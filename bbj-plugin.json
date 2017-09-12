@@ -2,5 +2,12 @@
 	"name":"BBjGridExWidget",
 	"description":"Prototyping the BBjGridExWidget based on ag-grid",
 	"version": "1.0",
-	"author":"Basis"
+	"author":"Basis",
+	"plugin_dependencies": [
+								{
+									"plugin_name"    : "BBjWidget",
+									"plugin_version" : "master",
+									"project_url"    : "https://github.com/BBj-Plugins/BBjWidget"
+								}
+							]
 }
