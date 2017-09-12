@@ -1,0 +1,72 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub fillGrid
+
+process_events
+
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+    grid!.addColumn("CDNUMBER","Item#")
+    grid!.addColumn("ARTIST","Artist Name")
+    grid!.addColumn("TITLE","Record Title")
+    grid!.addColumn("LABEL","Publisher")
+    grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
+    
+    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
+    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
+    grid!.pinColumn("CDNUMBER","left")
+    grid!.setColumnWidth("CDNUMBER",120)
+    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
+
+    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+    grid!.setMultipleSelection(1)
+    
+    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
+    rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
+
+    grid!.setEnableFilter(1)
+    
+    grid!.setData(rs!)
+    
+    grid!.setFitToGrid(1)
+    
+    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+    
+return
+
+onRowSelect:
+    ev! = BBjAPI().getLastEvent()
+    rem TODO unfold the object structure - it will change!
+    a=msgbox(str(ev!.getObject()),0,"ROW(S) SELECTED")
+return    
