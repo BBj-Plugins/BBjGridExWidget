@@ -22,6 +22,14 @@ grid!.setData(rs!)
 (...)
 ```
 
+##samples
+
+Commented samples from the [Demo](https://github.com/BBj-Plugins/BBjGridExWidget/tree/master/Demo) subdirectory
+
+[Demo.bbj](./Demo.bbj.md)
+
+
+
 ##Documentation
 
 [javadoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget.html)
