@@ -68,8 +68,16 @@ class public BBjGridExWidget extends BBjWidget
             htmlview!.setOpaque(0)
             
             #HTMLView!=htmlview!
+            if INFO(3,6)<>"5" then
+                #HTMLView!.setLocation(-9,-9)
+            fi
         fi
-        #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
+        
+        if INFO(3,6)="5" then
+            #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
+        else
+            #HTMLView!.setSize(#getCanvas().getWidth()+16,#getCanvas().getHeight()+16)
+        fi
     methodend
     
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
