@@ -1,2 +1,7 @@
-# BBjLatencyIndicatorWidget
-A graphical indicator for the UI to show the latency / quality of the connection
+# BBjGridExWidget
+
+A Grid Widget Plugin for BBj
+
+
+[Documentation](https://bbj-plugins.github.io/BBjGridExWidget/)
+
