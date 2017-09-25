@@ -136,10 +136,9 @@ That's all we need to get a result set that works with the grid:
 ```                 
         grid!.setData(rs!)
 ```
-        
+```        
     fi
 return
-
 ```
 
 this is toggling the "fit to grid" functionality in the widget:
@@ -154,6 +153,10 @@ toggleFitToGrid:
     fi
 return
 
+``` 
+
+Hidden Easter Egg: get the Console in the Java FX WebView:
+``` 
 onWinKeypress:
     declare auto BBjKeypressEvent key_ev!
     key_ev! = BBjAPI().getLastEvent()
