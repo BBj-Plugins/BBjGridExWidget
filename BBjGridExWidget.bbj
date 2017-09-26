@@ -21,6 +21,11 @@ class public BBjGridExWidgetRowDoubleClickEvent
     
 classend
 
+class public BBjGridExWidgetColumnState
+
+    field public BBjString String$
+
+classend
 
 rem /**
 rem  * A sample BBj Widget Implementation
@@ -192,7 +197,7 @@ class public BBjGridExWidget extends BBjWidget
 :            'allowContextMenuWithControlKey': false,"
 
         if (#EnableFilter)
-            opt$=opt$+"'enableFilter': true,'floatingFilter': true,"
+            opt$=opt$+"'enableFilter': false,'floatingFilter': true,"
         fi
 
         if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
@@ -407,12 +412,14 @@ class public BBjGridExWidget extends BBjWidget
     methodend
     
     
-    method private void executeScript(BBjString s$)
+    method private Object executeScript(BBjString s$)
         if #IsReady! then
-            #HTMLView!.executeScript(s$)
+            methodret #HTMLView!.executeScript(s$)
         else
             #backlog!.addItem(s$)
         fi
+        
+        methodret null() 
     methodend
 
     
@@ -522,6 +529,7 @@ rem --------------------api methods--------------------------------
     rem  */     
     method public void setFitToGrid(BBjNumber fit!)
         #FitToGrid=fit!
+        ret! = #executeScript("setFitToGrid("+str(fit!)+")")
     methodend
 
 
@@ -603,6 +611,24 @@ rem --------------------api methods--------------------------------
     method public void setEnableFilter(BBjNumber enable)
         #EnableFilter=enable
     methodend    
+    
+    
+    method public BBjGridExWidgetColumnState getColumnsState()
+    
+        state! = new BBjGridExWidgetColumnState()
+        json_string$ = str(#HTMLView!.executeScript("getColumnsState()"))
+        state!.setString(json_string$)
+        methodret state!
+    
+    methodend
+
+    method public void setColumnsState(BBjGridExWidgetColumnState state!)
+    
+        json_state$ = state!.getString()
+        #HTMLView!.executeScript("setColumnsState("+json_state$+")")
+    
+    methodend
+
 
     rem /**
     rem  * @return constant value to define left aligned column

@@ -81,12 +81,30 @@ class AgGridPrototype {
 
         
         var grid = new agGrid.Grid(this.container, options);
+//        this.gridOptions = options;
         
     }
 
 
 }
 
+function setFitToGrid(fitmode){
+	
+//	alert(fitmode);
+	//blabla
+	
+	return {'demo':'hello world','bla':'blubb'}	;
+
+}
+
+function setColumnsState(state){
+	$doc.theGrid.gridOptions.columnApi.setColumnState(state);
+}
+
+function getColumnsState(){
+	var state = $doc.theGrid.gridOptions.columnApi.getColumnState();
+	return JSON.stringify(state);
+}
 
 function cellRenderer(params) {
 	var cdef = params.column.colDef.cellStyleDefaults || {};

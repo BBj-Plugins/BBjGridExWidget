@@ -1,0 +1,109 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+tb_get! = wnd!.addButton(300,0,0,200,25,"GET STATE")
+tb_set! = wnd!.addButton(301,220,0,200,25,"SET STATE")
+
+tb_get!.setCallback(BBjAPI.ON_BUTTON_PUSH,"getState")
+tb_set!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setState")
+
+gosub fillGrid
+
+process_events
+
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+    grid!.addColumn("CDNUMBER","Item#")
+    grid!.addColumn("ARTIST","Artist Name")
+    grid!.addColumn("TITLE","Record Title")
+    grid!.addColumn("LABEL","Publisher")
+    grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
+    
+    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
+    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
+    grid!.pinColumn("CDNUMBER","left")
+    grid!.setColumnWidth("CDNUMBER",120)
+    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
+
+    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+    grid!.setMultipleSelection(1)
+    
+    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
+    rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
+
+    grid!.setEnableFilter(1)
+    
+    grid!.setData(rs!)
+    
+    grid!.setFitToGrid(1)
+    
+    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+    grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
+
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
+return
+
+onRowSelect:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
+    else
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+    fi
+return    
+
+onRowDoubleclick:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getRow()),0,"DOUBLE CLICK")
+    else
+        print 'SHOW', "DOUBLE CLICK" ,ev!.getRow()
+    fi
+return  
+
+getState:
+    state! = grid!.getColumnsState()
+    state$ = str(state!.getString())
+    if INFO(3,6)="5" then
+        a=msgbox(state$,0,"GET STATE")
+    else
+        print 'SHOW', "GET STATE ",state$
+    fi
+
+return
+
+setState:
+    if state!<>null() then
+        grid!.setColumnsState(state!)
+    fi
+return
