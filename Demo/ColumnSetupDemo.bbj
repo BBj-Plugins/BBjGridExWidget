@@ -62,11 +62,10 @@ byebye:
 resize:
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
-    
 return
 
 onRowSelect:
     ev! = BBjAPI().getLastEvent()
-    rem TODO unfold the object structure - it will change!
-    a=msgbox(str(ev!.getObject()),0,"ROW(S) SELECTED")
+    ev! = ev!.getObject()
+    a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED") 
 return    

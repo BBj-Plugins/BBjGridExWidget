@@ -44,7 +44,14 @@ class AgGridPrototype {
         
         options.onSelectionChanged = function (e) {
             var r = e.api.getSelectedRows();
-            sendBBjEvent({'type':'grid-select-row','rows':JSON.stringify(r)});
+            var nodes = e.api.getSelectedNodes();
+            var n=[];
+            for (var i in nodes){
+            	var node_i = nodes[i];
+            	n.push(node_i.id);
+            }
+
+            sendBBjEvent({'type':'grid-select-row','rows':r,'nodes':n});
         };
     	
         
@@ -173,6 +180,7 @@ function loadData(url) {
 
 
 function sendBBjEvent(payload){
+	console.log(payload);
 	var d = $doc.getElementById('eventTransporterDiv');
 	var event = new Event('click');
 	event.payload=payload;
