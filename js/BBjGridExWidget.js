@@ -50,10 +50,12 @@ class AgGridPrototype {
             	var node_i = nodes[i];
             	n.push(node_i.id);
             }
-
             sendBBjEvent({'type':'grid-select-row','rows':r,'nodes':n});
         };
-    	
+
+        options.onRowDoubleClicked = function (e) {
+        	sendBBjEvent({'type':'grid-row-doubleclick','rows':e.data,'nodes':e.rowIndex});
+        }; 
         
         options.rowData = this.data;
         
@@ -180,7 +182,8 @@ function loadData(url) {
 
 
 function sendBBjEvent(payload){
-	console.log(payload);
+//	console.log("sending event to BBj:");
+//	console.log(payload);
 	var d = $doc.getElementById('eventTransporterDiv');
 	var event = new Event('click');
 	event.payload=payload;

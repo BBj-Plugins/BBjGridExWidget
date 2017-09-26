@@ -53,6 +53,7 @@ fillGrid:
     grid!.setFitToGrid(1)
     
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+    grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
 
 return
 
@@ -67,5 +68,19 @@ return
 onRowSelect:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED") 
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
+    else
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+    fi
 return    
+
+onRowDoubleclick:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getSelectedRows()),0,"DOUBLE CLICK")
+    else
+        print 'SHOW', "DOUBLE CLICK" ,ev!.getSelectedRows()
+    fi
+return  

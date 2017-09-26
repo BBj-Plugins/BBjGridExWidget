@@ -124,7 +124,6 @@ class public BBjGridExWidget extends BBjWidget
         
         
         if pos("grid-select-row"=N$)>0 then
-            
             fire_ev! = new BBjGridExWidgetSelectRowEvent()
             if pos("""nodes"""=n$)>0 then
                 x$=n$(pos("""nodes"""=n$)+7)
@@ -143,6 +142,26 @@ class public BBjGridExWidget extends BBjWidget
             fire_ev!.setSelectedRows(v!)
             #fireEvent(#ON_GRID_SELECT_ROW(),fire_ev!)
         fi
+        
+        if pos("grid-row-doubleclick"=N$)>0 then
+            fire_ev! = new BBjGridExWidgetSelectRowEvent()
+            if pos("""nodes"""=n$)>0 then
+                x$=n$(pos("""nodes"""=n$)+7)
+                x$=x$(pos("["=x$)+1)
+                x$=x$(1,pos("]"=x$)-1)
+                v! = new BBjVector()
+                while pos(","=x$)>0
+                    x1$=x$(1,pos(","=x$)-1)
+                    x$=x$(pos(","=x$)+1)
+                    v!.addItem(x1$(2,len(x1$)-2))
+                wend
+                if (x$>"") then
+                    v!.addItem(x$(2,len(x$)-2))
+                fi
+            fi
+            fire_ev!.setSelectedRows(v!)
+            #fireEvent(#ON_GRID_DOUBLE_CLICK(),fire_ev!)
+        fi        
     methodend
 
     
@@ -613,11 +632,18 @@ rem --------------------api methods--------------------------------
     methodend 
 
     rem /**
-    rem  * @return constant value to define row selection mode
+    rem  * @return constant value to define row selection event
     rem  */    
     method public static BBjNumber ON_GRID_SELECT_ROW()
         methodret BBjAPI.ON_GRID_SELECT_ROW
     methodend 
+
+    rem /**
+    rem  * @return constant value to define row double click event
+    rem  */    
+    method public static BBjNumber ON_GRID_DOUBLE_CLICK()
+        methodret BBjAPI.ON_GRID_DOUBLE_CLICK
+    methodend     
 
 classend
 
