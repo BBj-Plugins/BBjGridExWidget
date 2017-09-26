@@ -79,8 +79,8 @@ onRowDoubleclick:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
     if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getSelectedRows()),0,"DOUBLE CLICK")
+        a=msgbox(str(ev!.getRow()),0,"DOUBLE CLICK")
     else
-        print 'SHOW', "DOUBLE CLICK" ,ev!.getSelectedRows()
+        print 'SHOW', "DOUBLE CLICK" ,ev!.getRow()
     fi
 return  

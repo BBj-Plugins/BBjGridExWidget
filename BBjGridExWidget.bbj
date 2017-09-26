@@ -15,6 +15,12 @@ class public BBjGridExWidgetSelectRowEvent
     
 classend
 
+class public BBjGridExWidgetRowDoubleClickEvent
+    
+    field public BBjNumber Row
+    
+classend
+
 
 rem /**
 rem  * A sample BBj Widget Implementation
@@ -144,7 +150,7 @@ class public BBjGridExWidget extends BBjWidget
         fi
         
         if pos("grid-row-doubleclick"=N$)>0 then
-            fire_ev! = new BBjGridExWidgetSelectRowEvent()
+            fire_ev! = new BBjGridExWidgetRowDoubleClickEvent()
             if pos("""nodes"""=n$)>0 then
                 x$=n$(pos("""nodes"""=n$)+7)
                 x$=x$(pos("["=x$)+1)
@@ -156,10 +162,9 @@ class public BBjGridExWidget extends BBjWidget
                     v!.addItem(x1$(2,len(x1$)-2))
                 wend
                 if (x$>"") then
-                    v!.addItem(x$(2,len(x$)-2))
+                    fire_ev!.setRow(num(x$(2,len(x$)-2)))
                 fi
             fi
-            fire_ev!.setSelectedRows(v!)
             #fireEvent(#ON_GRID_DOUBLE_CLICK(),fire_ev!)
         fi        
     methodend
