@@ -111,68 +111,42 @@ class public BBjGridExWidget extends BBjWidget
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
     
         n$=str(ev!.getEventMap())
-        if pos("payload"=n$)>0 then
-            N$=n$(pos("payload"=n$)+8)
-            i=1
-            c=0
-            while i<len(n$)+1
-              if n$(i,1)="{" then 
-                  let c=c+1
-              else
-                  if n$(i,1)="}" then 
-                      let c=c-1
-                      if c=0 then
-                          n$=n$(1,i)
-                          break
-                      fi
-                  fi
-              fi
-              i=i+1
-            wend
-        else
-            n$="{}"
-        fi
-        
-        
         
         if pos("grid-select-row"=N$)>0 then
             fire_ev! = new BBjGridExWidgetSelectRowEvent()
-            if pos("""nodes"""=n$)>0 then
-                x$=n$(pos("""nodes"""=n$)+7)
-                x$=x$(pos("["=x$)+1)
-                x$=x$(1,pos("]"=x$)-1)
+            if pos("nodes="=n$)>0 then
+                x$=n$(pos("nodes="=n$)+6)
+                x$=x$(pos("{"=x$)+1)
+                x$=x$(1,pos("}"=x$)-1)
                 v! = new BBjVector()
                 while pos(","=x$)>0
                     x1$=x$(1,pos(","=x$)-1)
                     x$=x$(pos(","=x$)+1)
-                    v!.addItem(x1$(2,len(x1$)-2))
+                    x1$=x1$(pos(":"=x1$)+2)
+                    x1$=x1$(1,len(x1$)-1)
+                    v!.addItem(x1$)
                 wend
                 if (x$>"") then
-                    v!.addItem(x$(2,len(x$)-2))
+                    x$=x$(pos(":"=x$)+2)
+                    x$=x$(1,len(x$)-1)
+                    v!.addItem(x$)
                 fi
             fi
             fire_ev!.setSelectedRows(v!)
+            
             #fireEvent(#ON_GRID_SELECT_ROW(),fire_ev!)
         fi
         
         if pos("grid-row-doubleclick"=N$)>0 then
             fire_ev! = new BBjGridExWidgetRowDoubleClickEvent()
-            if pos("""nodes"""=n$)>0 then
-                x$=n$(pos("""nodes"""=n$)+7)
-                x$=x$(pos("["=x$)+1)
-                x$=x$(1,pos("]"=x$)-1)
-                v! = new BBjVector()
-                while pos(","=x$)>0
-                    x1$=x$(1,pos(","=x$)-1)
-                    x$=x$(pos(","=x$)+1)
-                    v!.addItem(x1$(2,len(x1$)-2))
-                wend
-                if (x$>"") then
-                    fire_ev!.setRow(num(x$(2,len(x$)-2)))
-                fi
+            if pos("nodes="=n$)>0 then
+                x$=n$(pos("nodes="=n$)+6)
+                x$=x$(1,pos(","=x$)-1)
+                fire_ev!.setRow(num(x$))
             fi
             #fireEvent(#ON_GRID_DOUBLE_CLICK(),fire_ev!)
-        fi        
+        fi   
+             
     methodend
 
     
@@ -380,7 +354,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             p_script! = script$
             p_script! = p_script!.replaceAll("\$doc","document")
-            p_script! = p_script!.replaceAll("\$win","window")
+            p_script! = p_script!.replaceAll("\$wnd","window")
             #HTMLView!.injectScript(str(p_script!),1)
             #HTMLView!.injectScript(str(p_script!))
         fi

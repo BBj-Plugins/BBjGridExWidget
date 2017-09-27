@@ -50,7 +50,7 @@ fillGrid:
     
     grid!.setData(rs!)
     
-    grid!.setFitToGrid(1)
+    rem grid!.setFitToGrid(1)
     
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
