@@ -229,7 +229,7 @@ function bbj_grid_widget_get_value_formatter_date(data) {
 
   return bbj_formate_date(
     data.value,
-    '%Y-%Mz-%Dz',
+    '%Y-%Mz-%Dz'
   );
 }
 
