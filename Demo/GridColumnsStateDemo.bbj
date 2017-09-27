@@ -17,6 +17,11 @@ grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
+if (info(3,6)<>"5") then
+    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
+fi
+ 
+ 
 tb_get! = wnd!.addButton(300,0,0,200,25,"GET STATE")
 tb_set! = wnd!.addButton(301,220,0,200,25,"SET STATE")
 
@@ -56,7 +61,7 @@ fillGrid:
     
     grid!.setData(rs!)
     
-    grid!.setFitToGrid(1)
+REM     grid!.setFitToGrid(1)
     
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
@@ -105,5 +110,13 @@ return
 setState:
     if state!<>null() then
         grid!.setColumnsState(state!)
+    fi
+return
+
+onWinKeypress:
+    declare auto BBjKeypressEvent key_ev!
+    key_ev! = BBjAPI().getLastEvent()
+    if key_ev!.getKeyCode() = 342 then
+       grid!.showDeveloperConsole()
     fi
 return

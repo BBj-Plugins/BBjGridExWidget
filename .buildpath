@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildpath>
+    <buildpathentry excluding="wbp-meta/**|backups/**|.project|build.log|.work/**|.classpath|.metadata/**|.metadata/**|.builaunches/**|.buildpath|.settings/**|.guilaunches/**|.bdtPath" kind="src" path=""/>
+</buildpath>

@@ -82,7 +82,7 @@ class public BBjGridExWidget extends BBjWidget
         if (f_init!) then
             dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=true")
             
-            html$="<html><body><div id='eventTransporterDiv' onClick='postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-fresh""></div></body></html>"
+            html$="<html><body><div id='eventTransporterDiv' onClick='bbj_grid_widget_post_event(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-fresh""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$)
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
@@ -109,6 +109,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 
     rem  */
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
+    
         n$=str(ev!.getEventMap())
         if pos("payload"=n$)>0 then
             N$=n$(pos("payload"=n$)+8)
@@ -211,7 +212,7 @@ class public BBjGridExWidget extends BBjWidget
         opt$=opt$+"'columnDefs':"+cdef$
         opt$=opt$+"}"
         
-        #HTMLView!.executeScript("setData("+data$+","+opt$+")")
+        #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+opt$+")")
          
     methodend 
     
@@ -529,7 +530,7 @@ rem --------------------api methods--------------------------------
     rem  */     
     method public void setFitToGrid(BBjNumber fit!)
         #FitToGrid=fit!
-        ret! = #executeScript("setFitToGrid("+str(fit!)+")")
+        ret! = #executeScript("bbj_grid_widget_fit_grid("+str(fit!)+")")
     methodend
 
 
@@ -616,7 +617,7 @@ rem --------------------api methods--------------------------------
     method public BBjGridExWidgetColumnState getColumnsState()
     
         state! = new BBjGridExWidgetColumnState()
-        json_string$ = str(#HTMLView!.executeScript("getColumnsState()"))
+        json_string$ = str(#HTMLView!.executeScript("bbj_grid_widget_get_state()"))
         state!.setString(json_string$)
         methodret state!
     
@@ -625,7 +626,7 @@ rem --------------------api methods--------------------------------
     method public void setColumnsState(BBjGridExWidgetColumnState state!)
     
         json_state$ = state!.getString()
-        #HTMLView!.executeScript("setColumnsState("+json_state$+")")
+        #HTMLView!.executeScript("bbj_grid_widget_set_state("+json_state$+")")
     
     methodend
 
