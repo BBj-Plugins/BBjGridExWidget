@@ -7,12 +7,10 @@
 */
 
 function bbj_grid_widget_post_event(ev) {
-  window.basisDispatchNativeEvent(ev);
+  window.basisDispatchCustomEvent(ev,ev.payload);
 }
 
 function bbj_grid_widget_send_event(payload) {
-	
-  console.log(payload);
   var d = $doc.getElementById('eventTransporterDiv');
   var event = new Event('click');
   event.payload = payload;
