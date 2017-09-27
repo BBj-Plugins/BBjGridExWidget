@@ -44,24 +44,12 @@ fillGrid:
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
     grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
-    
-    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
-    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
-    grid!.pinColumn("CDNUMBER","left")
-    grid!.setColumnWidth("CDNUMBER",120)
-    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-
+   
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(1)
     
-    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
-    rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
-
-    grid!.setEnableFilter(1)
     
     grid!.setData(rs!)
-    
-REM     grid!.setFitToGrid(1)
     
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
