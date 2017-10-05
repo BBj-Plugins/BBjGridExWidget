@@ -94,7 +94,7 @@ function bbj_formate_date(date, format) {
 }
 
 function bbj_grid_widget_post_event(ev) {
-  window.basisDispatchCustomEvent(ev,ev.payload);
+  window.basisDispatchCustomEvent(ev, ev.payload);
 }
 
 function bbj_grid_widget_send_event(payload) {
@@ -227,10 +227,15 @@ function bbj_grid_widget_get_value_formatter(filter) {
 
 function bbj_grid_widget_get_value_formatter_date(data) {
 
-  return bbj_formate_date(
-    data.value,
-    '%Y-%Mz-%Dz'
-  );
+  if (
+    $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field) &&
+    $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASk')
+  ) {
+    return bbj_formate_date(
+      data.value,
+      $doc.bbj_grid_widget_meta[data.colDef.field].MASK //'%Y-%Mz-%Dz'
+    );
+  } else return data.value;
 }
 
 function bbj_grid_widget_set_data(json, options) {
@@ -238,5 +243,6 @@ function bbj_grid_widget_set_data(json, options) {
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
   $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);
+  $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
 }
