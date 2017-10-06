@@ -7,90 +7,8 @@
 */
 
 bbj_grid_supported_value_formatter = {
-  'date': bbj_grid_widget_get_value_formatter_date
-}
-
-function bbj_formate_date(date, format) {
-
-  if (!date || !format) return null;
-
-  date = new Date(date);
-
-  var year = date.getYear();
-  var fullYear = date.getFullYear();
-  var month = date.getMonth() + 1;
-  var day = date.getDay();
-  var hours24 = date.getHours();
-  var hours12 = hours24 - 12;
-  hours12 = hours12 <= 12 ? hours12 : hours24;
-  hours12 = hours12 == 0 ? 12 : hours12;
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-
-  var translations = {
-
-    // year 
-    "Yz": year,
-    "Ys": fullYear,
-    "Yl": fullYear,
-    "Yp": String.fromCharCode(year),
-    "Yd": fullYear,
-    "Y": fullYear,
-
-    // month
-    "Mz": String(month).length == 1 ? "0" + month : month,
-    "Ms": month,
-    "Ml": month,
-    "Mp": String.fromCharCode(month),
-    "Md": month,
-    "M": month,
-
-    // day
-    "Dz": String(day).length == 1 ? "0" + day : day,
-    "Ds": day,
-    "Dl": day,
-    "Dp": String.fromCharCode(day),
-    "Dd": day,
-    "D": day,
-
-    // hour 24
-    "Hs": hours24,
-    "Hl": hours24,
-    "Hp": String.fromCharCode(hours24),
-    "Hd": hours24,
-    "H": hours24,
-
-    // hour 12
-    "hs": String(hours12).length == 1 ? "0" + hours12 : hours12,
-    "hl": hours12,
-    "hp": String.fromCharCode(hours12),
-    "hd": hours12,
-    "h": hours12,
-
-    // minutes
-    "ms": String(minutes).length == 1 ? "0" + minutes : minutes,
-    "ml": minutes,
-    "mp": String.fromCharCode(minutes),
-    "md": minutes,
-    "m": minutes,
-
-    // seconds
-    "ss": String(seconds).length == 1 ? "0" + seconds : seconds,
-    "sl": seconds,
-    "sp": String.fromCharCode(seconds),
-    "sd": seconds,
-    "s": seconds,
-
-    'pd': hours24 > 12 ? 'PM' : 'AM',
-    'p': hours24 > 12 ? 'PM' : 'AM',
-  };
-
-  var result = format;
-  for (var k in translations) {
-    result = result.replace(new RegExp('(%' + k + ')', 'g'), translations[k]);
-  }
-
-  return result;
+  'date': bbj_grid_widget_get_value_formatter_date,
+  'number': bbj_grid_widget_get_value_formatter_number
 }
 
 function bbj_grid_widget_post_event(ev) {
@@ -157,9 +75,11 @@ function bbj_grid_widget_init(container, license, data, options) {
 
     onRowDoubleClicked: function (e) {
 
-      bbj_grid_widget_send_event(
-        { 'type': 'grid-row-doubleclick', 'rows': e.data, 'nodes': e.rowIndex }
-      );
+      bbj_grid_widget_send_event({
+        'type': 'grid-row-doubleclick',
+        'rows': e.data,
+        'nodes': e.rowIndex
+      });
     },
 
     onSelectionChanged: function (e) {
@@ -172,9 +92,11 @@ function bbj_grid_widget_init(container, license, data, options) {
         n.push(node_i.id);
       }
 
-      bbj_grid_widget_send_event(
-        { 'type': 'grid-select-row', 'rows': r, 'nodes': n }
-      );
+      bbj_grid_widget_send_event({
+        'type': 'grid-select-row',
+        'rows': r,
+        'nodes': n
+      });
     },
 
     getNodeChildDetails: function (rowItem) {
@@ -229,11 +151,24 @@ function bbj_grid_widget_get_value_formatter_date(data) {
 
   if (
     $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field) &&
-    $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASk')
+    $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
   ) {
-    return bbj_formate_date(
+    return bbj_mask_date(
       data.value,
       $doc.bbj_grid_widget_meta[data.colDef.field].MASK //'%Y-%Mz-%Dz'
+    );
+  } else return data.value;
+}
+
+function bbj_grid_widget_get_value_formatter_number(data) {
+
+  if (
+    $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field) &&
+    $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
+  ) {
+    return bbj_mask_number(
+      data.value,
+      $doc.bbj_grid_widget_meta[data.colDef.field].MASK
     );
   } else return data.value;
 }
@@ -242,7 +177,8 @@ function bbj_grid_widget_set_data(json, options) {
 
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
-  $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);
+
   $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
+  $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);
 }

@@ -249,10 +249,12 @@ class public BBjGridExWidget extends BBjWidget
                     case Types.INTEGER
                     case Types.DECIMAL
                     case Types.DOUBLE
+                    case Types.NUMERIC
                         cdef$=cdef$+",""type"":""numericColumn"",""filter"":""number"""
                     break
                     case Types.DATE
                     case Types.TIMESTAMP
+                      
                         cdef$=cdef$+",""filter"":""date"""
                     break
                     
@@ -342,10 +344,24 @@ class public BBjGridExWidget extends BBjWidget
             close (ch)        
             #HTMLView!.injectScript(script$,1)
         fi
+
+        ch=unt
+        open (ch)"BBjGridExWidget/js/format.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #HTMLView!.injectScript(script$)
+        
         
         ch=unt
+        open (ch)"BBjGridExWidget/js/masks.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #HTMLView!.injectScript(script$)
+        
+                
+        ch=unt
         open (ch)"BBjGridExWidget/js/BBjGridExWidget.js"
-        read record (ch,siz=1521000)script$
+        read record (ch,siz=5512000)script$
         close (ch)
 
         if INFO(3,6)="5" then
@@ -354,7 +370,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             p_script! = script$
             p_script! = p_script!.replaceAll("\$doc","document")
-            p_script! = p_script!.replaceAll("\$wnd","window")
+            p_script! = p_script!.replaceAll("\$win","window")
             #HTMLView!.injectScript(str(p_script!),1)
             #HTMLView!.injectScript(str(p_script!))
         fi
@@ -476,7 +492,7 @@ rem --------------------api methods--------------------------------
             #ColumnDefinition! = new DataRow()
         fi
         
-        #ColumnDefinition!.setFieldValue(Field$,Type!,"")
+        #ColumnDefinition!.setFieldValue(Field$,Type!,null())
         #ColumnDefinition!.setFieldAttribute(Field$,"LABEL",Label$)
         #ColumnDefinition!.setFieldAttribute(Field$,"EDITABLE",STR(Editable!))
     
