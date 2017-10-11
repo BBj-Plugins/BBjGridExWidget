@@ -38,8 +38,10 @@ fillGrid:
     declare SqlQueryBC sbc!
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-
+   
+    print rs!.get(0).toJson()
     grid!.addColumn("CDNUMBER","Item#")
+    grid!.addColumn("COST","COST",2)
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
@@ -49,8 +51,12 @@ fillGrid:
     grid!.setMultipleSelection(1)
     
     
+    rs!.setAttribute(10,"MASK","$#,##00")
+    
     grid!.setData(rs!)
     
+    
+
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
 
