@@ -587,6 +587,22 @@ rem --------------------api methods--------------------------------
         #EnableFilter=enable
     methodend    
     
+    rem /**
+    rem  * set the label for the group column if the grid is a tree-grid
+    rem  * defaults to "Group"
+    rem  * @param label$ - the label
+    rem  */
+    method public void setGroupColumnLabel(BBjString label$)
+        #GroupColumnLabel$ = label$
+    methodend
+
+    rem /**
+    rem  * get the label for the group column if the grid is a tree-grid
+    rem  * @returns label$ 
+    rem  */
+    method public BBjString getGroupColumnLabel()
+        return #GroupColumnLabel$
+    methodend
     
     method public BBjGridExWidgetColumnState getColumnsState()
     
