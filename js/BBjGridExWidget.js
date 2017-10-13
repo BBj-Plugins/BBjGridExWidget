@@ -143,14 +143,14 @@ function bbj_grid_widget_set_state(state) {
 
 function bbj_grid_widget_get_value_formatter(filter) {
 
-  return bbj_grid_supported_value_formatter.hasOwnProperty(filter) ?
+  return bbj_grid_supported_value_formatter && bbj_grid_supported_value_formatter.hasOwnProperty(filter) ?
     bbj_grid_supported_value_formatter[filter] : null;
 }
 
 function bbj_grid_widget_get_value_formatter_date(data) {
 
   if (
-    $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field) &&
+    ($doc.bbj_grid_widget_meta && $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field)) &&
     $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
   ) {
     return bbj_mask_date(
@@ -163,7 +163,7 @@ function bbj_grid_widget_get_value_formatter_date(data) {
 function bbj_grid_widget_get_value_formatter_number(data) {
 
   if (
-    $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field) &&
+    ($doc.bbj_grid_widget_meta && $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field)) &&
     $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
   ) {
     return bbj_mask_number(
