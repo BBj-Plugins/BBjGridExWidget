@@ -242,7 +242,7 @@ class public BBjGridExWidget extends BBjWidget
                 width$=""
                 width$=cd!.getFieldAttribute(f$,"WIDTH",err=*next)
                 if width$>"" then
-                    cdef$=cdef$+",'width':'"+width$+"'" 
+                    cdef$=cdef$+",'width':"+width$ 
                 fi                
 
                 switch cd!.getFieldType(f$)
