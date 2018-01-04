@@ -103,14 +103,19 @@ doQuery:
             bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
         fi
         
-        rs! = bc!.retrieve("SELECT * FROM "+tbl$)
+        rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
         grid!.setData(rs!)
         
-        rs!.setAttribute(23,"MASK","%Y-%Mz-%Dz")
-        rs!.setAttribute(24,"MASK","%Y/%Mz/%Dz")
+        if db$="ChileCompany" AND tbl$="CUSTOMER" then 
+            rs!.setAttribute(23,"MASK","%Y-%Mz-%Dz")
+            rs!.setAttribute(24,"MASK","%Y/%Mz/%Dz")
+        fi
     fi
-return
+    return
 
+error_sql:
+        a=msgbox(BBjAPI().getLastException().getMessage() ,0,"ERROR")
+return        
 
 toggleFitToGrid:
     declare auto BBjToolButtonPushEvent toogle_ev!
