@@ -648,6 +648,25 @@ rem --------------------api methods--------------------------------
         methodret #SelectedRows!
     methodend
     
+    
+    method public void setTheme(BBjString theme$)
+        if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
+            s$="document.getElementById('grid').className='ag-"+theme$+"';"
+            #executeScript(s$)
+        fi
+    methodend
+    
+    
+    method public BBjVector getThemes()
+        v! = new BBjVector()
+        v!.addItem("dark")
+        v!.addItem("fresh")
+        v!.addItem("blue")
+        v!.addItem("bootstrap")
+        v!.addItem("material")
+        methodret v!
+    methodend
+    
     rem /**
     rem  * @return the selected row index
     rem  */
