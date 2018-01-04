@@ -48,6 +48,8 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber EnableFilter
     
     field private DataRow ColumnDefinition!
+    
+    field private BBjVector SelectedRows! = new BBjVector() 
 
     rem --------------------- constructors -------------------------------------
     rem /**
@@ -110,6 +112,8 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
     
+        declare BBjVector v!
+    
         n$=str(ev!.getEventMap())
         
         if pos("grid-select-row"=N$)>0 then
@@ -133,6 +137,7 @@ class public BBjGridExWidget extends BBjWidget
                 fi
             fi
             fire_ev!.setSelectedRows(v!)
+            #SelectedRows!=v!
             
             #fireEvent(#ON_GRID_SELECT_ROW(),fire_ev!)
         fi
@@ -636,7 +641,26 @@ rem --------------------api methods--------------------------------
     
     methodend
 
-
+    rem /**
+    rem  * @return BBjVector with the selected row indexes
+    rem  */
+    method public BBjVector getSelectedRows()
+        methodret #SelectedRows!
+    methodend
+    
+    rem /**
+    rem  * @return the selected row index
+    rem  */
+    method public BBjNumber getSelectedRow()
+        if #SelectedRows!.size() = 0 then
+            methodret -1
+        else
+            r=-1
+            r=num(#SelectedRows!.getItem(0),err=*next)
+            methodret r
+        fi
+    methodend  
+    
     rem /**
     rem  * @return constant value to define left aligned column
     rem  */
@@ -682,6 +706,8 @@ rem --------------------api methods--------------------------------
     method public static BBjNumber ON_GRID_DOUBLE_CLICK()
         methodret BBjAPI.ON_GRID_DOUBLE_CLICK
     methodend     
+    
+
 
 classend
 
