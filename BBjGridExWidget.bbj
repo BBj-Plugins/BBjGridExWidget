@@ -84,7 +84,7 @@ class public BBjGridExWidget extends BBjWidget
         if (f_init!) then
             dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=true")
             
-            html$="<html><body><div id='eventTransporterDiv' onClick='bbj_grid_widget_post_event(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-fresh""></div></body></html>"
+            html$="<html><body><div id='eventTransporterDiv' onClick='bbj_grid_widget_post_event(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-fresh""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$)
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
@@ -337,7 +337,8 @@ class public BBjGridExWidget extends BBjWidget
         rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method    
         if INFO(3,6)="5" then
             rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
-            open (ch)"BBjGridExWidget/js/ag-grid.js"
+            rem open (ch)"BBjGridExWidget/js/ag-grid.js"
+            open (ch)"BBjGridExWidget/js/ag-grid.min.js"
             read record (ch,siz=5512000)script$
             close (ch)        
             #HTMLView!.injectScript(script$)
@@ -651,7 +652,11 @@ rem --------------------api methods--------------------------------
     
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
-            s$="document.getElementById('grid').className='ag-"+theme$+"';"
+            if info(3,6)="5" then
+                s$="$doc.getElementById('grid').className='ag-theme-"+theme$+"';"
+            else
+                s$="document.getElementById('grid').className='ag-theme-"+theme$+"';"
+            fi
             #executeScript(s$)
         fi
     methodend

@@ -16,8 +16,10 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1024,768,"BBj Grid Ex Demo")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,1024,768)
 
-grid!.setGroupColumnLabel("Customer")
-
+grid!       .setGroupColumnLabel("Customer")
+grid!       .setSelectionMode(grid!.GRID_SELECT_ROW())
+grid!       .setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+    
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -136,3 +138,13 @@ resize:
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
 return
+
+onRowSelect:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
+    else
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+    fi
+return   
