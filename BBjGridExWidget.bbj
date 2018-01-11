@@ -177,7 +177,7 @@ class public BBjGridExWidget extends BBjWidget
 :            'allowContextMenuWithControlKey': false,"
 
         if (#EnableFilter)
-            opt$=opt$+"'enableFilter': false,'floatingFilter': true,"
+            opt$=opt$+"'enableFilter': true,'floatingFilter': false,"
         fi
 
         if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then

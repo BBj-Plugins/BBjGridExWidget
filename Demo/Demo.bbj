@@ -23,6 +23,8 @@ btn_fit!    = wnd!.addToolButton(205,765,5,25,25,"[/]")
 
 grid! = new BBjGridExWidget(wnd!,100,0,35,900,563)
 
+grid!.setEnableFilter(1)
+
 lb_db!      .setCallback(BBjAPI.ON_LIST_SELECT,"loadTables")
 btn_query!  .setCallback(BBjAPI.ON_BUTTON_PUSH,"doQuery")
 lb_theme!   .setCallback(BBjAPI.ON_LIST_SELECT,"setTheme")
