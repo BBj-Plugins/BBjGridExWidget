@@ -46,6 +46,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber MultipleSelection
     field private BBjNumber FitToGrid
     field private BBjNumber EnableFilter
+    field private BBjNumber GroupChildCount
     
     field private DataRow ColumnDefinition!
     
@@ -101,6 +102,10 @@ class public BBjGridExWidget extends BBjWidget
         else
             #HTMLView!.setSize(#getCanvas().getWidth()+16,#getCanvas().getHeight()+16)
         fi
+    methodend
+    
+    method public void setShowGroupChildCount(BBjNumber status!)
+        #GroupChildCount=status!
     methodend
     
     rem /**
@@ -212,9 +217,9 @@ class public BBjGridExWidget extends BBjWidget
         
         cdef$= "["
         first=1
-        
+            GroupChildCount$ = iff(#GroupChildCount = 1 , "true" ,"false")  
             if fGroup%>0 then
-                cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""group"",""pinned"":""left""}"
+                cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""agGroupCellRenderer"",""cellRendererParams"":{ ""suppressCount"":" + GroupChildCount$ + "},""pinned"":""left""}"
                 first=0
             fi
         
