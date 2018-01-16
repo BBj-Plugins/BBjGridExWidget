@@ -104,6 +104,12 @@ class public BBjGridExWidget extends BBjWidget
         fi
     methodend
     
+    rem /**
+    rem  * Optinally Suppress the number of items in a group
+    rem  * 
+    rem  * @param BBjNumber status!: 0 to enable , 1 to disable 
+    rem  * 
+    rem  */
     method public void setShowGroupChildCount(BBjNumber status!)
         #GroupChildCount=status!
     methodend
