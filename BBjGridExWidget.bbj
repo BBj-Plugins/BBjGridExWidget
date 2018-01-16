@@ -217,7 +217,7 @@ class public BBjGridExWidget extends BBjWidget
         
         cdef$= "["
         first=1
-            GroupChildCount$ = iff(#GroupChildCount = 1 , "true" ,"false")  
+            GroupChildCount$ = iff(#GroupChildCount = 1 , "false" ,"true")  
             if fGroup%>0 then
                 cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""agGroupCellRenderer"",""cellRendererParams"":{ ""suppressCount"":" + GroupChildCount$ + "},""pinned"":""left""}"
                 first=0

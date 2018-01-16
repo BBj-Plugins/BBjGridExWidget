@@ -16,7 +16,7 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1024,768,"BBj Grid Ex Demo")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,1024,768)
 
-grid!.setShowGroupChildCount(1)
+grid!		.setShowGroupChildCount(1)
 
 grid!       .setGroupColumnLabel("Customer")
 grid!       .setSelectionMode(grid!.GRID_SELECT_ROW())
