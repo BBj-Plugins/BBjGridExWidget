@@ -115,6 +115,36 @@ class public BBjGridExWidget extends BBjWidget
     methodend
     
     rem /**
+    rem  * set the selected row
+    rem  */
+    method public void setSelectedRow(BBjNumber x!)
+        
+        script$="bbj_grid_widget_set_selected_rows([" + str(x!) + "]);"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * set the selected row indices
+    rem  */
+    method public void setSelectedRows(BBjVector x!)
+        
+        script$="bbj_grid_widget_set_selected_rows(["
+        it! = x!.iterator()
+        first=1
+        while it!.hasNext()
+            if first
+                first=0
+            else    
+                script$=script$+","
+            fi
+            script$=script$+str(it!.next())
+        wend
+        script$=script$+"]);"
+        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
     rem  * Determines and dispatches the actual event
     rem  * 

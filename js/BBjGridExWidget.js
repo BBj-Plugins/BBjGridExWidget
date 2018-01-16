@@ -131,6 +131,16 @@ function bbj_grid_widget_fit_grid(fitmode) {
   $doc.bbj_grid_widget.api.sizeColumnsToFit();
 }
 
+function bbj_grid_widget_set_selected_rows(rows) {
+
+  console.log(rows);
+  $doc.bbj_grid_widget.api.forEachNode(function (node) {
+    if (rows.indexOf(node.rowIndex) > -1) {
+    	node.setSelected( true );
+    }
+  }.bind(this));
+}
+
 function bbj_grid_widget_get_state() {
 
   var state = $doc.bbj_grid_widget.columnApi.getColumnState();
