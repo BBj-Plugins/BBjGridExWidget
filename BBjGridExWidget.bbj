@@ -47,6 +47,8 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber FitToGrid
     field private BBjNumber EnableFilter
     field private BBjNumber GroupChildCount
+    field private BBjNumber groupSelectsChildren
+    field private BBjNumber showSelectionCheckbox
     
     field private DataRow ColumnDefinition!
     
@@ -115,12 +117,28 @@ class public BBjGridExWidget extends BBjWidget
     methodend
     
     rem /**
+    rem  * When true, selecting a group will have the impact of selecting all its children
+    rem  * When false, then the group is selectable independently of the child nodes
+    rem  */
+    method public void setGroupSelectsChildren(BBjNumber x!)
+        #groupSelectsChildren=x!
+    methodend
+    
+    rem /**
+    rem  * When true, selection box will be show on the first column
+    rem  * When false, no checkbox will be displayed
+    rem  */
+    method public void seShowSelectionCheckbox(BBjNumber x!)
+        #showSelectionCheckbox=x!
+    methodend
+    
+    rem /**
     rem  * set the selected row
     rem  */
     method public void setSelectedRow(BBjNumber x!)
         
         script$="bbj_grid_widget_set_selected_rows([" + str(x!) + "]);"        
-        #executeScript(script$)
+        #HTMLView!.executeScript(script$)
     methodend  
     
     rem /**
@@ -141,7 +159,7 @@ class public BBjGridExWidget extends BBjWidget
         wend
         script$=script$+"]);"
         
-        #executeScript(script$)
+        #HTMLView!.executeScript(script$)
     methodend  
     
     rem /**
@@ -223,12 +241,18 @@ class public BBjGridExWidget extends BBjWidget
 
         if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
             if (#MultipleSelection >0 )
-                opt$=opt$+"'rowSelection': 'multiple',"            
+                opt$=opt$+"'rowSelection': 'multiple', 'groupSelectsChildren': false,"            
             else
                 opt$=opt$+"'rowSelection': 'single',"
             fi
         fi
 
+       if (#groupSelectsChildren >0 )
+                opt$=opt$+"'groupSelectsChildren': true,"            
+       else
+                opt$=opt$+"'groupSelectsChildren': false,"      
+       fi
+        
         opt$=opt$+"'columnDefs':"+cdef$
         opt$=opt$+"}"
         
@@ -255,7 +279,20 @@ class public BBjGridExWidget extends BBjWidget
         first=1
             GroupChildCount$ = iff(#GroupChildCount = 1 , "false" ,"true")  
             if fGroup%>0 then
-                cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""agGroupCellRenderer"",""cellRendererParams"":{ ""suppressCount"":" + GroupChildCount$ + "},""pinned"":""left""}"
+                cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""agGroupCellRenderer"",""pinned"":""left"","
+                
+                cdef$ = cdef$ +"'cellRendererParams':{ 'suppressCount':" + GroupChildCount$ + "," 
+                 if (#showSelectionCheckbox > 0 )
+                          cdef$=cdef$+"'checkbox': true,"            
+                 else
+                          cdef$=cdef$+"'checkbox': false,"      
+                 fi
+                 
+                 rem end for cellRendererParams    
+                 cdef$=cdef$+"}"
+                 
+                 rem end for main group
+                 cdef$=cdef$+"}"  
                 first=0
             fi
         
@@ -264,9 +301,7 @@ class public BBjGridExWidget extends BBjWidget
             
             while it!.hasNext()
                 f$=it!.next()
-                if first then
-                    first = 0
-                else
+                if !first then
                     cdef$=cdef$+","
                 fi
 
@@ -291,6 +326,14 @@ class public BBjGridExWidget extends BBjWidget
                     cdef$=cdef$+",'width':"+width$ 
                 fi                
 
+                if first then
+                   if (#showSelectionCheckbox > 0 )
+                              cdef$=cdef$+",'checkboxSelection': true"            
+                    else
+                              cdef$=cdef$+",'checkboxSelection': false"      
+                    fi
+                fi
+                    
                 switch cd!.getFieldType(f$)
                     case Types.INTEGER
                     case Types.DECIMAL
@@ -355,7 +398,7 @@ class public BBjGridExWidget extends BBjWidget
                 
                 cdef$=cdef$+"}" 
                 
-                
+                first = 0
             wend
         
         cdef$=cdef$+"]"
