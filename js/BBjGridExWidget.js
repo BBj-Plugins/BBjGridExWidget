@@ -133,12 +133,14 @@ function bbj_grid_widget_fit_grid(fitmode) {
 
 function bbj_grid_widget_set_selected_rows(rows) {
 
-  console.log(rows);
-  $doc.bbj_grid_widget.api.forEachNode(function (node) {
+  $doc.bbj_grid_widget.api.forEachNodeAfterFilterAndSort(function (node) {
     if (rows.indexOf(node.rowIndex) > -1) {
-    	node.setSelected( true );
+      node.setSelected(true);
+      node.expanded = true;
     }
   }.bind(this));
+
+  $doc.bbj_grid_widget.api.onGroupExpandedOrCollapsed() 
 }
 
 function bbj_grid_widget_get_state() {
