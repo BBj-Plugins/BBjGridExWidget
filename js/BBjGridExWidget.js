@@ -143,6 +143,10 @@ function bbj_grid_widget_set_selected_rows(rows) {
   $doc.bbj_grid_widget.api.onGroupExpandedOrCollapsed() 
 }
 
+function bbj_grid_widget_set_select_all(){
+  $doc.bbj_grid_widget.api.selectAll() 
+}
+
 function bbj_grid_widget_get_state() {
 
   var state = $doc.bbj_grid_widget.columnApi.getColumnState();
