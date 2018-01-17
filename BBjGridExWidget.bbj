@@ -138,7 +138,7 @@ class public BBjGridExWidget extends BBjWidget
     method public void setSelectedRow(BBjNumber x!)
         
         script$="bbj_grid_widget_set_selected_rows([" + str(x!) + "]);"        
-        #HTMLView!.executeScript(script$)
+        #executeScript(script$)
     methodend  
     
     rem /**
@@ -159,7 +159,7 @@ class public BBjGridExWidget extends BBjWidget
         wend
         script$=script$+"]);"
         
-        #HTMLView!.executeScript(script$)
+        #executeScript(script$)
     methodend  
     
     rem /**
