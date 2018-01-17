@@ -244,6 +244,19 @@ class public BBjGridExWidget extends BBjWidget
     methodend  
     
     rem /**
+    rem  * set visible column 
+    rem  * 
+    rem  * Ensures the column is visible, scrolling the table if needed.
+    rem  * 
+    rem  * @param BBJString columnid!: the column id 
+    rem  */
+    method public void setVisibleColumn(BBjString columnId!)
+        
+        script$="bbj_grid_widget_set_visible_column('" + columnId! + "');"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
     rem  * Determines and dispatches the actual event
     rem  * 

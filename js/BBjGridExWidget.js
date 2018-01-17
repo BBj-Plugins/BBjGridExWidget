@@ -172,6 +172,10 @@ function bbj_grid_widget_set_visible_row(index,position){
   $doc.bbj_grid_widget.api.ensureIndexVisible(index,position);
 }
 
+function bbj_grid_widget_set_visible_column(columnId) {
+  $doc.bbj_grid_widget.api.ensureColumnVisible(columnId);
+}
+
 function bbj_grid_widget_get_state() {
 
   var state = $doc.bbj_grid_widget.columnApi.getColumnState();
