@@ -204,6 +204,25 @@ class public BBjGridExWidget extends BBjWidget
     methodend   
     
     rem /**
+    rem  *  Expand all groups.
+    rem  */
+    method public void expandAll()
+        
+        script$="bbj_grid_widget_set_expand_all();"        
+        #executeScript(script$)
+    methodend  
+    
+    
+    rem /**
+    rem  *  collapse all groups.
+    rem  */
+    method public void collapseAll()
+        
+        script$="bbj_grid_widget_set_collapse_all();"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
     rem  * Determines and dispatches the actual event
     rem  * 

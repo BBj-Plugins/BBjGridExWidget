@@ -140,24 +140,32 @@ function bbj_grid_widget_set_selected_rows(rows) {
     }
   }.bind(this));
 
-  $doc.bbj_grid_widget.api.onGroupExpandedOrCollapsed() 
+  $doc.bbj_grid_widget.api.onGroupExpandedOrCollapsed()
 }
 
-function bbj_grid_widget_set_select_all(filtered){
-  if(1 ===  filtered) {
-    $doc.bbj_grid_widget.api.selectAllFiltered(); 
+function bbj_grid_widget_set_select_all(filtered) {
+  if (1 === filtered) {
+    $doc.bbj_grid_widget.api.selectAllFiltered();
   } else {
-    $doc.bbj_grid_widget.api.selectAll(); 
+    $doc.bbj_grid_widget.api.selectAll();
   }
 }
 
-function bbj_grid_widget_set_deselect_all(filtered){
+function bbj_grid_widget_set_deselect_all(filtered) {
 
-  if(1 ===  filtered) {
-    $doc.bbj_grid_widget.api.deselectAllFiltered(); 
+  if (1 === filtered) {
+    $doc.bbj_grid_widget.api.deselectAllFiltered();
   } else {
-    $doc.bbj_grid_widget.api.deselectAll(); 
+    $doc.bbj_grid_widget.api.deselectAll();
   }
+}
+
+function bbj_grid_widget_set_expand_all() {
+  $doc.bbj_grid_widget.api.expandAll();
+}
+
+function bbj_grid_widget_set_collapse_all() {
+  $doc.bbj_grid_widget.api.collapseAll();
 }
 
 function bbj_grid_widget_get_state() {
