@@ -169,7 +169,6 @@ function bbj_grid_widget_set_collapse_all() {
 }
 
 function bbj_grid_widget_set_visible_row(index,position){
-  console.log(index)
   $doc.bbj_grid_widget.api.ensureIndexVisible(index,position);
 }
 
