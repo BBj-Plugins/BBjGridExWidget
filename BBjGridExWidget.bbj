@@ -222,6 +222,27 @@ class public BBjGridExWidget extends BBjWidget
         #executeScript(script$)
     methodend  
     
+    
+    rem /**
+    rem  *  set visible row
+    rem  * 
+    rem  * Ensures the row index is visible by vertically scrolling the grid. 
+    rem  * The valid values for positions are {'top', 'middle', 'bottom'}. 
+    rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
+    rem  * 
+    rem  * @param BBjNumber index!: the row index
+    rem  * @param BBjString position!: the scrolling poistion 
+    rem  * 
+    rem  * @see GRID_ROWPOS_TOP()
+    rem  * @see GRID_ROWPOS_MIDDLE()
+    rem  * @see GRID_ROWPOS_BOTTOM()
+    rem  */
+    method public void setVisibleRow(BBjNumber index! , BBjString position!)
+        
+        script$="bbj_grid_widget_set_visible_row(" + str(index!) + ",'" + str(position!) +"');"        
+        #executeScript(script$)
+    methodend  
+    
     rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
     rem  * Determines and dispatches the actual event
@@ -875,6 +896,27 @@ rem --------------------api methods--------------------------------
         methodret BBjAPI.ON_GRID_DOUBLE_CLICK
     methodend     
     
+    
+    rem /**
+    rem  * @return constant value to define row position
+    rem  */
+    method public static BBjString GRID_ROWPOS_TOP()
+        methodret "top"
+    methodend 
+    
+    rem /**
+    rem  * @return constant value to define row position
+    rem  */
+    method public static BBjString GRID_ROWPOS_MIDDLE()
+        methodret "middle"
+    methodend 
+    
+    rem /**
+    rem  * @return constant value to define row position
+    rem  */    
+    method public static BBjString GRID_ROWPOS_BOTTOM()
+        methodret "bottom"
+    methodend 
 
 
 classend
