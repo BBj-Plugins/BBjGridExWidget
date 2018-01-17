@@ -147,6 +147,10 @@ function bbj_grid_widget_set_select_all(){
   $doc.bbj_grid_widget.api.selectAll() 
 }
 
+function bbj_grid_widget_set_deselect_all(){
+  $doc.bbj_grid_widget.api.deselectAll() 
+}
+
 function bbj_grid_widget_get_state() {
 
   var state = $doc.bbj_grid_widget.columnApi.getColumnState();
