@@ -167,7 +167,18 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void selectAll()
         
-        script$="bbj_grid_widget_set_select_all();"        
+        script$="bbj_grid_widget_set_select_all(0);"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * select all rows
+    rem  * 
+    rem  * @param BBJNumber x!: 0 select all , 1 select all filtered 
+    rem  */
+    method public void selectAll(BBjNumber x!)
+        
+        script$="bbj_grid_widget_set_select_all(" + str(x!) + ");"        
         #executeScript(script$)
     methodend  
     
@@ -177,9 +188,20 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void deselectAll()
         
-        script$="bbj_grid_widget_set_deselect_all();"        
+        script$="bbj_grid_widget_set_select_all(0);"        
         #executeScript(script$)
     methodend  
+    
+    rem /**
+    rem  * deselect all rows
+    rem  * 
+    rem  * @param BBJNumber x!: 0 deselect all , 1 deselect all filtered 
+    rem  */
+    method public void deselectAll(BBjNumber x!)
+        
+        script$="bbj_grid_widget_set_deselect_all(" + str(x!) + ");"        
+        #executeScript(script$)
+    methodend   
     
     rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
