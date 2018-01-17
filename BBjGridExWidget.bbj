@@ -163,6 +163,16 @@ class public BBjGridExWidget extends BBjWidget
     methodend  
     
     rem /**
+    rem  * select all rows
+    rem  */
+    method public void selectAll()
+        
+        script$="bbj_grid_widget_set_select_all();"        
+        #executeScript(script$)
+    methodend  
+    
+    
+    rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
     rem  * Determines and dispatches the actual event
     rem  * 
