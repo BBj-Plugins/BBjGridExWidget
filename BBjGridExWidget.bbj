@@ -770,6 +770,12 @@ rem --------------------api methods--------------------------------
             
     methodend
     
+    method public void moveColumn(BBjString Field$, BBjNumber toIndex!)
+        script$="bbj_grid_widget_set_column_move('" + Field$ + "'," + str(toIndex!) + ");"        
+        #executeScript(script$)
+    methodend
+
+    
     rem /**
     rem  * set the selection mode of the grid 
     rem  * @param BBjNumber mode: the selection mode, one of 
