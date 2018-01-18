@@ -83,6 +83,9 @@ onSelectButton:
     selection! = ed!.getText()
     sel = num(selection!,err=multiple_selection)
     grid!.setSelectedRow(sel)
+    
+    rem now make sure this row is visible, in the middle
+    grid!.setVisibleRow(sel,grid!.GRID_ROWPOS_MIDDLE())
     return
     
     
@@ -101,6 +104,10 @@ multiple_selection:
     
     grid!.setSelectedRows(s!)
     
+    if (s!.size()>0) then
+        rem now make sure the first selected row is visible on top
+        grid!.setVisibleRow(s!.getItem(0),grid!.GRID_ROWPOS_TOP())
+    fi
 return
 
 onUseCheckbox:
