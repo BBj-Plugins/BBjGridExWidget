@@ -136,7 +136,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * set the selected row
     rem  */
     method public void setSelectedRow(BBjNumber x!)
-        
+        #deselectAll() 
         script$="bbj_grid_widget_set_selected_rows([" + str(x!) + "]);"        
         #executeScript(script$)
     methodend  
@@ -145,7 +145,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * set the selected row indices
     rem  */
     method public void setSelectedRows(BBjVector x!)
-        
+        #deselectAll() 
         script$="bbj_grid_widget_set_selected_rows(["
         it! = x!.iterator()
         first=1
@@ -188,7 +188,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void deselectAll()
         
-        script$="bbj_grid_widget_set_select_all(0);"        
+        script$="bbj_grid_widget_set_deselect_all(0);"        
         #executeScript(script$)
     methodend  
     

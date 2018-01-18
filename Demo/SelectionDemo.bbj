@@ -1,0 +1,100 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub fillGrid
+
+process_events
+
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+    grid!.setData(rs!)
+
+    
+    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+    grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
+
+    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+    grid!.setMultipleSelection(1)
+    
+    st! = wnd!.addStaticText(200,20,10,200,25,"Enter rows to select, e.g. ""5,7""")
+    ed! = wnd!.addEditBox(201,200,10,250,22,"")
+    btn! = wnd!.addButton(202,460,10,80,22,"SELECT")
+
+    btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectButton")
+
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-40)
+return
+
+onRowSelect:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
+    else
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+    fi
+return    
+
+onRowDoubleclick:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    if INFO(3,6)="5" then
+        a=msgbox(str(ev!.getRow()),0,"DOUBLE CLICK")
+    else
+        print 'SHOW', "DOUBLE CLICK" ,ev!.getRow()
+    fi
+return  
+
+
+onSelectButton:
+
+    selection! = ed!.getText()
+    sel = num(selection!,err=multiple_selection)
+    grid!.setSelectedRow(sel)
+    return
+    
+    
+multiple_selection:
+    if pos(","=selection!)=0 then
+        a=msgbox("Enter row numbers, separated by comma!",0,"INPUT ERROR")
+        return
+    fi
+    x! = selection!.split(",")
+
+    s! = new BBjVector()
+
+    for i=0 to x!.length
+      s!.addItem(num(x![i],err=*continue))
+    next 
+    
+    grid!.setSelectedRows(s!)
+    
+return
