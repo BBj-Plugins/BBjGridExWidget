@@ -121,6 +121,10 @@ class public BBjGridExWidget extends BBjWidget
     rem  * When false, then the group is selectable independently of the child nodes
     rem  */
     method public void setGroupSelectsChildren(BBjNumber x!)
+    
+        rem this only makes sense with mutli-selection switched on!
+        #setMultipleSelection(1)
+    
         #groupSelectsChildren=x!
     methodend
     
@@ -128,7 +132,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * When true, selection box will be show on the first column
     rem  * When false, no checkbox will be displayed
     rem  */
-    method public void seShowSelectionCheckbox(BBjNumber x!)
+    method public void setShowSelectionCheckbox(BBjNumber x!)
         #showSelectionCheckbox=x!
     methodend
     

@@ -112,7 +112,7 @@ return
 
 onUseCheckbox:
     useCheckbox = cb!.isSelected()
-    grid!.seShowSelectionCheckbox(useCheckbox)
+    grid!.setShowSelectionCheckbox(useCheckbox)
     
     rem this definition requires a refresh!
     gosub fillGrid
