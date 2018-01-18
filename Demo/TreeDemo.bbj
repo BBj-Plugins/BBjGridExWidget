@@ -133,6 +133,8 @@ fillGrid:
     
     grid!.setFitToGrid(0)
     
+    grid!.expandAll()
+    
 return
 
 
