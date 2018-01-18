@@ -737,6 +737,8 @@ rem --------------------api methods--------------------------------
     rem  */ 
     method public void setColumnWidth(BBjString Field$, BBjNumber w!)
         #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",STR(w!),err=*next)
+        script$="bbj_grid_widget_set_column_width('" + Field$ + "'," + str(w!) + ");"        
+        #executeScript(script$)
     methodend
 
     rem /**
