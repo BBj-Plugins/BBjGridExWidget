@@ -17,6 +17,16 @@ grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
+st! = wnd!.addStaticText(200,20,10,200,25,"Enter rows to select, e.g. ""5,7""")
+ed! = wnd!.addEditBox(201,200,10,250,22,"")
+btn! = wnd!.addButton(202,460,10,80,22,"SELECT")
+
+cb! = wnd!.addCheckBox(203,550,10,200,22,"Use Selection Checkbox")
+
+btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectButton")
+cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
+cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
+
 gosub fillGrid
 
 process_events
@@ -36,12 +46,6 @@ fillGrid:
 
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(1)
-    
-    st! = wnd!.addStaticText(200,20,10,200,25,"Enter rows to select, e.g. ""5,7""")
-    ed! = wnd!.addEditBox(201,200,10,250,22,"")
-    btn! = wnd!.addButton(202,460,10,80,22,"SELECT")
-
-    btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectButton")
 
 return
 
@@ -97,4 +101,13 @@ multiple_selection:
     
     grid!.setSelectedRows(s!)
     
+return
+
+onUseCheckbox:
+    useCheckbox = cb!.isSelected()
+    grid!.seShowSelectionCheckbox(useCheckbox)
+    
+    rem this definition requires a refresh!
+    gosub fillGrid
+
 return
