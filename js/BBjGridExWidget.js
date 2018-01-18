@@ -180,6 +180,10 @@ function bbj_grid_widget_set_column_width(columnid, width) {
   $doc.bbj_grid_widget.columnApi.setColumnWidth(columnid, width);
 }
 
+function bbj_grid_widget_set_column_pin(columnid,pin) {
+  $doc.bbj_grid_widget.columnApi.setColumnPinned(columnid, pin);
+}
+
 function bbj_grid_widget_get_state() {
 
   var state = $doc.bbj_grid_widget.columnApi.getColumnState();

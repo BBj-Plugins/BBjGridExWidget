@@ -699,6 +699,9 @@ rem --------------------api methods--------------------------------
         else
             #ColumnDefinition!.removeFieldAttribute(Field$,"PINNED",err=*next)
         fi
+        
+        script$="bbj_grid_widget_set_column_pin('" + Field$ + "','" + pin$  + "');"        
+        #executeScript(script$)
     methodend
 
     rem /**
