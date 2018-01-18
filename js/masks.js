@@ -7,7 +7,7 @@ function bbj_mask_date(date, format) {
     var year = date.getYear();
     var fullYear = date.getFullYear();
     var month = date.getMonth() + 1;
-    var day = date.getDay();
+    var day = date.getDate();
     var hours24 = date.getHours();
     var hours12 = hours24 - 12;
     hours12 = hours12 <= 12 ? hours12 : hours24;
