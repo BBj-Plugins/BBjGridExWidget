@@ -46,6 +46,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber MultipleSelection
     field private BBjNumber FitToGrid
     field private BBjNumber EnableFilter
+    field private BBjNumber EnableFloatingFilter
     field private BBjNumber GroupChildCount
     field private BBjNumber groupSelectsChildren
     field private BBjNumber showSelectionCheckbox
@@ -334,7 +335,11 @@ class public BBjGridExWidget extends BBjWidget
 :            'allowContextMenuWithControlKey': false,"
 
         if (#EnableFilter)
-            opt$=opt$+"'enableFilter': true,'floatingFilter': false,"
+            opt$=opt$+"'enableFilter': true,"
+        fi
+        
+        if(#EnableFloatingFilter) 
+            opt$=opt$+"'floatingFilter': true,"
         fi
 
         if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
@@ -437,7 +442,7 @@ class public BBjGridExWidget extends BBjWidget
                     case Types.DECIMAL
                     case Types.DOUBLE
                     case Types.NUMERIC
-                        cdef$=cdef$+",""type"":""numericColumn"",""filter"":""number"""
+                        cdef$=cdef$+",""type"":""numericColumn"",""filter"":""agNumberColumnFilter"""
                     break
                     case Types.DATE
                     case Types.TIMESTAMP
@@ -447,7 +452,7 @@ class public BBjGridExWidget extends BBjWidget
                     
                     
                     case default
-                        cdef$=cdef$+",""filter"":""text"""
+                        cdef$=cdef$+",""filter"":""agTextColumnFilter"""
                     break
                     
                     
@@ -800,6 +805,14 @@ rem --------------------api methods--------------------------------
     rem  */     
     method public void setEnableFilter(BBjNumber enable)
         #EnableFilter=enable
+    methodend  
+    
+    rem /**
+    rem  * Allow floating filters in the grid 
+    rem  * @param BBjNumber enable: 1 shows the floating filter widgets in the toolbar 
+    rem  */     
+    method public void setEnableFloatingFilter(BBjNumber enable)
+        #EnableFloatingFilter=enable
     methodend    
     
     rem /**
