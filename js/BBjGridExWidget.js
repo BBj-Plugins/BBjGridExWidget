@@ -188,6 +188,10 @@ function bbj_grid_widget_set_column_move(columnid, toIndex) {
   $doc.bbj_grid_widget.columnApi.moveColumn(columnid, toIndex);
 }
 
+function bbj_grid_widget_set_quick_filter(filter) {
+  $doc.bbj_grid_widget.api.setQuickFilter(filter);
+}
+
 function bbj_grid_widget_get_state() {
 
   var state = $doc.bbj_grid_widget.columnApi.getColumnState();

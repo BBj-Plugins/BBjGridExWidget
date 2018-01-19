@@ -815,6 +815,23 @@ rem --------------------api methods--------------------------------
         #EnableFloatingFilter=enable
     methodend    
     
+    
+    rem /**
+    rem  * Perform throw columns search  
+    rem  * @param BBjNumber filter 
+    rem  */     
+    method public void setQuickFilter(BBjNumber filter)
+        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter("+ str(filter) +")")
+    methodend  
+    
+    rem /**
+    rem  * Perform throw columns search  
+    rem  * @param BBjNumber filter 
+    rem  */     
+    method public void setQuickFilter(BBjString filter!)
+        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter('"+ filter! +"')")
+    methodend  
+    
     rem /**
     rem  * set the label for the group column if the grid is a tree-grid
     rem  * defaults to "Group"
