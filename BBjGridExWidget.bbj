@@ -437,7 +437,7 @@ class public BBjGridExWidget extends BBjWidget
                     case Types.DECIMAL
                     case Types.DOUBLE
                     case Types.NUMERIC
-                        cdef$=cdef$+",""type"":""numericColumn"",""filter"":""number"""
+                        cdef$=cdef$+",""type"":""numericColumn"",""filter"":""agNumberColumnFilter"""
                     break
                     case Types.DATE
                     case Types.TIMESTAMP
@@ -447,7 +447,7 @@ class public BBjGridExWidget extends BBjWidget
                     
                     
                     case default
-                        cdef$=cdef$+",""filter"":""text"""
+                        cdef$=cdef$+",""filter"":""agTextColumnFilter"""
                     break
                     
                     
@@ -769,6 +769,12 @@ rem --------------------api methods--------------------------------
         swend
             
     methodend
+    
+    method public void moveColumn(BBjString Field$, BBjNumber toIndex!)
+        script$="bbj_grid_widget_set_column_move('" + Field$ + "'," + str(toIndex!) + ");"        
+        #executeScript(script$)
+    methodend
+
     
     rem /**
     rem  * set the selection mode of the grid 
