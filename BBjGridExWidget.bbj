@@ -2,6 +2,13 @@ use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
 use com.basiscomponents.db.tree.DataTree
 use java.sql.Types
+use com.google.gson.Gson
+use com.google.gson.JsonParser
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use java.lang.Integer
+use java.util.ArrayList
+
 
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
 
@@ -316,57 +323,41 @@ class public BBjGridExWidget extends BBjWidget
     method private void performGridDataUpdate()
         
         if (! #IsReady!) methodret
-
+        
+        gson! = new Gson()
         if (#RS! <> null()) then
             data$=#RS!.toJson()
-            cdef$=#getAgGridColumnDefinition(0)
+            cdef!= #getAgGridColumnDefinition(0)
         else
                 if (#TREE! <> null()) then
                     data$=#TREE!.toJson()
-                    cdef$=#getAgGridColumnDefinition(1)
+                    cdef!= #getAgGridColumnDefinition(1)
                 fi
         fi
        
-        opt$="{   
-:            'enableColResize': true,
-:            'enableSorting': true,
-:            'animateRows': true,
-:            'enableColResize': true,
-:            'allowContextMenuWithControlKey': false,"
+       option! = new JsonObject()
+       option!.addProperty("enableSorting",Boolean.valueOf(1))
+       option!.addProperty("animateRows",Boolean.valueOf(1))
+       option!.addProperty("enableColResize",Boolean.valueOf(1))
+       option!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
+       option!.addProperty("enableFilter",Boolean.valueOf(iff(#EnableFilter = 1 , "true" ,"false")))
+       option!.addProperty("floatingFilter",Boolean.valueOf(iff(#EnableFloatingFilter = 1 , "true" ,"false")))
+       option!.addProperty("groupSelectsChildren",Boolean.valueOf(iff(#groupSelectsChildren = 1 ,  "true" ,"false")))
+       option!.add("columnDefs",cdef!)
 
-        if (#EnableFilter)
-            opt$=opt$+"'enableFilter': true,"
-        fi
         
-        if(#EnableFloatingFilter) 
-            opt$=opt$+"'floatingFilter': true,"
-        fi
-
-        if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
-            if (#MultipleSelection >0 )
-                opt$=opt$+"'rowSelection': 'multiple', 'groupSelectsChildren': false,"            
-            else
-                opt$=opt$+"'rowSelection': 'single',"
-            fi
-        fi
-
-       if (#groupSelectsChildren >0 )
-                opt$=opt$+"'groupSelectsChildren': true,"            
-       else
-                opt$=opt$+"'groupSelectsChildren': false,"      
+       if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
+           option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
        fi
-        
-        opt$=opt$+"'columnDefs':"+cdef$
-        opt$=opt$+"}"
-        
-        #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+opt$+")")
+
+        #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+")")
          
     methodend 
     
    
-    method private BBjString getAgGridColumnDefinition(BBjInt fGroup%)
+    method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
         
-        declare DataRow cd!
+       declare DataRow cd!
         cd! = #ColumnDefinition!
         if cd! = null() or cd!.getFieldNames().size()=0  then
             if #RS! <> null() and #RS!.size()>0 then
@@ -378,24 +369,23 @@ class public BBjGridExWidget extends BBjWidget
             fi
         fi
         
-        cdef$= "["
+        cdef! = new JsonArray()
         first=1
-            GroupChildCount$ = iff(#GroupChildCount = 1 , "false" ,"true")  
             if fGroup%>0 then
-                cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""agGroupCellRenderer"",""pinned"":""left"","
+            
+                node! = new JsonObject()
+                node!.addProperty("headerName",#GroupColumnLabel$)
+                node!.addProperty("field","__node__name")
+                node!.addProperty("cellRenderer","agGroupCellRenderer")
+                node!.addProperty("pinned","left")
                 
-                cdef$ = cdef$ +"'cellRendererParams':{ 'suppressCount':" + GroupChildCount$ + "," 
-                 if (#showSelectionCheckbox > 0 )
-                          cdef$=cdef$+"'checkbox': true,"            
-                 else
-                          cdef$=cdef$+"'checkbox': false,"      
-                 fi
-                 
-                 rem end for cellRendererParams    
-                 cdef$=cdef$+"}"
-                 
-                 rem end for main group
-                 cdef$=cdef$+"}"  
+                cellRendererParams! = new JsonObject()
+                cellRendererParams!.addProperty("suppressCount" ,Boolean.valueOf(iff(#GroupChildCount = 1 , "false" ,"true")))
+                cellRendererParams!.addProperty("checkbox" ,Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
+                
+                node!.add("cellRendererParams",cellRendererParams!)
+                
+                cdef!.add(node!)
                 first=0
             fi
         
@@ -404,9 +394,6 @@ class public BBjGridExWidget extends BBjWidget
             
             while it!.hasNext()
                 f$=it!.next()
-                if !first then
-                    cdef$=cdef$+","
-                fi
 
                 label$=""
                 label$=cd!.getFieldAttribute(f$,"LABEL",err=*next)
@@ -414,27 +401,24 @@ class public BBjGridExWidget extends BBjWidget
                     label$=f$
                 fi
 
-
-                cdef$=cdef$+"{""headerName"":"""+label$+""",""field"":"""+f$+""""
+                node! = new JsonObject()
+                node!.addProperty("headerName",label$)
+                node!.addProperty("field",f$)
 
                 pin$=""
                 pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
                 if pin$>"" then
-                    cdef$=cdef$+",""pinned"":"""+pin$+""""
+                    node!.addProperty("pinned",pin$)
                 fi
                 
                 width$=""
                 width$=cd!.getFieldAttribute(f$,"WIDTH",err=*next)
                 if width$>"" then
-                    cdef$=cdef$+",'width':"+width$ 
+                    node!.addProperty("width",width$)
                 fi                
-
+                
                 if first then
-                   if (#showSelectionCheckbox > 0 )
-                              cdef$=cdef$+",'checkboxSelection': true"            
-                    else
-                              cdef$=cdef$+",'checkboxSelection': false"      
-                    fi
+                   node!.addProperty("checkboxSelection",Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
                 fi
                     
                 switch cd!.getFieldType(f$)
@@ -442,20 +426,18 @@ class public BBjGridExWidget extends BBjWidget
                     case Types.DECIMAL
                     case Types.DOUBLE
                     case Types.NUMERIC
-                        cdef$=cdef$+",""type"":""numericColumn"",""filter"":""agNumberColumnFilter"""
+                        node!.addProperty("type","numericColumn")
+                        node!.addProperty("filter","agNumberColumnFilter")
                     break
                     case Types.DATE
                     case Types.TIMESTAMP
-                      
-                        cdef$=cdef$+",""filter"":""date"""
+                        node!.addProperty("filter","date")
                     break
                     
                     
                     case default
-                        cdef$=cdef$+",""filter"":""agTextColumnFilter"""
+                        node!.addProperty("filter","agTextColumnFilter")
                     break
-                    
-                    
                 swend
 
                 
@@ -471,41 +453,32 @@ class public BBjGridExWidget extends BBjWidget
 
                 f=0
                 if (bgc$>"" OR fgc$>"" or align$>"") then
-                    cdef$=cdef$+",'cellStyleDefaults': {"
+                
+                    cellStyleDefaults! = new JsonObject()
                     
                     if (fgc$>"") then
-                        cdef$=cdef$+"'FGCOLOR': '"+fgc$+"'"
+                        cellStyleDefaults!.addProperty("FGCOLOR",fgc$)
                         f=1
-                    fi
-                        
-                    if f>0 then
-                        cdef$=cdef$+","
                     fi
                     
                     if bgc$>"" then
-                        cdef$=cdef$+"'BGCOLOR': '"+bgc$+"'"
+                        cellStyleDefaults!.addProperty("BGCOLOR",bgc$)
                         f=1
                     fi
                     
-                    if f>0 then
-                        cdef$=cdef$+","
-                    fi
-
                     if align$>"" then
-                        cdef$=cdef$+"'ALIGN':'"+align$+"'"
+                        cellStyleDefaults!.addProperty("ALIGN",align$)
                         f=1 
-                    fi                       
+                    fi
                     
-                    cdef$=cdef$+"}"
+                    node!.add("cellStyleDefaults",cellStyleDefaults!)                       
                 fi
-                
-                cdef$=cdef$+"}" 
-                
+
                 first = 0
+                cdef!.add(node!)
             wend
-        
-        cdef$=cdef$+"]"
-        methodret cdef$
+            
+        methodret cdef! 
     
     methodend
 

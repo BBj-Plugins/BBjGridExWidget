@@ -125,6 +125,7 @@ fillGrid:
     grid!.pinColumn("SALES_YTD","right")
     grid!.pinColumn("SALES_LY","right")
     
+    grid!.setMultipleSelection(1)
     grid!.setShowSelectionCheckbox(1)
     grid!.setGroupSelectsChildren(1)
 

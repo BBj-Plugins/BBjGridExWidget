@@ -239,7 +239,6 @@ function bbj_grid_widget_set_data(json, options) {
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
 
-  console.log(options)
   $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
   $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);
