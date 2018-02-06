@@ -41,7 +41,6 @@ fillGrid:
     grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
 
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    grid!.setMultipleSelection(1)
     
     rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
     rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
@@ -49,7 +48,9 @@ fillGrid:
     grid!.setEnableFilter(1)
     grid!.setEnableFloatingFilter(1)
     
-    grid!.setData(rs!)
+    grid!.setData(rs!,"CDNUMBER")
+    
+    grid!.moveColumn("PLAYINGTIME",1)
     
     rem grid!.setFitToGrid(1)
     
@@ -70,9 +71,9 @@ onRowSelect:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
     if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
+        a=msgbox(ev!.getSelectedIds(),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
     else
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedIds()
     fi
 return    
 

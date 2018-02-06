@@ -6,6 +6,8 @@
 * file that was distributed with this source code.
 */
 
+bbj_grid_selected_row_events = [];
+
 bbj_grid_supported_value_formatter = {
   'date': bbj_grid_widget_get_value_formatter_date,
   'number': bbj_grid_widget_get_value_formatter_number
@@ -59,6 +61,58 @@ function bbj_grid_widget_cell_render(params) {
   }
 };
 
+function bbj_grid_build_node_info_from_event(e) {
+
+  if (false === e.node.group) {
+    var hasParent = e.node.hasOwnProperty('parent') ? true : false;
+    return {
+      id: e.node.id, // auto generated id by ag-gird (can be changed , but we will not change it)
+      childIndex: e.node.childIndex, // row index when it is a child in a group 
+      // childrenCount: e.node.group ? e.node.allChildrenCount : 0,
+      selected: Boolean(e.node.selected),
+      data: e.node.data,
+      level: e.node.level, // the group level 
+
+      hasParent: hasParent,
+      // parentId: hasParent ? e.node.parent.id : -1,
+      parentKey: hasParent ? e.node.parent.key : '',
+    };
+  }
+
+  return false;
+
+  // var parents = {};
+  // if (hasParent) {
+  //   var next = e.node.parent;
+  //   var parentHasParent = next.hasOwnProperty('parent') ? true : false;
+  //   while (next) {
+
+  //     parents[next.id] = {
+  //       id: next.id, // auto generated id by ag-gird (can be changed , but we will not change it)
+  //       index: next.rowIndex || -1, // row idnex
+  //       childIndex: next.childIndex, // row index when it is a child in a group 
+  //       childrenCount: next.group ? next.allChildrenCount : 0,
+  //       selected: Boolean(next.selected),
+  //       data: next.data,
+
+  //       group: Boolean(next.group), // whether the node is a group 
+  //       level: next.level, // the group level 
+
+  //       hasParent: parentHasParent,
+  //       parentId: parentHasParent ? next.parent.id : -1,
+  //       parentKey: parentHasParent ? next.parent.key : '',
+  //     };
+
+
+  //     next = parentHasParent ? next.parent : false;
+  //     parentHasParent = next.hasOwnProperty('parent') ? true : false;
+  //   }
+  // }
+
+  // // result.parents = parents;
+  // return result;
+}
+
 function bbj_grid_widget_init(container, license, data, options) {
 
   if (agGrid.LisenseManager) {
@@ -82,25 +136,34 @@ function bbj_grid_widget_init(container, license, data, options) {
       });
     },
 
+    onRowSelected: function (e) {
+      console.log(e)
+      bbj_grid_selected_row_events.push(e);
+    },
+
     onSelectionChanged: function (e) {
 
-      var r = e.api.getSelectedRows();
-      var nodes = e.api.getSelectedNodes();
-      var n = [];
-      for (var i in nodes) {
-        var node_i = nodes[i];
-        n.push(node_i.id);
-      }
+      var details = [];
+      bbj_grid_selected_row_events.forEach(function (e) {
+        var detail = bbj_grid_build_node_info_from_event(e);
+        if (detail) details.push(detail);
+      });
 
+      bbj_grid_selected_row_events = [];
+
+      console.log({
+        'type': 'grid-select-row',
+        'detail': details
+      })
       bbj_grid_widget_send_event({
         'type': 'grid-select-row',
-        'rows': r,
-        'nodes': n
+        'detail': [details]
       });
     },
 
     getNodeChildDetails: function (rowItem) {
 
+      var key = rowItem[$doc.bbj_grid_widget["__getParentNodeId"]];
       if (rowItem.__node__children) {
         return {
           group: true,
@@ -109,13 +172,21 @@ function bbj_grid_widget_init(container, license, data, options) {
           // provide ag-Grid with the children of this group
           children: rowItem.__node__children,
           // the key is used by the default group cellRenderer
-          key: rowItem.__node__name
+          key: key ? key : -1
         };
       } else {
         return null;
       }
     }
   });
+
+  if ($doc.bbj_grid_widget["__getRowNodeId"]) {
+    options.getRowNodeId = function (data) {
+      var id = data[$doc.bbj_grid_widget["__getRowNodeId"]];
+      id = id ? id : Math.random();
+      return id;
+    };
+  }
 
   for (var i in options.columnDefs) {
     options.columnDefs[i].cellStyle = bbj_grid_widget_cell_render;
@@ -239,6 +310,7 @@ function bbj_grid_widget_set_data(json, options) {
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
 
+  console.log(options)
   $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
   $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);

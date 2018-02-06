@@ -12,12 +12,69 @@ use java.util.ArrayList
 
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
 
+class public BBjGridExWidgetRow 
+    
+    field public BBjString Id!
+    field public BBjNumber ChildIndex!
+    field public BBjString ParentKey!
+    
+    field public BBjNumber IsSelected!
+    field public BBjNumber HasParent!
+    
+    
+    method public String toString()
+        methodret #Id!
+    methodend
+    
+classend
+
 class public BBjGridExWidgetSelectRowEvent
     
-    field public BBjVector SelectedRows! = new BBjVector() 
+    field public BBjVector Rows! = new BBjVector() 
+    field public BBjVector SelectedRows! = new BBjVector()
+    field public BBjVector DeselectedRows! = new BBjVector()
+    
+    method public BBjNumber getRowCount()
+        
+        methodret #Rows!.size()
+    methodend
     
     method public BBjNumber getSelectedRowCount()
+        
         methodret #SelectedRows!.size()
+    methodend
+
+    method public BBjNumber getDeselectedRowCount()
+        
+        methodret #DeselectedRows!.size()
+    methodend
+    
+    method public BBjVector getSelectedIds()
+        
+        declare BBjVector ids!
+        ids! = new BBjVector()
+        
+        selectedCount! = #getSelectedRowCount() - 1
+         
+        for n = 0 to selectedCount!
+            ids!.add(cast(BBjGridExWidgetRow,#SelectedRows!.getItem(n)).getId()) 
+        next n
+        
+        methodret ids!
+    methodend    
+    
+    method public BBjNumber getDeselectedIds()
+        
+        declare BBjVector ids!
+        ids! = new BBjVector()
+        
+        deselectedCount! = #getDeselectedRowCount() - 1
+         
+        for n = 0 to deselectedCount!
+            ids!.add(cast(BBjGridExWidgetRow,#DeselectedRows!.getItem(n)).getId()) 
+        next n
+        
+        methodret ids!
     methodend
     
 classend
@@ -57,6 +114,8 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber GroupChildCount
     field private BBjNumber groupSelectsChildren
     field private BBjNumber showSelectionCheckbox
+    field private BBjString RowNodeId$
+    field private BBjString ParentNodeId$
     
     field private DataRow ColumnDefinition!
     
@@ -277,48 +336,96 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
     
-        declare BBjVector v!
-    
-        n$=str(ev!.getEventMap())
         
-        if pos("grid-select-row"=N$)>0 then
-            fire_ev! = new BBjGridExWidgetSelectRowEvent()
-            if pos("nodes="=n$)>0 then
-                x$=n$(pos("nodes="=n$)+6)
-                x$=x$(pos("{"=x$)+1)
-                x$=x$(1,pos("}"=x$)-1)
-                v! = new BBjVector()
-                while pos(","=x$)>0
-                    x1$=x$(1,pos(","=x$)-1)
-                    x$=x$(pos(","=x$)+1)
-                    x1$=x1$(pos(":"=x1$)+2)
-                    x1$=x1$(1,len(x1$)-1)
-                    v!.addItem(x1$)
-                wend
-                if (x$>"") then
-                    x$=x$(pos(":"=x$)+2)
-                    x$=x$(1,len(x$)-1)
-                    v!.addItem(x$)
-                fi
-            fi
-            fire_ev!.setSelectedRows(v!)
-            #SelectedRows!=v!
-            
-            #fireEvent(#ON_GRID_SELECT_ROW(),fire_ev!)
-        fi
+        map! = ev!.getEventMap()
+        type$ = map!.get("type")
+        detail$ = map!.get("detail")
         
-        if pos("grid-row-doubleclick"=N$)>0 then
-            fire_ev! = new BBjGridExWidgetRowDoubleClickEvent()
-            if pos("nodes="=n$)>0 then
-                x$=n$(pos("nodes="=n$)+6)
-                x$=x$(1,pos(","=x$)-1)
-                fire_ev!.setRow(num(x$))
-            fi
-            #fireEvent(#ON_GRID_DOUBLE_CLICK(),fire_ev!)
-        fi   
+        switch type$
+            case "grid-select-row"
+                #handleGirdSelectRowEvent(detail$)
+                break    
+        swend
+        
+REM         escape
+REM         n$=str(ev!.getEventMap())
+REM         
+REM         if pos("grid-select-row"=N$)>0 then
+REM             fire_ev! = new BBjGridExWidgetSelectRowEvent()
+REM             if pos("nodes="=n$)>0 then
+REM                 x$=n$(pos("nodes="=n$)+6)
+REM                 x$=x$(pos("{"=x$)+1)
+REM                 x$=x$(1,pos("}"=x$)-1)
+REM                 v! = new BBjVector()
+REM                 while pos(","=x$)>0
+REM                     x1$=x$(1,pos(","=x$)-1)
+REM                     x$=x$(pos(","=x$)+1)
+REM                     x1$=x1$(pos(":"=x1$)+2)
+REM                     x1$=x1$(1,len(x1$)-1)
+REM                     v!.addItem(x1$)
+REM                 wend
+REM                 if (x$>"") then
+REM                     x$=x$(pos(":"=x$)+2)
+REM                     x$=x$(1,len(x$)-1)
+REM                     v!.addItem(x$)
+REM                 fi
+REM             fi
+REM             fire_ev!.setSelectedRows(v!)
+REM             #SelectedRows!=v!
+REM             
+REM             #fireEvent(#ON_GRID_SELECT_ROW(),fire_ev!)
+REM         fi
+REM         
+REM         if pos("grid-row-doubleclick"=N$)>0 then
+REM             fire_ev! = new BBjGridExWidgetRowDoubleClickEvent()
+REM             if pos("nodes="=n$)>0 then
+REM                 x$=n$(pos("nodes="=n$)+6)
+REM                 x$=x$(1,pos(","=x$)-1)
+REM                 fire_ev!.setRow(num(x$))
+REM             fi
+REM             #fireEvent(#ON_GRID_DOUBLE_CLICK(),fire_ev!)
+REM         fi   
              
     methodend
-
+    
+    method private void handleGirdSelectRowEvent(BBjString detail$)
+        
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+            
+        event! = new BBjGridExWidgetSelectRowEvent()
+        rows! = new BBjVector()
+        selected! = new BBjVector()
+        deselected! = new BBjVector()
+        
+        it! = array!.iterator()
+        while (it!.hasNext()) 
+        
+                next! = it!.next().getAsJsonObject()
+                
+                row! = new BBjGridExWidgetRow()
+                row!.setId(next!.get("id").getAsString())
+                row!.setChildIndex(next!.get("childIndex").getAsInt())
+                row!.setParentKey(next!.get("parentKey").getAsString())
+                row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
+                row!.setHasParent(iff(next!.get("hasParent").getAsString() = "true" ,  1 , 0))
+                
+                rows!.add( row!)
+                
+                if row!.getIsSelected() = 1 then
+                    selected!.add(row!)
+                else 
+                   deselected!.add(row!)
+                fi
+        wend
+        
+        event!.setRows(rows!)
+        event!.setSelectedRows(selected!)
+        event!.setDeselectedRows(deselected!)
+        
+        #SelectedRows!= cast(BBjVector , selected!)
+        #fireEvent(#ON_GRID_SELECT_ROW(),event!)
+    methodend
     
     method private void performGridDataUpdate()
         
@@ -343,6 +450,8 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("enableFilter",Boolean.valueOf(iff(#EnableFilter = 1 , "true" ,"false")))
        option!.addProperty("floatingFilter",Boolean.valueOf(iff(#EnableFloatingFilter = 1 , "true" ,"false")))
        option!.addProperty("groupSelectsChildren",Boolean.valueOf(iff(#groupSelectsChildren = 1 ,  "true" ,"false")))
+       option!.addProperty("__getRowNodeId",#RowNodeId$)
+       option!.addProperty("__getParentNodeId",#ParentNodeId$)
        option!.add("columnDefs",cdef!)
 
         
@@ -404,6 +513,8 @@ class public BBjGridExWidget extends BBjWidget
                 node! = new JsonObject()
                 node!.addProperty("headerName",label$)
                 node!.addProperty("field",f$)
+                
+                node!.addProperty("colId","foo")
 
                 pin$=""
                 pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
@@ -593,6 +704,18 @@ rem --------------------api methods--------------------------------
         #URL$=""
         #performGridDataUpdate()
     methodend
+    
+    
+    rem /**
+    rem  * set the data into the grid
+    rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
+    rem  * @param BBjString: field used to generate id 
+    rem  */
+    method public void setData( ResultSet rs! ,BBjString RowNodeId$)
+    
+       #RowNodeId$ = RowNodeId$
+       #setData(rs!)
+    methodend
 
     rem /**
     rem  * set the data into the grid, to create a tree grid
@@ -605,6 +728,19 @@ rem --------------------api methods--------------------------------
         #TREE! = tree!
         #URL$=""
         #performGridDataUpdate()
+    methodend
+    
+    
+    method public void setData( DataTree rs! ,BBjString RowNodeId$)
+    
+       #RowNodeId$ = RowNodeId$
+       #setData(rs!)
+    methodend
+    
+    method public void setData( DataTree rs! ,BBjString RowNodeId$ , BBjString ParentNodeId$)
+    
+       #ParentNodeId$ = ParentNodeId$
+       #setData(rs! , RowNodeId$)
     methodend
     
     rem /**

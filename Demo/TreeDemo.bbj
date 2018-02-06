@@ -34,7 +34,7 @@ fillGrid:
 
     qbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
 
-    sql$="SELECT
+    sql$="SELECT TOP 2
 :   trim(LAST_NAME)+', '+trim(FIRST_NAME)+' ('+trim(CUST_NUM)+')'  AS '__node__name',
 :   CUST_NUM        ,
 :   FIRST_NAME      ,
@@ -76,13 +76,13 @@ fillGrid:
     
     c11!.setResultSet(r!)
     c11!.setFieldValue("STATE","(other)")
-    c11!.setFieldValue("COUNTRY","US")
     
     x11 = r!.sum("SALES_YTD")
     y11 = r!.sum("SALES_LY")
     
     c11!.setFieldValue("SALES_YTD", x11)
     c11!.setFieldValue("SALES_LY", y11)
+    c11!.setFieldValue("PARENT_ID", "CUSTOMERS_MEXICO")
 
     r! = qbc!.retrieve(sql$+"WHERE COUNTRY='US'AND STATE='NM'")
     
@@ -95,9 +95,11 @@ fillGrid:
     c12!.setFieldValue("COUNTRY","US")
     c12!.setFieldValue("SALES_YTD",x12)
     c12!.setFieldValue("SALES_LY", y12)
-
+    c12!.setFieldValue("PARENT_ID", "CUSTOMERS_OUT_OF_STATE")
+    
     c1!.setFieldValue("SALES_YTD",x11+x12)
     c1!.setFieldValue("SALES_LY", y11+y12)
+    c1!.setFieldValue("PARENT_ID", "CUSTOMERS")
 
     r! = qbc!.retrieve(sql$+"WHERE COUNTRY!='US' AND STATE=''")
     
@@ -110,7 +112,9 @@ fillGrid:
 
     c2!.setFieldValue("SALES_YTD", x2)
     c2!.setFieldValue("SALES_LY", y1)
+    c2!.setFieldValue("PARENT_ID", "CUSTOMERS_GLOBAL")
     
+    grid!.addColumn("CUST_NUM","ID")
     grid!.addColumn("COMPANY","Company Name")
     grid!.addColumn("CITY","Town")
     grid!.addColumn("STATE","State")
@@ -128,9 +132,8 @@ fillGrid:
     grid!.setMultipleSelection(1)
     grid!.setShowSelectionCheckbox(1)
     grid!.setGroupSelectsChildren(1)
-
     
-    grid!.setData(dt!)
+    grid!.setData(dt!,"CUST_NUM","PARENT_ID")
     
     grid!.setFitToGrid(0)
     
@@ -153,6 +156,7 @@ onRowSelect:
     if INFO(3,6)="5" then
         a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
     else
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedIds()
+        print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED: ",ev!.getDeselectedIds()
     fi
 return   
