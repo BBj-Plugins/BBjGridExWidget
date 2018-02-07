@@ -130,13 +130,11 @@ function bbj_grid_widget_init(container, license, data, options) {
 
       bbj_grid_widget_send_event({
         'type': 'grid-row-doubleclick',
-        'rows': e.data,
-        'nodes': e.rowIndex
+        'detail': [[bbj_grid_build_node_info_from_event(e)]]
       });
     },
 
     onRowSelected: function (e) {
-      console.log(e)
       bbj_grid_selected_row_events.push(e);
     },
 
@@ -148,16 +146,14 @@ function bbj_grid_widget_init(container, license, data, options) {
         if (detail) details.push(detail);
       });
 
-      bbj_grid_selected_row_events = [];
+      if (details.length) {
+        bbj_grid_selected_row_events = [];
 
-      console.log({
-        'type': 'grid-select-row',
-        'detail': details
-      })
-      bbj_grid_widget_send_event({
-        'type': 'grid-select-row',
-        'detail': [details]
-      });
+        bbj_grid_widget_send_event({
+          'type': 'grid-row-select',
+          'detail': [details]
+        });
+      }
     },
 
     getNodeChildDetails: function (rowItem) {
@@ -247,7 +243,7 @@ function bbj_grid_widget_set_visible_column(columnId) {
 }
 
 function bbj_grid_widget_set_column_width(columnid, width) {
-  $doc.bbj_grid_widget.columnApi.setColumnWidth(columnid, width);
+  $doc.bbj_grid_widget.columnApi.setColumnWidth(columnid, Number(width));
 }
 
 function bbj_grid_widget_set_column_pin(columnid, pin) {
@@ -309,7 +305,6 @@ function bbj_grid_widget_set_data(json, options) {
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
 
-  console.log(options)
   $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
   $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);

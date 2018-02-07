@@ -70,23 +70,35 @@ resize:
     grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
 return
 
-onRowSelect:
+onRowSelect: 
+
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
-    else
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+    
+    selectedRow! = grid!.getSelectedRow()
+    
+    if selectedRow! <> null() then
+        if INFO(3,6)="5" then
+          a = msgbox(selectedRow!.getId(), 0, selectedRow!.getData().get("TITLE").getAsString())
+        else
+          print 'SHOW', ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getRows()
+          print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
+          print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
+          print 'SHOW', grid!.getSelectedRows().size()," ROW(S) SELECTED SO FAR : ", grid!.getSelectedRows()
+          print 'SHOW', "------------------------------------------------------------------------"
+        fi
     fi
 return    
 
 onRowDoubleclick:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
+    row! = ev!.getRow()
+    
     if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getRow()),0,"DOUBLE CLICK")
+        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
     else
-        print 'SHOW', "DOUBLE CLICK" ,ev!.getRow()
+        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
     fi
 return  
 
@@ -95,7 +107,6 @@ getState:
     state$ = str(state!.getString())
     if INFO(3,6)="5" then
         a=msgbox(state$,0,"GET STATE")
-    else
         print 'SHOW', "GET STATE ",state$
     fi
 

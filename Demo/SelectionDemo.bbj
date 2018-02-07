@@ -38,7 +38,7 @@ fillGrid:
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
-    grid!.setData(rs!)
+    grid!.setData(rs!,"CDNUMBER")
 
     
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
@@ -60,11 +60,11 @@ return
 onRowSelect:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
-    else
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
-    fi
+    print 'SHOW', ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getRows()
+    print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
+    print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
+    print 'SHOW', grid!.getSelectedRows().size()," ROW(S) SELECTED SO FAR : ", grid!.getSelectedRows()
+    print 'SHOW', "------------------------------------------------------------------------"    
 return    
 
 onRowDoubleclick:
@@ -86,7 +86,7 @@ onSelectButton:
     
     rem now make sure this row is visible, in the middle
     grid!.setVisibleRow(sel,grid!.GRID_ROWPOS_MIDDLE())
-    return
+return
     
     
 multiple_selection:
@@ -94,13 +94,14 @@ multiple_selection:
         a=msgbox("Enter row numbers, separated by comma!",0,"INPUT ERROR")
         return
     fi
-    x! = selection!.split(",")
-
+    x! = java.util.Arrays.asList(selection!.split(","))
+    
+    
     s! = new BBjVector()
 
-    for i=0 to x!.length
-      s!.addItem(num(x![i],err=*continue))
-    next 
+    for i=0 to x!.size()
+      s!.addItem(num(x!.get(i),err=*continue))
+    next i
     
     grid!.setSelectedRows(s!)
     
