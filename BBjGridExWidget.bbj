@@ -20,10 +20,10 @@ class public BBjGridExWidgetRow
     field public BBjString ParentKey!
     field public BBjNumber IsSelected!
     field public JsonObject Data!
+    
     method public String toString()
         methodret #Id!
     methodend
-    
 classend
 
 class public BBjGridExWidgetSelectRowEvent
@@ -32,21 +32,41 @@ class public BBjGridExWidgetSelectRowEvent
     field public BBjVector SelectedRows! = new BBjVector()
     field public BBjVector DeselectedRows! = new BBjVector()
     
+    rem /**
+    rem  * Get the number of affected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber
+    rem  */
     method public BBjNumber getRowCount()
         
         methodret #Rows!.size()
     methodend
     
+    rem /**
+    rem  * Get the number of selected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber 
+    rem  */
     method public BBjNumber getSelectedRowCount()
         
         methodret #SelectedRows!.size()
     methodend
 
+    rem /**
+    rem  * Get the number of deselected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber 
+    rem  */
     method public BBjNumber getDeselectedRowCount()
         
         methodret #DeselectedRows!.size()
     methodend
     
+    rem /**
+    rem  * Get the ids of selected rows by the last event
+    rem  * 
+    rem  * @return BBjVector 
+    rem  */
     method public BBjVector getSelectedIds()
        
         declare BBjVector ids!
@@ -63,6 +83,11 @@ class public BBjGridExWidgetSelectRowEvent
         methodret ids!
     methodend    
     
+    rem /**
+    rem  * Get the ids of deselected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber 
+    rem  */
     method public BBjVector getDeselectedIds()
         
         declare BBjVector ids!
@@ -81,9 +106,9 @@ class public BBjGridExWidgetSelectRowEvent
     
 classend
 
-class public BBjGridExWidgetRowDoubleClickEvent
+class public BBjGridExWidgetDoubleClickRowEvent
     
-    field public BBjNumber Row
+    field public BBjGridExWidgetRow Row!
     
 classend
 
@@ -337,65 +362,33 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 
     rem  */
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
-    
         
         map! = ev!.getEventMap()
         type$ = map!.get("type")
         detail$ = map!.get("detail")
         
         switch type$
-            case "grid-select-row"
+            case "grid-row-select"
                 #handleGirdSelectRowEvent(detail$)
-                break    
+                break
+            case "grid-row-doubleclick"
+                #handleGirdDoubleClickEvent(detail$)
+                break              
         swend
-        
-REM         escape
-REM         n$=str(ev!.getEventMap())
-REM         
-REM         if pos("grid-select-row"=N$)>0 then
-REM             fire_ev! = new BBjGridExWidgetSelectRowEvent()
-REM             if pos("nodes="=n$)>0 then
-REM                 x$=n$(pos("nodes="=n$)+6)
-REM                 x$=x$(pos("{"=x$)+1)
-REM                 x$=x$(1,pos("}"=x$)-1)
-REM                 v! = new BBjVector()
-REM                 while pos(","=x$)>0
-REM                     x1$=x$(1,pos(","=x$)-1)
-REM                     x$=x$(pos(","=x$)+1)
-REM                     x1$=x1$(pos(":"=x1$)+2)
-REM                     x1$=x1$(1,len(x1$)-1)
-REM                     v!.addItem(x1$)
-REM                 wend
-REM                 if (x$>"") then
-REM                     x$=x$(pos(":"=x$)+2)
-REM                     x$=x$(1,len(x$)-1)
-REM                     v!.addItem(x$)
-REM                 fi
-REM             fi
-REM             fire_ev!.setSelectedRows(v!)
-REM             #SelectedRows!=v!
-REM             
-REM             #fireEvent(#ON_GRID_SELECT_ROW(),fire_ev!)
-REM         fi
-REM         
-REM         if pos("grid-row-doubleclick"=N$)>0 then
-REM             fire_ev! = new BBjGridExWidgetRowDoubleClickEvent()
-REM             if pos("nodes="=n$)>0 then
-REM                 x$=n$(pos("nodes="=n$)+6)
-REM                 x$=x$(1,pos(","=x$)-1)
-REM                 fire_ev!.setRow(num(x$))
-REM             fi
-REM             #fireEvent(#ON_GRID_DOUBLE_CLICK(),fire_ev!)
-REM         fi   
-             
     methodend
     
+    rem /**
+    rem  * Handle Rows Selections Event
+    rem  * 
+    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetSelectRowEvent
+    rem  * 
+    rem  * @see BBjGridExWidgetSelectRowEvent 
+    rem  */
     method private void handleGirdSelectRowEvent(BBjString detail$)
         
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
             
-        event! = new BBjGridExWidgetSelectRowEvent()
         rows! = new BBjVector()
         selected! = new BBjVector()
         deselected! = new BBjVector()
@@ -404,7 +397,6 @@ REM         fi
         while (it!.hasNext()) 
         
                 next! = it!.next().getAsJsonObject()
-                
                 row! = new BBjGridExWidgetRow()
                 row!.setId(next!.get("id").getAsString())
                 row!.setChildIndex(next!.get("childIndex").getAsInt())
@@ -423,11 +415,38 @@ REM         fi
                 fi
         wend
         
+        event! = new BBjGridExWidgetSelectRowEvent()
         event!.setRows(rows!)
         event!.setSelectedRows(selected!)
         event!.setDeselectedRows(deselected!)
         
         #fireEvent(#ON_GRID_SELECT_ROW(),event!)
+    methodend
+    
+    rem /**
+    rem  * Handle Doucle click event 
+    rem  * 
+    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetDoubleClickRowEvent
+    rem  * 
+    rem  * @see BBjGridExWidgetDoubleClickRowEvent
+    rem  */
+    method private void handleGirdDoubleClickEvent(BBjString detail$)
+        
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+        next! = array!.iterator().next().getAsJsonObject()
+                
+        row! = new BBjGridExWidgetRow()
+        row!.setId(next!.get("id").getAsString())
+        row!.setChildIndex(next!.get("childIndex").getAsInt())
+        row!.setParentKey(next!.get("parentKey").getAsString())
+        row!.setData(next!.get("data").getAsJsonObject())
+        row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
+        
+        event! = new BBjGridExWidgetDoubleClickRowEvent()
+        event!.setRow(row!)
+        
+        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
     methodend
     
     method private void performGridDataUpdate()
@@ -528,7 +547,7 @@ REM         fi
                 width$=""
                 width$=cd!.getFieldAttribute(f$,"WIDTH",err=*next)
                 if width$>"" then
-                    node!.addProperty("width",width$)
+                    node!.addProperty("width",num(width$))
                 fi                
                 
                 if first then
@@ -856,7 +875,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber width!: the column width
     rem  */ 
     method public void setColumnWidth(BBjString Field$, BBjNumber w!)
-        #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",STR(w!),err=*next)
+        #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",num(w!),err=*next)
         script$="bbj_grid_widget_set_column_width('" + Field$ + "'," + str(w!) + ");"        
         #executeScript(script$)
     methodend
@@ -978,12 +997,24 @@ rem --------------------api methods--------------------------------
     methodend
 
     rem /**
-    rem  * @return BBjVector with the selected row indexes
+    rem  * @return Hashmap with the selected row indexes and items
     rem  */
     method public BBjVector getSelectedRows()
         methodret #SelectedRows!
     methodend
     
+        rem /**
+    rem  * @return the selected row 
+    rem  */
+    method public BBjGridExWidgetRow getSelectedRow()
+    
+        if #SelectedRows!.size() > 0 then
+            it! = #SelectedRows!.entrySet().iterator()
+            methodret it!.next().getValue()
+        fi
+        
+        methodret null()
+    methodend  
     
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
@@ -1006,22 +1037,7 @@ rem --------------------api methods--------------------------------
         v!.addItem("material")
         methodret v!
     methodend
-    
-    rem /**
-    rem  * @return the selected row index
-    rem  * @deprecated
-    rem  */
-    method public BBjNumber getSelectedRow()
-REM         if #SelectedRows!.size() = 0 then
-REM             methodret -1
-REM         else
-REM             r=-1
-REM             r=num(#SelectedRows!.getItem(0),err=*next)
-REM             methodret r
-REM         fi
-        methodret -1
-    methodend  
-    
+        
     rem /**
     rem  * @return constant value to define left aligned column
     rem  */
