@@ -64,18 +64,17 @@ function bbj_grid_widget_cell_render(params) {
 function bbj_grid_build_node_info_from_event(e) {
 
   if (false === e.node.group) {
-    var hasParent = e.node.hasOwnProperty('parent') ? true : false;
     return {
       id: e.node.id, // auto generated id by ag-gird (can be changed , but we will not change it)
       childIndex: e.node.childIndex, // row index when it is a child in a group 
       // childrenCount: e.node.group ? e.node.allChildrenCount : 0,
       selected: Boolean(e.node.selected),
       data: e.node.data,
-      level: e.node.level, // the group level 
+      // level: e.node.level, // the group level 
 
-      hasParent: hasParent,
+      // hasParent: hasParent,
       // parentId: hasParent ? e.node.parent.id : -1,
-      parentKey: hasParent ? e.node.parent.key : '',
+      parentKey: e.node.hasOwnProperty('parent') ? e.node.parent.key : '',
     };
   }
 

@@ -155,8 +155,12 @@ onRowSelect:
     ev! = ev!.getObject()
     if INFO(3,6)="5" then
         a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
+        b=msgbox(str(ev!.getDeselectedRows()),0,str(ev!.getDeselectedRowCount())+" ROW(S) DESELECTED")
     else
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedIds()
-        print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED: ",ev!.getDeselectedIds()
+        print 'SHOW', ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getRows()
+        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
+        print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
+        print 'SHOW', grid!.getSelectedRows().size()," ROW(S) SELECTED SO FAR : ", grid!.getSelectedRows()
+        print 'SHOW', "------------------------------------------------------------------------"
     fi
 return   

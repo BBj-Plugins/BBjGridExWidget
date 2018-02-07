@@ -8,6 +8,7 @@ use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use java.lang.Integer
 use java.util.ArrayList
+use java.util.HashMap
 
 
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
@@ -17,11 +18,8 @@ class public BBjGridExWidgetRow
     field public BBjString Id!
     field public BBjNumber ChildIndex!
     field public BBjString ParentKey!
-    
     field public BBjNumber IsSelected!
-    field public BBjNumber HasParent!
-    
-    
+    field public JsonObject Data!
     method public String toString()
         methodret #Id!
     methodend
@@ -50,29 +48,33 @@ class public BBjGridExWidgetSelectRowEvent
     methodend
     
     method public BBjVector getSelectedIds()
-        
+       
         declare BBjVector ids!
-        ids! = new BBjVector()
+        ids! = new BBjVector() 
+        selectedCount! = #getSelectedRowCount()
         
-        selectedCount! = #getSelectedRowCount() - 1
-         
-        for n = 0 to selectedCount!
-            ids!.add(cast(BBjGridExWidgetRow,#SelectedRows!.getItem(n)).getId()) 
-        next n
+        if selectedCount! > 0 then 
+      
+            for n = 0 to selectedCount! - 1 step 1
+                ids!.add(cast(BBjGridExWidgetRow,#SelectedRows!.getItem(n)).getId()) 
+            next n
+        fi
         
         methodret ids!
     methodend    
     
-    method public BBjNumber getDeselectedIds()
+    method public BBjVector getDeselectedIds()
         
         declare BBjVector ids!
-        ids! = new BBjVector()
+        ids! = new BBjVector() 
+        deselectedCount! = #getDeselectedRowCount()
         
-        deselectedCount! = #getDeselectedRowCount() - 1
-         
-        for n = 0 to deselectedCount!
-            ids!.add(cast(BBjGridExWidgetRow,#DeselectedRows!.getItem(n)).getId()) 
-        next n
+        if deselectedCount! > 0 then 
+      
+            for n = 0 to deselectedCount! - 1 step 1
+                ids!.add(cast(BBjGridExWidgetRow,#DeselectedRows!.getItem(n)).getId()) 
+            next n
+        fi
         
         methodret ids!
     methodend
@@ -119,7 +121,7 @@ class public BBjGridExWidget extends BBjWidget
     
     field private DataRow ColumnDefinition!
     
-    field private BBjVector SelectedRows! = new BBjVector() 
+    field private HashMap SelectedRows! = new HashMap() 
 
     rem --------------------- constructors -------------------------------------
     rem /**
@@ -407,15 +409,17 @@ REM         fi
                 row!.setId(next!.get("id").getAsString())
                 row!.setChildIndex(next!.get("childIndex").getAsInt())
                 row!.setParentKey(next!.get("parentKey").getAsString())
+                row!.setData(next!.get("data").getAsJsonObject())
                 row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
-                row!.setHasParent(iff(next!.get("hasParent").getAsString() = "true" ,  1 , 0))
                 
                 rows!.add( row!)
                 
                 if row!.getIsSelected() = 1 then
                     selected!.add(row!)
+                    #SelectedRows!.put(row!.getId(),row!)
                 else 
                    deselected!.add(row!)
+                   #SelectedRows!.remove(row!.getId())
                 fi
         wend
         
@@ -423,7 +427,6 @@ REM         fi
         event!.setSelectedRows(selected!)
         event!.setDeselectedRows(deselected!)
         
-        #SelectedRows!= cast(BBjVector , selected!)
         #fireEvent(#ON_GRID_SELECT_ROW(),event!)
     methodend
     
@@ -1006,15 +1009,17 @@ rem --------------------api methods--------------------------------
     
     rem /**
     rem  * @return the selected row index
+    rem  * @deprecated
     rem  */
     method public BBjNumber getSelectedRow()
-        if #SelectedRows!.size() = 0 then
-            methodret -1
-        else
-            r=-1
-            r=num(#SelectedRows!.getItem(0),err=*next)
-            methodret r
-        fi
+REM         if #SelectedRows!.size() = 0 then
+REM             methodret -1
+REM         else
+REM             r=-1
+REM             r=num(#SelectedRows!.getItem(0),err=*next)
+REM             methodret r
+REM         fi
+        methodret -1
     methodend  
     
     rem /**
