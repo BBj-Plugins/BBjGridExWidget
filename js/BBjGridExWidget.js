@@ -61,7 +61,7 @@ function bbj_grid_widget_cell_render(params) {
 
 function bbj_grid_widget_init(container, license, data, options) {
 
-  if (agGrid.LisenseManager) {
+  if (agGrid.LicenseManager) {
     agGrid.LicenseManager.setLicenseKey(license);
   }
 
