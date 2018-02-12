@@ -180,8 +180,16 @@ function bbj_grid_widget_set_column_width(columnid, width) {
   $doc.bbj_grid_widget.columnApi.setColumnWidth(columnid, width);
 }
 
-function bbj_grid_widget_set_column_pin(columnid,pin) {
+function bbj_grid_widget_set_column_pin(columnid, pin) {
   $doc.bbj_grid_widget.columnApi.setColumnPinned(columnid, pin);
+}
+
+function bbj_grid_widget_set_column_move(columnid, toIndex) {
+  $doc.bbj_grid_widget.columnApi.moveColumn(columnid, toIndex);
+}
+
+function bbj_grid_widget_set_quick_filter(filter) {
+  $doc.bbj_grid_widget.api.setQuickFilter(filter);
 }
 
 function bbj_grid_widget_get_state() {
@@ -231,6 +239,7 @@ function bbj_grid_widget_set_data(json, options) {
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
 
+  console.log(options)
   $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
   $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);

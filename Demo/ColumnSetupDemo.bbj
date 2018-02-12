@@ -47,6 +47,7 @@ fillGrid:
     rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
 
     grid!.setEnableFilter(1)
+    grid!.setEnableFloatingFilter(1)
     
     grid!.setData(rs!)
     

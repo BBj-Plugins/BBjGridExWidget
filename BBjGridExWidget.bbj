@@ -46,6 +46,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber MultipleSelection
     field private BBjNumber FitToGrid
     field private BBjNumber EnableFilter
+    field private BBjNumber EnableFloatingFilter
     field private BBjNumber GroupChildCount
     field private BBjNumber groupSelectsChildren
     field private BBjNumber showSelectionCheckbox
@@ -334,7 +335,11 @@ class public BBjGridExWidget extends BBjWidget
 :            'allowContextMenuWithControlKey': false,"
 
         if (#EnableFilter)
-            opt$=opt$+"'enableFilter': true,'floatingFilter': false,"
+            opt$=opt$+"'enableFilter': true,"
+        fi
+        
+        if(#EnableFloatingFilter) 
+            opt$=opt$+"'floatingFilter': true,"
         fi
 
         if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
@@ -800,7 +805,32 @@ rem --------------------api methods--------------------------------
     rem  */     
     method public void setEnableFilter(BBjNumber enable)
         #EnableFilter=enable
+    methodend  
+    
+    rem /**
+    rem  * Allow floating filters in the grid 
+    rem  * @param BBjNumber enable: 1 shows the floating filter widgets in the toolbar 
+    rem  */     
+    method public void setEnableFloatingFilter(BBjNumber enable)
+        #EnableFloatingFilter=enable
     methodend    
+    
+    
+    rem /**
+    rem  * Perform throw columns search  
+    rem  * @param BBjNumber filter 
+    rem  */     
+    method public void setQuickFilter(BBjNumber filter)
+        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter("+ str(filter) +")")
+    methodend  
+    
+    rem /**
+    rem  * Perform throw columns search  
+    rem  * @param BBjNumber filter 
+    rem  */     
+    method public void setQuickFilter(BBjString filter!)
+        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter('"+ filter! +"')")
+    methodend  
     
     rem /**
     rem  * set the label for the group column if the grid is a tree-grid
