@@ -41,7 +41,6 @@ fillGrid:
     grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
 
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    grid!.setMultipleSelection(1)
     
     rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
     rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
@@ -49,7 +48,9 @@ fillGrid:
     grid!.setEnableFilter(1)
     grid!.setEnableFloatingFilter(1)
     
-    grid!.setData(rs!)
+    grid!.setData(rs!,"CDNUMBER")
+    
+    grid!.moveColumn("PLAYINGTIME",1)
     
     rem grid!.setFitToGrid(1)
     
@@ -66,22 +67,34 @@ resize:
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
 return
 
-onRowSelect:
+onRowSelect: 
+
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
-    else
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED: ",ev!.getSelectedRows()
+    
+    selectedRow! = grid!.getSelectedRow()
+    
+    if selectedRow! <> null() then
+        if INFO(3,6)="5" then
+          a = msgbox(selectedRow!.getId(), 0, selectedRow!.getData().get("TITLE").getAsString())
+        else
+          print 'SHOW', ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getRows()
+          print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
+          print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
+          print 'SHOW', grid!.getSelectedRows().size()," ROW(S) SELECTED SO FAR : ", grid!.getSelectedRows()
+          print 'SHOW', "------------------------------------------------------------------------"
+        fi
     fi
 return    
 
 onRowDoubleclick:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
+    row! = ev!.getRow()
+    
     if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getRow()),0,"DOUBLE CLICK")
+        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
     else
-        print 'SHOW', "DOUBLE CLICK" ,ev!.getRow()
+        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
     fi
 return  
