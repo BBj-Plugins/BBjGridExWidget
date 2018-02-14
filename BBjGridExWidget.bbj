@@ -519,7 +519,11 @@ class public BBjGridExWidget extends BBjWidget
                 cdef!.add(node!)
                 first=0
             fi
-        
+            
+            if cd! = null() or cd!.getFieldNames().size()=0  then
+                methodret cdef!
+            fi
+                
             f! = cd!.getFieldNames()
             it! = f!.iterator()
             
