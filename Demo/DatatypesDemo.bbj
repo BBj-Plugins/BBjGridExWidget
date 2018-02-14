@@ -1,5 +1,7 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.db.DataRow
 use java.sql.Types
 
 ? 'HIDE'
@@ -24,10 +26,46 @@ process_events
    
 fillGrid:
 
-    declare SqlQueryBC sbc!
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+    rs! = new ResultSet()
+    
 
+    i=1
+    x=2.13
+    
+    for j=1 to 2
+       
+        dr! = new DataRow()
+        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
+        
+        if i=1 then
+            dr!.setFieldAttribute("DOUBLE","MASK","-### ##0.0000")
+            dr!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("TIMESTAMP","MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+        fi
+        
+        rs!.addItem(dr!)
+        
+        i=i+1
+        x=x*-i
+        
+        dr! = new DataRow()
+        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
+        
+        rs!.addItem(dr!)
+
+        i=i+1
+        x=x*-i
+        
+    next
+    
     grid!.setData(rs!)
 
 return
