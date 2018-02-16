@@ -161,9 +161,12 @@ function bbj_grid_widget_init(container, license, data, options) {
     options.columnDefs[i].valueFormatter = bbj_grid_widget_format_value(
       options.columnDefs[i].filter
     );
-    options.columnDefs[i].cellRenderer = bbj_grid_widget_render_value(
-      options.columnDefs[i].filter
-    );
+
+    if(!options.columnDefs[i].cellRenderer) {
+      options.columnDefs[i].cellRenderer = bbj_grid_widget_render_value(
+        options.columnDefs[i].filter
+      );
+    }
   }
 
   return new agGrid.Grid(container, options);
