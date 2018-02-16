@@ -280,7 +280,7 @@ function bbj_grid_widget_get_value_formatter_date(data) {
     ($doc.bbj_grid_widget_meta && $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field)) &&
     $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
   ) {
-    return bbj_mask_date(
+    return BBj.Masks.date(
       data.value,
       $doc.bbj_grid_widget_meta[data.colDef.field].MASK //'%Y-%Mz-%Dz'
     );
@@ -293,7 +293,7 @@ function bbj_grid_widget_get_value_formatter_number(data) {
     ($doc.bbj_grid_widget_meta && $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field)) &&
     $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
   ) {
-    return bbj_mask_number(
+    return BBj.Masks.number(
       data.value,
       $doc.bbj_grid_widget_meta[data.colDef.field].MASK
     );

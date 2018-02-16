@@ -649,18 +649,10 @@ class public BBjGridExWidget extends BBjWidget
         fi
 
         ch=unt
-        open (ch)"BBjGridExWidget/js/format.js"
+        open (ch)"BBjGridExWidget/js/bbj-masks.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #HTMLView!.injectScript(script$)
-        
-        
-        ch=unt
-        open (ch)"BBjGridExWidget/js/masks.js"
-        read record (ch,siz=5512000)script$
-        close (ch)
-        #HTMLView!.injectScript(script$)
-        
                 
         ch=unt
         open (ch)"BBjGridExWidget/js/BBjGridExWidget.js"
