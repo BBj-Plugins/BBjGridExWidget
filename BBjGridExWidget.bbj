@@ -539,8 +539,6 @@ class public BBjGridExWidget extends BBjWidget
                 node! = new JsonObject()
                 node!.addProperty("headerName",label$)
                 node!.addProperty("field",f$)
-                
-                node!.addProperty("colId","foo")
 
                 pin$=""
                 pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
