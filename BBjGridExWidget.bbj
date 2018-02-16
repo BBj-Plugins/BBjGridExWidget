@@ -571,6 +571,10 @@ class public BBjGridExWidget extends BBjWidget
                         node!.addProperty("filter","date")
                     break
                     
+                    case Types.BOOLEAN
+                        node!.addProperty("filter","boolean")
+                    break
+                    
                     
                     case default
                         node!.addProperty("filter","agTextColumnFilter")

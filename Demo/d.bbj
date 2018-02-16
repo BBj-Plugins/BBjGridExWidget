@@ -1,0 +1,71 @@
+REM /**
+REM  * d.bbj
+REM  * @author Hyyan-Basis
+REM  *
+REM  */
+use com.google.gson.JsonParser
+use com.google.gson.Gson
+use com.google.gson.JsonObject
+use java.util.HashMap
+use java.util.Iterator
+use java.lang.Integer
+use java.util.Collection 
+use java.util.ArrayList
+
+class public Foo
+    
+     field public BBjString firstname$
+     field public BBjString lastname$
+classend
+
+json$ = "[{firstname: ""Hyyan"",lastname:""AF""},{firstname:""Foo"",lastname:""Bar""}]"
+
+
+declare JsonParser parser!
+parser! = new JsonParser()
+
+array! = parser!.parse(json$).getAsJsonArray()
+
+it! = array!.iterator()
+while (it!.hasNext()) 
+        next! = it!.next()
+        print next!.getAsJsonObject().get("firstname").getAsBoolean()
+wend
+
+REM obj! = new JsonObject()
+REM obj!.addProperty("id", Integer.valueOf(5))
+REM 
+REM declare ArrayList c!
+REM c! = new ArrayList()
+REM c!.add("5")
+REM c!.add(obj!)
+REM 
+REM declare Gson g!
+REM 
+REM g! = new Gson()
+REM print g!.toJson(c!)
+
+REM parse! = new JsonParser()
+REM obj! = new JsonObject()
+REM obj!.addProperty("id", Integer.valueOf(5))
+REM 
+REM obj2! = new JsonObject()
+REM obj2!.addProperty("id2" , Integer.valueOf(2))
+REM 
+REM obj!.add("foo",obj2!)
+REM 
+REM it! = m!.entrySet().iterator()
+REM while (it!.hasNext()) 
+REM         next! = it!.next()
+REM         print next!.getKey() + " - " + str(next!.getValue()) + "\n"
+REM wend
+REM 
+REM print m!.toString()
+
+
+
+
+REM ret! = parse!.parse("{id: '5'}").getAsJsonObject()
+REM print ret!.get("id").getAsDouble()
+REM print ret!.toString()        
+REM         print ret!.get("id").getAsInt()

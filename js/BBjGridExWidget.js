@@ -13,6 +13,10 @@ bbj_grid_supported_value_formatter = {
   'agNumberColumnFilter': bbj_grid_widget_get_value_formatter_number
 }
 
+bbj_grid_supported_value_renderer = {
+  'boolean': bbj_grid_widget_get_value_renderer_boolean
+}
+
 function bbj_grid_widget_post_event(ev) {
   window.basisDispatchCustomEvent(ev, ev.payload);
 }
@@ -185,7 +189,10 @@ function bbj_grid_widget_init(container, license, data, options) {
 
   for (var i in options.columnDefs) {
     options.columnDefs[i].cellStyle = bbj_grid_widget_cell_render;
-    options.columnDefs[i].valueFormatter = bbj_grid_widget_get_value_formatter(
+    options.columnDefs[i].valueFormatter = bbj_grid_widget_format_value(
+      options.columnDefs[i].filter
+    );
+    options.columnDefs[i].cellRenderer = bbj_grid_widget_render_value(
       options.columnDefs[i].filter
     );
   }
@@ -268,14 +275,17 @@ function bbj_grid_widget_set_state(state) {
   $doc.bbj_grid_widget.columnApi.setColumnState(state);
 }
 
-function bbj_grid_widget_get_value_formatter(filter) {
-
+function bbj_grid_widget_format_value(filter) {
   return bbj_grid_supported_value_formatter && bbj_grid_supported_value_formatter.hasOwnProperty(filter) ?
     bbj_grid_supported_value_formatter[filter] : null;
 }
 
-function bbj_grid_widget_get_value_formatter_date(data) {
+function bbj_grid_widget_render_value(renderer) {
+  return bbj_grid_supported_value_renderer && bbj_grid_supported_value_renderer.hasOwnProperty(renderer) ?
+    bbj_grid_supported_value_renderer[renderer] : null;
+}
 
+function bbj_grid_widget_get_value_formatter_date(data) {
   if (
     ($doc.bbj_grid_widget_meta && $doc.bbj_grid_widget_meta.hasOwnProperty(data.colDef.field)) &&
     $doc.bbj_grid_widget_meta[data.colDef.field].hasOwnProperty('MASK')
@@ -298,6 +308,16 @@ function bbj_grid_widget_get_value_formatter_number(data) {
       $doc.bbj_grid_widget_meta[data.colDef.field].MASK
     );
   } else return data.value;
+}
+
+function bbj_grid_widget_get_value_renderer_boolean(data) {
+
+  if (data.value) {
+    return '<span>&#x2714;</span>'
+  } else {
+    return '<span>&#x2718;</span>'
+  }
+
 }
 
 function bbj_grid_widget_set_data(json, options) {
