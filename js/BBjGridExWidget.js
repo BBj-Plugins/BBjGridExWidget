@@ -284,12 +284,15 @@ function bbj_grid_widget_get_value_formatter_number(data) {
 
 function bbj_grid_widget_get_value_renderer_boolean(data) {
 
-  if (data.value) {
+  if (true === data.value) {
     return '<span>&#x2714;</span>'
-  } else {
+  } 
+  
+  if (false === data.value) {
     return '<span>&#x2718;</span>'
   }
 
+  return date.value;
 }
 
 function bbj_grid_widget_set_data(json, options) {
