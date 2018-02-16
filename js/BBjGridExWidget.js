@@ -10,7 +10,7 @@ bbj_grid_selected_row_events = [];
 
 bbj_grid_supported_value_formatter = {
   'date': bbj_grid_widget_get_value_formatter_date,
-  'number': bbj_grid_widget_get_value_formatter_number
+  'agNumberColumnFilter': bbj_grid_widget_get_value_formatter_number
 }
 
 function bbj_grid_widget_post_event(ev) {
