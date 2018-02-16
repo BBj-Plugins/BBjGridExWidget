@@ -66,6 +66,11 @@ fillGrid:
         
     next
     
+    rem a row with most columns empty
+    dr! = new DataRow()
+    dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+    rs!.addItem(dr!)
+    
     grid!.setData(rs!)
 
 return
