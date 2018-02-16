@@ -161,9 +161,12 @@ function bbj_grid_widget_init(container, license, data, options) {
     options.columnDefs[i].valueFormatter = bbj_grid_widget_format_value(
       options.columnDefs[i].filter
     );
-    options.columnDefs[i].cellRenderer = bbj_grid_widget_render_value(
-      options.columnDefs[i].filter
-    );
+
+    if(!options.columnDefs[i].cellRenderer) {
+      options.columnDefs[i].cellRenderer = bbj_grid_widget_render_value(
+        options.columnDefs[i].filter
+      );
+    }
   }
 
   return new agGrid.Grid(container, options);
@@ -281,12 +284,15 @@ function bbj_grid_widget_get_value_formatter_number(data) {
 
 function bbj_grid_widget_get_value_renderer_boolean(data) {
 
-  if (data.value) {
+  if (true === data.value) {
     return '<span>&#x2714;</span>'
-  } else {
+  } 
+  
+  if (false === data.value) {
     return '<span>&#x2718;</span>'
   }
 
+  return date.value;
 }
 
 function bbj_grid_widget_set_data(json, options) {
