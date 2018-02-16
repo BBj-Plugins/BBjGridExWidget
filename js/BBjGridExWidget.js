@@ -83,37 +83,6 @@ function bbj_grid_build_node_info_from_event(e) {
   }
 
   return false;
-
-  // var parents = {};
-  // if (hasParent) {
-  //   var next = e.node.parent;
-  //   var parentHasParent = next.hasOwnProperty('parent') ? true : false;
-  //   while (next) {
-
-  //     parents[next.id] = {
-  //       id: next.id, // auto generated id by ag-gird (can be changed , but we will not change it)
-  //       index: next.rowIndex || -1, // row idnex
-  //       childIndex: next.childIndex, // row index when it is a child in a group 
-  //       childrenCount: next.group ? next.allChildrenCount : 0,
-  //       selected: Boolean(next.selected),
-  //       data: next.data,
-
-  //       group: Boolean(next.group), // whether the node is a group 
-  //       level: next.level, // the group level 
-
-  //       hasParent: parentHasParent,
-  //       parentId: parentHasParent ? next.parent.id : -1,
-  //       parentKey: parentHasParent ? next.parent.key : '',
-  //     };
-
-
-  //     next = parentHasParent ? next.parent : false;
-  //     parentHasParent = next.hasOwnProperty('parent') ? true : false;
-  //   }
-  // }
-
-  // // result.parents = parents;
-  // return result;
 }
 
 function bbj_grid_widget_init(container, license, data, options) {
