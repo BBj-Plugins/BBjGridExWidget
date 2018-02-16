@@ -30,11 +30,12 @@ fillGrid:
     
 
     i=1
-    x=2.13
+    x=2222.1312345
     
     for j=1 to 2
        
         dr! = new DataRow()
+        dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
@@ -42,7 +43,7 @@ fillGrid:
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         
         if i=1 then
-            dr!.setFieldAttribute("DOUBLE","MASK","-### ##0.0000")
+            dr!.setFieldAttribute("DOUBLE","MASK","-###.###.#00,000")
             dr!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("TIMESTAMP","MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
         fi
@@ -53,6 +54,7 @@ fillGrid:
         x=x*-i
         
         dr! = new DataRow()
+        dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
@@ -68,7 +70,7 @@ fillGrid:
     
     rem a row with most columns empty
     dr! = new DataRow()
-    dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+    dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
     rs!.addItem(dr!)
     
     grid!.setData(rs!)

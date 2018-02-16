@@ -579,7 +579,6 @@ class public BBjGridExWidget extends BBjWidget
                     break
                 swend
 
-                
                 bgc$=""
                 bgc$=cd!.getFieldAttribute(f$,"BGCOLOR",err=*next)
 
@@ -978,7 +977,7 @@ rem --------------------api methods--------------------------------
         return #GroupColumnLabel$
     methodend
     
-    method public BBjGridExWidgetColumnState getColumnsState()
+    method public BBjGridExWidgetColumnState getColumnState()
     
         state! = new BBjGridExWidgetColumnState()
         json_string$ = str(#HTMLView!.executeScript("bbj_grid_widget_get_state()"))
@@ -987,7 +986,7 @@ rem --------------------api methods--------------------------------
     
     methodend
 
-    method public void setColumnsState(BBjGridExWidgetColumnState state!)
+    method public void setColumnState(BBjGridExWidgetColumnState state!)
     
         json_state$ = state!.getString()
         #HTMLView!.executeScript("bbj_grid_widget_set_state("+json_state$+")")
