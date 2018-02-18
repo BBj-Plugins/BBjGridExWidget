@@ -61,10 +61,12 @@ onRowSelect:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
     print 'SHOW', ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getRows()
-    print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
-    print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
-    print 'SHOW', grid!.getSelectedRows().size()," ROW(S) SELECTED SO FAR : ", grid!.getSelectedRows()
-    print 'SHOW', "------------------------------------------------------------------------"    
+    print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
+    print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
+    print 'BR',grid!.getSelectedRows().size()," GET SELECTED ROWS : ", grid!.getSelectedRows(),'ER'
+    print 'BR',grid!.getSelectedRows().size()," GET SELECTED ROW  : ", grid!.getSelectedRow(),'ER'
+    
+    print "------------------------------------------------------------------------"    
 return    
 
 onRowDoubleclick:

@@ -146,7 +146,7 @@ class public BBjGridExWidget extends BBjWidget
     
     field private DataRow ColumnDefinition!
     
-    field private HashMap SelectedRows! = new HashMap() 
+    field private HashMap SelectedRowsMap! = new HashMap() 
 
     rem --------------------- constructors -------------------------------------
     rem /**
@@ -408,10 +408,10 @@ class public BBjGridExWidget extends BBjWidget
                 
                 if row!.getIsSelected() = 1 then
                     selected!.add(row!)
-                    #SelectedRows!.put(row!.getId(),row!)
+                    #SelectedRowsMap!.put(row!.getId(),row!)
                 else 
                    deselected!.add(row!)
-                   #SelectedRows!.remove(row!.getId())
+                   #SelectedRowsMap!.remove(row!.getId())
                 fi
         wend
         
@@ -996,22 +996,50 @@ rem --------------------api methods--------------------------------
     rem /**
     rem  * @return Hashmap with the selected row indexes and items
     rem  */
-    method public BBjVector getSelectedRows()
-        methodret #SelectedRows!
+    method public BBjVector getSelectedRowsInfo()
+        methodret #SelectedRowsMap!
     methodend
     
         rem /**
     rem  * @return the selected row 
     rem  */
-    method public BBjGridExWidgetRow getSelectedRow()
+    method public BBjGridExWidgetRow getSelectedRowInfo()
     
-        if #SelectedRows!.size() > 0 then
-            it! = #SelectedRows!.entrySet().iterator()
+        if #SelectedRowsMap!.size() > 0 then
+            it! = #SelectedRowsMap!.entrySet().iterator()
             methodret it!.next().getValue()
         fi
         
         methodret null()
     methodend  
+    
+    rem /**
+    rem  * @return BBjVector with the selected row indexes and items
+    rem  */
+    method public BBjVector getSelectedRows()
+        declare BBjVector ids!
+        ids! = new BBjVector() 
+
+        it! = #SelectedRowsMap!.entrySet().iterator()
+        while it!.hasNext()
+            ids!.addItem(it!.next().getValue().getId())
+        wend
+        methodret ids!
+            
+    methodend
+    
+        rem /**
+    rem  * @return the selected row 
+    rem  */
+    method public BBjNumber getSelectedRow()
+    
+        if #SelectedRowsMap!.size() > 0 then
+            it! = #SelectedRowsMap!.entrySet().iterator()
+            methodret num(it!.next().getValue().getId())
+        fi
+        
+        methodret -1
+    methodend      
     
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
