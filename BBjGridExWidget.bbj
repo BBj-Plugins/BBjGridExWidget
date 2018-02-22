@@ -181,7 +181,7 @@ class public BBjGridExWidget extends BBjWidget
         if (f_init!) then
             dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=true")
             
-            html$="<html><body><div id='eventTransporterDiv' onClick='bbj_grid_widget_post_event(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-fresh""></div></body></html>"
+            html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-fresh""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$)
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
@@ -235,7 +235,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setSelectedRow(BBjNumber x!)
         #deselectAll() 
-        script$="bbj_grid_widget_set_selected_rows([" + str(x!) + "]);"        
+        script$="gw_setSelectedRows([" + str(x!) + "]);"        
         #executeScript(script$)
     methodend  
     
@@ -244,7 +244,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setSelectedRows(BBjVector x!)
         #deselectAll() 
-        script$="bbj_grid_widget_set_selected_rows(["
+        script$="gw_setSelectedRows(["
         it! = x!.iterator()
         first=1
         while it!.hasNext()
@@ -265,7 +265,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void selectAll()
         
-        script$="bbj_grid_widget_set_select_all(0);"        
+        script$="gw_selectAll(0);"        
         #executeScript(script$)
     methodend  
     
@@ -276,7 +276,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void selectAll(BBjNumber x!)
         
-        script$="bbj_grid_widget_set_select_all(" + str(x!) + ");"        
+        script$="gw_selectAll(" + str(x!) + ");"        
         #executeScript(script$)
     methodend  
     
@@ -286,7 +286,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void deselectAll()
         
-        script$="bbj_grid_widget_set_deselect_all(0);"        
+        script$="gw_deselectAll(0);"        
         #executeScript(script$)
     methodend  
     
@@ -297,7 +297,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void deselectAll(BBjNumber x!)
         
-        script$="bbj_grid_widget_set_deselect_all(" + str(x!) + ");"        
+        script$="gw_deselectAll(" + str(x!) + ");"        
         #executeScript(script$)
     methodend   
     
@@ -306,7 +306,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void expandAll()
         
-        script$="bbj_grid_widget_set_expand_all();"        
+        script$="gw_expandAll();"        
         #executeScript(script$)
     methodend  
     
@@ -316,7 +316,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void collapseAll()
         
-        script$="bbj_grid_widget_set_collapse_all();"        
+        script$="gw_collapseAll();"        
         #executeScript(script$)
     methodend  
     
@@ -337,7 +337,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setVisibleRow(BBjNumber index! , BBjString position!)
         
-        script$="bbj_grid_widget_set_visible_row(" + str(index!) + ",'" + str(position!) +"');"        
+        script$="gw_setVisibleRow(" + str(index!) + ",'" + str(position!) +"');"        
         #executeScript(script$)
     methodend  
     
@@ -350,7 +350,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setVisibleColumn(BBjString columnId!)
         
-        script$="bbj_grid_widget_set_visible_column('" + columnId! + "');"        
+        script$="gw_setVisibleColumn('" + columnId! + "');"        
         #executeScript(script$)
     methodend  
     
@@ -481,7 +481,7 @@ class public BBjGridExWidget extends BBjWidget
            option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
        fi
 
-        #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+")")
+        #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(option!)+")")
          
     methodend 
     
@@ -561,21 +561,20 @@ class public BBjGridExWidget extends BBjWidget
                     case Types.DECIMAL
                     case Types.DOUBLE
                     case Types.NUMERIC
-                        node!.addProperty("type","numericColumn")
-                        node!.addProperty("filter","agNumberColumnFilter")
+                        node!.addProperty("type","basic-number")
                     break
                     case Types.DATE
                     case Types.TIMESTAMP
-                        node!.addProperty("filter","date")
+                        node!.addProperty("type","basic-date")
                     break
                     
                     case Types.BOOLEAN
-                        node!.addProperty("filter","boolean")
+                        node!.addProperty("type","basic-boolean")
                     break
                     
                     
                     case default
-                        node!.addProperty("filter","agTextColumnFilter")
+                        node!.addProperty("type","agTextColumnFilter")
                     break
                 swend
 
@@ -637,27 +636,33 @@ class public BBjGridExWidget extends BBjWidget
         if INFO(3,6)="5" then
             rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
             rem open (ch)"BBjGridExWidget/js/ag-grid.js"
-            open (ch)"BBjGridExWidget/js/ag-grid.min.js"
+            open (ch)"BBjGridExWidget/js/dist/ag-grid.min.js"
             read record (ch,siz=5512000)script$
             close (ch)        
             #HTMLView!.injectScript(script$)
             #HTMLView!.injectScript(script$,1)
         else
             rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
-            open (ch)"BBjGridExWidget/js/ag-grid.min.js"
+            open (ch)"BBjGridExWidget/js/dist/ag-grid.min.js"
             read record (ch,siz=5512000)script$
             close (ch)        
             #HTMLView!.injectScript(script$,1)
         fi
 
         ch=unt
-        open (ch)"BBjGridExWidget/js/bbj-masks.min.js"
+        open (ch)"BBjGridExWidget/js/dist/bbj-masks.min.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #HTMLView!.injectScript(script$)
+        
+        ch=unt
+        open (ch)"BBjGridExWidget/js/dist/agc-basic.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #HTMLView!.injectScript(script$)
                 
         ch=unt
-        open (ch)"BBjGridExWidget/js/BBjGridExWidget.js"
+        open (ch)"BBjGridExWidget/js/dist/bbj-grid-widget.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
 
@@ -834,7 +839,7 @@ rem --------------------api methods--------------------------------
             #ColumnDefinition!.removeFieldAttribute(Field$,"PINNED",err=*next)
         fi
         
-        script$="bbj_grid_widget_set_column_pin('" + Field$ + "','" + pin$  + "');"        
+        script$="gw_pinColumn('" + Field$ + "','" + pin$  + "');"        
         #executeScript(script$)
     methodend
 
@@ -845,7 +850,7 @@ rem --------------------api methods--------------------------------
     rem  */     
     method public void setFitToGrid(BBjNumber fit!)
         #FitToGrid=fit!
-        ret! = #executeScript("bbj_grid_widget_fit_grid("+str(fit!)+")")
+        ret! = #executeScript("gw_sizeColumnsToFit("+str(fit!)+")")
     methodend
 
 
@@ -874,7 +879,7 @@ rem --------------------api methods--------------------------------
     rem  */ 
     method public void setColumnWidth(BBjString Field$, BBjNumber w!)
         #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",num(w!),err=*next)
-        script$="bbj_grid_widget_set_column_width('" + Field$ + "'," + str(w!) + ");"        
+        script$="gw_setColumnWidth('" + Field$ + "'," + str(w!) + ");"        
         #executeScript(script$)
     methodend
 
@@ -905,7 +910,7 @@ rem --------------------api methods--------------------------------
     methodend
     
     method public void moveColumn(BBjString Field$, BBjNumber toIndex!)
-        script$="bbj_grid_widget_set_column_move('" + Field$ + "'," + str(toIndex!) + ");"        
+        script$="gw_moveColumn('" + Field$ + "'," + str(toIndex!) + ");"        
         #executeScript(script$)
     methodend
 
@@ -950,7 +955,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber filter 
     rem  */     
     method public void setQuickFilter(BBjNumber filter)
-        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter("+ str(filter) +")")
+        #HTMLView!.executeScript("gw_setQuickFilter("+ str(filter) +")")
     methodend  
     
     rem /**
@@ -958,7 +963,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber filter 
     rem  */     
     method public void setQuickFilter(BBjString filter!)
-        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter('"+ filter! +"')")
+        #HTMLView!.executeScript("gw_setQuickFilter('"+ filter! +"')")
     methodend  
     
     rem /**
@@ -981,7 +986,7 @@ rem --------------------api methods--------------------------------
     method public BBjGridExWidgetColumnState getColumnsState()
     
         state! = new BBjGridExWidgetColumnState()
-        json_string$ = str(#HTMLView!.executeScript("bbj_grid_widget_get_state()"))
+        json_string$ = str(#HTMLView!.executeScript("gw_getState()"))
         state!.setString(json_string$)
         methodret state!
     
@@ -990,7 +995,7 @@ rem --------------------api methods--------------------------------
     method public void setColumnsState(BBjGridExWidgetColumnState state!)
     
         json_state$ = state!.getString()
-        #HTMLView!.executeScript("bbj_grid_widget_set_state("+json_state$+")")
+        #HTMLView!.executeScript("gw_setState("+json_state$+")")
     
     methodend
 

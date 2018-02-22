@@ -43,6 +43,7 @@ fillGrid:
         
         if i=1 then
             dr!.setFieldAttribute("DOUBLE","MASK","-### ##0.0000")
+            dr!.setFieldAttribute("DOUBLE","MIN","4545")
             dr!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("TIMESTAMP","MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
         fi

@@ -32,7 +32,7 @@ fillGrid:
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
-    grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
+    grid!.addColumn("PLAYINGTIME","Playing Time (min)")
     
     grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
     grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
