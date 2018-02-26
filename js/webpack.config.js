@@ -21,7 +21,8 @@ module.exports = {
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
-          presets: ['@babel/preset-env']
+          presets: ['@babel/preset-env'],
+          plugins: ["@babel/plugin-proposal-object-rest-spread"]
         }
       },
       {
@@ -40,7 +41,7 @@ module.exports = {
       { from: __dirname + '/node_modules/ag-grid/dist/ag-grid.min.js', to: __dirname + '/dist/' },
       { from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js', to: __dirname + '/dist/' },
       { from: __dirname + '/node_modules/bbj-masks/dist/bbj-masks.min.js', to: __dirname + '/dist/' },
-      { from: __dirname + '/node_modules/ag-grid-components/dist/basic-bundle.js', to: __dirname + '/dist/agc-basic.min.js' },
+      { from: __dirname + '/node_modules/ag-grid-components/dist/agc-basic.min.js', to: __dirname + '/dist/' },
     ])
   ],
   watchOptions: {

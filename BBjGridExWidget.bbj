@@ -107,15 +107,21 @@ class public BBjGridExWidgetSelectRowEvent
 classend
 
 class public BBjGridExWidgetDoubleClickRowEvent
-    
     field public BBjGridExWidgetRow Row!
-    
+classend
+
+class public BBjGridWidgetCellEditingEvent 
+    field public BBjGridExWidgetRow Row!
+    field public BBjString Column$
+    field public BBjString Value$
+classend
+
+class public BBjGridWidgetRowEditingEvent
+    field public BBjGridExWidgetRow Row!
 classend
 
 class public BBjGridExWidgetColumnState
-
     field public BBjString String$
-
 classend
 
 rem /**
@@ -146,7 +152,13 @@ class public BBjGridExWidget extends BBjWidget
     
     field private DataRow ColumnDefinition!
     
-    field private HashMap SelectedRows! = new HashMap() 
+    field private HashMap SelectedRows! = new HashMap()
+    
+    field private BBjNumber Editing! = 0
+    field public BBjNumber SingleClickEdit! = 0
+    field public BBjNumber CellChangeFlash! = 0
+    field public BBjNumber GroupEdit! = 0
+    field public BBjString EditType$ = ""
 
     rem --------------------- constructors -------------------------------------
     rem /**
@@ -371,9 +383,41 @@ class public BBjGridExWidget extends BBjWidget
             case "grid-row-select"
                 #handleGirdSelectRowEvent(detail$)
                 break
+                
             case "grid-row-doubleclick"
                 #handleGirdDoubleClickEvent(detail$)
-                break              
+                break
+                
+            case "cellEditingStarted"
+                #Editing! = 1   
+                #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
+                break
+                
+            case "cellValueChanged"
+                #Editing! = 0
+                #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_CHANGED())
+                break
+                             
+            case "cellEditingStopped"
+                #Editing! = 0
+                #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STOPPED())
+                break
+                                
+            case "rowEditingStarted"
+                #Editing! = 1            
+                #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STARTED())
+                break
+                
+            case "rowValueChanged"
+                #Editing! = 0            
+                #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_CHANGED())
+                break
+                
+            case "rowEditingStopped"
+                #Editing! = 0            
+                #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STOPPED())
+                break                                
+                                
         swend
     methodend
     
@@ -449,6 +493,48 @@ class public BBjGridExWidget extends BBjWidget
         #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
     methodend
     
+    method private void handleGirdCellEditingEvent(BBjString detail$ , BBjNumber type!)
+        
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+        next! = array!.iterator().next().getAsJsonObject()
+                
+        rowAsJson! = next!.get("row").getAsJsonObject()
+        row! = new BBjGridExWidgetRow()
+        row!.setId(rowAsJson!.get("id").getAsString())
+        row!.setChildIndex(rowAsJson!.get("childIndex").getAsInt())
+        row!.setParentKey(rowAsJson!.get("parentKey").getAsString())
+        row!.setData(rowAsJson!.get("data").getAsJsonObject())
+        row!.setIsSelected(iff(rowAsJson!.get("selected").getAsString() = "true" ,  1 , 0))
+        
+        event! = new BBjGridWidgetCellEditingEvent()
+        event!.setRow(row!)
+        event!.setValue(next!.get("value").getAsString())
+        event!.setColumn(next!.get("column").getAsString())
+        
+
+        #fireEvent(type!, event!)
+    methodend
+
+    method private void handleGirdROWEditingEvent(BBjString detail$ , BBjNumber type!)
+     
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+        next! = array!.iterator().next().getAsJsonObject()
+                
+        row! = new BBjGridExWidgetRow()
+        row!.setId(next!.get("id").getAsString())
+        row!.setChildIndex(next!.get("childIndex").getAsInt())
+        row!.setParentKey(next!.get("parentKey").getAsString())
+        row!.setData(next!.get("data").getAsJsonObject())
+        row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
+        
+        event! = new BBjGridExWidgetDoubleClickRowEvent()
+        event!.setRow(row!)
+        
+        #fireEvent(type!, event!)
+    methodend
+        
     method private void performGridDataUpdate()
         
         if (! #IsReady!) methodret
@@ -474,6 +560,11 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("groupSelectsChildren",Boolean.valueOf(iff(#groupSelectsChildren = 1 ,  "true" ,"false")))
        option!.addProperty("__getRowNodeId",#RowNodeId$)
        option!.addProperty("__getParentNodeId",#ParentNodeId$)
+       option!.addProperty("editType",#getEditType())
+       option!.addProperty("singleClickEdit",#getSingleClickEdit())
+       option!.addProperty("enableCellChangeFlash",#getCellChangeFlash())
+       option!.addProperty("enableGroupEdit",#getGroupEdit())
+       
        option!.add("columnDefs",cdef!)
 
         
@@ -539,6 +630,7 @@ class public BBjGridExWidget extends BBjWidget
                 node! = new JsonObject()
                 node!.addProperty("headerName",label$)
                 node!.addProperty("field",f$)
+                
 
                 pin$=""
                 pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
@@ -551,6 +643,12 @@ class public BBjGridExWidget extends BBjWidget
                 if width$>"" then
                     node!.addProperty("width",num(width$))
                 fi                
+                
+                editable! = 0
+                editable!= num(cd!.getFieldAttribute(f$,"EDITABLE",err=*next))
+                if editable! > 0 then
+                    node!.addProperty("editable",1)
+                fi
                 
                 if first then
                    node!.addProperty("checkboxSelection",Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
@@ -1019,6 +1117,14 @@ rem --------------------api methods--------------------------------
         methodret null()
     methodend  
     
+    rem /** 
+    rem  * @return one if editing is eabled , false otherwise
+    rem  */
+    method public BBjNUmber isEditing()
+        return #Editing
+    methodend
+    
+    
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
             if info(3,6)="5" then
@@ -1086,8 +1192,31 @@ rem --------------------api methods--------------------------------
     method public static BBjNumber ON_GRID_DOUBLE_CLICK()
         methodret BBjAPI.ON_GRID_DOUBLE_CLICK
     methodend     
+
+    method public static BBjNumber ON_GRID_CELL_EDITING_STARTED()
+        methodret 5000
+    methodend    
+
+    method public static BBjNumber ON_GRID_CELL_EDITING_CHANGED()
+        methodret 5001
+    methodend
     
+    method public static BBjNumber ON_GRID_CELL_EDITING_STOPPED()
+        methodret 5002
+    methodend
+
+    method public static BBjNumber ON_GRID_ROW_EDITING_STARTED()
+        methodret 5003
+    methodend    
+
+    method public static BBjNumber ON_GRID_ROW_EDITING_CHANGED()
+        methodret 5004
+    methodend
     
+    method public static BBjNumber ON_GRID_ROW_EDITING_STOPPED()
+        methodret 5005
+    methodend
+            
     rem /**
     rem  * @return constant value to define row position
     rem  */
@@ -1108,7 +1237,14 @@ rem --------------------api methods--------------------------------
     method public static BBjString GRID_ROWPOS_BOTTOM()
         methodret "bottom"
     methodend 
-
+    
+    method public static BBjString GRID_EDITTYPE_ROW()
+        methodret "fullRow"
+    methodend
+    
+    method public static BBjString GRID_EDITTYPE_CELL()
+        methodret ""
+    methodend
 
 classend
 

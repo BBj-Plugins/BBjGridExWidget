@@ -1,27 +1,48 @@
 /*
 * This file is part of the grid project
-* (c) Basis Europe <eu@basis.com>
+* (c) Basis Europe <eu@Basis.AgGridComponents.com>
 *
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
 
-export let gw_selectedRowsStack = [];
+export function gw_getSupportedColumnTypes() {
 
-export function gw_setData(json, options) {
+  return {
+    "basic-boolean": {
+      cellRenderer: 'BasicBooleansRenderer',
+      cellEditor: 'BasicBooleansEditor',
+      filter: 'BasicBooleansFilter',
+      floatingFilter: 'BasicBooleansFilter'
+    },
 
-  const container = $doc.getElementById('grid');
-  container.innerHTML = '';
+    "basic-number": {
+      cellRenderer: 'BasicNumbersRenderer',
+      cellEditor: 'BasicNumbersEditor',
+      filter: 'agNumberColumnFilter',
+      filterParams: {
+        inRangeInclusive: true,
+      },
+      floatingFilter: 'agNumberColumnFilter',
+      floatingFilterParams: {
+        inRangeInclusive: true,
+      },
+    }
+  };
+}
 
-  console.log(options)
+export function gw_getDefaultComponents() {
 
-  $doc.gw_meta = json[0].meta;
-  $doc.AGridComponentsMetaConfig = $doc.gw_meta;
+  return {
+    // Booleans
+    'BasicBooleansRenderer': Basis.AgGridComponents.BasicBooleansRenderer,
+    'BasicBooleansEditor': Basis.AgGridComponents.BasicBooleansEditor,
+    'BasicBooleansFilter': Basis.AgGridComponents.BasicBooleansFilter,
 
-  $doc.gw_options = options;
-  window.gw_options = $doc.gw_options;
-  
-  $doc.gw_instance = gw_init(container, '', json, options);
+    // Numbers
+    'BasicNumbersRenderer': Basis.AgGridComponents.BasicNumbersRenderer,
+    'BasicNumbersEditor': Basis.AgGridComponents.BasicNumbersEditor
+  }
 }
 
 export function gw_init(container, license, data, defaultOptions = {}) {
@@ -31,45 +52,25 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   let options = Object.assign(defaultOptions, {
 
     rowData: data,
+    getDocument: () => $doc,
+    columnTypes: gw_getSupportedColumnTypes(),
+    components: gw_getDefaultComponents(),
 
-    getDocument: function () {
-      return $doc;
-    },
+    onRowDoubleClicked: gw_onRowDoubleClicked,
+    onRowSelected: gw_onRowSelected,
+    onSelectionChanged: gw_onSelectionChanged,
 
-    onRowDoubleClicked: function (e) {
+    onCellEditingStarted: gw_onCellEditingsEvent,
+    onCellEditingStopped: gw_onCellEditingsEvent,
+    onCellValueChanged: gw_onCellEditingsEvent,
 
-      gw_sendEvent({
-        'type': 'grid-row-doubleclick',
-        'detail': [[gw_parseNodeFromEvent(e)]]
-      });
-    },
+    onRowEditingStarted: gw_onRowEditingsEvent,
+    onRowEditingStopped: gw_onRowEditingsEvent,
+    onRowValueChanged: gw_onRowEditingsEvent,
 
-    onRowSelected: function (e) {
-      gw_selectedRowsStack.push(e);
-    },
+    getNodeChildDetails: (rowItem) => {
 
-    onSelectionChanged: function (e) {
-
-      let details = [];
-      gw_selectedRowsStack.forEach(function (e) {
-
-        const detail = gw_parseNodeFromEvent(e);
-        if (detail) details.push(detail);
-      });
-
-      if (details.length) {
-
-        gw_selectedRowsStack = [];
-        gw_sendEvent({
-          'type': 'grid-row-select',
-          'detail': [details]
-        });
-      }
-    },
-
-    getNodeChildDetails: function (rowItem) {
-
-      var key = rowItem[gw_options["__getParentNodeId"]];
+      const key = rowItem[gw_options["__getParentNodeId"]];
       if (rowItem.__node__children) {
         return {
           group: true,
@@ -99,4 +100,19 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   }
 
   return new agGrid.Grid(container, options);
+}
+
+
+export function gw_setData(json, options) {
+
+  const container = $doc.getElementById('grid');
+  container.innerHTML = '';
+
+  console.log(options)
+
+  window.gw_meta = json[0].meta;
+  window.AGridComponentsMetaConfig = gw_meta;
+
+  window.gw_options = options
+  window.gw_instance = gw_init(container, '', json, options);
 }

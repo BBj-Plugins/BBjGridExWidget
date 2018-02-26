@@ -181,7 +181,7 @@
     "@babel/helper-remap-async-to-generator" "7.0.0-beta.40"
     "@babel/plugin-syntax-async-generators" "7.0.0-beta.40"
 
-"@babel/plugin-proposal-object-rest-spread@7.0.0-beta.40":
+"@babel/plugin-proposal-object-rest-spread@7.0.0-beta.40", "@babel/plugin-proposal-object-rest-spread@^7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.0.0-beta.40.tgz#ce35d2240908e52706a612eb26d67db667cd700f"
   dependencies:
@@ -455,7 +455,7 @@ acorn@^5.0.0:
 
 "ag-grid-components@https://git.storesandbox.de/hyyan/ag-grid-components.git":
   version ""
-  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#fc7e4985d0645b99bd3c777bec37df28d8e8c7fd"
+  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#a51c03b6c253abf8a654c60fe48be555f4145d4d"
   dependencies:
     bbj-masks "https://git.storesandbox.de/hyyan/bbj-masks.git"
 
@@ -660,8 +660,8 @@ base64-js@^1.0.2:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.3.tgz#fb13668233d9614cf5fb4bce95a9ba4096cdf801"
 
 "bbj-masks@https://git.storesandbox.de/hyyan/bbj-masks.git":
-  version "1.2.1"
-  resolved "https://git.storesandbox.de/hyyan/bbj-masks.git#365422d1e7da30befe14f40ad806960edc44105b"
+  version "1.2.2"
+  resolved "https://git.storesandbox.de/hyyan/bbj-masks.git#c9eeb2b900d0464b47d587dbb08b120b1df6f17a"
   dependencies:
     number-format.js "^1.1.11"
 
