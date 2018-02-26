@@ -156,7 +156,6 @@ class public BBjGridExWidget extends BBjWidget
     
     field private BBjNumber Editing! = 0
     field public BBjNumber SingleClickEdit! = 0
-    field public BBjNumber CellChangeFlash! = 0
     field public BBjNumber GroupEdit! = 0
     field public BBjString EditType$ = ""
 
@@ -562,7 +561,6 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("__getParentNodeId",#ParentNodeId$)
        option!.addProperty("editType",#getEditType())
        option!.addProperty("singleClickEdit",#getSingleClickEdit())
-       option!.addProperty("enableCellChangeFlash",#getCellChangeFlash())
        option!.addProperty("enableGroupEdit",#getGroupEdit())
        
        option!.add("columnDefs",cdef!)
