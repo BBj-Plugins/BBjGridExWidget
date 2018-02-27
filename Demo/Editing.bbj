@@ -89,7 +89,6 @@ fillGrid:
         
     next 
     
-    grid!.showDeveloperConsole()
     grid!.setData(rs!,"ID")
 
 return
