@@ -44,15 +44,13 @@ fillGrid:
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         
         if i=1 then
-            dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
             
-            dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
             dr!.setFieldAttribute("BOOLEAN","RENDERER_TRUE","switch")
             dr!.setFieldAttribute("BOOLEAN","RENDERER_FALSE","switch")
             
-            dr!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl")
-            dr!.setFieldAttribute("TIMESTAMP","MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
         fi
         
         rs!.addItem(dr!)
