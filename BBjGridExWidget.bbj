@@ -1267,5 +1267,13 @@ rem --------------------api methods--------------------------------
     method public static BBjString GRID_TYPE_BASIC_TIMESTAMP()
         methodret "basic-timestamp"
     methodend  
+    
+    method public static BBjString GRID_TYPE_BASIC_IMAGE()
+        methodret "basic-image"
+    methodend 
+    
+    method public static BBjString GRID_TYPE_BASIC_IMAGE_FILTERABLE()
+        methodret "basic-image-filterable"
+    methodend 
 classend
 

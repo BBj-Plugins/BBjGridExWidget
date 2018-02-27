@@ -69,6 +69,24 @@ export function gw_getSupportedColumnTypes() {
         'FILTER_ENABLE_TIME': true
       }
     },
+
+    "basic-image": {
+      cellRenderer: 'BasicImagesRenderer',
+      suppressMenu:true,
+      suppressFilter: true,
+      cellRendererParams: {
+        'IMAGE_WIDTH': '25px',
+        'IMAGE_HEIGHT': '25px',
+      },
+    },
+
+    "basic-image-filterable": {
+      cellRenderer: 'BasicImagesRenderer',
+      cellRendererParams: {
+        'IMAGE_WIDTH': '25px',
+        'IMAGE_HEIGHT': '25px',
+      },
+    }
   };
 }
 
@@ -87,7 +105,10 @@ export function gw_getDefaultComponents() {
     // Dates
     'BasicDateTimesEditor': Basis.AgGridComponents.BasicDateTimesEditor,
     'BasicDateTimesRenderer': Basis.AgGridComponents.BasicDateTimesRenderer,
-    'BasicDateTimesFilter': Basis.AgGridComponents.BasicDateTimesFilter
+    'BasicDateTimesFilter': Basis.AgGridComponents.BasicDateTimesFilter,
+
+    // Images
+    'BasicImagesRenderer': Basis.AgGridComponents.BasicImagesRenderer,
   }
 }
 

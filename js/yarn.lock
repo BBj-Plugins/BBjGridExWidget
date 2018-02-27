@@ -458,8 +458,8 @@ acorn@^5.0.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.4.1.tgz#fdc58d9d17f4a4e98d102ded826a9b9759125102"
 
 "ag-grid-components@https://git.storesandbox.de/hyyan/ag-grid-components.git":
-  version "1.0.0"
-  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#950a8181302c5a86789405cf58bd282e0f99a395"
+  version "1.1.0"
+  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#a1bdaaa3d02c7943b6282a5d97237e95fb080c23"
   dependencies:
     bbj-masks "https://git.storesandbox.de/hyyan/bbj-masks.git"
     flatpickr "^4.3.2"
