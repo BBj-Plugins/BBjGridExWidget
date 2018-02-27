@@ -651,30 +651,36 @@ class public BBjGridExWidget extends BBjWidget
                 if first then
                    node!.addProperty("checkboxSelection",Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
                 fi
+                 
+                type! = ""
+                type!= cd!.getFieldAttribute(f$,"TYPE",err=*next)
+                if type! <> "" then
+                    node!.addProperty("type",type!)
                     
-                switch cd!.getFieldType(f$)
-                    case Types.INTEGER
-                    case Types.DECIMAL
-                    case Types.DOUBLE
-                    case Types.NUMERIC
-                        node!.addProperty("type","basic-number")
-                    break
-                    case Types.DATE
-                        node!.addProperty("type","basic-date")
-                    break
-                    case Types.TIMESTAMP
-                        node!.addProperty("type","basic-timestamp")
-                    break
-                    
-                    case Types.BOOLEAN
-                        node!.addProperty("type","basic-boolean")
-                    break
-                   
-                    case default
-REM                         node!.addProperty("type","agTextColumnFilter")
-                    break
-                swend
-
+                else
+                  switch cd!.getFieldType(f$)
+                      case Types.INTEGER
+                      case Types.DECIMAL
+                      case Types.DOUBLE
+                      case Types.NUMERIC
+                          node!.addProperty("type",#GRID_TYPE_BASIC_NUMBER())
+                      break
+                      case Types.DATE
+                          node!.addProperty("type",#GRID_TYPE_BASIC_DATE())
+                      break
+                      case Types.TIMESTAMP
+                          node!.addProperty("type",#GRID_TYPE_BASIC_TIMESTAMP())
+                      break
+                      
+                      case Types.BOOLEAN
+                          node!.addProperty("type",#GRID_TYPE_BASIC_BOOLEAN())
+                      break
+                     
+                      case default
+                          rem node!.addProperty("type","agTextColumnFilter")
+                      break
+                  swend
+                fi
                 
                 bgc$=""
                 bgc$=cd!.getFieldAttribute(f$,"BGCOLOR",err=*next)
@@ -1244,6 +1250,22 @@ rem --------------------api methods--------------------------------
     method public static BBjString GRID_EDITTYPE_CELL()
         methodret ""
     methodend
+    
+    
+    method public static BBjString GRID_TYPE_BASIC_NUMBER()
+        methodret "basic-number"
+    methodend 
 
+    method public static BBjString GRID_TYPE_BASIC_BOOLEAN()
+        methodret "basic-boolean"
+    methodend
+    
+    method public static BBjString GRID_TYPE_BASIC_DATE()
+        methodret "basic-date"
+    methodend
+    
+    method public static BBjString GRID_TYPE_BASIC_TIMESTAMP()
+        methodret "basic-timestamp"
+    methodend  
 classend
 
