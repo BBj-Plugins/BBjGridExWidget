@@ -660,17 +660,18 @@ class public BBjGridExWidget extends BBjWidget
                         node!.addProperty("type","basic-number")
                     break
                     case Types.DATE
-                    case Types.TIMESTAMP
                         node!.addProperty("type","basic-date")
+                    break
+                    case Types.TIMESTAMP
+                        node!.addProperty("type","basic-timestamp")
                     break
                     
                     case Types.BOOLEAN
                         node!.addProperty("type","basic-boolean")
                     break
-                    
-                    
+                   
                     case default
-                        node!.addProperty("type","agTextColumnFilter")
+REM                         node!.addProperty("type","agTextColumnFilter")
                     break
                 swend
 
@@ -746,7 +747,7 @@ class public BBjGridExWidget extends BBjWidget
         fi
 
         ch=unt
-        open (ch)"BBjGridExWidget/js/dist/bbj-masks.min.js"
+        open (ch)"BBjGridExWidget/js/dist/bbj-masks-bundle.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #HTMLView!.injectScript(script$)

@@ -19,7 +19,6 @@ export function gw_onCellEditingsEvent(e) {
     value = {value: e.value};
   }
 
-  console.log({ row: parsed , ...value })
   if (parsed) {
     
     gw_sendEvent({

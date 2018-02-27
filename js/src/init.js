@@ -11,9 +11,12 @@ export function gw_getSupportedColumnTypes() {
   return {
     "basic-boolean": {
       cellRenderer: 'BasicBooleansRenderer',
+      cellRendererParams: {
+        'RENDERER_TRUE': 'switch',
+        'RENDERER_FALSE': 'switch'
+      },
       cellEditor: 'BasicBooleansEditor',
-      filter: 'BasicBooleansFilter',
-      floatingFilter: 'BasicBooleansFilter'
+      filter: 'BasicBooleansFilter'
     },
 
     "basic-number": {
@@ -27,7 +30,45 @@ export function gw_getSupportedColumnTypes() {
       floatingFilterParams: {
         inRangeInclusive: true,
       },
-    }
+    },
+
+    "basic-date": {
+
+      cellRenderer: 'BasicDateTimesRenderer',
+      cellRendererParams: {
+        'RENDERER_MASK': '%Y/%Mz/%Dz'
+      },
+
+      cellEditor: 'BasicDateTimesEditor',
+      cellEditorParams: {
+        'EDITOR_MASK': '%Y/%Mz/%Dz'
+      },
+
+      filter: 'BasicDateTimesFilter',
+      filterParams: {
+        'FILTER_MASK': '%Y/%Mz/%Dz'
+      },
+    },
+
+    "basic-timestamp": {
+
+      cellRenderer: 'BasicDateTimesRenderer',
+      cellRendererParams: {
+        'RENDERER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz'
+      },
+
+      cellEditor: 'BasicDateTimesEditor',
+      cellEditorParams: {
+        'EDITOR_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
+        'EDITOR_ENABLE_TIME': true
+      },
+
+      filter: 'BasicDateTimesFilter',
+      filterParams: {
+        'FILTER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
+        'FILTER_ENABLE_TIME': true
+      }
+    },
   };
 }
 
@@ -41,7 +82,12 @@ export function gw_getDefaultComponents() {
 
     // Numbers
     'BasicNumbersRenderer': Basis.AgGridComponents.BasicNumbersRenderer,
-    'BasicNumbersEditor': Basis.AgGridComponents.BasicNumbersEditor
+    'BasicNumbersEditor': Basis.AgGridComponents.BasicNumbersEditor,
+
+    // Dates
+    'BasicDateTimesEditor': Basis.AgGridComponents.BasicDateTimesEditor,
+    'BasicDateTimesRenderer': Basis.AgGridComponents.BasicDateTimesRenderer,
+    'BasicDateTimesFilter': Basis.AgGridComponents.BasicDateTimesFilter
   }
 }
 
@@ -107,8 +153,6 @@ export function gw_setData(json, options) {
 
   const container = $doc.getElementById('grid');
   container.innerHTML = '';
-
-  console.log(options)
 
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;

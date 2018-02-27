@@ -20,8 +20,7 @@ grid!.setEnableFloatingFilter(1)
 
 
 grid!.setSingleClickEdit(1)
-grid!.setCellChangeFlash(1)
-grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
+REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_CHANGED(),"rowEditingChanged")
@@ -50,22 +49,24 @@ fillGrid:
        
         dr! = new DataRow()
         dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
-        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
-        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
+        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
         if i=1 then
             dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
             
             dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
-            dr!.setFieldAttribute("BOOLEAN","RENDERER_TRUE","switch")
-            dr!.setFieldAttribute("BOOLEAN","RENDERER_FALSE","switch")
             
-            dr!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl")
-            dr!.setFieldAttribute("TIMESTAMP","MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("DATE","EDITABLE","1")
+            
+            dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","EDITOR_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","EDITABLE","1")
         fi
         
         rs!.addItem(dr!)
@@ -75,19 +76,20 @@ fillGrid:
         
         dr! = new DataRow()
         dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
-        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
-        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
+        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
         rs!.addItem(dr!)
 
         i=i+1
         x=x*-i
         
-    next
+    next 
     
+    grid!.showDeveloperConsole()
     grid!.setData(rs!,"ID")
 
 return

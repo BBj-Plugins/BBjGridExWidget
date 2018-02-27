@@ -3,7 +3,6 @@
   "main": "index.js",
   "author": "Hyyan Abo Fakher",
   "license": "MIT",
-  "version": "0",
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/webpack --watch --progress",

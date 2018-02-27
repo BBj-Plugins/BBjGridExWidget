@@ -5,7 +5,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    "bbj-grid-widget": "./src/index.js",
+    // "bbj-grid-widget": "./src/index.js",
     "bbj-grid-widget.min": "./src/index.js",
   },
   devtool: "source-map",
@@ -22,7 +22,10 @@ module.exports = {
         loader: "babel-loader",
         options: {
           presets: ['@babel/preset-env'],
-          plugins: ["@babel/plugin-proposal-object-rest-spread"]
+          plugins: [
+            ["@babel/plugin-proposal-object-rest-spread"]
+          ]
+
         }
       },
       {
@@ -40,7 +43,7 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: __dirname + '/node_modules/ag-grid/dist/ag-grid.min.js', to: __dirname + '/dist/' },
       { from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js', to: __dirname + '/dist/' },
-      { from: __dirname + '/node_modules/bbj-masks/dist/bbj-masks.min.js', to: __dirname + '/dist/' },
+      { from: __dirname + '/node_modules/bbj-masks/dist/bbj-masks-bundle.min.js', to: __dirname + '/dist/' },
       { from: __dirname + '/node_modules/ag-grid-components/dist/agc-basic.min.js', to: __dirname + '/dist/' },
     ])
   ],
