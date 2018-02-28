@@ -41,12 +41,14 @@ export function gw_getSupportedColumnTypes() {
 
       cellEditor: 'BasicDateTimesEditor',
       cellEditorParams: {
-        'EDITOR_MASK': '%Y/%Mz/%Dz'
+        'EDITOR_MASK': '%Y/%Mz/%Dz',
+        'EDITOR_ALLOW_INPUT': true,
       },
 
       filter: 'BasicDateTimesFilter',
       filterParams: {
-        'FILTER_MASK': '%Y/%Mz/%Dz'
+        'FILTER_MASK': '%Y/%Mz/%Dz',
+        'FILTER_ALLOW_INPUT': true,
       },
     },
 
@@ -60,13 +62,15 @@ export function gw_getSupportedColumnTypes() {
       cellEditor: 'BasicDateTimesEditor',
       cellEditorParams: {
         'EDITOR_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
-        'EDITOR_ENABLE_TIME': true
+        'EDITOR_ENABLE_TIME': true,
+        'EDITOR_ALLOW_INPUT': true,
       },
 
       filter: 'BasicDateTimesFilter',
       filterParams: {
         'FILTER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
-        'FILTER_ENABLE_TIME': true
+        'FILTER_ENABLE_TIME': true,
+        'FILTER_ALLOW_INPUT': true,
       }
     },
 

@@ -62,6 +62,7 @@ fillGrid:
             dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
             
             dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("DATE","EDITOR_MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("DATE","EDITABLE","1")
             
             dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
