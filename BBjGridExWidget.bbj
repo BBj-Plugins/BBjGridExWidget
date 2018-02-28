@@ -562,12 +562,15 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("editType",#getEditType())
        option!.addProperty("singleClickEdit",#getSingleClickEdit())
        option!.addProperty("enableGroupEdit",#getGroupEdit())
+       option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
        
        option!.add("columnDefs",cdef!)
 
         
-       if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
-           option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
+       if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection = 0 then
+           option!.addProperty("__navigateToNextCell",1)
+       else 
+           option!.addProperty("__navigateToNextCell",0)
        fi
 
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(option!)+")")

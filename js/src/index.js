@@ -6,6 +6,7 @@
 * file that was distributed with this source code.
 */
 
+export * from './utilities.js';
 export * from './events.js';
 export * from './api.js';
 export * from './init.js';

@@ -21,3 +21,40 @@ export function gw_collapseAll() {
 export function gw_setVisibleRow(index, position) {
   gw_options.api.ensureIndexVisible(index, position);
 }
+
+export function gw_navigateToNextRow(params) {
+
+  let previousCell = params.previousCellDef;
+  let suggestedNextCell = params.nextCellDef;
+
+  const KEY_UP = 38;
+  const KEY_DOWN = 40;
+  const KEY_LEFT = 37;
+  const KEY_RIGHT = 39;
+
+  switch (params.key) {
+    case KEY_DOWN:
+      previousCell = params.previousCellDef;
+      // set selected cell on current cell + 1
+      gw_options.api.forEachNode((node) => {
+        if (previousCell.rowIndex + 1 === node.rowIndex) {
+          node.setSelected(true);
+        }
+      });
+      return suggestedNextCell;
+    case KEY_UP:
+      previousCell = params.previousCellDef;
+      // set selected cell on current cell - 1
+      gw_options.api.forEachNode((node) => {
+        if (previousCell.rowIndex - 1 === node.rowIndex) {
+          node.setSelected(true);
+        }
+      });
+      return suggestedNextCell;
+    case KEY_LEFT:
+    case KEY_RIGHT:
+      return suggestedNextCell;
+    default:
+      throw new Error("You have super strange keyboard");
+  }
+}

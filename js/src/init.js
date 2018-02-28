@@ -1,3 +1,5 @@
+import { gw_collapseAll } from "./api/rows";
+
 /*
 * This file is part of the grid project
 * (c) Basis Europe <eu@Basis.AgGridComponents.com>
@@ -76,7 +78,7 @@ export function gw_getSupportedColumnTypes() {
 
     "basic-image": {
       cellRenderer: 'BasicImagesRenderer',
-      suppressMenu:true,
+      suppressMenu: true,
       suppressFilter: true,
       cellRendererParams: {
         'IMAGE_WIDTH': '25px',
@@ -166,6 +168,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     };
   }
 
+  if (
+    gw_options.hasOwnProperty("__navigateToNextCell") &&
+    gw_options.__navigateToNextCell
+  ) {
+    options.navigateToNextCell = gw_navigateToNextRow
+  }
+
   for (let i in options.columnDefs) {
     options.columnDefs[i].cellStyle = gw_cellStyler;
   }
@@ -179,6 +188,7 @@ export function gw_setData(json, options) {
   const container = $doc.getElementById('grid');
   container.innerHTML = '';
 
+  console.log(options);
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;
 
