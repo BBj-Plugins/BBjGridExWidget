@@ -158,6 +158,7 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjNumber SingleClickEdit! = 0
     field public BBjNumber GroupEdit! = 0
     field public BBjString EditType$ = ""
+    field public BBjString EnterKeyBehavior$ = ""
 
     rem --------------------- constructors -------------------------------------
     rem /**
@@ -563,7 +564,7 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("singleClickEdit",#getSingleClickEdit())
        option!.addProperty("enableGroupEdit",#getGroupEdit())
        option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
-       
+       option!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
        option!.add("columnDefs",cdef!)
 
         
@@ -1278,5 +1279,13 @@ rem --------------------api methods--------------------------------
     method public static BBjString GRID_TYPE_BASIC_IMAGE_FILTERABLE()
         methodret "basic-image-filterable"
     methodend 
+    
+    method public static BBjString GRID_ENTER_NEXT_CELL()
+        methodret "next"
+    methodend     
+    
+    method public static BBjString GRID_ENTER_STOP_EDITING()
+        methodret "stop"
+    methodend    
 classend
 

@@ -182,7 +182,6 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   return new agGrid.Grid(container, options);
 }
 
-
 export function gw_setData(json, options) {
 
   const container = $doc.getElementById('grid');
@@ -193,4 +192,17 @@ export function gw_setData(json, options) {
 
   window.gw_options = options
   window.gw_instance = gw_init(container, '', json, options);
+
+  if (gw_options.hasOwnProperty('__enterKeyBehavior')) {
+
+    const behavior = gw_options.__enterKeyBehavior;
+
+    switch (behavior) {
+      case 'next':
+      container.addEventListener('keydown', ge_onMoveToNextCell);
+        break;
+      default:
+        break;
+    }
+  }
 }

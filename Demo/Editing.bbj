@@ -20,6 +20,7 @@ grid!.setEnableFloatingFilter(1)
 
 
 grid!.setSingleClickEdit(1)
+grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
 REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
@@ -50,8 +51,8 @@ fillGrid:
         dr! = new DataRow()
         dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
-        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
@@ -78,8 +79,8 @@ fillGrid:
         dr! = new DataRow()
         dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
-        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
