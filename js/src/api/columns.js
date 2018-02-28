@@ -7,7 +7,7 @@
 */
 
 export function gw_sizeColumnsToFit() {
-  gw_options.api.sizeColumnsToFit();
+  gw_options.columnApi.sizeColumnsToFit();
 }
 
 export function gw_setSelectedRows(rows) {
@@ -45,9 +45,9 @@ export function gw_setVisibleColumn(columnId) {
 }
 
 export function gw_setColumnWidth(columnid, width) {
-  gw_options.api.setColumnWidth(columnid, Number(width));
+  gw_options.columnApi.setColumnWidth(columnid, Number(width));
 }
-
+``
 export function gw_pinColumn(columnid, pin) {
   gw_options.columnApi.setColumnPinned(columnid, pin);
 }
