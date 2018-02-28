@@ -483,7 +483,11 @@ class public BBjGridExWidget extends BBjWidget
            option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
        fi
 
-        #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+")")
+       if #this!.getLicenseKey()>"" then
+            #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+",'"+#this!.getLicenseKey()+"')")    
+       else
+            #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+")")
+       fi
          
     methodend 
     

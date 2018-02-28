@@ -295,12 +295,12 @@ function bbj_grid_widget_get_value_renderer_boolean(data) {
   return date.value;
 }
 
-function bbj_grid_widget_set_data(json, options) {
+function bbj_grid_widget_set_data(json, options,license) {
 
   var container = $doc.getElementById('grid');
   container.innerHTML = '';
 
   $doc.bbj_grid_widget_meta = json[0].meta;
   $doc.bbj_grid_widget = options;
-  $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, '', json, options);
+  $doc.bbj_grid_widget_instance = bbj_grid_widget_init(container, license, json, options);
 }
