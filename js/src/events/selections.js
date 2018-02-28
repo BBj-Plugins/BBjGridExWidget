@@ -21,23 +21,19 @@ export function gw_onRowSelected(e) {
 
 export function gw_onSelectionChanged() {
 
-  let debounce = gw_debounce(() => {
-    let details = [];
-    gw_selectedRowsStack.forEach(function (e) {
+  let details = [];
+  gw_selectedRowsStack.forEach(function (e) {
 
-      const detail = gw_parseNodeFromEvent(e);
-      if (detail) details.push(detail);
+    const detail = gw_parseNodeFromEvent(e);
+    if (detail) details.push(detail);
+  });
+
+  if (details.length) {
+
+    gw_selectedRowsStack = [];
+    gw_sendEvent({
+      'type': 'grid-row-select',
+      'detail': [details]
     });
-
-    if (details.length) {
-
-      gw_selectedRowsStack = [];
-      gw_sendEvent({
-        'type': 'grid-row-select',
-        'detail': [details]
-      });
-    }
-  }, 350);
-
-  debounce();
+  }
 }
