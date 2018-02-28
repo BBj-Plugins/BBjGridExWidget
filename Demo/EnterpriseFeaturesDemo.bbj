@@ -1,0 +1,56 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+lic!=System.getProperty("bbjgridexwidget.license")
+
+if lic!=null() or str(lic!)="" then
+    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Demo for Enterprise Features")
+    release
+fi
+
+BBjGridExWidget.setLicenseKey(lic!)
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub fillGrid
+
+process_events
+
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+    filter! = new com.basiscomponents.db.DataRow()
+    filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
+    
+    rs! = rs!.filterBy(filter!)
+
+    grid!.setData(rs!)
+
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return
+
