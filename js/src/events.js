@@ -6,6 +6,7 @@
 * file that was distributed with this source code.
 */
 
+export * from './events/pollyfill.js';
 export * from './events/utilities.js';
 export * from './events/selections.js';
 export * from './events/editing.js';
