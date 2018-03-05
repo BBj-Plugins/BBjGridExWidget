@@ -755,15 +755,9 @@ class public BBjGridExWidget extends BBjWidget
             close (ch)        
             #HTMLView!.injectScript(script$,1)
         fi
-
-        ch=unt
-        open (ch)"BBjGridExWidget/js/dist/bbj-masks-bundle.min.js"
-        read record (ch,siz=5512000)script$
-        close (ch)
-        #HTMLView!.injectScript(script$)
         
         ch=unt
-        open (ch)"BBjGridExWidget/js/dist/agc-basic.min.js"
+        open (ch)"BBjGridExWidget/js/dist/agc-basic-bundle.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #HTMLView!.injectScript(script$)
