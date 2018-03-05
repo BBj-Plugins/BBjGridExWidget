@@ -11,6 +11,10 @@ import { gw_collapseAll } from "./api/rows";
 export function gw_getSupportedColumnTypes() {
 
   return {
+    "basic-string": {
+      cellEditor: 'agPopupTextCellEditor'
+    },
+
     "basic-boolean": {
       cellRenderer: 'BasicBooleansRenderer',
       cellRendererParams: {

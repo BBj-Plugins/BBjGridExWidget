@@ -35,25 +35,24 @@ nextEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editNext")
 previousEdit! = wnd!.addButton(306,150,40,130,25,"Previous Cell Edit")
 previousEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editPrevious")
 
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
 grid! = new BBjGridExWidget(wnd!,100,0,70,1200,800)
 grid!.setEnableFilter(1)
 grid!.setEnableFloatingFilter(1)
 
-
+rem by default not all cells are editable
+grid!.setEditable(0)
 grid!.setSingleClickEdit(1)
+REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
-grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
-grid!.setCallback(grid!.ON_GRID_ROW_EDITING_CHANGED(),"rowEditingChanged")
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped")
 
 grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STARTED(),"cellEditingStarted")
-grid!.setCallback(grid!.ON_GRID_CELL_EDITING_CHANGED(),"cellEditingChanged")
 grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STOPPED(),"cellEditingStopped")
-
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
 gosub fillGrid
 

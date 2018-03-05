@@ -155,11 +155,12 @@ class public BBjGridExWidget extends BBjWidget
     field private HashMap SelectedRows! = new HashMap()
     
     field private BBjNumber Editing! = 0
+    field public BBjNumber Editable! = 0
     field public BBjNumber SingleClickEdit! = 0
     field public BBjNumber GroupEdit! = 0
     field public BBjString EditType$ = ""
     field public BBjString EnterKeyBehavior$ = ""
-
+    
     rem --------------------- constructors -------------------------------------
     rem /**
     rem  * disabled default constructor
@@ -636,10 +637,11 @@ class public BBjGridExWidget extends BBjWidget
                     node!.addProperty("width",num(width$))
                 fi                
                 
-                editable! = 0
                 editable!= num(cd!.getFieldAttribute(f$,"EDITABLE",err=*next))
                 if editable! > 0 then
                     node!.addProperty("editable",1)
+                else
+                    node!.addProperty("editable",#Editable!)
                 fi
                 
                 if first then
@@ -671,7 +673,7 @@ class public BBjGridExWidget extends BBjWidget
                       break
                      
                       case default
-                          rem node!.addProperty("type","agTextColumnFilter")
+                          node!.addProperty("type",#GRID_TYPE_BASIC_STRING())
                       break
                   swend
                 fi
@@ -1263,6 +1265,10 @@ rem --------------------api methods--------------------------------
         methodret ""
     methodend
     
+    
+    method public static BBjString GRID_TYPE_BASIC_STRING()
+        methodret "basic-string"
+    methodend 
     
     method public static BBjString GRID_TYPE_BASIC_NUMBER()
         methodret "basic-number"
