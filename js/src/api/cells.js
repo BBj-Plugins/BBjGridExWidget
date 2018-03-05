@@ -26,7 +26,6 @@ export function gw_editNextCell(){
 };
 
 export function gw_editPreviousCell() {
-  console.log('sdfsdffd')
   gw_options.api.tabToPreviousCell();
 }
 
