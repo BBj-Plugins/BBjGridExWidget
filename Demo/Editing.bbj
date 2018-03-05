@@ -12,16 +12,37 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1200,800,"BBj Grid Ex Demo")
 
-grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+startEditingZero! = wnd!.addButton(300,10,10,200,25,"Start Editing (1 , DOUBLE)")
+startEditingZero!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingZeroFunc")
+
+startEditingDelete! = wnd!.addButton(301,220,10,200,25,"Start Editing (1, DOUBLE , 46)")
+startEditingDelete!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingDeleteFunc")
+
+startEditingFill! = wnd!.addButton(302,430,10,200,25,"Start Editing (1 , DOUBLE , '200')")
+startEditingFill!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingFillFunc")
+
+stopEditing! = wnd!.addButton(303,640,10,100,25,"Stop Editing")
+stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopEditingFunc")
+
+stopEditing! = wnd!.addButton(304,750,10,130,25,"Stop And Cancel Editing")
+stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopAndCancelEditingFunc")
+
+nextEdit! = wnd!.addButton(305,10,40,130,25,"Next Cell Edit")
+nextEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editNext")
+
+previousEdit! = wnd!.addButton(306,150,40,130,25,"Previous Cell Edit")
+previousEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editPrevious")
+
+grid! = new BBjGridExWidget(wnd!,100,0,70,1200,800)
 grid!.setEnableFilter(1)
 grid!.setEnableFloatingFilter(1)
 
 
 grid!.setSingleClickEdit(1)
-grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
-REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
+REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
+grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_CHANGED(),"rowEditingChanged")
@@ -37,7 +58,40 @@ wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 gosub fillGrid
 
 process_events
+
+
+startEditingZeroFunc:
+    grid!.stopEditing(1)
+    grid!.setStartCellEditing(1,"DOUBLE")
+return
+
+startEditingDeleteFunc:
+    grid!.stopEditing(1)
+    rem KEY CODE for DELETE key is 46
+    grid!.setStartCellEditing(1,"DOUBLE",46) 
+return
+
+startEditingFillFunc:
+    grid!.stopEditing(1)
+    grid!.setStartCellEditing(1,"DOUBLE","200")
+return
    
+stopEditingFunc:
+    grid!.stopEditing(0)
+return   
+
+stopAndCancelEditingFunc:
+    grid!.stopEditing(1)
+return
+
+editNext:
+    grid!.startNextCellEditing()
+return
+
+editPrevious:
+    grid!.startPreviousCellEditing()
+return
+
 fillGrid:
 
     rs! = new ResultSet()
@@ -57,6 +111,7 @@ fillGrid:
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
         if i=1 then
+            
             dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
             
@@ -85,6 +140,7 @@ fillGrid:
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
         rs!.addItem(dr!)
+        grid!.setStartCellEditing(1,"DOUBLE")
 
         i=i+1
         x=x*-i

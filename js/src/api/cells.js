@@ -6,6 +6,30 @@
 * file that was distributed with this source code.
 */
 
+export function gw_startEditingCell(row, colKey, key, char) {
+  
+  gw_options.api.setFocusedCell(Number(row), colKey);
+  gw_options.api.startEditingCell({
+    rowIndex: Number(row),
+    colKey: colKey,
+    keyPress: Number(key),
+    charPress: char
+  });
+}
+
+export function gw_stopEditing(cancel) {
+  gw_options.api.stopEditing(cancel);
+}
+
+export function gw_editNextCell(){
+  gw_options.api.tabToNextCell();
+};
+
+export function gw_editPreviousCell() {
+  console.log('sdfsdffd')
+  gw_options.api.tabToPreviousCell();
+}
+
 export function gw_cellStyler(params) {
 
   let cdef = params.column.colDef.cellStyleDefaults || {};

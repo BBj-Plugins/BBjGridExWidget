@@ -1099,7 +1099,39 @@ rem --------------------api methods--------------------------------
         #HTMLView!.executeScript("gw_setState("+json_state$+")")
     
     methodend
+    
+    method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
+        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
+    methodend
 
+    method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
+        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
+    methodend
+        
+    method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
+        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+    methodend
+    
+    method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
+        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+    methodend
+      
+    method public void startNextCellEditing()
+        #HTMLView!.executeScript("gw_editNextCell()")
+    methodend 
+              
+    method public void startPreviousCellEditing()
+        #HTMLView!.executeScript("gw_editPreviousCell()")
+    methodend 
+                    
+    method public void stopEditing()
+        #HTMLView!.executeScript("gw_stopEditing(0)")
+    methodend 
+                
+    method public void stopEditing(BBjNumber cancel!)
+        #HTMLView!.executeScript("gw_stopEditing("+STR(cancel!)+ ")")
+    methodend   
+             
     rem /**
     rem  * @return Hashmap with the selected row indexes and items
     rem  */
@@ -1107,7 +1139,7 @@ rem --------------------api methods--------------------------------
         methodret #SelectedRows!
     methodend
     
-        rem /**
+    rem /**
     rem  * @return the selected row 
     rem  */
     method public BBjGridExWidgetRow getSelectedRow()

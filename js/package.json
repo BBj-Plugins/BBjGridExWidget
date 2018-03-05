@@ -22,7 +22,6 @@
   "dependencies": {
     "ag-grid": "^16.0.1",
     "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git",
-    "ag-grid-enterprise": "^16.0.1",
-    "bbj-masks": "https://git.storesandbox.de/hyyan/bbj-masks.git"
+    "ag-grid-enterprise": "^16.0.1"
   }
 }
