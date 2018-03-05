@@ -47,7 +47,7 @@ export function gw_onRowEditingsEvent(e) {
   }
 }
 
-export function ge_onMoveToNextCell(e) {
+export function gw_onMoveToNextCell(e) {
 
   const key = e.which || e.keyCode;
   if (gw_editing && key === 13) { // enter

@@ -199,7 +199,7 @@ export function gw_setData(json, options) {
 
     switch (behavior) {
       case 'next':
-      container.addEventListener('keydown', ge_onMoveToNextCell);
+      container.addEventListener('keydown', gw_onMoveToNextCell);
         break;
       default:
         break;
