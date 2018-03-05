@@ -124,7 +124,7 @@ export function gw_getDefaultComponents() {
 
 export function gw_init(container, license, data, defaultOptions = {}) {
 
-  if (agGrid.LicenseManager) agGrid.LicenseManager.setLicenseKey(license);
+  if (agGrid.LicenseManager && license) agGrid.LicenseManager.setLicenseKey(license);
 
   let options = Object.assign(defaultOptions, {
 
@@ -186,7 +186,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   return new agGrid.Grid(container, options);
 }
 
-export function gw_setData(json, options) {
+export function gw_setData(json, options, license) {
 
   const container = $doc.getElementById('grid');
   container.innerHTML = '';
@@ -195,7 +195,7 @@ export function gw_setData(json, options) {
   window.AGridComponentsMetaConfig = gw_meta;
 
   window.gw_options = options
-  window.gw_instance = gw_init(container, '', json, options);
+  window.gw_instance = gw_init(container, license, json, options);
 
   if (gw_options.hasOwnProperty('__enterKeyBehavior')) {
 
@@ -203,7 +203,7 @@ export function gw_setData(json, options) {
 
     switch (behavior) {
       case 'next':
-      container.addEventListener('keydown', gw_onMoveToNextCell);
+        container.addEventListener('keydown', gw_onMoveToNextCell);
         break;
       default:
         break;
