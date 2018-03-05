@@ -155,10 +155,39 @@ class public BBjGridExWidget extends BBjWidget
     field private HashMap SelectedRows! = new HashMap()
     
     field private BBjNumber Editing! = 0
+    
+    rem Enable/disable grid editing
     field public BBjNumber Editable! = 0
+    
+    rem Enable/disable grid single click editing
     field public BBjNumber SingleClickEdit! = 0
+    
+    rem Set the default column type 
+    field public BBjString DefaultType$ = #GRID_TYPE_BASIC_STRING()
+    
+    rem enable/disable group edit 
     field public BBjNumber GroupEdit! = 0
+    
+    rem /**
+    rem  * Define the edit type
+    rem  * 
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_STRING
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_TEXT
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_NUMBER 
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_BOOLEAN 
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_DATE 
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_TIMESTAMP
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_IMAGE 
+    rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_IMAGE_FILTERABLE
+    rem  */
     field public BBjString EditType$ = ""
+    
+    rem /**
+    rem  * Enter Key Behavior
+    rem  * 
+    rem  * @see BBjGridExWidget.GRID_ENTER_NEXT_CELL
+    rem  * @see BBjGridExWidget.GRID_ENTER_STOP_EDITING
+    rem  */
     field public BBjString EnterKeyBehavior$ = ""
     
     rem --------------------- constructors -------------------------------------
@@ -382,31 +411,31 @@ class public BBjGridExWidget extends BBjWidget
         
         switch type$
             case "grid-row-select"
-                #handleGirdSelectRowEvent(detail$)
+                #handleGridSelectRowEvent(detail$)
                 break
                 
             case "grid-row-doubleclick"
-                #handleGirdDoubleClickEvent(detail$)
+                #handleGridDoubleClickEvent(detail$)
                 break
                 
             case "cellEditingStarted"
                 #Editing! = 1   
-                #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
+                #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
                 break
                              
             case "cellEditingStopped"
                 #Editing! = 0
-                #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STOPPED())
+                #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STOPPED())
                 break
                                 
             case "rowEditingStarted"
                 #Editing! = 1            
-                #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STARTED())
+                #handleGridROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STARTED())
                 break
                 
             case "rowEditingStopped"
                 #Editing! = 0            
-                #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STOPPED())
+                #handleGridROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STOPPED())
                 break                                
                                 
         swend
@@ -419,7 +448,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 
     rem  * @see BBjGridExWidgetSelectRowEvent 
     rem  */
-    method private void handleGirdSelectRowEvent(BBjString detail$)
+    method private void handleGridSelectRowEvent(BBjString detail$)
         
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -465,7 +494,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 
     rem  * @see BBjGridExWidgetDoubleClickRowEvent
     rem  */
-    method private void handleGirdDoubleClickEvent(BBjString detail$)
+    method private void handleGridDoubleClickEvent(BBjString detail$)
         
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -484,7 +513,7 @@ class public BBjGridExWidget extends BBjWidget
         #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
     methodend
     
-    method private void handleGirdCellEditingEvent(BBjString detail$ , BBjNumber type!)
+    method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
         
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -507,7 +536,7 @@ class public BBjGridExWidget extends BBjWidget
         #fireEvent(type!, event!)
     methodend
 
-    method private void handleGirdROWEditingEvent(BBjString detail$ , BBjNumber type!)
+    method private void handleGridROWEditingEvent(BBjString detail$ , BBjNumber type!)
      
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -673,7 +702,7 @@ class public BBjGridExWidget extends BBjWidget
                       break
                      
                       case default
-                          node!.addProperty("type",#GRID_TYPE_BASIC_STRING())
+                          node!.addProperty("type",#DefaultType$)
                       break
                   swend
                 fi
@@ -1084,7 +1113,7 @@ rem --------------------api methods--------------------------------
         methodret state!
     
     methodend
-
+    
     method public void setColumnsState(BBjGridExWidgetColumnState state!)
     
         json_state$ = state!.getString()
@@ -1092,34 +1121,67 @@ rem --------------------api methods--------------------------------
     
     methodend
     
+    rem /**
+    rem  * Start Cell Editing
+    rem  * 
+    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjString colId!: The column ID
+    rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
         #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
     methodend
-
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
-    methodend
-        
+   
+    rem /**
+    rem  * Start Cell Editing
+    rem  * 
+    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber char$: key chars to press on editors when editors support it
+    rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
         #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
     methodend
     
+    
+    rem /**
+    rem  * Start Cell Editing
+    rem  * 
+    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber char$: key chars to press on editors when editors support it
+    rem  * @param BBjNumber key!: key codes to press on editors when editors support it
+    rem  */    
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
         #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
     methodend
       
-    method public void startNextCellEditing()
+    rem /**
+    rem  * Start Next Cell Editing
+    rem  */
+    method public void moveToNextCell()
         #HTMLView!.executeScript("gw_editNextCell()")
     methodend 
-              
-    method public void startPreviousCellEditing()
+
+    rem /**
+    rem  * Move to previous cell
+    rem  */
+    method public void moveToPreviousCell()
         #HTMLView!.executeScript("gw_editPreviousCell()")
     methodend 
-                    
+
+    
+    rem /**
+    rem  * Stop editing and discard changes
+    rem  */
     method public void stopEditing()
         #HTMLView!.executeScript("gw_stopEditing(0)")
     methodend 
                 
+    rem /**
+    rem  * Stop Editing 
+    rem  *  
+    rem  * @param BBjNumber cancel!: 1 = discard changes , 0 = accept changes
+    rem  */
     method public void stopEditing(BBjNumber cancel!)
         #HTMLView!.executeScript("gw_stopEditing("+STR(cancel!)+ ")")
     methodend   
@@ -1220,18 +1282,30 @@ rem --------------------api methods--------------------------------
         methodret BBjAPI.ON_GRID_DOUBLE_CLICK
     methodend     
 
+    rem /**
+    rem  * @return constant value to define cell editing start event
+    rem  */ 
     method public static BBjNumber ON_GRID_CELL_EDITING_STARTED()
         methodret 5000
     methodend    
     
+    rem /**
+    rem  * @return constant value to define cell editing stop event
+    rem  */     
     method public static BBjNumber ON_GRID_CELL_EDITING_STOPPED()
         methodret 5002
     methodend
 
+    rem /**
+    rem  * @return constant value to define row editing start event
+    rem  */ 
     method public static BBjNumber ON_GRID_ROW_EDITING_STARTED()
         methodret 5003
     methodend    
     
+    rem /**
+    rem  * @return constant value to define row editing stop event
+    rem  */ 
     method public static BBjNumber ON_GRID_ROW_EDITING_STOPPED()
         methodret 5005
     methodend
@@ -1257,47 +1331,86 @@ rem --------------------api methods--------------------------------
         methodret "bottom"
     methodend 
     
+    rem /**
+    rem  * @return constant value to define editing mode "row"
+    rem  */ 
     method public static BBjString GRID_EDITTYPE_ROW()
         methodret "fullRow"
     methodend
     
+    rem /**
+    rem  * @return constant value to define editing mode "cell"
+    rem  */ 
     method public static BBjString GRID_EDITTYPE_CELL()
         methodret ""
     methodend
     
-    
+    rem /**
+    rem  * @return constant value to define string column types
+    rem  */     
     method public static BBjString GRID_TYPE_BASIC_STRING()
         methodret "basic-string"
+    methodend
+    
+    rem /**
+    rem  * @return constant value to define text column types
+    rem  */         
+    method public static BBjString GRID_TYPE_BASIC_TEXT()
+        methodret "basic-text"
     methodend 
     
+    rem /**
+    rem  * @return constant value to define number column types
+    rem  */         
     method public static BBjString GRID_TYPE_BASIC_NUMBER()
         methodret "basic-number"
     methodend 
 
+    rem /**
+    rem  * @return constant value to define boolean column types
+    rem  */     
     method public static BBjString GRID_TYPE_BASIC_BOOLEAN()
         methodret "basic-boolean"
     methodend
     
+    rem /**
+    rem  * @return constant value to define date column types
+    rem  */         
     method public static BBjString GRID_TYPE_BASIC_DATE()
         methodret "basic-date"
     methodend
     
+    rem /**
+    rem  * @return constant value to define timestamp column types
+    rem  */     
     method public static BBjString GRID_TYPE_BASIC_TIMESTAMP()
         methodret "basic-timestamp"
     methodend  
     
+    rem /**
+    rem  * @return constant value to define image column types
+    rem  */         
     method public static BBjString GRID_TYPE_BASIC_IMAGE()
         methodret "basic-image"
     methodend 
     
+    rem /**
+    rem  * @return constant value to define filterable image column types
+    rem  */         
     method public static BBjString GRID_TYPE_BASIC_IMAGE_FILTERABLE()
         methodret "basic-image-filterable"
     methodend 
     
+    rem /**
+    rem  * @return constant value to define enter key behavior (Move to next cell)
+    rem  */     
     method public static BBjString GRID_ENTER_NEXT_CELL()
         methodret "next"
     methodend     
-    
+
+    rem /**
+    rem  * @return constant value to define enter key behavior (Stop editing)
+    rem  */         
     method public static BBjString GRID_ENTER_STOP_EDITING()
         methodret "stop"
     methodend    

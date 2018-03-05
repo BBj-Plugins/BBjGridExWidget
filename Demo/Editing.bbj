@@ -44,6 +44,7 @@ grid!.setEnableFloatingFilter(1)
 
 rem by default not all cells are editable
 grid!.setEditable(0)
+grid!.setDefaultType(grid!.GRID_TYPE_BASIC_TEXT())
 grid!.setSingleClickEdit(1)
 REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
@@ -84,11 +85,11 @@ stopAndCancelEditingFunc:
 return
 
 editNext:
-    grid!.startNextCellEditing()
+    grid!.moveToNextCell()
 return
 
 editPrevious:
-    grid!.startPreviousCellEditing()
+    grid!.moveToPreviousCell()
 return
 
 fillGrid:
@@ -139,7 +140,6 @@ fillGrid:
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         
         rs!.addItem(dr!)
-        grid!.setStartCellEditing(1,"DOUBLE")
 
         i=i+1
         x=x*-i
