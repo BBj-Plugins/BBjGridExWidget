@@ -167,13 +167,6 @@ rowEditingStarted:
     print 'SHOW', "Row Editing Started  : ID = " , ev!.getRow().getId()    
 return
 
-rowEditingChanged:
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    
-    print 'SHOW', "Row Editing Changed  : ID = " , ev!.getRow().getId()
-return
-
 rowEditingStopped:
 
     ev! = BBjAPI().getLastEvent()
@@ -191,16 +184,6 @@ cellEditingStarted:
     print 'SHOW', "                     : Column     = " , ev!.getColumn()
     print 'SHOW', "                     : Cell Value = " , ev!.getValue()
     
-return 
-
-cellEditingChanged:
-
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    
-    print 'SHOW', "Cell Editing Changed : ROW ID = " , ev!.getRow().getId()
-    print 'SHOW', "                     : Column     = " , ev!.getColumn()
-    print 'SHOW', "                     : Cell Value = " , ev!.getValue()
 return 
 
 cellEditingStopped:

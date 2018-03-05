@@ -393,11 +393,6 @@ class public BBjGridExWidget extends BBjWidget
                 #Editing! = 1   
                 #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
                 break
-                
-            case "cellValueChanged"
-                #Editing! = 0
-                #handleGirdCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_CHANGED())
-                break
                              
             case "cellEditingStopped"
                 #Editing! = 0
@@ -407,11 +402,6 @@ class public BBjGridExWidget extends BBjWidget
             case "rowEditingStarted"
                 #Editing! = 1            
                 #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STARTED())
-                break
-                
-            case "rowValueChanged"
-                #Editing! = 0            
-                #handleGirdROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_CHANGED())
                 break
                 
             case "rowEditingStopped"
@@ -1233,10 +1223,6 @@ rem --------------------api methods--------------------------------
     method public static BBjNumber ON_GRID_CELL_EDITING_STARTED()
         methodret 5000
     methodend    
-
-    method public static BBjNumber ON_GRID_CELL_EDITING_CHANGED()
-        methodret 5001
-    methodend
     
     method public static BBjNumber ON_GRID_CELL_EDITING_STOPPED()
         methodret 5002
@@ -1245,10 +1231,6 @@ rem --------------------api methods--------------------------------
     method public static BBjNumber ON_GRID_ROW_EDITING_STARTED()
         methodret 5003
     methodend    
-
-    method public static BBjNumber ON_GRID_ROW_EDITING_CHANGED()
-        methodret 5004
-    methodend
     
     method public static BBjNumber ON_GRID_ROW_EDITING_STOPPED()
         methodret 5005
