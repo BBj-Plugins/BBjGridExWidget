@@ -7,7 +7,7 @@
 	"screenshots": [
 		"screenshots/main.png",
 		"screenshots/other.jpg"
-	 ]
+	 ],
 	"plugin_dependencies": [
 								{
 									"plugin_name"    : "BBjWidget",
