@@ -49,15 +49,11 @@ resize:
 return
 
 showDetails:
-    ev! = BBjAPI().getLastEvent()
-    data$= ev!.getObject().getRows().getItem(0).getData().toString()
-    rec! = DataRow.fromJson(data$)
+    rec! = grid!.getSelectedRowInfo().asDataRow()
     cust$=rec!.getFieldAsString("CUST_NUM")
 
     dsbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
     drs! = dsbc!.retrieve("SELECT  * FROM ORDER_HEADER WHERE CUST_NUM='"+cust$+"'")
     dtlgrid!.setData(drs!)
-
-    
 return    
     

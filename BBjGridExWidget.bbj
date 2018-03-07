@@ -24,6 +24,12 @@ class public BBjGridExWidgetRow
     method public String toString()
         methodret #Id!
     methodend
+    
+    method public DataRow asDataRow()
+    
+        methodret DataRow.fromJson(#Data!.toString())
+    
+    methodend
 classend
 
 class public BBjGridExWidgetSelectRowEvent
