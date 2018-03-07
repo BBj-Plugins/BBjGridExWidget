@@ -902,6 +902,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber width!: the column width
     rem  */ 
     method public void setColumnWidth(BBjString Field$, BBjNumber w!)
+        if Field$="$TREENODE" then let Field$="__node__name"
         #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",num(w!),err=*next)
         script$="bbj_grid_widget_set_column_width('" + Field$ + "'," + str(w!) + ");"        
         #executeScript(script$)

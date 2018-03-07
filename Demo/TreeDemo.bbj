@@ -21,6 +21,7 @@ grid!		.setShowGroupChildCount(1)
 grid!       .setGroupColumnLabel("Customer")
 grid!       .setSelectionMode(grid!.GRID_SELECT_ROW())
 grid!       .setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+grid!       .setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
     
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
@@ -135,7 +136,10 @@ fillGrid:
     
     grid!.setData(dt!,"CUST_NUM","PARENT_ID")
     
-    grid!.setFitToGrid(0)
+    rem set the width for the tree node column
+    grid!.setColumnWidth("$TREENODE",400)
+    
+    grid!.setColumnWidth("CUST_NUM",100)
     
     grid!.expandAll()
     
@@ -150,17 +154,34 @@ resize:
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
 return
 
-onRowSelect:
+onRowSelect: 
+
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
+    
+    sel! =  grid!.getSelectedRows()
+  
     if INFO(3,6)="5" then
-        a=msgbox(str(ev!.getSelectedRows()),0,str(ev!.getSelectedRowCount())+" ROW(S) SELECTED")
-        b=msgbox(str(ev!.getDeselectedRows()),0,str(ev!.getDeselectedRowCount())+" ROW(S) DESELECTED")
+      a = msgbox(sel!, 0, "Selection")
     else
-        print 'SHOW', ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getRows()
-        print 'SHOW', ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedIds()
-        print 'SHOW', ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getDeselectedIds()
-        print 'SHOW', grid!.getSelectedRows().size()," ROW(S) SELECTED SO FAR : ", grid!.getSelectedRows()
-        print 'SHOW', "------------------------------------------------------------------------"
+      print 'SHOW', 
+      print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
+      print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
+      print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
+      print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
+      print  "------------------------------------------------------------------------"
+    fi
+
+return      
+
+onRowDoubleclick:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    row! = ev!.getRow()
+    
+    if INFO(3,6)="5" then
+        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
+    else
+        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
     fi
 return   
