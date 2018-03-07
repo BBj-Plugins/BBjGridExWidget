@@ -86,7 +86,7 @@ return
 loadTables:
     lb_tbl!.removeAllItems()
     db$ = lb_db!.getSelectedItem()
-    sqlopen (1)db$
+    sqlopen (1,err=no_db)db$
     x$=sqltables(1)
     sqlclose(1)
     j=0
@@ -101,6 +101,10 @@ loadTables:
         i=i+1
     wend    
     lb_tbl!.selectIndex(j)
+return
+    
+no_db:
+    a=msgbox("Database "+db$+" does not exist!",16,"Error")
 return
     
 doQuery:
