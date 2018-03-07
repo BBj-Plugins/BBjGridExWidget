@@ -16,6 +16,13 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1024,768,"BBj Grid Ex Demo")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,1024,768)
 
+grid!		.setShowGroupChildCount(1)
+
+grid!       .setGroupColumnLabel("Customer")
+grid!       .setSelectionMode(grid!.GRID_SELECT_ROW())
+grid!       .setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+grid!       .setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
+    
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -28,7 +35,7 @@ fillGrid:
 
     qbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
 
-    sql$="SELECT
+    sql$="SELECT TOP 2
 :   trim(LAST_NAME)+', '+trim(FIRST_NAME)+' ('+trim(CUST_NUM)+')'  AS '__node__name',
 :   CUST_NUM        ,
 :   FIRST_NAME      ,
@@ -70,13 +77,13 @@ fillGrid:
     
     c11!.setResultSet(r!)
     c11!.setFieldValue("STATE","(other)")
-    c11!.setFieldValue("COUNTRY","US")
     
     x11 = r!.sum("SALES_YTD")
     y11 = r!.sum("SALES_LY")
     
     c11!.setFieldValue("SALES_YTD", x11)
     c11!.setFieldValue("SALES_LY", y11)
+    c11!.setFieldValue("PARENT_ID", "CUSTOMERS_MEXICO")
 
     r! = qbc!.retrieve(sql$+"WHERE COUNTRY='US'AND STATE='NM'")
     
@@ -89,9 +96,11 @@ fillGrid:
     c12!.setFieldValue("COUNTRY","US")
     c12!.setFieldValue("SALES_YTD",x12)
     c12!.setFieldValue("SALES_LY", y12)
-
+    c12!.setFieldValue("PARENT_ID", "CUSTOMERS_OUT_OF_STATE")
+    
     c1!.setFieldValue("SALES_YTD",x11+x12)
     c1!.setFieldValue("SALES_LY", y11+y12)
+    c1!.setFieldValue("PARENT_ID", "CUSTOMERS")
 
     r! = qbc!.retrieve(sql$+"WHERE COUNTRY!='US' AND STATE=''")
     
@@ -104,7 +113,9 @@ fillGrid:
 
     c2!.setFieldValue("SALES_YTD", x2)
     c2!.setFieldValue("SALES_LY", y1)
+    c2!.setFieldValue("PARENT_ID", "CUSTOMERS_GLOBAL")
     
+    grid!.addColumn("CUST_NUM","ID")
     grid!.addColumn("COMPANY","Company Name")
     grid!.addColumn("CITY","Town")
     grid!.addColumn("STATE","State")
@@ -119,10 +130,18 @@ fillGrid:
     grid!.pinColumn("SALES_YTD","right")
     grid!.pinColumn("SALES_LY","right")
     
+    grid!.setMultipleSelection(1)
+    grid!.setShowSelectionCheckbox(1)
+    grid!.setGroupSelectsChildren(1)
     
-    grid!.setData(dt!)
+    grid!.setData(dt!,"CUST_NUM","PARENT_ID")
     
-    grid!.setFitToGrid(0)
+    rem set the width for the tree node column
+    grid!.setColumnWidth("$TREENODE",400)
+    
+    grid!.setColumnWidth("CUST_NUM",100)
+    
+    grid!.expandAll()
     
 return
 
@@ -134,3 +153,35 @@ resize:
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
 return
+
+onRowSelect: 
+
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    sel! =  grid!.getSelectedRows()
+  
+    if INFO(3,6)="5" then
+      a = msgbox(sel!, 0, "Selection")
+    else
+      print 'SHOW', 
+      print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
+      print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
+      print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
+      print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
+      print  "------------------------------------------------------------------------"
+    fi
+
+return      
+
+onRowDoubleclick:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    row! = ev!.getRow()
+    
+    if INFO(3,6)="5" then
+        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
+    else
+        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
+    fi
+return   

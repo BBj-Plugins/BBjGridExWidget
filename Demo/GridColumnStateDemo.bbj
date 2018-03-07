@@ -12,10 +12,21 @@ declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 
-grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+if (info(3,6)<>"5") then
+    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
+fi
+ 
+ 
+tb_get! = wnd!.addButton(300,0,0,200,25,"GET STATE")
+tb_set! = wnd!.addButton(301,220,0,200,25,"SET STATE")
+
+tb_get!.setCallback(BBjAPI.ON_BUTTON_PUSH,"getState")
+tb_set!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setState")
 
 gosub fillGrid
 
@@ -27,34 +38,24 @@ fillGrid:
     declare SqlQueryBC sbc!
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-
+   
     grid!.addColumn("CDNUMBER","Item#")
+    grid!.addColumn("COST","COST",2)
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
     grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
-    
-    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
-    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
-    grid!.pinColumn("CDNUMBER","left")
-    grid!.setColumnWidth("CDNUMBER",120)
-    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-
+   
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(1)
     
-    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
-    rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
+    
+    rs!.setAttribute(10,"MASK","$#,##00")
+    
+    grid!.setData(rs!)
+    
+    
 
-    grid!.setEnableFilter(1)
-    grid!.setEnableFloatingFilter(1)
-    
-    grid!.setData(rs!,"CDNUMBER")
-    
-    grid!.moveColumn("PLAYINGTIME",1)
-    
-    rem grid!.setFitToGrid(1)
-    
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
 
@@ -65,7 +66,7 @@ byebye:
     
 resize:
     ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
 return
 
 onRowSelect: 
@@ -73,18 +74,8 @@ onRowSelect:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
     
-    sel! =  grid!.getSelectedRows()
-  
-    if INFO(3,6)="5" then
-      a = msgbox(sel!, 0, "Selection")
-    else
-      print 'SHOW', 
-      print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
-      print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
-      print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
-      print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
-      print  "------------------------------------------------------------------------"
-    fi
+    selectedRow! = grid!.getSelectedRow()
+    print 'SHOW',selectedRow!
 
 return    
 
@@ -99,3 +90,27 @@ onRowDoubleclick:
         print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
     fi
 return  
+
+getState:
+    state! = grid!.getColumnState()
+    state$ = str(state!.getString())
+    if INFO(3,6)="5" then
+        a=msgbox(state$,0,"GET STATE")
+        print 'SHOW', "GET STATE ",state$
+    fi
+
+return
+
+setState:
+    if state!<>null() then
+        grid!.setColumnState(state!)
+    fi
+return
+
+onWinKeypress:
+    declare auto BBjKeypressEvent key_ev!
+    key_ev! = BBjAPI().getLastEvent()
+    if key_ev!.getKeyCode() = 342 then
+       grid!.showDeveloperConsole()
+    fi
+return

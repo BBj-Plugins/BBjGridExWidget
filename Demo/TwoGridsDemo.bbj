@@ -1,0 +1,59 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use com.basiscomponents.db.DataRow
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,290)
+dtlgrid! = new BBjGridExWidget(wnd!,101,0,295,800,290)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub fillGrid
+
+process_events
+
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
+    rs! = sbc!.retrieve("SELECT  * FROM CUSTOMER")
+    grid!.setData(rs!)
+
+    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"showDetails")
+    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+    grid!.setMultipleSelection(0)    
+    
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    h=int(ev!.getHeight()/2)-2
+    grid!.setSize(ev!.getWidth(),h)
+    dtlgrid!.setSize(ev!.getWidth(),h)
+    dtlgrid!.setLocation(0,h+2)
+return
+
+showDetails:
+    rec! = grid!.getSelectedRowInfo().asDataRow()
+    cust$=rec!.getFieldAsString("CUST_NUM")
+
+    dsbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
+    drs! = dsbc!.retrieve("SELECT  * FROM ORDER_HEADER WHERE CUST_NUM='"+cust$+"'")
+    dtlgrid!.setData(drs!)
+return    
+    

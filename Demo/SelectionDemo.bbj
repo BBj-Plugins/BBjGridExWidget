@@ -12,10 +12,20 @@ declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 
-grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+st! = wnd!.addStaticText(200,20,10,200,25,"Enter rows to select, e.g. ""5,7""")
+ed! = wnd!.addEditBox(201,200,10,250,22,"")
+btn! = wnd!.addButton(202,460,10,80,22,"SELECT")
+
+cb! = wnd!.addCheckBox(203,550,10,200,22,"Use Selection Checkbox")
+
+btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectButton")
+cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
+cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
 gosub fillGrid
 
@@ -28,35 +38,14 @@ fillGrid:
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
-    grid!.addColumn("CDNUMBER","Item#")
-    grid!.addColumn("ARTIST","Artist Name")
-    grid!.addColumn("TITLE","Record Title")
-    grid!.addColumn("LABEL","Publisher")
-    grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
-    
-    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
-    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
-    grid!.pinColumn("CDNUMBER","left")
-    grid!.setColumnWidth("CDNUMBER",120)
-    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-
-    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    grid!.setMultipleSelection(1)
-    
-    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
-    rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
-
-    grid!.setEnableFilter(1)
-    grid!.setEnableFloatingFilter(1)
-    
     grid!.setData(rs!,"CDNUMBER")
-    
-    grid!.moveColumn("PLAYINGTIME",1)
-    
-    rem grid!.setFitToGrid(1)
+
     
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
+
+    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+    grid!.setMultipleSelection(1)
 
 return
 
@@ -65,7 +54,7 @@ byebye:
     
 resize:
     ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-40)
 return
 
 onRowSelect: 
@@ -86,7 +75,7 @@ onRowSelect:
       print  "------------------------------------------------------------------------"
     fi
 
-return    
+return      
 
 onRowDoubleclick:
     ev! = BBjAPI().getLastEvent()
@@ -99,3 +88,46 @@ onRowDoubleclick:
         print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
     fi
 return  
+
+
+onSelectButton:
+
+    selection! = ed!.getText()
+    sel = num(selection!,err=multiple_selection)
+    grid!.setSelectedRow(sel)
+    
+    rem now make sure this row is visible, in the middle
+    grid!.setVisibleRow(sel,grid!.GRID_ROWPOS_MIDDLE())
+return
+    
+    
+multiple_selection:
+    if pos(","=selection!)=0 then
+        a=msgbox("Enter row numbers, separated by comma!",0,"INPUT ERROR")
+        return
+    fi
+    x! = java.util.Arrays.asList(selection!.split(","))
+    
+    
+    s! = new BBjVector()
+
+    for i=0 to x!.size()
+      s!.addItem(num(x!.get(i),err=*continue))
+    next i
+    
+    grid!.setSelectedRows(s!)
+    
+    if (s!.size()>0) then
+        rem now make sure the first selected row is visible on top
+        grid!.setVisibleRow(s!.getItem(0),grid!.GRID_ROWPOS_TOP())
+    fi
+return
+
+onUseCheckbox:
+    useCheckbox = cb!.isSelected()
+    grid!.setShowSelectionCheckbox(useCheckbox)
+    
+    rem this definition requires a refresh!
+    gosub fillGrid
+
+return

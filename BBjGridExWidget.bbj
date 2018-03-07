@@ -2,8 +2,128 @@ use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
 use com.basiscomponents.db.tree.DataTree
 use java.sql.Types
+use com.google.gson.Gson
+use com.google.gson.JsonParser
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use java.lang.Integer
+use java.util.ArrayList
+use java.util.HashMap
+
 
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
+
+class public BBjGridExWidgetRow 
+    
+    field public BBjString Id!
+    field public BBjNumber ChildIndex!
+    field public BBjString ParentKey!
+    field public BBjNumber IsSelected!
+    field public JsonObject Data!
+    
+    method public String toString()
+        methodret #Id!
+    methodend
+    
+    method public DataRow asDataRow()
+    
+        methodret DataRow.fromJson(#Data!.toString())
+    
+    methodend
+classend
+
+class public BBjGridExWidgetSelectRowEvent
+    
+    field public BBjVector ChangedRows! = new BBjVector() 
+    field public BBjVector NewSelectedRows! = new BBjVector()
+    field public BBjVector NewDeselectedRows! = new BBjVector()
+    field public BBjVector SelectedRows! = new BBjVector()
+    
+    rem /**
+    rem  * Get the number of affected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber
+    rem  */
+    method public BBjNumber getRowCount()
+        
+        methodret #ChangedRows!.size()
+    methodend
+    
+    rem /**
+    rem  * Get the number of selected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber 
+    rem  */
+    method public BBjNumber getSelectedRowCount()
+        
+        methodret #NewSelectedRows!.size()
+    methodend
+
+    rem /**
+    rem  * Get the number of deselected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber 
+    rem  */
+    method public BBjNumber getDeselectedRowCount()
+        
+        methodret #NewDeselectedRows!.size()
+    methodend
+    
+    rem /**
+    rem  * Get the ids of selected rows by the last event
+    rem  * 
+    rem  * @return BBjVector 
+    rem  */
+    method public BBjVector getNewSelectedRows()
+       
+        declare BBjVector ids!
+        ids! = new BBjVector() 
+        selectedCount! = #getSelectedRowCount()
+        
+        if selectedCount! > 0 then 
+      
+            for n = 0 to selectedCount! - 1 step 1
+                ids!.add(cast(BBjGridExWidgetRow,#NewSelectedRows!.getItem(n)).getId()) 
+            next n
+        fi
+        
+        methodret ids!
+    methodend    
+    
+    rem /**
+    rem  * Get the ids of deselected rows by the last event
+    rem  * 
+    rem  * @return BBjNumber 
+    rem  */
+    method public BBjVector getNewDeselectedRows()
+        
+        declare BBjVector ids!
+        ids! = new BBjVector() 
+        deselectedCount! = #getDeselectedRowCount()
+        
+        if deselectedCount! > 0 then 
+      
+            for n = 0 to deselectedCount! - 1 step 1
+                ids!.add(cast(BBjGridExWidgetRow,#NewDeselectedRows!.getItem(n)).getId()) 
+            next n
+        fi
+        
+        methodret ids!
+    methodend
+    
+classend
+
+class public BBjGridExWidgetDoubleClickRowEvent
+    
+    field public BBjGridExWidgetRow Row!
+    
+classend
+
+class public BBjGridExWidgetColumnState
+
+    field public BBjString String$
+
+classend
 
 rem /**
 rem  * A sample BBj Widget Implementation
@@ -24,8 +144,18 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber MultipleSelection
     field private BBjNumber FitToGrid
     field private BBjNumber EnableFilter
+    field private BBjNumber EnableFloatingFilter
+    field private BBjNumber GroupChildCount
+    field private BBjNumber groupSelectsChildren
+    field private BBjNumber showSelectionCheckbox
+    field private BBjString RowNodeId$
+    field private BBjString ParentNodeId$
     
     field private DataRow ColumnDefinition!
+    
+    field private HashMap SelectedRowsMap! = new HashMap() 
+    
+    field public static BBjString LicenseKey$
 
     rem --------------------- constructors -------------------------------------
     rem /**
@@ -60,12 +190,12 @@ class public BBjGridExWidget extends BBjWidget
         if (f_init!) then
             dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=true")
             
-            html$="<html><body><div id='eventTransporterDiv' onClick='postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-fresh""></div></body></html>"
-            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$)
+            html$="<html><body><div id='eventTransporterDiv' onClick='bbj_grid_widget_post_event(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-fresh""></div></body></html>"
+            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
-            htmlview!.setCallback(BBjAPI.ON_POPUP_REQUEST,#this!,"onPopupRequest")
             htmlview!.setOpaque(0)
+            htmlview!.setText(html$)
             
             #HTMLView!=htmlview!
             if INFO(3,6)<>"5" then
@@ -80,93 +210,301 @@ class public BBjGridExWidget extends BBjWidget
         fi
     methodend
     
-    method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
-        n$=str(ev!.getEventMap())
-        if pos("payload"=n$)>0 then
-            N$=n$(pos("payload"=n$)+8)
-            i=1
-            c=0
-            while i<len(n$)+1
-              if n$(i,1)="{" then 
-                  let c=c+1
-              else
-                  if n$(i,1)="}" then 
-                      let c=c-1
-                      if c=0 then
-                          n$=n$(1,i)
-                          break
-                      fi
-                  fi
-              fi
-              i=i+1
-            wend
-        else
-            n$="{}"
-        fi
-        if pos("grid-select-row"=N$)>0 then
-            rem TODO unfold the object structure - it will change!
-            #fireEvent(#ON_GRID_SELECT_ROW(),n$)
-        fi
+    rem /**
+    rem  * Optinally Suppress the number of items in a group
+    rem  * 
+    rem  * @param BBjNumber status!: 0 to enable , 1 to disable 
+    rem  * 
+    rem  */
+    method public void setShowGroupChildCount(BBjNumber status!)
+        #GroupChildCount=status!
     methodend
-
-    method public void onPopupRequest ( BBjPopupRequestEvent ev!)
-
+    
+    rem /**
+    rem  * When true, selecting a group will have the impact of selecting all its children
+    rem  * When false, then the group is selectable independently of the child nodes
+    rem  */
+    method public void setGroupSelectsChildren(BBjNumber x!)
+    
+        rem this only makes sense with mutli-selection switched on!
+        #setMultipleSelection(1)
+    
+        #groupSelectsChildren=x!
     methodend
+    
+    rem /**
+    rem  * When true, selection box will be show on the first column
+    rem  * When false, no checkbox will be displayed
+    rem  */
+    method public void setShowSelectionCheckbox(BBjNumber x!)
+        #showSelectionCheckbox=x!
+    methodend
+    
+    rem /**
+    rem  * set the selected row
+    rem  */
+    method public void setSelectedRow(BBjNumber x!)
+        #deselectAll() 
+        script$="bbj_grid_widget_set_selected_rows([" + str(x!) + "]);"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * set the selected row indices
+    rem  */
+    method public void setSelectedRows(BBjVector x!)
+        #deselectAll() 
+        script$="bbj_grid_widget_set_selected_rows(["
+        it! = x!.iterator()
+        first=1
+        while it!.hasNext()
+            if first
+                first=0
+            else    
+                script$=script$+","
+            fi
+            script$=script$+str(it!.next())
+        wend
+        script$=script$+"]);"
         
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * select all rows
+    rem  */
+    method public void selectAll()
+        
+        script$="bbj_grid_widget_set_select_all(0);"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * select all rows
+    rem  * 
+    rem  * @param BBJNumber x!: 0 select all , 1 select all filtered 
+    rem  */
+    method public void selectAll(BBjNumber x!)
+        
+        script$="bbj_grid_widget_set_select_all(" + str(x!) + ");"        
+        #executeScript(script$)
+    methodend  
+    
+    
+    rem /**
+    rem  * deselect all rows
+    rem  */
+    method public void deselectAll()
+        
+        script$="bbj_grid_widget_set_deselect_all(0);"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * deselect all rows
+    rem  * 
+    rem  * @param BBJNumber x!: 0 deselect all , 1 deselect all filtered 
+    rem  */
+    method public void deselectAll(BBjNumber x!)
+        
+        script$="bbj_grid_widget_set_deselect_all(" + str(x!) + ");"        
+        #executeScript(script$)
+    methodend   
+    
+    rem /**
+    rem  *  Expand all groups.
+    rem  */
+    method public void expandAll()
+        
+        script$="bbj_grid_widget_set_expand_all();"        
+        #executeScript(script$)
+    methodend  
+    
+    
+    rem /**
+    rem  *  collapse all groups.
+    rem  */
+    method public void collapseAll()
+        
+        script$="bbj_grid_widget_set_collapse_all();"        
+        #executeScript(script$)
+    methodend  
+    
+    
+    rem /**
+    rem  *  set visible row
+    rem  * 
+    rem  * Ensures the row index is visible by vertically scrolling the grid. 
+    rem  * The valid values for positions are {'top', 'middle', 'bottom'}. 
+    rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
+    rem  * 
+    rem  * @param BBjNumber index!: the row index
+    rem  * @param BBjString position!: the scrolling poistion 
+    rem  * 
+    rem  * @see GRID_ROWPOS_TOP()
+    rem  * @see GRID_ROWPOS_MIDDLE()
+    rem  * @see GRID_ROWPOS_BOTTOM()
+    rem  */
+    method public void setVisibleRow(BBjNumber index! , BBjString position!)
+        
+        script$="bbj_grid_widget_set_visible_row(" + str(index!) + ",'" + str(position!) +"');"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * set visible column 
+    rem  * 
+    rem  * Ensures the column is visible, scrolling the table if needed.
+    rem  * 
+    rem  * @param BBJString columnid!: the column id 
+    rem  */
+    method public void setVisibleColumn(BBjString columnId!)
+        
+        script$="bbj_grid_widget_set_visible_column('" + columnId! + "');"        
+        #executeScript(script$)
+    methodend  
+    
+    rem /**
+    rem  * Event Handler for Native JavaScript Event (from the Grid)
+    rem  * Determines and dispatches the actual event
+    rem  * 
+    rem  * @param BBjNativeJavaScriptEvent ev!: the js event
+    rem  * 
+    rem  */
+    method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
+        
+        map! = ev!.getEventMap()
+        type$ = map!.get("type")
+        detail$ = map!.get("detail")
+        
+        switch type$
+            case "grid-row-select"
+                #handleGridSelectRowEvent(detail$)
+                break
+            case "grid-row-doubleclick"
+                #handleGridDoubleClickEvent(detail$)
+                break              
+        swend
+    methodend
+    
+    rem /**
+    rem  * Handle Rows Selections Event
+    rem  * 
+    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetSelectRowEvent
+    rem  * 
+    rem  * @see BBjGridExWidgetSelectRowEvent 
+    rem  */
+    method private void handleGridSelectRowEvent(BBjString detail$)
+        
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+            
+        rows! = new BBjVector()
+        selected! = new BBjVector()
+        deselected! = new BBjVector()
+        
+        it! = array!.iterator()
+        while (it!.hasNext()) 
+        
+                next! = it!.next().getAsJsonObject()
+                row! = new BBjGridExWidgetRow()
+                row!.setId(next!.get("id").getAsString())
+                row!.setChildIndex(next!.get("childIndex").getAsInt())
+                row!.setParentKey(next!.get("parentKey").getAsString())
+                row!.setData(next!.get("data").getAsJsonObject())
+                row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
+                
+                rows!.add( row!)
+                
+                if row!.getIsSelected() = 1 then
+                    selected!.add(row!)
+                    #SelectedRowsMap!.put(row!.getId(),row!)
+                else 
+                   deselected!.add(row!)
+                   #SelectedRowsMap!.remove(row!.getId())
+                fi
+        wend
+        
+        event! = new BBjGridExWidgetSelectRowEvent()
+        event!.setChangedRows(rows!)
+        event!.setNewSelectedRows(selected!)
+        event!.setNewDeselectedRows(deselected!)
+        event!.setSelectedRows(#getSelectedRows())
+        
+        
+        #fireEvent(#ON_GRID_SELECT_ROW(),event!)
+    methodend
+    
+    rem /**
+    rem  * Handle Doucle click event 
+    rem  * 
+    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetDoubleClickRowEvent
+    rem  * 
+    rem  * @see BBjGridExWidgetDoubleClickRowEvent
+    rem  */
+    method private void handleGridDoubleClickEvent(BBjString detail$)
+        
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+        next! = array!.iterator().next().getAsJsonObject()
+                
+        row! = new BBjGridExWidgetRow()
+        row!.setId(next!.get("id").getAsString())
+        row!.setChildIndex(next!.get("childIndex").getAsInt())
+        row!.setParentKey(next!.get("parentKey").getAsString())
+        row!.setData(next!.get("data").getAsJsonObject())
+        row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
+        
+        event! = new BBjGridExWidgetDoubleClickRowEvent()
+        event!.setRow(row!)
+        
+        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+    methodend
     
     method private void performGridDataUpdate()
         
         if (! #IsReady!) methodret
-
+        
+        gson! = new Gson()
         if (#RS! <> null()) then
             data$=#RS!.toJson()
-            cdef$=#getAgGridColumnDefinition(0)
+            cdef!= #getAgGridColumnDefinition(0)
         else
                 if (#TREE! <> null()) then
                     data$=#TREE!.toJson()
-                    cdef$=#getAgGridColumnDefinition(1)
+                    cdef!= #getAgGridColumnDefinition(1)
                 fi
         fi
        
-        opt$="{   
-:            'enableColResize': true,
-:            'enableSorting': true,
-:            'animateRows': true,
-:            'enableColResize': true,
-:            'allowContextMenuWithControlKey': false,"
+       option! = new JsonObject()
+       option!.addProperty("enableSorting",Boolean.valueOf(1))
+       option!.addProperty("animateRows",Boolean.valueOf(1))
+       option!.addProperty("enableColResize",Boolean.valueOf(1))
+       option!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
+       option!.addProperty("enableFilter",Boolean.valueOf(iff(#EnableFilter = 1 , "true" ,"false")))
+       option!.addProperty("floatingFilter",Boolean.valueOf(iff(#EnableFloatingFilter = 1 , "true" ,"false")))
+       option!.addProperty("groupSelectsChildren",Boolean.valueOf(iff(#groupSelectsChildren = 1 ,  "true" ,"false")))
+       option!.addProperty("__getRowNodeId",#RowNodeId$)
+       option!.addProperty("__getParentNodeId",#ParentNodeId$)
+       option!.add("columnDefs",cdef!)
 
-        if (#EnableFilter)
-            opt$=opt$+"'enableFilter': true,'floatingFilter': true,"
-        fi
-
-        if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
-            if (#MultipleSelection >0 )
-                opt$=opt$+"'rowSelection': 'multiple',"            
-            else
-                opt$=opt$+"'rowSelection': 'single',"
-            fi
-        fi
-
-REM ://          groupUseEntireRow: true,
-REM ://          pagination: true,
-REM ://          enableRangeSelection: true,
-REM ://          rowGroupPanelShow: 'always',
-REM ://          debug: true,            
-REM ://          paginationPageSize: 500
-
-
-
-        opt$=opt$+"'columnDefs':"+cdef$
-        opt$=opt$+"}"
         
-        #HTMLView!.executeScript("setData("+data$+","+opt$+")")
+       if (#SelectionMode = BBjGrid.GRID_SELECT_ROW) then
+           option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
+       fi
+
+       if #this!.getLicenseKey()>"" then
+            #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+",'"+#this!.getLicenseKey()+"')")    
+       else
+            #HTMLView!.executeScript("bbj_grid_widget_set_data("+data$+","+gson!.toJson(option!)+")")
+       fi
          
     methodend 
     
    
-    method private BBjString getAgGridColumnDefinition(BBjInt fGroup%)
+    method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
         
-        declare DataRow cd!
+       declare DataRow cd!
         cd! = #ColumnDefinition!
         if cd! = null() or cd!.getFieldNames().size()=0  then
             if #RS! <> null() and #RS!.size()>0 then
@@ -178,24 +516,35 @@ REM ://          paginationPageSize: 500
             fi
         fi
         
-        cdef$= "["
+        cdef! = new JsonArray()
         first=1
-        
             if fGroup%>0 then
-                cdef$=cdef$+"{""headerName"":"""+#GroupColumnLabel$+""",""field"":""__node__name"",""cellRenderer"": ""group"",""pinned"":""left""}"
+            
+                node! = new JsonObject()
+                node!.addProperty("headerName",#GroupColumnLabel$)
+                node!.addProperty("field","__node__name")
+                node!.addProperty("cellRenderer","agGroupCellRenderer")
+                node!.addProperty("pinned","left")
+                
+                cellRendererParams! = new JsonObject()
+                cellRendererParams!.addProperty("suppressCount" ,Boolean.valueOf(iff(#GroupChildCount = 1 , "false" ,"true")))
+                cellRendererParams!.addProperty("checkbox" ,Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
+                
+                node!.add("cellRendererParams",cellRendererParams!)
+                
+                cdef!.add(node!)
                 first=0
             fi
-        
+            
+            if cd! = null() or cd!.getFieldNames().size()=0  then
+                methodret cdef!
+            fi
+                
             f! = cd!.getFieldNames()
             it! = f!.iterator()
             
             while it!.hasNext()
                 f$=it!.next()
-                if first then
-                    first = 0
-                else
-                    cdef$=cdef$+","
-                fi
 
                 label$=""
                 label$=cd!.getFieldAttribute(f$,"LABEL",err=*next)
@@ -203,41 +552,49 @@ REM ://          paginationPageSize: 500
                     label$=f$
                 fi
 
-
-                cdef$=cdef$+"{""headerName"":"""+label$+""",""field"":"""+f$+""""
+                node! = new JsonObject()
+                node!.addProperty("headerName",label$)
+                node!.addProperty("field",f$)
 
                 pin$=""
                 pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
                 if pin$>"" then
-                    cdef$=cdef$+",""pinned"":"""+pin$+""""
+                    node!.addProperty("pinned",pin$)
                 fi
                 
                 width$=""
                 width$=cd!.getFieldAttribute(f$,"WIDTH",err=*next)
                 if width$>"" then
-                    cdef$=cdef$+",'width':'"+width$+"'" 
+                    node!.addProperty("width",num(width$))
                 fi                
-
+                
+                if first then
+                   node!.addProperty("checkboxSelection",Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
+                fi
+                    
                 switch cd!.getFieldType(f$)
                     case Types.INTEGER
                     case Types.DECIMAL
                     case Types.DOUBLE
-                        cdef$=cdef$+",""type"":""numericColumn"",""filter"":""number"""
+                    case Types.NUMERIC
+                        node!.addProperty("type","numericColumn")
+                        node!.addProperty("filter","agNumberColumnFilter")
                     break
                     case Types.DATE
                     case Types.TIMESTAMP
-                        cdef$=cdef$+",""filter"":""date"""
+                        node!.addProperty("filter","date")
+                    break
+                    
+                    case Types.BOOLEAN
+                        node!.addProperty("filter","boolean")
                     break
                     
                     
                     case default
-                        cdef$=cdef$+",""filter"":""text"""
+                        node!.addProperty("filter","agTextColumnFilter")
                     break
-                    
-                    
                 swend
 
-                
                 bgc$=""
                 bgc$=cd!.getFieldAttribute(f$,"BGCOLOR",err=*next)
 
@@ -250,70 +607,93 @@ REM ://          paginationPageSize: 500
 
                 f=0
                 if (bgc$>"" OR fgc$>"" or align$>"") then
-                    cdef$=cdef$+",'cellStyleDefaults': {"
+                
+                    cellStyleDefaults! = new JsonObject()
                     
                     if (fgc$>"") then
-                        cdef$=cdef$+"'FGCOLOR': '"+fgc$+"'"
+                        cellStyleDefaults!.addProperty("FGCOLOR",fgc$)
                         f=1
-                    fi
-                        
-                    if f>0 then
-                        cdef$=cdef$+","
                     fi
                     
                     if bgc$>"" then
-                        cdef$=cdef$+"'BGCOLOR': '"+bgc$+"'"
+                        cellStyleDefaults!.addProperty("BGCOLOR",bgc$)
                         f=1
                     fi
                     
-                    if f>0 then
-                        cdef$=cdef$+","
-                    fi
-
                     if align$>"" then
-                        cdef$=cdef$+"'ALIGN':'"+align$+"'"
+                        cellStyleDefaults!.addProperty("ALIGN",align$)
                         f=1 
-                    fi                       
+                    fi
                     
-                    cdef$=cdef$+"}"
+                    node!.add("cellStyleDefaults",cellStyleDefaults!)                       
                 fi
-                
-                cdef$=cdef$+"}" 
-                
-                
+
+                first = 0
+                cdef!.add(node!)
             wend
-        
-        cdef$=cdef$+"]"
-        methodret cdef$
+            
+        methodret cdef! 
     
     methodend
 
-    
-    method public void onLoad(BBjEvent ev! )
+    rem /**
+    rem  * callback method after initial load
+    rem  * does last initialization work
+    rem  * 
+    rem  * @param BBjEvent ev!: the onLoad event
+    rem  */
+    method public void onLoad(BBjEvent ev!)
 
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED); rem ' only do this once
 
         ch=unt
 
-        rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method    
-        if INFO(3,6)="5" then
-            rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
-            open (ch)"BBjGridExWidget/js/ag-grid.js"
-            read record (ch,siz=5512000)script$
-            close (ch)        
-            #HTMLView!.injectScript(script$)
-            #HTMLView!.injectScript(script$,1)
-        else
-            rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
-            open (ch)"BBjGridExWidget/js/ag-grid.min.js"
-            read record (ch,siz=5512000)script$
-            close (ch)        
-            #HTMLView!.injectScript(script$,1)
-        fi
+        if (BBjGridExWidget.getLicenseKey()>"") then
+
+              rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method    
+              if INFO(3,6)="5" then
+                  open (ch)"BBjGridExWidget/js/ag-grid-enterprise.min.js"
+                  read record (ch,siz=5512000)script$
+                  close (ch)        
+                  #HTMLView!.injectScript(script$)
+                  #HTMLView!.injectScript(script$,1)
+              else
+                  open (ch)"BBjGridExWidget/js/ag-grid-enterprise.min.js"
+                  read record (ch,siz=5512000)script$
+                  close (ch)        
+                  #HTMLView!.injectScript(script$,1)
+              fi
+         
+         else
+         
+              rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method    
+              if INFO(3,6)="5" then
+                  rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
+                  rem open (ch)"BBjGridExWidget/js/ag-grid.js"
+                  open (ch)"BBjGridExWidget/js/ag-grid.min.js"
+                  read record (ch,siz=5512000)script$
+                  close (ch)        
+                  #HTMLView!.injectScript(script$)
+                  #HTMLView!.injectScript(script$,1)
+              else
+                  rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
+                  open (ch)"BBjGridExWidget/js/ag-grid.min.js"
+                  read record (ch,siz=5512000)script$
+                  close (ch)        
+                  #HTMLView!.injectScript(script$,1)
+              fi
+        
+        endif
         
         ch=unt
+        open (ch)"BBjGridExWidget/js/bbj-masks.min.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #HTMLView!.injectScript(script$)
+                
+        ch=unt
         open (ch)"BBjGridExWidget/js/BBjGridExWidget.js"
-        read record (ch,siz=1521000)script$
+        read record (ch,siz=5512000)script$
         close (ch)
 
         if INFO(3,6)="5" then
@@ -344,31 +724,60 @@ REM ://          paginationPageSize: 500
     methodend
 
 
+    rem /**
+    rem  * experimental function that shows the developer console 
+    rem  * (only in GUI, for BUI it's a NOOP) 
+    rem  */
     method public void showDeveloperConsole()
         if (info(3,6)<>"5") then
             #executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}")
         fi
     methodend
     
-    method public void executeScript(BBjString s$)
+    
+    method private Object executeScript(BBjString s$)
         if #IsReady! then
-            #HTMLView!.executeScript(s$)
+            methodret #HTMLView!.executeScript(s$)
         else
             #backlog!.addItem(s$)
         fi
+        
+        methodret null() 
     methodend
 
     
 rem --------------------api methods--------------------------------
 
+
+    rem /**
+    rem  * set the data into the grid
+    rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
+    rem  */
     method public void setData( ResultSet rs!)
         #RS! = rs!
         #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
     methodend
+    
+    
+    rem /**
+    rem  * set the data into the grid
+    rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
+    rem  * @param BBjString: field used to generate id 
+    rem  */
+    method public void setData( ResultSet rs! ,BBjString RowNodeId$)
+    
+       #RowNodeId$ = RowNodeId$
+       #setData(rs!)
+    methodend
 
-
+    rem /**
+    rem  * set the data into the grid, to create a tree grid
+    rem  * @param DataTree: the com.basiscomponents.db.tree.DataTree with the data 
+    rem  * organized in hiearchy of ResultSets
+    rem  * @see Demo/TreeDemo.bbj https://github.com/BasisHub/BBjGridExWidget/blob/master/Demo/TreeDemo.bbj
+    rem  */
     method public void setData( DataTree tree!)
         #RS! = null()
         #TREE! = tree!
@@ -376,36 +785,82 @@ rem --------------------api methods--------------------------------
         #performGridDataUpdate()
     methodend
     
-
+    
+    method public void setData( DataTree rs! ,BBjString RowNodeId$)
+    
+       #RowNodeId$ = RowNodeId$
+       #setData(rs!)
+    methodend
+    
+    method public void setData( DataTree rs! ,BBjString RowNodeId$ , BBjString ParentNodeId$)
+    
+       #ParentNodeId$ = ParentNodeId$
+       #setData(rs! , RowNodeId$)
+    methodend
+    
+    rem /**
+    rem  * clear all columns
+    rem  */
     method public void clearColumnDefinitions()
         #ColumnDefinition! = null()
     methodend
     
+    rem /**
+    rem  * add a column to the grid
+    rem  * @param BBjString field$: the field name that matches the ResultSet
+    rem  */
     method public void addColumn(BBjString Field$)
         #addColumn(Field$,Field$,12,0)
     methodend
 
+    rem /**
+    rem  * add a column to the grid
+    rem  * @param BBjString field$: the field name that matches the ResultSet
+    rem  * @param BBjString label$: the column header
+    rem  */
     method public void addColumn(BBjString Field$, BBjString Label$)
         #addColumn(Field$,Label$, 12, 0)
     methodend
 
-    method public void addColumn(BBjString Field$, BBjString Label$, BBjInt Type%)
-        #addColumn(Field$,Label$, Type%, 0)
+    rem /**
+    rem  * add a column to the grid
+    rem  * @param BBjString field$: the field name that matches the ResultSet
+    rem  * @param BBjString label$: the column header
+    rem  * @param BBjNumber Type!: the column Type (java.sql.Types)
+    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+    rem  * 
+    rem  */
+    method public void addColumn(BBjString Field$, BBjString Label$, BBjNumber Type!)
+        #addColumn(Field$,Label$, Type!, 0)
     methodend
 
-    
-    method public void addColumn(BBjString Field$, BBjString Label$, BBjInt Type%, BBjInt Editable%)
+    rem /**
+    rem  * add a column to the grid
+    rem  * @param BBjString field$: the field name that matches the ResultSet
+    rem  * @param BBjString label$: the column header
+    rem  * @param BBjNumber Type!: the column Type (java.sql.Types)
+    rem  * @param BBjNumber Editable!: 1 = column is editable
+    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+    rem  * 
+    rem  */    
+    method public void addColumn(BBjString Field$, BBjString Label$, BBjNumber Type!, BBjNumber Editable!)
     
         if #ColumnDefinition! = null() then
             #ColumnDefinition! = new DataRow()
         fi
         
-        #ColumnDefinition!.setFieldValue(Field$,Type%,"")
+        #ColumnDefinition!.setFieldValue(Field$,Type!,null())
         #ColumnDefinition!.setFieldAttribute(Field$,"LABEL",Label$)
-        #ColumnDefinition!.setFieldAttribute(Field$,"EDITABLE",STR(Editable%))
+        #ColumnDefinition!.setFieldAttribute(Field$,"EDITABLE",STR(Editable!))
     
     methodend
     
+    rem /**
+    rem  * pin a column of the grid to the left or the right margin
+    rem  * @param BBjString field$: the field name of the column
+    rem  * @param BBjString pin$: "right" or "left" 
+    rem  * 
+    rem  */    
     method public void pinColumn(BBjString Field$, BBjString pin$)
         pin$=cvs(pin$,8)
         if pin$="left" or pin$="right" then
@@ -413,26 +868,65 @@ rem --------------------api methods--------------------------------
         else
             #ColumnDefinition!.removeFieldAttribute(Field$,"PINNED",err=*next)
         fi
+        
+        script$="bbj_grid_widget_set_column_pin('" + Field$ + "','" + pin$  + "');"        
+        #executeScript(script$)
     methodend
-    
-    method public void setFitToGrid(BBjNumber fit)
-        #FitToGrid=fit%
+
+    rem /**
+    rem  * set the grid to scroll horizontally or fit into the client area
+    rem  * @param BBjNumber fit!: 1 = fit all columns into the width
+    rem  * 
+    rem  */     
+    method public void setFitToGrid(BBjNumber fit!)
+        #FitToGrid=fit!
+        ret! = #executeScript("bbj_grid_widget_fit_grid("+str(fit!)+")")
     methodend
-    
+
+
+    rem /**
+    rem  * set the font color of a column 
+    rem  * @param BBjString Field$: the field name of the column 
+    rem  * @param BBjColor color!: the color for the column
+    rem  */ 
     method public void setColumnForeColor(BBjString Field$,BBjColor color!)
         #ColumnDefinition!.setFieldAttribute(Field$,"FGCOLOR","#"+hta(chr(color!.getRed()))+hta(chr(color!.getGreen()))+hta(chr(color!.getBlue())),err=*next)
     methodend
 
+    rem /**
+    rem  * set the background color of a column 
+    rem  * @param BBjString Field$: the field name of the column 
+    rem  * @param BBjColor color!: the color for the column
+    rem  */ 
     method public void setColumnBackColor(BBjString Field$,BBjColor color!)
         #ColumnDefinition!.setFieldAttribute(Field$,"BGCOLOR","#"+hta(chr(color!.getRed()))+hta(chr(color!.getGreen()))+hta(chr(color!.getBlue())),err=*next)
     methodend
 
-    method public void setColumnWidth(BBjString Field$, BBjInt w%)
-        #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",STR(w%),err=*next)
+    rem /**
+    rem  * set the width of a column 
+    rem  * @param BBjString Field$: the field name of the column 
+    rem  * @param BBjNumber width!: the column width
+    rem  */ 
+    method public void setColumnWidth(BBjString Field$, BBjNumber w!)
+        if Field$="$TREENODE" then let Field$="__node__name"
+        #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",num(w!),err=*next)
+        script$="bbj_grid_widget_set_column_width('" + Field$ + "'," + str(w!) + ");"        
+        #executeScript(script$)
     methodend
-    
-    method public void setColumnAlignment(BBjString Field$, BBjNumber w)
-        switch w
+
+    rem /**
+    rem  * set the alignment of a column 
+    rem  * @param BBjString Field$: the field name of the column 
+    rem  * @param BBjNumber align: the column alignment
+    rem  * 
+    rem  * valid alignments:
+    rem  * 
+    rem  * @see GRID_ALIGN_LEFT()
+    rem  * @see GRID_ALIGN_CENTER()
+    rem  * @see GRID_ALIGN_RIGHT()
+    rem  */    
+    method public void setColumnAlignment(BBjString Field$, BBjNumber align)
+        switch align
             case BBjGrid.GRID_ALIGN_LEFT
                 #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","left",err=*next)
                 break
@@ -446,27 +940,183 @@ rem --------------------api methods--------------------------------
             
     methodend
     
+    method public void moveColumn(BBjString Field$, BBjNumber toIndex!)
+        script$="bbj_grid_widget_set_column_move('" + Field$ + "'," + str(toIndex!) + ");"        
+        #executeScript(script$)
+    methodend
+
     
+    rem /**
+    rem  * set the selection mode of the grid 
+    rem  * @param BBjNumber mode: the selection mode, one of 
+    rem  * @see GRID_SELECT_ROW()
+    rem  * @see GRID_SELECT_CELL()
+    rem  */     
     method public void setSelectionMode(BBjNumber mode)
         #SelectionMode=mode
     methodend
 
+    rem /**
+    rem  * Allow selection of multiple cells or rows  
+    rem  * @param BBjNumber multiple: 1 allows multiple selection, 0 denies 
+    rem  */ 
     method public void setMultipleSelection(BBjNumber multiple)
         #MultipleSelection=multiple
     methodend
-    
-    method public void setEnableFilter(BBjNumber EnableFilter)
-        #EnableFilter=EnableFilter
-    methodend    
 
+    rem /**
+    rem  * Allow filters in the grid 
+    rem  * @param BBjNumber enable: 1 shows the auto filter widgets in the toolbar 
+    rem  */     
+    method public void setEnableFilter(BBjNumber enable)
+        #EnableFilter=enable
+    methodend  
+    
+    rem /**
+    rem  * Allow floating filters in the grid 
+    rem  * @param BBjNumber enable: 1 shows the floating filter widgets in the toolbar 
+    rem  */     
+    method public void setEnableFloatingFilter(BBjNumber enable)
+        #EnableFloatingFilter=enable
+    methodend    
+    
+    
+    rem /**
+    rem  * Perform throw columns search  
+    rem  * @param BBjNumber filter 
+    rem  */     
+    method public void setQuickFilter(BBjNumber filter)
+        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter("+ str(filter) +")")
+    methodend  
+    
+    rem /**
+    rem  * Perform throw columns search  
+    rem  * @param BBjNumber filter 
+    rem  */     
+    method public void setQuickFilter(BBjString filter!)
+        #HTMLView!.executeScript("bbj_grid_widget_set_quick_filter('"+ filter! +"')")
+    methodend  
+    
+    rem /**
+    rem  * set the label for the group column if the grid is a tree-grid
+    rem  * defaults to "Group"
+    rem  * @param label$ - the label
+    rem  */
+    method public void setGroupColumnLabel(BBjString label$)
+        #GroupColumnLabel$ = label$
+    methodend
+
+    rem /**
+    rem  * get the label for the group column if the grid is a tree-grid
+    rem  * @returns label$ 
+    rem  */
+    method public BBjString getGroupColumnLabel()
+        return #GroupColumnLabel$
+    methodend
+    
+    method public BBjGridExWidgetColumnState getColumnState()
+    
+        state! = new BBjGridExWidgetColumnState()
+        json_string$ = str(#HTMLView!.executeScript("bbj_grid_widget_get_state()"))
+        state!.setString(json_string$)
+        methodret state!
+    
+    methodend
+
+    method public void setColumnState(BBjGridExWidgetColumnState state!)
+    
+        json_state$ = state!.getString()
+        #HTMLView!.executeScript("bbj_grid_widget_set_state("+json_state$+")")
+    
+    methodend
+
+    rem /**
+    rem  * @return Hashmap with the selected row indexes and items
+    rem  */
+    method public BBjVector getSelectedRowsInfo()
+        methodret #SelectedRowsMap!
+    methodend
+    
+        rem /**
+    rem  * @return the selected row 
+    rem  */
+    method public BBjGridExWidgetRow getSelectedRowInfo()
+    
+        if #SelectedRowsMap!.size() > 0 then
+            it! = #SelectedRowsMap!.entrySet().iterator()
+            methodret it!.next().getValue()
+        fi
+        
+        methodret null()
+    methodend  
+    
+    rem /**
+    rem  * @return BBjVector with the selected row indexes and items
+    rem  */
+    method public BBjVector getSelectedRows()
+        declare BBjVector ids!
+        ids! = new BBjVector() 
+
+        it! = #SelectedRowsMap!.entrySet().iterator()
+        while it!.hasNext()
+            ids!.addItem(it!.next().getValue().getId())
+        wend
+        methodret ids!
+            
+    methodend
+    
+        rem /**
+    rem  * @return the selected row 
+    rem  */
+    method public BBjNumber getSelectedRow()
+    
+        if #SelectedRowsMap!.size() > 0 then
+            it! = #SelectedRowsMap!.entrySet().iterator()
+            methodret num(it!.next().getValue().getId())
+        fi
+        
+        methodret -1
+    methodend      
+    
+    method public void setTheme(BBjString theme$)
+        if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
+            if info(3,6)="5" then
+                s$="$doc.getElementById('grid').className='ag-theme-"+theme$+"';"
+            else
+                s$="document.getElementById('grid').className='ag-theme-"+theme$+"';"
+            fi
+            #executeScript(s$)
+        fi
+    methodend
+    
+    
+    method public BBjVector getThemes()
+        v! = new BBjVector()
+        v!.addItem("dark")
+        v!.addItem("fresh")
+        v!.addItem("blue")
+        v!.addItem("bootstrap")
+        v!.addItem("material")
+        methodret v!
+    methodend
+        
+    rem /**
+    rem  * @return constant value to define left aligned column
+    rem  */
     method public static BBjNumber GRID_ALIGN_LEFT()
         methodret BBjGrid.GRID_ALIGN_LEFT
     methodend 
-    
+
+    rem /**
+    rem  * @return constant value to define right aligned column
+    rem  */    
     method public static BBjNumber GRID_ALIGN_RIGHT()
         methodret BBjGrid.GRID_ALIGN_RIGHT
     methodend 
-    
+
+    rem /**
+    rem  * @return constant value to define centered column
+    rem  */    
     method public static BBjNumber GRID_ALIGN_CENTER()
         methodret BBjGrid.GRID_ALIGN_CENTER
     methodend 
@@ -475,8 +1125,47 @@ rem --------------------api methods--------------------------------
         methodret BBjGrid.GRID_SELECT_ROW
     methodend 
 
+    rem /**
+    rem  * @return constant value to define cell selection mode
+    rem  */
+    method public static BBjNumber GRID_SELECT_CELL()
+        methodret BBjGrid.GRID_SELECT_CELL
+    methodend 
+
+    rem /**
+    rem  * @return constant value to define row selection event
+    rem  */    
     method public static BBjNumber ON_GRID_SELECT_ROW()
         methodret BBjAPI.ON_GRID_SELECT_ROW
+    methodend 
+
+    rem /**
+    rem  * @return constant value to define row double click event
+    rem  */    
+    method public static BBjNumber ON_GRID_DOUBLE_CLICK()
+        methodret BBjAPI.ON_GRID_DOUBLE_CLICK
+    methodend     
+    
+    
+    rem /**
+    rem  * @return constant value to define row position
+    rem  */
+    method public static BBjString GRID_ROWPOS_TOP()
+        methodret "top"
+    methodend 
+    
+    rem /**
+    rem  * @return constant value to define row position
+    rem  */
+    method public static BBjString GRID_ROWPOS_MIDDLE()
+        methodret "middle"
+    methodend 
+    
+    rem /**
+    rem  * @return constant value to define row position
+    rem  */    
+    method public static BBjString GRID_ROWPOS_BOTTOM()
+        methodret "bottom"
     methodend 
 
 classend

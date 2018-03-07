@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "ag-grid-enterprise": "^12.0.2",
-    "ag-grid": "^12.0.2"
+    "ag-grid": "^12.0.2",
+    "number-format.js": "^1.1.11"
   }
 }
