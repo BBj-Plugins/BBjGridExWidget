@@ -28,9 +28,10 @@ classend
 
 class public BBjGridExWidgetSelectRowEvent
     
-    field public BBjVector Rows! = new BBjVector() 
+    field public BBjVector ChangedRows! = new BBjVector() 
+    field public BBjVector NewSelectedRows! = new BBjVector()
+    field public BBjVector NewDeselectedRows! = new BBjVector()
     field public BBjVector SelectedRows! = new BBjVector()
-    field public BBjVector DeselectedRows! = new BBjVector()
     
     rem /**
     rem  * Get the number of affected rows by the last event
@@ -39,7 +40,7 @@ class public BBjGridExWidgetSelectRowEvent
     rem  */
     method public BBjNumber getRowCount()
         
-        methodret #Rows!.size()
+        methodret #ChangedRows!.size()
     methodend
     
     rem /**
@@ -49,7 +50,7 @@ class public BBjGridExWidgetSelectRowEvent
     rem  */
     method public BBjNumber getSelectedRowCount()
         
-        methodret #SelectedRows!.size()
+        methodret #NewSelectedRows!.size()
     methodend
 
     rem /**
@@ -59,7 +60,7 @@ class public BBjGridExWidgetSelectRowEvent
     rem  */
     method public BBjNumber getDeselectedRowCount()
         
-        methodret #DeselectedRows!.size()
+        methodret #NewDeselectedRows!.size()
     methodend
     
     rem /**
@@ -67,7 +68,7 @@ class public BBjGridExWidgetSelectRowEvent
     rem  * 
     rem  * @return BBjVector 
     rem  */
-    method public BBjVector getSelectedIds()
+    method public BBjVector getNewSelectedRows()
        
         declare BBjVector ids!
         ids! = new BBjVector() 
@@ -76,7 +77,7 @@ class public BBjGridExWidgetSelectRowEvent
         if selectedCount! > 0 then 
       
             for n = 0 to selectedCount! - 1 step 1
-                ids!.add(cast(BBjGridExWidgetRow,#SelectedRows!.getItem(n)).getId()) 
+                ids!.add(cast(BBjGridExWidgetRow,#NewSelectedRows!.getItem(n)).getId()) 
             next n
         fi
         
@@ -88,7 +89,7 @@ class public BBjGridExWidgetSelectRowEvent
     rem  * 
     rem  * @return BBjNumber 
     rem  */
-    method public BBjVector getDeselectedIds()
+    method public BBjVector getNewDeselectedRows()
         
         declare BBjVector ids!
         ids! = new BBjVector() 
@@ -97,7 +98,7 @@ class public BBjGridExWidgetSelectRowEvent
         if deselectedCount! > 0 then 
       
             for n = 0 to deselectedCount! - 1 step 1
-                ids!.add(cast(BBjGridExWidgetRow,#DeselectedRows!.getItem(n)).getId()) 
+                ids!.add(cast(BBjGridExWidgetRow,#NewDeselectedRows!.getItem(n)).getId()) 
             next n
         fi
         
@@ -372,10 +373,10 @@ class public BBjGridExWidget extends BBjWidget
         
         switch type$
             case "grid-row-select"
-                #handleGirdSelectRowEvent(detail$)
+                #handleGridSelectRowEvent(detail$)
                 break
             case "grid-row-doubleclick"
-                #handleGirdDoubleClickEvent(detail$)
+                #handleGridDoubleClickEvent(detail$)
                 break              
         swend
     methodend
@@ -387,7 +388,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 
     rem  * @see BBjGridExWidgetSelectRowEvent 
     rem  */
-    method private void handleGirdSelectRowEvent(BBjString detail$)
+    method private void handleGridSelectRowEvent(BBjString detail$)
         
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -419,9 +420,11 @@ class public BBjGridExWidget extends BBjWidget
         wend
         
         event! = new BBjGridExWidgetSelectRowEvent()
-        event!.setRows(rows!)
-        event!.setSelectedRows(selected!)
-        event!.setDeselectedRows(deselected!)
+        event!.setChangedRows(rows!)
+        event!.setNewSelectedRows(selected!)
+        event!.setNewDeselectedRows(deselected!)
+        event!.setSelectedRows(#getSelectedRows())
+        
         
         #fireEvent(#ON_GRID_SELECT_ROW(),event!)
     methodend
@@ -433,7 +436,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 
     rem  * @see BBjGridExWidgetDoubleClickRowEvent
     rem  */
-    method private void handleGirdDoubleClickEvent(BBjString detail$)
+    method private void handleGridDoubleClickEvent(BBjString detail$)
         
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
