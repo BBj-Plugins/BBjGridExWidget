@@ -1,0 +1,27 @@
+{
+  "name": "bbj-grid-widget",
+  "main": "index.js",
+  "author": "Hyyan Abo Fakher",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "./node_modules/.bin/webpack --watch --progress",
+    "build": "./node_modules/.bin/webpack"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
+    "babel-loader": "8.0.0-beta.0",
+    "copy-webpack-plugin": "^4.4.1",
+    "css-loader": "^0.28.9",
+    "style-loader": "^0.20.2",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "ag-grid": "^16.0.1",
+    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git",
+    "ag-grid-enterprise": "^16.0.1"
+  }
+}

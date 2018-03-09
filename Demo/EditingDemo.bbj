@@ -1,0 +1,197 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.db.DataRow
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1200,800,"BBj Grid Ex Demo")
+
+startEditingZero! = wnd!.addButton(300,10,10,200,25,"Start Editing (1 , DOUBLE)")
+startEditingZero!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingZeroFunc")
+
+startEditingDelete! = wnd!.addButton(301,220,10,200,25,"Start Editing (1, DOUBLE , 46)")
+startEditingDelete!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingDeleteFunc")
+
+startEditingFill! = wnd!.addButton(302,430,10,200,25,"Start Editing (1 , DOUBLE , '200')")
+startEditingFill!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingFillFunc")
+
+stopEditing! = wnd!.addButton(303,640,10,100,25,"Stop Editing")
+stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopEditingFunc")
+
+stopEditing! = wnd!.addButton(304,750,10,130,25,"Stop And Cancel Editing")
+stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopAndCancelEditingFunc")
+
+nextEdit! = wnd!.addButton(305,10,40,130,25,"Next Cell Edit")
+nextEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editNext")
+
+previousEdit! = wnd!.addButton(306,150,40,130,25,"Previous Cell Edit")
+previousEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editPrevious")
+
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+grid! = new BBjGridExWidget(wnd!,100,0,70,1200,800)
+grid!.setEnableFilter(1)
+grid!.setEnableFloatingFilter(1)
+
+rem enable grid editing based on EDITABLE flag in DataRow Attribute
+grid!.setEditable(1)
+grid!.setSingleClickEdit(1)
+REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
+REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
+
+grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
+grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped")
+
+grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STARTED(),"cellEditingStarted")
+grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STOPPED(),"cellEditingStopped")
+
+gosub fillGrid
+
+process_events
+
+
+startEditingZeroFunc:
+    grid!.stopEditing(1)
+    grid!.setStartCellEditing(1,"DOUBLE")
+return
+
+startEditingDeleteFunc:
+    grid!.stopEditing(1)
+    rem KEY CODE for DELETE key is 46
+    grid!.setStartCellEditing(1,"DOUBLE",46) 
+return
+
+startEditingFillFunc:
+    grid!.stopEditing(1)
+    grid!.setStartCellEditing(1,"DOUBLE","200")
+return
+   
+stopEditingFunc:
+    grid!.stopEditing(0)
+return   
+
+stopAndCancelEditingFunc:
+    grid!.stopEditing(1)
+return
+
+editNext:
+    grid!.startNextCellEditing()
+return
+
+editPrevious:
+    grid!.startPreviousCellEditing()
+return
+
+fillGrid:
+
+    rs! = new ResultSet()
+    
+
+    i=1
+    x=2.13
+    
+    for j=1 to 2
+       
+        dr! = new DataRow()
+        dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
+        dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
+        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
+        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+        
+        if i=1 then
+            
+            dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
+            dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
+            
+            dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
+            
+            dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("DATE","EDITOR_MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("DATE","EDITABLE","1")
+            
+            dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","EDITOR_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","EDITABLE","1")
+        fi
+        
+        rs!.addItem(dr!)
+        
+        i=i+1
+        x=x*-i
+        
+        dr! = new DataRow()
+        dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
+        dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
+        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
+        dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+        
+        rs!.addItem(dr!)
+        grid!.setStartCellEditing(1,"DOUBLE")
+
+        i=i+1
+        x=x*-i
+        
+    next 
+    
+    grid!.setData(rs!,"ID")
+
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return
+
+
+rowEditingStarted:
+
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    print 'SHOW', "Row Editing Started  : ID = " , ev!.getRow().getId()    
+return
+
+rowEditingStopped:
+
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    print 'SHOW', "Row Editing Stopped  : ID = " , ev!.getRow().getId()
+return
+ 
+cellEditingStarted:
+
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    print 'SHOW', "Cell Editing Started : ROW ID     = " , ev!.getRow().getId()
+    print 'SHOW', "                     : Column     = " , ev!.getColumn()
+    print 'SHOW', "                     : Cell Value = " , ev!.getValue()
+    
+return 
+
+cellEditingStopped:
+
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    print 'SHOW', "Cell Editing Stopped : ROW ID = " , ev!.getRow().getId()
+    print 'SHOW', "                     : Column     = " , ev!.getColumn()
+    print 'SHOW', "                     : Cell Value = " , ev!.getValue()
+return 
