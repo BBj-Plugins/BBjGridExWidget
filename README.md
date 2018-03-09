@@ -1,5 +1,3 @@
-BBjGridExWidget
-===============
 
 A Grid Widget Plugin for BBj
 
