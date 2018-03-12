@@ -4,6 +4,7 @@
 	"version": "1.0",
 	"author":"Basis",
 	"licence": "MIT",
+	"bbj_dependency"     : "17.00",
 	"screenshots": [
 		"screenshots/main.png",
 		"screenshots/other.jpg"
