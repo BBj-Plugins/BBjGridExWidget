@@ -195,7 +195,6 @@ export function gw_setData(json, options, license) {
   const container = $doc.getElementById('grid');
   container.innerHTML = '';
 
-  console.log(options)
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;
 
