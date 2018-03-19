@@ -48,8 +48,8 @@ fillGrid:
         if i=1 then
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
             
-            dr!.setFieldAttribute("BOOLEAN","RENDERER_TRUE","switch")
-            dr!.setFieldAttribute("BOOLEAN","RENDERER_FALSE","switch")
+            dr!.setFieldAttribute("BOOLEAN","RENDERER_TRUE","&#x2714;")
+            dr!.setFieldAttribute("BOOLEAN","RENDERER_FALSE","&#x2718;")
             
             dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")

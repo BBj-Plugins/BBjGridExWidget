@@ -22,8 +22,8 @@ export function gw_getSupportedColumnTypes() {
     "basic-boolean": {
       cellRenderer: 'BasicBooleansRenderer',
       cellRendererParams: {
-        'RENDERER_TRUE': 'switch',
-        'RENDERER_FALSE': 'switch'
+        'RENDERER_TRUE': '&#x2714;',
+        'RENDERER_FALSE': '&#x2718;'
       },
       cellEditor: 'BasicBooleansEditor',
       filter: 'BasicBooleansFilter'
