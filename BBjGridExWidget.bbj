@@ -770,21 +770,19 @@ class public BBjGridExWidget extends BBjWidget
     method public void onLoad(BBjEvent ev!)
 
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED); rem ' only do this once
+        gridPath$ = iff(LEN(#LicenseKey$) > 0,"BBjGridExWidget/js/dist/ag-grid-enterprise.min.js","BBjGridExWidget/js/dist/ag-grid.min.js")
 
         ch=unt
 
         rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method    
         if INFO(3,6)="5" then
-            rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
-            rem open (ch)"BBjGridExWidget/js/ag-grid.js"
-            open (ch)"BBjGridExWidget/js/dist/ag-grid.min.js"
+            open (ch)gridPath$
             read record (ch,siz=5512000)script$
             close (ch)        
             #HTMLView!.injectScript(script$)
             #HTMLView!.injectScript(script$,1)
         else
-            rem open (ch)"BBjGridExWidget/js/ag-grid-enterprise.js"
-            open (ch)"BBjGridExWidget/js/dist/ag-grid.min.js"
+            open (ch)gridPath$
             read record (ch,siz=5512000)script$
             close (ch)        
             #HTMLView!.injectScript(script$,1)
