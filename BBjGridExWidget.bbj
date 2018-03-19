@@ -865,6 +865,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber: 1 to show , 0 to hide
     rem  */
     method public void setShowToolPanel(BBjNumber show!) 
+        #assertIsEnterprise("Tool Panel")
         #executeScript("gw_showToolPanel("+str(show!)+")")
     methodend
     
