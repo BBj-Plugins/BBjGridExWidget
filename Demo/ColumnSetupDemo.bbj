@@ -32,7 +32,7 @@ fillGrid:
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
-    grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
+    grid!.addColumn("PLAYINGTIME","Playing Time (min)")
     
     grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
     grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
@@ -41,7 +41,7 @@ fillGrid:
     grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
 
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    grid!.setMultipleSelection(1)
+    grid!.setMultipleSelection(0)
     
     rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
     rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")

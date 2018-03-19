@@ -12,7 +12,11 @@ export function gw_getSupportedColumnTypes() {
 
   return {
     "basic-string": {
-      cellEditor: 'agPopupTextCellEditor'
+      cellEditor: 'agTextCellEditor'
+    },
+
+    "basic-text": {
+      cellEditor: 'agLargeTextCellEditor'
     },
 
     "basic-boolean": {

@@ -44,7 +44,7 @@ fillGrid:
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
 
-    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+    grid!.setSelectionMode(grid!.GRID_SELECT_CELL())
     grid!.setMultipleSelection(1)
 
 return

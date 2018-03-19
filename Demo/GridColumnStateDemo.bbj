@@ -47,8 +47,6 @@ fillGrid:
     grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
    
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    grid!.setMultipleSelection(1)
-    
     
     rs!.setAttribute(10,"MASK","$#,##00")
     

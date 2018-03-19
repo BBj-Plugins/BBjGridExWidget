@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "ag-grid": "^16.0.1",
-    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git",
+    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#v1.5.2",
     "ag-grid-enterprise": "^16.0.1"
   }
 }
