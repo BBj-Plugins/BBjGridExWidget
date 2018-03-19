@@ -10,3 +10,4 @@ export * from './api/columns.js';
 export * from './api/rows.js';
 export * from './api/cells.js';
 export * from './api/state.js';
+export * from './api/enterprise/toolpanel.js';
