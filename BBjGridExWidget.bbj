@@ -858,8 +858,17 @@ class public BBjGridExWidget extends BBjWidget
 
     
 rem --------------------api methods--------------------------------
-
-
+    
+    rem /**
+    rem  * Show/Hide Tool Panel
+    rem  * 
+    rem  * @param BBjNumber: 1 to show , 0 to hide
+    rem  */
+    method public void setShowToolPanel(BBjNumber show!) 
+        #executeScript("gw_showToolPanel("+str(show!)+")")
+    methodend
+    
+    
     rem /**
     rem  * set the data into the grid
     rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
