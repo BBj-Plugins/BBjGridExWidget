@@ -847,6 +847,14 @@ class public BBjGridExWidget extends BBjWidget
         
         methodret null() 
     methodend
+    
+        
+    method private void assertIsEnterprise(BBjString feature$)
+        
+        if LEN(#LicenseKey$) <= 0 then
+            throw "(" + feature$ + ") is an ag-grid enterprise feature , please set a licence key to use this feature.", 256
+        fi
+    methodend
 
     
 rem --------------------api methods--------------------------------
