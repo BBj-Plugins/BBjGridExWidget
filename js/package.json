@@ -1,6 +1,6 @@
 {
   "name": "bbj-grid-widget",
-  "main": "index.js",
+  "main": "src/index.js",
   "author": "Hyyan Abo Fakher",
   "license": "MIT",
   "private": true,
