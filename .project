@@ -13,6 +13,5 @@
 	</buildSpec>
 	<natures>
 		<nature>com.basis.bdt.eclipse.core.nature</nature>
-		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>

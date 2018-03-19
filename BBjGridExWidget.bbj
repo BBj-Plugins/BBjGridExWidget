@@ -607,7 +607,7 @@ class public BBjGridExWidget extends BBjWidget
            option!.addProperty("__navigateToNextCell",0)
        fi
 
-        #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(option!)+")")
+        #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(option!)+",'" + #LicenseKey$ + "')")
          
     methodend 
     
