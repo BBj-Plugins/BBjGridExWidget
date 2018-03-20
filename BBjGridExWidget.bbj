@@ -179,6 +179,21 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjNumber GroupEdit! = 0
     
     rem /**
+    rem  * (ag-Grid-Enterprise only) Set to 1 if you want to be able to aggregate by column via the GUI. 
+    rem  */
+    field public BBjNumber EnableValue! = 0
+    
+    rem /**
+    rem  * (ag-Grid-Enterprise only) Set to 1 if you want to be able to row group by column via the GUI
+    rem  */
+    field public BBjNumber EnableRowGroup! = 0
+    
+    rem /**
+    rem  * (ag-Grid-Enterprise only) Set to 1 if you want to be able to pivot by column via the GUI. 
+    rem  */
+    field public BBjNumber EnablePivot! = 0
+    
+    rem /**
     rem  * Define the edit type
     rem  * 
     rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_STRING
@@ -572,6 +587,7 @@ class public BBjGridExWidget extends BBjWidget
         
         if (! #IsReady!) methodret
         
+        tree! = 0
         gson! = new Gson()
         if (#RS! <> null()) then
             data$=#RS!.toJson()
@@ -580,6 +596,7 @@ class public BBjGridExWidget extends BBjWidget
                 if (#TREE! <> null()) then
                     data$=#TREE!.toJson()
                     cdef!= #getAgGridColumnDefinition(1)
+                    tree! = 1
                 fi
         fi
        
@@ -598,6 +615,7 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("enableGroupEdit",#getGroupEdit())
        option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
        option!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
+       option!.addProperty("__isTree",tree!)
        option!.add("columnDefs",cdef!)
 
         
@@ -684,6 +702,27 @@ class public BBjGridExWidget extends BBjWidget
                     node!.addProperty("editable",1)
                 else
                     node!.addProperty("editable",#Editable!)
+                fi
+                
+                enableValue!= num(cd!.getFieldAttribute(f$,"ENABLE_VALUE",err=*next))
+                if editable! > 0 then
+                    node!.addProperty("enableValue",1)
+                else
+                    node!.addProperty("enableValue",#EnableValue!)
+                fi
+                
+                enableRowGroup!= num(cd!.getFieldAttribute(f$,"ENABLE_ROW_GROUP",err=*next))
+                if enableRowGroup! > 0 then
+                    node!.addProperty("enableRowGroup",1)
+                else
+                    node!.addProperty("enableRowGroup",#EnableRowGroup!)
+                fi
+                
+                enablePivot!= num(cd!.getFieldAttribute(f$,"ENABLE_PIVOT",err=*next))
+                if enablePivot! > 0 then
+                    node!.addProperty("enablePivot",1)
+                else
+                    node!.addProperty("enablePivot",#EnablePivot!)
                 fi
                 
                 if first then
