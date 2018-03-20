@@ -154,6 +154,5 @@ return
 setTheme:
     ev! = BBjAPI().getLastEvent()
     theme$ = ev!.getSelectedItem()
-    print 'SHOW' , theme$
     grid!.setTheme(theme$)
 return
