@@ -233,7 +233,7 @@ class public BBjGridExWidget extends BBjWidget
         if (f_init!) then
             dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=true")
             
-            html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-fresh""></div></body></html>"
+            html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
@@ -1286,7 +1286,7 @@ rem --------------------api methods--------------------------------
     methodend      
     
     method public void setTheme(BBjString theme$)
-        if pos(theme$="dark#fresh#blue#bootstrap#material")>0 then
+        if pos(theme$="dark#fresh#blue#bootstrap#material#balham#balham-dark")>0 then
             if info(3,6)="5" then
                 s$="$doc.getElementById('grid').className='ag-theme-"+theme$+"';"
             else
@@ -1299,6 +1299,8 @@ rem --------------------api methods--------------------------------
     
     method public BBjVector getThemes()
         v! = new BBjVector()
+        v!.addItem("balham")
+        v!.addItem("balham-dark")
         v!.addItem("dark")
         v!.addItem("fresh")
         v!.addItem("blue")

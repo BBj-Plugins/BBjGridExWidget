@@ -48,7 +48,7 @@ rem lb_db!.setEnabled(0)
 
 
 lb_theme!.insertItems(0,grid!.getThemes())
-lb_theme!.selectIndex(1)
+lb_theme!.selectIndex(0)
 
 
 process_events
@@ -154,5 +154,6 @@ return
 setTheme:
     ev! = BBjAPI().getLastEvent()
     theme$ = ev!.getSelectedItem()
+    print 'SHOW' , theme$
     grid!.setTheme(theme$)
 return
