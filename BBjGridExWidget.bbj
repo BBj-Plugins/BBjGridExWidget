@@ -240,6 +240,8 @@ class public BBjGridExWidget extends BBjWidget
     rem  */    
     field public BBjNumber FunctionsReadOnly! = 0
     
+    field public BBjString RowGroupPanelShow$ = #GRID_GroupPanel_SHOW_ONGROUPING()
+    
     rem /**
     rem  * Define the edit type
     rem  * 
@@ -672,6 +674,7 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("toolPanelSuppressColumnSelectAll",#SuppressColumnSelectAll!)
        option!.addProperty("toolPanelSuppressColumnExpandAll",#SuppressColumnExpandAll!)
        option!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
+       option!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
        
        option!.add("columnDefs",cdef!)
 
@@ -1592,5 +1595,26 @@ rem --------------------api methods--------------------------------
     method public static BBjString GRID_ENTER_STOP_EDITING()
         methodret "stop"
     methodend    
+    
+    rem /**
+    rem  * @return constant value which defines that group panel must always be shown
+    rem  */         
+    method public static BBjString GRID_GroupPanel_SHOW_VISIBLE()
+        methodret "always"
+    methodend 
+    
+    rem /**
+    rem  * @return constant value which defines that group panel must be shown only when grouping
+    rem  */                  
+    method public static BBjString GRID_GroupPanel_SHOW_ONGROUPING()
+        methodret "onlyWhenGrouping"
+    methodend   
+    
+    rem /**
+    rem  * @return constant value which defines that group panel must always be hidden
+    rem  */     
+    method public static BBjString GRID_GroupPanel_SHOW_HIDDEN()
+        methodret "never"
+    methodend            
 classend
 
