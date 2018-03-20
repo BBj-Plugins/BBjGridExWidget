@@ -194,6 +194,46 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjNumber EnablePivot! = 0
     
     rem /**
+    rem  * Suppress Row Groups section.
+    rem  */
+    field public BBjNumber SuppressRowGroups! = 0
+    
+    rem /**
+    rem  * suppress Values section
+    rem  */
+    field public BBjNumber SuppressValues! = 0
+    
+    rem /**
+    rem  * suppress Column Labels (Pivot) section.
+    rem  */
+    field public BBjNumber SuppressPivots! = 0    
+    
+    rem /**
+    rem  * suppress Pivot Mode section.
+    rem  */
+    field public BBjNumber SuppressPivotMode! = 0    
+    
+    rem /**
+    rem  * suppress Side Buttons section.
+    rem  */
+    field public BBjNumber SuppressSideButtons! = 0   
+    
+    rem /**
+    rem  * suppress Column Filter section.
+    rem  */
+    field public BBjNumber SuppressColumnFilter! = 0       
+    
+    rem /**
+    rem  * suppress Select / Un-select all widget.
+    rem  */
+    field public BBjNumber SuppressColumnSelectAll! = 0           
+    
+    rem /**
+    rem  * suppress Expand / Collapse all widget.
+    rem  */
+    field public BBjNumber SuppressColumnExpandAll! = 0   
+    
+    rem /**
     rem  * Define the edit type
     rem  * 
     rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_STRING
@@ -616,6 +656,15 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("rowSelection",iff(#MultipleSelection = 1 , "multiple" ,"single"))
        option!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
        option!.addProperty("__isTree",tree!)
+       option!.addProperty("toolPanelSuppressRowGroups",#SuppressRowGroups!)
+       option!.addProperty("toolPanelSuppressValues",#SuppressValues!)
+       option!.addProperty("toolPanelSuppressPivots",#SuppressPivots!)
+       option!.addProperty("toolPanelSuppressPivotMode",#SuppressPivotMode!)
+       option!.addProperty("toolPanelSuppressSideButtons",#SuppressSideButtons!)
+       option!.addProperty("toolPanelSuppressColumnFilter",#SuppressColumnFilter!)
+       option!.addProperty("toolPanelSuppressColumnSelectAll",#SuppressColumnSelectAll!)
+       option!.addProperty("toolPanelSuppressColumnExpandAll",#SuppressColumnExpandAll!)
+       
        option!.add("columnDefs",cdef!)
 
         
