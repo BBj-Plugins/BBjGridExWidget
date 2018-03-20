@@ -234,6 +234,13 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjNumber SuppressColumnExpandAll! = 0   
     
     rem /**
+    rem  * 1  will prevent changes to group, pivot or values through the GUI
+    rem  * This is useful if you want to show the user the group, pivot and values panel, so they can see what columns are used, 
+    rem  * but prevent them from making changes to the selection.
+    rem  */    
+    field public BBjNumber FunctionsReadOnly! = 0
+    
+    rem /**
     rem  * Define the edit type
     rem  * 
     rem  * @see BBjGridExWidget.GRID_TYPE_BASIC_STRING
@@ -664,6 +671,7 @@ class public BBjGridExWidget extends BBjWidget
        option!.addProperty("toolPanelSuppressColumnFilter",#SuppressColumnFilter!)
        option!.addProperty("toolPanelSuppressColumnSelectAll",#SuppressColumnSelectAll!)
        option!.addProperty("toolPanelSuppressColumnExpandAll",#SuppressColumnExpandAll!)
+       option!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
        
        option!.add("columnDefs",cdef!)
 
@@ -956,7 +964,6 @@ rem --------------------api methods--------------------------------
         #assertIsEnterprise("Tool Panel")
         #executeScript("gw_showToolPanel("+str(show!)+")")
     methodend
-    
     
     rem /**
     rem  * set the data into the grid
