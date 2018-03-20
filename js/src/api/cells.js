@@ -35,7 +35,7 @@ export function gw_cellStyler(params) {
 
   var meta = {};
 
-  if (params.data.meta)
+  if (params.data && params.data.meta)
     meta = params.data.meta[params.column.colId] || {};
 
   let colStyle = {};
