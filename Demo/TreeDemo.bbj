@@ -180,8 +180,8 @@ onRowDoubleclick:
     row! = ev!.getRow()
     
     if INFO(3,6)="5" then
-        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
+        a=msgbox(row!.getId() + " - " + row!.getData().get("FIRST_NAME").getAsString(),0,"DOUBLE CLICK")
     else
-        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
+        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("FIRST_NAME").getAsString()
     fi
 return   

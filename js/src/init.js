@@ -148,8 +148,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     onRowEditingStarted: gw_onRowEditingsEvent,
     onRowEditingStopped: gw_onRowEditingsEvent,
     onRowValueChanged: gw_onRowEditingsEvent,
+  });
 
-    getNodeChildDetails: (rowItem) => {
+  if (
+    gw_options.hasOwnProperty('__isTree') &&
+    true === gw_options.__isTree
+  ) {
+    options.getNodeChildDetails = rowItem => {
 
       const key = rowItem[gw_options["__getParentNodeId"]];
       if (rowItem.__node__children) {
@@ -162,14 +167,14 @@ export function gw_init(container, license, data, defaultOptions = {}) {
           key: key ? key : -1
         };
       } else {
-        return null;
+        return false;
       }
     }
-  });
+  }
 
   if (gw_options.hasOwnProperty('__getRowNodeId')) {
 
-    options.getRowNodeId = function (data) {
+    options.getRowNodeId = data => {
       let id = data[gw_options['__getRowNodeId']];
       id = id ? id : Math.random();
       return id;
@@ -184,7 +189,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   }
 
   for (let i in options.columnDefs) {
-    options.columnDefs[i].cellStyle = gw_cellStyler;
+    // options.columnDefs[i].cellStyle = gw_cellStyler;
   }
 
   return new agGrid.Grid(container, options);
@@ -198,6 +203,7 @@ export function gw_setData(json, options, license) {
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;
 
+  console.log(options)
   window.gw_options = options
   window.gw_instance = gw_init(container, license, json, options);
 

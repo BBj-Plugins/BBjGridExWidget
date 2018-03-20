@@ -23,6 +23,9 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 grid!.setShowToolPanel(1)
+grid!.setEnablePivot(1)
+grid!.setEnableValue(1)
+grid!.setEnableRowGroup(1)
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
@@ -43,7 +46,7 @@ fillGrid:
     
     rs! = rs!.filterBy(filter!)
 
-    grid!.setData(rs!)
+    grid!.setData(rs!,"CDNUMBER")
 
 return
 

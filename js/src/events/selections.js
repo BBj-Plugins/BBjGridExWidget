@@ -9,10 +9,15 @@
 export let gw_selectedRowsStack = [];
 
 export function gw_onRowDoubleClicked(e) {
-  gw_sendEvent({
-    'type': 'grid-row-doubleclick',
-    'detail': [[gw_parseNodeFromEvent(e)]]
-  });
+
+  const node = gw_parseNodeFromEvent(e);
+
+  if (node) {
+    gw_sendEvent({
+      'type': 'grid-row-doubleclick',
+      'detail': [[node]]
+    });
+  }
 }
 
 export function gw_onRowSelected(e) {
