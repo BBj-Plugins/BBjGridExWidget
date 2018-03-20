@@ -189,7 +189,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   }
 
   for (let i in options.columnDefs) {
-    // options.columnDefs[i].cellStyle = gw_cellStyler;
+    options.columnDefs[i].cellStyle = gw_cellStyler;
   }
 
   return new agGrid.Grid(container, options);
