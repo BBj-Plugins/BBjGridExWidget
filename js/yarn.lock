@@ -464,13 +464,13 @@ acorn@^5.0.0:
     bbj-masks "https://git.storesandbox.de/hyyan/bbj-masks.git#v1.3.1"
     flatpickr "^4.3.2"
 
-ag-grid-enterprise@^16.0.1:
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-16.0.1.tgz#b3621f88955340a3ca3b0446ed220046fff2c391"
+ag-grid-enterprise@17.0.0:
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-17.0.0.tgz#760769c9400f6eb60213a06ca2c5fe91c92d9fd4"
 
-ag-grid@^16.0.1:
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-16.0.1.tgz#f9b5562fff6c70b38a20ffb1708800006c902c1a"
+ag-grid@17.0.0:
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-17.0.0.tgz#b8c82268c1785e04425a3149ca53cc526376029b"
 
 ajv-keywords@^3.1.0:
   version "3.1.0"

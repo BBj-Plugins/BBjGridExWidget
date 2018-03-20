@@ -20,8 +20,8 @@
     "webpack": "^3.11.0"
   },
   "dependencies": {
-    "ag-grid": "^16.0.1",
+    "ag-grid": "17.0.0",
     "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#v1.6.0",
-    "ag-grid-enterprise": "^16.0.1"
+    "ag-grid-enterprise": "17.0.0"
   }
 }
