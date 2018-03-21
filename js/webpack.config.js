@@ -44,6 +44,7 @@ module.exports = {
       { from: __dirname + '/node_modules/ag-grid/dist/ag-grid.min.js', to: __dirname + '/dist/' },
       { from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js', to: __dirname + '/dist/' },
       { from: __dirname + '/node_modules/ag-grid-components/dist/agc-basic-bundle.min.js', to: __dirname + '/dist/' },
+      { from: __dirname + '/node_modules/jss/jss.min.js', to: __dirname + '/dist/' },
     ])
   ],
   watchOptions: {
