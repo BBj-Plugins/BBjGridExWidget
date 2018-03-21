@@ -64537,9 +64537,9 @@
         "mediaType": "text/x-web-markdown",
         "resourceType": "file"
       },
-      "Demo/json.json": {
-        "sourcePath": false,
-        "mediaType": "application/json",
+      "Demo/ConditionalStylingDemo.bbj": {
+        "sourcePath": true,
+        "mediaType": "application/vnd.businessbasic.bbj",
         "resourceType": "file"
       }
     }
