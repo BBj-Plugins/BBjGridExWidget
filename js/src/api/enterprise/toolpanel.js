@@ -10,6 +10,10 @@ export function gw_showToolPanel(show) {
   gw_options.api.showToolPanel(Boolean(show));
 }
 
+export function gw_setFunctionsReadOnly(readonly) {
+  gw_options.api.setFunctionsReadOnly(Boolean(readonly));
+}
+
 export function gw_getToolPanelClass(params) {
 
   const def = params.colDef;

@@ -54,7 +54,6 @@ fillGrid:
     
     rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
     grid!.setData(rs!,"CDNUMBER")
-
 return
 
 byebye:

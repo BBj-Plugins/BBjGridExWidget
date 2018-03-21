@@ -970,6 +970,11 @@ class public BBjGridExWidget extends BBjWidget
     
 rem --------------------api methods--------------------------------
     
+    method public void setFunctionsReadOnly(BBjNumber readonly!)
+        #FunctionsReadOnly! = readonly!
+        #executeScript("gw_setFunctionsReadOnly("+str(readonly!)+")")
+    methodend
+    
     rem /**
     rem  * Show/Hide Tool Panel
     rem  * 
