@@ -1097,7 +1097,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber filter 
     rem  */     
     method public void setQuickFilter(BBjNumber filter)
-        #HTMLView!.executeScript("gw_setQuickFilter("+ str(filter) +")")
+        #executeScript("gw_setQuickFilter("+ str(filter) +")")
     methodend  
     
     rem /**
@@ -1105,7 +1105,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber filter 
     rem  */     
     method public void setQuickFilter(BBjString filter!)
-        #HTMLView!.executeScript("gw_setQuickFilter('"+ filter! +"')")
+        #executeScript("gw_setQuickFilter('"+ filter! +"')")
     methodend  
     
     rem /**
@@ -1137,7 +1137,7 @@ rem --------------------api methods--------------------------------
     method public void setColumnsState(BBjGridExWidgetColumnState state!)
     
         json_state$ = state!.getString()
-        #HTMLView!.executeScript("gw_setState("+json_state$+")")
+        #executeScript("gw_setState("+json_state$+")")
     
     methodend
     
@@ -1148,7 +1148,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjString colId!: The column ID
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
+        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
     methodend
    
     rem /**
@@ -1159,7 +1159,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber char$: key chars to press on editors when editors support it
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
     methodend
     
     
@@ -1172,45 +1172,45 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber key!: key codes to press on editors when editors support it
     rem  */    
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
     methodend
       
     rem /**
     rem  * Start Next Cell Editing
     rem  */
     method public void moveToNextCell()
-        #HTMLView!.executeScript("gw_editNextCell()")
+        #executeScript("gw_editNextCell()")
     methodend 
 
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
+        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
     methodend
         
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
     methodend
     
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
-        #HTMLView!.executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
     methodend
       
     method public void startNextCellEditing()
-        #HTMLView!.executeScript("gw_editNextCell()")
+        #executeScript("gw_editNextCell()")
     methodend 
               
     method public void startPreviousCellEditing()
-        #HTMLView!.executeScript("gw_editPreviousCell()")
+        #executeScript("gw_editPreviousCell()")
     methodend 
                      
     method public void stopEditing(BBjNumber cancel!)
-        #HTMLView!.executeScript("gw_stopEditing("+STR(cancel!)+ ")")
+        #executeScript("gw_stopEditing("+STR(cancel!)+ ")")
     methodend   
              
     rem /**
     rem  * Move to previous cell
     rem  */
     method public void moveToPreviousCell()
-        #HTMLView!.executeScript("gw_editPreviousCell()")
+        #executeScript("gw_editPreviousCell()")
     methodend 
 
     
@@ -1218,7 +1218,7 @@ rem --------------------api methods--------------------------------
     rem  * Stop editing and discard changes
     rem  */
     method public void stopEditing()
-        #HTMLView!.executeScript("gw_stopEditing(0)")
+        #executeScript("gw_stopEditing(0)")
     methodend 
                 
     rem /**
@@ -1227,7 +1227,7 @@ rem --------------------api methods--------------------------------
     rem  * @param BBjNumber cancel!: 1 = discard changes , 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
-        #HTMLView!.executeScript("gw_stopEditing("+STR(cancel!)+ ")")
+        #executeScript("gw_stopEditing("+STR(cancel!)+ ")")
     methodend   
              
     rem /**
