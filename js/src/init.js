@@ -184,8 +184,18 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   }
 
   for (let i in options.columnDefs) {
-    options.columnDefs[i].cellStyle = gw_cellStyler;
-    options.columnDefs[i].cellClass = gw_getCellClass;
+
+    const def = options.columnDefs[i]
+    def.cellStyle = gw_cellStyler;
+    def.cellClass = gw_getCellClass;
+
+    // search for global cell class rules
+    if (
+      gw_meta.hasOwnProperty(def.field) &&
+      gw_meta[def.field].hasOwnProperty('CELL_CLASS_RULES')
+    ) {
+      def.cellClassRules = JSON.parse(gw_meta[def.field].CELL_CLASS_RULES)
+    }
   }
 
   return new agGrid.Grid(container, options);
@@ -199,6 +209,7 @@ export function gw_setData(json, options, license) {
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;
 
+  console.log(options)
   window.gw_options = options
   window.gw_instance = gw_init(container, license, json, options);
 
