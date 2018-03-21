@@ -29,10 +29,9 @@ grid!.setSuppressValues(1)
 grid!.setFunctionsReadOnly(0)
 grid!.setRowGroupPanelShow(grid!.GRID_GroupPanel_SHOW_VISIBLE())
 
-json! = new JsonObject()
-json!.addProperty("background","green")
-grid!.addStyle(".my-class",json!)
-
+musicTypeStyle! = new JsonObject()
+musicTypeStyle!.addProperty("background","gold")
+grid!.addStyle(".music-type",musicTypeStyle!)
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
@@ -52,7 +51,8 @@ fillGrid:
     filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
     
     rs! = rs!.filterBy(filter!)
-
+    
+    rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
     grid!.setData(rs!,"CDNUMBER")
 
 return

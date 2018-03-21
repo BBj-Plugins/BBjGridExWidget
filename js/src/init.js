@@ -193,6 +193,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     const def = options.columnDefs[i]
     def.cellStyle = gw_cellStyler;
     def.cellClass = gw_getCellClass;
+    def.toolPanelClass = gw_getToolPanelClass
 
     // search for global cell class rules
     if (
