@@ -65,3 +65,15 @@ export function gw_cellStyler(params) {
     return null;
   }
 }
+
+export function gw_getCellClass(params) {
+
+  const field = params.colDef.field;
+  
+  if(params.data && params.data.hasOwnProperty('meta') ) {
+    return (
+      params.data.meta.hasOwnProperty(field) &&
+      params.data.meta[field].hasOwnProperty('CELL_CLASS')
+     ) ? params.data.meta[field].CELL_CLASS : `CELL_CLASS_${field}`
+  }
+}
