@@ -729,7 +729,6 @@ class public BBjGridExWidget extends BBjWidget
                 
                 bgc$=""
                 bgc$=cd!.getFieldAttribute(f$,"BGCOLOR",err=*next)
-                print label$, bgc$
 
                 fgc$=""
                 fgc$=cd!.getFieldAttribute(f$,"FGCOLOR",err=*next)
