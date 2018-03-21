@@ -616,6 +616,7 @@ class public BBjGridExWidget extends BBjWidget
         
        declare DataRow cd!
         cd! = #ColumnDefinition!
+        
         if cd! = null() or cd!.getFieldNames().size()=0  then
             if #RS! <> null() and #RS!.size()>0 then
                 cd! = #RS!.get(0)
@@ -688,6 +689,12 @@ class public BBjGridExWidget extends BBjWidget
                 
                 if first then
                    node!.addProperty("checkboxSelection",Boolean.valueOf(iff(#showSelectionCheckbox = 1 , "true" ,"false")))
+                fi
+                 
+                cellClass$=""
+                cellClass$=cd!.getFieldAttribute(f$,"CELL_CLASS")
+                if cellClass$>"" then
+                    node!.addProperty("cellClass",cellClass$)
                 fi
                  
                 type! = ""
@@ -773,8 +780,7 @@ class public BBjGridExWidget extends BBjWidget
         gridPath$ = iff(LEN(#LicenseKey$) > 0,"BBjGridExWidget/js/dist/ag-grid-enterprise.min.js","BBjGridExWidget/js/dist/ag-grid.min.js")
 
         ch=unt
-
-        rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method    
+    
         if INFO(3,6)="5" then
             open (ch)gridPath$
             read record (ch,siz=5512000)script$
@@ -788,6 +794,12 @@ class public BBjGridExWidget extends BBjWidget
             #HTMLView!.injectScript(script$,1)
         fi
         
+        ch=unt
+        open (ch)"BBjGridExWidget/js/dist/jss.min.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #HTMLView!.injectScript(script$)
+                
         ch=unt
         open (ch)"BBjGridExWidget/js/dist/agc-basic-bundle.min.js"
         read record (ch,siz=5512000)script$
@@ -858,8 +870,36 @@ class public BBjGridExWidget extends BBjWidget
 
     
 rem --------------------api methods--------------------------------
-
-
+    
+    rem /**
+    rem  * Add Style block
+    rem  * 
+    rem  * @param selector$ : Css Selector
+    rem  * @param rules! : Css Rules object as json object
+    rem  */
+    method public void addStyle(BBjString selector$ , JsonObject rules! )
+      #executeScript("gw_setStyle('" + selector$ + "','" + rules!.toString() + "')")
+    methodend
+    
+    rem /**
+    rem  * Add Style block
+    rem  * 
+    rem  * @param selector$ : Css Selector
+    rem  * @param rules! : Css Rules object as string
+    rem  */
+    method public void addStyle(BBjString selector$ , BBjString rules! )
+      #executeScript("gw_setStyle('" + selector$ + "','" + rules! + "')")
+    methodend
+    
+    rem /**
+    rem  * Remove Style Block
+    rem  * 
+    rem  * @param selector$ : Css Selector
+    rem  */
+    method public void removeStyle(BBjString selector$)
+      #executeScript("gw_removeStyle('" + selector$ + "')")
+    methodend
+    
     rem /**
     rem  * set the data into the grid
     rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data

@@ -1,6 +1,7 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
+use com.google.gson.JsonObject
 
 ? 'HIDE'
 
@@ -22,6 +23,11 @@ BBjGridExWidget.setLicenseKey(lic!)
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+json! = new JsonObject()
+json!.addProperty("background","green")
+grid!.addStyle(".my-class",json!)
+
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
