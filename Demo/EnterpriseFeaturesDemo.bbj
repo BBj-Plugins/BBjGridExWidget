@@ -1,6 +1,7 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
+use com.google.gson.JsonObject
 
 ? 'HIDE'
 
@@ -27,6 +28,11 @@ grid!.setEnableRowGroup(1)
 grid!.setSuppressValues(1)
 grid!.setFunctionsReadOnly(0)
 grid!.setRowGroupPanelShow(grid!.GRID_GroupPanel_SHOW_VISIBLE())
+
+json! = new JsonObject()
+json!.addProperty("background","green")
+grid!.addStyle(".my-class",json!)
+
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
