@@ -25,11 +25,6 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 
 json! = new JsonObject()
-json!.addProperty("background","red ")
-grid!.addStyle(".my-class",json!)
-grid!.removeStyle(".my-class")
-
-json! = new JsonObject()
 json!.addProperty("background","green")
 grid!.addStyle(".my-class",json!)
 
