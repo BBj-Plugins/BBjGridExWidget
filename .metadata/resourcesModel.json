@@ -64537,11 +64537,6 @@
         "mediaType": "text/x-web-markdown",
         "resourceType": "file"
       },
-      "Demo/doo.bbj": {
-        "sourcePath": true,
-        "mediaType": "application/vnd.businessbasic.bbj",
-        "resourceType": "file"
-      },
       "Demo/json.json": {
         "sourcePath": false,
         "mediaType": "application/json",

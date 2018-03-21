@@ -43,11 +43,14 @@ fillGrid:
     
     rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
     
-    REM      Another way to set styles
+    REM      Another way to set styles for cells
     cellStyle! = new JsonObject()
-    cellStyle!.addProperty("background","green")
-    cellStyle!.addProperty("color","white")
-    cellStyle!.addProperty("border","3px solid black")
+    cellStyle!.addProperty("background","yellow")
+    cellStyle!.addProperty("color","black")
+    cellStyle!.addProperty("text-align","center")
+    cellStyle!.addProperty("font-weight","bolder")
+    cellStyle!.addProperty("font-style","italic")
+    cellStyle!.addProperty("outline","3px solid green")
     
     grid!.addStyle(".my-class" , cellStyle!)
     rs!.getItem(1).setFieldAttribute("LABEL","CELL_CLASS","my-class")
