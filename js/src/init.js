@@ -185,6 +185,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
   for (let i in options.columnDefs) {
     options.columnDefs[i].cellStyle = gw_cellStyler;
+    options.columnDefs[i].cellClass = gw_getCellClass;
   }
 
   return new agGrid.Grid(container, options);
