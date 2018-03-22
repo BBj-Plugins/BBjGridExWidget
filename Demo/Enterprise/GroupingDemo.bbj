@@ -1,0 +1,85 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+use com.google.gson.JsonObject
+
+REM ? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+lic!=System.getProperty("bbjgridexwidget.license")
+
+if lic!=null() or str(lic!)="" then
+    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Demo for Enterprise Features")
+    release
+fi
+
+BBjGridExWidget.setLicenseKey(lic!)
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+cb! = wnd!.addCheckBox(203,12,10,200,22,"Enable Read Only Mode")
+cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
+cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub setupGrid
+
+process_events
+
+   
+setupGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+    filter! = new com.basiscomponents.db.DataRow()
+    filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
+    
+    rs! = rs!.filterBy(filter!)
+        
+    musicTypeIndex! = rs!.getColumnIndex("MUSICTYPE")     
+    artistIndex! = rs!.getColumnIndex("ARTIST")
+     
+    rs!.setAttribute(musicTypeIndex!,"ROW_GROUP","1")
+REM     rs!.setAttribute(musicTypeIndex!,"SHOW_ROW_GROUP","Gener")
+    rs!.setAttribute(musicTypeIndex!,"ROW_GROUP_INDEX","0")
+    
+    rs!.setAttribute(artistIndex!,"ROW_GROUP","1")
+REM     rs!.setAttribute(artistIndex!,"SHOW_ROW_GROUP","Artist")
+    rs!.setAttribute(artistIndex!,"ROW_GROUP_INDEX","1")
+    
+    rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
+    
+    grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+    grid!.setShowToolPanel(1)
+    grid!.setEnableRowGroup(1)
+    grid!.setRowGroupPanelShow(grid!.GRID_GroupPanel_SHOW_VISIBLE())
+    grid!.setAutoGroupHeaderName("My Custom Group")
+    grid!.setShowSelectionCheckbox(1)
+    
+    rem set to true to have each group in its own column separate column
+    grid!.setGroupMultiAutoColumn(0)
+    
+    
+    grid!.setData(rs!,"CDNUMBER")
+return
+
+onUseCheckbox:
+    useCheckbox! = cb!.isSelected()
+    grid!.setFunctionsReadOnly(useCheckbox!)
+return
+    
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return
+

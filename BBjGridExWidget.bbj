@@ -1270,7 +1270,8 @@ class public BBjGridExWidget extends BBjWidget
         if (! #IsReady!)
             methodret
         FI
-
+        
+        tree! = 0
         gson! = new Gson()
 
         if (#RS! <> null()) then
@@ -1279,6 +1280,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             if (#TREE! <> null()) then
                 data$=#TREE!.toJson()
+                tree! = 1
                 cdef!= #getAgGridColumnDefinition(1)
             FI
         FI
@@ -1316,6 +1318,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
+        options!.addProperty("__isTree",tree!)
         
         options!.add("columnDefs",cdef!)
 

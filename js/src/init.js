@@ -188,18 +188,14 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
   for (let i in options.columnDefs) {
 
-    const def = options.columnDefs[i]
+    const def = options.columnDefs[i];
+    const field = def.field;
+
     def.cellStyle = gw_cellStyler;
     def.cellClass = gw_getCellClass;
-    def.toolPanelClass = gw_getToolPanelClass
+    def.toolPanelClass = gw_getToolPanelClass;
 
-    // search for global cell class rules
-    if (
-      gw_meta.hasOwnProperty(def.field) &&
-      gw_meta[def.field].hasOwnProperty('CELL_CLASS_RULES')
-    ) {
-      def.cellClassRules = JSON.parse(gw_meta[def.field].CELL_CLASS_RULES)
-    }
+    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null , true);
   }
 
   return new agGrid.Grid(container, options);

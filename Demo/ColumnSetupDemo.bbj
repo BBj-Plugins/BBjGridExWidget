@@ -3,7 +3,7 @@ use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
 
-REM ? 'HIDE'
+? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
 declare auto BBjListButton lb_db!

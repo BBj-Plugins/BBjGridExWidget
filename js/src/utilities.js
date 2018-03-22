@@ -21,3 +21,25 @@ export function gw_debounce(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 };
+
+export function gw_getGlobalMeta(field, value, fallback = null , json = false) {
+
+  if (
+    gw_meta && gw_meta.hasOwnProperty(field) &&
+    gw_meta[field].hasOwnProperty(value)
+  ) {
+
+    if (json) {
+      try {
+        return JSON.parse(gw_meta[field][value]);
+      } catch(e) {
+        console.warn(`BBjGridExWidget : Faild to parse [${field}][${value}] as JSON`)
+        return fallback;
+      }
+    } else {
+      return gw_meta[field][value];
+    }
+  }
+
+  return fallback;
+}
