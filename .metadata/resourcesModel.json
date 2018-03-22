@@ -64473,11 +64473,6 @@
         "mediaType": "application/javascript",
         "resourceType": "file"
       },
-      "Demo/EnterpriseFeaturesDemo.bbj": {
-        "sourcePath": true,
-        "mediaType": "application/vnd.businessbasic.bbj",
-        "resourceType": "file"
-      },
       "BBjGridExWidget.bbj": {
         "sourcePath": true,
         "mediaType": "application/vnd.businessbasic.bbj",
@@ -64535,6 +64530,29 @@
       "README.md": {
         "sourcePath": false,
         "mediaType": "text/x-web-markdown",
+        "resourceType": "file"
+      },
+      "js/src/api/enterprise/toolpanel.js": {
+        "sourcePath": false,
+        "mediaType": "application/javascript",
+        "resourceType": "file"
+      },
+      "js/src/api/enterprise": {
+        "sourcePath": true,
+        "resourceType": "folder"
+      },
+      "Demo/Enterprise": {
+        "sourcePath": true,
+        "resourceType": "folder"
+      },
+      "Demo/Enterprise/ToolPanelDemo.bbj": {
+        "sourcePath": true,
+        "mediaType": "application/vnd.businessbasic.bbj",
+        "resourceType": "file"
+      },
+      "Demo/Enterprise/GroupingDemo.bbj": {
+        "sourcePath": true,
+        "mediaType": "application/vnd.businessbasic.bbj",
         "resourceType": "file"
       }
     }

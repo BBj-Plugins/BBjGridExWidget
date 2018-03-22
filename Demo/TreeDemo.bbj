@@ -131,7 +131,7 @@ fillGrid:
     grid!.pinColumn("SALES_LY","right")
     
     grid!.setMultipleSelection(1)
-    grid!.setShowSelectionCheckbox(1)
+    grid!.setShowGroupSelectionCheckbox(1)
     grid!.setGroupSelectsChildren(1)
     
     grid!.setData(dt!,"CUST_NUM","PARENT_ID")
@@ -162,7 +162,7 @@ onRowSelect:
     sel! =  grid!.getSelectedRows()
   
     if INFO(3,6)="5" then
-      a = msgbox(sel!, 0, "Selection")
+      a = msgbox( ev!.getChangedRows().toString(), 0, "Selection")
     else
       print 'SHOW', 
       print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
