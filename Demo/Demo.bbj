@@ -7,6 +7,8 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
+? 'HIDE'
+
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo")
 
               wnd!.addStaticText(200,5,10,60,25,"Database:")

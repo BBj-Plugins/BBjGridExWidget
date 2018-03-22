@@ -27,7 +27,7 @@ grid!.setShowToolPanel(1)
 grid!.setEnableRowGroup(1)
 grid!.setSuppressValues(1)
 grid!.setFunctionsReadOnly(0)
-grid!.setRowGroupPanelShow(grid!.GRID_GroupPanel_SHOW_VISIBLE())
+grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
 
 musicTypeStyle! = new JsonObject()
 musicTypeStyle!.addProperty("background","gold")
