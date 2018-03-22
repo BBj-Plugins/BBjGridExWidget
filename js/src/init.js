@@ -1,5 +1,3 @@
-import { gw_collapseAll } from "./api/rows";
-
 /*
 * This file is part of the grid project
 * (c) Basis Europe <eu@Basis.AgGridComponents.com>
