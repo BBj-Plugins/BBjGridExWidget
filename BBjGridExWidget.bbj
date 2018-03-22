@@ -117,6 +117,8 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjString EditType$ = #GRID_EDITTYPE_CELL()
     rem /**
     rem  * Set to true to enable Group Editing, otherwise by default, row groups cannot be edited.
+    rem  *
+    rem  * @RequiresRefresh
     rem  */
     field public BBjNumber GroupEdit! = 0
     rem /**
@@ -164,6 +166,15 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 1 = enable editing
     rem  * 0 = disable edition
     rem  *
+    rem  * This option can be overridden from the column attributes directly
+    rem  *
+    rem  * ex:
+    rem  *
+    rem  * <code>
+    rem  *  dr! = new DataRow()
+    rem  *  dr!.setFieldAttribute("DOUBLE","ENABLE_VALUE","1")
+    rem  * </code>
+    rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
@@ -174,6 +185,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  * 1 = enable editing
     rem  * 0 = disable edition
     rem  *
+    rem  * This option can be overridden from the column attributes directly
+    rem  *
+    rem  * ex:
+    rem  *
+    rem  * <code>
+    rem  *  dr! = new DataRow()
+    rem  *  dr!.setFieldAttribute("DOUBLE","ENABLE_ROW_GROUP","1")
+    rem  * </code>
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
@@ -183,6 +202,15 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * 1 = enable editing
     rem  * 0 = disable edition
+    rem  *
+    rem  * This option can be overridden from the column attributes directly
+    rem  *
+    rem  * ex:
+    rem  *
+    rem  * <code>
+    rem  *  dr! = new DataRow()
+    rem  *  dr!.setFieldAttribute("DOUBLE","ENABLE_PIVOT","1")
+    rem  * </code>
     rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
