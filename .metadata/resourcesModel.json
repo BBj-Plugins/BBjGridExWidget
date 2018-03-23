@@ -66932,11 +66932,6 @@
         "sourcePath": false,
         "mediaType": "application/octet-stream",
         "resourceType": "file"
-      },
-      "Demo/Enterprise/GGG.bbj": {
-        "sourcePath": true,
-        "mediaType": "application/vnd.businessbasic.bbj",
-        "resourceType": "file"
       }
     }
   }
