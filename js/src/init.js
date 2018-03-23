@@ -146,6 +146,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     onRowEditingStarted: gw_onRowEditingsEvent,
     onRowEditingStopped: gw_onRowEditingsEvent,
     onRowValueChanged: gw_onRowEditingsEvent,
+    rememberGroupStateWhenNewData: true
   });
 
   if (
@@ -196,6 +197,15 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.toolPanelClass = gw_getToolPanelClass;
 
     def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null , true);
+
+    const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
+    def.rowGroup = rowGroup
+    def.enableRowGroup = rowGroup ? true: false;
+    def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
+    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP' , gw_getGlobalMeta(field,"LABEL"));
+    def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
+    def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
+    def.hide = gw_getGlobalMeta(field, 'HIDE' , gw_getGlobalMeta(field, 'HIDDEN' , false));
   }
 
   return new agGrid.Grid(container, options);
@@ -209,7 +219,6 @@ export function gw_setData(json, options, license) {
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;
 
-  console.log(options)
   window.gw_options = options
   window.gw_instance = gw_init(container, license, json, options);
 

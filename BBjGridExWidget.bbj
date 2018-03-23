@@ -310,6 +310,31 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjString RowGroupPanelShow$ = #GRID_GROUPPANEL_SHOW_ONGROUPING()
+    rem /**
+    rem  * If using auto column, set to true to have each group in its own column separate column.
+    rem  * eg if group by Country then Year, two auto columns will be created, one for country and
+    rem  * one for year
+    rem  * 
+    rem  * 1 = enable
+    rem  * 0 = disable  
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber GroupMultiAutoColumn! = 0
+    rem /**
+    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns 
+    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will 
+    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the 
+    rem  * group.
+    rem  * 
+    rem  * 1 = enable
+    rem  * 0 = disable  
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber GroupUseEntireRow! = 0    
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -1093,6 +1118,38 @@ class public BBjGridExWidget extends BBjWidget
         #SuppressValues!  = bool!
     methodend
     rem /**
+    rem  * If using auto column, set to true to have each group in its own column separate column.
+    rem  * eg if group by Country then Year, two auto columns will be created, one for country and
+    rem  * one for year
+    rem  * 
+    rem  * 1 = enable
+    rem  * 0 = disable  
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setGroupMultiAutoColumn(BBjNumber bool!)
+        #assertIsEnterprise("GroupMultiAutoColumn")
+        #GroupMultiAutoColumn!  = bool!
+    methodend    
+    
+    rem /**
+    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns 
+    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will 
+    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the 
+    rem  * group.
+    rem  * 
+    rem  * 1 = enable
+    rem  * 0 = disable  
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setGroupUseEntireRow(BBjNumber bool!)
+        #assertIsEnterprise("GroupUseEntireRow")
+        #GroupUseEntireRow!  = bool!
+    methodend      
+    rem /**
     rem  * @return the selected row
     rem  */
     method public BBjGridExWidgetRow getSelectedRowInfo()
@@ -1467,18 +1524,37 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("toolPanelSuppressColumnExpandAll",#SuppressColumnExpandAll!)
         options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
-
+        options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
+        options!.addProperty("groupMultiAutoColumn",#GroupMultiAutoColumn!)
+        options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
+        
         if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
             options!.addProperty("__navigateToNextCell",1)
         else
             options!.addProperty("__navigateToNextCell",0)
         FI
+        
+        autoGroupColumnDef! = new JsonObject()
+        if #GroupMultiAutoColumn! = 0 then
+            autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
+        fi
+        
+        autoGroupColumnDefCellRendererParams! = new JsonObject()
+        autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
+        autoGroupColumnDefCellRendererParams!.addProperty("checkbox", #ShowGroupSelectionCheckbox!)
+        
+        autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
+        
+        options!.add("autoGroupColumnDef",autoGroupColumnDef!)
+        options!.add("columnDefs",cdef!)
+        
+                
         rem the following are not supported ag-grid options , by they are required by plugin js code
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
         options!.addProperty("__isTree",tree!)
-        options!.add("columnDefs",cdef!)
+        
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
@@ -1507,7 +1583,7 @@ class public BBjGridExWidget extends BBjWidget
             node!.addProperty("cellRenderer","agGroupCellRenderer")
             node!.addProperty("pinned","left")
             cellRendererParams! = new JsonObject()
-            cellRendererParams!.addProperty("suppressCount" ,#ShowGroupChildCount!)
+            cellRendererParams!.addProperty("suppressCount" ,1 - #ShowGroupChildCount!)
             cellRendererParams!.addProperty("checkbox" , #ShowGroupSelectionCheckbox!)
             node!.add("cellRendererParams",cellRendererParams!)
             cdef!.add(node!)

@@ -3,7 +3,7 @@ use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
 
-REM ? 'HIDE'
+? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
 declare auto BBjListButton lb_db!
@@ -47,24 +47,24 @@ setupGrid:
     artistIndex! = rs!.getColumnIndex("ARTIST")
      
     rs!.setAttribute(musicTypeIndex!,"ROW_GROUP","1")
-REM     rs!.setAttribute(musicTypeIndex!,"SHOW_ROW_GROUP","Gener")
     rs!.setAttribute(musicTypeIndex!,"ROW_GROUP_INDEX","0")
     
     rs!.setAttribute(artistIndex!,"ROW_GROUP","1")
-REM     rs!.setAttribute(artistIndex!,"SHOW_ROW_GROUP","Artist")
     rs!.setAttribute(artistIndex!,"ROW_GROUP_INDEX","1")
-    
-    rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
+    rs!.setAttribute(artistIndex!,"VALUE_GETTER","if(data) return 'Artist : ' +  data.ARTIST")
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
     grid!.setShowToolPanel(1)
     grid!.setEnableRowGroup(1)
-    grid!.setRowGroupPanelShow(grid!.GRID_GroupPanel_SHOW_VISIBLE())
-    grid!.setAutoGroupHeaderName("My Custom Group")
-    grid!.setShowSelectionCheckbox(1)
+    grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+    grid!.setGroupColumnLabel("My Custom Group")
+    grid!.setShowGroupChildCount(1)
+    grid!.setShowGroupSelectionCheckbox(1)
+    grid!.setGroupSelectsChildren(1)
     
-    rem set to true to have each group in its own column separate column
-    grid!.setGroupMultiAutoColumn(0)
+    
+    rem grid!.setGroupUseEntireRow(1)
+    rem grid!.setGroupMultiAutoColumn(1)
     
     
     grid!.setData(rs!,"CDNUMBER")
