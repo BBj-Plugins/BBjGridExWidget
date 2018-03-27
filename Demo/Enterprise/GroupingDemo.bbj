@@ -55,7 +55,7 @@ setupGrid:
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
     grid!.setShowToolPanel(1)
-    grid!.setEnableRowGroup(1)
+    grid!.setEnableRowGroup(0)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
     grid!.setGroupColumnLabel("My Custom Group")
     grid!.setShowGroupChildCount(1)

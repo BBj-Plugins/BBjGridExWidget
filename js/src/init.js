@@ -200,7 +200,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
     const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
     def.rowGroup = rowGroup
-    def.enableRowGroup = rowGroup ? true: false;
+    def.enableRowGroup = rowGroup ? true: def.enableRowGroup;
     def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
     def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP' , gw_getGlobalMeta(field,"LABEL"));
     def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
@@ -219,6 +219,7 @@ export function gw_setData(json, options, license) {
   window.gw_meta = json[0].meta;
   window.AGridComponentsMetaConfig = gw_meta;
 
+  console.log(options);
   window.gw_options = options
   window.gw_instance = gw_init(container, license, json, options);
 
