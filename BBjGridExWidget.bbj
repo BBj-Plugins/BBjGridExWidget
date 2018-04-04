@@ -168,6 +168,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjString RowNodeId$
     field private BBjString ParentNodeId$
     field private DataRow ColumnDefinition!
+    field public  DataRow AttributesRecord!
     field private BBjNumber Editing! = 0
     rem /**
     rem  * disabled default constructor
@@ -317,6 +318,20 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setData( ResultSet rs!)
         #RS! = rs!
+        
+        if #AttributesRecord! <> NULL() then
+            rem TODO: use the new method of components as soon as implemented
+            rem https://github.com/BasisHub/components/issues/87
+            r1! = rs!.getItem(0)
+            ar! = #AttributesRecord!
+    
+            it! = r1!.getFieldNames().iterator()
+            while it!.hasNext()
+                f$ = it!.next()
+                r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+            wend
+        fi 
+        
         #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
