@@ -1238,12 +1238,13 @@ class public BBjGridExWidget extends BBjWidget
                 node!.addProperty("width",num(width$))
             FI
 
+            editable! = 0
             editable!= num(cd!.getFieldAttribute(f$,"EDITABLE",err=*next))
-
-            if editable! > 0 then
+            
+            if editable! > 0 and #Editable! > 0 then
                 node!.addProperty("editable",1)
             else
-                node!.addProperty("editable",#Editable!)
+                node!.addProperty("editable",0)
             FI
 
             if first then
