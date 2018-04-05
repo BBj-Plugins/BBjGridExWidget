@@ -22,8 +22,8 @@ if (info(3,6)<>"5") then
 fi
  
  
-tb_get! = wnd!.addButton(300,0,0,200,25,"GET STATE")
-tb_set! = wnd!.addButton(301,220,0,200,25,"SET STATE")
+tb_get! = wnd!.addButton(300,10,3,200,25,"GET STATE")
+tb_set! = wnd!.addButton(301,230,3,200,25,"SET STATE")
 
 tb_get!.setCallback(BBjAPI.ON_BUTTON_PUSH,"getState")
 tb_set!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setState")
@@ -42,12 +42,16 @@ fillGrid:
    
     rem setting up the columns that should be displayed (the result set has more)
     grid!.addColumn("CDNUMBER","Item#")
-    grid!.addColumn("COST","COST",Types.DOUBLE)
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
+    grid!.addColumn("COST","COST",Types.DOUBLE)
     grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
     grid!.setColumnAlignment("COST",grid!.GRID_ALIGN_RIGHT())
+    
+    grid!.setColumnWidth("CDNUMBER",100)
+    grid!.setColumnWidth("COST",120)
+    
     grid!.setColumnMask("COST","$ #.##0,00")
    
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
