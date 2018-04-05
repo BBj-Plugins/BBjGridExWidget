@@ -39,20 +39,20 @@ fillGrid:
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
    
+   
+    rem setting up the columns that should be displayed (the result set has more)
     grid!.addColumn("CDNUMBER","Item#")
-    grid!.addColumn("COST","COST",2)
+    grid!.addColumn("COST","COST",Types.DOUBLE)
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
     grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
+    grid!.setColumnAlignment("COST",grid!.GRID_ALIGN_RIGHT())
+    grid!.setColumnMask("COST","$ #.##0,00")
    
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    
-    rs!.setAttribute(10,"MASK","$#,##00")
-    
+        
     grid!.setData(rs!)
-    
-    
 
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")

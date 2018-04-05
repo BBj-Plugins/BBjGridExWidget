@@ -11,9 +11,7 @@ declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
-
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -21,22 +19,19 @@ gosub fillGrid
 
 process_events
 
-   
 fillGrid:
 
-    declare SqlQueryBC sbc!
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+declare SqlQueryBC sbc!
 
-    grid!.setData(rs!)
-
+sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+grid!.setData(rs!)
 return
 
 byebye:
-    bye
-    
-resize:
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
-return
+bye
 
+resize:
+ev! = BBjAPI().getLastEvent()
+grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return
