@@ -332,6 +332,19 @@ class public BBjGridExWidget extends BBjWidget
             wend
         fi 
         
+        if #ColumnDefinition! <> NULL() then
+            r1! = rs!.getItem(0)
+            ar! = #ColumnDefinition!
+    
+            it! = r1!.getFieldNames().iterator()
+            while it!.hasNext()
+                f$ = it!.next()
+                if ar!.contains(f$) then
+                    r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                fi
+            wend        
+        fi
+        
         #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
@@ -439,6 +452,33 @@ class public BBjGridExWidget extends BBjWidget
     method public void setColumnBackColor(BBjString Field$,BBjColor color!)
         #ColumnDefinition!.setFieldAttribute(Field$,"BGCOLOR","#"+hta(chr(color!.getRed()))+hta(chr(color!.getGreen()))+hta(chr(color!.getBlue())),err=*next)
     methodend
+
+    rem /**
+    rem  * set the background color of a column
+    rem  *
+    rem  * @param BBjString Field$: the field name of the column
+    rem  * @param BBjString mask$: the (date or numeric) mask, BBj style, for display and editing
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */    
+    method public void setColumnMask(BBjString Field$, BBjString mask$)
+        #this!.setColumnMask(Field$,mask$,mask$)
+    methodend
+
+    rem /**
+    rem  * set the background color of a column
+    rem  *
+    rem  * @param BBjString Field$: the field name of the column
+    rem  * @param BBjString renderer_mask$: the (date or numeric) mask, BBj style, for display
+    rem  * @param BBjString editor_mask$: the (date or numeric) mask, BBj style, for editing
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */       
+    method public void setColumnMask(BBjString Field$, BBjString renderer_mask$, BBjString editor_mask$)
+        #ColumnDefinition!.setFieldAttribute(Field$,"RENDERER_MASK",renderer_mask$)
+        #ColumnDefinition!.setFieldAttribute(Field$,"EDITOR_MASK",editor_mask$)
+    methodend
+    
     rem /**
     rem  * set the alignment of a column
     rem  * @param BBjString Field$: the field name of the column
@@ -470,7 +510,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @param BBjGridExWidgetColumnState state! : the state object
     rem  */
-    method public void setColumnsState(BBjGridExWidgetColumnState state!)
+    method public void setColumnState(BBjGridExWidgetColumnState state!)
         json_state$ = state!.getString()
         #executeScript("gw_setState("+json_state$+")")
     methodend
