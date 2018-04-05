@@ -27,6 +27,13 @@ btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectButton")
 cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
 cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
+grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
+
+grid!.setSelectionMode(grid!.GRID_SELECT_CELL())
+grid!.setMultipleSelection(1)
+
+
 gosub fillGrid
 
 process_events
@@ -39,14 +46,7 @@ fillGrid:
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
     grid!.setData(rs!,"CDNUMBER")
-
     
-    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
-    grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
-
-    grid!.setSelectionMode(grid!.GRID_SELECT_CELL())
-    grid!.setMultipleSelection(1)
-
 return
 
 byebye:
