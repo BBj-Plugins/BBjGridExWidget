@@ -17,8 +17,8 @@ grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
-st! = wnd!.addStaticText(200,20,14,200,25,"Enter a termo to search in the grid data")
-ed! = wnd!.addEditBox(250,210,10,250,22,"")
+st! = wnd!.addStaticText(200,20,14,200,25,"Enter a term to search inside the grid data:")
+ed! = wnd!.addEditBox(250,230,10,250,22,"")
 ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 
 gosub fillGrid
