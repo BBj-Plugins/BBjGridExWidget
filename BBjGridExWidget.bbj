@@ -314,27 +314,27 @@ class public BBjGridExWidget extends BBjWidget
     rem  * If using auto column, set to true to have each group in its own column separate column.
     rem  * eg if group by Country then Year, two auto columns will be created, one for country and
     rem  * one for year
-    rem  * 
+    rem  *
     rem  * 1 = enable
-    rem  * 0 = disable  
+    rem  * 0 = disable
     rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
     field public BBjNumber GroupMultiAutoColumn! = 0
     rem /**
-    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns 
-    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will 
-    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the 
+    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns
+    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will
+    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the
     rem  * group.
-    rem  * 
+    rem  *
     rem  * 1 = enable
-    rem  * 0 = disable  
+    rem  * 0 = disable
     rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber GroupUseEntireRow! = 0    
+    field public BBjNumber GroupUseEntireRow! = 0
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -500,33 +500,32 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setData( ResultSet rs!)
         #RS! = rs!
-        
+
         if #AttributesRecord! <> NULL() then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
             r1! = rs!.getItem(0)
             ar! = #AttributesRecord!
-    
             it! = r1!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
                 r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
             wend
-        fi 
-        
+        fi
+
         if #ColumnDefinition! <> NULL() then
             r1! = rs!.getItem(0)
             ar! = #ColumnDefinition!
-    
             it! = r1!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
+
                 if ar!.contains(f$) then
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
-            wend        
+            wend
         fi
-        
+
         #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
@@ -634,7 +633,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void setColumnBackColor(BBjString Field$,BBjColor color!)
         #ColumnDefinition!.setFieldAttribute(Field$,"BGCOLOR","#"+hta(chr(color!.getRed()))+hta(chr(color!.getGreen()))+hta(chr(color!.getBlue())),err=*next)
     methodend
-
     rem /**
     rem  * set the mask of a column
     rem  *
@@ -642,25 +640,10 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjString mask$: the (date or numeric) mask, BBj style, for display and editing
     rem  *
     rem  * @RequiresRefresh
-    rem  */    
+    rem  */
     method public void setColumnMask(BBjString Field$, BBjString mask$)
-        #this!.setColumnMask(Field$,mask$,mask$)
+        #ColumnDefinition!.setFieldAttribute(Field$,"MASK",mask$)
     methodend
-
-    rem /**
-    rem  * set the mask of a column
-    rem  *
-    rem  * @param BBjString Field$: the field name of the column
-    rem  * @param BBjString renderer_mask$: the (date or numeric) mask, BBj style, for display
-    rem  * @param BBjString editor_mask$: the (date or numeric) mask, BBj style, for editing
-    rem  *
-    rem  * @RequiresRefresh
-    rem  */       
-    method public void setColumnMask(BBjString Field$, BBjString renderer_mask$, BBjString editor_mask$)
-        #ColumnDefinition!.setFieldAttribute(Field$,"RENDERER_MASK",renderer_mask$)
-        #ColumnDefinition!.setFieldAttribute(Field$,"EDITOR_MASK",editor_mask$)
-    methodend
-    
     rem /**
     rem  * set the alignment of a column
     rem  * @param BBjString Field$: the field name of the column
@@ -1176,9 +1159,9 @@ class public BBjGridExWidget extends BBjWidget
     rem  * If using auto column, set to true to have each group in its own column separate column.
     rem  * eg if group by Country then Year, two auto columns will be created, one for country and
     rem  * one for year
-    rem  * 
+    rem  *
     rem  * 1 = enable
-    rem  * 0 = disable  
+    rem  * 0 = disable
     rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
@@ -1186,16 +1169,15 @@ class public BBjGridExWidget extends BBjWidget
     method public void setGroupMultiAutoColumn(BBjNumber bool!)
         #assertIsEnterprise("GroupMultiAutoColumn")
         #GroupMultiAutoColumn!  = bool!
-    methodend    
-    
+    methodend
     rem /**
-    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns 
-    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will 
-    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the 
+    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns
+    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will
+    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the
     rem  * group.
-    rem  * 
+    rem  *
     rem  * 1 = enable
-    rem  * 0 = disable  
+    rem  * 0 = disable
     rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
@@ -1203,7 +1185,7 @@ class public BBjGridExWidget extends BBjWidget
     method public void setGroupUseEntireRow(BBjNumber bool!)
         #assertIsEnterprise("GroupUseEntireRow")
         #GroupUseEntireRow!  = bool!
-    methodend      
+    methodend
     rem /**
     rem  * @return the selected row
     rem  */
@@ -1582,34 +1564,30 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
         options!.addProperty("groupMultiAutoColumn",#GroupMultiAutoColumn!)
         options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
-        
+
         if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
             options!.addProperty("__navigateToNextCell",1)
         else
             options!.addProperty("__navigateToNextCell",0)
         FI
-        
+
         autoGroupColumnDef! = new JsonObject()
+
         if #GroupMultiAutoColumn! = 0 then
             autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
         fi
-        
+
         autoGroupColumnDefCellRendererParams! = new JsonObject()
         autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
         autoGroupColumnDefCellRendererParams!.addProperty("checkbox", #ShowGroupSelectionCheckbox!)
-        
         autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
-        
         options!.add("autoGroupColumnDef",autoGroupColumnDef!)
         options!.add("columnDefs",cdef!)
-        
-                
         rem the following are not supported ag-grid options , by they are required by plugin js code
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
         options!.addProperty("__isTree",tree!)
-        
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
