@@ -1,6 +1,7 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
+use com.google.gson.JsonObject
 
 ? 'HIDE'
 
@@ -39,22 +40,27 @@ fillGrid:
     grid!.pinColumn("CDNUMBER","left")
     grid!.setColumnWidth("CDNUMBER",120)
     grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
+    
+    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
+    
+    REM      Another way to set styles for cells
+    cellStyle! = new JsonObject()
+    cellStyle!.addProperty("background","yellow")
+    cellStyle!.addProperty("color","black")
+    cellStyle!.addProperty("text-align","center")
+    cellStyle!.addProperty("font-weight","bolder")
+    cellStyle!.addProperty("font-style","italic")
+    cellStyle!.addProperty("outline","3px solid green")
+    
+    grid!.addStyle(".my-class" , cellStyle!)
+    rs!.getItem(1).setFieldAttribute("LABEL","CELL_CLASS","my-class")
 
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(0)
-    
-    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
-    rs!.getItem(1).setFieldAttribute("LABEL","FGCOLOR","#00FF00")
-
     grid!.setEnableFilter(1)
     grid!.setEnableFloatingFilter(1)
-    
-    grid!.setData(rs!,"CDNUMBER")
-    
+    grid!.setData(rs!,"CDNUMBER")    
     grid!.moveColumn("PLAYINGTIME",1)
-    
-    rem grid!.setFitToGrid(1)
-    
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
     grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
 

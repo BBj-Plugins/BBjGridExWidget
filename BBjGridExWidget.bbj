@@ -10,7 +10,6 @@ use java.lang.Integer
 use java.util.ArrayList
 use java.util.HashMap
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
-
 rem /**
 rem  * A Grid Widget Plugin for BBj
 rem  */
@@ -88,6 +87,8 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjNumber SingleClickEdit! = 0
     rem /**
+    rem  * Define the edit type
+    rem  *
     rem  * Set the default cell editor type
     rem  * default to GRID_TYPE_BASIC_STRING
     rem  *
@@ -116,6 +117,8 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjString EditType$ = #GRID_EDITTYPE_CELL()
     rem /**
     rem  * Set to true to enable Group Editing, otherwise by default, row groups cannot be edited.
+    rem  *
+    rem  * @RequiresRefresh
     rem  */
     field public BBjNumber GroupEdit! = 0
     rem /**
@@ -158,6 +161,180 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  */
     field public BBjNumber ShowGroupChildCount! = 0
+    rem /**
+    rem  * Enable/disable aggregate by column via the GUI.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * This option can be overridden from the column attributes directly
+    rem  *
+    rem  * ex:
+    rem  *
+    rem  * <code>
+    rem  *  dr! = new DataRow()
+    rem  *  dr!.setFieldAttribute("DOUBLE","ENABLE_VALUE","1")
+    rem  * </code>
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber EnableValue! = 0
+    rem /**
+    rem  * Enable/disable row group by column via the GUI
+    rem  *
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * This option can be overridden from the column attributes directly
+    rem  *
+    rem  * ex:
+    rem  *
+    rem  * <code>
+    rem  *  dr! = new DataRow()
+    rem  *  dr!.setFieldAttribute("DOUBLE","ENABLE_ROW_GROUP","1")
+    rem  * </code>
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber EnableRowGroup! = 0
+    rem /**
+    rem  * Enable/disable pivot by column via the GUI.
+    rem  *
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * This option can be overridden from the column attributes directly
+    rem  *
+    rem  * ex:
+    rem  *
+    rem  * <code>
+    rem  *  dr! = new DataRow()
+    rem  *  dr!.setFieldAttribute("DOUBLE","ENABLE_PIVOT","1")
+    rem  * </code>
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber EnablePivot! = 1
+    rem /**
+    rem  * Suppress Row Groups section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressRowGroups! = 0
+    rem /**
+    rem  * suppress Values section
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressValues! = 1
+    rem /**
+    rem  * suppress Column Labels (Pivot) section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressPivots! = 1
+    rem /**
+    rem  * suppress Pivot Mode section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressPivotMode! = 1
+    rem /**
+    rem  * suppress Side Buttons section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressSideButtons! = 1
+    rem /**
+    rem  * suppress Column Filter section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressColumnFilter! = 0
+    rem /**
+    rem  * suppress Select / Un-select all widget.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressColumnSelectAll! = 0
+    rem /**
+    rem  * suppress Expand / Collapse all widget.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressColumnExpandAll! = 0
+    rem /**
+    rem  * Enable/disable changes to group, pivot or values through the GUI
+    rem  * This is useful if you want to show the user the group, pivot and values panel, so they can see what columns are used,
+    rem  * but prevent them from making changes to the selection.
+    rem  *
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber FunctionsReadOnly! = 0
+    rem /**
+    rem  * Set group panel visiblity
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_GROUPPANEL_SHOW_HIDDEN
+    rem  * @see BBjGridExWidget.GRID_GROUPPANEL_SHOW_VISIBLE
+    rem  * @see BBjGridExWidget.GRID_GROUPPANEL_SHOW_ONGROUPING
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjString RowGroupPanelShow$ = #GRID_GROUPPANEL_SHOW_ONGROUPING()
+    rem /**
+    rem  * If using auto column, set to true to have each group in its own column separate column.
+    rem  * eg if group by Country then Year, two auto columns will be created, one for country and
+    rem  * one for year
+    rem  *
+    rem  * 1 = enable
+    rem  * 0 = disable
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber GroupMultiAutoColumn! = 0
+    rem /**
+    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns
+    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will
+    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the
+    rem  * group.
+    rem  *
+    rem  * 1 = enable
+    rem  * 0 = disable
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber GroupUseEntireRow! = 0
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -228,7 +405,7 @@ class public BBjGridExWidget extends BBjWidget
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED); rem ' only do this once
         gridPath$ = iff(LEN(#LicenseKey$) > 0,"BBjGridExWidget/js/dist/ag-grid-enterprise.min.js","BBjGridExWidget/js/dist/ag-grid.min.js")
         ch=unt
-        rem loading the patched ag-grid in BUI until they will have fixed their code for the getDocument method
+
         if INFO(3,6)="5" then
             open (ch)gridPath$
             read record (ch,siz=5512000)script$
@@ -242,6 +419,11 @@ class public BBjGridExWidget extends BBjWidget
             #HTMLView!.injectScript(script$,1)
         FI
 
+        ch=unt
+        open (ch)"BBjGridExWidget/js/dist/jss.min.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #HTMLView!.injectScript(script$)
         ch=unt
         open (ch)"BBjGridExWidget/js/dist/agc-basic-bundle.min.js"
         read record (ch,siz=5512000)script$
@@ -318,33 +500,32 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setData( ResultSet rs!)
         #RS! = rs!
-        
+
         if #AttributesRecord! <> NULL() then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
             r1! = rs!.getItem(0)
             ar! = #AttributesRecord!
-    
             it! = r1!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
                 r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
             wend
-        fi 
-        
+        fi
+
         if #ColumnDefinition! <> NULL() then
             r1! = rs!.getItem(0)
             ar! = #ColumnDefinition!
-    
             it! = r1!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
+
                 if ar!.contains(f$) then
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
-            wend        
+            wend
         fi
-        
+
         #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
@@ -452,33 +633,17 @@ class public BBjGridExWidget extends BBjWidget
     method public void setColumnBackColor(BBjString Field$,BBjColor color!)
         #ColumnDefinition!.setFieldAttribute(Field$,"BGCOLOR","#"+hta(chr(color!.getRed()))+hta(chr(color!.getGreen()))+hta(chr(color!.getBlue())),err=*next)
     methodend
-
     rem /**
-    rem  * set the background color of a column
+    rem  * set the mask of a column
     rem  *
     rem  * @param BBjString Field$: the field name of the column
     rem  * @param BBjString mask$: the (date or numeric) mask, BBj style, for display and editing
     rem  *
     rem  * @RequiresRefresh
-    rem  */    
+    rem  */
     method public void setColumnMask(BBjString Field$, BBjString mask$)
-        #this!.setColumnMask(Field$,mask$,mask$)
+        #ColumnDefinition!.setFieldAttribute(Field$,"MASK",mask$)
     methodend
-
-    rem /**
-    rem  * set the background color of a column
-    rem  *
-    rem  * @param BBjString Field$: the field name of the column
-    rem  * @param BBjString renderer_mask$: the (date or numeric) mask, BBj style, for display
-    rem  * @param BBjString editor_mask$: the (date or numeric) mask, BBj style, for editing
-    rem  *
-    rem  * @RequiresRefresh
-    rem  */       
-    method public void setColumnMask(BBjString Field$, BBjString renderer_mask$, BBjString editor_mask$)
-        #ColumnDefinition!.setFieldAttribute(Field$,"RENDERER_MASK",renderer_mask$)
-        #ColumnDefinition!.setFieldAttribute(Field$,"EDITOR_MASK",editor_mask$)
-    methodend
-    
     rem /**
     rem  * set the alignment of a column
     rem  * @param BBjString Field$: the field name of the column
@@ -494,15 +659,15 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setColumnAlignment(BBjString Field$, BBjNumber align)
         switch align
-        case BBjGrid.GRID_ALIGN_LEFT
-            #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","left",err=*next)
-            break
-        case BBjGrid.GRID_ALIGN_CENTER
-            #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","center",err=*next)
-            break
-        case BBjGrid.GRID_ALIGN_RIGHT
-            #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","right",err=*next)
-            break
+            case BBjGrid.GRID_ALIGN_LEFT
+                #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","left",err=*next)
+                break
+            case BBjGrid.GRID_ALIGN_CENTER
+                #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","center",err=*next)
+                break
+            case BBjGrid.GRID_ALIGN_RIGHT
+                #ColumnDefinition!.setFieldAttribute(Field$,"ALIGN","right",err=*next)
+                break
         swend
     methodend
     rem /**
@@ -524,6 +689,32 @@ class public BBjGridExWidget extends BBjWidget
         json_string$ = str(#HTMLView!.executeScript("gw_getState()"))
         state!.setString(json_string$)
         methodret state!
+    methodend
+    rem /**
+    rem  * Add Style block
+    rem  *
+    rem  * @param selector$ : Css Selector
+    rem  * @param rules! : Css Rules object as json object
+    rem  */
+    method public void addStyle(BBjString selector$ , JsonObject rules! )
+        #executeScript("gw_setStyle('" + selector$ + "','" + rules!.toString() + "')")
+    methodend
+    rem /**
+    rem  * Add Style block
+    rem  *
+    rem  * @param selector$ : Css Selector
+    rem  * @param rules! : Css Rules object as string
+    rem  */
+    method public void addStyle(BBjString selector$ , BBjString rules! )
+        #executeScript("gw_setStyle('" + selector$ + "','" + rules! + "')")
+    methodend
+    rem /**
+    rem  * Remove Style Block
+    rem  *
+    rem  * @param selector$ : Css Selector
+    rem  */
+    method public void removeStyle(BBjString selector$)
+        #executeScript("gw_removeStyle('" + selector$ + "')")
     methodend
     rem /**
     rem  * When true, selecting a group will have the impact of selecting all its children
@@ -819,6 +1010,183 @@ class public BBjGridExWidget extends BBjWidget
         #executeScript("gw_stopEditing("+STR(cancel!)+ ")")
     methodend
     rem /**
+    rem  * Enable/disable changes to group, pivot or values through the GUI
+    rem  * This is useful if you want to show the user the group, pivot and values panel, so they can see what columns are used,
+    rem  * but prevent them from making changes to the selection.
+    rem  *
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @Enterprise
+    rem  */
+    method public void setFunctionsReadOnly(BBjNumber readonly!)
+        #assertIsEnterprise("FunctionsReadOnly")
+        #FunctionsReadOnly! = readonly!
+        #executeScript("gw_setFunctionsReadOnly("+str(readonly!)+")")
+    methodend
+    rem /**
+    rem  * Show/Hide Tool Panel
+    rem  *
+    rem  * @param BBjNumber: 1 to show , 0 to hide
+    rem  */
+    method public void setShowToolPanel(BBjNumber show!)
+        #assertIsEnterprise("Tool Panel")
+        #executeScript("gw_showToolPanel("+str(show!)+")")
+    methodend
+    rem /**
+    rem  * Enable/disable aggregate by column via the GUI.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setEnableValue(BBjNumber bool!)
+        #assertIsEnterprise("EnableValue")
+        #EnableValue! = bool!
+    methodend
+    rem /**
+    rem  * Enable/disable pivot by column via the GUI.
+    rem  *
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setEnablePivot(BBjNumber bool!)
+        #assertIsEnterprise("EnablePivot")
+        #EnablePivot! = bool!
+    methodend
+    rem /**
+    rem  * suppress Expand / Collapse all widget.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressColumnExpandAll(BBjNumber bool!)
+        #assertIsEnterprise("SuppressColumnExpandAll")
+        #SuppressColumnExpandAll!  = bool!
+    methodend
+    rem /**
+    rem  * suppress Column Filter section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressColumnFilter(BBjNumber bool!)
+        #assertIsEnterprise("SuppressColumnFilter")
+        #SuppressColumnFilter!  = bool!
+    methodend
+    rem /**
+    rem  * suppress Select / Un-select all widget.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressColumnSelectAll(BBjNumber bool!)
+        #assertIsEnterprise("SuppressColumnSelectAll")
+        #SuppressColumnSelectAll!  = bool!
+    methodend
+    rem /**
+    rem  * suppress Pivot Mode section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressPivotMode(BBjNumber bool!)
+        #assertIsEnterprise("SuppressPivotMode")
+        #SuppressPivotMode!  = bool!
+    methodend
+    rem /**
+    rem  * suppress Column Labels (Pivot) section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressPivots(BBjNumber bool!)
+        #assertIsEnterprise("SuppressPivots")
+        #SuppressPivots!  = bool!
+    methodend
+    rem /**
+    rem  * Enable/disable row group by column via the GUI
+    rem  *
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setEnableRowGroup(BBjNumber bool!)
+        #assertIsEnterprise("EnableRowGroup")
+        #EnableRowGroup! = bool!
+    methodend
+    rem /**
+    rem  * suppress Side Buttons section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressSideButtons(BBjNumber bool!)
+        #assertIsEnterprise("SuppressSideButtons")
+        #SuppressSideButtons!  = bool!
+    methodend
+    rem /**
+    rem  * suppress Values section
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setSuppressValues(BBjNumber bool!)
+        #assertIsEnterprise("SuppressValues")
+        #SuppressValues!  = bool!
+    methodend
+    rem /**
+    rem  * If using auto column, set to true to have each group in its own column separate column.
+    rem  * eg if group by Country then Year, two auto columns will be created, one for country and
+    rem  * one for year
+    rem  *
+    rem  * 1 = enable
+    rem  * 0 = disable
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setGroupMultiAutoColumn(BBjNumber bool!)
+        #assertIsEnterprise("GroupMultiAutoColumn")
+        #GroupMultiAutoColumn!  = bool!
+    methodend
+    rem /**
+    rem  * If grouping, set to true or false (default is false). If true, a group row will span all columns
+    rem  * across the entire width of the table. If false, the cells will be rendered as normal and you will
+    rem  * have the opportunity to include a grouping column (normally the first on the left) to show the
+    rem  * group.
+    rem  *
+    rem  * 1 = enable
+    rem  * 0 = disable
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    method public void setGroupUseEntireRow(BBjNumber bool!)
+        #assertIsEnterprise("GroupUseEntireRow")
+        #GroupUseEntireRow!  = bool!
+    methodend
+    rem /**
     rem  * @return the selected row
     rem  */
     method public BBjGridExWidgetRow getSelectedRowInfo()
@@ -1023,6 +1391,25 @@ class public BBjGridExWidget extends BBjWidget
     method public static BBjString GRID_ENTER_STOP_EDITING()
         methodret "stop"
     methodend
+    rem /**
+    rem  * @return constant value which defines that group panel must always be shown
+    rem  */
+    method public static BBjString GRID_GROUPPANEL_SHOW_VISIBLE()
+        methodret "always"
+    methodend
+    rem /**
+    rem  * @return constant value which defines that group panel must be shown only when grouping
+    rem  */
+    method public static BBjString GRID_GROUPPANEL_SHOW_ONGROUPING()
+        methodret "onlyWhenGrouping"
+    methodend
+    rem /**
+    rem  * @return constant value which defines that group panel must always be hidden
+    rem  */
+    method public static BBjString GRID_GROUPPANEL_SHOW_HIDDEN()
+        methodret "never"
+    methodend
+
     method private Object executeScript(BBjString s$)
         if #IsReady! then
             methodret #HTMLView!.executeScript(s$)
@@ -1032,6 +1419,7 @@ class public BBjGridExWidget extends BBjWidget
 
         methodret null()
     methodend
+
     method private void assertIsEnterprise(BBjString feature$)
         if LEN(#LicenseKey$) <= 0 then
             throw "(" + feature$ + ") is an ag-grid enterprise feature , please set a licence key to use this feature.", 256
@@ -1098,6 +1486,7 @@ class public BBjGridExWidget extends BBjWidget
         event!.setRow(row!)
         #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
     methodend
+
     method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -1115,6 +1504,7 @@ class public BBjGridExWidget extends BBjWidget
         event!.setColumn(next!.get("column").getAsString())
         #fireEvent(type!, event!)
     methodend
+
     method private void handleGridROWEditingEvent(BBjString detail$ , BBjNumber type!)
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -1129,11 +1519,13 @@ class public BBjGridExWidget extends BBjWidget
         event!.setRow(row!)
         #fireEvent(type!, event!)
     methodend
+
     method private void performGridDataUpdate()
         if (! #IsReady!)
             methodret
         FI
 
+        tree! = 0
         gson! = new Gson()
 
         if (#RS! <> null()) then
@@ -1142,6 +1534,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             if (#TREE! <> null()) then
                 data$=#TREE!.toJson()
+                tree! = 1
                 cdef!= #getAgGridColumnDefinition(1)
             FI
         FI
@@ -1158,22 +1551,46 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("singleClickEdit",#SingleClickEdit!)
         options!.addProperty("enableGroupEdit",#GroupEdit!)
         options!.addProperty("rowSelection",iff(#MultipleSelection! = 1 , "multiple" ,"single"))
-        
+        options!.addProperty("toolPanelSuppressRowGroups",#SuppressRowGroups!)
+        options!.addProperty("toolPanelSuppressValues",#SuppressValues!)
+        options!.addProperty("toolPanelSuppressPivots",#SuppressPivots!)
+        options!.addProperty("toolPanelSuppressPivotMode",#SuppressPivotMode!)
+        options!.addProperty("toolPanelSuppressSideButtons",#SuppressSideButtons!)
+        options!.addProperty("toolPanelSuppressColumnFilter",#SuppressColumnFilter!)
+        options!.addProperty("toolPanelSuppressColumnSelectAll",#SuppressColumnSelectAll!)
+        options!.addProperty("toolPanelSuppressColumnExpandAll",#SuppressColumnExpandAll!)
+        options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
+        options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
+        options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
+        options!.addProperty("groupMultiAutoColumn",#GroupMultiAutoColumn!)
+        options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
+
         if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
             options!.addProperty("__navigateToNextCell",1)
         else
             options!.addProperty("__navigateToNextCell",0)
         FI
-        
+
+        autoGroupColumnDef! = new JsonObject()
+
+        if #GroupMultiAutoColumn! = 0 then
+            autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
+        fi
+
+        autoGroupColumnDefCellRendererParams! = new JsonObject()
+        autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
+        autoGroupColumnDefCellRendererParams!.addProperty("checkbox", #ShowGroupSelectionCheckbox!)
+        autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
+        options!.add("autoGroupColumnDef",autoGroupColumnDef!)
+        options!.add("columnDefs",cdef!)
         rem the following are not supported ag-grid options , by they are required by plugin js code
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
-        
-        options!.add("columnDefs",cdef!)
-        
+        options!.addProperty("__isTree",tree!)
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
+
     method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
         declare DataRow cd!
 
@@ -1199,7 +1616,7 @@ class public BBjGridExWidget extends BBjWidget
             node!.addProperty("cellRenderer","agGroupCellRenderer")
             node!.addProperty("pinned","left")
             cellRendererParams! = new JsonObject()
-            cellRendererParams!.addProperty("suppressCount" ,#ShowGroupChildCount!)
+            cellRendererParams!.addProperty("suppressCount" ,1 - #ShowGroupChildCount!)
             cellRendererParams!.addProperty("checkbox" , #ShowGroupSelectionCheckbox!)
             node!.add("cellRendererParams",cellRendererParams!)
             cdef!.add(node!)
@@ -1224,6 +1641,11 @@ class public BBjGridExWidget extends BBjWidget
             node! = new JsonObject()
             node!.addProperty("headerName",label$)
             node!.addProperty("field",f$)
+
+            if first then
+                node!.addProperty("checkboxSelection",#ShowSelectionCheckbox!)
+            FI
+
             pin$=""
             pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
 
@@ -1247,8 +1669,35 @@ class public BBjGridExWidget extends BBjWidget
                 node!.addProperty("editable",0)
             FI
 
-            if first then
-                node!.addProperty("checkboxSelection",#ShowSelectionCheckbox!)
+            enableValue!= num(cd!.getFieldAttribute(f$,"ENABLE_VALUE",err=*next))
+
+            if editable! > 0 then
+                node!.addProperty("enableValue",1)
+            else
+                node!.addProperty("enableValue",#EnableValue!)
+            FI
+
+            enableRowGroup!= num(cd!.getFieldAttribute(f$,"ENABLE_ROW_GROUP",err=*next))
+
+            if enableRowGroup! > 0 then
+                node!.addProperty("enableRowGroup",1)
+            else
+                node!.addProperty("enableRowGroup",#EnableRowGroup!)
+            FI
+
+            enablePivot!= num(cd!.getFieldAttribute(f$,"ENABLE_PIVOT",err=*next))
+
+            if enablePivot! > 0 then
+                node!.addProperty("enablePivot",1)
+            else
+                node!.addProperty("enablePivot",#EnablePivot!)
+            FI
+
+            cellClass$=""
+            cellClass$=cd!.getFieldAttribute(f$,"CELL_CLASS")
+
+            if cellClass$>"" then
+                node!.addProperty("cellClass",cellClass$)
             FI
 
             type! = ""
@@ -1258,24 +1707,24 @@ class public BBjGridExWidget extends BBjWidget
                 node!.addProperty("type",type!)
             else
                 switch cd!.getFieldType(f$)
-                case Types.INTEGER
-                case Types.DECIMAL
-                case Types.DOUBLE
-                case Types.NUMERIC
-                    node!.addProperty("type",#GRID_TYPE_BASIC_NUMBER())
-                    break
-                case Types.DATE
-                    node!.addProperty("type",#GRID_TYPE_BASIC_DATE())
-                    break
-                case Types.TIMESTAMP
-                    node!.addProperty("type",#GRID_TYPE_BASIC_TIMESTAMP())
-                    break
-                case Types.BOOLEAN
-                    node!.addProperty("type",#GRID_TYPE_BASIC_BOOLEAN())
-                    break
-                case default
-                    node!.addProperty("type",#DefaultType$)
-                    break
+                    case Types.INTEGER
+                    case Types.DECIMAL
+                    case Types.DOUBLE
+                    case Types.NUMERIC
+                        node!.addProperty("type",#GRID_TYPE_BASIC_NUMBER())
+                        break
+                    case Types.DATE
+                        node!.addProperty("type",#GRID_TYPE_BASIC_DATE())
+                        break
+                    case Types.TIMESTAMP
+                        node!.addProperty("type",#GRID_TYPE_BASIC_TIMESTAMP())
+                        break
+                    case Types.BOOLEAN
+                        node!.addProperty("type",#GRID_TYPE_BASIC_BOOLEAN())
+                        break
+                    case default
+                        node!.addProperty("type",#DefaultType$)
+                        break
                 swend
             FI
 

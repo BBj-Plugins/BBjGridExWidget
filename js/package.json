@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/webpack --watch --progress",
+    "watch": "./node_modules/.bin/webpack --watch --progress",
     "build": "./node_modules/.bin/webpack"
   },
   "devDependencies": {
@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "ag-grid": "17.0.0",
-    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#v1.6.0",
-    "ag-grid-enterprise": "17.0.0"
+    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#v1.7.0",
+    "ag-grid-enterprise": "17.0.0",
+    "jss": "https://github.com/dvtng/jss"
   }
 }

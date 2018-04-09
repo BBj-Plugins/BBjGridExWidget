@@ -35,7 +35,7 @@ export function gw_cellStyler(params) {
 
   var meta = {};
 
-  if (params.data.meta)
+  if (params.data && params.data.meta)
     meta = params.data.meta[params.column.colId] || {};
 
   let colStyle = {};
@@ -63,5 +63,17 @@ export function gw_cellStyler(params) {
   }
   else {
     return null;
+  }
+}
+
+export function gw_getCellClass(params) {
+
+  const field = params.colDef.field;
+  
+  if(params.data && params.data.hasOwnProperty('meta') ) {
+    return (
+      params.data.meta.hasOwnProperty(field) &&
+      params.data.meta[field].hasOwnProperty('CELL_CLASS')
+     ) ? params.data.meta[field].CELL_CLASS : `CELL_CLASS_${field}`
   }
 }
