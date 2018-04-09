@@ -636,7 +636,7 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
     rem /**
-    rem  * set the background color of a column
+    rem  * set the mask of a column
     rem  *
     rem  * @param BBjString Field$: the field name of the column
     rem  * @param BBjString mask$: the (date or numeric) mask, BBj style, for display and editing
@@ -648,7 +648,7 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
     rem /**
-    rem  * set the background color of a column
+    rem  * set the mask of a column
     rem  *
     rem  * @param BBjString Field$: the field name of the column
     rem  * @param BBjString renderer_mask$: the (date or numeric) mask, BBj style, for display
