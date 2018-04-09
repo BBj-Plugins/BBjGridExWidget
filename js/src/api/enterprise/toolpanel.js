@@ -22,6 +22,6 @@ export function gw_getToolPanelClass(params) {
     gw_meta.hasOwnProperty(def.field) &&
     gw_meta[def.field].hasOwnProperty('TOOLPANEL_CLASS')
   ) {
-    return gw_meta[def.field].TOOLPANEL_CLASS
+    return gw_meta[def.field].TOOLPANEL_CLASS;
   }
 }

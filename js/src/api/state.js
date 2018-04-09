@@ -8,6 +8,6 @@ export function gw_getState() {
   try {
     return JSON.stringify(state);
   } catch (e) {
-    console.warn('Failed to parse state', e)
+    console.warn('Failed to parse state', e);
   }
 }

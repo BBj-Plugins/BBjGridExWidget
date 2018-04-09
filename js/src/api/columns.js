@@ -19,7 +19,7 @@ export function gw_setSelectedRows(rows) {
     }
   }.bind(this));
 
-  gw_options.api.onGroupExpandedOrCollapsed()
+  gw_options.api.onGroupExpandedOrCollapsed();
 }
 
 export function gw_selectAll(filtered) {
@@ -47,7 +47,7 @@ export function gw_setVisibleColumn(columnId) {
 export function gw_setColumnWidth(columnid, width) {
   gw_options.columnApi.setColumnWidth(columnid, Number(width));
 }
-``
+
 export function gw_pinColumn(columnid, pin) {
   gw_options.columnApi.setColumnPinned(columnid, pin);
 }

@@ -35,5 +35,5 @@ export function gw_parseNodeFromEvent(e) {
     parentKey: e.node.hasOwnProperty('parent') && e.node.parent.hasOwnProperty('key') ? e.node.parent.key : '',
   };
 
-  return detail
+  return detail;
 }

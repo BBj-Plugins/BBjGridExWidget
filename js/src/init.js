@@ -121,7 +121,7 @@ export function gw_getDefaultComponents() {
 
     // Images
     'BasicImagesRenderer': Basis.AgGridComponents.BasicImagesRenderer,
-  }
+  };
 }
 
 export function gw_init(container, license, data, defaultOptions = {}) {
@@ -155,7 +155,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   ) {
     options.getNodeChildDetails = rowItem => {
 
-      const key = rowItem[gw_options["__getParentNodeId"]];
+      const key = rowItem[gw_options.__getParentNodeId];
       if (rowItem.__node__children) {
         return {
           group: true,
@@ -168,13 +168,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
       } else {
         return false;
       }
-    }
+    };
   }
 
   if (gw_options.hasOwnProperty('__getRowNodeId')) {
 
     options.getRowNodeId = data => {
-      let id = data[gw_options['__getRowNodeId']];
+      let id = data[gw_options.__getRowNodeId];
       id = id ? id : Math.random();
       return id;
     };
@@ -184,7 +184,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     gw_options.hasOwnProperty("__navigateToNextCell") &&
     gw_options.__navigateToNextCell
   ) {
-    options.navigateToNextCell = gw_navigateToNextRow
+    options.navigateToNextCell = gw_navigateToNextRow;
   }
 
   for (let i in options.columnDefs) {
@@ -199,7 +199,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null , true);
 
     const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
-    def.rowGroup = rowGroup
+    def.rowGroup = rowGroup;
     def.enableRowGroup = rowGroup ? true: def.enableRowGroup;
     def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
     def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP' , gw_getGlobalMeta(field,"LABEL"));
@@ -220,7 +220,7 @@ export function gw_setData(json, options, license) {
   window.AGridComponentsMetaConfig = gw_meta;
 
   console.log(options);
-  window.gw_options = options
+  window.gw_options = options;
   window.gw_instance = gw_init(container, license, json, options);
 
   if (gw_options.hasOwnProperty('__enterKeyBehavior')) {

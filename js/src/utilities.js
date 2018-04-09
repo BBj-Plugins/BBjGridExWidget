@@ -20,7 +20,7 @@ export function gw_debounce(func, wait, immediate) {
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
-};
+}
 
 export function gw_getGlobalMeta(field, value, fallback = null , json = false) {
 
@@ -33,7 +33,7 @@ export function gw_getGlobalMeta(field, value, fallback = null , json = false) {
       try {
         return JSON.parse(gw_meta[field][value]);
       } catch(e) {
-        console.warn(`BBjGridExWidget : Faild to parse [${field}][${value}] as JSON`)
+        console.warn(`BBjGridExWidget : Faild to parse [${field}][${value}] as JSON`);
         return fallback;
       }
     } else {
