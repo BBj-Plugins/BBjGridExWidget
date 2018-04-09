@@ -215,7 +215,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnablePivot! = 0
+    field public BBjNumber EnablePivot! = 1
     rem /**
     rem  * Suppress Row Groups section.
     rem  * 1 = enable editing
@@ -233,7 +233,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressValues! = 0
+    field public BBjNumber SuppressValues! = 1
     rem /**
     rem  * suppress Column Labels (Pivot) section.
     rem  * 1 = enable editing
@@ -242,7 +242,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressPivots! = 0
+    field public BBjNumber SuppressPivots! = 1
     rem /**
     rem  * suppress Pivot Mode section.
     rem  * 1 = enable editing
@@ -251,7 +251,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressPivotMode! = 0
+    field public BBjNumber SuppressPivotMode! = 1
     rem /**
     rem  * suppress Side Buttons section.
     rem  * 1 = enable editing
@@ -260,7 +260,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressSideButtons! = 0
+    field public BBjNumber SuppressSideButtons! = 1
     rem /**
     rem  * suppress Column Filter section.
     rem  * 1 = enable editing
