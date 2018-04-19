@@ -46,12 +46,6 @@ fillGrid:
     declare SqlQueryBC sbc!
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-
-    filter! = new com.basiscomponents.db.DataRow()
-    filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
-    
-    rs! = rs!.filterBy(filter!)
-    
     rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
     grid!.setData(rs!,"CDNUMBER")
 return
