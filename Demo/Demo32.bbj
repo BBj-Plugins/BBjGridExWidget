@@ -1,0 +1,34 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+
+use java.sql.Types
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub fillGrid
+
+? 'SHOW','RAISE',
+
+process_events
+
+fillGrid:
+
+
+rs! = ResultSet.fromJson("[{""STATUSDOCUMENTSID"":""A"",""QUANTITYCOLLI"":null,""TOTALWEIGHTCOLLI"":null,""SCHEDULEDSHIPMENTDATE"":""2011-05-06"",""SALESORDERID"":""101029"",""SHIPMENTID"":""70014"",""SITEID"":""01"",""CARRIERID"":""01"",""SHIPMENTTYPEID"":"""",""SHIPMENTTYPEDESC_SHORT"":"""",""CUSTOMERADDRESSID"":""1001"",""DELIVERY_FORMATTEDADDRESS"":""Combidex BV, 3115 HE  SCHIEDAM"",""ALLOWEDTOPRINTPICKLIST"":""0"",""SHIPMENTSTATUSID"":""5"",""TRANSPORT"":false,""SHIPMENTSTATUSDESC"":""Afgehandeld"",""CUSTOMERADDRESSDESC"":""Combidex BV, Schiedam (NL)"",""CARRIERDESC"":""Post NL"",""TRANSPORTID"":null,""meta"":{""STATUSDOCUMENTSID"":{""ColumnType"":""12""},""QUANTITYCOLLI"":{""ColumnType"":""2"",""MASK"":""-##,###,##0"",""LABEL"":""Colli"",""ALIGN"":""Right"",""FIELDTYPE"":""2""},""TOTALWEIGHTCOLLI"":{""ColumnType"":""2"",""MASK"":""-##,###,##0.00"",""LABEL"":""Gewicht"",""ALIGN"":""Right"",""FIELDTYPE"":""2""},""SCHEDULEDSHIPMENTDATE"":{""ColumnType"":""91"",""MASK"":""%Dz-%Mz-%Yd"",""LABEL"":""Verzenddatum"",""ALIGN"":""Center"",""FIELDTYPE"":""91""},""SALESORDERID"":{""ColumnType"":""12"",""LABEL"":""Verkooporder"",""ALIGN"":""Left""},""SHIPMENTID"":{""ColumnType"":""12"",""LABEL"":""Verzendnr."",""ALIGN"":""Left""},""SITEID"":{""ColumnType"":""12""},""CARRIERID"":{""ColumnType"":""12""},""SHIPMENTTYPEID"":{""ColumnType"":""12""},""SHIPMENTTYPEDESC_SHORT"":{""ColumnType"":""12""},""CUSTOMERADDRESSID"":{""ColumnType"":""12""},""DELIVERY_FORMATTEDADDRESS"":{""ColumnType"":""12"",""LABEL"":""Afleveradres"",""ALIGN"":""Left""},""ALLOWEDTOPRINTPICKLIST"":{""ColumnType"":""12""},""SHIPMENTSTATUSID"":{""ColumnType"":""12""},""TRANSPORT"":{""ColumnType"":""16""},""SHIPMENTSTATUSDESC"":{""ColumnType"":""12"",""LABEL"":""Status"",""ALIGN"":""Left""},""CUSTOMERADDRESSDESC"":{""ColumnType"":""12"",""LABEL"":""Klant"",""ALIGN"":""Left""},""CARRIERDESC"":{""ColumnType"":""12"",""LABEL"":""Vervoerder"",""ALIGN"":""Left""},""TRANSPORTID"":{""ColumnType"":""12""}}}"+"]")
+
+rem this works, has no NULL values inside:
+rem rs! = ResultSet.fromJson("[{""STATUSDOCUMENTSID"":""A"",""QUANTITYCOLLI"":3,""TOTALWEIGHTCOLLI"":4,""SCHEDULEDSHIPMENTDATE"":""2011-05-06"",""SALESORDERID"":""101029"",""SHIPMENTID"":""70014"",""SITEID"":""01"",""CARRIERID"":""01"",""SHIPMENTTYPEID"":"""",""SHIPMENTTYPEDESC_SHORT"":"""",""CUSTOMERADDRESSID"":""1001"",""DELIVERY_FORMATTEDADDRESS"":""Combidex BV, 3115 HE  SCHIEDAM"",""ALLOWEDTOPRINTPICKLIST"":""0"",""SHIPMENTSTATUSID"":""5"",""TRANSPORT"":false,""SHIPMENTSTATUSDESC"":""Afgehandeld"",""CUSTOMERADDRESSDESC"":""Combidex BV, Schiedam (NL)"",""CARRIERDESC"":""Post NL"",""TRANSPORTID"":""22"",""meta"":{""STATUSDOCUMENTSID"":{""ColumnType"":""12""},""QUANTITYCOLLI"":{""ColumnType"":""2"",""MASK"":""-##,###,##0"",""LABEL"":""Colli"",""ALIGN"":""Right"",""FIELDTYPE"":""2""},""TOTALWEIGHTCOLLI"":{""ColumnType"":""2"",""MASK"":""-##,###,##0.00"",""LABEL"":""Gewicht"",""ALIGN"":""Right"",""FIELDTYPE"":""2""},""SCHEDULEDSHIPMENTDATE"":{""ColumnType"":""91"",""MASK"":""%Dz-%Mz-%Yd"",""LABEL"":""Verzenddatum"",""ALIGN"":""Center"",""FIELDTYPE"":""91""},""SALESORDERID"":{""ColumnType"":""12"",""LABEL"":""Verkooporder"",""ALIGN"":""Left""},""SHIPMENTID"":{""ColumnType"":""12"",""LABEL"":""Verzendnr."",""ALIGN"":""Left""},""SITEID"":{""ColumnType"":""12""},""CARRIERID"":{""ColumnType"":""12""},""SHIPMENTTYPEID"":{""ColumnType"":""12""},""SHIPMENTTYPEDESC_SHORT"":{""ColumnType"":""12""},""CUSTOMERADDRESSID"":{""ColumnType"":""12""},""DELIVERY_FORMATTEDADDRESS"":{""ColumnType"":""12"",""LABEL"":""Afleveradres"",""ALIGN"":""Left""},""ALLOWEDTOPRINTPICKLIST"":{""ColumnType"":""12""},""SHIPMENTSTATUSID"":{""ColumnType"":""12""},""TRANSPORT"":{""ColumnType"":""16""},""SHIPMENTSTATUSDESC"":{""ColumnType"":""12"",""LABEL"":""Status"",""ALIGN"":""Left""},""CUSTOMERADDRESSDESC"":{""ColumnType"":""12"",""LABEL"":""Klant"",""ALIGN"":""Left""},""CARRIERDESC"":{""ColumnType"":""12"",""LABEL"":""Vervoerder"",""ALIGN"":""Left""},""TRANSPORTID"":{""ColumnType"":""12""}}}]")
+
+grid!.setData(rs!)
+return
+
+byebye:
+bye
+
+resize:
+ev! = BBjAPI().getLastEvent()
+grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return

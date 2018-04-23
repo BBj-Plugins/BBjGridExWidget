@@ -7,7 +7,7 @@
 */
 
 export function gw_sizeColumnsToFit() {
-  gw_options.columnApi.sizeColumnsToFit();
+  gw_options.api.sizeColumnsToFit();
 }
 
 export function gw_setSelectedRows(rows) {

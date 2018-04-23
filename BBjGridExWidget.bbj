@@ -341,7 +341,6 @@ class public BBjGridExWidget extends BBjWidget
     field private ResultSet RS!
     field private BBjString URL$
     field private DataTree TREE!
-    field private BBjNumber FitToGrid
     field private BBjString RowNodeId$
     field private BBjString ParentNodeId$
     field private DataRow ColumnDefinition!
@@ -891,12 +890,9 @@ class public BBjGridExWidget extends BBjWidget
     methodend
     rem /**
     rem  * set the grid to scroll horizontally or fit into the client area
-    rem  *
-    rem  * @param BBjNumber fit!: 1 = fit all columns into the width
     rem  */
-    method public void setFitToGrid(BBjNumber fit!)
-        #FitToGrid=fit!
-        ret! = #executeScript("gw_sizeColumnsToFit("+str(fit!)+")")
+    method public void setFitToGrid()
+        ret! = #executeScript("gw_sizeColumnsToFit()")
     methodend
     rem /**
     rem  * set the width of a column

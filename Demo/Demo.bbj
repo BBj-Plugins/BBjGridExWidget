@@ -138,11 +138,7 @@ return
 toggleFitToGrid:
     declare auto BBjToolButtonPushEvent toogle_ev!
     toggle_ev! = BBjAPI().getLastEvent()
-    if btn_fit!.isSelected() then
-        grid!.setFitToGrid(1)
-    else
-        grid!.setFitToGrid(0)
-    fi
+    grid!.setFitToGrid()
 return
 
 onWinKeypress:
