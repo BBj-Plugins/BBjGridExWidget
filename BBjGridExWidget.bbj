@@ -360,7 +360,7 @@ class public BBjGridExWidget extends BBjWidget
     rem * @param BBjInt w: width
     rem * @param BBjInt h: height
     rem */
-    method public BBjGridExWidget(BBjWindow wnd!, BBjInt id!, BBjInt x!, BBjInt y!, BBjInt w!, BBjInt h!)
+    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
     methodend
     rem /**
