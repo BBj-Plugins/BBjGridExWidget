@@ -500,7 +500,7 @@ class public BBjGridExWidget extends BBjWidget
     method public void setData( ResultSet rs!)
         #RS! = rs!
 
-        if #AttributesRecord! <> NULL() AND rs!.size() >0 then
+        if #AttributesRecord! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
             r1! = rs!.getItem(0)
@@ -512,7 +512,7 @@ class public BBjGridExWidget extends BBjWidget
             wend
         fi
 
-        if #ColumnDefinition! <> NULL() AND rs!.size() >0 then
+        if #ColumnDefinition! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             r1! = rs!.getItem(0)
             ar! = #ColumnDefinition!
             it! = r1!.getFieldNames().iterator()
