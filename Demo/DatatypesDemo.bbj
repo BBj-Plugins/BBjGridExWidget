@@ -90,18 +90,18 @@ prepareGrid:
     ar!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
     ar!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
     ar!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
-    
-    ar!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
+
+    ar!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000"); rem or RENDERER_MASK
     ar!.setFieldAttribute("DOUBLE","LABEL","A Double Value")
 
-REM this is also the default:    
+    REM this is also the default:    
     ar!.setFieldAttribute("BOOLEAN 1","RENDERER_TRUE","&#x2714;")
     ar!.setFieldAttribute("BOOLEAN 1","RENDERER_FALSE","&#x2718;")
     
     ar!.setFieldAttribute("BOOLEAN 2","RENDERER_TRUE","switch")
     ar!.setFieldAttribute("BOOLEAN 2","RENDERER_FALSE","switch")
     
-    ar!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
+    ar!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl"); rem // or RENDERER_MASK
     ar!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
     
     list! = new JsonObject()
