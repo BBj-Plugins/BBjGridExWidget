@@ -10,8 +10,13 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
+x=0
+y=0
+w=800
+h=600
+
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+grid! = new BBjGridExWidget(wnd!,100,x,y,w,h)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -33,5 +38,7 @@ bye
 
 resize:
 ev! = BBjAPI().getLastEvent()
-grid!.setSize(ev!.getWidth(),ev!.getHeight())
+w=ev!.getWidth()
+h=ev!.getHeight()
+grid!.setSize(w,h)
 return
