@@ -22,6 +22,19 @@ grid!.setEnableFloatingFilter(1)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
+rem /**
+rem  * @see http://documentation.basis.com/BASISHelp/WebHelp/commands2/opts_variable.htm
+rem  * Set the default group and deciaml separator for numbers masking 
+rem  * 
+rem  * To override these global option for a specific column set 
+rem  * RENDERER_GROUP_SEPARATOR and RENDERER_DECIMAL_SEPARATOR meta on the column level
+rem  */
+a$=opts
+a$(3,1)=ior(a$(3,1),$02$)
+a$(5,1)=","; rem set numbers group separator 
+a$(6,1)="."; rem set numbers decimal separator
+setopts A$
+
 gosub prepareGrid
 gosub fillGrid
 
@@ -31,10 +44,9 @@ process_events
 fillGrid:
 
     rs! = new ResultSet()
-    
 
     i=1
-    x=2222.1312345
+    x=1234
     
     for j=1 to 2
        
@@ -91,7 +103,10 @@ prepareGrid:
     ar!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
     ar!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
 
-    ar!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000"); rem or RENDERER_MASK
+    ar!.setFieldAttribute("DOUBLE","MASK","##,##.0"); rem or RENDERER_MASK
+    rem ar!.setFieldAttribute("DOUBLE","RENDERER_GROUP_SEPARATOR","G"); rem change group separator
+    rem ar!.setFieldAttribute("DOUBLE","RENDERER_DECIMAL_SEPARATOR","D"); rem change decimal separator
+    
     ar!.setFieldAttribute("DOUBLE","LABEL","A Double Value")
 
     REM this is also the default:    

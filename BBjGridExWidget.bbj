@@ -1579,11 +1579,17 @@ class public BBjGridExWidget extends BBjWidget
         autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
         options!.add("autoGroupColumnDef",autoGroupColumnDef!)
         options!.add("columnDefs",cdef!)
-        rem the following are not supported ag-grid options , by they are required by plugin js code
+        rem the following are not supported by ag-grid options but they are required by plugin js code
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
         options!.addProperty("__isTree",tree!)
+
+        comma$=",";dot$=".";a$=opts
+        if AND ( a$(3,1), $02$ ) = $02$ then comma$=a$(5,1) ; dot$=a$(6,1) fi
+        options!.addProperty("__numberGroupSep",comma$)
+        options!.addProperty("__numberDecimalSep",dot$)
+
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
@@ -1658,7 +1664,7 @@ class public BBjGridExWidget extends BBjWidget
 
             editable! = 0
             editable!= num(cd!.getFieldAttribute(f$,"EDITABLE",err=*next))
-            
+
             if editable! > 0 and #Editable! > 0 then
                 node!.addProperty("editable",1)
             else

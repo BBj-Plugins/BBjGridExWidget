@@ -29,6 +29,10 @@ export function gw_getSupportedColumnTypes() {
 
     "basic-number": {
       cellRenderer: 'BasicNumbersRenderer',
+      cellRendererParams: {
+        RENDERER_GROUP_SEPARATOR: '.', 
+        RENDERER_DECIMAL_SEPARATOR: ','
+      },
       cellEditor: 'BasicNumbersEditor',
       filter: 'agNumberColumnFilter',
       filterParams: {
@@ -128,12 +132,18 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
   if (agGrid.LicenseManager && license) agGrid.LicenseManager.setLicenseKey(license);
 
+  let types = gw_getSupportedColumnTypes();
+
+  //override numbers group and decimal separators
+  types['basic-number']['cellRendererParams']['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
+  types['basic-number']['cellRendererParams']['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
+
   let options = Object.assign(defaultOptions, {
 
     rowData: data,
     getDocument: () => $doc,
-    columnTypes: gw_getSupportedColumnTypes(),
     components: gw_getDefaultComponents(),
+    columnTypes: types,
 
     onRowDoubleClicked: gw_onRowDoubleClicked,
     onRowSelected: gw_onRowSelected,
