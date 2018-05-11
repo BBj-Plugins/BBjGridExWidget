@@ -1,6 +1,8 @@
 
 A Grid Widget Plugin for BBj
 
+![2018-05-08_1035](https://user-images.githubusercontent.com/4833070/39746783-b33abe8e-52ab-11e8-9fe2-59b53c6bc984.png)
+
 Features:
 ---------
 
