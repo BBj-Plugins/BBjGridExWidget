@@ -527,6 +527,7 @@ class public BBjGridExWidget extends BBjWidget
 
         #TREE! = null()
         #URL$=""
+        #SelectedRowsMap!.clear()
         #performGridDataUpdate()
     methodend
     rem /**
