@@ -545,13 +545,13 @@ address@^1.0.1:
     flatpickr "^4.3.2"
     serve "^6.5.6"
 
-ag-grid-enterprise@17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-17.0.0.tgz#760769c9400f6eb60213a06ca2c5fe91c92d9fd4"
+ag-grid-enterprise@18.0.0:
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-18.0.0.tgz#aa8ec97fc39812c28be9fd65dd904cbba1da8c44"
 
-ag-grid@17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-17.0.0.tgz#b8c82268c1785e04425a3149ca53cc526376029b"
+ag-grid@18.0.0:
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-18.0.0.tgz#c88be8f12a3bdc20978e767c2f2036265aa34301"
 
 ajv-keywords@^3.1.0:
   version "3.2.0"
