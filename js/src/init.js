@@ -30,7 +30,7 @@ export function gw_getSupportedColumnTypes() {
     "basic-number": {
       cellRenderer: 'BasicNumbersRenderer',
       cellRendererParams: {
-        RENDERER_GROUP_SEPARATOR: '.', 
+        RENDERER_GROUP_SEPARATOR: '.',
         RENDERER_DECIMAL_SEPARATOR: ','
       },
       cellEditor: 'BasicNumbersEditor',
@@ -206,16 +206,21 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.cellClass = gw_getCellClass;
     def.toolPanelClass = gw_getToolPanelClass;
 
-    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null , true);
+    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null, true);
 
     const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
+    const enableValue =  Number(gw_getGlobalMeta(field, 'ENABLE_VALUE'));
+
     def.rowGroup = rowGroup;
-    def.enableRowGroup = rowGroup ? true: def.enableRowGroup;
+    def.enableRowGroup = rowGroup ? true : def.enableRowGroup;
     def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
-    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP' , gw_getGlobalMeta(field,"LABEL"));
+    def.enableValue = enableValue > 0 ? true : false;
+    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP', gw_getGlobalMeta(field, "LABEL"));
+    def.aggFunc = gw_getGlobalMeta(field, 'AGG_FUNC');
+    def.allowedAggFuncs = gw_getGlobalMeta(field, 'ALLOWED_AGG_FUNCS', 'sum,min,max,count,avg,first,last').split(',');
     def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
-    def.hide = gw_getGlobalMeta(field, 'HIDE' , gw_getGlobalMeta(field, 'HIDDEN' , false));
+    def.hide = gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
   }
 
   return new agGrid.Grid(container, options);

@@ -508,8 +508,9 @@ class public BBjGridExWidget extends BBjWidget
             it! = r1!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
+
                 if ar!.contains(f$) then
-                   r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                    r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
             wend
         fi
@@ -1587,12 +1588,12 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
         options!.addProperty("__isTree",tree!)
-
-        comma$=",";dot$=".";a$=opts
+        comma$=","
+        dot$="."
+        a$=opts
         if AND ( a$(3,1), $02$ ) = $02$ then comma$=a$(5,1) ; dot$=a$(6,1) fi
         options!.addProperty("__numberGroupSep",comma$)
         options!.addProperty("__numberDecimalSep",dot$)
-
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
@@ -1600,7 +1601,7 @@ class public BBjGridExWidget extends BBjWidget
         declare DataRow cd!
 
         cd! = #ColumnDefinition!
-        
+
         if #AttributesRecord! <> NULL() and cd! <> NULL() then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
@@ -1608,8 +1609,9 @@ class public BBjGridExWidget extends BBjWidget
             it! = cd!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
+
                 if cd!.contains(f$) then
-                   cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                    cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
             wend
         fi
@@ -1687,9 +1689,22 @@ class public BBjGridExWidget extends BBjWidget
                 node!.addProperty("editable",0)
             FI
 
+            aggFunc$ = cd!.getFieldAttribute(f$,"AGG_FUNC",err=*next)
+
+            if len(aggFunc$) > 0 then
+                node!.addProperty("aggFunc",aggFunc$)
+            FI
+
+            allowedAggFuncs$ = cd!.getFieldAttribute(f$,"ALLOWED_AGG_FUNCS",err=*next)
+
+            if len(aggFunc$) > 0 then
+                node!.addProperty("ALLOWED_AGG_FUNCS",allowedAggFuncs$)
+            FI
+            
+
             enableValue!= num(cd!.getFieldAttribute(f$,"ENABLE_VALUE",err=*next))
 
-            if editable! > 0 then
+            if enableValue! > 0 then
                 node!.addProperty("enableValue",1)
             else
                 node!.addProperty("enableValue",#EnableValue!)

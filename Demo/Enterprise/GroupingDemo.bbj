@@ -45,6 +45,7 @@ setupGrid:
         
     musicTypeIndex! = rs!.getColumnIndex("MUSICTYPE")     
     artistIndex! = rs!.getColumnIndex("ARTIST")
+    playingTimeIndex! =rs!.getColumnIndex("PLAYINGTIME")
      
     rs!.setAttribute(musicTypeIndex!,"ROW_GROUP","1")
     rs!.setAttribute(musicTypeIndex!,"ROW_GROUP_INDEX","0")
@@ -52,8 +53,18 @@ setupGrid:
     rs!.setAttribute(artistIndex!,"ROW_GROUP","1")
     rs!.setAttribute(artistIndex!,"ROW_GROUP_INDEX","1")
     rs!.setAttribute(artistIndex!,"VALUE_GETTER","if(data) return 'Artist : ' +  data.ARTIST")
+
+    rs!.setAttribute(playingTimeIndex!,"ENABLE_VALUE","1")
+    rs!.setAttribute(playingTimeIndex!,"AGG_FUNC","sum")
+    rs!.setAttribute(playingTimeIndex!,"ALLOWED_AGG_FUNCS","sum,min,max")
+    rs!.setAttribute(playingTimeIndex!,"VALUE_GETTER","Number(data.PLAYINGTIME)")
     
+    rs!.setAttribute()
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+
+    grid!.setSuppressValues(0)
+    rem grid!.setEnableValue(1)
+
     grid!.setShowToolPanel(1)
     grid!.setEnableRowGroup(0)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
