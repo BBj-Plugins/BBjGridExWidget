@@ -59,7 +59,6 @@ setupGrid:
     rs!.setAttribute(playingTimeIndex!,"ALLOWED_AGG_FUNCS","sum,min,max")
     rs!.setAttribute(playingTimeIndex!,"VALUE_GETTER","Number(data.PLAYINGTIME)")
     
-    rs!.setAttribute()
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
     grid!.setSuppressValues(0)
