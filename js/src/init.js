@@ -18,26 +18,34 @@ export function gw_getSupportedColumnTypes() {
     },
 
     "basic-boolean": {
+
       cellRenderer: 'BasicBooleansRenderer',
       cellRendererParams: {
         'RENDERER_TRUE': '&#x2714;',
         'RENDERER_FALSE': '&#x2718;'
       },
+
       cellEditor: 'BasicBooleansEditor',
       filter: 'BasicBooleansFilter'
     },
 
     "basic-number": {
-      cellRenderer: 'BasicNumbersRenderer',
-      cellRendererParams: {
-        RENDERER_GROUP_SEPARATOR: '.',
-        RENDERER_DECIMAL_SEPARATOR: ','
-      },
+
+      valueFormatter: Basis.AgGridComponents.BasicNumbersValueFormatter.format,
+
+      // cellRenderer: 'BasicNumbersRenderer',
+      // cellRendererParams: {
+      //   RENDERER_GROUP_SEPARATOR: '.',
+      //   RENDERER_DECIMAL_SEPARATOR: ','
+      // },
+
       cellEditor: 'BasicNumbersEditor',
+
       filter: 'agNumberColumnFilter',
       filterParams: {
         inRangeInclusive: true,
       },
+
       floatingFilter: 'agNumberColumnFilter',
       floatingFilterParams: {
         inRangeInclusive: true,
@@ -46,10 +54,12 @@ export function gw_getSupportedColumnTypes() {
 
     "basic-date": {
 
-      cellRenderer: 'BasicDateTimesRenderer',
-      cellRendererParams: {
-        'RENDERER_MASK': '%Y/%Mz/%Dz'
-      },
+      valueFormatter: Basis.AgGridComponents.BasicDateTimesValueFormatter.format,
+
+      // cellRenderer: 'BasicDateTimesRenderer',
+      // cellRendererParams: {
+      //   'RENDERER_MASK': '%Y/%Mz/%Dz'
+      // },
 
       cellEditor: 'BasicDateTimesEditor',
       cellEditorParams: {
@@ -66,10 +76,11 @@ export function gw_getSupportedColumnTypes() {
 
     "basic-timestamp": {
 
-      cellRenderer: 'BasicDateTimesRenderer',
-      cellRendererParams: {
-        'RENDERER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz'
-      },
+      valueFormatter: Basis.AgGridComponents.BasicDateTimesValueFormatter.format,
+      // cellRenderer: 'BasicDateTimesRenderer',
+      // cellRendererParams: {
+      //   'RENDERER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz'
+      // },
 
       cellEditor: 'BasicDateTimesEditor',
       cellEditorParams: {
@@ -115,12 +126,12 @@ export function gw_getDefaultComponents() {
     'BasicBooleansFilter': Basis.AgGridComponents.BasicBooleansFilter,
 
     // Numbers
-    'BasicNumbersRenderer': Basis.AgGridComponents.BasicNumbersRenderer,
+    // 'BasicNumbersRenderer': Basis.AgGridComponents.BasicNumbersRenderer,
     'BasicNumbersEditor': Basis.AgGridComponents.BasicNumbersEditor,
 
     // Dates
     'BasicDateTimesEditor': Basis.AgGridComponents.BasicDateTimesEditor,
-    'BasicDateTimesRenderer': Basis.AgGridComponents.BasicDateTimesRenderer,
+    // 'BasicDateTimesRenderer': Basis.AgGridComponents.BasicDateTimesRenderer,
     'BasicDateTimesFilter': Basis.AgGridComponents.BasicDateTimesFilter,
 
     // Images
@@ -133,10 +144,6 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   if (agGrid.LicenseManager && license) agGrid.LicenseManager.setLicenseKey(license);
 
   let types = gw_getSupportedColumnTypes();
-
-  //override numbers group and decimal separators
-  types['basic-number']['cellRendererParams']['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
-  types['basic-number']['cellRendererParams']['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
 
   let options = Object.assign(defaultOptions, {
 
@@ -202,6 +209,14 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     const def = options.columnDefs[i];
     const field = def.field;
 
+    //override numbers group and decimal separators
+    if ('basic-number' === def.type) {
+      if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR'))
+        def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
+      if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
+        def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
+    }
+
     def.cellStyle = gw_cellStyler;
     def.cellClass = gw_getCellClass;
     def.toolPanelClass = gw_getToolPanelClass;
@@ -209,7 +224,8 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null, true);
 
     const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
-    const enableValue =  Number(gw_getGlobalMeta(field, 'ENABLE_VALUE'));
+    const enableValue = Number(gw_getGlobalMeta(field, 'ENABLE_VALUE'));
+    const footerValueGetter = gw_getGlobalMeta(field, 'FOOTER_VALUE_GETTER');
 
     def.rowGroup = rowGroup;
     def.enableRowGroup = rowGroup ? true : def.enableRowGroup;
@@ -221,6 +237,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
     def.hide = gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
+
+    if (footerValueGetter) {
+      def.cellRenderer = 'agGroupCellRenderer';
+      def.cellRendererParams = Object.assign({}, def.cellRendererParams, {
+        footerValueGetter: footerValueGetter
+      });
+    }
   }
 
   return new agGrid.Grid(container, options);

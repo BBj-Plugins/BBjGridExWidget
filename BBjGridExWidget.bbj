@@ -154,6 +154,12 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjString GroupColumnLabel$ = "Group"
     rem /**
+    rem  * Set the default grouping footer getter expression 
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */
+    field public BBjString GroupColumnFooterGetter$ = "'Total' +  x "
+    rem /**
     rem  * Enable/disable Suppress the number of items in a group
     rem  * 1 = enable
     rem  * 0 = disable
@@ -335,6 +341,26 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjNumber GroupUseEntireRow! = 0
+    rem /**
+    rem  * If true then includes a 'grand' total across all groups
+    rem  *
+    rem  * 1 = enable
+    rem  * 0 = disable
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber GroupIncludeFooter! = 0
+    rem /**
+    rem  * If true then includes group totals within each group level
+    rem  *
+    rem  * 1 = enable
+    rem  * 0 = disable
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber GroupIncludeTotalFooter! = 0
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -1564,6 +1590,8 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
         options!.addProperty("groupMultiAutoColumn",#GroupMultiAutoColumn!)
         options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
+        options!.addProperty("groupIncludeFooter",#GroupIncludeFooter!)
+        options!.addProperty("groupIncludeTotalFooter",#GroupIncludeTotalFooter!)
 
         if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
             options!.addProperty("__navigateToNextCell",1)
@@ -1580,6 +1608,7 @@ class public BBjGridExWidget extends BBjWidget
         autoGroupColumnDefCellRendererParams! = new JsonObject()
         autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
         autoGroupColumnDefCellRendererParams!.addProperty("checkbox", #ShowGroupSelectionCheckbox!)
+        autoGroupColumnDefCellRendererParams!.addProperty("footerValueGetter", #GroupColumnFooterGetter$)
         autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
         options!.add("autoGroupColumnDef",autoGroupColumnDef!)
         options!.add("columnDefs",cdef!)
@@ -1700,7 +1729,12 @@ class public BBjGridExWidget extends BBjWidget
             if len(aggFunc$) > 0 then
                 node!.addProperty("ALLOWED_AGG_FUNCS",allowedAggFuncs$)
             FI
-            
+
+            footerValueGetter$ = cd!.getFieldAttribute(f$,"FOOTER_VALUE_GETTER",err=*next)
+
+            if len(footerValueGetter$) > 0 then
+                node!.addProperty("FOOTER_VALUE_GETTER",footerValueGetters$)
+            FI
 
             enableValue!= num(cd!.getFieldAttribute(f$,"ENABLE_VALUE",err=*next))
 
