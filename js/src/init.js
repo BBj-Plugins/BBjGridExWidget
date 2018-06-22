@@ -210,11 +210,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     const field = def.field;
 
     //override numbers group and decimal separators
-    if ('basic-number' === def.type) {
-      if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR'))
-        def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
-      if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
-        def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
+    if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
+      if (gw_meta && gw_meta.hasOwnProperty('field')) {
+        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR'))
+          def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
+        if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
+          def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
+      }
     }
 
     def.cellStyle = gw_cellStyler;
