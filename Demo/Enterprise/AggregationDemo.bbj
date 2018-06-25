@@ -55,7 +55,7 @@ setupGrid:
     rs!.setAttribute(costIndex!,"ENABLE_VALUE","1")
     rs!.setAttribute(costIndex!,"AGG_FUNC","sum")
     rs!.setAttribute(costIndex!,"ALLOWED_AGG_FUNCS","sum,avg")
-    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","'Cost Total' + '(' + BBj.Masks.Types.number(x, '##,##.0' , ',' , '.')  + ') $' ")
+    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","if(x) {return 'Cost Total' + '(' + BBj.Masks.Types.number(x, '##,##.0' , ',' , '.')  + ') $'} else {return x} ")
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
