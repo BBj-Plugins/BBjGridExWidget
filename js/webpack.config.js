@@ -6,7 +6,10 @@ const path = require("path");
 module.exports = {
   entry: {
     // "bbj-grid-widget": "./src/index.js",
-    "bbj-grid-widget.min": "./src/index.js",
+    "bbj-grid-widget.min": [
+      "core-js/fn/string/starts-with.js",
+      "./src/index.js"
+    ],
   },
   devtool: "source-map",
   output: {

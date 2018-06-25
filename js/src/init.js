@@ -215,7 +215,8 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP' , gw_getGlobalMeta(field,"LABEL"));
     def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
-    def.hide = gw_getGlobalMeta(field, 'HIDE' , gw_getGlobalMeta(field, 'HIDDEN' , false));
+    def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE' , gw_getGlobalMeta(field, 'HIDDEN' , false));
+    def.suppressToolPanel = def.headerName.startsWith('__');
   }
 
   return new agGrid.Grid(container, options);
