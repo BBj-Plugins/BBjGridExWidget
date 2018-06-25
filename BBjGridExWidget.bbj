@@ -374,7 +374,9 @@ class public BBjGridExWidget extends BBjWidget
         declare BBjHtmlView htmlview!
 
         if (f_init!) then
-            dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=true")
+            dummy$=stbl("!OPTIONS","JXBROWSER_HTMLVIEW=TRUE",ERR=*NEXT)
+            dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=TRUE",ERR=*NEXT)
+            
             html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
@@ -1528,7 +1530,13 @@ class public BBjGridExWidget extends BBjWidget
         gson! = new Gson()
 
         if (#RS! <> null()) then
-            data$=#RS!.toJson()
+
+            if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
+                data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
+            else
+                data$=#RS!.toJson(BBjAPI.TRUE)
+            fi
+
             cdef!= #getAgGridColumnDefinition(0)
         else
             if (#TREE! <> null()) then
@@ -1623,6 +1631,11 @@ class public BBjGridExWidget extends BBjWidget
                 FI
             FI
         FI
+
+        if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
+            rem this probably needs to be removed again, just showing for demonstration purpose
+            cd!.setFieldValue("__ROW_INDEX","")
+        fi
 
         cdef! = new JsonArray()
         first=1
