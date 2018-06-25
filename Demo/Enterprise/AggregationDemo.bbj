@@ -81,7 +81,7 @@ byebye:
     
 resize:
     ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-40)
 return
 
 
