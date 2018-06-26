@@ -30,7 +30,7 @@ export function gw_getSupportedColumnTypes() {
     "basic-number": {
       cellRenderer: 'BasicNumbersRenderer',
       cellRendererParams: {
-        RENDERER_GROUP_SEPARATOR: '.', 
+        RENDERER_GROUP_SEPARATOR: '.',
         RENDERER_DECIMAL_SEPARATOR: ','
       },
       cellEditor: 'BasicNumbersEditor',
@@ -156,43 +156,22 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     onRowEditingStarted: gw_onRowEditingsEvent,
     onRowEditingStopped: gw_onRowEditingsEvent,
     onRowValueChanged: gw_onRowEditingsEvent,
-    rememberGroupStateWhenNewData: true
+
+    getRowNodeId: gw_getRowNodeId,
+
+    rememberGroupStateWhenNewData: true,
   });
 
   if (
-    gw_options.hasOwnProperty('__isTree') &&
-    true === gw_options.__isTree
+    options.hasOwnProperty('__isTree') &&
+    true === options.__isTree
   ) {
-    options.getNodeChildDetails = rowItem => {
-
-      const key = rowItem[gw_options.__getParentNodeId];
-      if (rowItem.__node__children) {
-        return {
-          group: true,
-          expanded: false,
-          // provide ag-Grid with the children of this group
-          children: rowItem.__node__children,
-          // the key is used by the default group cellRenderer
-          key: key ? key : -1
-        };
-      } else {
-        return false;
-      }
-    };
-  }
-
-  if (gw_options.hasOwnProperty('__getRowNodeId')) {
-
-    options.getRowNodeId = data => {
-      let id = data[gw_options.__getRowNodeId];
-      id = id ? id : Math.random();
-      return id;
-    };
+    options.getNodeChildDetails = gw_getNodeChildDetails;
   }
 
   if (
-    gw_options.hasOwnProperty("__navigateToNextCell") &&
-    gw_options.__navigateToNextCell
+    options.hasOwnProperty("__navigateToNextCell") &&
+    options.__navigateToNextCell
   ) {
     options.navigateToNextCell = gw_navigateToNextRow;
   }
@@ -206,13 +185,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.cellClass = gw_getCellClass;
     def.toolPanelClass = gw_getToolPanelClass;
 
-    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null , true);
+    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null, true);
 
     const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
     def.rowGroup = rowGroup;
-    def.enableRowGroup = rowGroup ? true: def.enableRowGroup;
+    def.enableRowGroup = rowGroup ? true : def.enableRowGroup;
     def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
-    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP' , gw_getGlobalMeta(field,"LABEL"));
+    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP', gw_getGlobalMeta(field, "LABEL"));
     def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
     def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE' , gw_getGlobalMeta(field, 'HIDDEN' , false));
@@ -231,7 +210,7 @@ export function gw_setData(json, options, license) {
   window.AGridComponentsMetaConfig = gw_meta;
 
   console.log(options);
-  window.gw_options = options;
+  window.gw_options = options;  
   window.gw_instance = gw_init(container, license, json, options);
 
   if (gw_options.hasOwnProperty('__enterKeyBehavior')) {

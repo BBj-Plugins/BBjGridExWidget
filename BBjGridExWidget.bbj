@@ -376,7 +376,6 @@ class public BBjGridExWidget extends BBjWidget
         if (f_init!) then
             dummy$=stbl("!OPTIONS","JXBROWSER_HTMLVIEW=TRUE",ERR=*NEXT)
             dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=TRUE",ERR=*NEXT)
-            
             html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
@@ -510,8 +509,9 @@ class public BBjGridExWidget extends BBjWidget
             it! = r1!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
+
                 if ar!.contains(f$) then
-                   r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                    r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
             wend
         fi
@@ -568,6 +568,24 @@ class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * add a column to the grid
     rem  * @param BBjString field$: the field name that matches the ResultSet
+    rem  * @param BBjString label$: the column header
+    rem  * @param BBjNumber Type!: the column Type (java.sql.Types)
+    rem  * @param BBjNumber Editable!: 1 = column is editable
+    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+    rem  *
+    rem  */
+    method public void addColumn(BBjString Field$, BBjString Label$, BBjNumber Type!, BBjNumber Editable!)
+        if #ColumnDefinition! = null() then
+            #ColumnDefinition! = new DataRow()
+        FI
+
+        #ColumnDefinition!.setFieldValue(Field$,Type!,null())
+        #ColumnDefinition!.setFieldAttribute(Field$,"LABEL",Label$)
+        #ColumnDefinition!.setFieldAttribute(Field$,"EDITABLE",STR(Editable!))
+    methodend
+    rem /**
+    rem  * add a column to the grid
+    rem  * @param BBjString field$: the field name that matches the ResultSet
     rem  */
     method public void addColumn(BBjString Field$)
         #addColumn(Field$,Field$,12,0)
@@ -590,24 +608,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void addColumn(BBjString Field$, BBjString Label$, BBjNumber Type!)
         #addColumn(Field$,Label$, Type!, 0)
-    methodend
-    rem /**
-    rem  * add a column to the grid
-    rem  * @param BBjString field$: the field name that matches the ResultSet
-    rem  * @param BBjString label$: the column header
-    rem  * @param BBjNumber Type!: the column Type (java.sql.Types)
-    rem  * @param BBjNumber Editable!: 1 = column is editable
-    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
-    rem  *
-    rem  */
-    method public void addColumn(BBjString Field$, BBjString Label$, BBjNumber Type!, BBjNumber Editable!)
-        if #ColumnDefinition! = null() then
-            #ColumnDefinition! = new DataRow()
-        FI
-
-        #ColumnDefinition!.setFieldValue(Field$,Type!,null())
-        #ColumnDefinition!.setFieldAttribute(Field$,"LABEL",Label$)
-        #ColumnDefinition!.setFieldAttribute(Field$,"EDITABLE",STR(Editable!))
     methodend
     rem /**
     rem  * clear all columns
@@ -1442,20 +1442,20 @@ class public BBjGridExWidget extends BBjWidget
         it! = array!.iterator()
         while (it!.hasNext())
             next! = it!.next().getAsJsonObject()
-            row! = new BBjGridExWidgetRow()
+            row! = new BBjGridExWidgetRow(#RS!)
             row!.setId(next!.get("id").getAsString())
             row!.setChildIndex(next!.get("childIndex").getAsInt())
+            row!.setIndex(next!.get("index").getAsInt())
             row!.setParentKey(next!.get("parentKey").getAsString())
-            row!.setData(next!.get("data").getAsJsonObject())
             row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
             rows!.add( row!)
 
             if row!.getIsSelected() = 1 then
                 selected!.add(row!)
-                #SelectedRowsMap!.put(row!.getId(),row!)
+                #SelectedRowsMap!.put(row!.getIndex(),row!)
             else
                 deselected!.add(row!)
-                #SelectedRowsMap!.remove(row!.getId())
+                #SelectedRowsMap!.remove(row!.getIndex())
             FI
         wend
 
@@ -1477,11 +1477,11 @@ class public BBjGridExWidget extends BBjWidget
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
         next! = array!.iterator().next().getAsJsonObject()
-        row! = new BBjGridExWidgetRow()
+        row! = new BBjGridExWidgetRow(#RS!)
         row!.setId(next!.get("id").getAsString())
         row!.setChildIndex(next!.get("childIndex").getAsInt())
+        row!.setIndex(next!.get("index").getAsInt())
         row!.setParentKey(next!.get("parentKey").getAsString())
-        row!.setData(next!.get("data").getAsJsonObject())
         row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
         event! = new BBjGridExWidgetDoubleClickRowEvent()
         event!.setRow(row!)
@@ -1493,11 +1493,11 @@ class public BBjGridExWidget extends BBjWidget
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
         next! = array!.iterator().next().getAsJsonObject()
         rowAsJson! = next!.get("row").getAsJsonObject()
-        row! = new BBjGridExWidgetRow()
+        row! = new BBjGridExWidgetRow(#RS!)
         row!.setId(rowAsJson!.get("id").getAsString())
         row!.setChildIndex(rowAsJson!.get("childIndex").getAsInt())
+        row!.setIndex(next!.get("index").getAsInt())
         row!.setParentKey(rowAsJson!.get("parentKey").getAsString())
-        row!.setData(rowAsJson!.get("data").getAsJsonObject())
         row!.setIsSelected(iff(rowAsJson!.get("selected").getAsString() = "true" ,  1 , 0))
         event! = new BBjGridWidgetCellEditingEvent()
         event!.setRow(row!)
@@ -1510,11 +1510,11 @@ class public BBjGridExWidget extends BBjWidget
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
         next! = array!.iterator().next().getAsJsonObject()
-        row! = new BBjGridExWidgetRow()
+        row! = new BBjGridExWidgetRow(#RS!)
         row!.setId(next!.get("id").getAsString())
         row!.setChildIndex(next!.get("childIndex").getAsInt())
+        row!.setIndex(next!.get("index").getAsInt())
         row!.setParentKey(next!.get("parentKey").getAsString())
-        row!.setData(next!.get("data").getAsJsonObject())
         row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
         event! = new BBjGridExWidgetDoubleClickRowEvent()
         event!.setRow(row!)
@@ -1530,7 +1530,6 @@ class public BBjGridExWidget extends BBjWidget
         gson! = new Gson()
 
         if (#RS! <> null()) then
-
             if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
                 data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
             else
@@ -1595,12 +1594,12 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
         options!.addProperty("__isTree",tree!)
-
-        comma$=",";dot$=".";a$=opts
+        comma$=","
+        dot$="."
+        a$=opts
         if AND ( a$(3,1), $02$ ) = $02$ then comma$=a$(5,1) ; dot$=a$(6,1) fi
         options!.addProperty("__numberGroupSep",comma$)
         options!.addProperty("__numberDecimalSep",dot$)
-
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
@@ -1608,7 +1607,7 @@ class public BBjGridExWidget extends BBjWidget
         declare DataRow cd!
 
         cd! = #ColumnDefinition!
-        
+
         if #AttributesRecord! <> NULL() and cd! <> NULL() then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
@@ -1616,8 +1615,9 @@ class public BBjGridExWidget extends BBjWidget
             it! = cd!.getFieldNames().iterator()
             while it!.hasNext()
                 f$ = it!.next()
+
                 if cd!.contains(f$) then
-                   cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                    cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
             wend
         fi
@@ -1800,17 +1800,28 @@ classend
 class public BBjGridExWidgetRow
 
     field public BBjString Id!
+    field public BBjNumber Index!
     field public BBjNumber ChildIndex!
     field public BBjString ParentKey!
     field public BBjNumber IsSelected!
     field public JsonObject Data!
+    field private ResultSet RS!
+
+    method public BBjGridExWidgetRow(ResultSet RS!)
+        #RS! = RS!
+    methodend
 
     method public String toString()
         methodret #Id!
     methodend
 
     method public DataRow asDataRow()
-        methodret DataRow.fromJson(#Data!.toString())
+        methodret #RS!.getItem(#Index!)
+    methodend
+
+    method public JsonObject getData()
+        parser! = new JsonParser()
+        methodret parser!.parse(#asDataRow().toJson()).getAsJsonArray().get(0)
     methodend
 
 classend
