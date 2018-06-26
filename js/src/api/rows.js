@@ -61,7 +61,6 @@ export function gw_navigateToNextRow(params) {
 
 export function gw_getRowNodeId(data) {
 
-  console.log(gw_options.__getRowNodeId)
   let id;
   if (gw_options.hasOwnProperty('__getRowNodeId')) {
     id = data[gw_options.__getRowNodeId];
