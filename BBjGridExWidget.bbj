@@ -1496,7 +1496,7 @@ class public BBjGridExWidget extends BBjWidget
         row! = new BBjGridExWidgetRow(#RS!)
         row!.setId(rowAsJson!.get("id").getAsString())
         row!.setChildIndex(rowAsJson!.get("childIndex").getAsInt())
-        row!.setIndex(next!.get("index").getAsInt())
+        row!.setIndex(rowAsJson!.get("index").getAsInt())
         row!.setParentKey(rowAsJson!.get("parentKey").getAsString())
         row!.setIsSelected(iff(rowAsJson!.get("selected").getAsString() = "true" ,  1 , 0))
         event! = new BBjGridWidgetCellEditingEvent()
