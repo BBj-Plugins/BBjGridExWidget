@@ -48,14 +48,14 @@ setupGrid:
     rs!.setAttribute(playingTimeIndex!,"ALLOWED_AGG_FUNCS","sum,min,max")
     rem convert string to number 
     rs!.setAttribute(playingTimeIndex!,"VALUE_GETTER","Number(data.PLAYINGTIME)")
-    rs!.setAttribute(playingTimeIndex!,"FOOTER_VALUE_GETTER","'PlayingTime Total' + '(' + x + ')' ")
+    rs!.setAttribute(playingTimeIndex!,"FOOTER_VALUE_GETTER","'PlayingTime ' + column.aggFunc +' (' + x + ')' ")
 
     costIndex! =rs!.getColumnIndex("COST")
 
     rs!.setAttribute(costIndex!,"ENABLE_VALUE","1")
     rs!.setAttribute(costIndex!,"AGG_FUNC","sum")
-    rs!.setAttribute(costIndex!,"ALLOWED_AGG_FUNCS","sum,avg")
-    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","if(x) {return column.aggFunc + '(' + BBj.Masks.Types.number(x, '##,##.0' , ',' , '.')  + ') $'} else {return x} ")
+    rs!.setAttribute(costIndex!,"ALLOWED_AGG_FUNCS","sum,avg,min,max")
+    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","if(x) {return column.aggFunc + ':' + BBj.Masks.Types.number(x, '### ##0.00' , ',' , '.')  + ' $'} else {return x} ")
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
