@@ -30,7 +30,6 @@ wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 gosub setupGrid
 
 process_events
-
    
 setupGrid:
 
@@ -42,40 +41,32 @@ setupGrid:
     filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
     
     rs! = rs!.filterBy(filter!)
-        
-    musicTypeIndex! = rs!.getColumnIndex("MUSICTYPE")     
-    artistIndex! = rs!.getColumnIndex("ARTIST")
     playingTimeIndex! =rs!.getColumnIndex("PLAYINGTIME")
-     
-    rs!.setAttribute(musicTypeIndex!,"ROW_GROUP","1")
-    rs!.setAttribute(musicTypeIndex!,"ROW_GROUP_INDEX","0")
-    
-    rs!.setAttribute(artistIndex!,"ROW_GROUP","1")
-    rs!.setAttribute(artistIndex!,"ROW_GROUP_INDEX","1")
-    rs!.setAttribute(artistIndex!,"VALUE_GETTER","if(data) return 'Artist : ' +  data.ARTIST")
 
     rs!.setAttribute(playingTimeIndex!,"ENABLE_VALUE","1")
     rs!.setAttribute(playingTimeIndex!,"AGG_FUNC","sum")
     rs!.setAttribute(playingTimeIndex!,"ALLOWED_AGG_FUNCS","sum,min,max")
+    rem convert string to number 
     rs!.setAttribute(playingTimeIndex!,"VALUE_GETTER","Number(data.PLAYINGTIME)")
+    rs!.setAttribute(playingTimeIndex!,"FOOTER_VALUE_GETTER","'PlayingTime ' + column.aggFunc +' (' + x + ')' ")
+
+    costIndex! =rs!.getColumnIndex("COST")
+
+    rs!.setAttribute(costIndex!,"ENABLE_VALUE","1")
+    rs!.setAttribute(costIndex!,"AGG_FUNC","sum")
+    rs!.setAttribute(costIndex!,"ALLOWED_AGG_FUNCS","sum,avg,min,max")
+    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","if(x) {return column.aggFunc + ':' + BBj.Masks.Types.number(x, '### ##0.00' , ',' , '.')  + ' $'} else {return x} ")
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
     grid!.setSuppressValues(0)
-    rem grid!.setEnableValue(1)
-
     grid!.setShowToolPanel(1)
-    grid!.setEnableRowGroup(0)
+    grid!.setGroupIncludeFooter(1)
+    grid!.setGroupIncludeTotalFooter(1)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
-    grid!.setGroupColumnLabel("My Custom Group")
     grid!.setShowGroupChildCount(1)
     grid!.setShowGroupSelectionCheckbox(1)
     grid!.setGroupSelectsChildren(1)
-    
-    
-    rem grid!.setGroupUseEntireRow(1)
-    rem grid!.setGroupMultiAutoColumn(1)
-    
     
     grid!.setData(rs!,"CDNUMBER")
 return
@@ -90,6 +81,7 @@ byebye:
     
 resize:
     ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-40)
 return
+
 
