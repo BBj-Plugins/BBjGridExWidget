@@ -1,12 +1,16 @@
 const webpack = require("webpack");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require("path");
 
 module.exports = {
+  target: 'web',
   entry: {
-    // "bbj-grid-widget": "./src/index.js",
-    "bbj-grid-widget.min": "./src/index.js",
+    "bbj-grid-widget.min": [
+      "core-js/fn/string/starts-with.js",
+      "./src/index.js"
+    ],
   },
   devtool: "source-map",
   output: {
@@ -42,10 +46,11 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: __dirname + '/node_modules/ag-grid/dist/ag-grid.min.js', to: __dirname + '/dist/' },
-      { from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js', to: __dirname + '/dist/' },
-      { from: __dirname + '/node_modules/ag-grid-components/dist/agc-basic-bundle.min.js', to: __dirname + '/dist/' },
-      { from: __dirname + '/node_modules/jss/jss.min.js', to: __dirname + '/dist/' },
-    ])
+      { from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js', to: __dirname + '/dist/' }
+    ]),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static'
+    })
   ],
   watchOptions: {
     ignored: /node_modules/

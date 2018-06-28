@@ -23,17 +23,12 @@ export function gw_parseNodeFromEvent(e) {
   if (true === e.node.group) return false; // we do not manage groups
 
   let detail = {
-    id: e.node.id, // auto generated id by ag-gird (can be changed , but we will not change it)
-    childIndex: e.node.childIndex, // row index when it is a child in a group 
-    // childrenCount: e.node.group ? e.node.allChildrenCount : 0,
+    id: !gw_options.__getRowNodeId && e.node.data.__ROW_INDEX ? e.node.data.__ROW_INDEX : e.node.id,
+    childIndex: e.node.childIndex,
     selected: Boolean(e.node.selected),
-    data: e.node.data,
-    // level: e.node.level, // the group level 
-
-    // hasParent: hasParent,
-    // parentId: hasParent ? e.node.parent.id : -1,
+    index: Number(e.node.data.__ROW_INDEX ? e.node.data.__ROW_INDEX : -1),
     parentKey: e.node.hasOwnProperty('parent') && e.node.parent.hasOwnProperty('key') ? e.node.parent.key : '',
   };
-
+  
   return detail;
 }

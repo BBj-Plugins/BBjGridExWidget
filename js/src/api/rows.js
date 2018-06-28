@@ -58,3 +58,31 @@ export function gw_navigateToNextRow(params) {
       throw new Error("You have super strange keyboard");
   }
 }
+
+export function gw_getRowNodeId(data) {
+
+  let id;
+  if (gw_options.hasOwnProperty('__getRowNodeId')) {
+    id = data[gw_options.__getRowNodeId];
+  }
+
+  id = id ? id : data.__ROW_INDEX;
+  return id;
+}
+
+export function gw_getNodeChildDetails(rowItem) {
+
+  const key = rowItem[gw_options.__getParentNodeId];
+  if (rowItem.__node__children) {
+    return {
+      group: true,
+      expanded: false,
+      // provide ag-Grid with the children of this group
+      children: rowItem.__node__children,
+      // the key is used by the default group cellRenderer
+      key: key ? key : -1
+    };
+  } else {
+    return false;
+  }
+}
