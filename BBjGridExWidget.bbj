@@ -154,7 +154,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjString GroupColumnLabel$ = "Group"
     rem /**
-    rem  * Set the default grouping footer getter expression 
+    rem  * Set the default grouping footer getter expression
     rem  *
     rem  * @RequiresRefresh
     rem  */
@@ -372,6 +372,7 @@ class public BBjGridExWidget extends BBjWidget
     field private DataRow ColumnDefinition!
     field public  DataRow AttributesRecord!
     field private BBjNumber Editing! = 0
+    field private HashMap ColumnGroups! = new HashMap()
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -1246,6 +1247,55 @@ class public BBjGridExWidget extends BBjWidget
         methodret ids!
     methodend
     rem /**
+    rem  * Group Vector of Columns
+    rem * @param BBjString id$: the group id
+    rem * @param BBjString name$: the group label/name
+    rem * @param BBjVector columns!: Vector of columns ids
+    rem * @param BBjInt MarryChildren!: Set to 'true' to keep columns in this group beside each other in the grid.
+    rem *                               Moving the columns outside of the group (and hence breaking the group) is not allowed.
+    rem * @param BBjInt HeaderClass$:  Css class to apply
+    rem */
+    method public void addColumnGroup(BBjString id$ , BBjString name$ ,  BBjVector columns! , Boolean MarryChildren! ,BBjString HeaderClass$ )
+        json! = new JsonObject()
+        size! = columns!.size()
+
+        if size! > 0 then
+            columnsStr! = ""
+            for n = 0 to size! - 1 step 1
+                columnsStr! = columnsStr! +str(columns!.getItem(n)) + ","
+            next n
+
+            columnsStr! = columnsStr!.substring(0,columnsStr!.length() - 1)
+            json!.addProperty("children",columnsStr!)
+        FI
+
+        json!.addProperty("groupId",id$)
+        json!.addProperty("headerName",name$)
+        json!.addProperty("marryChildren",MarryChildren!)
+        json!.addProperty("headerClass",HeaderClass$)
+        #ColumnGroups!.put(id$,str(json!))
+    methodend
+    rem /**
+    rem  * Group Vector of Columns
+    rem * @param BBjString id$: the group id
+    rem * @param BBjString name$: the group label/name
+    rem * @param BBjVector columns!: Vector of columns ids
+    rem * @param BBjInt MarryChildren!: Set to 'true' to keep columns in this group beside each other in the grid.
+    rem *                               Moving the columns outside of the group (and hence breaking the group) is not allowed.
+    rem */
+    method public void addColumnGroup(BBjString id$, BBjString name$ , BBjVector columns! , Boolean MarryChildren!)
+        #addColumnGroup(id$,name$,columns! , MarryChildren! ,  "" )
+    methodend
+    rem /**
+    rem  * Group Vector of Columns
+    rem * @param BBjString id$: the group id
+    rem * @param BBjString name$: the group label/name
+    rem * @param BBjVector columns!: Vector of columns ids
+    rem */
+    method public void addColumnGroup(BBjString id$ , BBjString name$, BBjVector columns!)
+        #addColumnGroup(id$,name$ , columns! , 1  , "" )
+    methodend
+    rem /**
     rem  * experimental function that shows the developer console
     rem  * (only in GUI, for BUI it's a NOOP)
     rem  */
@@ -1613,6 +1663,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
         options!.addProperty("__isTree",tree!)
+        options!.addProperty("__columnsGroup",new Gson().toJson(#ColumnGroups!))
         comma$=","
         dot$="."
         a$=opts

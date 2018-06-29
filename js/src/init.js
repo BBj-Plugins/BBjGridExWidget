@@ -202,7 +202,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.allowedAggFuncs = gw_getGlobalMeta(field, 'ALLOWED_AGG_FUNCS', 'sum,min,max,count,avg,first,last').split(',');
     def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
-    def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE' , gw_getGlobalMeta(field, 'HIDDEN' , false));
+    def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
     def.suppressToolPanel = def.headerName.startsWith('__');
 
     if (footerValueGetter) {
@@ -212,6 +212,8 @@ export function gw_init(container, license, data, defaultOptions = {}) {
       });
     }
   }
+
+  gw_groupColumns(JSON.parse(options.__columnsGroup), options.columnDefs);
 
   return new agGrid.Grid(container, options);
 }
@@ -225,7 +227,7 @@ export function gw_setData(json, options, license) {
   window.AGridComponentsMetaConfig = gw_meta;
 
   console.log(options);
-  window.gw_options = options;  
+  window.gw_options = options;
   window.gw_instance = gw_init(container, license, json, options);
 
   if (gw_options.hasOwnProperty('__enterKeyBehavior')) {
