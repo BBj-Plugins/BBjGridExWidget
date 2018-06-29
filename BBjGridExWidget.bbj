@@ -1651,7 +1651,7 @@ class public BBjGridExWidget extends BBjWidget
             FI
         FI
 
-        if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
+        if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051  AND cd! <> null() then
             rem this probably needs to be removed again, just showing for demonstration purpose
             cd!.setFieldValue("__ROW_INDEX","")
         fi
