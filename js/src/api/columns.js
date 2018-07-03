@@ -55,3 +55,35 @@ export function gw_pinColumn(columnid, pin) {
 export function gw_moveColumn(columnid, toIndex) {
   gw_options.columnApi.moveColumn(columnid, toIndex);
 }
+
+export function gw_groupColumns(columns, columnDefs) {
+
+  for (const i in columns) {
+
+    if (!columns.hasOwnProperty(i)) continue;
+
+    const column = JSON.parse(columns[i]);
+    
+    const children = column.children.split(',');
+    let newChildren = [];
+    let newColumnDef = [];
+
+
+    children.forEach(child => {
+
+      for (let x = 0; x < columnDefs.length; x++) {
+
+        const def = columnDefs[x];
+
+        if(def && def.hasOwnProperty("field") && def.field === child) {
+          newChildren.push(def);
+          columnDefs.splice(x, 1);
+          break;
+        }
+      }
+    });
+
+    column.children = newChildren;
+    columnDefs.unshift(column);
+  }
+}
