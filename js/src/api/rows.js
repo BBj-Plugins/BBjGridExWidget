@@ -86,3 +86,25 @@ export function gw_getNodeChildDetails(rowItem) {
     return false;
   }
 }
+
+export function gw_setRowsData(json) {
+  
+  gw_options.api.setRowData(json);
+  gw_options.rowData = json;
+  gw_options.api.refreshClientSideRowModel('group');
+}
+
+export function gw_setRowData(row) {
+
+  const data = row[0];
+  const key = gw_options.__getRowNodeId.length === 0 ? "__ROW_INDEX" : gw_options.__getRowNodeId;
+  gw_options.api.getRowNode(data[key]).setData(data);
+  gw_options.api.refreshClientSideRowModel('group');
+}
+
+export function gw_removeRow(index) {
+  
+  gw_options.rowData.splice(Number(index), 1);
+  gw_options.api.setRowData(gw_options.rowData);
+  gw_options.api.refreshClientSideRowModel('group');
+}

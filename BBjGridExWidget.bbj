@@ -154,7 +154,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjString GroupColumnLabel$ = "Group"
     rem /**
-    rem  * Set the default grouping footer getter expression 
+    rem  * Set the default grouping footer getter expression
     rem  *
     rem  * @RequiresRefresh
     rem  */
@@ -367,7 +367,7 @@ class public BBjGridExWidget extends BBjWidget
     field private ResultSet RS!
     field private BBjString URL$
     field private DataTree TREE!
-    field private BBjString RowNodeId$
+    field private BBjString RowNodeId$ = "__ROW_INDEX"
     field private BBjString ParentNodeId$
     field private DataRow ColumnDefinition!
     field public  DataRow AttributesRecord!
@@ -580,6 +580,90 @@ class public BBjGridExWidget extends BBjWidget
     method public void setData( DataTree rs! ,BBjString RowNodeId$ , BBjString ParentNodeId$)
         #ParentNodeId$ = ParentNodeId$
         #setData(rs! , RowNodeId$)
+    methodend
+    rem /**
+    rem  * Set new rows into the grid
+    rem  *
+    rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
+    rem  */
+    method public void setRowsData(ResultSet rs!)
+        #RS! = rs!
+
+        if #AttributesRecord! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
+            rem TODO: use the new method of components as soon as implemented
+            rem https://github.com/BasisHub/components/issues/87
+            r1! = rs!.getItem(0)
+            ar! = #AttributesRecord!
+            it! = r1!.getFieldNames().iterator()
+            while it!.hasNext()
+                f$ = it!.next()
+
+                if ar!.contains(f$) then
+                    r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                fi
+            wend
+        fi
+
+        if #ColumnDefinition! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
+            r1! = rs!.getItem(0)
+            ar! = #ColumnDefinition!
+            it! = r1!.getFieldNames().iterator()
+            while it!.hasNext()
+                f$ = it!.next()
+
+                if ar!.contains(f$) then
+                    r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                fi
+            wend
+        fi
+
+        #TREE! = null()
+        #URL$=""
+        #SelectedRowsMap!.clear()
+
+        if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
+            data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
+        else
+            data$=#RS!.toJson(BBjAPI.TRUE)
+        fi
+
+        #executeScript("gw_setRowsData(" + data$+ ")")
+    methodend
+    rem /**
+    rem  * Clear row data (Empty the grid )
+    rem  */
+    method public void clearRowsData()
+        #RS! = new ResultSet()
+        #TREE! = null()
+        #URL$=""
+        #SelectedRowsMap!.clear()
+        #executeScript("gw_setRowsData([])")
+    methodend
+    rem /**
+    rem  * Update row data
+    rem  *
+    rem  * @param BBjNumber: row index
+    rem  * @param DataRow: DataRow object which contains the update
+    rem  */
+    method public void setRowData(BBjNumber index!,DataRow row!)
+        if #RS!.count() <> 0 then
+            #RS!.setItem(index!,row!)
+            row!.setFieldValue("__ROW_INDEX",str(index!))
+            #executeScript("gw_setRowData(" + row!.toJson()  +")")
+        fi
+    methodend
+    rem /**
+    rem  * Remove row from grid by index
+    rem  *
+    rem  * @param BBjNumber: row index
+    rem  */
+    method public void removeRow(BBjNumber index!)
+        if #RS!.count() <> 0 then
+            #RS!.remove(index!)
+            #executeScript("gw_removeRow(" + str(index!)  +")")
+            rem print #RS!.getItem(index!)
+            rem escape
+        fi
     methodend
     rem /**
     rem  * add a column to the grid
