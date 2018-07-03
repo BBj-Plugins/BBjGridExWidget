@@ -45,20 +45,31 @@ fillGrid:
     grid!.setEnableFilter(1)
     grid!.setEnableFloatingFilter(1)
     
-    group! = new BBjVector()
-    group!.addItem("ARTIST")
-    group!.addItem("TITLE")
-    group!.addItem("LABEL")
-    group!.addItem("PLAYINGTIME")
-
-    groupStyle! = new JsonObject()
+	groupStyle! = new JsonObject()
     groupStyle!.addProperty("background","#03a9f4")
     groupStyle!.addProperty("color","white")
     groupStyle!.addProperty("font-weight","bolder")
     groupStyle!.addProperty("border-bottom","3px solid black")
 
     grid!.addStyle(".my-group-class" , groupStyle!)
-    grid!.addColumnGroup("myGroupID" , "CD Information",group! , 1 , "my-group-class")
+    
+	
+    group! = new BBjVector()
+    group!.addItem("CDNUMBER")
+    grid!.addColumnGroup("group1" , "Inventory",group! , 0 , "my-group-class")
+	
+	group! = new BBjVector()
+    group!.addItem("ARTIST")
+    group!.addItem("TITLE")
+    grid!.addColumnGroup("group2" , "CD Information",group! , 0 , "my-group-class")
+	
+	group! = new BBjVector()
+    group!.addItem("LABEL")
+    group!.addItem("PLAYINGTIME")
+    grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
+	
+	
+	
     grid!.setData(rs!)    
 return
 
