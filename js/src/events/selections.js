@@ -30,6 +30,7 @@ export function gw_onSelectionChanged() {
   gw_selectedRowsStack.forEach(function (e) {
 
     const detail = gw_parseNodeFromEvent(e);
+    console.log(detail)
     if (detail) details.push(detail);
   });
 

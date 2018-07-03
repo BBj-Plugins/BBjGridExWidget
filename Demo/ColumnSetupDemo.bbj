@@ -61,9 +61,6 @@ fillGrid:
     grid!.setEnableFloatingFilter(1)
     grid!.setData(rs!,"CDNUMBER")    
     grid!.moveColumn("PLAYINGTIME",1)
-    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
-    grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
-
 return
 
 byebye:
@@ -73,35 +70,3 @@ resize:
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
 return
-
-onRowSelect: 
-
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    
-    sel! =  grid!.getSelectedRows()
-  
-    if INFO(3,6)="5" then
-      a = msgbox(ev!.getNewSelectedRows().toString(), 0, "Selection")
-    else
-      print 'SHOW', 
-      print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
-      print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
-      print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
-      print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
-      print  "------------------------------------------------------------------------"
-    fi
-
-return    
-
-onRowDoubleclick:
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    row! = ev!.getRow()
-    
-    if INFO(3,6)="5" then
-        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
-    else
-        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
-    fi
-return  

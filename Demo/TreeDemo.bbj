@@ -21,7 +21,6 @@ grid!		.setShowGroupChildCount(1)
 grid!       .setGroupColumnLabel("Customer")
 grid!       .setSelectionMode(grid!.GRID_SELECT_ROW())
 grid!       .setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
-grid!       .setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
     
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
@@ -173,15 +172,3 @@ onRowSelect:
     fi
 
 return      
-
-onRowDoubleclick:
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    row! = ev!.getRow()
-    
-    if INFO(3,6)="5" then
-        a=msgbox(row!.getId() + " - " + row!.getData().get("FIRST_NAME").getAsString(),0,"DOUBLE CLICK")
-    else
-        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("FIRST_NAME").getAsString()
-    fi
-return   
