@@ -28,7 +28,7 @@ cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
 cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
 grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onSelection")
-rem grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onSelection")
+grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onDoubleCLick")
 
 grid!.setSelectionMode(grid!.GRID_SELECT_CELL())
 grid!.setMultipleSelection(1)
@@ -67,24 +67,43 @@ onSelection:
 
     if INFO(3,6)="5" then
       if row! <> null() then
-        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
+        a=msgbox(row!.getId() + " - " + row!.asDataRow().getFieldAsString("TITLE"),0,"DOUBLE CLICK")
       else 
         a = msgbox(str(rows!), 0, "Selection")
       fi
     else
-     if row! <> null() then
-        print 'SHOW' , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
-      else 
+
+        print  "------------------------------------------------------------------------"
+
+
+        print 'SHOW' , "getSelectedRow: "
+        print row!.getId() , " - " , row!.asDataRow().getFieldAsString("TITLE")
+
+        print 'SHOW' , "getSelectedRows: "
+        it! = rows!.iterator()
+        while it!.hasNext()
+            row! = it!.next()
+            print 'SHOW' , row!.getId() , " - " , row!.asDataRow().getFieldAsString("TITLE")
+        wend
+        
+
         print 'SHOW', 
         print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
         print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
         print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
         print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
+      
         print  "------------------------------------------------------------------------"
       fi
     fi
 
 return      
+
+onDoubleCLick:
+  ? 'BR',"DOUBLE CLICK:"
+  gosub onSelection
+  ? 'ER',
+return
 
 onSelectButton:
 
