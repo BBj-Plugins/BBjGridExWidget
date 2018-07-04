@@ -1,0 +1,103 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+x=0
+y=0
+w=800
+h=600
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+grid! = new BBjGridExWidget(wnd!,100,x,y,w,h-50)
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
+
+restoreOrginial! = wnd!.addButton(200,10,h-38,150,25,"Restore Original ResultSet")
+restoreOrginial!.setCallback(BBjAPI.ON_BUTTON_PUSH,"restoreOrginialRS")
+
+updateResultSet! = wnd!.addButton(201,160,h-38,150,25,"Set New ResultSet")
+updateResultSet!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setNewRS")
+
+updateFirstRow! = wnd!.addButton(202,310,h-38,100,25,"Update First Row")
+updateFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"updateFirstRow")
+
+removeFirstRow! = wnd!.addButton(203,410,h-38,100,25,"Remove First Row")
+removeFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeFirstRow")
+
+clearRowsData! = wnd!.addButton(204,510,h-38,100,25,"Clear Rows")
+clearRowsData!.setCallback(BBjAPI.ON_BUTTON_PUSH,"clearRowsData")
+
+gosub fillGrid
+
+process_events
+
+fillGrid:
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY ")
+    grid!.setData(rs!,"CDNUMBER")
+return
+
+restoreOrginialRS:
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY ")
+    grid!.setRowsData(rs!)
+return 
+
+setNewRS:
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT TOP 5 * FROM CDINVENTORY ")
+    grid!.setRowsData(rs!)
+return
+
+updateFirstRow:
+    row! = rs!.getItem(0)
+    row!.setFieldValue("TITLE","My New Title")
+    row!.setFieldValue("ARTIST","My New ARTIST")
+    grid!.setRowData(0 , row!)
+return
+
+removeFirstRow:
+    grid!.removeRow(0)
+return
+
+clearRowsData:
+    grid!.clearRowsData()
+return
+
+onRowSelect: 
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    sel! =  grid!.getSelectedRows()
+  
+    if INFO(3,6)="5" then
+      a = msgbox(ev!.getNewSelectedRows().toString(), 0, "Selection")
+    else
+      print 'SHOW', 
+      print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
+      print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
+      print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
+      print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
+      print  "------------------------------------------------------------------------"
+    fi
+return 
+
+resize:
+    ev! = BBjAPI().getLastEvent()
+    w=ev!.getWidth()
+    h=ev!.getHeight()
+    grid!.setSize(w,h-80)
+return
+
+byebye:
+bye

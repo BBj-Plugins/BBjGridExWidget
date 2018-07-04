@@ -29,6 +29,6 @@ export function gw_parseNodeFromEvent(e) {
     index: Number(e.node.data.__ROW_INDEX ? e.node.data.__ROW_INDEX : -1),
     parentKey: e.node.hasOwnProperty('parent') && e.node.parent.hasOwnProperty('key') ? e.node.parent.key : '',
   };
-  
+
   return detail;
 }
