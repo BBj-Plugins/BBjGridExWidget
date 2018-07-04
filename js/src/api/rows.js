@@ -111,4 +111,5 @@ export function gw_removeRow(index) {
 
 export function gw_addRows(index,rows) {
   gw_options.api.updateRowData({add: rows, addIndex: index});
+  gw_options.api.refreshClientSideRowModel('group');
 }
