@@ -58,9 +58,6 @@ fillGrid:
         
     grid!.setData(rs!)
 
-    grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
-    grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onRowDoubleclick")
-
 return
 
 byebye:
@@ -70,28 +67,6 @@ resize:
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
 return
-
-onRowSelect: 
-
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    
-    selectedRow! = grid!.getSelectedRow()
-    print 'SHOW',selectedRow!
-
-return    
-
-onRowDoubleclick:
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    row! = ev!.getRow()
-    
-    if INFO(3,6)="5" then
-        a=msgbox(row!.getId() + " - " + row!.getData().get("TITLE").getAsString(),0,"DOUBLE CLICK")
-    else
-        print 'SHOW', "DOUBLE CLICK " , row!.getId() , " - " , row!.getData().get("TITLE").getAsString()
-    fi
-return  
 
 getState:
     state! = grid!.getColumnState()

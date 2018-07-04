@@ -488,10 +488,10 @@ class public BBjGridExWidget extends BBjWidget
         detail$ = map!.get("detail")
         switch type$
             case "grid-row-select"
-                #handleGridSelectRowEvent(detail$)
+                #handleGridSelectRowEvent(detail$, "single")
                 break
             case "grid-row-doubleclick"
-                #handleGridDoubleClickEvent(detail$)
+                #handleGridSelectRowEvent(detail$,"double")
                 break
             case "cellEditingStarted"
                 #Editing! = 1
@@ -1205,17 +1205,6 @@ class public BBjGridExWidget extends BBjWidget
         #GroupUseEntireRow!  = bool!
     methodend
     rem /**
-    rem  * @return the selected row
-    rem  */
-    method public BBjGridExWidgetRow getSelectedRowInfo()
-        if #SelectedRowsMap!.size() > 0 then
-            it! = #SelectedRowsMap!.entrySet().iterator()
-            methodret it!.next().getValue()
-        FI
-
-        methodret null()
-    methodend
-    rem /**
     rem  * @return one if ag grid is in the editing mode , 0 otherwise
     rem  */
     method public BBjNUmber isEditing()
@@ -1224,27 +1213,27 @@ class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * @return the selected row
     rem  */
-    method public BBjNumber getSelectedRow()
+    method public BBjGridExWidgetRow getSelectedRow()
         if #SelectedRowsMap!.size() > 0 then
             it! = #SelectedRowsMap!.entrySet().iterator()
-            methodret num(it!.next().getValue().getId())
+            methodret it!.next().getValue()
         FI
 
-        methodret -1
+        methodret null()
     methodend
     rem /**
-    rem  * @return BBjVector with the selected row indexes and items
+    rem  * @return BBjVector with the selected rows
     rem  */
     method public BBjVector getSelectedRows()
         declare BBjVector ids!
 
-        ids! = new BBjVector()
+        rows! = new BBjVector()
         it! = #SelectedRowsMap!.entrySet().iterator()
         while it!.hasNext()
-            ids!.addItem(it!.next().getValue().getId())
+            rows!.addItem(it!.next().getValue())
         wend
 
-        methodret ids!
+        methodret rows!
     methodend
     rem /**
     rem  * Group Vector of Columns
@@ -1499,7 +1488,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @see BBjGridExWidgetSelectRowEvent
     rem  */
-    method private void handleGridSelectRowEvent(BBjString detail$)
+    method private void handleGridSelectRowEvent(BBjString detail$, BBjString type$)
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
         rows! = new BBjVector()
@@ -1530,28 +1519,12 @@ class public BBjGridExWidget extends BBjWidget
         event!.setNewSelectedRows(selected!)
         event!.setNewDeselectedRows(deselected!)
         event!.setSelectedRows(#getSelectedRows())
-        #fireEvent(#ON_GRID_SELECT_ROW(),event!)
-    methodend
-    rem /**
-    rem  * Handle Doucle click event
-    rem  *
-    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetDoubleClickRowEvent
-    rem  *
-    rem  * @see BBjGridExWidgetDoubleClickRowEvent
-    rem  */
-    method private void handleGridDoubleClickEvent(BBjString detail$)
-        parser! = new JsonParser()
-        array! = parser!.parse(detail$).getAsJsonObject().get("0")
-        next! = array!.iterator().next().getAsJsonObject()
-        row! = new BBjGridExWidgetRow(#RS!)
-        row!.setId(next!.get("id").getAsString())
-        row!.setChildIndex(next!.get("childIndex").getAsInt())
-        row!.setIndex(next!.get("index").getAsInt())
-        row!.setParentKey(next!.get("parentKey").getAsString())
-        row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
-        event! = new BBjGridExWidgetDoubleClickRowEvent()
-        event!.setRow(row!)
-        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+
+        if type$ = "single" then
+            #fireEvent(#ON_GRID_SELECT_ROW(),event!)
+        else
+            #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+        fi
     methodend
 
     method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
@@ -1982,12 +1955,6 @@ class public BBjGridExWidgetSelectRowEvent
 
         methodret ids!
     methodend
-
-classend
-
-class public BBjGridExWidgetDoubleClickRowEvent
-
-    field public BBjGridExWidgetRow Row!
 
 classend
 
