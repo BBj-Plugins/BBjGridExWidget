@@ -631,16 +631,6 @@ class public BBjGridExWidget extends BBjWidget
         #executeScript("gw_setRowsData(" + data$+ ")")
     methodend
     rem /**
-    rem  * Clear row data (Empty the grid )
-    rem  */
-    method public void clearRowsData()
-        #RS! = new ResultSet()
-        #TREE! = null()
-        #URL$=""
-        #SelectedRowsMap!.clear()
-        #executeScript("gw_setRowsData([])")
-    methodend
-    rem /**
     rem  * Update row data
     rem  *
     rem  * @param BBjNumber: row index
@@ -654,6 +644,17 @@ class public BBjGridExWidget extends BBjWidget
         fi
     methodend
     rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param BBjNumber: index insert index
+    rem  * @param DataRow: DataRow object which contains the update
+    rem  */
+    method public void addRow(BBjNumber index!,DataRow row!)
+        #RS!.add(index! , row!)
+        parser! = new JsonParser()
+        #executeScript("gw_addRows("+ str(index!) +",[" + parser!.parse(row!.toJson()).getAsJsonArray().get(0).toString() +"])")
+    methodend
+    rem /**
     rem  * Remove row from grid by index
     rem  *
     rem  * @param BBjNumber: row index
@@ -665,6 +666,16 @@ class public BBjGridExWidget extends BBjWidget
             rem print #RS!.getItem(index!)
             rem escape
         fi
+    methodend
+    rem /**
+    rem  * Clear row data (Empty the grid )
+    rem  */
+    method public void clearRowsData()
+        #RS! = new ResultSet()
+        #TREE! = null()
+        #URL$=""
+        #SelectedRowsMap!.clear()
+        #executeScript("gw_setRowsData([])")
     methodend
     rem /**
     rem  * add a column to the grid

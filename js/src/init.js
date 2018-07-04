@@ -204,6 +204,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
     def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
     def.suppressToolPanel = def.headerName.startsWith('__');
+    def.editable = gw_getGlobalMeta(field,'EDITABLE',false) === "1" ? true : false;
 
     if (footerValueGetter) {
       def.cellRenderer = 'agGroupCellRenderer';

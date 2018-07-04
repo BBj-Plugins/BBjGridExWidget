@@ -108,3 +108,7 @@ export function gw_removeRow(index) {
   gw_options.api.setRowData(gw_options.rowData);
   gw_options.api.refreshClientSideRowModel('group');
 }
+
+export function gw_addRows(index,rows) {
+  gw_options.api.updateRowData({add: rows, addIndex: index});
+}
