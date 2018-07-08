@@ -401,16 +401,18 @@ class public BBjGridExWidget extends BBjWidget
         declare BBjHtmlView htmlview!
 
         if (f_init!) then
-            dummy$=stbl("!OPTIONS","JXBROWSER_HTMLVIEW=TRUE",ERR=*NEXT)
-            dummy$=stbl("!OPTIONS","JAVAFX_HTMLVIEW=TRUE",ERR=*NEXT)
             html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
-            htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
-            htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
-            htmlview!.setOpaque(0)
-            htmlview!.setText(html$)
+            
+            if (htmlview!.getClientType() <> "Chromium")
+                htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
+            else
+                htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
+                htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
+                htmlview!.setOpaque(0)
+                htmlview!.setText(html$)
+            fi
             #HTMLView!=htmlview!
-
             if INFO(3,6)<>"5" then
                 #HTMLView!.setLocation(-9,-9)
             FI
