@@ -1,10 +1,10 @@
 {
 	"name":"BBjGridExWidget",
-	"description":"The BBjGridExWidget is a grid control, based on a com.basiscomponents.db.ResultSet. It supports DnD column ordering, sorting, filtering, grouping, and many more features",
-	"version": "0.9",
+	"description":"The BBjGridExWidget is a grid control, based on a com.basiscomponents.db.ResultSet. It supports DnD column ordering, sorting, filtering, grouping, and many more features. Requires the Chromium HTML View Control that is available in BBj 18.10 and later with a valid SAM maintenance contract.",
+	"version": "0.99",
 	"author":"Basis",
 	"licence": "MIT",
-	"bbj_dependency"     : "17.00",
+	"bbj_dependency"     : "18.10",
 	"screenshots": [
 		"screenshots/main.png",
 		"screenshots/other.jpg"
