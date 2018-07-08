@@ -28,11 +28,11 @@ restoreOrginial!.setCallback(BBjAPI.ON_BUTTON_PUSH,"restoreOrginialRS")
 updateResultSet! = wnd!.addButton(201,160,h-38,150,25,"Set New ResultSet")
 updateResultSet!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setNewRS")
 
-updateFirstRow! = wnd!.addButton(202,310,h-38,100,25,"Update First Row")
-updateFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"updateFirstRow")
+updateFirstRow! = wnd!.addButton(202,310,h-38,100,25,"Update 3rd Row")
+updateFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"updateThirdRow")
 
-removeFirstRow! = wnd!.addButton(203,410,h-38,100,25,"Remove First Row")
-removeFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeFirstRow")
+removeFirstRow! = wnd!.addButton(203,410,h-38,100,25,"Remove 2nd Row")
+removeFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeSecondRow")
 
 clearRowsData! = wnd!.addButton(204,510,h-38,100,25,"Clear Rows")
 clearRowsData!.setCallback(BBjAPI.ON_BUTTON_PUSH,"clearRowsData")
@@ -59,15 +59,15 @@ setNewRS:
     grid!.setRowsData(rs!)
 return
 
-updateFirstRow:
-    row! = rs!.getItem(0)
+updateThirdRow:
+    row! = rs!.getItem(2)
     row!.setFieldValue("TITLE","My New Title")
     row!.setFieldValue("ARTIST","My New ARTIST")
-    grid!.setRowData(0 , row!)
+    grid!.setRowData(2 , row!)
 return
 
-removeFirstRow:
-    grid!.removeRow(0)
+removeSecondRow:
+    grid!.removeRow(1)
 return
 
 clearRowsData:
