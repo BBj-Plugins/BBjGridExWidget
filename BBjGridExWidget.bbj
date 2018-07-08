@@ -623,13 +623,7 @@ class public BBjGridExWidget extends BBjWidget
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
-
-        if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
-            data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
-        else
-            data$=#RS!.toJson(BBjAPI.TRUE)
-        fi
-
+        data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
         #executeScript("gw_setRowsData(" + data$+ ")")
     methodend
     rem /**
@@ -1666,12 +1660,7 @@ class public BBjGridExWidget extends BBjWidget
         gson! = new Gson()
 
         if (#RS! <> null()) then
-            if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051 then
-                data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
-            else
-                data$=#RS!.toJson(BBjAPI.TRUE)
-            fi
-
+            data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
             cdef!= #getAgGridColumnDefinition(0)
         else
             if (#TREE! <> null()) then
@@ -1772,10 +1761,6 @@ class public BBjGridExWidget extends BBjWidget
             FI
         FI
 
-        if com.basiscomponents.VersionInfo.getComponentsBuildTimeMillis() > 1529907740051  AND cd! <> null() then
-            rem this probably needs to be removed again, just showing for demonstration purpose
-            cd!.setFieldValue("__ROW_INDEX","")
-        fi
 
         cdef! = new JsonArray()
         first=1
