@@ -1,7 +1,7 @@
 {
 	"name":"BBjGridExWidget",
 	"description":"The BBjGridExWidget is a grid control, based on a com.basiscomponents.db.ResultSet. It supports DnD column ordering, sorting, filtering, grouping, and many more features",
-	"version": "1.0",
+	"version": "0.9",
 	"author":"Basis",
 	"licence": "MIT",
 	"bbj_dependency"     : "17.00",
