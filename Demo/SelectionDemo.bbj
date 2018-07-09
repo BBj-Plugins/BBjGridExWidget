@@ -45,7 +45,7 @@ fillGrid:
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
-    grid!.setData(rs!,"CDNUMBER")
+    grid!.setData(rs!)
     
 return
 

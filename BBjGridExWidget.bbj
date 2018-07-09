@@ -1591,7 +1591,7 @@ class public BBjGridExWidget extends BBjWidget
             row! = new BBjGridExWidgetRow(#RS!)
             row!.setId(next!.get("id").getAsString())
             row!.setChildIndex(next!.get("childIndex").getAsInt())
-            row!.setIndex(next!.get("index").getAsInt())
+            row!.setIndex(next!.get("index").getAsString())
             row!.setParentKey(next!.get("parentKey").getAsString())
             row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
             rows!.add( row!)
@@ -1626,7 +1626,7 @@ class public BBjGridExWidget extends BBjWidget
         row! = new BBjGridExWidgetRow(#RS!)
         row!.setId(rowAsJson!.get("id").getAsString())
         row!.setChildIndex(rowAsJson!.get("childIndex").getAsInt())
-        row!.setIndex(rowAsJson!.get("index").getAsInt())
+        row!.setIndex(rowAsJson!.get("index").getAsString())
         row!.setParentKey(rowAsJson!.get("parentKey").getAsString())
         row!.setIsSelected(iff(rowAsJson!.get("selected").getAsString() = "true" ,  1 , 0))
         event! = new BBjGridWidgetCellEditingEvent()
@@ -1643,7 +1643,7 @@ class public BBjGridExWidget extends BBjWidget
         row! = new BBjGridExWidgetRow(#RS!)
         row!.setId(next!.get("id").getAsString())
         row!.setChildIndex(next!.get("childIndex").getAsInt())
-        row!.setIndex(next!.get("index").getAsInt())
+        row!.setIndex(next!.get("index").getAsString())
         row!.setParentKey(next!.get("parentKey").getAsString())
         row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
         event! = new BBjGridExWidgetDoubleClickRowEvent()
@@ -1760,7 +1760,6 @@ class public BBjGridExWidget extends BBjWidget
                 FI
             FI
         FI
-
 
         cdef! = new JsonArray()
         first=1
@@ -1943,7 +1942,7 @@ classend
 class public BBjGridExWidgetRow
 
     field public BBjString Id!
-    field public BBjNumber Index!
+    field public BBjString Index!
     field public BBjNumber ChildIndex!
     field public BBjString ParentKey!
     field public BBjNumber IsSelected!
@@ -1959,7 +1958,7 @@ class public BBjGridExWidgetRow
     methodend
 
     method public DataRow asDataRow()
-        methodret #RS!.getItem(#Index!)
+        methodret #RS!.get(#Index!)
     methodend
 
     method public JsonObject getData()

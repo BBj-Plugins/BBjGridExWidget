@@ -49,7 +49,7 @@ resize:
 return
 
 showDetails:
-    rec! = grid!.getSelectedRowInfo().asDataRow()
+    rec! = grid!.getSelectedRow().asDataRow()
     cust$=rec!.getFieldAsString("CUST_NUM")
 
     dsbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
