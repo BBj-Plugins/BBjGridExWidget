@@ -401,9 +401,9 @@ class public BBjGridExWidget extends BBjWidget
         declare BBjHtmlView htmlview!
 
         if (f_init!) then
-            html$="<html><body><div id='eventTransporterDiv' onClick='gw_postEvent(event);'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
-            
+
             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
             else
@@ -412,7 +412,9 @@ class public BBjGridExWidget extends BBjWidget
                 htmlview!.setOpaque(0)
                 htmlview!.setText(html$)
             fi
+            
             #HTMLView!=htmlview!
+
             if INFO(3,6)<>"5" then
                 #HTMLView!.setLocation(-9,-9)
             FI
@@ -424,6 +426,12 @@ class public BBjGridExWidget extends BBjWidget
             #HTMLView!.setSize(#getCanvas().getWidth()+16,#getCanvas().getHeight()+16)
         FI
     methodend
+
+    method protected void injectScript(BBjString script$) 
+        bui = INFO(3,6)="5"
+        if bui then #HTMLView!.injectScript(script$) else #HTMLView!.injectScript(script$ , 1) FI
+    methodend
+
     rem /**
     rem  * callback method after initial load
     rem  * does last initialization work
@@ -431,38 +439,40 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjEvent ev!: the onLoad event
     rem  */
     method public void onLoad(BBjEvent ev!)
-        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED); rem ' only do this once
-        gridPath$ = iff(LEN(#LicenseKey$) > 0,"BBjGridExWidget/js/dist/ag-grid-enterprise.min.js","BBjGridExWidget/js/dist/ag-grid.min.js")
-        ch=unt
 
-        if INFO(3,6)="5" then
-            open (ch)gridPath$
-            read record (ch,siz=5512000)script$
-            close (ch)
-            #HTMLView!.injectScript(script$)
-            #HTMLView!.injectScript(script$,1)
-        else
-            open (ch)gridPath$
-            read record (ch,siz=5512000)script$
-            close (ch)
-            #HTMLView!.injectScript(script$,1)
-        FI
-
+        rem ' only do this once
+        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
         ch=unt
-        open (ch)"BBjGridExWidget/js/dist/bbj-grid-widget.min.js"
+        distBase$ = "BBjGridExWidget/js/dist"
+        
+        rem include the grid 
+        gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid.min.noStyle.js")
+        open (ch)gridPath$
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #injectScript(script$)
+
+        rem include locale files 
+        locale! = stbl("!LOCALE")
+        locale$ = locale!.replaceAll("_","-")
+        dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
+        isLocale = 0
+        open (ch,err=*next)dateJsLocalePath$;isLocale=1
+        if isLocale = 0 then
+            close (ch) 
+            dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
+            open (ch,err=*next)dateJsLocalePath$
+        fi
         read record (ch,siz=5512000)script$
         close (ch)
 
-        if INFO(3,6)="5" then
-            #HTMLView!.injectScript(script$)
-            #HTMLView!.injectScript(script$,1)
-        else
-            p_script! = script$
-            p_script! = p_script!.replaceAll("\$doc","document")
-            p_script! = p_script!.replaceAll("\$win","window")
-            #HTMLView!.injectScript(str(p_script!),1)
-            #HTMLView!.injectScript(str(p_script!))
-        FI
+        #injectScript(script$)
+
+        ch=unt
+        open (ch) distBase$ + "/bbj-grid-widget.min.js"
+        read record (ch,siz=5512000)script$
+        close (ch)
+        #injectScript(script$)
 
         #IsReady! = BBjAPI.TRUE
 
@@ -1729,6 +1739,8 @@ class public BBjGridExWidget extends BBjWidget
         if AND ( a$(3,1), $02$ ) = $02$ then comma$=a$(5,1) ; dot$=a$(6,1) fi
         options!.addProperty("__numberGroupSep",comma$)
         options!.addProperty("__numberDecimalSep",dot$)
+
+        options!.addProperty("__locale",stbl("!LOCALE"))
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 

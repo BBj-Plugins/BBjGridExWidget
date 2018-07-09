@@ -7,9 +7,9 @@
 */
 
 export function gw_setStyle(selector, rules) {
-  jss.forDocument($doc || document).set(selector, JSON.parse(rules));
+  jss.forDocument(gw_getDocument()).set(selector, JSON.parse(rules));
 }
 
 export function gw_removeStyle(selector) {
-  jss.forDocument($doc || document).remove(selector);
+  jss.forDocument(gw_getDocument()).remove(selector);
 }

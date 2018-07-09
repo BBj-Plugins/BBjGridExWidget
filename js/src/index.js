@@ -6,12 +6,25 @@
 * file that was distributed with this source code.
 */
 
-// import {Basis} ;
-// import {jss} from '../node_modules/jss/jss.js';
-
-// export {default} from '../node_modules/ag-grid-components/dist/agc-basic-bundle.min.js';
 import 'expose-loader?jss!../node_modules/jss/jss.js';
 import 'expose-loader?Basis.AgGridComponents!../node_modules/ag-grid-components/dist/agc-basic.bundle.js';
+
+require('ag-grid/dist/styles/ag-grid.css');
+
+require('ag-grid/dist/styles/theme-fresh.css');
+require('ag-grid/dist/styles/theme-dark.css');
+require('ag-grid/dist/styles/theme-blue.css');
+require('ag-grid/dist/styles/theme-material.css');
+require('ag-grid/dist/styles/theme-bootstrap.css');
+
+require('ag-grid/dist/styles/ag-theme-fresh.css');
+require('ag-grid/dist/styles/ag-theme-dark.css');
+require('ag-grid/dist/styles/ag-theme-blue.css');
+require('ag-grid/dist/styles/ag-theme-material.css');
+require('ag-grid/dist/styles/ag-theme-bootstrap.css');
+
+require('ag-grid/dist/styles/ag-theme-balham.css');
+require('ag-grid/dist/styles/ag-theme-balham-dark.css');
 
 export * from './utilities.js';
 export * from './events.js';

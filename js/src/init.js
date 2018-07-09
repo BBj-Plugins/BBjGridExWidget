@@ -133,7 +133,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   let options = Object.assign(defaultOptions, {
 
     rowData: data,
-    getDocument: () => $doc,
+    getDocument: () => gw_getDocument(),
     components: gw_getDefaultComponents(),
     columnTypes: types,
 
@@ -204,7 +204,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
     def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
     def.suppressToolPanel = def.headerName.startsWith('__');
-    def.editable = gw_getGlobalMeta(field,'EDITABLE',false) === "1" ? true : false;
+    def.editable = gw_getGlobalMeta(field, 'EDITABLE', false) === "1" ? true : false;
 
     if (footerValueGetter) {
       def.cellRenderer = 'agGroupCellRenderer';
@@ -221,7 +221,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
 export function gw_setData(json, options, license) {
 
-  const container = $doc.getElementById('grid');
+  const container = gw_getDocument().getElementById('grid');
   container.innerHTML = '';
 
   window.gw_meta = json[0].meta;
