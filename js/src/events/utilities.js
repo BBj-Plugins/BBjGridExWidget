@@ -12,10 +12,10 @@ export function gw_postEvent(ev) {
 
 export function gw_sendEvent(payload) {
 
-  const d = $doc.getElementById('eventTransporterDiv');
+  const div = gw_getDocument().getElementById('eventTransporterDiv');
   const event = new CustomEvent('click');
   event.payload = payload;
-  d.dispatchEvent(event);
+  div.dispatchEvent(event);
 }
 
 export function gw_parseNodeFromEvent(e) {

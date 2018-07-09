@@ -2,7 +2,9 @@ const webpack = require("webpack");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+let uglifyJs = require('uglify-js');
 const path = require("path");
+const distPath = path.resolve(__dirname, "dist");
 
 module.exports = {
   target: 'web',
@@ -14,7 +16,7 @@ module.exports = {
   },
   devtool: "source-map",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: distPath,
     filename: "[name].js",
     libraryTarget: 'window',
   },
@@ -33,10 +35,15 @@ module.exports = {
         }
       },
       {
-        test: /\.css/,
-        exclude: [/node_modules/],
-        loaders: ['style-loader', 'css-loader'],
-        include: __dirname + '/src'
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader", options: {
+              insertInto: function () { return window.top.document.head }
+            }
+          },
+          { loader: "css-loader", options: { minimize: true } }
+        ]
       }
     ]
   },
@@ -45,8 +52,22 @@ module.exports = {
       include: /\.min\.js$/
     }),
     new CopyWebpackPlugin([
-      { from: __dirname + '/node_modules/ag-grid/dist/ag-grid.min.js', to: __dirname + '/dist/' },
-      { from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js', to: __dirname + '/dist/' }
+      { 
+        from: __dirname + '/node_modules/ag-grid/dist/ag-grid.min.noStyle.js',
+         to: distPath
+      },
+      { 
+        from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
+        to: distPath
+      },
+      {
+        from: __dirname + '/node_modules/Datejs/src/globalization/**',
+        to: distPath + '/i18n/Datejs',
+        flatten: true,
+        transform: function (fileContent, path) {
+          return uglifyJs.minify(fileContent.toString()).code.toString();
+        }
+      },
     ]),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static'

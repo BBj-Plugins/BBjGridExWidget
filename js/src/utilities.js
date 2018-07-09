@@ -43,3 +43,11 @@ export function gw_getGlobalMeta(field, value, fallback = null , json = false) {
 
   return fallback;
 }
+
+export function gw_getDocument() {
+  return typeof $doc !== 'undefined' ? $doc : document;
+}
+
+export function gw_getWindow() {
+  return typeof $win !== 'undefined' ? $win : window;
+}
