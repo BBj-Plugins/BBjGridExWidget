@@ -404,14 +404,14 @@ class public BBjGridExWidget extends BBjWidget
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
 
-            if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
-                htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
-            else
+REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
+REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
+REM             else
                 htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
                 htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
                 htmlview!.setOpaque(0)
                 htmlview!.setText(html$)
-            fi
+REM             fi
             
             #HTMLView!=htmlview!
 
