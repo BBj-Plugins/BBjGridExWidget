@@ -373,6 +373,9 @@ class public BBjGridExWidget extends BBjWidget
     field public  DataRow AttributesRecord!
     field private BBjNumber Editing! = 0
     field private HashMap ColumnGroups! = new HashMap()
+    
+    field public static BBjNumber Debug=0
+    
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -402,7 +405,20 @@ class public BBjGridExWidget extends BBjWidget
 
         if (f_init!) then
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+			
+			if (info(3,6)<>"5" and #Debug>0) then
+			    call "BBjGridExWidget/util/EnableDebugger.bbj"
+			fi
+
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
+            
+            if (info(3,6)<>"5" and #Debug>0) then
+                url$ = htmlview!.getAttribute("remoteDebuggingURL")
+                if url$>"" then
+                    BBjAPI().getThinClient().browse(url$)
+                fi
+            fi
+			
 
 REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
 REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
