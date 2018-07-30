@@ -27,7 +27,7 @@ wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
-grid!.setCallback(5007,"onShowDirection")
+
 
 gosub fillGrid
 
@@ -57,8 +57,17 @@ fillGrid:
     item!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/maps-icon.png" , 20 , 20)
     item!.setCssClasses("maps-style")
     menu!.addItem(item!)
+    grid!.setCallback(5007,"onShowDirection")
 
-    item! = new BBjGridContextMenuItem(5008,"Copy Functions")
+
+    rem custom item
+    item! = new BBjGridContextMenuItem(5008,"Search Firstname in Namepedia")
+    item!.setTooltip("Search First Name in Namepedia")
+    item!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
+    menu!.addItem(item!)
+    grid!.setCallback(5008,"onShowFirstName")
+
+    item! = new BBjGridContextMenuItem(5009,"Copy Functions")
     submenu! = new BBjGridContextMenu()
     submenu!.addItem(BBjGridContextMenuItem.COPY())
     submenu!.addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
@@ -75,7 +84,17 @@ onShowDirection:
     ev! = ev!.getObject()
     
     row! = ev!.getRow().asDataRow()
-    url$ = "https://www.google.com/maps/search/?api=1&query=" + row!.getFieldAsString("BILL_ADDR1").trim() + ","  + row!.getFieldAsString("COUNTRY").trim()
+    url$ = "https://www.google.com/maps/search/?api=1&query=" + java.net.URLEncoder.encode(row!.getFieldAsString("BILL_ADDR1").trim() + ","  + row!.getFieldAsString("COUNTRY").trim())
+    BBjAPI().getThinClient().browse(url$)
+return
+
+
+onShowFirstName:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    row! = ev!.getRow().asDataRow()
+    url$ = "http://www.namepedia.org/en/firstname/?q="+java.net.URLEncoder.encode(row!.getFieldAsString("FIRST_NAME").trim())
     BBjAPI().getThinClient().browse(url$)
 return
 
