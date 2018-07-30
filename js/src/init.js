@@ -152,6 +152,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     getRowNodeId: gw_getRowNodeId,
 
     rememberGroupStateWhenNewData: true,
+    getContextMenuItems: gw_getContextMenu
   });
 
   if (

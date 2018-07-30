@@ -5,6 +5,7 @@ use java.sql.Types
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
+use com.google.gson.JsonPrimitive
 use com.google.gson.JsonArray
 use java.lang.Integer
 use java.util.ArrayList
@@ -361,6 +362,13 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjNumber GroupIncludeTotalFooter! = 0
+    rem /**
+    rem  * The grid context menu
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -373,9 +381,7 @@ class public BBjGridExWidget extends BBjWidget
     field public  DataRow AttributesRecord!
     field private BBjNumber Editing! = 0
     field private HashMap ColumnGroups! = new HashMap()
-    
     field public static BBjNumber Debug=0
-    
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -405,30 +411,28 @@ class public BBjGridExWidget extends BBjWidget
 
         if (f_init!) then
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
-			
-			if (info(3,6)<>"5" and #Debug>0) then
-			    call "BBjGridExWidget/util/EnableDebugger.bbj"
-			fi
+
+            if (info(3,6)<>"5" and #Debug>0) then
+                call "BBjGridExWidget/util/EnableDebugger.bbj"
+            fi
 
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
-            
+
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
+
                 if url$>"" then
                     BBjAPI().getThinClient().browse(url$)
                 fi
             fi
-			
-
-REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
-REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
-REM             else
-                htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
-                htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
-                htmlview!.setOpaque(0)
-                htmlview!.setText(html$)
-REM             fi
-            
+            REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
+            REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
+            REM             else
+            htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
+            htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
+            htmlview!.setOpaque(0)
+            htmlview!.setText(html$)
+            REM             fi
             #HTMLView!=htmlview!
 
             if INFO(3,6)<>"5" then
@@ -443,11 +447,10 @@ REM             fi
         FI
     methodend
 
-    method protected void injectScript(BBjString script$) 
+    method protected void injectScript(BBjString script$)
         bui = INFO(3,6)="5"
         if bui then #HTMLView!.injectScript(script$) else #HTMLView!.injectScript(script$ , 1) FI
     methodend
-
     rem /**
     rem  * callback method after initial load
     rem  * does last initialization work
@@ -455,41 +458,37 @@ REM             fi
     rem  * @param BBjEvent ev!: the onLoad event
     rem  */
     method public void onLoad(BBjEvent ev!)
-
         rem ' only do this once
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
         ch=unt
         distBase$ = "BBjGridExWidget/js/dist"
-        
-        rem include the grid 
+        rem include the grid
         gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid.min.noStyle.js")
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
-
-        rem include locale files 
+        rem include locale files
         locale! = stbl("!LOCALE")
         locale$ = locale!.replaceAll("_","-")
         dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
         isLocale = 0
         open (ch,err=*next)dateJsLocalePath$;isLocale=1
+
         if isLocale = 0 then
-            close (ch) 
+            close (ch)
             dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
             open (ch,err=*next)dateJsLocalePath$
         fi
+
         read record (ch,siz=5512000)script$
         close (ch)
-
         #injectScript(script$)
-
         ch=unt
         open (ch) distBase$ + "/bbj-grid-widget.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
-
         #IsReady! = BBjAPI.TRUE
 
         if #RS! <> null() or #TREE! <> null()  or #URL$>"" then
@@ -536,6 +535,9 @@ REM             fi
             case "rowEditingStopped"
                 #Editing! = 0
                 #handleGridROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STOPPED())
+                break
+            case "contextmenu"
+                #handleGridContextmenuEvent(detail$)
                 break
         swend
     methodend
@@ -1677,6 +1679,24 @@ REM             fi
         #fireEvent(type!, event!)
     methodend
 
+    method private void handleGridContextmenuEvent(BBjString detail$)
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+        next! = array!.iterator().next().getAsJsonObject()
+        rowAsJson! = next!.get("row").getAsJsonObject()
+        row! = new BBjGridExWidgetRow(#RS!)
+        row!.setId(rowAsJson!.get("id").getAsString())
+        row!.setChildIndex(rowAsJson!.get("childIndex").getAsInt())
+        row!.setIndex(rowAsJson!.get("index").getAsString())
+        row!.setParentKey(rowAsJson!.get("parentKey").getAsString())
+        row!.setIsSelected(iff(rowAsJson!.get("selected").getAsString() = "true" ,  1 , 0))
+        event! = new BBjGridWidgetContextMenuEvent()
+        event!.setRow(row!)
+        event!.setValue(next!.get("value").getAsString())
+        event!.setColumn(next!.get("column").getAsString())
+        #fireEvent(next!.get("id").getAsInt(),event!)
+    methodend
+
     method private void performGridDataUpdate()
         if (! #IsReady!)
             methodret
@@ -1755,8 +1775,8 @@ REM             fi
         if AND ( a$(3,1), $02$ ) = $02$ then comma$=a$(5,1) ; dot$=a$(6,1) fi
         options!.addProperty("__numberGroupSep",comma$)
         options!.addProperty("__numberDecimalSep",dot$)
-
         options!.addProperty("__locale",stbl("!LOCALE"))
+        options!.addProperty("__contextMenu",#ContextMenu!.toString())
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
@@ -1966,6 +1986,188 @@ REM             fi
     methodend
 
 classend
+rem /**
+rem  * A class which reprensets grid context menu item
+rem  */
+class public BBjGridContextMenuItem
+
+    field protected JsonObject json! = new JsonObject()
+    rem /**
+    rem  * Construct new Menu item
+    rem  *
+    rem  * @param BBjNumber id!: item's ID
+    rem  * @param BBjString name$: item's name
+    rem  */
+    method public BBjGridContextMenuItem(BBjNumber id! ,BBjString name$)
+        #json!.addProperty("id",str(id!))
+        #json!.addProperty("name",name$)
+    methodend
+    rem /**
+    rem  * Set a sub menu for the current item
+    rem  *
+    rem  * @param BBjGridContextMenu menu!: The menu object
+    rem  */
+    method public void setSubMenu(BBjGridContextMenu menu!)
+        #json!.addProperty("subMenu",menu!.toString())
+    methodend
+    rem /**
+    rem  * Set the item tooltip
+    rem  *
+    rem  * @param BBjString tooltip$: tooltip string
+    rem  */
+    method public void setTooltip(BBjString tooltip$)
+        #json!.addProperty("tooltip",tooltip$)
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  * @param BBjNumber width!: image width
+    rem  * @param BBjNumber height!: image height
+    rem  */
+    method public void setIcon(BBjString url$,BBjNumber width!,BBjNumber height!)
+        #json!.addProperty("icon","<img border=0 width=" + str(width!) +  " height=" + str(height!) + " src='" + url$ + "' />")
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  * @param BBjNumber width!: image width
+    rem  */
+    method public void setIcon(BBjString url$,BBjNumber width!)
+        #setIcon(url$,width!,15)
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  */
+    method public void setIcon(BBjString url$)
+        #setIcon(url$,15,15)
+    methodend
+    rem /**
+    rem  * Set the item css classes
+    rem  *
+    rem  * @param BBjString classes$: space sperated string
+    rem  */
+    method public void setCssClasses(BBjString classes$)
+        #json!.addProperty("cssClasses",classes$)
+    methodend
+    rem /**
+    rem  * Convert the item to JsonObject
+    rem  *
+    rem  * @return  JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        methodret #json!
+    methodend
+    rem /**
+    rem  * @return shortcode to autoSizeAll menu item
+    rem  */
+    method public static BBjString  AUTO_SIZE_ALL()
+        methodret "autoSizeAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to expandAll menu item
+    rem  */
+    method public static BBjString  EXPAND_ALL()
+        methodret "expandAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to contractAll menu item
+    rem  */
+    method public static BBjString  CONTRACT_ALL()
+        methodret "contractAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to copy menu item
+    rem  */
+    method public static BBjString  COPY()
+        methodret "copy"
+    methodend
+    rem /**
+    rem  * @return shortcode to copyWithHeaders menu item
+    rem  */
+    method public static BBjString  COPY_WITH_HEADERS ()
+        methodret "copyWithHeaders"
+    methodend
+    rem /**
+    rem  * @return shortcode to resetColumns menu item
+    rem  */
+    method public static BBjString  RESET_COLUMNS()
+        methodret "resetColumns"
+    methodend
+    rem /**
+    rem  * @return shortcode to toolPanel menu item
+    rem  */
+    method public static BBjString  TOOLPANEL()
+        methodret "toolPanel"
+    methodend
+    rem /**
+    rem  * @return shortcode to export menu item
+    rem  */
+    method public static BBjString  EXPORT()
+        methodret "export"
+    methodend
+    rem /**
+    rem  * @return shortcode to csvExport menu item
+    rem  */
+    method public static BBjString  CSV_EXPORT()
+        methodret "csvExport"
+    methodend
+    rem /**
+    rem  * @return shortcode to excelExport menu item
+    rem  */
+    method public static BBjString  EXCEL_EXPORT()
+        methodret "excelExport"
+    methodend
+
+classend
+rem /**
+rem  * A class which reprensets grid context menu
+rem  */
+class public BBjGridContextMenu
+
+    field protected JsonArray Items! = new JsonArray()
+    rem /**
+    rem  * Add new context menu item
+    rem  *
+    rem  * @param BBjGridContextMenuItem item!: the item object
+    rem  */
+    method public void addItem(BBjGridContextMenuItem item!)
+        #Items!.add(item!.getAsJsonObject())
+    methodend
+    rem /**
+    rem  * Add a predefined context menu item
+    rem  *
+    rem  * @param BBjString item$: the item ID
+    rem  */
+    method public void addItem(BBjString item$)
+        #Items!.add(new JsonPrimitive(item$))
+    methodend
+    rem /**
+    rem  * Conver the menu to JSON string
+    rem  *
+    rem  * @returns String
+    rem  */
+    method public String toString()
+        methodret #Items!.toString()
+    methodend
+
+classend
+rem /**
+rem  * A class which reprensets the default grid context menu
+rem  */
+class public BBjGridDefaultContextMenu extends BBjGridContextMenu
+
+    method public BBjGridDefaultContextMenu()
+        #addItem(BBjGridContextMenuItem.COPY())
+        #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+        #addItem(BBjGridContextMenuItem.TOOLPANEL())
+        #addItem(BBjGridContextMenuItem.EXPORT())
+    methodend
+
+classend
 
 class public BBjGridExWidgetRow
 
@@ -2078,6 +2280,14 @@ classend
 class public BBjGridWidgetRowEditingEvent
 
     field public BBjGridExWidgetRow Row!
+
+classend
+
+class public BBjGridWidgetContextMenuEvent
+
+    field public BBjGridExWidgetRow Row!
+    field public BBjString Column$
+    field public BBjString Value$
 
 classend
 
