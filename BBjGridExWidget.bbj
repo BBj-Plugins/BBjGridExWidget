@@ -574,6 +574,7 @@ REM             fi
             wend
         fi
 
+        #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
@@ -646,6 +647,7 @@ REM             fi
             wend
         fi
 
+        #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
@@ -661,8 +663,7 @@ REM             fi
     method public void setRowData(BBjNumber index!,DataRow row!)
         if #RS!.count() <> 0 then
             #RS!.setItem(index!,row!)
-            row!.setFieldValue("__ROW_INDEX",str(index!))
-            #executeScript("gw_setRowData(" + row!.toJson()  +")")
+            #executeScript("gw_setRowData(" + row!.toJson("__ROW_INDEX")  +")")
         fi
     methodend
     rem /**
@@ -674,7 +675,7 @@ REM             fi
     method public void addRow(BBjNumber index!,DataRow row!)
         #RS!.add(index! , row!)
         parser! = new JsonParser()
-        #executeScript("gw_addRows("+ str(index!) +",[" + parser!.parse(row!.toJson()).getAsJsonArray().get(0).toString() +"])")
+        #executeScript("gw_addRows("+ str(index!) +",[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
     rem  * Remove row from grid by index
@@ -683,8 +684,14 @@ REM             fi
     rem  */
     method public void removeRow(BBjNumber index!)
         if #RS!.count() <> 0 then
+            if #RowNodeId$ <> "__ROW_INDEX" then 
+                value! = #RS!.getItem(index!).getFieldAsString(#RowNodeId$)
+            else 
+                value! = #RS!.getItem(index!).getRowKey()
+            fi
+            
             #RS!.remove(index!)
-            #executeScript("gw_removeRow(" + str(index!)  +")")
+            #executeScript("gw_removeRows(['" + str(value!)  +"'])")
             rem print #RS!.getItem(index!)
             rem escape
         fi
@@ -694,6 +701,7 @@ REM             fi
     rem  */
     method public void clearRowsData()
         #RS! = new ResultSet()
+        #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
