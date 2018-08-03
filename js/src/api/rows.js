@@ -60,7 +60,6 @@ export function gw_navigateToNextRow(params) {
 }
 
 export function gw_getRowNodeId(data) {
-  console.log(data ,data[gw_options.__getRowNodeId]);
   return data[gw_options.__getRowNodeId];
 }
 
@@ -90,9 +89,7 @@ export function gw_setRowsData(json) {
 
 export function gw_setRowData(row) {
 
-  const data = row[0];
-  const key = gw_options.__getRowNodeId;
-  gw_options.api.getRowNode(data[key]).setData(data);
+  gw_options.api.updateRowData({update: [row]});
   gw_options.api.refreshClientSideRowModel('group');
 }
 
@@ -108,6 +105,7 @@ export function gw_removeRows(indexes) {
 }
 
 export function gw_addRows(index,rows) {
+  
   gw_options.api.updateRowData({add: rows, addIndex: index});
   gw_options.api.refreshClientSideRowModel('group');
 }

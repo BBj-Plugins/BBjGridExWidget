@@ -662,10 +662,12 @@ REM             fi
     rem  */
     method public void setRowData(BBjNumber index!,DataRow row!)
         if #RS!.count() <> 0 then
-            #RS!.setItem(index!,row!)
-            #executeScript("gw_setRowData(" + row!.toJson("__ROW_INDEX")  +")")
+            #RS!.set(index!,row!)
+            parser! = new JsonParser()
+            #executeScript("gw_setRowData(" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString()  +")")
         fi
     methodend
+    
     rem /**
     rem  * Add new row
     rem  *
@@ -676,6 +678,17 @@ REM             fi
         #RS!.add(index! , row!)
         parser! = new JsonParser()
         #executeScript("gw_addRows("+ str(index!) +",[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+   
+    methodend
+    rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param DataRow: DataRow object which contains the update
+    rem  */
+    method public void addRow(DataRow row!)
+        #RS!.add(row!)
+        parser! = new JsonParser()
+        #executeScript("gw_addRows(null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
     rem  * Remove row from grid by index
