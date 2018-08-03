@@ -148,7 +148,9 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     onRowEditingStarted: gw_onRowEditingsEvent,
     onRowEditingStopped: gw_onRowEditingsEvent,
     onRowValueChanged: gw_onRowEditingsEvent,
-
+    onCellClicked: gw_onCellClickEvent,
+    onCellDoubleClicked: gw_onCellClickEvent,
+  
     getRowNodeId: gw_getRowNodeId,
 
     rememberGroupStateWhenNewData: true,
