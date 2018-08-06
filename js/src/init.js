@@ -206,7 +206,14 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
     def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
     def.suppressToolPanel = def.headerName.startsWith('__');
-    def.editable = gw_getGlobalMeta(field, 'EDITABLE', false) === "1" ? true : false;
+    def.editable = param => {
+
+      const global = gw_getGlobalMeta(field, 'EDITABLE', false) === "1" ? true : false;
+      if(!param.data.hasOwnProperty('meta')) return global;
+
+      const path = param.data.meta[param.column.colId];
+      return path.hasOwnProperty('EDITABLE') ? (path.EDITABLE === "1" ? true : false) : global;
+    };
 
     if (footerValueGetter) {
       def.cellRenderer = 'agGroupCellRenderer';
