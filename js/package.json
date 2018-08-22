@@ -1,7 +1,7 @@
 {
   "name": "bbj-grid-widget",
   "main": "dist/bbj-grid-widget.min.js",
-  "author": "Hyyan Abo Fakher",
+  "author": "BASIS",
   "license": "MIT",
   "private": true,
   "scripts": {
