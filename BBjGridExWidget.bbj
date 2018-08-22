@@ -450,37 +450,44 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjEvent ev!: the onLoad event
     rem  */
     method public void onLoad(BBjEvent ev!)
+
         rem ' only do this once
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
+
         ch=unt
-        distBase$ = "BBjGridExWidget/js/dist"
+        distBase$ = "BBjGridExWidget/js"
         rem include the grid
-        gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid.min.noStyle.js")
+        gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/dist/ag-grid-enterprise.min.noStyle.js",distBase$ +"/dist/ag-grid.min.noStyle.js")
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
-        rem include locale files
+
+        rem include Datejs
         locale! = stbl("!LOCALE")
         locale$ = locale!.replaceAll("_","-")
-        dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
+        dateJsLocalePath$ = distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
+        print distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
         isLocale = 0
+        ch=unt
         open (ch,err=*next)dateJsLocalePath$;isLocale=1
 
         if isLocale = 0 then
             close (ch)
-            dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
+            dateJsLocalePath$ = distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
             open (ch,err=*next)dateJsLocalePath$
         fi
 
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
+
         ch=unt
-        open (ch) distBase$ + "/bbj-grid-widget.min.js"
+        open (ch) distBase$ + "/dist/bbj-grid-widget.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
+        
         #IsReady! = BBjAPI.TRUE
 
         if #RS! <> null() or #TREE! <> null()  or #URL$>"" then

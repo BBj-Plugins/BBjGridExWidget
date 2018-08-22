@@ -89,6 +89,7 @@ export function gw_setRowsData(json) {
 
 export function gw_setRowData(row) {
 
+  console.log(row)
   gw_options.api.updateRowData({update: [row]});
   gw_options.api.refreshClientSideRowModel('group');
 }
