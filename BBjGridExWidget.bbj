@@ -410,6 +410,14 @@ class public BBjGridExWidget extends BBjWidget
         declare BBjHtmlView htmlview!
 
         if (f_init!) then
+        
+            lic!=System.getProperty("bbjgridexwidget.license")
+
+            if lic! <> null() and str(lic!) <> "" then
+               #setLicenseKey(lic!)
+            fi
+        
+        
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
