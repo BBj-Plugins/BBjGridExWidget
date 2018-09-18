@@ -185,7 +185,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnableValue! = 0
+    field public BBjNumber EnableValue! = 1
     rem /**
     rem  * Enable/disable row group by column via the GUI
     rem  *
@@ -203,7 +203,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnableRowGroup! = 0
+    field public BBjNumber EnableRowGroup! = 1
     rem /**
     rem  * Enable/disable pivot by column via the GUI.
     rem  *
@@ -222,7 +222,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnablePivot! = 1
+    field public BBjNumber EnablePivot! = 0
     rem /**
     rem  * Suppress Row Groups section.
     rem  * 1 = enable editing
@@ -249,7 +249,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressPivots! = 1
+    field public BBjNumber SuppressPivots! = 0
     rem /**
     rem  * suppress Pivot Mode section.
     rem  * 1 = enable editing
@@ -258,7 +258,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressPivotMode! = 1
+    field public BBjNumber SuppressPivotMode! = 0
     rem /**
     rem  * suppress Side Buttons section.
     rem  * 1 = enable editing
@@ -267,7 +267,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressSideButtons! = 1
+    field public BBjNumber SuppressSideButtons! = 0
     rem /**
     rem  * suppress Column Filter section.
     rem  * 1 = enable editing
@@ -2302,5 +2302,9 @@ classend
 class public BBjGridExWidgetColumnState
 
     field public BBjString String$
+    
+    method public BBjGridExWidgetColumnState(BBjString String$)
+        #String$= String$
+    methodend
 
 classend
