@@ -44,7 +44,7 @@ process_events
 fillGrid:
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY ")
-    grid!.setData(rs!)
+    grid!.setData(rs!,"CDNUMBER")
 return
 
 restoreOrginialRS:
