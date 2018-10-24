@@ -42,3 +42,18 @@ export function gw_onSelectionChanged() {
     });
   }
 }
+
+export function gw_onCellClickEvent(e) {
+
+  const parsed = gw_parseNodeFromEvent(e);
+
+  if (parsed) {
+
+    gw_sendEvent({
+      'type': e.type,
+      'detail': [[
+        { row: parsed, value: e.value, column: e.column.colId }
+      ]]
+    });
+  }
+}

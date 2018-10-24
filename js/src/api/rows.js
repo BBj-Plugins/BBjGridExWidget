@@ -60,14 +60,7 @@ export function gw_navigateToNextRow(params) {
 }
 
 export function gw_getRowNodeId(data) {
-
-  let id;
-  if (gw_options.hasOwnProperty('__getRowNodeId')) {
-    id = data[gw_options.__getRowNodeId];
-  }
-
-  id = id ? id : data.__ROW_INDEX;
-  return id;
+  return data[gw_options.__getRowNodeId];
 }
 
 export function gw_getNodeChildDetails(rowItem) {
@@ -96,20 +89,24 @@ export function gw_setRowsData(json) {
 
 export function gw_setRowData(row) {
 
-  const data = row[0];
-  const key = gw_options.__getRowNodeId.length === 0 ? "__ROW_INDEX" : gw_options.__getRowNodeId;
-  gw_options.api.getRowNode(data[key]).setData(data);
+  console.log(row)
+  gw_options.api.updateRowData({update: [row]});
   gw_options.api.refreshClientSideRowModel('group');
 }
 
-export function gw_removeRow(index) {
+export function gw_removeRows(indexes) {
   
-  gw_options.rowData.splice(Number(index), 1);
-  gw_options.api.setRowData(gw_options.rowData);
+  let items = [];
+  indexes.forEach( index => {
+    items.push(gw_options.api.getRowNode(index).data);
+  });
+
+  gw_options.api.updateRowData({remove: items});
   gw_options.api.refreshClientSideRowModel('group');
 }
 
 export function gw_addRows(index,rows) {
+  
   gw_options.api.updateRowData({add: rows, addIndex: index});
   gw_options.api.refreshClientSideRowModel('group');
 }

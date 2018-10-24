@@ -468,6 +468,7 @@ class public BBjGridExWidget extends BBjWidget
     method public void onLoad(BBjEvent ev!)
         rem ' only do this once
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
+
         ch=unt
         distBase$ = "BBjGridExWidget/js/dist"
         rem include the grid
@@ -479,8 +480,10 @@ class public BBjGridExWidget extends BBjWidget
         rem include locale files
         locale! = stbl("!LOCALE")
         locale$ = locale!.replaceAll("_","-")
-        dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
+        dateJsLocalePath$ = distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
+        print distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
         isLocale = 0
+        ch=unt
         open (ch,err=*next)dateJsLocalePath$;isLocale=1
 
         if isLocale = 0 then
@@ -493,7 +496,7 @@ class public BBjGridExWidget extends BBjWidget
         close (ch)
         #injectScript(script$)
         ch=unt
-        open (ch) distBase$ + "/bbj-grid-widget.min.js"
+        open (ch) distBase$ + "/dist/bbj-grid-widget.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
@@ -535,6 +538,12 @@ class public BBjGridExWidget extends BBjWidget
             case "cellEditingStopped"
                 #Editing! = 0
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STOPPED())
+                break
+            case "cellClicked"
+                #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_CLICK())
+                break
+            case "cellDoubleClicked"
+                #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_DOUBLE_CLICK())
                 break
             case "rowEditingStarted"
                 #Editing! = 1
@@ -584,6 +593,7 @@ class public BBjGridExWidget extends BBjWidget
             wend
         fi
 
+        #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
@@ -656,6 +666,7 @@ class public BBjGridExWidget extends BBjWidget
             wend
         fi
 
+        #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
@@ -670,9 +681,9 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setRowData(BBjNumber index!,DataRow row!)
         if #RS!.count() <> 0 then
-            #RS!.setItem(index!,row!)
-            row!.setFieldValue("__ROW_INDEX",str(index!))
-            #executeScript("gw_setRowData(" + row!.toJson()  +")")
+            #RS!.set(index!,row!)
+            parser! = new JsonParser()
+            #executeScript("gw_setRowData(" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString()  +")")
         fi
     methodend
     rem /**
@@ -684,7 +695,17 @@ class public BBjGridExWidget extends BBjWidget
     method public void addRow(BBjNumber index!,DataRow row!)
         #RS!.add(index! , row!)
         parser! = new JsonParser()
-        #executeScript("gw_addRows("+ str(index!) +",[" + parser!.parse(row!.toJson()).getAsJsonArray().get(0).toString() +"])")
+        #executeScript("gw_addRows("+ str(index!) +",[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+    methodend
+    rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param DataRow: DataRow object which contains the update
+    rem  */
+    method public void addRow(DataRow row!)
+        #RS!.add(row!)
+        parser! = new JsonParser()
+        #executeScript("gw_addRows(null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
     rem  * Remove row from grid by index
@@ -693,8 +714,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void removeRow(BBjNumber index!)
         if #RS!.count() <> 0 then
+            if #RowNodeId$ <> "__ROW_INDEX" then
+                value! = #RS!.getItem(index!).getFieldAsString(#RowNodeId$)
+            else
+                value! = #RS!.getItem(index!).getRowKey()
+            fi
+
             #RS!.remove(index!)
-            #executeScript("gw_removeRow(" + str(index!)  +")")
+            #executeScript("gw_removeRows(['" + str(value!)  +"'])")
             rem print #RS!.getItem(index!)
             rem escape
         fi
@@ -704,6 +731,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void clearRowsData()
         #RS! = new ResultSet()
+        #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
@@ -1483,6 +1511,18 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public static BBjNumber ON_GRID_ROW_EDITING_STOPPED()
         methodret 5005
+    methodend
+    rem /**
+    rem  * @return constant value to define cell click event
+    rem  */
+    method public static BBjNumber ON_GRID_CELL_CLICK()
+        methodret 5006
+    methodend
+    rem /**
+    rem  * @return constant value to define cell double click event
+    rem  */
+    method public static BBjNumber ON_GRID_CELL_DOUBLE_CLICK()
+        methodret 5007
     methodend
     rem /**
     rem  * @return constant value to define row position

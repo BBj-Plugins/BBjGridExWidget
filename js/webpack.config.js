@@ -59,15 +59,7 @@ module.exports = {
       { 
         from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
         to: distPath
-      },
-      {
-        from: __dirname + '/node_modules/Datejs/src/globalization/**',
-        to: distPath + '/i18n/Datejs',
-        flatten: true,
-        transform: function (fileContent, path) {
-          return uglifyJs.minify(fileContent.toString()).code.toString();
-        }
-      },
+      }
     ]),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static'
