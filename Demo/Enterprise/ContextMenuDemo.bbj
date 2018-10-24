@@ -1,0 +1,108 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridContextMenu
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+lic!=System.getProperty("bbjgridexwidget.license")
+
+if lic!=null() or str(lic!)="" then
+    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Demo for Enterprise Features")
+    release
+fi
+
+BBjGridExWidget.setLicenseKey(lic!)
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+
+gosub fillGrid
+
+process_events
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
+    rs! = sbc!.retrieve("SELECT  * FROM CUSTOMER")
+
+    style! = new JsonObject()
+    style!.addProperty("background","#bdbdbd")
+    grid!.addStyle(".maps-style" , style!)
+
+    menu! = new BBjGridContextMenu()
+
+    rem predefined items
+    menu!.addItem(BBjGridContextMenuItem.AUTO_SIZE_ALL())
+    menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
+    menu!.addItem(BBjGridContextMenuItem.TOOLPANEL())
+    menu!.addItem(BBjGridContextMenuItem.EXPORT())
+
+    rem custom item
+    item! = new BBjGridContextMenuItem(5007,"Show Direction")
+    item!.setTooltip("Open the location in Google Maps")
+    item!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/maps-icon.png" , 20 , 20)
+    item!.setCssClasses("maps-style")
+    menu!.addItem(item!)
+    grid!.setCallback(5007,"onShowDirection")
+
+
+    rem custom item
+    item! = new BBjGridContextMenuItem(5008,"Search Firstname in Namepedia")
+    item!.setTooltip("Search First Name in Namepedia")
+    item!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
+    menu!.addItem(item!)
+    grid!.setCallback(5008,"onShowFirstName")
+
+    item! = new BBjGridContextMenuItem(5009,"Copy Functions")
+    submenu! = new BBjGridContextMenu()
+    submenu!.addItem(BBjGridContextMenuItem.COPY())
+    submenu!.addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+    item!.setSubMenu(submenu!)
+    menu!.addItem(item!)
+
+    grid!.setContextMenu(menu!)
+    grid!.setData(rs!)
+return
+
+onShowDirection:
+
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    row! = ev!.getRow().asDataRow()
+    url$ = "https://www.google.com/maps/search/?api=1&query=" + java.net.URLEncoder.encode(row!.getFieldAsString("BILL_ADDR1").trim() + ","  + row!.getFieldAsString("COUNTRY").trim())
+    BBjAPI().getThinClient().browse(url$)
+return
+
+
+onShowFirstName:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+    
+    row! = ev!.getRow().asDataRow()
+    url$ = "http://www.namepedia.org/en/firstname/?q="+java.net.URLEncoder.encode(row!.getFieldAsString("FIRST_NAME").trim())
+    BBjAPI().getThinClient().browse(url$)
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return
+

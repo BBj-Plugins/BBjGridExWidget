@@ -5,6 +5,7 @@ use java.sql.Types
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
+use com.google.gson.JsonPrimitive
 use com.google.gson.JsonArray
 use java.lang.Integer
 use java.util.ArrayList
@@ -184,7 +185,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnableValue! = 0
+    field public BBjNumber EnableValue! = 1
     rem /**
     rem  * Enable/disable row group by column via the GUI
     rem  *
@@ -202,7 +203,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnableRowGroup! = 0
+    field public BBjNumber EnableRowGroup! = 1
     rem /**
     rem  * Enable/disable pivot by column via the GUI.
     rem  *
@@ -221,7 +222,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber EnablePivot! = 1
+    field public BBjNumber EnablePivot! = 0
     rem /**
     rem  * Suppress Row Groups section.
     rem  * 1 = enable editing
@@ -248,7 +249,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressPivots! = 1
+    field public BBjNumber SuppressPivots! = 0
     rem /**
     rem  * suppress Pivot Mode section.
     rem  * 1 = enable editing
@@ -257,7 +258,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressPivotMode! = 1
+    field public BBjNumber SuppressPivotMode! = 0
     rem /**
     rem  * suppress Side Buttons section.
     rem  * 1 = enable editing
@@ -266,7 +267,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjNumber SuppressSideButtons! = 1
+    field public BBjNumber SuppressSideButtons! = 0
     rem /**
     rem  * suppress Column Filter section.
     rem  * 1 = enable editing
@@ -361,6 +362,13 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjNumber GroupIncludeTotalFooter! = 0
+    rem /**
+    rem  * The grid context menu
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -402,6 +410,14 @@ class public BBjGridExWidget extends BBjWidget
         declare BBjHtmlView htmlview!
 
         if (f_init!) then
+        
+            lic!=System.getProperty("bbjgridexwidget.license")
+
+            if lic! <> null() and str(lic!) <> "" then
+               #setLicenseKey(lic!)
+            fi
+        
+        
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
@@ -450,20 +466,18 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjEvent ev!: the onLoad event
     rem  */
     method public void onLoad(BBjEvent ev!)
-
         rem ' only do this once
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
 
         ch=unt
-        distBase$ = "BBjGridExWidget/js"
+        distBase$ = "BBjGridExWidget/js/dist"
         rem include the grid
-        gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/dist/ag-grid-enterprise.min.noStyle.js",distBase$ +"/dist/ag-grid.min.noStyle.js")
+        gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid.min.noStyle.js")
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
-
-        rem include Datejs
+        rem include locale files
         locale! = stbl("!LOCALE")
         locale$ = locale!.replaceAll("_","-")
         dateJsLocalePath$ = distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
@@ -474,20 +488,18 @@ class public BBjGridExWidget extends BBjWidget
 
         if isLocale = 0 then
             close (ch)
-            dateJsLocalePath$ = distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
+            dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
             open (ch,err=*next)dateJsLocalePath$
         fi
 
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
-
         ch=unt
         open (ch) distBase$ + "/dist/bbj-grid-widget.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
-        
         #IsReady! = BBjAPI.TRUE
 
         if #RS! <> null() or #TREE! <> null()  or #URL$>"" then
@@ -540,6 +552,9 @@ class public BBjGridExWidget extends BBjWidget
             case "rowEditingStopped"
                 #Editing! = 0
                 #handleGridROWEditingEvent(detail$,#ON_GRID_ROW_EDITING_STOPPED())
+                break
+            case "contextmenu"
+                #handleGridContextmenuEvent(detail$)
                 break
         swend
     methodend
@@ -1712,6 +1727,24 @@ class public BBjGridExWidget extends BBjWidget
         #fireEvent(type!, event!)
     methodend
 
+    method private void handleGridContextmenuEvent(BBjString detail$)
+        parser! = new JsonParser()
+        array! = parser!.parse(detail$).getAsJsonObject().get("0")
+        next! = array!.iterator().next().getAsJsonObject()
+        rowAsJson! = next!.get("row").getAsJsonObject()
+        row! = new BBjGridExWidgetRow(#RS!)
+        row!.setId(rowAsJson!.get("id").getAsString())
+        row!.setChildIndex(rowAsJson!.get("childIndex").getAsInt())
+        row!.setIndex(rowAsJson!.get("index").getAsString())
+        row!.setParentKey(rowAsJson!.get("parentKey").getAsString())
+        row!.setIsSelected(iff(rowAsJson!.get("selected").getAsString() = "true" ,  1 , 0))
+        event! = new BBjGridWidgetContextMenuEvent()
+        event!.setRow(row!)
+        event!.setValue(next!.get("value").getAsString())
+        event!.setColumn(next!.get("column").getAsString())
+        #fireEvent(next!.get("id").getAsInt(),event!)
+    methodend
+
     method private void performGridDataUpdate()
         if (! #IsReady!)
             methodret
@@ -1791,6 +1824,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("__numberGroupSep",comma$)
         options!.addProperty("__numberDecimalSep",dot$)
         options!.addProperty("__locale",stbl("!LOCALE"))
+        options!.addProperty("__contextMenu",#ContextMenu!.toString())
         #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
@@ -2000,6 +2034,188 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
 classend
+rem /**
+rem  * A class which reprensets grid context menu item
+rem  */
+class public BBjGridContextMenuItem
+
+    field protected JsonObject json! = new JsonObject()
+    rem /**
+    rem  * Construct new Menu item
+    rem  *
+    rem  * @param BBjNumber id!: item's ID
+    rem  * @param BBjString name$: item's name
+    rem  */
+    method public BBjGridContextMenuItem(BBjNumber id! ,BBjString name$)
+        #json!.addProperty("id",str(id!))
+        #json!.addProperty("name",name$)
+    methodend
+    rem /**
+    rem  * Set a sub menu for the current item
+    rem  *
+    rem  * @param BBjGridContextMenu menu!: The menu object
+    rem  */
+    method public void setSubMenu(BBjGridContextMenu menu!)
+        #json!.addProperty("subMenu",menu!.toString())
+    methodend
+    rem /**
+    rem  * Set the item tooltip
+    rem  *
+    rem  * @param BBjString tooltip$: tooltip string
+    rem  */
+    method public void setTooltip(BBjString tooltip$)
+        #json!.addProperty("tooltip",tooltip$)
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  * @param BBjNumber width!: image width
+    rem  * @param BBjNumber height!: image height
+    rem  */
+    method public void setIcon(BBjString url$,BBjNumber width!,BBjNumber height!)
+        #json!.addProperty("icon","<img border=0 width=" + str(width!) +  " height=" + str(height!) + " src='" + url$ + "' />")
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  * @param BBjNumber width!: image width
+    rem  */
+    method public void setIcon(BBjString url$,BBjNumber width!)
+        #setIcon(url$,width!,15)
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  */
+    method public void setIcon(BBjString url$)
+        #setIcon(url$,15,15)
+    methodend
+    rem /**
+    rem  * Set the item css classes
+    rem  *
+    rem  * @param BBjString classes$: space sperated string
+    rem  */
+    method public void setCssClasses(BBjString classes$)
+        #json!.addProperty("cssClasses",classes$)
+    methodend
+    rem /**
+    rem  * Convert the item to JsonObject
+    rem  *
+    rem  * @return  JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        methodret #json!
+    methodend
+    rem /**
+    rem  * @return shortcode to autoSizeAll menu item
+    rem  */
+    method public static BBjString  AUTO_SIZE_ALL()
+        methodret "autoSizeAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to expandAll menu item
+    rem  */
+    method public static BBjString  EXPAND_ALL()
+        methodret "expandAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to contractAll menu item
+    rem  */
+    method public static BBjString  CONTRACT_ALL()
+        methodret "contractAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to copy menu item
+    rem  */
+    method public static BBjString  COPY()
+        methodret "copy"
+    methodend
+    rem /**
+    rem  * @return shortcode to copyWithHeaders menu item
+    rem  */
+    method public static BBjString  COPY_WITH_HEADERS ()
+        methodret "copyWithHeaders"
+    methodend
+    rem /**
+    rem  * @return shortcode to resetColumns menu item
+    rem  */
+    method public static BBjString  RESET_COLUMNS()
+        methodret "resetColumns"
+    methodend
+    rem /**
+    rem  * @return shortcode to toolPanel menu item
+    rem  */
+    method public static BBjString  TOOLPANEL()
+        methodret "toolPanel"
+    methodend
+    rem /**
+    rem  * @return shortcode to export menu item
+    rem  */
+    method public static BBjString  EXPORT()
+        methodret "export"
+    methodend
+    rem /**
+    rem  * @return shortcode to csvExport menu item
+    rem  */
+    method public static BBjString  CSV_EXPORT()
+        methodret "csvExport"
+    methodend
+    rem /**
+    rem  * @return shortcode to excelExport menu item
+    rem  */
+    method public static BBjString  EXCEL_EXPORT()
+        methodret "excelExport"
+    methodend
+
+classend
+rem /**
+rem  * A class which reprensets grid context menu
+rem  */
+class public BBjGridContextMenu
+
+    field protected JsonArray Items! = new JsonArray()
+    rem /**
+    rem  * Add new context menu item
+    rem  *
+    rem  * @param BBjGridContextMenuItem item!: the item object
+    rem  */
+    method public void addItem(BBjGridContextMenuItem item!)
+        #Items!.add(item!.getAsJsonObject())
+    methodend
+    rem /**
+    rem  * Add a predefined context menu item
+    rem  *
+    rem  * @param BBjString item$: the item ID
+    rem  */
+    method public void addItem(BBjString item$)
+        #Items!.add(new JsonPrimitive(item$))
+    methodend
+    rem /**
+    rem  * Conver the menu to JSON string
+    rem  *
+    rem  * @returns String
+    rem  */
+    method public String toString()
+        methodret #Items!.toString()
+    methodend
+
+classend
+rem /**
+rem  * A class which reprensets the default grid context menu
+rem  */
+class public BBjGridDefaultContextMenu extends BBjGridContextMenu
+
+    method public BBjGridDefaultContextMenu()
+        #addItem(BBjGridContextMenuItem.COPY())
+        #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+        #addItem(BBjGridContextMenuItem.TOOLPANEL())
+        #addItem(BBjGridContextMenuItem.EXPORT())
+    methodend
+
+classend
 
 class public BBjGridExWidgetRow
 
@@ -2115,8 +2331,20 @@ class public BBjGridWidgetRowEditingEvent
 
 classend
 
+class public BBjGridWidgetContextMenuEvent
+
+    field public BBjGridExWidgetRow Row!
+    field public BBjString Column$
+    field public BBjString Value$
+
+classend
+
 class public BBjGridExWidgetColumnState
 
     field public BBjString String$
+    
+    method public BBjGridExWidgetColumnState(BBjString String$)
+        #String$= String$
+    methodend
 
 classend
