@@ -480,8 +480,7 @@ class public BBjGridExWidget extends BBjWidget
         rem include locale files
         locale! = stbl("!LOCALE")
         locale$ = locale!.replaceAll("_","-")
-        dateJsLocalePath$ = distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
-        print distBase$ + "/vendor/Datejs/build/date-" + locale$ + ".js"
+        dateJsLocalePath$ = distBase$ + "/../vendor/Datejs/build/date-" + locale$ + ".js"
         isLocale = 0
         ch=unt
         open (ch,err=*next)dateJsLocalePath$;isLocale=1
@@ -496,7 +495,7 @@ class public BBjGridExWidget extends BBjWidget
         close (ch)
         #injectScript(script$)
         ch=unt
-        open (ch) distBase$ + "/dist/bbj-grid-widget.min.js"
+        open (ch) distBase$ + "/bbj-grid-widget.min.js"
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
