@@ -154,7 +154,9 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     getRowNodeId: gw_getRowNodeId,
 
     rememberGroupStateWhenNewData: true,
-    getContextMenuItems: gw_getContextMenu
+    getContextMenuItems: gw_getContextMenu,
+    popupParent: gw_getDocument().body,
+    allowContextMenuWithControlKey:true
   });
 
   if (
