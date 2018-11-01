@@ -52,7 +52,7 @@ export function gw_onCellClickEvent(e) {
     gw_sendEvent({
       'type': e.type,
       'detail': [[
-        { row: parsed, value: e.value, column: e.column.colId }
+        { row: parsed, value: gw_escape(e.value), column: e.column.colId }
       ]]
     });
   }

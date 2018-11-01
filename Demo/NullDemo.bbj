@@ -3,14 +3,14 @@ use com.basiscomponents.db.ResultSet
 
 use java.sql.Types
 
+? 'HIDE'
+
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
 gosub fillGrid
-
-? 'SHOW','RAISE',
 
 process_events
 

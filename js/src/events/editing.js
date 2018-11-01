@@ -16,9 +16,9 @@ export function gw_onCellEditingsEvent(e) {
 
   let value;
   if (type === 'cellValueChanged') {
-    value = { value: e.newValue, oldValue: e.oldValue };
+    value = { value: gw_escape(e.newValue), oldValue: gw_escape(e.oldValue) };
   } else {
-    value = { value: e.value };
+    value = { value: gw_escape(e.value) };
   }
 
   if (parsed) {

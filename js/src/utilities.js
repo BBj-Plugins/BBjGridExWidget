@@ -51,3 +51,7 @@ export function gw_getDocument() {
 export function gw_getWindow() {
   return typeof $win !== 'undefined' ? $win : window;
 }
+
+export function gw_escape(value) {
+  return value !== null && value !== undefined ? value: '';
+}
