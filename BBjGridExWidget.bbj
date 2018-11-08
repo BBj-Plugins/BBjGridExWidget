@@ -379,6 +379,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjString ParentNodeId$
     field private DataRow ColumnDefinition!
     field public  DataRow AttributesRecord!
+    field private DataRow AdditionalAttributes! = new DataRow()
     field private BBjNumber Editing! = 0
     field private HashMap ColumnGroups! = new HashMap()
     field public static BBjNumber Debug=0
@@ -590,6 +591,18 @@ class public BBjGridExWidget extends BBjWidget
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                 fi
             wend
+        fi
+        
+        if rs! <> NULL() AND rs!.size()>0 then
+        
+            it! = #AdditionalAttributes!.getFieldNames().iterator()
+            r1! = rs!.getItem(0)
+            while it!.hasNext()
+                f$=it!.next()
+                if r1!.contains(f$) then
+                        r1!.setFieldAttributes(f$,#AdditionalAttributes!.getFieldAttributes(f$))
+                fi
+            wend  
         fi
 
         #RS!.createIndex()
@@ -1438,6 +1451,22 @@ class public BBjGridExWidget extends BBjWidget
     method public void addColumnGroup(BBjString id$ , BBjString name$, BBjVector columns!)
         #addColumnGroup(id$,name$ , columns! , 1  , "" )
     methodend
+    
+    
+    method public void setColumnImageList(BBjString colname$, BBjImage imagelist!)
+        enc! = java.util.Base64.getEncoder()
+        list! = new JsonObject()
+        for i=1 to int(imageList!.getWidth() / imageList!.getHeight())
+            imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
+            bytes$ = imageSlice!.getBytes("png") 
+            b64$ = enc!.encode(bytes$)
+            list!.addProperty(str(i),"data:image/png;base64, "+b64$)
+        next 
+        #AdditionalAttributes!.setFieldValue(colname$,"")
+        #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
+        #AdditionalAttributes!.setFieldAttribute(colname$,"IMAGES_LIST",list!.toString())    
+    methodend
+    
     rem /**
     rem  * experimental function that shows the developer console
     rem  * (only in GUI, for BUI it's a NOOP)
@@ -1855,7 +1884,7 @@ class public BBjGridExWidget extends BBjWidget
                 FI
             FI
         FI
-
+        
         cdef! = new JsonArray()
         first=1
 

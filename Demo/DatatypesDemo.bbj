@@ -53,6 +53,7 @@ fillGrid:
         dr! = new DataRow()
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         dr!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
+        dr!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i))
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
@@ -66,6 +67,7 @@ fillGrid:
         dr! = new DataRow()
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
         dr!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
+        dr!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i))
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
@@ -97,6 +99,7 @@ prepareGrid:
     ar! = new DataRow()
     ar!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
     ar!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
+    ar!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i))
     ar!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
     ar!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
     ar!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
@@ -127,8 +130,10 @@ prepareGrid:
     
     ar!.setFieldAttribute("ICON","TYPE",grid!.GRID_TYPE_BASIC_IMAGE_FILTERABLE())
     ar!.setFieldAttribute("ICON","IMAGES_LIST",list!.toString())
-
     grid!.setAttributesRecord(ar!)
+
+    imageList!=BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/imagelist.png")
+    grid!.setColumnImageList("IMAGELIST",imageList!)
 
 return
 
