@@ -106,7 +106,7 @@ prepareGrid:
     ar!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
     ar!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
 
-    ar!.setFieldAttribute("DOUBLE","MASK","##,##.0"); rem or RENDERER_MASK
+    ar!.setFieldAttribute("DOUBLE","MASK","##,##0.00"); rem or RENDERER_MASK
     rem ar!.setFieldAttribute("DOUBLE","RENDERER_GROUP_SEPARATOR","G"); rem change group separator
     rem ar!.setFieldAttribute("DOUBLE","RENDERER_DECIMAL_SEPARATOR","D"); rem change decimal separator
     
