@@ -695,6 +695,11 @@ acorn@^5.0.0, acorn@^5.3.0, acorn@^5.6.2:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.1.tgz#f095829297706a7c9776958c0afc8930a9b9d9d8"
 
+ag-grid-community@^19.1.1:
+  version "19.1.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-19.1.1.tgz#8a7af68a853faca3ef6f49bd8a4a43b2398b4549"
+  integrity sha512-brnACOi7bPCs+ffTBz7Um0+lCeHUXY7WpGpbG/rDBwnU2fIk+edxqBzpxHO0B3svM3zWCh5ltXi3O+qTTkPPaA==
+
 "ag-grid-components@https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.7.0":
   version "1.12.0"
   resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#4ba3ef602280740dd73484aeb69c2be6b6b4f9f1"
@@ -703,13 +708,10 @@ acorn@^5.0.0, acorn@^5.3.0, acorn@^5.6.2:
     bbj-masks "https://git.storesandbox.de/hyyan/bbj-masks.git#^v1.3.1"
     flatpickr "^4.3.2"
 
-ag-grid-enterprise@18.0.0:
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-18.0.0.tgz#aa8ec97fc39812c28be9fd65dd904cbba1da8c44"
-
-ag-grid@18.0.0:
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-18.0.0.tgz#c88be8f12a3bdc20978e767c2f2036265aa34301"
+ag-grid-enterprise@^19.1.1:
+  version "19.1.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-19.1.1.tgz#4e10e45461ab71fc2c3dd1aa1c1beb9a6fa12f71"
+  integrity sha512-oEUjTBqkGOiBhALL7LaV9T58CHBzaCzdVmgltcAZByjsz5BOxo1hbVWHeO3G9mE5zyKgcBl6utXoZj6idAofpw==
 
 ag-grid@^18.0.1:
   version "18.1.1"

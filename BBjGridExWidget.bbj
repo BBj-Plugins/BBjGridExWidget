@@ -2146,6 +2146,7 @@ class public BBjGridContextMenuItem
     methodend
     rem /**
     rem  * @return shortcode to toolPanel menu item
+    rem  * @deprecated
     rem  */
     method public static BBjString  TOOLPANEL()
         methodret "toolPanel"
@@ -2210,7 +2211,7 @@ class public BBjGridDefaultContextMenu extends BBjGridContextMenu
     method public BBjGridDefaultContextMenu()
         #addItem(BBjGridContextMenuItem.COPY())
         #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
-        #addItem(BBjGridContextMenuItem.TOOLPANEL())
+        rem #addItem(BBjGridContextMenuItem.TOOLPANEL())
         #addItem(BBjGridContextMenuItem.EXPORT())
     methodend
 

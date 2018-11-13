@@ -156,7 +156,28 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     rememberGroupStateWhenNewData: true,
     getContextMenuItems: gw_getContextMenu,
     popupParent: gw_getDocument().body,
-    allowContextMenuWithControlKey:true
+    allowContextMenuWithControlKey:true,
+    sideBar:'columns'
+    // sideBar: {
+    //   toolPanels: [{
+    //       id: 'columns',
+    //       labelDefault: 'Columns',
+    //       labelKey: 'columns',
+    //       iconKey: 'columns',
+    //       toolPanel: 'agColumnsToolPanel',
+    //       toolPanelParams: {
+    //           suppressRowGroups: true,
+    //           suppressValues: true,
+    //           suppressPivots: true,
+    //           suppressPivotMode: true,
+    //           suppressSideButtons: true,
+    //           suppressColumnFilter: true,
+    //           suppressColumnSelectAll: true,
+    //           suppressColumnExpandAll: true
+    //       }
+    //   }],
+    //   defaultToolPanel: 'columns'
+    // },
   });
 
   if (
