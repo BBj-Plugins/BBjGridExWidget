@@ -235,7 +235,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
 export function gw_setData(json, options, license) {
 
-  const container = gw_getDocument().getElementById('grid');
+  const container = gw_getDocument().getElementById(options['__id']);
   container.innerHTML = '';
 
   window.gw_meta = json[0].meta;
