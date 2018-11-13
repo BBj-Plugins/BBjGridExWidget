@@ -24,9 +24,11 @@ fi
  
 tb_get! = wnd!.addButton(300,10,3,200,25,"GET STATE")
 tb_set! = wnd!.addButton(301,230,3,200,25,"SET STATE")
+tb_refresh! = wnd!.addButton(302,450,3,200,25,"REFRESH")
 
 tb_get!.setCallback(BBjAPI.ON_BUTTON_PUSH,"getState")
 tb_set!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setState")
+tb_refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refresh")
 
 gosub fillGrid
 
@@ -82,6 +84,10 @@ setState:
     if state!<>null() then
         grid!.setColumnState(state!)
     fi
+return
+
+refresh:
+    grid!.setData(rs!)
 return
 
 onWinKeypress:

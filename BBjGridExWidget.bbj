@@ -383,6 +383,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjNumber Editing! = 0
     field private HashMap ColumnGroups! = new HashMap()
     field public static BBjNumber Debug=0
+    field private BBjString DataFingerprint$
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -604,12 +605,26 @@ class public BBjGridExWidget extends BBjWidget
                 fi
             wend  
         fi
+        
+        rem if the data fed to the grid is the same as before, it's an update. 
+        rem In this case we want to retain the setting of the columns
+        rem and the order and sizes
+        r1! = rs!.getItem(0)
+        datafingerprint$ = r1!.getFieldNames().toString()
+        keep=0
+        if (datafingerprint$ = #DataFingerprint$) then
+            tmpstate!=#getColumnState()
+        fi
 
         #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
         #performGridDataUpdate()
+        if tmpstate!<>null() then
+            #setColumnState(tmpstate!)
+        fi 
+        #DataFingerprint$ = datafingerprint$
     methodend
     rem /**
     rem  * set the data into the grid
@@ -1451,8 +1466,13 @@ class public BBjGridExWidget extends BBjWidget
     method public void addColumnGroup(BBjString id$ , BBjString name$, BBjVector columns!)
         #addColumnGroup(id$,name$ , columns! , 1  , "" )
     methodend
-    
-    
+    rem /**
+    rem  * Set an image list for a given column
+    rem  * The column has to contain the values "1","2","3" to x to reference
+    rem  * the slices in the BBjImage list 
+    rem  * @param BBjString colname$: the column name
+    rem  * @param BBjImage imagelist!: the image list containing the image sprites
+    rem  */
     method public void setColumnImageList(BBjString colname$, BBjImage imagelist!)
         enc! = java.util.Base64.getEncoder()
         list! = new JsonObject()
@@ -1466,7 +1486,6 @@ class public BBjGridExWidget extends BBjWidget
         #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
         #AdditionalAttributes!.setFieldAttribute(colname$,"IMAGES_LIST",list!.toString())    
     methodend
-    
     rem /**
     rem  * experimental function that shows the developer console
     rem  * (only in GUI, for BUI it's a NOOP)
