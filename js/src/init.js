@@ -180,9 +180,10 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
     //override numbers group and decimal separators
     if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
-      if (gw_meta && gw_meta.hasOwnProperty('field')) {
-        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR'))
+      if (gw_meta && gw_meta.hasOwnProperty(field)) {
+        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')){
           def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
+        }
         if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
           def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
       }
@@ -228,7 +229,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   }
 
   gw_groupColumns(JSON.parse(options.__columnsGroup), options.columnDefs);
-
+  
   return new agGrid.Grid(container, options);
 }
 
