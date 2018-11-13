@@ -979,6 +979,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBJNumber x!: 0 select all , 1 select all filtered
     rem  */
     method public void selectAll(BBjNumber x!)
+        #deselectAll()
         script$="gw_selectAll(" + str(x!) + ");"
         #executeScript(script$)
     methodend
@@ -986,6 +987,9 @@ class public BBjGridExWidget extends BBjWidget
     rem  * deselect all rows
     rem  */
     method public void deselectAll()
+        rem need to clear old selection
+        rem TODO / missing: create the SelectedRowsMap based on the new programmatic setting
+        #SelectedRowsMap!.clear()
         script$="gw_deselectAll(0);"
         #executeScript(script$)
     methodend

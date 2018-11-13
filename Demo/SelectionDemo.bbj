@@ -21,16 +21,19 @@ st! = wnd!.addStaticText(200,20,10,200,25,"Enter rows to select, e.g. ""5,7""")
 ed! = wnd!.addEditBox(201,200,10,250,22,"")
 btn! = wnd!.addButton(202,460,10,80,22,"SELECT")
 
-cb! = wnd!.addCheckBox(203,550,10,200,22,"Use Selection Checkbox")
+cb! = wnd!.addCheckBox(203,550,10,200,22,"Use Checkbox")
+
+btn_show! = wnd!.addButton(204,660,10,80,22,"SHOW SEL")
 
 btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectButton")
+btn_show!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onShowButton")
 cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
 cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
 grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onSelection")
 grid!.setCallback(grid!.ON_GRID_DOUBLE_CLICK(),"onDoubleCLick")
 
-grid!.setSelectionMode(grid!.GRID_SELECT_CELL())
+grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
 grid!.setMultipleSelection(1)
 
 
@@ -145,4 +148,21 @@ onUseCheckbox:
     rem this definition requires a refresh!
     gosub fillGrid
 
+return
+
+
+onShowButton:
+    sel! = grid!.getSelectedRows()
+    it! = sel!.iterator()
+    ? 'CS','SHOW','RAISE',"Selected Rows are:"
+    while it!.hasNext()
+        sr! = it!.next()
+        ? "ChildInde:  ",sr!.getChildIndex()
+        ? "Data:       ",sr!.asDataRow()
+        ? "Id:         ",sr!.getId()
+        ? "Index:      ",sr!.getIndex()
+        ? ""    
+    wend
+
+        
 return
