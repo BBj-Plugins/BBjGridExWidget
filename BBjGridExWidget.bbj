@@ -1484,7 +1484,7 @@ class public BBjGridExWidget extends BBjWidget
             imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
             bytes$ = imageSlice!.getBytes("png") 
             b64$ = enc!.encode(bytes$)
-            list!.addProperty(str(i),"data:image/png;base64, "+b64$)
+            list!.addProperty(str(i-1),"data:image/png;base64, "+b64$)
         next 
         #AdditionalAttributes!.setFieldValue(colname$,"")
         #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
