@@ -369,6 +369,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
+    field private BBjString ID$
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -411,6 +412,7 @@ class public BBjGridExWidget extends BBjWidget
     method public void redraw(Boolean f_init!)
         declare BBjHtmlView htmlview!
 
+        #ID$ = java.util.UUID.randomUUID().toString()
         if (f_init!) then
         
             lic!=System.getProperty("bbjgridexwidget.license")
@@ -419,8 +421,7 @@ class public BBjGridExWidget extends BBjWidget
                #setLicenseKey(lic!)
             fi
         
-        
-            html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id=""grid"" style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id='" + str(#ID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
@@ -1863,6 +1864,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.add("autoGroupColumnDef",autoGroupColumnDef!)
         options!.add("columnDefs",cdef!)
         rem the following are not supported by ag-grid options but they are required by plugin js code
+        options!.addProperty("__id",#ID$)
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
