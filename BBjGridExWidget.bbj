@@ -1487,6 +1487,11 @@ class public BBjGridExWidget extends BBjWidget
             b64$ = enc!.encode(bytes$)
             list!.addProperty(str(i-1),"data:image/png;base64, "+b64$)
         next 
+        
+        rem adding a clear pixel to reflext the -1 for backwards compatibility to legacy BBj grid
+        clearpixel$=enc!.encode($89504E470D0A1A0A0000000D4948445200000001000000010804000000B51C0C020000000B49444154789C63FACF0000020701029A1C31710000000049454E44AE426082$)
+        list!.addProperty("-1","data:image/png;base64, "+clearpixel$)
+        
         #AdditionalAttributes!.setFieldValue(colname$,"")
         #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
         #AdditionalAttributes!.setFieldAttribute(colname$,"IMAGES_LIST",list!.toString())    
