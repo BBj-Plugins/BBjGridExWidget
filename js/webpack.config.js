@@ -62,7 +62,8 @@ module.exports = {
       }
     ]),
     new BundleAnalyzerPlugin({
-      analyzerMode: 'static'
+      analyzerMode: 'static',
+      openAnalyzer: false
     })
   ],
   watchOptions: {
