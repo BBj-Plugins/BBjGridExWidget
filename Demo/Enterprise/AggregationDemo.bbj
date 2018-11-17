@@ -1,4 +1,5 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetColumnsToolpanel
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -59,7 +60,7 @@ setupGrid:
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
-    grid!.setSuppressValues(0)
+    cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
     grid!.setShowToolPanel(1)
     grid!.setGroupIncludeFooter(1)
     grid!.setGroupIncludeTotalFooter(1)

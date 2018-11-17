@@ -48,7 +48,6 @@ fillGrid:
     rem predefined items
     menu!.addItem(BBjGridContextMenuItem.AUTO_SIZE_ALL())
     menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
-    menu!.addItem(BBjGridContextMenuItem.TOOLPANEL())
     menu!.addItem(BBjGridContextMenuItem.EXPORT())
 
     rem custom item

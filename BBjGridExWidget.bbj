@@ -224,78 +224,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjNumber EnablePivot! = 0
     rem /**
-    rem  * Suppress Row Groups section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressRowGroups! = 0
-    rem /**
-    rem  * suppress Values section
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressValues! = 1
-    rem /**
-    rem  * suppress Column Labels (Pivot) section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressPivots! = 0
-    rem /**
-    rem  * suppress Pivot Mode section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressPivotMode! = 0
-    rem /**
-    rem  * suppress Side Buttons section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressSideButtons! = 0
-    rem /**
-    rem  * suppress Column Filter section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressColumnFilter! = 0
-    rem /**
-    rem  * suppress Select / Un-select all widget.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressColumnSelectAll! = 0
-    rem /**
-    rem  * suppress Expand / Collapse all widget.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressColumnExpandAll! = 0
-    rem /**
     rem  * Enable/disable changes to group, pivot or values through the GUI
     rem  * This is useful if you want to show the user the group, pivot and values panel, so they can see what columns are used,
     rem  * but prevent them from making changes to the selection.
@@ -369,6 +297,13 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
+    rem /**
+    rem  * The grid sidebar
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar()
     field private BBjString ID$
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
@@ -413,14 +348,14 @@ class public BBjGridExWidget extends BBjWidget
         declare BBjHtmlView htmlview!
 
         #ID$ = java.util.UUID.randomUUID().toString()
+
         if (f_init!) then
-        
             lic!=System.getProperty("bbjgridexwidget.license")
 
             if lic! <> null() and str(lic!) <> "" then
-               #setLicenseKey(lic!)
+                #setLicenseKey(lic!)
             fi
-        
+
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id='" + str(#ID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
@@ -471,7 +406,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void onLoad(BBjEvent ev!)
         rem ' only do this once
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
-
         ch=unt
         distBase$ = "BBjGridExWidget/js/dist"
         rem include the grid
@@ -594,25 +528,25 @@ class public BBjGridExWidget extends BBjWidget
                 fi
             wend
         fi
-        
+
         if rs! <> NULL() AND rs!.size()>0 then
-        
             it! = #AdditionalAttributes!.getFieldNames().iterator()
             r1! = rs!.getItem(0)
             while it!.hasNext()
                 f$=it!.next()
+
                 if r1!.contains(f$) then
-                        r1!.setFieldAttributes(f$,#AdditionalAttributes!.getFieldAttributes(f$))
+                    r1!.setFieldAttributes(f$,#AdditionalAttributes!.getFieldAttributes(f$))
                 fi
-            wend  
+            wend
         fi
-        
-        rem if the data fed to the grid is the same as before, it's an update. 
+        rem if the data fed to the grid is the same as before, it's an update.
         rem In this case we want to retain the setting of the columns
         rem and the order and sizes
         r1! = rs!.getItem(0)
         datafingerprint$ = r1!.getFieldNames().toString()
         keep=0
+
         if (datafingerprint$ = #DataFingerprint$) then
             tmpstate!=#getColumnState()
         fi
@@ -622,9 +556,11 @@ class public BBjGridExWidget extends BBjWidget
         #URL$=""
         #SelectedRowsMap!.clear()
         #performGridDataUpdate()
+
         if tmpstate!<>null() then
             #setColumnState(tmpstate!)
-        fi 
+        fi
+
         #DataFingerprint$ = datafingerprint$
     methodend
     rem /**
@@ -943,9 +879,9 @@ class public BBjGridExWidget extends BBjWidget
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material#balham#balham-dark")>0 then
             if info(3,6)="5" then
-                s$="$doc.getElementById('grid').className='ag-theme-"+theme$+"';"
+                s$="$doc.getElementById('" + str(#ID$) + "').className='ag-theme-"+theme$+"';"
             else
-                s$="document.getElementById('grid').className='ag-theme-"+theme$+"';"
+                s$="document.getElementById('" + str(#ID$) + "').className='ag-theme-"+theme$+"';"
             FI
 
             #executeScript(s$)
@@ -1264,66 +1200,6 @@ class public BBjGridExWidget extends BBjWidget
         #EnablePivot! = bool!
     methodend
     rem /**
-    rem  * suppress Expand / Collapse all widget.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressColumnExpandAll(BBjNumber bool!)
-        #assertIsEnterprise("SuppressColumnExpandAll")
-        #SuppressColumnExpandAll!  = bool!
-    methodend
-    rem /**
-    rem  * suppress Column Filter section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressColumnFilter(BBjNumber bool!)
-        #assertIsEnterprise("SuppressColumnFilter")
-        #SuppressColumnFilter!  = bool!
-    methodend
-    rem /**
-    rem  * suppress Select / Un-select all widget.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressColumnSelectAll(BBjNumber bool!)
-        #assertIsEnterprise("SuppressColumnSelectAll")
-        #SuppressColumnSelectAll!  = bool!
-    methodend
-    rem /**
-    rem  * suppress Pivot Mode section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressPivotMode(BBjNumber bool!)
-        #assertIsEnterprise("SuppressPivotMode")
-        #SuppressPivotMode!  = bool!
-    methodend
-    rem /**
-    rem  * suppress Column Labels (Pivot) section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressPivots(BBjNumber bool!)
-        #assertIsEnterprise("SuppressPivots")
-        #SuppressPivots!  = bool!
-    methodend
-    rem /**
     rem  * Enable/disable row group by column via the GUI
     rem  *
     rem  * 1 = enable editing
@@ -1335,30 +1211,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void setEnableRowGroup(BBjNumber bool!)
         #assertIsEnterprise("EnableRowGroup")
         #EnableRowGroup! = bool!
-    methodend
-    rem /**
-    rem  * suppress Side Buttons section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressSideButtons(BBjNumber bool!)
-        #assertIsEnterprise("SuppressSideButtons")
-        #SuppressSideButtons!  = bool!
-    methodend
-    rem /**
-    rem  * suppress Values section
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    method public void setSuppressValues(BBjNumber bool!)
-        #assertIsEnterprise("SuppressValues")
-        #SuppressValues!  = bool!
     methodend
     rem /**
     rem  * If using auto column, set to true to have each group in its own column separate column.
@@ -1474,7 +1326,7 @@ class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * Set an image list for a given column
     rem  * The column has to contain the values "1","2","3" to x to reference
-    rem  * the slices in the BBjImage list 
+    rem  * the slices in the BBjImage list
     rem  * @param BBjString colname$: the column name
     rem  * @param BBjImage imagelist!: the image list containing the image sprites
     rem  */
@@ -1483,13 +1335,14 @@ class public BBjGridExWidget extends BBjWidget
         list! = new JsonObject()
         for i=1 to int(imageList!.getWidth() / imageList!.getHeight())
             imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
-            bytes$ = imageSlice!.getBytes("png") 
+            bytes$ = imageSlice!.getBytes("png")
             b64$ = enc!.encode(bytes$)
             list!.addProperty(str(i),"data:image/png;base64, "+b64$)
-        next 
+        next
+
         #AdditionalAttributes!.setFieldValue(colname$,"")
         #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
-        #AdditionalAttributes!.setFieldAttribute(colname$,"IMAGES_LIST",list!.toString())    
+        #AdditionalAttributes!.setFieldAttribute(colname$,"IMAGES_LIST",list!.toString())
     methodend
     rem /**
     rem  * experimental function that shows the developer console
@@ -1828,14 +1681,6 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("singleClickEdit",#SingleClickEdit!)
         options!.addProperty("enableGroupEdit",#GroupEdit!)
         options!.addProperty("rowSelection",iff(#MultipleSelection! = 1 , "multiple" ,"single"))
-        options!.addProperty("toolPanelSuppressRowGroups",#SuppressRowGroups!)
-        options!.addProperty("toolPanelSuppressValues",#SuppressValues!)
-        options!.addProperty("toolPanelSuppressPivots",#SuppressPivots!)
-        options!.addProperty("toolPanelSuppressPivotMode",#SuppressPivotMode!)
-        options!.addProperty("toolPanelSuppressSideButtons",#SuppressSideButtons!)
-        options!.addProperty("toolPanelSuppressColumnFilter",#SuppressColumnFilter!)
-        options!.addProperty("toolPanelSuppressColumnSelectAll",#SuppressColumnSelectAll!)
-        options!.addProperty("toolPanelSuppressColumnExpandAll",#SuppressColumnExpandAll!)
         options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
@@ -1843,6 +1688,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
         options!.addProperty("groupIncludeFooter",#GroupIncludeFooter!)
         options!.addProperty("groupIncludeTotalFooter",#GroupIncludeTotalFooter!)
+        options!.addProperty("sideBar",#Sidebar!.toString())
 
         if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
             options!.addProperty("__navigateToNextCell",1)
@@ -1909,7 +1755,7 @@ class public BBjGridExWidget extends BBjWidget
                 FI
             FI
         FI
-        
+
         cdef! = new JsonArray()
         first=1
 
@@ -2396,9 +2242,173 @@ classend
 class public BBjGridExWidgetColumnState
 
     field public BBjString String$
-    
+
     method public BBjGridExWidgetColumnState(BBjString String$)
         #String$= String$
+    methodend
+
+classend
+
+class public BBjGridExWidgetSidebar
+
+    field public BBjString DefaulToolpanel$
+    field public HashMap Toolpanels!
+
+    method public BBjGridExWidgetSidebar()
+        #Toolpanels! = new HashMap()
+    methodend
+
+    method public BBjString toString()
+        toolpanelsJson! = new JsonArray()
+        it! = #Toolpanels!.entrySet().iterator()
+        while it!.hasNext()
+            toolpanelsJson!.add(it!.next().getValue().getAsJsonObject())
+        wend
+
+        json! = new JsonObject()
+        json!.addProperty("toolPanels",toolpanelsJson!.toString())
+        json!.addProperty("defaultToolPanel",#DefaulToolpanel$)
+        methodret new Gson().toJson(json!)
+    methodend
+
+classend
+
+class public BBjGridExWidgetDefaultSidebar extends BBjGridExWidgetSidebar
+
+    method public BBjGridExWidgetDefaultSidebar()
+        columns! = new BBjGridExWidgetColumnsToolpanel()
+        #getToolpanels().put(columns!.getId() , columns!)
+        #setDefaulToolpanel(columns!.getId())
+        rem TODO: check the toolanel style is not working in GUI
+        rem #addSidebar(new BBjGridExWidgetFiltersToolpanel())
+    methodend
+
+classend
+
+class public BBjGridExWidgetToolpanel
+
+    field public BBjString Label$
+    field protected BBjString Id$
+    field protected BBjString Icon$
+    field protected BBjString Component$
+
+    method public BBjGridExWidgetToolpanel(BBjString id$ , BBjString label$ , BBjString icon$ , BBjString component$)
+        #Id$ = id$
+        #Label$ = label$
+        #Icon$  = icon$
+        #Component$ = component$
+    methodend
+
+    method public BBjString getId()
+        methodret #Id$
+    methodend
+
+classend
+
+class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
+    rem /**
+    rem  * suppress Expand / Collapse all widget.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressColumnExpandAll! = 0
+    rem /**
+    rem  * suppress Select / Un-select all widget.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressColumnSelectAll! = 0
+    rem /**
+    rem  * suppress Column Filter section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressColumnFilter! = 0
+    rem /**
+    rem  * suppress Pivot Mode section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressPivotMode! = 0
+    rem /**
+    rem  * suppress Column Labels (Pivot) section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressPivots! = 0
+    rem /**
+    rem  * suppress Values section
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressValues! = 1
+    rem /**
+    rem  * Suppress Row Groups section.
+    rem  * 1 = enable editing
+    rem  * 0 = disable edition
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field public BBjNumber SuppressRowGroups! = 0
+
+    method public BBjGridExWidgetColumnsToolpanel()
+        #super!("columns","Columns","columns","agColumnsToolPanel")
+    methodend
+
+    method public JsonObject getAsJsonObject()
+        json! = new JsonObject()
+        json!.addProperty("id",#getId())
+        json!.addProperty("labelDefault",#getLabel())
+        json!.addProperty("labelKey",#getId())
+        json!.addProperty("iconKey",#getIcon())
+        json!.addProperty("toolPanel",#getComponent())
+        toolPanelParams! = new JsonObject()
+        toolPanelParams!.addProperty("suppressRowGroups",Boolean.valueOf(#SuppressRowGroups!))
+        toolPanelParams!.addProperty("suppressValues",Boolean.valueOf(#SuppressValues!))
+        toolPanelParams!.addProperty("suppressPivots",Boolean.valueOf(#SuppressPivots!))
+        toolPanelParams!.addProperty("suppressPivotMode",Boolean.valueOf(#SuppressPivotMode!))
+        toolPanelParams!.addProperty("suppressColumnFilter",Boolean.valueOf(#SuppressColumnFilter!))
+        toolPanelParams!.addProperty("suppressColumnSelectAll",Boolean.valueOf(#SuppressColumnSelectAll!))
+        toolPanelParams!.addProperty("suppressColumnExpandAll",Boolean.valueOf(#SuppressColumnExpandAll!))
+        json!.add("toolPanelParams",toolPanelParams!)
+        methodret json!
+    methodend
+
+classend
+
+class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
+
+    method public BBjGridExWidgetFiltersToolpanel()
+        #super!("filters","Filters","filters","agFiltersToolPanel")
+    methodend
+
+    method public JsonObject getAsJsonObject()
+        json! = new JsonObject()
+        json!.addProperty("id",#getId())
+        json!.addProperty("labelDefault",#getLabel())
+        json!.addProperty("labelKey",#getId())
+        json!.addProperty("iconKey",#getIcon())
+        json!.addProperty("toolPanel",#getComponent())
+        methodret json!
     methodend
 
 classend
