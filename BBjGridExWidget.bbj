@@ -402,6 +402,15 @@ class public BBjGridExWidget extends BBjWidget
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
     methodend
+
+    rem /**
+    rem  * The constructor that creates the widget in the ChildWindow
+    rem * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem */
+    method public BBjGridExWidget(BBjChildWindow wnd!)
+        #super!.create(wnd!)
+    methodend
+
     rem /**
     rem  * @Override
     rem  * This method is called whenever the widget needs to be rendered
