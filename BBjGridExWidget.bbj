@@ -339,6 +339,15 @@ class public BBjGridExWidget extends BBjWidget
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
     methodend
+
+    rem /**
+    rem  * The constructor that creates the widget in the ChildWindow
+    rem * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem */
+    method public BBjGridExWidget(BBjChildWindow wnd!)
+        #super!.create(wnd!)
+    methodend
+
     rem /**
     rem  * @Override
     rem  * This method is called whenever the widget needs to be rendered
@@ -552,25 +561,31 @@ class public BBjGridExWidget extends BBjWidget
         rem if the data fed to the grid is the same as before, it's an update.
         rem In this case we want to retain the setting of the columns
         rem and the order and sizes
-        r1! = rs!.getItem(0)
-        datafingerprint$ = r1!.getFieldNames().toString()
-        keep=0
 
-        if (datafingerprint$ = #DataFingerprint$) then
-            tmpstate!=#getColumnState()
+        if (rs!.size() >0) then
+            r1! = rs!.getItem(0)
+            datafingerprint$ = r1!.getFieldNames().toString()
+            keep=0
+            if (datafingerprint$ = #DataFingerprint$) then
+                tmpstate!=#getColumnState()
+            fi
+
         fi
-
         #RS!.createIndex()
         #TREE! = null()
         #URL$=""
         #SelectedRowsMap!.clear()
         #performGridDataUpdate()
 
-        if tmpstate!<>null() then
-            #setColumnState(tmpstate!)
+        if (rs!.size() >0) then
+            if tmpstate!<>null() then
+                #setColumnState(tmpstate!)
+            fi 
+            #DataFingerprint$ = datafingerprint$
         fi
 
         #DataFingerprint$ = datafingerprint$
+
     methodend
     rem /**
     rem  * set the data into the grid
@@ -1362,8 +1377,14 @@ class public BBjGridExWidget extends BBjWidget
             imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
             bytes$ = imageSlice!.getBytes("png")
             b64$ = enc!.encode(bytes$)
-            list!.addProperty(str(i),"data:image/png;base64, "+b64$)
-        next
+
+            list!.addProperty(str(i-1),"data:image/png;base64, "+b64$)
+        next 
+        
+        rem adding a clear pixel to reflext the -1 for backwards compatibility to legacy BBj grid
+        clearpixel$=enc!.encode($89504E470D0A1A0A0000000D4948445200000001000000010804000000B51C0C020000000B49444154789C63FACF0000020701029A1C31710000000049454E44AE426082$)
+        list!.addProperty("-1","data:image/png;base64, "+clearpixel$)
+        
 
         #AdditionalAttributes!.setFieldValue(colname$,"")
         #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
