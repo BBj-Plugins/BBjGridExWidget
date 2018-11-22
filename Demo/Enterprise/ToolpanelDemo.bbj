@@ -1,4 +1,5 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetColumnsToolpanel
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -25,9 +26,10 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 grid!.setShowToolPanel(1)
 grid!.setEnableRowGroup(1)
-grid!.setSuppressValues(1)
 grid!.setFunctionsReadOnly(0)
 grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+
+cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(1)
 
 musicTypeStyle! = new JsonObject()
 musicTypeStyle!.addProperty("background","gold")

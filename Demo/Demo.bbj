@@ -9,6 +9,7 @@ declare BBjGridExWidget grid!
 
 ? 'HIDE'
 
+BBjGridExWidget.setDebug(1)
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo")
 
               wnd!.addStaticText(200,5,10,60,25,"Database:")

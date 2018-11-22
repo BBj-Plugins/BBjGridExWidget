@@ -1,10 +1,10 @@
 /*
-* This file is part of the grid project
-* (c) Basis Europe <eu@Basis.AgGridComponents.com>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the grid project
+ * (c) Basis Europe <eu@Basis.AgGridComponents.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 export function gw_getSupportedColumnTypes() {
 
@@ -150,14 +150,17 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     onRowValueChanged: gw_onRowEditingsEvent,
     onCellClicked: gw_onCellClickEvent,
     onCellDoubleClicked: gw_onCellClickEvent,
-  
+
     getRowNodeId: gw_getRowNodeId,
 
     rememberGroupStateWhenNewData: true,
     getContextMenuItems: gw_getContextMenu,
     popupParent: gw_getDocument().body,
-    allowContextMenuWithControlKey:true
+    allowContextMenuWithControlKey: true
   });
+
+  options.sideBar = JSON.parse(options.sideBar);
+  options.sideBar.toolPanels = JSON.parse(options.sideBar.toolPanels);
 
   if (
     options.hasOwnProperty('__isTree') &&
@@ -181,7 +184,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     //override numbers group and decimal separators
     if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
       if (gw_meta && gw_meta.hasOwnProperty(field)) {
-        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')){
+        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
           def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
         }
         if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
@@ -229,7 +232,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   }
 
   gw_groupColumns(JSON.parse(options.__columnsGroup), options.columnDefs);
-  
+
   return new agGrid.Grid(container, options);
 }
 
