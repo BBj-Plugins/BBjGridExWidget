@@ -320,6 +320,8 @@ class public BBjGridExWidget extends BBjWidget
     field private HashMap ColumnGroups! = new HashMap()
     field public static BBjNumber Debug=0
     field private BBjString DataFingerprint$
+    field private BBjNumber newW!
+    field private BBjNumber newH!
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -449,6 +451,13 @@ class public BBjGridExWidget extends BBjWidget
         wend
 
         #backlog! = null()
+        
+        if #newW! <> null() and #newH!<> null() then
+            #super!.setSize(#newW!,#newH!)
+            #newW! = null()
+            #newH! = null()
+        fi
+        
     methodend
     rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
@@ -1039,6 +1048,22 @@ class public BBjGridExWidget extends BBjWidget
     method public void setFitToGrid()
         ret! = #executeScript("gw_sizeColumnsToFit()")
     methodend
+
+    rem /**
+    rem  * setSize - set the size of the control
+    rem  * @param BBjNumber w! - width
+    rem  * @param BBjNumber h! - height
+    rem  */
+    method public void setSize(BBjNumber w!, BBjNumber h!)
+        rem if setSize is called before the page is ready, delay its execution
+         if #IsReady! then
+            #super!.setSize(w!,h!)
+        else
+            #newW! = w!
+            #newH! = h!
+        FI
+    methodend
+    
     rem /**
     rem  * set the width of a column
     rem  *
