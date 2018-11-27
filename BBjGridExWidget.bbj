@@ -304,7 +304,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field public BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar()
-    field private BBjString ID$
+    field private BBjString ID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -357,8 +357,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void redraw(Boolean f_init!)
         declare BBjHtmlView htmlview!
-
-        #ID$ = java.util.UUID.randomUUID().toString()
 
         if (f_init!) then
             lic!=System.getProperty("bbjgridexwidget.license")
