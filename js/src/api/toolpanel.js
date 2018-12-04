@@ -6,6 +6,18 @@
 * file that was distributed with this source code.
 */
 
+export function gw_setSideBarVisible(value) {
+  gw_options.api.setSideBarVisible(Boolean(value));
+}
+
+export function gw_openToolpanel(id) {
+  gw_options.api.openToolPanel(id);
+}
+
+export function gw_closeToolpanel(id) {
+  gw_options.api.closeToolPanel(id);
+}
+
 export function gw_setFunctionsReadOnly(readonly) {
   gw_options.api.setFunctionsReadOnly(Boolean(readonly));
 }

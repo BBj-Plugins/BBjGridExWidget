@@ -299,13 +299,13 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
     rem /**
     rem  * The grid sidebar
-    rem  * 
+    rem  *
     rem  * Set the default grid sidebar
     rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar()
+    field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
     field private BBjString ID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
@@ -854,6 +854,14 @@ class public BBjGridExWidget extends BBjWidget
         json_string$ = str(#HTMLView!.executeScript("gw_getState()"))
         state!.setString(json_string$)
         methodret state!
+    methodend
+    rem /**
+    rem  * Get the grid sidebar instance
+    rem  *
+    rem  * @return BBjGridExWidgetSidebar
+    rem  */
+    method public BBjGridExWidgetSidebar getSidebar()
+        methodret #Sidebar!
     methodend
     rem /**
     rem  * Add Style block
@@ -1967,6 +1975,18 @@ class public BBjGridExWidget extends BBjWidget
 
         methodret cdef!
     methodend
+    rem /**
+    rem  * A public access to the excute method
+    rem  *
+    rem  * NOTE : even though the method is declared as public , it is not meant for public usage.
+    rem  *        this method is used by external classes integrated with the widget
+    rem  *        like BBjGridExWidgetSidebar.
+    rem  *
+    rem  * @param BBjString script$
+    rem  */
+    method public void __executeScript__(BBjString script!)
+        #executeScript(script!)
+    methodend
 
 classend
 rem /**
@@ -2303,15 +2323,59 @@ class public BBjGridExWidgetSidebar
     rem  */
     field public HashMap Toolpanels! = new HashMap()
     rem /**
+    rem  * The BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetSidebar(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Set Visible
+    rem  *
+    rem  * Enable / Disable the grid sidebar
+    rem  */
+    method public void setVisible(BBjNumber visible!)
+        #Widget!.__executeScript__("gw_setSideBarVisible(" + str(visible!) + ")")
+    methodend
+    rem /**
+    rem  * Open toolpanel
+    rem  *
+    rem  * Open the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void openToolpanel(BBjString id!)
+        #Widget!.__executeScript__("gw_openToolpanel('" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Close toolpanel
+    rem  *
+    rem  * Close the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void closeToolpanel(BBjString id!)
+        #Widget!.__executeScript__("gw_closeToolpanel('" + str(id!) + "')")
+    methodend
+    rem /**
     rem  * Convert the sidebar into a parsable json string
     rem  * @returns string
     rem  */
     method public BBjString toString()
+        declare JsonArray toolpanelsJson!
+
         toolpanelsJson! = new JsonArray()
         it! = #Toolpanels!.entrySet().iterator()
         while it!.hasNext()
             toolpanelsJson!.add(it!.next().getValue().getAsJsonObject())
         wend
+
+        declare JsonObject json!
 
         json! = new JsonObject()
         json!.addProperty("toolPanels",toolpanelsJson!.toString())
@@ -2327,14 +2391,18 @@ rem  * A class to define the default implementation of the grid sidebar
 rem  */
 class public BBjGridExWidgetDefaultSidebar extends BBjGridExWidgetSidebar
     rem /**
-    rem  * Constructor
+    rem  * Construct the default grid sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
     rem  */
-    method public BBjGridExWidgetDefaultSidebar()
+    method public BBjGridExWidgetDefaultSidebar(BBjGridExWidget widget!)
+        #super!(widget!)
+
         declare BBjGridExWidgetColumnsToolpanel columns!
 
         columns! = new BBjGridExWidgetColumnsToolpanel()
-        #getToolpanels().put(columns!.getId() , columns!)
-        #setDefaulToolpanel(columns!.getId())
+        #getToolpanels().put(BBjGridExWidgetColumnsToolpanel.getId() , columns!)
+        #setDefaulToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
 
 classend
@@ -2344,10 +2412,6 @@ rem  *
 rem  * A base class to allow integration the ag-grid toolpanels
 rem  */
 class public BBjGridExWidgetToolpanel
-    rem /**
-    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
-    rem  */
-    field protected BBjString Id$
     rem /**
     rem  * The default label of the toolpanel
     rem  */
@@ -2366,24 +2430,14 @@ class public BBjGridExWidgetToolpanel
     rem  *
     rem  * Construct new toolpanel
     rem  *
-    rem  * @param BBjString id the toolpanel id
     rem  * @param BBjString label the toolpanel label
     rem  * @param BBjString icon the toolpanel icon
     rem  * @param BBjString component the javascript component used to render the toolpoanel on the client
     rem  */
-    method public BBjGridExWidgetToolpanel(BBjString id$ , BBjString label$ , BBjString icon$ , BBjString component$)
-        #Id$ = id$
+    method public BBjGridExWidgetToolpanel(BBjString label$ , BBjString icon$ , BBjString component$)
         #Label$ = label$
         #Icon$  = icon$
         #Component$ = component$
-    methodend
-    rem /**
-    rem  * Get The toolpanel id
-    rem  *
-    rem  * @return BBjString
-    rem  */
-    method public BBjString getId()
-        methodret #Id$
     methodend
 
 classend
@@ -2393,6 +2447,10 @@ rem  *
 rem  * Create a columns toolpanel
 rem  */
 class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
+    rem /**
+    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
+    rem  */
+    field public static BBjString Id$ = "columns"
     rem /**
     rem  * suppress Expand / Collapse all widget.
     rem  * 1 = enable editing
@@ -2460,7 +2518,7 @@ class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
     rem  * Construct new columns toolpanel
     rem  */
     method public BBjGridExWidgetColumnsToolpanel()
-        #super!("columns","Columns","columns","agColumnsToolPanel")
+        #super!("Columns","columns","agColumnsToolPanel")
     methodend
     rem /**
     rem  * Get as JsonObject
@@ -2470,12 +2528,17 @@ class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
     rem  * @return JsonObject
     rem  */
     method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
         json! = new JsonObject()
-        json!.addProperty("id",#getId())
+        json!.addProperty("id",#Id$)
         json!.addProperty("labelDefault",#getLabel())
-        json!.addProperty("labelKey",#getId())
+        json!.addProperty("labelKey",#Id$)
         json!.addProperty("iconKey",#getIcon())
         json!.addProperty("toolPanel",#getComponent())
+
+        declare JsonObject toolPanelParams!
+
         toolPanelParams! = new JsonObject()
         toolPanelParams!.addProperty("suppressRowGroups",Boolean.valueOf(#SuppressRowGroups!))
         toolPanelParams!.addProperty("suppressValues",Boolean.valueOf(#SuppressValues!))
@@ -2496,10 +2559,14 @@ rem  * Create a filters toolpanel
 rem  */
 class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
     rem /**
+    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
+    rem  */
+    field public static BBjString Id$ = "filters"
+    rem /**
     rem  * Construct new filters toolpanel
     rem  */
     method public BBjGridExWidgetFiltersToolpanel()
-        #super!("filters","Filters","filters","agFiltersToolPanel")
+        #super!("Filters","filters","agFiltersToolPanel")
     methodend
     rem /**
     rem  * Get as JsonObject
@@ -2509,10 +2576,12 @@ class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
     rem  * @return JsonObject
     rem  */
     method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
         json! = new JsonObject()
-        json!.addProperty("id",#getId())
+        json!.addProperty("id",#Id$)
         json!.addProperty("labelDefault",#getLabel())
-        json!.addProperty("labelKey",#getId())
+        json!.addProperty("labelKey",#Id$)
         json!.addProperty("iconKey",#getIcon())
         json!.addProperty("toolPanel",#getComponent())
         methodret json!
