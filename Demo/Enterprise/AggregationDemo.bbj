@@ -61,7 +61,6 @@ setupGrid:
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
     cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
-    grid!.setShowToolPanel(1)
     grid!.setGroupIncludeFooter(1)
     grid!.setGroupIncludeTotalFooter(1)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())

@@ -6,10 +6,6 @@
 * file that was distributed with this source code.
 */
 
-export function gw_showToolPanel(show) {
-  gw_options.api.showToolPanel(Boolean(show));
-}
-
 export function gw_setFunctionsReadOnly(readonly) {
   gw_options.api.setFunctionsReadOnly(Boolean(readonly));
 }

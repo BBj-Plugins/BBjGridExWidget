@@ -1204,15 +1204,6 @@ class public BBjGridExWidget extends BBjWidget
         #executeScript("gw_setFunctionsReadOnly("+str(readonly!)+")")
     methodend
     rem /**
-    rem  * Show/Hide Tool Panel
-    rem  *
-    rem  * @param BBjNumber: 1 to show , 0 to hide
-    rem  */
-    method public void setShowToolPanel(BBjNumber show!)
-        #assertIsEnterprise("Tool Panel")
-        #executeScript("gw_showToolPanel("+str(show!)+")")
-    methodend
-    rem /**
     rem  * Enable/disable aggregate by column via the GUI.
     rem  * 1 = enable editing
     rem  * 0 = disable edition
