@@ -306,7 +306,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
-    field private BBjString ID$ = java.util.UUID.randomUUID().toString()
+    field private BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -340,6 +340,7 @@ class public BBjGridExWidget extends BBjWidget
     rem */
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
+        #getSidebar().closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -347,6 +348,7 @@ class public BBjGridExWidget extends BBjWidget
     rem */
     method public BBjGridExWidget(BBjChildWindow wnd!)
         #super!.create(wnd!)
+        #getSidebar().closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
     rem /**
     rem  * @Override
@@ -365,7 +367,7 @@ class public BBjGridExWidget extends BBjWidget
                 #setLicenseKey(lic!)
             FI
 
-            html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id='" + str(#ID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
@@ -912,9 +914,9 @@ class public BBjGridExWidget extends BBjWidget
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material#balham#balham-dark")>0 then
             if info(3,6)="5" then
-                s$="$doc.getElementById('" + str(#ID$) + "').className='ag-theme-"+theme$+"';"
+                s$="$doc.getElementById('" + str(#GRIDID$) + "').className='ag-theme-"+theme$+"';"
             else
-                s$="document.getElementById('" + str(#ID$) + "').className='ag-theme-"+theme$+"';"
+                s$="document.getElementById('" + str(#GRIDID$) + "').className='ag-theme-"+theme$+"';"
             FI
 
             #executeScript(s$)
@@ -1082,6 +1084,11 @@ class public BBjGridExWidget extends BBjWidget
         if #IsReady! then
             #super!.setSize(w!,h!)
         else
+        
+            rem cheat with the superclass so getWidth / getHeight already return the later size
+            #super!.setW(w!)
+            #super!.setH(h!)
+
             #newW! = w!
             #newH! = h!
         FI
@@ -1750,7 +1757,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.add("autoGroupColumnDef",autoGroupColumnDef!)
         options!.add("columnDefs",cdef!)
         rem the following are not supported by ag-grid options but they are required by plugin js code
-        options!.addProperty("__id",#ID$)
+        options!.addProperty("__id",#GRIDID$)
         options!.addProperty("__getRowNodeId",#RowNodeId$)
         options!.addProperty("__getParentNodeId",#ParentNodeId$)
         options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
@@ -1769,6 +1776,8 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("__locale",stbl("!LOCALE"))
     options!.addProperty("__contextMenu",#ContextMenu!.toString())
     #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
+    #getSidebar().closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+
     methodend
 
     method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
