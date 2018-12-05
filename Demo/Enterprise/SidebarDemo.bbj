@@ -26,9 +26,11 @@ fi
  
 sidebarToggle! = wnd!.addButton(300,10,3,200,25,"Toggle Sidebar")
 toolpanelToggle! = wnd!.addButton(301,230,3,200,25,"Toggle Columns Toolpanel")
+refresh! = wnd!.addButton(302,460,3,200,25,"Refresh Data")
 
 sidebarToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"sidebarToggle")
 toolpanelToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"toolpanelToggle")
+refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refreshData")
 
 sidebarState! = 1
 toolpanelState! = 1
@@ -75,6 +77,11 @@ toolpanelToggle:
     fi
     
     toolpanelState! = !toolpanelState!
+return
+
+
+refreshData:
+    grid!.setData(rs!,"CDNUMBER")
 return
 
 byebye:
