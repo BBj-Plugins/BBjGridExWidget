@@ -57,6 +57,7 @@ fillGrid:
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         rs!.addItem(dr!)
@@ -71,6 +72,7 @@ fillGrid:
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+        dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
         
@@ -103,6 +105,7 @@ prepareGrid:
     ar!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
     ar!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
     ar!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+    ar!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
     ar!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
     ar!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
 
@@ -116,17 +119,27 @@ prepareGrid:
     ar!.setFieldAttribute("BOOLEAN 1","RENDERER_TRUE","&#x2714;")
     ar!.setFieldAttribute("BOOLEAN 1","RENDERER_FALSE","&#x2718;")
     
+    REM you can use a nice material toggle display
     ar!.setFieldAttribute("BOOLEAN 2","RENDERER_TRUE","switch")
     ar!.setFieldAttribute("BOOLEAN 2","RENDERER_FALSE","switch")
+    
+    REM ...or with some HTML also a picture on disc
+    ar!.setFieldAttribute("BOOLEAN 3","RENDERER_TRUE","<img src='"+BBjGridExWidget.getImageData("BBjGridExWidget/Demo/sampleicon.png")+"' height='20px'>")
+    REM ...or text
+    ar!.setFieldAttribute("BOOLEAN 3","RENDERER_FALSE","NOPE!")
+    
     
     ar!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl"); rem // or RENDERER_MASK
     ar!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
     
     list! = new JsonObject()
+    REM the renderers can be image URLs 
     list!.addProperty("ID_1","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_airline_seat_individual_suite_black_36dp.png")
     list!.addProperty("ID_2","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_confirmation_number_black_36dp.png")
     list!.addProperty("ID_3","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_drive_eta_black_36dp.png")
-    list!.addProperty("ID_4","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_adb_black_36dp.png")
+    REM or use an image on disk
+    list!.addProperty("ID_4",BBjGridExWidget.getImageData("BBjGridExWidget/Demo/sampleicon.png"))
+    
     
     ar!.setFieldAttribute("ICON","TYPE",grid!.GRID_TYPE_BASIC_IMAGE_FILTERABLE())
     ar!.setFieldAttribute("ICON","IMAGES_LIST",list!.toString())
