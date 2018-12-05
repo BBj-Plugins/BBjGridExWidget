@@ -300,10 +300,12 @@ class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * The grid sidebar
     rem  *
+    rem  * Set the default grid sidebar
+    rem  *
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field public BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar()
+    field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
     field private BBjString ID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
@@ -339,7 +341,6 @@ class public BBjGridExWidget extends BBjWidget
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
     methodend
-
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
     rem * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
@@ -347,7 +348,6 @@ class public BBjGridExWidget extends BBjWidget
     method public BBjGridExWidget(BBjChildWindow wnd!)
         #super!.create(wnd!)
     methodend
-
     rem /**
     rem  * @Override
     rem  * This method is called whenever the widget needs to be rendered
@@ -363,13 +363,13 @@ class public BBjGridExWidget extends BBjWidget
 
             if lic! <> null() and str(lic!) <> "" then
                 #setLicenseKey(lic!)
-            fi
+            FI
 
             html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id='" + str(#ID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
-            fi
+            FI
 
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
 
@@ -378,8 +378,8 @@ class public BBjGridExWidget extends BBjWidget
 
                 if url$>"" then
                     BBjAPI().getThinClient().browse(url$)
-                fi
-            fi
+                FI
+            FI
             REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
             REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
             REM             else
@@ -404,7 +404,12 @@ class public BBjGridExWidget extends BBjWidget
 
     method protected void injectScript(BBjString script$)
         bui = INFO(3,6)="5"
-        if bui then #HTMLView!.injectScript(script$) else #HTMLView!.injectScript(script$ , 1) FI
+
+        if bui then
+            #HTMLView!.injectScript(script$)
+        ELSE
+            #HTMLView!.injectScript(script$ , 1)
+        FI
     methodend
     rem /**
     rem  * callback method after initial load
@@ -435,7 +440,7 @@ class public BBjGridExWidget extends BBjWidget
             close (ch)
             dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
             open (ch,err=*next)dateJsLocalePath$
-        fi
+        FI
 
         read record (ch,siz=5512000)script$
         close (ch)
@@ -458,13 +463,11 @@ class public BBjGridExWidget extends BBjWidget
         wend
 
         #backlog! = null()
-        
         if #newW! <> null() and #newH!<> null() then
-            #super!.setSize(#newW!,#newH!)
-            #newW! = null()
-            #newH! = null()
-        fi
-        
+        #super!.setSize(#newW!,#newH!)
+        #newW! = null()
+        #newH! = null()
+    FI
     methodend
     rem /**
     rem  * Event Handler for Native JavaScript Event (from the Grid)
@@ -528,9 +531,9 @@ class public BBjGridExWidget extends BBjWidget
 
                 if ar!.contains(f$) then
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
-                fi
+                FI
             wend
-        fi
+        FI
 
         if #ColumnDefinition! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             r1! = rs!.getItem(0)
@@ -541,9 +544,9 @@ class public BBjGridExWidget extends BBjWidget
 
                 if ar!.contains(f$) then
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
-                fi
+                FI
             wend
-        fi
+        FI
 
         if rs! <> NULL() AND rs!.size()>0 then
             it! = #AdditionalAttributes!.getFieldNames().iterator()
@@ -553,22 +556,22 @@ class public BBjGridExWidget extends BBjWidget
 
                 if r1!.contains(f$) then
                     r1!.setFieldAttributes(f$,#AdditionalAttributes!.getFieldAttributes(f$))
-                fi
+                FI
             wend
-        fi
+        FI
         rem if the data fed to the grid is the same as before, it's an update.
         rem In this case we want to retain the setting of the columns
         rem and the order and sizes
-
         if (rs!.size() >0) then
             r1! = rs!.getItem(0)
             datafingerprint$ = r1!.getFieldNames().toString()
             keep=0
+
             if (datafingerprint$ = #DataFingerprint$) then
                 tmpstate!=#getColumnState()
-            fi
+            FI
+        FI
 
-        fi
         #RS!.createIndex()
         #TREE! = null()
         #URL$=""
@@ -578,12 +581,12 @@ class public BBjGridExWidget extends BBjWidget
         if (rs!.size() >0) then
             if tmpstate!<>null() then
                 #setColumnState(tmpstate!)
-            fi 
+            FI
+
             #DataFingerprint$ = datafingerprint$
-        fi
+        FI
 
         #DataFingerprint$ = datafingerprint$
-
     methodend
     rem /**
     rem  * set the data into the grid
@@ -635,9 +638,9 @@ class public BBjGridExWidget extends BBjWidget
 
                 if ar!.contains(f$) then
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
-                fi
+                FI
             wend
-        fi
+        FI
 
         if #ColumnDefinition! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             r1! = rs!.getItem(0)
@@ -648,9 +651,9 @@ class public BBjGridExWidget extends BBjWidget
 
                 if ar!.contains(f$) then
                     r1!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
-                fi
+                FI
             wend
-        fi
+        FI
 
         #RS!.createIndex()
         #TREE! = null()
@@ -670,7 +673,7 @@ class public BBjGridExWidget extends BBjWidget
             #RS!.set(index!,row!)
             parser! = new JsonParser()
             #executeScript("gw_setRowData(" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString()  +")")
-        fi
+        FI
     methodend
     rem /**
     rem  * Add new row
@@ -704,13 +707,13 @@ class public BBjGridExWidget extends BBjWidget
                 value! = #RS!.getItem(index!).getFieldAsString(#RowNodeId$)
             else
                 value! = #RS!.getItem(index!).getRowKey()
-            fi
+            FI
 
             #RS!.remove(index!)
             #executeScript("gw_removeRows(['" + str(value!)  +"'])")
             rem print #RS!.getItem(index!)
             rem escape
-        fi
+        FI
     methodend
     rem /**
     rem  * Clear row data (Empty the grid )
@@ -851,6 +854,14 @@ class public BBjGridExWidget extends BBjWidget
         json_string$ = str(#HTMLView!.executeScript("gw_getState()"))
         state!.setString(json_string$)
         methodret state!
+    methodend
+    rem /**
+    rem  * Get the grid sidebar instance
+    rem  *
+    rem  * @return BBjGridExWidgetSidebar
+    rem  */
+    method public BBjGridExWidgetSidebar getSidebar()
+        methodret #Sidebar!
     methodend
     rem /**
     rem  * Add Style block
@@ -1061,7 +1072,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void setFitToGrid()
         ret! = #executeScript("gw_sizeColumnsToFit()")
     methodend
-
     rem /**
     rem  * setSize - set the size of the control
     rem  * @param BBjNumber w! - width
@@ -1069,14 +1079,13 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setSize(BBjNumber w!, BBjNumber h!)
         rem if setSize is called before the page is ready, delay its execution
-         if #IsReady! then
+        if #IsReady! then
             #super!.setSize(w!,h!)
         else
             #newW! = w!
             #newH! = h!
         FI
     methodend
-    
     rem /**
     rem  * set the width of a column
     rem  *
@@ -1202,15 +1211,6 @@ class public BBjGridExWidget extends BBjWidget
         #assertIsEnterprise("FunctionsReadOnly")
         #FunctionsReadOnly! = readonly!
         #executeScript("gw_setFunctionsReadOnly("+str(readonly!)+")")
-    methodend
-    rem /**
-    rem  * Show/Hide Tool Panel
-    rem  *
-    rem  * @param BBjNumber: 1 to show , 0 to hide
-    rem  */
-    method public void setShowToolPanel(BBjNumber show!)
-        #assertIsEnterprise("Tool Panel")
-        #executeScript("gw_showToolPanel("+str(show!)+")")
     methodend
     rem /**
     rem  * Enable/disable aggregate by column via the GUI.
@@ -1375,15 +1375,11 @@ class public BBjGridExWidget extends BBjWidget
             imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
             bytes$ = imageSlice!.getBytes("png")
             b64$ = enc!.encode(bytes$)
-
             list!.addProperty(str(i-1),"data:image/png;base64, "+b64$)
-        next 
-        
+        next
         rem adding a clear pixel to reflext the -1 for backwards compatibility to legacy BBj grid
         clearpixel$=enc!.encode($89504E470D0A1A0A0000000D4948445200000001000000010804000000B51C0C020000000B49444154789C63FACF0000020701029A1C31710000000049454E44AE426082$)
         list!.addProperty("-1","data:image/png;base64, "+clearpixel$)
-        
-
         #AdditionalAttributes!.setFieldValue(colname$,"")
         #AdditionalAttributes!.setFieldAttribute(colname$,"TYPE",#GRID_TYPE_BASIC_IMAGE())
         #AdditionalAttributes!.setFieldAttribute(colname$,"IMAGES_LIST",list!.toString())
@@ -1640,7 +1636,7 @@ class public BBjGridExWidget extends BBjWidget
             #fireEvent(#ON_GRID_SELECT_ROW(),event!)
         else
             #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
-        fi
+        FI
     methodend
 
     method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
@@ -1744,7 +1740,7 @@ class public BBjGridExWidget extends BBjWidget
 
         if #GroupMultiAutoColumn! = 0 then
             autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
-        fi
+        FI
 
         autoGroupColumnDefCellRendererParams! = new JsonObject()
         autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
@@ -1763,12 +1759,16 @@ class public BBjGridExWidget extends BBjWidget
         comma$=","
         dot$="."
         a$=opts
-        if AND ( a$(3,1), $02$ ) = $02$ then comma$=a$(5,1) ; dot$=a$(6,1) fi
-        options!.addProperty("__numberGroupSep",comma$)
-        options!.addProperty("__numberDecimalSep",dot$)
-        options!.addProperty("__locale",stbl("!LOCALE"))
-        options!.addProperty("__contextMenu",#ContextMenu!.toString())
-        #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
+        if AND ( a$(3,1), $02$ ) = $02$ then
+        comma$=a$(5,1)
+        dot$=a$(6,1)
+    FI
+
+    options!.addProperty("__numberGroupSep",comma$)
+    options!.addProperty("__numberDecimalSep",dot$)
+    options!.addProperty("__locale",stbl("!LOCALE"))
+    options!.addProperty("__contextMenu",#ContextMenu!.toString())
+    #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
     methodend
 
     method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
@@ -1786,9 +1786,9 @@ class public BBjGridExWidget extends BBjWidget
 
                 if cd!.contains(f$) then
                     cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
-                fi
+                FI
             wend
-        fi
+        FI
 
         if cd! = null() or cd!.getFieldNames().size()=0  then
             if #RS! <> null() and #RS!.size()>0 then
@@ -1974,6 +1974,18 @@ class public BBjGridExWidget extends BBjWidget
         wend
 
         methodret cdef!
+    methodend
+    rem /**
+    rem  * A public access to the excute method
+    rem  *
+    rem  * NOTE : even though the method is declared as public , it is not meant for public usage.
+    rem  *        this method is used by external classes integrated with the widget
+    rem  *        like BBjGridExWidgetSidebar.
+    rem  *
+    rem  * @param BBjString script$
+    rem  */
+    method public void __executeScript__(BBjString script!)
+        #executeScript(script!)
     methodend
 
 classend
@@ -2292,22 +2304,78 @@ class public BBjGridExWidgetColumnState
     methodend
 
 classend
-
+rem /**
+rem  * BBjGridExWidgetSidebar
+rem  *
+rem  * A class to manage the grid sidebars
+rem  */
 class public BBjGridExWidgetSidebar
-
+    rem /**
+    rem  * DefaultToolpanel
+    rem  *
+    rem  * The id of the default panel
+    rem  */
     field public BBjString DefaulToolpanel$
-    field public HashMap Toolpanels!
-
-    method public BBjGridExWidgetSidebar()
-        #Toolpanels! = new HashMap()
+    rem /**
+    rem  * Toolpanels
+    rem  *
+    rem  * A hasmap for the registered toolpanels
+    rem  */
+    field public HashMap Toolpanels! = new HashMap()
+    rem /**
+    rem  * The BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetSidebar(BBjGridExWidget widget!)
+        #Widget! = widget!
     methodend
-
+    rem /**
+    rem  * Set Visible
+    rem  *
+    rem  * Enable / Disable the grid sidebar
+    rem  */
+    method public void setVisible(BBjNumber visible!)
+        #Widget!.__executeScript__("gw_setSideBarVisible(" + str(visible!) + ")")
+    methodend
+    rem /**
+    rem  * Open toolpanel
+    rem  *
+    rem  * Open the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void openToolpanel(BBjString id!)
+        #Widget!.__executeScript__("gw_openToolpanel('" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Close toolpanel
+    rem  *
+    rem  * Close the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void closeToolpanel(BBjString id!)
+        #Widget!.__executeScript__("gw_closeToolpanel('" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Convert the sidebar into a parsable json string
+    rem  * @returns string
+    rem  */
     method public BBjString toString()
+        declare JsonArray toolpanelsJson!
+
         toolpanelsJson! = new JsonArray()
         it! = #Toolpanels!.entrySet().iterator()
         while it!.hasNext()
             toolpanelsJson!.add(it!.next().getValue().getAsJsonObject())
         wend
+
+        declare JsonObject json!
 
         json! = new JsonObject()
         json!.addProperty("toolPanels",toolpanelsJson!.toString())
@@ -2316,40 +2384,73 @@ class public BBjGridExWidgetSidebar
     methodend
 
 classend
-
+rem /**
+rem  * BBjGridExWidgetDefaultSidebar
+rem  *
+rem  * A class to define the default implementation of the grid sidebar
+rem  */
 class public BBjGridExWidgetDefaultSidebar extends BBjGridExWidgetSidebar
+    rem /**
+    rem  * Construct the default grid sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetDefaultSidebar(BBjGridExWidget widget!)
+        #super!(widget!)
 
-    method public BBjGridExWidgetDefaultSidebar()
+        declare BBjGridExWidgetColumnsToolpanel columns!
+
         columns! = new BBjGridExWidgetColumnsToolpanel()
-        #getToolpanels().put(columns!.getId() , columns!)
-        #setDefaulToolpanel(columns!.getId())
-        rem TODO: check the toolanel style is not working in GUI
-        rem #addSidebar(new BBjGridExWidgetFiltersToolpanel())
+        #getToolpanels().put(BBjGridExWidgetColumnsToolpanel.getId() , columns!)
+        #setDefaulToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
 
 classend
-
+rem /**
+rem  * BBjGridExWidgetToolpanel
+rem  *
+rem  * A base class to allow integration the ag-grid toolpanels
+rem  */
 class public BBjGridExWidgetToolpanel
-
+    rem /**
+    rem  * The default label of the toolpanel
+    rem  */
     field public BBjString Label$
-    field protected BBjString Id$
+    rem /**
+    rem  * The key of the icon to be used as a graphical aid beside the label in the side bar.
+    rem  *  @see <a href="https://www.ag-grid.com/javascript-grid-icons/">javascript-grid-icons/</a>
+    rem  */
     field protected BBjString Icon$
+    rem /**
+    rem  * The javascript component to use as the panel.
+    rem  */
     field protected BBjString Component$
-
-    method public BBjGridExWidgetToolpanel(BBjString id$ , BBjString label$ , BBjString icon$ , BBjString component$)
-        #Id$ = id$
+    rem /**
+    rem  * BBjGridExWidgetToolpanel
+    rem  *
+    rem  * Construct new toolpanel
+    rem  *
+    rem  * @param BBjString label the toolpanel label
+    rem  * @param BBjString icon the toolpanel icon
+    rem  * @param BBjString component the javascript component used to render the toolpoanel on the client
+    rem  */
+    method public BBjGridExWidgetToolpanel(BBjString label$ , BBjString icon$ , BBjString component$)
         #Label$ = label$
         #Icon$  = icon$
         #Component$ = component$
     methodend
 
-    method public BBjString getId()
-        methodret #Id$
-    methodend
-
 classend
-
+rem /**
+rem  * BBjGridExWidgetColumnsToolpanel
+rem  *
+rem  * Create a columns toolpanel
+rem  */
 class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
+    rem /**
+    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
+    rem  */
+    field public static BBjString Id$ = "columns"
     rem /**
     rem  * suppress Expand / Collapse all widget.
     rem  * 1 = enable editing
@@ -2413,18 +2514,31 @@ class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
     rem  * @Enterprise
     rem  */
     field public BBjNumber SuppressRowGroups! = 0
-
+    rem /**
+    rem  * Construct new columns toolpanel
+    rem  */
     method public BBjGridExWidgetColumnsToolpanel()
-        #super!("columns","Columns","columns","agColumnsToolPanel")
+        #super!("Columns","columns","agColumnsToolPanel")
     methodend
-
+    rem /**
+    rem  * Get as JsonObject
+    rem  *
+    rem  * Get a json representation for the toolpanel
+    rem  *
+    rem  * @return JsonObject
+    rem  */
     method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
         json! = new JsonObject()
-        json!.addProperty("id",#getId())
+        json!.addProperty("id",#Id$)
         json!.addProperty("labelDefault",#getLabel())
-        json!.addProperty("labelKey",#getId())
+        json!.addProperty("labelKey",#Id$)
         json!.addProperty("iconKey",#getIcon())
         json!.addProperty("toolPanel",#getComponent())
+
+        declare JsonObject toolPanelParams!
+
         toolPanelParams! = new JsonObject()
         toolPanelParams!.addProperty("suppressRowGroups",Boolean.valueOf(#SuppressRowGroups!))
         toolPanelParams!.addProperty("suppressValues",Boolean.valueOf(#SuppressValues!))
@@ -2438,18 +2552,36 @@ class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
     methodend
 
 classend
-
+rem /**
+rem  * BBjGridExWidgetFiltersToolpanel
+rem  *
+rem  * Create a filters toolpanel
+rem  */
 class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
-
+    rem /**
+    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
+    rem  */
+    field public static BBjString Id$ = "filters"
+    rem /**
+    rem  * Construct new filters toolpanel
+    rem  */
     method public BBjGridExWidgetFiltersToolpanel()
-        #super!("filters","Filters","filters","agFiltersToolPanel")
+        #super!("Filters","filters","agFiltersToolPanel")
     methodend
-
+    rem /**
+    rem  * Get as JsonObject
+    rem  *
+    rem  * Get a json representation for the toolpanel
+    rem  *
+    rem  * @return JsonObject
+    rem  */
     method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
         json! = new JsonObject()
-        json!.addProperty("id",#getId())
+        json!.addProperty("id",#Id$)
         json!.addProperty("labelDefault",#getLabel())
-        json!.addProperty("labelKey",#getId())
+        json!.addProperty("labelKey",#Id$)
         json!.addProperty("iconKey",#getIcon())
         json!.addProperty("toolPanel",#getComponent())
         methodret json!

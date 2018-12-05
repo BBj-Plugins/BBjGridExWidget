@@ -1,0 +1,86 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetColumnsToolpanel
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+if (info(3,6)<>"5") then
+    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
+fi
+ 
+ 
+sidebarToggle! = wnd!.addButton(300,10,3,200,25,"Toggle Sidebar")
+toolpanelToggle! = wnd!.addButton(301,230,3,200,25,"Toggle Columns Toolpanel")
+
+sidebarToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"sidebarToggle")
+toolpanelToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"toolpanelToggle")
+
+sidebarState! = 1
+toolpanelState! = 1
+
+gosub fillGrid
+
+process_events
+
+   
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+    rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
+
+    grid!.setFunctionsReadOnly(0)
+    grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+
+    columnsToolpanel! = cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get(BBjGridExWidgetColumnsToolpanel.getId()))
+    columnsToolpanel!.setSuppressValues(1)
+
+    musicTypeStyle! = new JsonObject()
+    musicTypeStyle!.addProperty("background","gold")
+    grid!.addStyle(".music-type",musicTypeStyle!)
+
+    grid!.setData(rs!,"CDNUMBER")
+
+return
+
+sidebarToggle:
+    sidebar! = grid!.getSidebar()
+    sidebarState! = !sidebarState!
+    sidebar!.setVisible(sidebarState!)
+return
+
+toolpanelToggle:
+    sidebar! = grid!.getSidebar()
+
+    if toolpanelState! = 0 then 
+        sidebar!.openToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+    else 
+        sidebar!.closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+    fi
+    
+    toolpanelState! = !toolpanelState!
+return
+
+byebye:
+    bye
+    
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
+return

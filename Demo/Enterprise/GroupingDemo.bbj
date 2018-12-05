@@ -65,7 +65,6 @@ setupGrid:
     cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
     rem grid!.setEnableValue(1)
 
-    grid!.setShowToolPanel(1)
     grid!.setEnableRowGroup(0)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
     grid!.setGroupColumnLabel("My Custom Group")
