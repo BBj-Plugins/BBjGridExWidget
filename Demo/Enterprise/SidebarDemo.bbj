@@ -33,7 +33,7 @@ toolpanelToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"toolpanelToggle")
 refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refreshData")
 
 sidebarState! = 1
-toolpanelState! = 1
+toolpanelState! = 0
 
 gosub fillGrid
 
