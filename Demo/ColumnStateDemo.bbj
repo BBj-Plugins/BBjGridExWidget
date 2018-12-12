@@ -1,6 +1,7 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
+use com.google.gson.JsonObject
 
 ? 'HIDE'
 
@@ -16,11 +17,6 @@ grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
-
-if (info(3,6)<>"5") then
-    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
-fi
- 
  
 tb_get! = wnd!.addButton(300,10,3,200,25,"GET STATE")
 tb_set! = wnd!.addButton(301,230,3,200,25,"SET STATE")
@@ -36,30 +32,50 @@ process_events
 
    
 fillGrid:
-
-    declare SqlQueryBC sbc!
+declare SqlQueryBC sbc!
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-   
-   
-    rem setting up the columns that should be displayed (the result set has more)
+
     grid!.addColumn("CDNUMBER","Item#")
     grid!.addColumn("ARTIST","Artist Name")
     grid!.addColumn("TITLE","Record Title")
     grid!.addColumn("LABEL","Publisher")
-    grid!.addColumn("COST","COST",Types.DOUBLE)
-    grid!.addColumn("PLAYINGTIME","Playing Time (min)",Types.INTEGER)
-    grid!.setColumnAlignment("COST",grid!.GRID_ALIGN_RIGHT())
+    grid!.addColumn("PLAYINGTIME","Playing Time (min)")
     
-    grid!.setColumnWidth("CDNUMBER",100)
-    grid!.setColumnWidth("COST",120)
-    
-    grid!.setColumnMask("COST","$ #.##0,00")
-   
+    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
+    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
+    grid!.pinColumn("CDNUMBER","left")
+    grid!.setColumnWidth("CDNUMBER",120)
+    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-        
-    grid!.setData(rs!)
+    grid!.setMultipleSelection(0)
+    grid!.setEnableFilter(1)
+    grid!.setEnableFloatingFilter(1)
+    
+	groupStyle! = new JsonObject()
+    groupStyle!.addProperty("background","#03a9f4")
+    groupStyle!.addProperty("color","white")
+    groupStyle!.addProperty("font-weight","bolder")
+    groupStyle!.addProperty("border-bottom","3px solid black")
 
+    grid!.addStyle(".my-group-class" , groupStyle!)
+    
+	
+    group! = new BBjVector()
+    group!.addItem("CDNUMBER")
+    grid!.addColumnGroup("group1" , "Inventory",group! , 0 , "my-group-class")
+	
+	group! = new BBjVector()
+    group!.addItem("ARTIST")
+    group!.addItem("TITLE")
+    grid!.addColumnGroup("group2" , "CD Information",group! , 0 , "my-group-class")
+	
+	group! = new BBjVector()
+    group!.addItem("LABEL")
+    group!.addItem("PLAYINGTIME")
+    grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
+	
+    grid!.setData(rs!)    
 return
 
 byebye:
@@ -72,9 +88,8 @@ return
 
 getState:
     state! = grid!.getColumnState()
-    state$ = str(state!.getString())
     if INFO(3,6)="5" then
-        a=msgbox(state$,0,"GET STATE")
+        a=msgbox(state!.toString(),0,"GET STATE")
         print 'SHOW', "GET STATE ",state$
     fi
 
@@ -88,12 +103,4 @@ return
 
 refresh:
     grid!.setData(rs!)
-return
-
-onWinKeypress:
-    declare auto BBjKeypressEvent key_ev!
-    key_ev! = BBjAPI().getLastEvent()
-    if key_ev!.getKeyCode() = 342 then
-       grid!.showDeveloperConsole()
-    fi
 return
