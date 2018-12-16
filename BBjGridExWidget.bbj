@@ -1996,6 +1996,13 @@ class public BBjGridExWidget extends BBjWidget
     method public void __executeScript__(BBjString script!)
         #executeScript(script!)
     methodend
+    
+    method public static BBjString getImageData(BBjString filename$)
+        imageSlice!=BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/sampleicon.png")
+        bytes$ = imageSlice!.getBytes("png")
+        b64$ = java.util.Base64.getEncoder().encode(bytes$)
+        methodret "data:image/png;base64, "+b64$    
+    methodend
 
 classend
 rem /**
