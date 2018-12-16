@@ -156,7 +156,8 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     rememberGroupStateWhenNewData: true,
     getContextMenuItems: gw_getContextMenu,
     popupParent: gw_getDocument().body,
-    allowContextMenuWithControlKey: true
+    allowContextMenuWithControlKey: true,
+    suppressSetColumnStateEvents: true
   });
 
   options.sideBar = JSON.parse(options.sideBar);

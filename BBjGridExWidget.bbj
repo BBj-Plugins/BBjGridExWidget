@@ -838,19 +838,18 @@ class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * Apply columns state
     rem  *
-    rem  * @param BBjGridExWidgetColumnState state! : the state object
+    rem  * @param BBjGridExWidgetState state! : the state object
     rem  */
-    method public void setColumnState(BBjGridExWidgetColumnState state!)
-        json_state$ = state!.getString()
-        #executeScript("gw_setState("+json_state$+")")
+    method public void setColumnState(BBjGridExWidgetState state!)
+        #executeScript("gw_setState("+ state!.toString() +")")
     methodend
     rem /**
     rem  * Get Column state
     rem  *
-    rem  * @returns BBjGridExWidgetColumnState
+    rem  * @returns BBjGridExWidgetState
     rem  */
-    method public BBjGridExWidgetColumnState getColumnState()
-        state! = new BBjGridExWidgetColumnState()
+    method public BBjGridExWidgetState getColumnState()
+        state! = new BBjGridExWidgetState()
         json_string$ = str(#HTMLView!.executeScript("gw_getState()"))
         state!.setString(json_string$)
         methodret state!
@@ -2308,12 +2307,16 @@ class public BBjGridWidgetContextMenuEvent
 
 classend
 
-class public BBjGridExWidgetColumnState
+class public BBjGridExWidgetState
 
     field public BBjString String$
 
-    method public BBjGridExWidgetColumnState(BBjString String$)
+    method public BBjGridExWidgetState(BBjString String$)
         #String$= String$
+    methodend
+
+    method public BBjString toString()
+        methodret #String$
     methodend
 
 classend
