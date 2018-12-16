@@ -340,7 +340,6 @@ class public BBjGridExWidget extends BBjWidget
     rem */
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
-        #getSidebar().closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -348,7 +347,6 @@ class public BBjGridExWidget extends BBjWidget
     rem */
     method public BBjGridExWidget(BBjChildWindow wnd!)
         #super!.create(wnd!)
-        #getSidebar().closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
     rem /**
     rem  * @Override
@@ -1776,7 +1774,6 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("__locale",stbl("!LOCALE"))
     options!.addProperty("__contextMenu",#ContextMenu!.toString())
     #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
-    #getSidebar().closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
 
     methodend
 
@@ -2418,7 +2415,7 @@ class public BBjGridExWidgetDefaultSidebar extends BBjGridExWidgetSidebar
 
         columns! = new BBjGridExWidgetColumnsToolpanel()
         #getToolpanels().put(BBjGridExWidgetColumnsToolpanel.getId() , columns!)
-        #setDefaulToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+        rem #setDefaulToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
     methodend
 
 classend
