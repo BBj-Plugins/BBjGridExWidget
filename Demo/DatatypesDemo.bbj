@@ -59,7 +59,7 @@ fillGrid:
         dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
-        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"1979-08-03 12:22:13")
         rs!.addItem(dr!)
         
         i=i+1
@@ -73,8 +73,8 @@ fillGrid:
         dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
-        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
+        dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-10-23")
+        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2013-10-23 23:22:00")
         
         rs!.addItem(dr!)
 
@@ -129,7 +129,7 @@ prepareGrid:
     ar!.setFieldAttribute("BOOLEAN 3","RENDERER_FALSE","NOPE!")
     
     
-    ar!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl"); rem // or RENDERER_MASK
+    ar!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yd"); rem // or RENDERER_MASK
     ar!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
     
     list! = new JsonObject()
