@@ -1,4 +1,5 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetState
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -28,6 +29,12 @@ tb_refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refresh")
 
 gosub fillGrid
 
+REM state$="{""columns"":[{""colId"":""CDNUMBER"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""ARTIST"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""TITLE"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""LABEL"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""PLAYINGTIME"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null}],""groups"":[],""sort"":[],""filters"":{}}"
+state$="[{""colId"":""CDNUMBER"",""hide"":false,""aggFunc"":null,""width"":100,""pivotIndex"":null,""pinned"":""left"",""rowGroupIndex"":null},{""colId"":""TITLE"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""ARTIST"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""LABEL"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""COST"",""hide"":false,""aggFunc"":null,""width"":120,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""PLAYINGTIME"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null}]"
+st! = new BBjGridExWidgetState(state$)
+grid!.setColumnState(st!)
+
+
 process_events
 
    
@@ -42,38 +49,38 @@ declare SqlQueryBC sbc!
     grid!.addColumn("LABEL","Publisher")
     grid!.addColumn("PLAYINGTIME","Playing Time (min)")
     
-    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
-    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
-    grid!.pinColumn("CDNUMBER","left")
-    grid!.setColumnWidth("CDNUMBER",120)
-    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
-    grid!.setMultipleSelection(0)
-    grid!.setEnableFilter(1)
-    grid!.setEnableFloatingFilter(1)
-    
-	groupStyle! = new JsonObject()
-    groupStyle!.addProperty("background","#03a9f4")
-    groupStyle!.addProperty("color","white")
-    groupStyle!.addProperty("font-weight","bolder")
-    groupStyle!.addProperty("border-bottom","3px solid black")
-
-    grid!.addStyle(".my-group-class" , groupStyle!)
-    
-	
-    group! = new BBjVector()
-    group!.addItem("CDNUMBER")
-    grid!.addColumnGroup("group1" , "Inventory",group! , 0 , "my-group-class")
-	
-	group! = new BBjVector()
-    group!.addItem("ARTIST")
-    group!.addItem("TITLE")
-    grid!.addColumnGroup("group2" , "CD Information",group! , 0 , "my-group-class")
-	
-	group! = new BBjVector()
-    group!.addItem("LABEL")
-    group!.addItem("PLAYINGTIME")
-    grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
+REM     grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
+REM     grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
+REM     grid!.pinColumn("CDNUMBER","left")
+REM     grid!.setColumnWidth("CDNUMBER",120)
+REM     grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
+REM     grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
+REM     grid!.setMultipleSelection(0)
+REM     grid!.setEnableFilter(1)
+REM     grid!.setEnableFloatingFilter(1)
+REM     
+REM 	groupStyle! = new JsonObject()
+REM     groupStyle!.addProperty("background","#03a9f4")
+REM     groupStyle!.addProperty("color","white")
+REM     groupStyle!.addProperty("font-weight","bolder")
+REM     groupStyle!.addProperty("border-bottom","3px solid black")
+REM 
+REM     grid!.addStyle(".my-group-class" , groupStyle!)
+REM     
+REM 	
+REM     group! = new BBjVector()
+REM     group!.addItem("CDNUMBER")
+REM     grid!.addColumnGroup("group1" , "Inventory",group! , 0 , "my-group-class")
+REM 	
+REM 	group! = new BBjVector()
+REM     group!.addItem("ARTIST")
+REM     group!.addItem("TITLE")
+REM     grid!.addColumnGroup("group2" , "CD Information",group! , 0 , "my-group-class")
+REM 	
+REM 	group! = new BBjVector()
+REM     group!.addItem("LABEL")
+REM     group!.addItem("PLAYINGTIME")
+REM     grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
 	
     grid!.setData(rs!)    
 return
@@ -88,11 +95,9 @@ return
 
 getState:
     state! = grid!.getColumnState()
-    if INFO(3,6)="5" then
-        a=msgbox(state!.toString(),0,"GET STATE")
-        print 'SHOW', "GET STATE ",state$
-    fi
-
+    clipfromstr 1,state!.toString()
+    
+    
 return
 
 setState:

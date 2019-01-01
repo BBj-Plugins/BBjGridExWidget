@@ -2309,10 +2309,23 @@ classend
 
 class public BBjGridExWidgetState
 
-    field public BBjString String$
+    field private BBjString String$
 
     method public BBjGridExWidgetState(BBjString String$)
-        #String$= String$
+        #setString(String$)
+    methodend
+    
+    method public BBjString getString()
+        methodret #String$
+    methodend
+
+    method public void setString(BBjString jsonstr$)
+        if len(jsonstr$)>2 and jsonstr$(1,1)="[" then
+            rem old format that had only columns
+            jsonstr$="{""columns"":"+jsonstr$
+            jsonstr$=jsonstr$+",""groups"":[],""sort"":[],""filters"":{}}"
+        fi
+        #String$ = jsonstr$
     methodend
 
     method public BBjString toString()
