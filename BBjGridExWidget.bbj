@@ -1994,7 +1994,7 @@ class public BBjGridExWidget extends BBjWidget
     methodend
     
     method public static BBjString getImageData(BBjString filename$)
-        imageSlice!=BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/sampleicon.png")
+        imageSlice!=BBjAPI().getSysGui().getImageManager().loadImageFromFile(filename$)
         bytes$ = imageSlice!.getBytes("png")
         b64$ = java.util.Base64.getEncoder().encode(bytes$)
         methodret "data:image/png;base64, "+b64$    
