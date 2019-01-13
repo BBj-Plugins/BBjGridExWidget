@@ -365,7 +365,7 @@ class public BBjGridExWidget extends BBjWidget
                 #setLicenseKey(lic!)
             FI
 
-            html$="<html><body><script></script><div id='eventTransporterDiv' onClick='window.basisDispatchCustomEvent(event, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><body><script></script><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"

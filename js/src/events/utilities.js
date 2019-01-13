@@ -12,7 +12,7 @@ export function gw_postEvent(ev) {
 
 export function gw_sendEvent(payload) {
 
-  const div = gw_getDocument().getElementById('eventTransporterDiv');
+  const div = gw_getDocument().getElementById(`event-bridge-${gw_options.__id}`);
   const event = new CustomEvent('click');
   event.payload = payload;
   div.dispatchEvent(event);
