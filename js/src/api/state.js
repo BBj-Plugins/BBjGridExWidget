@@ -6,23 +6,24 @@
 * file that was distributed with this source code.
 */
 
-export function gw_setState(state) {
+export function gw_setState(id, state) {
+  const options = gw_getGrid(id).options;
   try {
-    gw_options.columnApi.setColumnState(state.columns);
-    gw_options.columnApi.setColumnGroupState(state.groups);
-    gw_options.api.setSortModel(state.sort);
-    gw_options.api.setFilterModel(state.filters);
+    options.columnApi.setColumnState(state.columns);
+    options.columnApi.setColumnGroupState(state.groups);
+    options.api.setSortModel(state.sort);
+    options.api.setFilterModel(state.filters);
   } catch (e) {
     console.warn('Failed to parse grid state from JSON', e);
   }
 }
 
-export function gw_getState() {
-
-  const columns = gw_options.columnApi.getColumnState();
-  const groups = gw_options.columnApi.getColumnGroupState();
-  const sort = gw_options.api.getSortModel();
-  const filters = gw_options.api.getFilterModel();
+export function gw_getState(id) {
+  const options = gw_getGrid(id).options;
+  const columns = options.columnApi.getColumnState();
+  const groups = options.columnApi.getColumnGroupState();
+  const sort = options.api.getSortModel();
+  const filters = options.api.getFilterModel();
 
   try {
     return JSON.stringify({

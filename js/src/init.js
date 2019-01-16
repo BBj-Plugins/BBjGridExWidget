@@ -1,3 +1,5 @@
+import { gw_getGrid } from "./utilities";
+
 /*
  * This file is part of the grid project
  * (c) Basis Europe <eu@Basis.AgGridComponents.com>
@@ -128,6 +130,9 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
   if (agGrid.LicenseManager && license) agGrid.LicenseManager.setLicenseKey(license);
 
+  const id = defaultOptions.context.id;
+  const meta = defaultOptions.context.meta;
+
   let types = gw_getSupportedColumnTypes();
 
   let options = Object.assign(defaultOptions, {
@@ -137,21 +142,43 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     components: gw_getDefaultComponents(),
     columnTypes: types,
 
-    onRowDoubleClicked: gw_onRowDoubleClicked,
-    onRowSelected: gw_onRowSelected,
-    onSelectionChanged: gw_onSelectionChanged,
+    onRowDoubleClicked: e => {
+      gw_onRowDoubleClicked(id, e);
+    },
+    onRowSelected: e => {
+      gw_onRowSelected(id, e);
+    },
+    onSelectionChanged: e => {
+      gw_onSelectionChanged(id, e);
+    },
 
-    onCellEditingStarted: gw_onCellEditingsEvent,
-    onCellEditingStopped: gw_onCellEditingsEvent,
-    onCellValueChanged: gw_onCellEditingsEvent,
+    onCellEditingStarted: e => {
+      gw_onCellEditingsEvent(id, e);
+    },
+    onCellEditingStopped: e => {
+      gw_onCellEditingsEvent(id, e);
+    },
+    onCellValueChanged: e => {
+      gw_onCellEditingsEvent(id, e)
+    },
 
-    onRowEditingStarted: gw_onRowEditingsEvent,
-    onRowEditingStopped: gw_onRowEditingsEvent,
-    onRowValueChanged: gw_onRowEditingsEvent,
-    onCellClicked: gw_onCellClickEvent,
-    onCellDoubleClicked: gw_onCellClickEvent,
+    onRowEditingStarted: e => {
+      gw_onRowEditingsEvent(id, e);
+    },
+    onRowEditingStopped: e => {
+      gw_onRowEditingsEvent(id, e);
+    },
+    onRowValueChanged: e => {
+      gw_onRowEditingsEvent(id, e);
+    },
+    onCellClicked: e => {
+      gw_onCellClickEvent(id, e);
+    },
+    onCellDoubleClicked: e => {
+      gw_onCellClickEvent(id, e);
+    },
 
-    getRowNodeId: gw_getRowNodeId,
+    getRowNodeId: data => gw_getRowNodeId(id, data),
 
     rememberGroupStateWhenNewData: true,
     getContextMenuItems: gw_getContextMenu,
@@ -163,16 +190,13 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   options.sideBar = JSON.parse(options.sideBar);
   options.sideBar.toolPanels = JSON.parse(options.sideBar.toolPanels);
 
-  if (
-    options.hasOwnProperty('__isTree') &&
-    true === options.__isTree
-  ) {
+  if (true === options.context.isTree) {
     options.getNodeChildDetails = gw_getNodeChildDetails;
   }
 
   if (
-    options.hasOwnProperty("__navigateToNextCell") &&
-    options.__navigateToNextCell
+    options.context.hasOwnProperty("navigateToNextCell") &&
+    options.context.navigateToNextCell
   ) {
     options.navigateToNextCell = gw_navigateToNextRow;
   }
@@ -184,11 +208,11 @@ export function gw_init(container, license, data, defaultOptions = {}) {
 
     //override numbers group and decimal separators
     if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
-      if (gw_meta && gw_meta.hasOwnProperty(field)) {
-        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
+      if (meta && meta.hasOwnProperty(field)) {
+        if (!meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
           def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
         }
-        if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
+        if (!meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
           def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
       }
     }
@@ -197,27 +221,27 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     def.cellClass = gw_getCellClass;
     def.toolPanelClass = gw_getToolPanelClass;
 
-    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null, true);
+    def.cellClassRules = gw_getGlobalMeta(id, field, 'CELL_CLASS_RULES', null, true);
 
-    const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
-    const enableValue = Number(gw_getGlobalMeta(field, 'ENABLE_VALUE'));
-    const footerValueGetter = gw_getGlobalMeta(field, 'FOOTER_VALUE_GETTER');
+    const rowGroup = Number(gw_getGlobalMeta(id, field, 'ROW_GROUP'));
+    const enableValue = Number(gw_getGlobalMeta(id, field, 'ENABLE_VALUE'));
+    const footerValueGetter = gw_getGlobalMeta(id, field, 'FOOTER_VALUE_GETTER');
 
     def.rowGroup = rowGroup;
     def.enableRowGroup = rowGroup ? true : def.enableRowGroup;
-    def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
+    def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(id, field, 'ROW_GROUP_INDEX')) : null;
     def.enableValue = enableValue > 0 ? true : false;
-    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP', gw_getGlobalMeta(field, "LABEL"));
-    def.aggFunc = gw_getGlobalMeta(field, 'AGG_FUNC');
-    def.allowedAggFuncs = gw_getGlobalMeta(field, 'ALLOWED_AGG_FUNCS', 'sum,min,max,count,avg,first,last').split(',');
-    def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
-    def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
-    def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
+    def.showRowGroup = gw_getGlobalMeta(id, field, 'SHOW_ROW_GROUP', gw_getGlobalMeta(id, field, "LABEL"));
+    def.aggFunc = gw_getGlobalMeta(id, field, 'AGG_FUNC');
+    def.allowedAggFuncs = gw_getGlobalMeta(id, field, 'ALLOWED_AGG_FUNCS', 'sum,min,max,count,avg,first,last').split(',');
+    def.valueGetter = gw_getGlobalMeta(id, field, 'VALUE_GETTER');
+    def.valueSetter = gw_getGlobalMeta(id, field, 'VALUE_SETTER');
+    def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(id, field, 'HIDE', gw_getGlobalMeta(id, field, 'HIDDEN', false));
     def.suppressToolPanel = def.headerName.startsWith('__');
     // bbj is handling this part now 
     // def.editable = param => {
 
-    //   const global = gw_getGlobalMeta(field, 'EDITABLE', false) === "1" ? true : false;
+    //   const global = gw_getGlobalMeta(id,field, 'EDITABLE', false) === "1" ? true : false;
     //   if(!param.data.hasOwnProperty('meta')) return global;
 
     //   const path = param.data.meta[param.column.colId];
@@ -232,33 +256,41 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     }
   }
 
-  gw_groupColumns(JSON.parse(options.__columnsGroup), options.columnDefs);
+  // gw_groupColumns(JSON.parse(options.context.columnsGroup), options.columnDefs);
 
   return new agGrid.Grid(container, options);
 }
 
 export function gw_setData(json, options, license) {
 
-  const container = gw_getDocument().getElementById(options['__id']);
+  console.log(options)
+  const container = gw_getDocument().getElementById(options.context.id);
   container.innerHTML = '';
 
-  window.gw_meta = json[0].meta;
-  window.AGridComponentsMetaConfig = gw_meta;
+  gw_addGrid(options.context.id, {
+    meta: json[0].meta,
+    options: options
+  });
 
-  console.log(options);
-  window.gw_options = options;
-  window.gw_instance = gw_init(container, license, json, options);
+  gw_getGrid(options.context.id).instance = gw_init(container, license, json, options);
 
-  if (gw_options.hasOwnProperty('__enterKeyBehavior')) {
+  // window.meta = json[0].meta;
+  // window.AGridComponentsMetaConfig = meta;
 
-    const behavior = gw_options.__enterKeyBehavior;
+  // console.log(options);
+  // window.gw_options = options;
+  // window.gw_instance = gw_init(container, license, json, options);
 
-    switch (behavior) {
-      case 'next':
-        container.addEventListener('keydown', gw_onMoveToNextCell);
-        break;
-      default:
-        break;
-    }
+  const enterKeyBehavior = options.context.enterKeyBehavior;
+
+  switch (enterKeyBehavior) {
+    case 'next':
+      container.addEventListener('keydown', e => {
+        gw_onMoveToNextCell(options.context.id, e);
+      });
+      break;
+    default:
+      break;
   }
+
 }

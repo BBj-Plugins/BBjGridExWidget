@@ -6,10 +6,11 @@
 * file that was distributed with this source code.
 */
 
-export function gw_startEditingCell(row, colKey, key, char) {
-  
-  gw_options.api.setFocusedCell(Number(row), colKey);
-  gw_options.api.startEditingCell({
+export function gw_startEditingCell(id, row, colKey, key, char) {
+
+  const options = gw_getGrid(id).options;
+  options.api.setFocusedCell(Number(row), colKey);
+  options.api.startEditingCell({
     rowIndex: Number(row),
     colKey: colKey,
     keyPress: Number(key),
@@ -17,16 +18,19 @@ export function gw_startEditingCell(row, colKey, key, char) {
   });
 }
 
-export function gw_stopEditing(cancel) {
-  gw_options.api.stopEditing(cancel);
+export function gw_stopEditing(id, cancel) {
+  const options = gw_getGrid(id).options;
+  options.api.stopEditing(cancel);
 }
 
-export function gw_editNextCell(){
-  gw_options.api.tabToNextCell();
+export function gw_editNextCell(id) {
+  const options = gw_getGrid(id).options;
+  options.api.tabToNextCell();
 };
 
-export function gw_editPreviousCell() {
-  gw_options.api.tabToPreviousCell();
+export function gw_editPreviousCell(id) {
+  const options = gw_getGrid(id).options;
+  options.api.tabToPreviousCell();
 }
 
 export function gw_cellStyler(params) {
@@ -69,11 +73,11 @@ export function gw_cellStyler(params) {
 export function gw_getCellClass(params) {
 
   const field = params.colDef.field;
-  
-  if(params.data && params.data.hasOwnProperty('meta') ) {
+
+  if (params.data && params.data.hasOwnProperty('meta')) {
     return (
       params.data.meta.hasOwnProperty(field) &&
       params.data.meta[field].hasOwnProperty('CELL_CLASS')
-     ) ? params.data.meta[field].CELL_CLASS : `CELL_CLASS_${field}`
+    ) ? params.data.meta[field].CELL_CLASS : `CELL_CLASS_${field}`
   }
 }

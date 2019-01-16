@@ -6,30 +6,35 @@
 * file that was distributed with this source code.
 */
 
-export function gw_setSideBarVisible(value) {
-  gw_options.api.setSideBarVisible(Boolean(value));
+export function gw_setSideBarVisible(id, value) {
+  const options = gw_getGrid(id).options;
+  options.api.setSideBarVisible(Boolean(value));
 }
 
-export function gw_openToolpanel(id) {
-  gw_options.api.openToolPanel(id);
+export function gw_openToolpanel(gridId, toolpanelId) {
+  const options = gw_getGrid(gridId).options;
+  options.api.openToolPanel(toolpanelId);
 }
 
-export function gw_closeToolpanel(id) {
-  gw_options.api.closeToolPanel(id);
+export function gw_closeToolpanel(gridId, toolpanelId) {
+  const options = gw_getGrid(gridId).options;
+  options.api.closeToolPanel(toolpanelId);
 }
 
-export function gw_setFunctionsReadOnly(readonly) {
-  gw_options.api.setFunctionsReadOnly(Boolean(readonly));
+export function gw_setFunctionsReadOnly(id, readonly) {
+  const options = gw_getGrid(id).options;
+  options.api.setFunctionsReadOnly(Boolean(readonly));
 }
 
 export function gw_getToolPanelClass(params) {
 
+  const meta = gw_getGrid(params.context.id).meta;
   const def = params.colDef;
 
   if (
-    gw_meta.hasOwnProperty(def.field) &&
-    gw_meta[def.field].hasOwnProperty('TOOLPANEL_CLASS')
+    meta && meta.hasOwnProperty(def.field) &&
+    meta[def.field].hasOwnProperty('TOOLPANEL_CLASS')
   ) {
-    return gw_meta[def.field].TOOLPANEL_CLASS;
+    return meta[def.field].TOOLPANEL_CLASS;
   }
 }

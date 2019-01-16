@@ -6,7 +6,7 @@
 * file that was distributed with this source code.
 */
 
-export function gw_onCellEditingsEvent(e) {
+export function gw_onCellEditingsEvent(id,e) {
 
   const parsed = gw_parseNodeFromEvent(e);
   const type = e.type;
@@ -23,7 +23,7 @@ export function gw_onCellEditingsEvent(e) {
 
   if (parsed) {
 
-    gw_sendEvent({
+    gw_sendEvent(id, {
       'type': e.type,
       'detail': [[
         { row: parsed, ...value, column: colId }
@@ -32,7 +32,7 @@ export function gw_onCellEditingsEvent(e) {
   }
 }
 
-export function gw_onRowEditingsEvent(e) {
+export function gw_onRowEditingsEvent(id,e) {
 
   const parsed = gw_parseNodeFromEvent(e);
   const type = e.type;
@@ -40,30 +40,30 @@ export function gw_onRowEditingsEvent(e) {
   window.gw_editing = type === 'rowEditingStopped' ? false : true;
 
   if (parsed) {
-    gw_sendEvent({
+    gw_sendEvent(id, {
       'type': e.type,
       'detail': [[parsed]]
     });
   }
 }
 
-export function gw_onMoveToNextCell(e) {
+export function gw_onMoveToNextCell(id, e) {
 
   const key = e.which || e.keyCode;
   if (gw_editing && key === 13) { // enter
 
-    const currentCell = gw_options.api.getFocusedCell();
-    const finalRowIndex = gw_options.api.paginationGetRowCount() - 1;
+    const options = gw_getGrid(id).options;
+    const currentCell = options.api.getFocusedCell();
+    const finalRowIndex = options.api.paginationGetRowCount() - 1;
 
     // If we are editing the last row in the grid, don't move to next line
     if (currentCell.rowIndex === finalRowIndex) {
       return;
     }
 
-    gw_options.api.stopEditing();
-    gw_options.api.clearFocusedCell();
-
-    gw_options.api.startEditingCell({
+    options.api.stopEditing();
+    options.api.clearFocusedCell();
+    options.api.startEditingCell({
       rowIndex: currentCell.rowIndex + 1,
       colKey: currentCell.column.colId
     });
