@@ -26,9 +26,9 @@ export function gw_setVisibleRow(id, index, position) {
   options.api.ensureIndexVisible(index, position);
 }
 
-export function gw_navigateToNextRow(params) {
+export function gw_navigateToNextRow(id, params) {
 
-  const options = gw_getGrid(params.context.id).options;
+  const options = gw_getGrid(id).options;
   let previousCell = params.previousCellDef;
   let suggestedNextCell = params.nextCellDef;
 
@@ -64,7 +64,7 @@ export function gw_navigateToNextRow(params) {
   }
 }
 
-export function gw_getRowNodeId(id,data) {
+export function gw_getRowNodeId(id, data) {
   return data[gw_getGrid(id).options.context.getRowNodeId];
 }
 
@@ -95,7 +95,7 @@ export function gw_setRowsData(id, json) {
 
 export function gw_setRowData(id, row) {
   const options = gw_getGrid(id).options;
-  
+
   options.api.updateRowData({ update: [row] });
   options.api.refreshClientSideRowModel('group');
 }
@@ -105,7 +105,7 @@ export function gw_removeRows(id, indexes) {
   let items = [];
 
   indexes.forEach(index => {
-    items.push(gw_options.api.getRowNode(index).data);
+    items.push(options.api.getRowNode(index).data);
   });
 
   options.api.updateRowData({ remove: items });
@@ -114,7 +114,7 @@ export function gw_removeRows(id, indexes) {
 
 export function gw_addRows(id, index, rows) {
   const options = gw_getGrid(id).options;
-  
+
   options.api.updateRowData({ add: rows, addIndex: index });
   options.api.refreshClientSideRowModel('group');
 }

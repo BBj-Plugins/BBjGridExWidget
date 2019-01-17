@@ -138,9 +138,14 @@ export function gw_init(container, license, data, defaultOptions = {}) {
   let options = Object.assign(defaultOptions, {
 
     rowData: data,
-    getDocument: () => gw_getDocument(),
-    components: gw_getDefaultComponents(),
     columnTypes: types,
+    components: gw_getDefaultComponents(),
+    popupParent: gw_getDocument().body,
+    rememberGroupStateWhenNewData: true,
+    allowContextMenuWithControlKey: true,
+    suppressSetColumnStateEvents: true,
+
+    getDocument: () => gw_getDocument(),
 
     onRowDoubleClicked: e => {
       gw_onRowDoubleClicked(id, e);
@@ -179,12 +184,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     },
 
     getRowNodeId: data => gw_getRowNodeId(id, data),
-
-    rememberGroupStateWhenNewData: true,
-    getContextMenuItems: gw_getContextMenu,
-    popupParent: gw_getDocument().body,
-    allowContextMenuWithControlKey: true,
-    suppressSetColumnStateEvents: true
+    getContextMenuItems: params => gw_getContextMenu(id, params),
   });
 
   options.sideBar = JSON.parse(options.sideBar);
@@ -198,7 +198,9 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     options.context.hasOwnProperty("navigateToNextCell") &&
     options.context.navigateToNextCell
   ) {
-    options.navigateToNextCell = gw_navigateToNextRow;
+    options.navigateToNextCell = params => {
+      return gw_navigateToNextRow(id, params);
+    };
   }
 
   for (let i in options.columnDefs) {
@@ -207,15 +209,15 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     const field = def.field;
 
     //override numbers group and decimal separators
-    if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
-      if (meta && meta.hasOwnProperty(field)) {
-        if (!meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
-          def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
-        }
-        if (!meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
-          def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
-      }
-    }
+    // if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
+    //   if (meta && meta.hasOwnProperty(field)) {
+    //     if (!meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
+    //       def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
+    //     }
+    //     if (!meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
+    //       def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
+    //   }
+    // }
 
     def.cellStyle = gw_cellStyler;
     def.cellClass = gw_getCellClass;
@@ -256,7 +258,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     }
   }
 
-  // gw_groupColumns(JSON.parse(options.context.columnsGroup), options.columnDefs);
+  gw_groupColumns(JSON.parse(options.context.columnsGroup), options.columnDefs);
 
   return new agGrid.Grid(container, options);
 }

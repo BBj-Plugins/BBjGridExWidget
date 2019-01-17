@@ -61,7 +61,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @RequiresRefresh
     rem  */
-    field public BBjNumber GroupSelectsChildren! = 1
+    field public BBjNumber GroupSelectsChildren! = 0
     rem /**
     rem  * Enable / Disable cell editing for the whole grid
     rem  * 1 = enable editing
@@ -694,7 +694,7 @@ class public BBjGridExWidget extends BBjWidget
     method public void addRow(DataRow row!)
         #RS!.add(row!)
         parser! = new JsonParser()
-        #executeScript("gw_addRows(null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+        #executeScript("gw_addRows('" + #GRIDID$ +"',null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
     rem  * Remove row from grid by index
@@ -1127,19 +1127,19 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber filter : filter as number
     rem  */
     method public void setQuickFilter(BBjString filter!)
-        #executeScript("gw_setQuickFilter('" + #GRIDID$ + "'" + filter! +"')")
+        #executeScript("gw_setQuickFilter('" + #GRIDID$ + "','" + filter! +"')")
     methodend
     rem /**
     rem  * Start Next Cell Editing
     rem  */
     method public void moveToNextCell()
-        #executeScript("gw_editNextCell()")
+        #executeScript("gw_editNextCell('"+ #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Move to previous cell
     rem  */
     method public void moveToPreviousCell()
-        #executeScript("gw_editPreviousCell()")
+        #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Start Cell Editing
@@ -1148,7 +1148,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjString colId!: The column ID
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "')")
+        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "')")
     methodend
     rem /**
     rem  * Start Cell Editing
@@ -1158,7 +1158,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber char$: key chars to press on editors when editors support it
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
-        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
     methodend
     rem /**
     rem  * Start Cell Editing
@@ -1168,19 +1168,19 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber key!: key codes to press on editors when editors support it
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
-        #executeScript("gw_startEditingCell("+STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
     methodend
     rem /**
     rem  * Start next Cell Editing
     rem  */
     method public void startNextCellEditing()
-        #executeScript("gw_editNextCell()")
+        #executeScript("gw_editNextCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Start previous Cell Editing
     rem  */
     method public void startPreviousCellEditing()
-        #executeScript("gw_editPreviousCell()")
+        #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Stop Editing and accept any changes
@@ -1189,7 +1189,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * Stop editing and discard changes
     rem  */
     method public void stopEditing()
-        #executeScript("gw_stopEditing(0)")
+        #executeScript("gw_stopEditing('" + #GRIDID$ "',0)")
     methodend
     rem /**
     rem  * Stop Editing
@@ -1197,7 +1197,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber cancel!: 1 = discard changes , 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
-        #executeScript("gw_stopEditing("+STR(cancel!)+ ")")
+        #executeScript("gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
     methodend
     rem /**
     rem  * Enable/disable changes to group, pivot or values through the GUI

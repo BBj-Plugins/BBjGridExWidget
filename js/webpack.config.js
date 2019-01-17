@@ -8,6 +8,7 @@ const distPath = path.resolve(__dirname, "dist");
 
 module.exports = {
   target: 'web',
+  mode: 'development',
   entry: {
     "bbj-grid-widget.min": [
       "core-js/fn/string/starts-with.js",

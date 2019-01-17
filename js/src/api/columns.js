@@ -67,7 +67,7 @@ export function gw_groupColumns(columns, columnDefs) {
 
   for (const i in columns) {
 
-    if (!columns.hasOwnProperty(i)) continue;
+    if (!columns || !columns.hasOwnProperty(i)) continue;
 
     const column = JSON.parse(columns[i]);
 
