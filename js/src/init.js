@@ -199,7 +199,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     options.context.navigateToNextCell
   ) {
     options.navigateToNextCell = params => {
-      return gw_navigateToNextRow(id, params);
+      gw_navigateToNextRow(id, params);
     };
   }
 

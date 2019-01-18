@@ -54,11 +54,11 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { 
-        from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js',
+        from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.noStyle.js',
          to: distPath
       },
       { 
-        from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
+        from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.noStyle.js',
         to: distPath
       }
     ]),
