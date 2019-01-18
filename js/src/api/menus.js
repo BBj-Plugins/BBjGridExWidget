@@ -18,7 +18,7 @@ export function gw_getContextMenu(gridId, params) {
       const colId = params.column.colId;
       const value = params.value;
 
-      gw_sendEvent({
+      gw_sendEvent(gridId, {
         'type': 'contextmenu',
         'detail': [[{ row: node, column: colId, value, id }]]
       });
