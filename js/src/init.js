@@ -199,7 +199,7 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     options.context.navigateToNextCell
   ) {
     options.navigateToNextCell = params => {
-      gw_navigateToNextRow(id, params);
+      return gw_navigateToNextRow(id, params);
     };
   }
 
@@ -209,15 +209,15 @@ export function gw_init(container, license, data, defaultOptions = {}) {
     const field = def.field;
 
     //override numbers group and decimal separators
-    // if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
-    //   if (meta && meta.hasOwnProperty(field)) {
-    //     if (!meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
-    //       def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
-    //     }
-    //     if (!meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
-    //       def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
-    //   }
-    // }
+    if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
+      if (meta && meta.hasOwnProperty(field)) {
+        if (!meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
+          def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
+        }
+        if (!meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
+          def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
+      }
+    }
 
     def.cellStyle = gw_cellStyler;
     def.cellClass = gw_getCellClass;
