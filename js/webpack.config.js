@@ -14,8 +14,12 @@ module.exports = {
       "core-js/fn/string/starts-with.js",
       "./src/index.js"
     ],
+    "bbj-grid-widget": [
+      "core-js/fn/string/starts-with.js",
+      "./src/index.js"
+    ],
   },
-  devtool: "source-map",
+  devtool: "inline-source-map",
   output: {
     path: distPath,
     filename: "[name].js",
@@ -58,7 +62,15 @@ module.exports = {
          to: distPath
       },
       { 
+        from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js',
+         to: distPath
+      },
+      { 
         from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.noStyle.js',
+        to: distPath
+      },
+      { 
+        from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
         to: distPath
       }
     ]),
