@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "watch": "./node_modules/.bin/webpack --watch --progress",
-    "build": "./node_modules/.bin/webpack"
+    "build": "./node_modules/.bin/webpack --mode=production"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",
