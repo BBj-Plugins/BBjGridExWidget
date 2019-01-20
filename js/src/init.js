@@ -118,6 +118,7 @@ export function gw_setData(json, options, license) {
       "basic-image": {
         cellRenderer: 'BasicImagesRenderer',
         suppressMenu: true,
+        filter: false,
         cellRendererParams: {
           'IMAGE_WIDTH': '25px',
           'IMAGE_HEIGHT': '25px',
