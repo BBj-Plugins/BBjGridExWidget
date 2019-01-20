@@ -1741,7 +1741,6 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("sideBar",#Sidebar!.toString())
 
         autoGroupColumnDef! = new JsonObject()
-
         if #GroupMultiAutoColumn! = 0 then
             autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
         FI
@@ -1766,19 +1765,10 @@ class public BBjGridExWidget extends BBjWidget
         context!.addProperty("numberDecimalSep",dot$)
         context!.addProperty("locale",stbl("!LOCALE"))
         context!.addProperty("contextMenu",#ContextMenu!.toString())
-
-        rem the following are not supported by ag-grid options but they are required by plugin js code
-        rem options!.addProperty("__id",#GRIDID$)
-        rem options!.addProperty("__getRowNodeId",#RowNodeId$)
-        rem options!.addProperty("__getParentNodeId",#ParentNodeId$)
-        rem options!.addProperty("__enterKeyBehavior",#EnterKeyBehavior$)
-        rem options!.addProperty("__isTree",tree!)
-        rem options!.addProperty("__columnsGroup",new Gson().toJson(#ColumnGroups!))
-
-        rem options!.addProperty("__numberGroupSep",comma$)
-        rem options!.addProperty("__numberDecimalSep",dot$)
-        rem options!.addProperty("__locale",stbl("!LOCALE"))
-        rem options!.addProperty("__contextMenu",#ContextMenu!.toString())
+        context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
+        context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
+        context!.addProperty("locale",stbl("!LOCALE"))
+        context!.addProperty("contextMenu",#ContextMenu!.toString())
 
         if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
             context!.addProperty("navigateToNextCell",1)
@@ -1788,7 +1778,7 @@ class public BBjGridExWidget extends BBjWidget
 
         options!.add("context",context!)
 
-        #HTMLView!.executeScript("gw_setData("+data$+","+gson!.toJson(options!)+",'" + #LicenseKey$ + "')")
+        #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
     methodend
 
     method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)

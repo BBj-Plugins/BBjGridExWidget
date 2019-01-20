@@ -49,6 +49,8 @@ export function gw_getGlobalMeta(id, field, value, fallback = null, json = false
 export function gw_addGrid(id, options) {
   window.BBjGridExWidget = window.BBjGridExWidget || {};
   window.BBjGridExWidget[id] = options;
+
+  return gw_getGrid(id);
 }
 
 export function gw_getGrid(id) {
