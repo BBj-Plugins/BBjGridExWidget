@@ -41,6 +41,10 @@ export function gw_setData(json, options, license) {
     getRowNodeId:         data    => gw_getRowNodeId(id, data),
     getContextMenuItems:  params  => gw_getContextMenu(id, params),
     rowData: json,
+    defaultColDef: {
+      sortable: true,
+      resizable: true
+    },
     columnTypes: {
       "basic-string": {
         cellEditor: 'agTextCellEditor'

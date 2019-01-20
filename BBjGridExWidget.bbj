@@ -78,7 +78,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @RequiresRefresh
     rem  */
-    field public BBjNumber Editable! = 0
+    field public BBjNumber Editable! = 0  
     rem /**
     rem  * Enable / Disable cell editing for the whole grid
     rem  * 1 = enable editing
@@ -1729,9 +1729,7 @@ class public BBjGridExWidget extends BBjWidget
         fi
 
         options! = new JsonObject()
-        options!.addProperty("enableSorting",Boolean.valueOf(1))
         options!.addProperty("animateRows",Boolean.valueOf(1))
-        options!.addProperty("enableColResize",Boolean.valueOf(1))
         options!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
         options!.addProperty("enableFilter",#EnableFilter!)
         options!.addProperty("floatingFilter",#EnableFloatingFilter!)
@@ -1880,7 +1878,7 @@ class public BBjGridExWidget extends BBjWidget
                 node!.addProperty("editable",1)
             else
                 node!.addProperty("editable",0)
-            FI
+            FI                        
 
             aggFunc$ = cd!.getFieldAttribute(f$,"AGG_FUNC",err=*next)
 
