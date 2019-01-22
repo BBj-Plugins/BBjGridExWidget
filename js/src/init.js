@@ -9,7 +9,7 @@
 export function gw_setData(json, options, license) {
 
   const id   = options.context.id;
-  const meta = options.context.meta;
+  const meta = json[0].meta;
   const container     = gw_getDocument().getElementById(options.context.id);
   const grid = gw_addGrid(id, {
     container,
