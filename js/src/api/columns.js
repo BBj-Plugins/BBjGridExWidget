@@ -6,64 +6,71 @@
 * file that was distributed with this source code.
 */
 
-export function gw_sizeColumnsToFit() {
-  gw_options.api.sizeColumnsToFit();
+export function gw_sizeColumnsToFit(id) {
+  const options = gw_getGrid(id).options;
+  options.api.sizeColumnsToFit();
 }
 
-export function gw_setSelectedRows(rows) {
+export function gw_setSelectedRows(id, rows) {
+  const options = gw_getGrid(id).options;
 
-  gw_options.api.forEachNodeAfterFilterAndSort(function (node) {
+  options.api.forEachNodeAfterFilterAndSort(node => {
     if (rows.indexOf(node.rowIndex) > -1) {
       node.setSelected(true);
       node.expanded = true;
     }
-  }.bind(this));
-
-  gw_options.api.onGroupExpandedOrCollapsed();
+  });
+  options.api.onGroupExpandedOrCollapsed();
 }
 
-export function gw_selectAll(filtered) {
+export function gw_selectAll(id, filtered) {
+  const options = gw_getGrid(id).options;
 
   if (1 === filtered) {
-    gw_options.api.selectAllFiltered();
+    options.api.selectAllFiltered();
   } else {
-    gw_options.api.selectAll();
+    options.api.selectAll();
   }
 }
 
-export function gw_deselectAll(filtered) {
+export function gw_deselectAll(id, filtered) {
+  const options = gw_getGrid(id).options;
 
   if (1 === filtered) {
-    gw_options.api.deselectAllFiltered();
+    options.api.deselectAllFiltered();
   } else {
-    gw_options.api.deselectAll();
+    options.api.deselectAll();
   }
 }
 
-export function gw_setVisibleColumn(columnId) {
-  gw_options.api.ensureColumnVisible(columnId);
+export function gw_setVisibleColumn(id, columnId) {
+  const options = gw_getGrid(id).options;
+  options.api.ensureColumnVisible(columnId);
 }
 
-export function gw_setColumnWidth(columnid, width) {
-  gw_options.columnApi.setColumnWidth(columnid, Number(width));
+export function gw_setColumnWidth(id, columnid, width) {
+  const options = gw_getGrid(id).options;
+  options.columnApi.setColumnWidth(columnid, Number(width));
 }
 
-export function gw_pinColumn(columnid, pin) {
-  gw_options.columnApi.setColumnPinned(columnid, pin);
+export function gw_pinColumn(id, columnid, pin) {
+  const options = gw_getGrid(id).options;
+  options.columnApi.setColumnPinned(columnid, pin);
 }
 
-export function gw_moveColumn(columnid, toIndex) {
-  gw_options.columnApi.moveColumn(columnid, toIndex);
+export function gw_moveColumn(id, columnid, toIndex) {
+  const options = gw_getGrid(id).options;
+  options.columnApi.moveColumn(columnid, toIndex);
 }
 
 export function gw_groupColumns(columns, columnDefs) {
 
   for (const i in columns) {
 
-    if (!columns.hasOwnProperty(i)) continue;
+    if (!columns || !columns.hasOwnProperty(i)) continue;
 
     const column = JSON.parse(columns[i]);
-    
+
     const children = column.children.split(',');
     let newChildren = [];
     let newColumnDef = [];
@@ -75,7 +82,7 @@ export function gw_groupColumns(columns, columnDefs) {
 
         const def = columnDefs[x];
 
-        if(def && def.hasOwnProperty("field") && def.field === child) {
+        if (def && def.hasOwnProperty("field") && def.field === child) {
           newChildren.push(def);
           columnDefs.splice(x, 1);
           break;

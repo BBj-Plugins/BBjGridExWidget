@@ -6,259 +6,241 @@
  * file that was distributed with this source code.
  */
 
-export function gw_getSupportedColumnTypes() {
+export function gw_setData(json, options, license) {
 
-  return {
-    "basic-string": {
-      cellEditor: 'agTextCellEditor'
+  const id   = options.context.id;
+  const meta = json[0].meta;
+  const container     = gw_getDocument().getElementById(options.context.id);
+  const grid = gw_addGrid(id, {
+    container,
+    options,
+    meta,
+  });
+
+  // TODO: use ag grid destroy
+  container.innerHTML = '';
+
+  // set the license key for enterprise version
+  if (agGrid.LicenseManager && license)
+    agGrid.LicenseManager.setLicenseKey(license);
+
+
+  options = Object.assign(options, {
+    getDocument:          ()      => gw_getDocument(),
+    onRowDoubleClicked:   e       => { gw_onRowDoubleClicked(id, e) },
+    onRowSelected:        e       => { gw_onRowSelected(id, e) },
+    onSelectionChanged:   e       => { gw_onSelectionChanged(id, e) },
+    onCellEditingStarted: e       => { gw_onCellEditingsEvent(id, e) },
+    onCellEditingStopped: e       => { gw_onCellEditingsEvent(id, e) },
+    onCellValueChanged:   e       => { gw_onCellEditingsEvent(id, e) },
+    onRowEditingStarted:  e       => { gw_onRowEditingsEvent(id, e) },
+    onRowEditingStopped:  e       => { gw_onRowEditingsEvent(id, e) },
+    onRowValueChanged:    e       => { gw_onRowEditingsEvent(id, e) },
+    onCellClicked:        e       => { gw_onCellClickEvent(id, e) },
+    onCellDoubleClicked:  e       => { gw_onCellClickEvent(id, e) },
+    getRowNodeId:         data    => gw_getRowNodeId(id, data),
+    getContextMenuItems:  params  => gw_getContextMenu(id, params),
+    rowData: json,
+    defaultColDef: {
+      sortable: true,
+      resizable: true
     },
-
-    "basic-text": {
-      cellEditor: 'agLargeTextCellEditor'
-    },
-
-    "basic-boolean": {
-
-      cellRenderer: 'BasicBooleansRenderer',
-      cellRendererParams: {
-        'RENDERER_TRUE': '&#x2714;',
-        'RENDERER_FALSE': '&#x2718;'
+    columnTypes: {
+      "basic-string": {
+        cellEditor: 'agTextCellEditor'
       },
 
-      cellEditor: 'BasicBooleansEditor',
-      filter: 'BasicBooleansFilter'
-    },
-
-    "basic-number": {
-
-      valueFormatter: Basis.AgGridComponents.BasicNumbersValueFormatter.format,
-
-      cellEditor: 'BasicNumbersEditor',
-
-      filter: 'agNumberColumnFilter',
-      filterParams: {
-        inRangeInclusive: true,
+      "basic-text": {
+        cellEditor: 'agLargeTextCellEditor'
       },
 
-      floatingFilter: 'agNumberColumnFilter',
-      floatingFilterParams: {
-        inRangeInclusive: true,
-      },
-    },
+      "basic-boolean": {
 
-    "basic-date": {
+        cellRenderer: 'BasicBooleansRenderer',
+        cellRendererParams: {
+          'RENDERER_TRUE': '&#x2714;',
+          'RENDERER_FALSE': '&#x2718;'
+        },
 
-      valueFormatter: Basis.AgGridComponents.BasicDateTimesValueFormatter.format,
-
-      cellEditor: 'BasicDateTimesEditor',
-      cellEditorParams: {
-        'EDITOR_MASK': '%Y/%Mz/%Dz',
-        'EDITOR_ALLOW_INPUT': true,
+        cellEditor: 'BasicBooleansEditor',
+        filter: 'BasicBooleansFilter'
       },
 
-      filter: 'BasicDateTimesFilter',
-      filterParams: {
-        'FILTER_MASK': '%Y/%Mz/%Dz',
-        'FILTER_ALLOW_INPUT': true,
+      "basic-number": {
+
+        valueFormatter: Basis.AgGridComponents.BasicNumbersValueFormatter.format,
+
+        cellEditor: 'BasicNumbersEditor',
+
+        filter: 'agNumberColumnFilter',
+        filterParams: {
+          inRangeInclusive: true,
+        },
+
+        floatingFilter: 'agNumberColumnFilter',
+        floatingFilterParams: {
+          inRangeInclusive: true,
+        },
       },
-    },
 
-    "basic-timestamp": {
+      "basic-date": {
 
-      valueFormatter: Basis.AgGridComponents.BasicDateTimesValueFormatter.format,
+        valueFormatter: Basis.AgGridComponents.BasicDateTimesValueFormatter.format,
 
-      cellEditor: 'BasicDateTimesEditor',
-      cellEditorParams: {
-        'EDITOR_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
-        'EDITOR_ENABLE_TIME': true,
-        'EDITOR_ALLOW_INPUT': true,
+        cellEditor: 'BasicDateTimesEditor',
+        cellEditorParams: {
+          'EDITOR_MASK': '%Y/%Mz/%Dz',
+          'EDITOR_ALLOW_INPUT': true,
+        },
+
+        filter: 'BasicDateTimesFilter',
+        filterParams: {
+          'FILTER_MASK': '%Y/%Mz/%Dz',
+          'FILTER_ALLOW_INPUT': true,
+        },
       },
 
-      filter: 'BasicDateTimesFilter',
-      filterParams: {
-        'FILTER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
-        'FILTER_ENABLE_TIME': true,
-        'FILTER_ALLOW_INPUT': true,
+      "basic-timestamp": {
+
+        valueFormatter: Basis.AgGridComponents.BasicDateTimesValueFormatter.format,
+
+        cellEditor: 'BasicDateTimesEditor',
+        cellEditorParams: {
+          'EDITOR_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
+          'EDITOR_ENABLE_TIME': true,
+          'EDITOR_ALLOW_INPUT': true,
+        },
+
+        filter: 'BasicDateTimesFilter',
+        filterParams: {
+          'FILTER_MASK': '%Y/%Mz/%Dz %Hz:%mz:%sz',
+          'FILTER_ENABLE_TIME': true,
+          'FILTER_ALLOW_INPUT': true,
+        }
+      },
+
+      "basic-image": {
+        cellRenderer: 'BasicImagesRenderer',
+        suppressMenu: true,
+        filter: false,
+        cellRendererParams: {
+          'IMAGE_WIDTH': '25px',
+          'IMAGE_HEIGHT': '25px',
+        },
+      },
+
+      "basic-image-filterable": {
+        cellRenderer: 'BasicImagesRenderer',
+        filter: true,
+        cellRendererParams: {
+          'IMAGE_WIDTH': '25px',
+          'IMAGE_HEIGHT': '25px',
+        },
       }
     },
+    components: {
+      // Booleans
+      'BasicBooleansRenderer': Basis.AgGridComponents.BasicBooleansRenderer,
+      'BasicBooleansEditor': Basis.AgGridComponents.BasicBooleansEditor,
+      'BasicBooleansFilter': Basis.AgGridComponents.BasicBooleansFilter,
 
-    "basic-image": {
-      cellRenderer: 'BasicImagesRenderer',
-      suppressMenu: true,
-      suppressFilter: true,
-      cellRendererParams: {
-        'IMAGE_WIDTH': '25px',
-        'IMAGE_HEIGHT': '25px',
-      },
+      // Numbers
+      // 'BasicNumbersRenderer': Basis.AgGridComponents.BasicNumbersRenderer,
+      'BasicNumbersEditor': Basis.AgGridComponents.BasicNumbersEditor,
+
+      // Dates
+      'BasicDateTimesEditor': Basis.AgGridComponents.BasicDateTimesEditor,
+      // 'BasicDateTimesRenderer': Basis.AgGridComponents.BasicDateTimesRenderer,
+      'BasicDateTimesFilter': Basis.AgGridComponents.BasicDateTimesFilter,
+
+      // Images
+      'BasicImagesRenderer': Basis.AgGridComponents.BasicImagesRenderer,
     },
-
-    "basic-image-filterable": {
-      cellRenderer: 'BasicImagesRenderer',
-      cellRendererParams: {
-        'IMAGE_WIDTH': '25px',
-        'IMAGE_HEIGHT': '25px',
-      },
-    }
-  };
-}
-
-export function gw_getDefaultComponents() {
-
-  return {
-    // Booleans
-    'BasicBooleansRenderer': Basis.AgGridComponents.BasicBooleansRenderer,
-    'BasicBooleansEditor': Basis.AgGridComponents.BasicBooleansEditor,
-    'BasicBooleansFilter': Basis.AgGridComponents.BasicBooleansFilter,
-
-    // Numbers
-    // 'BasicNumbersRenderer': Basis.AgGridComponents.BasicNumbersRenderer,
-    'BasicNumbersEditor': Basis.AgGridComponents.BasicNumbersEditor,
-
-    // Dates
-    'BasicDateTimesEditor': Basis.AgGridComponents.BasicDateTimesEditor,
-    // 'BasicDateTimesRenderer': Basis.AgGridComponents.BasicDateTimesRenderer,
-    'BasicDateTimesFilter': Basis.AgGridComponents.BasicDateTimesFilter,
-
-    // Images
-    'BasicImagesRenderer': Basis.AgGridComponents.BasicImagesRenderer,
-  };
-}
-
-export function gw_init(container, license, data, defaultOptions = {}) {
-
-  if (agGrid.LicenseManager && license) agGrid.LicenseManager.setLicenseKey(license);
-
-  let types = gw_getSupportedColumnTypes();
-
-  let options = Object.assign(defaultOptions, {
-
-    rowData: data,
-    getDocument: () => gw_getDocument(),
-    components: gw_getDefaultComponents(),
-    columnTypes: types,
-
-    onRowDoubleClicked: gw_onRowDoubleClicked,
-    onRowSelected: gw_onRowSelected,
-    onSelectionChanged: gw_onSelectionChanged,
-
-    onCellEditingStarted: gw_onCellEditingsEvent,
-    onCellEditingStopped: gw_onCellEditingsEvent,
-    onCellValueChanged: gw_onCellEditingsEvent,
-
-    onRowEditingStarted: gw_onRowEditingsEvent,
-    onRowEditingStopped: gw_onRowEditingsEvent,
-    onRowValueChanged: gw_onRowEditingsEvent,
-    onCellClicked: gw_onCellClickEvent,
-    onCellDoubleClicked: gw_onCellClickEvent,
-
-    getRowNodeId: gw_getRowNodeId,
-
-    rememberGroupStateWhenNewData: true,
-    getContextMenuItems: gw_getContextMenu,
     popupParent: gw_getDocument().body,
+    rememberGroupStateWhenNewData: true,
     allowContextMenuWithControlKey: true,
-    suppressSetColumnStateEvents: true
+    suppressSetColumnStateEvents: true,
+  });
+
+  options.context = Object.assign(options.context, {
+    AGridComponentsMetaConfig: json[0].meta
   });
 
   options.sideBar = JSON.parse(options.sideBar);
   options.sideBar.toolPanels = JSON.parse(options.sideBar.toolPanels);
 
-  if (
-    options.hasOwnProperty('__isTree') &&
-    true === options.__isTree
-  ) {
+  if (true === options.context.isTree) {
     options.getNodeChildDetails = gw_getNodeChildDetails;
   }
 
   if (
-    options.hasOwnProperty("__navigateToNextCell") &&
-    options.__navigateToNextCell
+    options.context.hasOwnProperty("navigateToNextCell") &&
+    options.context.navigateToNextCell
   ) {
-    options.navigateToNextCell = gw_navigateToNextRow;
+    options.navigateToNextCell = params => {
+      return gw_navigateToNextRow(id, params);
+    };
   }
 
   for (let i in options.columnDefs) {
 
-    const def = options.columnDefs[i];
-    const field = def.field;
+    const def               = options.columnDefs[i];
+    const field             = def.field;
 
-    //override numbers group and decimal separators
-    if (def.hasOwnProperty('type') && 'basic-number' === def.type) {
-      if (gw_meta && gw_meta.hasOwnProperty(field)) {
-        if (!gw_meta[field].hasOwnProperty('RENDERER_GROUP_SEPARATOR')) {
-          def['RENDERER_GROUP_SEPARATOR'] = defaultOptions.__numberGroupSep;
-        }
-        if (!gw_meta[field].hasOwnProperty('RENDERER_DECIMAL_SEPARATOR'))
-          def['RENDERER_DECIMAL_SEPARATOR'] = defaultOptions.__numberDecimalSep;
-      }
-    }
+    def.cellStyle           = gw_cellStyler;
+    def.cellClass           = gw_getCellClass;
+    def.toolPanelClass      = gw_getToolPanelClass;
 
-    def.cellStyle = gw_cellStyler;
-    def.cellClass = gw_getCellClass;
-    def.toolPanelClass = gw_getToolPanelClass;
+    def.cellClassRules      = gw_getGlobalMeta(id, field, 'CELL_CLASS_RULES', null, true);
 
-    def.cellClassRules = gw_getGlobalMeta(field, 'CELL_CLASS_RULES', null, true);
+    const rowGroup          = Number(gw_getGlobalMeta(id, field, 'ROW_GROUP'));
+    const enableValue       = Number(gw_getGlobalMeta(id, field, 'ENABLE_VALUE'));
+    const footerValueGetter = gw_getGlobalMeta(id, field, 'FOOTER_VALUE_GETTER');
 
-    const rowGroup = Number(gw_getGlobalMeta(field, 'ROW_GROUP'));
-    const enableValue = Number(gw_getGlobalMeta(field, 'ENABLE_VALUE'));
-    const footerValueGetter = gw_getGlobalMeta(field, 'FOOTER_VALUE_GETTER');
-
-    def.rowGroup = rowGroup;
-    def.enableRowGroup = rowGroup ? true : def.enableRowGroup;
-    def.rowGroupIndex = rowGroup ? Number(gw_getGlobalMeta(field, 'ROW_GROUP_INDEX')) : null;
-    def.enableValue = enableValue > 0 ? true : false;
-    def.showRowGroup = gw_getGlobalMeta(field, 'SHOW_ROW_GROUP', gw_getGlobalMeta(field, "LABEL"));
-    def.aggFunc = gw_getGlobalMeta(field, 'AGG_FUNC');
-    def.allowedAggFuncs = gw_getGlobalMeta(field, 'ALLOWED_AGG_FUNCS', 'sum,min,max,count,avg,first,last').split(',');
-    def.valueGetter = gw_getGlobalMeta(field, 'VALUE_GETTER');
-    def.valueSetter = gw_getGlobalMeta(field, 'VALUE_SETTER');
-    def.hide = def.headerName.startsWith('__') || gw_getGlobalMeta(field, 'HIDE', gw_getGlobalMeta(field, 'HIDDEN', false));
-    def.suppressToolPanel = def.headerName.startsWith('__');
-    // bbj is handling this part now 
-    // def.editable = param => {
-
-    //   const global = gw_getGlobalMeta(field, 'EDITABLE', false) === "1" ? true : false;
-    //   if(!param.data.hasOwnProperty('meta')) return global;
-
-    //   const path = param.data.meta[param.column.colId];
-    //   return path.hasOwnProperty('EDITABLE') ? (path.EDITABLE === "1" ? true : false) : global;
-    // };
+    def.rowGroup            = rowGroup;
+    def.enableRowGroup      = rowGroup ? true : def.enableRowGroup;
+    def.rowGroupIndex       = rowGroup ? Number(gw_getGlobalMeta(id, field, 'ROW_GROUP_INDEX')) : null;
+    def.enableValue         = enableValue > 0 ? true : false;
+    def.showRowGroup        = gw_getGlobalMeta(id, field, 'SHOW_ROW_GROUP', gw_getGlobalMeta(id, field, "LABEL"));
+    def.aggFunc             = gw_getGlobalMeta(id, field, 'AGG_FUNC');
+    def.allowedAggFuncs     = gw_getGlobalMeta(id, field, 'ALLOWED_AGG_FUNCS', 'sum,min,max,count,avg,first,last').split(',');
+    def.valueGetter         = gw_getGlobalMeta(id, field, 'VALUE_GETTER');
+    def.valueSetter         = gw_getGlobalMeta(id, field, 'VALUE_SETTER');
+    def.hide                = def.headerName.startsWith('__') || gw_getGlobalMeta(id, field, 'HIDE', gw_getGlobalMeta(id, field, 'HIDDEN', false));
+    def.suppressToolPanel   = def.headerName.startsWith('__');
 
     if (footerValueGetter) {
-      def.cellRenderer = 'agGroupCellRenderer';
-      def.cellRendererParams = Object.assign({}, def.cellRendererParams, {
+      def.cellRenderer        = 'agGroupCellRenderer';
+      def.cellRendererParams  = Object.assign({}, def.cellRendererParams, {
         footerValueGetter: footerValueGetter
       });
     }
   }
 
-  gw_groupColumns(JSON.parse(options.__columnsGroup), options.columnDefs);
+  gw_groupColumns(
+    JSON.parse(options.context.columnsGroup),
+    options.columnDefs
+  );
 
-  return new agGrid.Grid(container, options);
-}
+  const enterKeyBehavior = options.context.enterKeyBehavior;
 
-export function gw_setData(json, options, license) {
-
-  const container = gw_getDocument().getElementById(options['__id']);
-  container.innerHTML = '';
-
-  window.gw_meta = json[0].meta;
-  window.AGridComponentsMetaConfig = gw_meta;
-
-  console.log(options);
-  window.gw_options = options;
-  window.gw_instance = gw_init(container, license, json, options);
-
-  if (gw_options.hasOwnProperty('__enterKeyBehavior')) {
-
-    const behavior = gw_options.__enterKeyBehavior;
-
-    switch (behavior) {
-      case 'next':
-        container.addEventListener('keydown', gw_onMoveToNextCell);
-        break;
-      default:
-        break;
-    }
+  switch (enterKeyBehavior) {
+    case 'next':
+      container.addEventListener('keydown', e => {
+        gw_onMoveToNextCell(options.context.id, e);
+      });
+      break;
+    default:
+      break;
   }
+
+  const instance = new agGrid.Grid(container, options);
+  grid.instance = instance;
+  grid.options = options;
+  
+  console.log(
+    `%c Grid [${id}] settings : `
+    , 'background: #222; color: #bada55'
+    , options
+  )
 }

@@ -1,3 +1,5 @@
+import { gw_getGrid } from "../utilities";
+
 /*
 * This file is part of the grid project
 * (c) Basis Europe <eu@basis.com>
@@ -6,7 +8,7 @@
 * file that was distributed with this source code.
 */
 
-export function gw_getContextMenu(params) {
+export function gw_getContextMenu(gridId, params) {
 
   const buildContextMenuAction = (params, id) => {
 
@@ -16,7 +18,7 @@ export function gw_getContextMenu(params) {
       const colId = params.column.colId;
       const value = params.value;
 
-      gw_sendEvent({
+      gw_sendEvent(gridId, {
         'type': 'contextmenu',
         'detail': [[{ row: node, column: colId, value, id }]]
       });
@@ -37,5 +39,5 @@ export function gw_getContextMenu(params) {
     return parsed;
   };
 
-  return parseMenu(gw_options.__contextMenu);
+  return parseMenu(gw_getGrid(gridId).options.context.contextMenu);
 }

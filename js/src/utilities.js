@@ -22,26 +22,40 @@ export function gw_debounce(func, wait, immediate) {
   };
 }
 
-export function gw_getGlobalMeta(field, value, fallback = null , json = false) {
+export function gw_getGlobalMeta(id, field, value, fallback = null, json = false) {
 
+  const meta = gw_getGrid(id).meta;
+  console.log(meta);
+  
   if (
-    gw_meta && gw_meta.hasOwnProperty(field) &&
-    gw_meta[field].hasOwnProperty(value)
+    meta && meta.hasOwnProperty(field) &&
+    meta[field].hasOwnProperty(value)
   ) {
 
     if (json) {
       try {
-        return JSON.parse(gw_meta[field][value]);
-      } catch(e) {
+        return JSON.parse(meta[field][value]);
+      } catch (e) {
         console.warn(`BBjGridExWidget : Faild to parse [${field}][${value}] as JSON`);
         return fallback;
       }
     } else {
-      return gw_meta[field][value];
+      return meta[field][value];
     }
   }
 
   return fallback;
+}
+
+export function gw_addGrid(id, options) {
+  window.BBjGridExWidget = window.BBjGridExWidget || {};
+  window.BBjGridExWidget[id] = options;
+
+  return gw_getGrid(id);
+}
+
+export function gw_getGrid(id) {
+  return window.BBjGridExWidget[id];
 }
 
 export function gw_getDocument() {
@@ -53,5 +67,5 @@ export function gw_getWindow() {
 }
 
 export function gw_escape(value) {
-  return value !== null && value !== undefined ? value: '';
+  return value !== null && value !== undefined ? value : '';
 }

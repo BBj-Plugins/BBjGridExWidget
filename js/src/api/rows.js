@@ -6,24 +6,29 @@
 * file that was distributed with this source code.
 */
 
-export function gw_setQuickFilter(filter) {
-  gw_options.api.setQuickFilter(filter);
+export function gw_setQuickFilter(id, filter) {
+  const options = gw_getGrid(id).options;
+  options.api.setQuickFilter(filter);
 }
 
-export function gw_expandAll() {
-  gw_options.api.expandAll();
+export function gw_expandAll(id) {
+  const options = gw_getGrid(id).options;
+  options.api.expandAll();
 }
 
-export function gw_collapseAll() {
-  gw_options.api.collapseAll();
+export function gw_collapseAll(id) {
+  const options = gw_getGrid(id).options;
+  options.api.collapseAll();
 }
 
-export function gw_setVisibleRow(index, position) {
-  gw_options.api.ensureIndexVisible(index, position);
+export function gw_setVisibleRow(id, index, position) {
+  const options = gw_getGrid(id).options;
+  options.api.ensureIndexVisible(index, position);
 }
 
-export function gw_navigateToNextRow(params) {
+export function gw_navigateToNextRow(id, params) {
 
+  const options = gw_getGrid(id).options;
   let previousCell = params.previousCellDef;
   let suggestedNextCell = params.nextCellDef;
 
@@ -36,7 +41,7 @@ export function gw_navigateToNextRow(params) {
     case KEY_DOWN:
       previousCell = params.previousCellDef;
       // set selected cell on current cell + 1
-      gw_options.api.forEachNode((node) => {
+      options.api.forEachNode((node) => {
         if (previousCell.rowIndex + 1 === node.rowIndex) {
           node.setSelected(true);
         }
@@ -45,7 +50,7 @@ export function gw_navigateToNextRow(params) {
     case KEY_UP:
       previousCell = params.previousCellDef;
       // set selected cell on current cell - 1
-      gw_options.api.forEachNode((node) => {
+      options.api.forEachNode((node) => {
         if (previousCell.rowIndex - 1 === node.rowIndex) {
           node.setSelected(true);
         }
@@ -59,8 +64,8 @@ export function gw_navigateToNextRow(params) {
   }
 }
 
-export function gw_getRowNodeId(data) {
-  return data[gw_options.__getRowNodeId];
+export function gw_getRowNodeId(id, data) {
+  return data[gw_getGrid(id).options.context.getRowNodeId];
 }
 
 export function gw_getNodeChildDetails(rowItem) {
@@ -80,33 +85,36 @@ export function gw_getNodeChildDetails(rowItem) {
   }
 }
 
-export function gw_setRowsData(json) {
-  
-  gw_options.api.setRowData(json);
-  gw_options.rowData = json;
-  gw_options.api.refreshClientSideRowModel('group');
+export function gw_setRowsData(id, json) {
+  const options = gw_getGrid(id).options;
+
+  options.api.setRowData(json);
+  options.rowData = json;
+  options.api.refreshClientSideRowModel('group');
 }
 
-export function gw_setRowData(row) {
+export function gw_setRowData(id, row) {
+  const options = gw_getGrid(id).options;
 
-  console.log(row)
-  gw_options.api.updateRowData({update: [row]});
-  gw_options.api.refreshClientSideRowModel('group');
+  options.api.updateRowData({ update: [row] });
+  options.api.refreshClientSideRowModel('group');
 }
 
-export function gw_removeRows(indexes) {
-  
+export function gw_removeRows(id, indexes) {
+  const options = gw_getGrid(id).options;
   let items = [];
-  indexes.forEach( index => {
-    items.push(gw_options.api.getRowNode(index).data);
+
+  indexes.forEach(index => {
+    items.push(options.api.getRowNode(index).data);
   });
 
-  gw_options.api.updateRowData({remove: items});
-  gw_options.api.refreshClientSideRowModel('group');
+  options.api.updateRowData({ remove: items });
+  options.api.refreshClientSideRowModel('group');
 }
 
-export function gw_addRows(index,rows) {
-  
-  gw_options.api.updateRowData({add: rows, addIndex: index});
-  gw_options.api.refreshClientSideRowModel('group');
+export function gw_addRows(id, index, rows) {
+  const options = gw_getGrid(id).options;
+
+  options.api.updateRowData({ add: rows, addIndex: index });
+  options.api.refreshClientSideRowModel('group');
 }
