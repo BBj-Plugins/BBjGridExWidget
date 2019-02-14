@@ -1738,6 +1738,7 @@ class public BBjGridExWidget extends BBjWidget
         options!.addProperty("singleClickEdit",#SingleClickEdit!)
         options!.addProperty("enableGroupEdit",#GroupEdit!)
         options!.addProperty("rowSelection",iff(#MultipleSelection! = 1 , "multiple" ,"single"))
+        options!.addProperty("rowDeselection","true")
         options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
         options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
