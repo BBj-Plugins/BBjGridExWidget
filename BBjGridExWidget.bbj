@@ -324,6 +324,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjString DataFingerprint$
     field private BBjNumber newW!
     field private BBjNumber newH!
+    field private BBjString lastColumnStateHash$
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -531,6 +532,43 @@ class public BBjGridExWidget extends BBjWidget
                 break
         swend
     methodend
+    rem /**
+    rem  * set a callback to a label
+    rem  */
+    method public void setCallback(int p_eventType!, String p_callback!)
+        #super!.setCallback(p_eventType!, p_callback!)
+        
+        rem this if statement can go when https://github.com/BBj-Plugins/BBjGridExWidget/issues/72 
+        rem is resolved
+        if p_eventType!=#ON_GRID_COLUMN_STATE_CHANGE() then
+            BBjAPI().createTimer("timer"+#GRIDID$, 1, #this!, "onTimer")
+        fi
+    methodend
+    rem /**
+    rem  * set callback to a method in an object instance
+    rem  */
+    method public void setCallback(int p_eventType!, CustomObject p_snippetSetInstance!, String p_method!) 
+        #super!.setCallback(p_eventType!,p_snippetSetInstance!, p_snippetSetInstance!)
+        
+        rem this if statement can go when https://github.com/BBj-Plugins/BBjGridExWidget/issues/72 
+        rem is resolved
+        if p_eventType!=#ON_GRID_COLUMN_STATE_CHANGE() then
+            BBjAPI().createTimer("timer"+#GRIDID$, 1, #this!, "onTimer")
+        fi        
+    methodend
+
+    method public void onTimer(BBjTimerEvent ev!)
+    rem this method can go when https://github.com/BBj-Plugins/BBjGridExWidget/issues/72 
+    rem is resolved
+        event! = #getColumnState()
+        md$ = java.security.MessageDigest.getInstance("MD5").digest(event!.getString())
+        if md$<> #lastColumnStateHash$ then
+            if #lastColumnStateHash$<>"" then
+                #fireEvent(#ON_GRID_COLUMN_STATE_CHANGE(),event!)
+            fi
+            #lastColumnStateHash$ = md$
+        fi
+    methodend  
     rem /**
     rem  * set the data into the grid
     rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
@@ -1489,6 +1527,12 @@ class public BBjGridExWidget extends BBjWidget
     method public static BBjNumber ON_GRID_CELL_DOUBLE_CLICK()
         methodret 5007
     methodend
+    rem /**
+    rem  * @return constant value to define cell double click event
+    rem  */
+    method public static BBjNumber ON_GRID_COLUMN_STATE_CHANGE()
+        methodret 5008
+    methodend    
     rem /**
     rem  * @return constant value to define row position
     rem  */
