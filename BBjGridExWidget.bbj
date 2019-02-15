@@ -348,6 +348,15 @@ class public BBjGridExWidget extends BBjWidget
     method public BBjGridExWidget(BBjChildWindow wnd!)
         #super!.create(wnd!)
     methodend
+        REM /**
+    REM  * 
+    REM  * returns the unique control type
+    REM  * @returns int controlType = 65001
+    REM  * 
+    REM  */
+    method public int getControlType()
+        methodret 65001
+    methodend
     rem /**
     rem  * @Override
     rem  * This method is called whenever the widget needs to be rendered
@@ -1198,7 +1207,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * Stop editing and discard changes
     rem  */
     method public void stopEditing()
-        #executeScript("gw_stopEditing('" + #GRIDID$ "',0)")
+        #executeScript("gw_stopEditing('" + #GRIDID$ + "',0)")
     methodend
     rem /**
     rem  * Stop Editing
@@ -1295,7 +1304,7 @@ class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * @return one if ag grid is in the editing mode , 0 otherwise
     rem  */
-    method public BBjNUmber isEditing()
+    method public BBjNumber isEditing()
         return #Editing
     methodend
     rem /**
