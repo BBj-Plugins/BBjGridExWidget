@@ -10,3 +10,4 @@ export * from './events/pollyfills.js';
 export * from './events/utilities.js';
 export * from './events/selections.js';
 export * from './events/editing.js';
+export * from './events/state.js';

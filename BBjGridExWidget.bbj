@@ -497,6 +497,7 @@ class public BBjGridExWidget extends BBjWidget
         map! = ev!.getEventMap()
         type$ = map!.get("type")
         detail$ = map!.get("detail")
+
         switch type$
             case "gw.rowSelecte"
                 #handleGridSelectRowEvent(detail$, "single")
@@ -509,7 +510,10 @@ class public BBjGridExWidget extends BBjWidget
                 break
             case "gw.cellDoubleClicked"
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_DOUBLE_CLICK())
-                break                
+                break   
+            case "gw.stateChanged"
+                #handleStateChangedEvent(detail$,#ON_GRID_COLUMN_STATE_CHANGE())
+                break                                
             case "cellEditingStarted"
                 #Editing! = 1
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
@@ -1490,6 +1494,12 @@ class public BBjGridExWidget extends BBjWidget
         methodret 5007
     methodend
     rem /**
+    rem  * @return constant value to define grid state changes
+    rem  */
+    method public static BBjNumber ON_GRID_COLUMN_STATE_CHANGE()
+        methodret 5008
+    methodend     
+    rem /**
     rem  * @return constant value to define row position
     rem  */
     method public static BBjString GRID_ROWPOS_TOP()
@@ -1613,6 +1623,12 @@ class public BBjGridExWidget extends BBjWidget
             throw "(" + feature$ + ") is an ag-grid enterprise feature , please set a licence key to use this feature.", 256
         FI
     methodend
+
+    method private void handleStateChangedEvent(BBjString detail$, BBjNumber type!) 
+      event! = #getColumnState()
+      #fireEvent(type!, event!)
+    methodend
+
     rem /**
     rem  * Handle Rows Selections Event
     rem  *

@@ -1,3 +1,5 @@
+import { gw_debounce } from "./utilities";
+
 /*
  * This file is part of the grid project
  * (c) Basis Europe <eu@Basis.AgGridComponents.com>
@@ -38,6 +40,7 @@ export function gw_setData(json, options, license) {
     onRowValueChanged:    e       => { gw_onRowEditingsEvent(id, e) },
     onCellClicked:        e       => { gw_onCellClickEvent(id, e) },
     onCellDoubleClicked:  e       => { gw_onCellClickEvent(id, e) },
+    onGridReady:          e       => { gw_onReadyEvent(id,e) },
     getRowNodeId:         data    => gw_getRowNodeId(id, data),
     getContextMenuItems:  params  => gw_getContextMenu(id, params),
     rowData: json,
@@ -237,7 +240,7 @@ export function gw_setData(json, options, license) {
   const instance = new agGrid.Grid(container, options);
   grid.instance = instance;
   grid.options = options;
-  
+
   console.log(
     `%c Grid [${id}] settings : `
     , 'background: #222; color: #bada55'

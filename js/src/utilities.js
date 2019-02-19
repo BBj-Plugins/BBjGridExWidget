@@ -25,7 +25,6 @@ export function gw_debounce(func, wait, immediate) {
 export function gw_getGlobalMeta(id, field, value, fallback = null, json = false) {
 
   const meta = gw_getGrid(id).meta;
-  console.log(meta);
   
   if (
     meta && meta.hasOwnProperty(field) &&
