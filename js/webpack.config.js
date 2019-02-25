@@ -12,10 +12,12 @@ module.exports = {
   entry: {
     "bbj-grid-widget.min": [
       "core-js/fn/string/starts-with.js",
+      "core-js/fn/array/for-each.js",
       "./src/index.js"
     ],
     "bbj-grid-widget": [
       "core-js/fn/string/starts-with.js",
+      "core-js/fn/array/for-each.js",
       "./src/index.js"
     ],
   },
