@@ -552,7 +552,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * set callback to a method in an object instance
     rem  */
     method public void setCallback(int p_eventType!, CustomObject p_snippetSetInstance!, String p_method!) 
-        #super!.setCallback(p_eventType!,p_snippetSetInstance!, p_snippetSetInstance!)
+        #super!.setCallback(p_eventType!,p_snippetSetInstance!, p_method!)
         
         rem this if statement can go when https://github.com/BBj-Plugins/BBjGridExWidget/issues/72 
         rem is resolved
