@@ -78,7 +78,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @RequiresRefresh
     rem  */
-    field public BBjNumber Editable! = 0  
+    field public BBjNumber Editable! = 0
     rem /**
     rem  * Enable / Disable cell editing for the whole grid
     rem  * 1 = enable editing
@@ -348,11 +348,11 @@ class public BBjGridExWidget extends BBjWidget
     method public BBjGridExWidget(BBjChildWindow wnd!)
         #super!.create(wnd!)
     methodend
-        REM /**
-    REM  * 
+    REM /**
+    REM  *
     REM  * returns the unique control type
     REM  * @returns int controlType = 65001
-    REM  * 
+    REM  *
     REM  */
     method public int getControlType()
         methodret 65001
@@ -435,8 +435,9 @@ class public BBjGridExWidget extends BBjWidget
         if #getDebug() = 1 then
             gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
         else
-            gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js") 
+            gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
         fi
+
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
@@ -465,6 +466,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             open (ch) distBase$ + "/bbj-grid-widget.min.js"
         fi
+
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
@@ -497,7 +499,6 @@ class public BBjGridExWidget extends BBjWidget
         map! = ev!.getEventMap()
         type$ = map!.get("type")
         detail$ = map!.get("detail")
-
         switch type$
             case "gw.rowSelecte"
                 #handleGridSelectRowEvent(detail$, "single")
@@ -510,10 +511,10 @@ class public BBjGridExWidget extends BBjWidget
                 break
             case "gw.cellDoubleClicked"
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_DOUBLE_CLICK())
-                break   
+                break
             case "gw.stateChanged"
                 #handleStateChangedEvent(detail$,#ON_GRID_COLUMN_STATE_CHANGE())
-                break                                
+                break
             case "cellEditingStarted"
                 #Editing! = 1
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
@@ -1498,7 +1499,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public static BBjNumber ON_GRID_COLUMN_STATE_CHANGE()
         methodret 5008
-    methodend     
+    methodend
     rem /**
     rem  * @return constant value to define row position
     rem  */
@@ -1624,11 +1625,10 @@ class public BBjGridExWidget extends BBjWidget
         FI
     methodend
 
-    method private void handleStateChangedEvent(BBjString detail$, BBjNumber type!) 
-      event! = #getColumnState()
-      #fireEvent(type!, event!)
+    method private void handleStateChangedEvent(BBjString detail$, BBjNumber type!)
+        event! = #getColumnState()
+        #fireEvent(type!, event!)
     methodend
-
     rem /**
     rem  * Handle Rows Selections Event
     rem  *
@@ -1749,69 +1749,66 @@ class public BBjGridExWidget extends BBjWidget
         dot$="."
         a$=opts
         if AND ( a$(3,1), $02$ ) = $02$ then
-            comma$=a$(5,1)
-            dot$=a$(6,1)
-        fi
+        comma$=a$(5,1)
+        dot$=a$(6,1)
+    fi
 
-        options! = new JsonObject()
-        options!.addProperty("animateRows",Boolean.valueOf(1))
-        options!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
-        options!.addProperty("enableFilter",#EnableFilter!)
-        options!.addProperty("floatingFilter",#EnableFloatingFilter!)
-        options!.addProperty("groupSelectsChildren",#GroupSelectsChildren!)
-        options!.addProperty("editType",#EditType$)
-        options!.addProperty("singleClickEdit",#SingleClickEdit!)
-        options!.addProperty("enableGroupEdit",#GroupEdit!)
-        options!.addProperty("rowSelection",iff(#MultipleSelection! = 1 , "multiple" ,"single"))
-        options!.addProperty("rowDeselection","true")
-        options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
-        options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
-        options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
-        options!.addProperty("groupMultiAutoColumn",#GroupMultiAutoColumn!)
-        options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
-        options!.addProperty("groupIncludeFooter",#GroupIncludeFooter!)
-        options!.addProperty("groupIncludeTotalFooter",#GroupIncludeTotalFooter!)
-        options!.addProperty("sideBar",#Sidebar!.toString())
+    options! = new JsonObject()
+    options!.addProperty("animateRows",Boolean.valueOf(1))
+    options!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
+    options!.addProperty("enableFilter",#EnableFilter!)
+    options!.addProperty("floatingFilter",#EnableFloatingFilter!)
+    options!.addProperty("groupSelectsChildren",#GroupSelectsChildren!)
+    options!.addProperty("editType",#EditType$)
+    options!.addProperty("singleClickEdit",#SingleClickEdit!)
+    options!.addProperty("enableGroupEdit",#GroupEdit!)
+    options!.addProperty("rowSelection",iff(#MultipleSelection! = 1 , "multiple" ,"single"))
+    options!.addProperty("rowDeselection","true")
+    options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
+    options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
+    options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
+    options!.addProperty("groupMultiAutoColumn",#GroupMultiAutoColumn!)
+    options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
+    options!.addProperty("groupIncludeFooter",#GroupIncludeFooter!)
+    options!.addProperty("groupIncludeTotalFooter",#GroupIncludeTotalFooter!)
+    options!.addProperty("sideBar",#Sidebar!.toString())
+    autoGroupColumnDef! = new JsonObject()
 
-        autoGroupColumnDef! = new JsonObject()
-        if #GroupMultiAutoColumn! = 0 then
-            autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
-        FI
+    if #GroupMultiAutoColumn! = 0 then
+        autoGroupColumnDef!.addProperty("headerName",#GroupColumnLabel$)
+    FI
 
-        autoGroupColumnDefCellRendererParams! = new JsonObject()
-        autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
-        autoGroupColumnDefCellRendererParams!.addProperty("checkbox", #ShowGroupSelectionCheckbox!)
-        autoGroupColumnDefCellRendererParams!.addProperty("footerValueGetter", #GroupColumnFooterGetter$)
-        autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
-        
-        options!.add("autoGroupColumnDef",autoGroupColumnDef!)
-        options!.add("columnDefs",cdef!)
+    autoGroupColumnDefCellRendererParams! = new JsonObject()
+    autoGroupColumnDefCellRendererParams!.addProperty("suppressCount", 1 - #ShowGroupChildCount!)
+    autoGroupColumnDefCellRendererParams!.addProperty("checkbox", #ShowGroupSelectionCheckbox!)
+    autoGroupColumnDefCellRendererParams!.addProperty("footerValueGetter", #GroupColumnFooterGetter$)
+    autoGroupColumnDef!.add("cellRendererParams",autoGroupColumnDefCellRendererParams!)
+    options!.add("autoGroupColumnDef",autoGroupColumnDef!)
+    options!.add("columnDefs",cdef!)
+    context! = new JsonObject()
+    context!.addProperty("id",#GRIDID$)
+    context!.addProperty("getRowNodeId",#RowNodeId$)
+    context!.addProperty("getParentNodeId",#ParentNodeId$)
+    context!.addProperty("enterKeyBehavior",#EnterKeyBehavior$)
+    context!.addProperty("isTree",tree!)
+    context!.addProperty("columnsGroup", new Gson().toJson(#ColumnGroups!))
+    context!.addProperty("numberGroupSep",comma$)
+    context!.addProperty("numberDecimalSep",dot$)
+    context!.addProperty("locale",stbl("!LOCALE"))
+    context!.addProperty("contextMenu",#ContextMenu!.toString())
+    context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
+    context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
+    context!.addProperty("locale",stbl("!LOCALE"))
+    context!.addProperty("contextMenu",#ContextMenu!.toString())
 
-        context! = new JsonObject()
-        context!.addProperty("id",#GRIDID$)
-        context!.addProperty("getRowNodeId",#RowNodeId$)
-        context!.addProperty("getParentNodeId",#ParentNodeId$)
-        context!.addProperty("enterKeyBehavior",#EnterKeyBehavior$)
-        context!.addProperty("isTree",tree!)
-        context!.addProperty("columnsGroup", new Gson().toJson(#ColumnGroups!))
-        context!.addProperty("numberGroupSep",comma$)
-        context!.addProperty("numberDecimalSep",dot$)
-        context!.addProperty("locale",stbl("!LOCALE"))
-        context!.addProperty("contextMenu",#ContextMenu!.toString())
-        context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
-        context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
-        context!.addProperty("locale",stbl("!LOCALE"))
-        context!.addProperty("contextMenu",#ContextMenu!.toString())
+    if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
+        context!.addProperty("navigateToNextCell",1)
+    else
+        context!.addProperty("navigateToNextCell",0)
+    FI
 
-        if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
-            context!.addProperty("navigateToNextCell",1)
-        else
-            context!.addProperty("navigateToNextCell",0)
-        FI
-
-        options!.add("context",context!)
-
-        #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
+    options!.add("context",context!)
+    #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
     methodend
 
     method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
@@ -1904,7 +1901,7 @@ class public BBjGridExWidget extends BBjWidget
                 node!.addProperty("editable",1)
             else
                 node!.addProperty("editable",0)
-            FI                        
+            FI
 
             aggFunc$ = cd!.getFieldAttribute(f$,"AGG_FUNC",err=*next)
 

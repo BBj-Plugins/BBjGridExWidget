@@ -1,5 +1,9 @@
 # Changelog 
 
+## v0.92.1 - 05-02-2019
+
+* [[fix] remove dead code for #72](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4408a9571510dca3f7f4f4ecfb2d0f4a6db629f)
+
 ## v0.92.0 - 25-02-2019
 
 * [Fix #72](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fd6d1980b15cabaf614a46ea4aa73e6de4d2dba9)

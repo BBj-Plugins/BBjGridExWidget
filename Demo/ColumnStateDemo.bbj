@@ -21,6 +21,7 @@ wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
  
 tb_get! = wnd!.addButton(300,10,3,200,25,"GET STATE")
+tb_get!.setEnabled(0)
 tb_set! = wnd!.addButton(301,230,3,200,25,"SET STATE")
 tb_refresh! = wnd!.addButton(302,450,3,200,25,"REFRESH")
 
@@ -88,7 +89,10 @@ declare SqlQueryBC sbc!
     group!.addItem("PLAYINGTIME")
     grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
 	
-    grid!.setData(rs!)    
+    grid!.setData(rs!)
+    
+    grid!.setCallback(grid!.ON_GRID_COLUMN_STATE_CHANGE(),"onColumnStateChange")
+        
 return
 
 byebye:
@@ -108,6 +112,7 @@ setState:
     if state!<>null() then
         grid!.setColumnState(state!)
     fi
+    tb_get!.setEnabled(0)
 return
 
 onColumnStateChange:
@@ -117,4 +122,8 @@ return
 
 refresh:
     grid!.setData(rs!)
+return
+
+onColumnStateChange:
+    tb_get!.setEnabled(1)
 return
