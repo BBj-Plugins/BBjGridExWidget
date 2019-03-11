@@ -374,7 +374,7 @@ class public BBjGridExWidget extends BBjWidget
                 #setLicenseKey(lic!)
             FI
 
-            html$="<html><body><script></script><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><head><style>html,body{margin:0;padding:0}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
@@ -398,17 +398,9 @@ class public BBjGridExWidget extends BBjWidget
             htmlview!.setText(html$)
             REM             fi
             #HTMLView!=htmlview!
-
-            if INFO(3,6)<>"5" then
-                #HTMLView!.setLocation(-9,-9)
-            FI
         FI
 
-        if INFO(3,6)="5" then
-            #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
-        else
-            #HTMLView!.setSize(#getCanvas().getWidth()+16,#getCanvas().getHeight()+16)
-        FI
+        #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
     methodend
 
     method protected void injectScript(BBjString script$)
