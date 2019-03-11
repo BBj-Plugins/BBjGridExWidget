@@ -298,6 +298,12 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
     rem /**
+    rem  * The grid default row height
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */    
+    field public BBjNumber RowHeight! = 25
+    rem /**
     rem  * The grid sidebar
     rem  *
     rem  * Set the default grid sidebar
@@ -1104,6 +1110,15 @@ class public BBjGridExWidget extends BBjWidget
         FI
     methodend
     rem /**
+    rem  * Set the given row height 
+    rem  *
+    rem  * @param BBjNumber index! - the row index
+    rem  * @param BBjNumber height! - the new row height
+    rem  */
+    method public void setRowHeight (BBjNumber index!, BBjNumber height!)
+        #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
+    methodend
+    rem /**
     rem  * set the width of a column
     rem  *
     rem  * @param BBjString Field$: the field name of the column
@@ -1763,6 +1778,7 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("groupUseEntireRow",#GroupUseEntireRow!)
     options!.addProperty("groupIncludeFooter",#GroupIncludeFooter!)
     options!.addProperty("groupIncludeTotalFooter",#GroupIncludeTotalFooter!)
+    options!.addProperty("rowHeight",#RowHeight!.longValue())
     options!.addProperty("sideBar",#Sidebar!.toString())
     autoGroupColumnDef! = new JsonObject()
 
