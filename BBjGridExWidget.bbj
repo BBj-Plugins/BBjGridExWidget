@@ -1115,6 +1115,19 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
     rem  */
+    method public void setRowHeight (BBjNumber height!)
+        if #RS! <> null() and #RS!.size()>0 then
+            for i=0 to #RS!.size()-1
+                #setRowHeight(i,height!)
+            next 
+        fi
+    methodend    
+    rem /**
+    rem  * Set the given row height 
+    rem  *
+    rem  * @param BBjNumber index! - the row index
+    rem  * @param BBjNumber height! - the new row height
+    rem  */
     method public void setRowHeight (BBjNumber index!, BBjNumber height!)
         #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
     methodend
