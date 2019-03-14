@@ -2266,7 +2266,7 @@ class public BBjGridExWidgetSelectRowEvent
     rem  *
     rem  * @return BBjNumber
     rem  */
-    method public BBjNumber getRowCount()
+    method public BBjNumber getSelectedRowCount()
         methodret #SelectedRows!.size()
     methodend
 classend
