@@ -498,11 +498,11 @@ class public BBjGridExWidget extends BBjWidget
         type$ = map!.get("type")
         detail$ = map!.get("detail")
         switch type$
-            case "gw.rowSelecte"
-                #handleGridSelectRowEvent(detail$, "single")
+            case "gw.rowSelect"
+                #onSelecteRowChange(detail$, "single")
                 break
             case "gw.rowDoubleClick"
-                #handleGridSelectRowEvent(detail$,"double")
+                #onSelecteRowChange(detail$,"double")
                 break
             case "gw.cellClicked"
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_CLICK())
@@ -1332,10 +1332,21 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @return the selected row
     rem  */
     method public BBjGridExWidgetRow getSelectedRow()
-        if #SelectedRowsMap!.size() > 0 then
-            it! = #SelectedRowsMap!.entrySet().iterator()
-            methodret it!.next().getValue()
-        FI
+        returnedRow! = #executeScript("gw_getSelectedRow('" + #GRIDID$ + "')")
+
+        if len(returnedRow!) > 0 then 
+            parser! = new JsonParser()
+            parsedRow! = parser!.parse(returnedRow!).getAsJsonObject()
+            row! = new BBjGridExWidgetRow(#RS!)
+            
+            row!.setId(parsedRow!.get("id").getAsString())
+            row!.setChildIndex(parsedRow!.get("childIndex").getAsInt())
+            row!.setIndex(parsedRow!.get("index").getAsString())
+            row!.setParentKey(parsedRow!.get("parentKey").getAsString())
+            row!.setIsSelected(iff(parsedRow!.get("selected").getAsString() = "true" ,  1 , 0))
+
+            methodret row!
+        fi
 
         methodret null()
     methodend
@@ -1343,12 +1354,20 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @return BBjVector with the selected rows
     rem  */
     method public BBjVector getSelectedRows()
-        declare BBjVector ids!
-
+        returnedRows! = #executeScript("gw_getSelectedRows('" + #GRIDID$ + "')")
+        parser! = new JsonParser()
+        array! = parser!.parse(returnedRows!).getAsJsonArray()
         rows! = new BBjVector()
-        it! = #SelectedRowsMap!.entrySet().iterator()
-        while it!.hasNext()
-            rows!.addItem(it!.next().getValue())
+        it! = array!.iterator()
+        while (it!.hasNext())
+            next! = it!.next().getAsJsonObject()
+            row! = new BBjGridExWidgetRow(#RS!)
+            row!.setId(next!.get("id").getAsString())
+            row!.setChildIndex(next!.get("childIndex").getAsInt())
+            row!.setIndex(next!.get("index").getAsString())
+            row!.setParentKey(next!.get("parentKey").getAsString())
+            row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
+            rows!.add( row!)
         wend
 
         methodret rows!
@@ -1652,36 +1671,8 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @see BBjGridExWidgetSelectRowEvent
     rem  */
-    method private void handleGridSelectRowEvent(BBjString detail$, BBjString type$)
-        parser! = new JsonParser()
-        array! = parser!.parse(detail$).getAsJsonObject().get("0")
-        rows! = new BBjVector()
-        selected! = new BBjVector()
-        deselected! = new BBjVector()
-        it! = array!.iterator()
-        while (it!.hasNext())
-            next! = it!.next().getAsJsonObject()
-            row! = new BBjGridExWidgetRow(#RS!)
-            row!.setId(next!.get("id").getAsString())
-            row!.setChildIndex(next!.get("childIndex").getAsInt())
-            row!.setIndex(next!.get("index").getAsString())
-            row!.setParentKey(next!.get("parentKey").getAsString())
-            row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
-            rows!.add( row!)
-
-            if row!.getIsSelected() = 1 then
-                selected!.add(row!)
-                #SelectedRowsMap!.put(row!.getIndex(),row!)
-            else
-                deselected!.add(row!)
-                #SelectedRowsMap!.remove(row!.getIndex())
-            FI
-        wend
-
+    method private void onSelecteRowChange(BBjString detail$, BBjString type$)
         event! = new BBjGridExWidgetSelectRowEvent()
-        event!.setChangedRows(rows!)
-        event!.setNewSelectedRows(selected!)
-        event!.setNewDeselectedRows(deselected!)
         event!.setSelectedRows(#getSelectedRows())
 
         if type$ = "single" then
@@ -2268,73 +2259,16 @@ classend
 
 class public BBjGridExWidgetSelectRowEvent
 
-    field public BBjVector ChangedRows! = new BBjVector()
-    field public BBjVector NewSelectedRows! = new BBjVector()
-    field public BBjVector NewDeselectedRows! = new BBjVector()
     field public BBjVector SelectedRows! = new BBjVector()
+
     rem /**
     rem  * Get the number of affected rows by the last event
     rem  *
     rem  * @return BBjNumber
     rem  */
     method public BBjNumber getRowCount()
-        methodret #ChangedRows!.size()
+        methodret #SelectedRows!.size()
     methodend
-    rem /**
-    rem  * Get the number of selected rows by the last event
-    rem  *
-    rem  * @return BBjNumber
-    rem  */
-    method public BBjNumber getSelectedRowCount()
-        methodret #NewSelectedRows!.size()
-    methodend
-    rem /**
-    rem  * Get the number of deselected rows by the last event
-    rem  *
-    rem  * @return BBjNumber
-    rem  */
-    method public BBjNumber getDeselectedRowCount()
-        methodret #NewDeselectedRows!.size()
-    methodend
-    rem /**
-    rem  * Get the ids of selected rows by the last event
-    rem  *
-    rem  * @return BBjVector
-    rem  */
-    method public BBjVector getNewSelectedRows()
-        declare BBjVector ids!
-
-        ids! = new BBjVector()
-        selectedCount! = #getSelectedRowCount()
-
-        if selectedCount! > 0 then
-            for n = 0 to selectedCount! - 1 step 1
-                ids!.add(cast(BBjGridExWidgetRow,#NewSelectedRows!.getItem(n)).getId())
-            next n
-        FI
-
-        methodret ids!
-    methodend
-    rem /**
-    rem  * Get the ids of deselected rows by the last event
-    rem  *
-    rem  * @return BBjNumber
-    rem  */
-    method public BBjVector getNewDeselectedRows()
-        declare BBjVector ids!
-
-        ids! = new BBjVector()
-        deselectedCount! = #getDeselectedRowCount()
-
-        if deselectedCount! > 0 then
-            for n = 0 to deselectedCount! - 1 step 1
-                ids!.add(cast(BBjGridExWidgetRow,#NewDeselectedRows!.getItem(n)).getId())
-            next n
-        FI
-
-        methodret ids!
-    methodend
-
 classend
 
 class public BBjGridWidgetCellEditingEvent

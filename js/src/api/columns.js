@@ -11,38 +11,6 @@ export function gw_sizeColumnsToFit(id) {
   options.api.sizeColumnsToFit();
 }
 
-export function gw_setSelectedRows(id, rows) {
-  const options = gw_getGrid(id).options;
-
-  options.api.forEachNodeAfterFilterAndSort(node => {
-    if (rows.indexOf(node.rowIndex) > -1) {
-      node.setSelected(true);
-      node.expanded = true;
-    }
-  });
-  options.api.onGroupExpandedOrCollapsed();
-}
-
-export function gw_selectAll(id, filtered) {
-  const options = gw_getGrid(id).options;
-
-  if (1 === filtered) {
-    options.api.selectAllFiltered();
-  } else {
-    options.api.selectAll();
-  }
-}
-
-export function gw_deselectAll(id, filtered) {
-  const options = gw_getGrid(id).options;
-
-  if (1 === filtered) {
-    options.api.deselectAllFiltered();
-  } else {
-    options.api.deselectAll();
-  }
-}
-
 export function gw_setVisibleColumn(id, columnId) {
   const options = gw_getGrid(id).options;
   options.api.ensureColumnVisible(columnId);
