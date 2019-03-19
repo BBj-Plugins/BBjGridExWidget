@@ -120,17 +120,33 @@ export function gw_addRows(id, index, rows) {
 }
 
 /**
+ * Set the height of all rows 
+ * 
+ * @param {String} id the grid id
+ * @param {Number} height the row height
+ */
+export function gw_setRowsHeight(id, height) {
+  const options = gw_getGrid(id).options;
+
+  options.api.forEachNode(row => {
+    console.log(row)
+    row.setRowHeight(height);
+  });
+  options.api.onRowHeightChanged()
+}
+
+/**
  * Set the given row height 
  * 
- * @param {Number} id the grid id 
+ * @param {String} id the grid id 
  * @param {Number} index the row index
  * @param {Number} height the new height
  */
-export function gw_setRowHeight(id, index , height) {
+export function gw_setRowHeight(id, index, height) {
   const options = gw_getGrid(id).options;
   const row = options.api.getDisplayedRowAtIndex(index);
 
-  if(row) {
+  if (row) {
     row.setRowHeight(height);
     options.api.onRowHeightChanged()
   } else {
