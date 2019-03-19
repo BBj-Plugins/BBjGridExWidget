@@ -129,7 +129,6 @@ export function gw_setRowsHeight(id, height) {
   const options = gw_getGrid(id).options;
 
   options.api.forEachNode(row => {
-    console.log(row)
     row.setRowHeight(height);
   });
   options.api.onRowHeightChanged()
