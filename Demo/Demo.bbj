@@ -153,4 +153,14 @@ setTheme:
     ev! = BBjAPI().getLastEvent()
     theme$ = ev!.getSelectedItem()
     grid!.setTheme(theme$)
+    if theme$="material" then
+        grid!.setRowHeight(50)
+    else
+        grid!.setRowHeight(25)
+    fi
+
+    if theme$="balham-dark"
+        grid!.setRowHeight(0,50)
+    fi
+    
 return
