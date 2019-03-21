@@ -308,6 +308,13 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
+    rem /**
+    rem  * The grid statusbar
+    rem  *
+    rem  * @RequiresRefresh
+    rem  * @Enterprise
+    rem  */
+    field protected BBjGridExWidgetStatusBar Statusbar! = new BBjGridExWidgetStatusBar()
     field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
@@ -880,6 +887,14 @@ class public BBjGridExWidget extends BBjWidget
         methodret #Sidebar!
     methodend
     rem /**
+    rem  * Get the grid statusbar instance
+    rem  *
+    rem  * @return BBjGridExWidgetStatusBar
+    rem  */
+    method public BBjGridExWidgetSidebar getStatusbar()
+        methodret #Statusbar!
+    methodend
+    rem /**
     rem  * Add Style block
     rem  *
     rem  * @param selector$ : Css Selector
@@ -1110,9 +1125,9 @@ class public BBjGridExWidget extends BBjWidget
     method public void setRowHeight (BBjNumber height!)
         #RowHeight! = height!
         #executeScript("gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
-    methodend    
+    methodend
     rem /**
-    rem  * Set the given row height 
+    rem  * Set the given row height
     rem  *
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
@@ -1773,6 +1788,7 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("groupIncludeTotalFooter",#GroupIncludeTotalFooter!)
     options!.addProperty("rowHeight",#RowHeight!.longValue())
     options!.addProperty("sideBar",#Sidebar!.toString())
+    options!.addProperty("statusBar",#Statusbar!.toString())
     autoGroupColumnDef! = new JsonObject()
 
     if #GroupMultiAutoColumn! = 0 then
@@ -2594,6 +2610,266 @@ class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
         json!.addProperty("iconKey",#getIcon())
         json!.addProperty("toolPanel",#getComponent())
         methodret json!
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetStatusBarComponentInterface
+rem  *
+rem  * A Interface which defines a status bar component
+rem  */
+interface public BBjGridExWidgetStatusBarComponentInterface
+    rem /**
+    rem  * Get the component name
+    rem  *
+    rem  * @returns BBjString the component name
+    rem  */
+
+    method public static BBjString getName()
+    methodend
+    rem /**
+    rem  * Set the component alignment
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+
+    method public void setAlignment(BBjString alignment$)
+    methodend
+    rem /**
+    rem  * Get the component alignment
+    rem  *
+    rem  * @returns BBjString the component alignment
+    rem  */
+
+    method public BBjString getAlignment()
+    methodend
+    rem /**
+    rem  * Get The component's JSON representation
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+    methodend
+interfaceend
+rem /**
+rem  * AbstractBBjGridExWidgetStatusBarComponent
+rem  *
+rem  * A basic implementation for BBjGridExWidgetStatusBarComponentInterface
+rem  */
+class public AbstractBBjGridExWidgetStatusBarComponent implements BBjGridExWidgetStatusBarComponentInterface
+    rem /**
+    rem  * The component alignment
+    rem  */
+    field public BBjString Alignment$ = "left"
+    rem /**
+    rem  * Constructor
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+    method public AbstractBBjGridExWidgetStatusBarComponent(BBjString alignment$)
+        #setAlignment(alignment$)
+    methodend
+    rem /**
+    rem  * Set the component alignment
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+    method public void setAlignment(BBjString alignment$)
+        switch alignment$
+            case "right"
+                #Alignment$ = "right"
+                break
+            case "left"
+                #Alignment$ = "left"
+                break
+            case "center"
+                #Alignment$ = "center"
+                break
+            CASE DEFAULT
+                #Alignment$ = "left"
+                break
+        swend
+    methodend
+    rem /**
+    rem  * Get The component's JSON representation
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        json! = new JsonObject()
+        json!.addProperty("statusPanel",#getName())
+        json!.addProperty("align",#getAlignment())
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetStatusBarTotalRowCountComponent
+rem  *
+rem  * A statusbar component which provides the total row count.
+rem  */
+class public BBjGridExWidgetStatusBarTotalRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
+    rem /**
+    rem  * Constructor
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+    method public BBjGridExWidgetStatusBarTotalRowCountComponent(BBjString alignment$)
+        #super!(alignment$)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getName()
+        methodret "agTotalRowCountComponent"
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetStatusBarFilteredRowCountComponent
+rem  *
+rem  * A statusbar component which provides the filtered row count.
+rem  */
+class public BBjGridExWidgetStatusBarFilteredRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
+    rem /**
+    rem  * Constructor
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+    method public BBjGridExWidgetStatusBarFilteredRowCountComponent(BBjString alignment$)
+        #super!(alignment$)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getName()
+        methodret "agFilteredRowCountComponent"
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent
+rem  *
+rem  * A statusbar component which provides the total and filtered row count.
+rem  */
+class public BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
+    rem /**
+    rem  * Constructor
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+    method public BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent(BBjString alignment$)
+        #super!(alignment$)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getName()
+        methodret "agTotalAndFilteredRowCountComponent"
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetStatusBarSelectedRowCountComponent
+rem  *
+rem  * A statusbar component which provides the total and filtered row count.
+rem  */
+class public BBjGridExWidgetStatusBarSelectedRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
+    rem /**
+    rem  * Constructor
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+    method public BBjGridExWidgetStatusBarSelectedRowCountComponent(BBjString alignment$)
+        #super!(alignment$)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getName()
+        methodret "agSelectedRowCountComponent"
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetStatusBar
+rem  *
+rem  * BBjGridExWidget status bar manager.
+rem  * The class can add , remove & hide status bar components
+rem  *
+rem  * @Enterprise
+rem  */
+class public BBjGridExWidgetStatusBar
+    rem /**
+    rem  * Toolpanels
+    rem  *
+    rem  * A hasmap for the registered components
+    rem  */
+    field protected HashMap components! = new HashMap()
+    rem /**
+    rem  * Add statusbar component
+    rem  *
+    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
+    rem  */
+    method public void addComponent(BBjGridExWidgetStatusBarComponentInterface component!)
+        #components!.put(component!.getName(),component!)
+    methodend
+    rem /**
+    rem  * Get statusbar component
+    rem  *
+    rem  * @param BBjString name$ the component name
+    rem  */
+    method public void getComponent(name$)
+        c! = #components!.get(name$)
+        methodret c!
+    methodend
+    rem /**
+    rem  * Remove statusbar compoent
+    rem  *
+    rem  * @param BBjString name$ the component name
+    rem  */
+    method public void removeComponent(name$)
+        #components!.remove(name$)
+    methodend
+    rem /**
+    rem  * Remove statusbar component
+    rem  *
+    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
+    rem  */
+    method public void removeComponent(BBjGridExWidgetStatusBarComponentInterface component!)
+        #components!.remove(component!.getName())
+    methodend
+    rem /**
+    rem  * Hide/show statusbar component
+    rem  *
+    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
+    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
+    rem  */
+    method public void setComponentVisibility(BBjGridExWidgetStatusBarComponentInterface component! , BBjNumber visiblity!)
+    methodend
+    rem /**
+    rem  * Hide/show statusbar component
+    rem  *
+    rem  * @param BBjString name$ the component name
+    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
+    rem  */
+    method public void setComponentVisibility(name$ , visiblity!)
+    methodend
+    rem /**
+    rem  * Convert the statusbar into a parsable json string
+    rem  * @returns string
+    rem  */
+    method public BBjString toString()
+        defs! = new JsonArray()
+        it! = #components!.entrySet().iterator()
+        while it!.hasNext()
+            defs!.add(it!.next().getValue().getAsJsonObject())
+        wend
+
+        json! = new JsonObject()
+        json!.addProperty("statusPanels",defs!.toString())
+        methodret new Gson().toJson(json!)
     methodend
 
 classend
