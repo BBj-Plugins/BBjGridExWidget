@@ -12,7 +12,6 @@ declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 
-BBjGridExWidget.setDebug(1)
 grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
@@ -92,7 +91,7 @@ onSelection:
         
 
         print 'SHOW', 
-        print ev!.getRowCount(), " ROW(s) AFFECTED By Event:"
+        print ev!.getSelectedRowCount(), " ROW(s) AFFECTED By Event:"
         rem print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedRowCount()
       
         print  "------------------------------------------------------------------------"
