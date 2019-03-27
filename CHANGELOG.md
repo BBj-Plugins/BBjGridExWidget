@@ -1,10 +1,18 @@
 # Changelog 
 
-## v0.92.1 - 05-02-2019
+## v0.93.0  - 27/03/2019
+
+* [Fix: The two-grid demo doesn't empty the lower grid when a customer has no orders - #108](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0d115aa4d15891fb369497ccdc1a455dcec3369e)
+* [Fix: Using vertical scrollbar sometimes doesn't show the last row completely - #109](https://github.com/BBj-Plugins/BBjGridExWidget/commit/45695cc30cc211ec7b9eceac6c5fee8173a2610c)
+* [feat: Add the ability to set the row height globally and by row - #112](https://github.com/BBj-Plugins/BBjGridExWidget/commit/90d47712432c96e7585bbe796f2377f5a36bffc4)
+* [feat: implement debounced selection api - #69](https://github.com/BBj-Plugins/BBjGridExWidget/commit/831243b3b9090b47d926ead26e1b905f308dde17)
+
+
+## v0.92.1 - 05/02/2019
 
 * [[fix] remove dead code for #72](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4408a9571510dca3f7f4f4ecfb2d0f4a6db629f)
 
-## v0.92.0 - 25-02-2019
+## v0.92.0 - 25/02/2019
 
 * [Fix #72](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fd6d1980b15cabaf614a46ea4aa73e6de4d2dba9)
 * [introduce unique control type id](https://github.com/BBj-Plugins/BBjGridExWidget/commit/75f13d2de1e3507cc2011497cc563d7fd44d5c33)
