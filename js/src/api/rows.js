@@ -118,3 +118,105 @@ export function gw_addRows(id, index, rows) {
   options.api.updateRowData({ add: rows, addIndex: index });
   options.api.refreshClientSideRowModel('group');
 }
+
+/**
+ * Set the height of all rows 
+ * 
+ * @param {String} id the grid id
+ * @param {Number} height the row height
+ */
+export function gw_setRowsHeight(id, height) {
+  const options = gw_getGrid(id).options;
+
+  options.api.forEachNode(row => {
+    row.setRowHeight(height);
+  });
+  options.api.onRowHeightChanged()
+}
+
+/**
+ * Set the given row height 
+ * 
+ * @param {String} id the grid id 
+ * @param {Number} index the row index
+ * @param {Number} height the new height
+ */
+export function gw_setRowHeight(id, index, height) {
+  const options = gw_getGrid(id).options;
+  const row = options.api.getDisplayedRowAtIndex(index);
+
+  if (row) {
+    row.setRowHeight(height);
+    options.api.onRowHeightChanged()
+  } else {
+    console.warn(`Failed to set height for row ${index}. Row can not be found`);
+  }
+}
+
+export function gw_setSelectedRows(id, rows) {
+  const options = gw_getGrid(id).options;
+
+  options.api.forEachNodeAfterFilterAndSort(node => {
+    if (rows.indexOf(node.rowIndex) > -1) {
+      node.setSelected(true);
+      node.expanded = true;
+    }
+  });
+  options.api.onGroupExpandedOrCollapsed();
+}
+
+export function gw_selectAll(id, filtered) {
+  const options = gw_getGrid(id).options;
+
+  if (1 === filtered) {
+    options.api.selectAllFiltered();
+  } else {
+    options.api.selectAll();
+  }
+}
+
+export function gw_deselectAll(id, filtered) {
+  const options = gw_getGrid(id).options;
+
+  if (1 === filtered) {
+    options.api.deselectAllFiltered();
+  } else {
+    options.api.deselectAll();
+  }
+}
+
+/**
+ * Get the current selected rows
+ * 
+ * @param {Number} id grid's id
+ * 
+ * @returns {String}  selected rows as JSON
+ */
+export function gw_getSelectedRows(id) {
+  const options = gw_getGrid(id).options;
+  const nodes = options.api.getSelectedNodes();
+  let parsed = [];
+
+  nodes.forEach(node => {
+    parsed.push(gw_parseNode(node, options.context));
+  });
+
+  return JSON.stringify(parsed);
+}
+
+/**
+ * Get the last selected row
+ * 
+ * @param {Number} id grid's id
+ * 
+ * @returns {String} selected row as JSON
+ */
+export function gw_getSelectedRow(id) {
+  const rows = JSON.parse(gw_getSelectedRows(id));
+
+  if (rows.length) {
+    return JSON.stringify(rows[rows.length - 1]);
+  }
+
+  return '';
+}

@@ -1,5 +1,3 @@
-import { gw_debounce } from "./utilities";
-
 /*
  * This file is part of the grid project
  * (c) Basis Europe <eu@Basis.AgGridComponents.com>
@@ -25,13 +23,12 @@ export function gw_setData(json, options, license) {
   // set the license key for enterprise version
   if (agGrid.LicenseManager && license)
     agGrid.LicenseManager.setLicenseKey(license);
-
-
+  
+  const debounceDuration =  250;
   options = Object.assign(options, {
     getDocument:          ()      => gw_getDocument(),
-    onRowDoubleClicked:   e       => { gw_onRowDoubleClicked(id, e) },
-    onRowSelected:        e       => { gw_onRowSelected(id, e) },
-    onSelectionChanged:   e       => { gw_onSelectionChanged(id, e) },
+    onRowDoubleClicked:   gw_debounce(gw_onRowDoubleClicked , debounceDuration ),
+    onSelectionChanged:   gw_debounce(gw_onSelectionChanged , debounceDuration ),
     onCellEditingStarted: e       => { gw_onCellEditingsEvent(id, e) },
     onCellEditingStopped: e       => { gw_onCellEditingsEvent(id, e) },
     onCellValueChanged:   e       => { gw_onCellEditingsEvent(id, e) },
