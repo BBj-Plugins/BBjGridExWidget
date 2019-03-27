@@ -6,6 +6,22 @@
 * file that was distributed with this source code.
 */
 
+/** https://davidwalsh.name/javascript-debounce-function */
+export function gw_debounce(func, wait, immediate) {
+  var timeout;
+  return function () {
+    var context = this, args = arguments;
+    var later = function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}
+
 /**
  * Send an event to BBj side 
  * 
@@ -23,7 +39,8 @@ export function gw_sendEvent(id, payload) {
 }
 
 /**
- * @typedef {Object} GW_NODE
+ * @typedef {Object} BBjGridExWidgetRow
+ * 
  * @property {number} id 
  * @property {number} index 
  * @property {number} parentKey 
@@ -32,24 +49,41 @@ export function gw_sendEvent(id, payload) {
  */
 
 /**
+ * Parse a node as BBjGridExWidgetRow
+ * 
+ * @param {Object} node ag grid node
+ * @param {Object} context  ag grid context
+ * 
+ * @returns {BBjGridExWidgetRow|Boolean} object formatted as BBjGridExWidgetRow.
+ *                                       false if the node is for group node
+ */
+export function gw_parseNode(node, context) {
+
+  if (true === node.group) return false; // we do not manage groups
+
+  const rowNodeId = context.hasOwnProperty('getRowNodeId')
+    && node.data[context.getRowNodeId] ?
+    node.data[context.getRowNodeId] : '';
+
+  return {
+    id: rowNodeId ? rowNodeId : node.id,
+    index: rowNodeId,
+    parentKey: node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key') ?
+      node.parent.key : '',
+    childIndex: node.childIndex,
+    selected: Boolean(node.selected),
+  };
+}
+
+/**
  * Parse node from event 
  * 
- * The function will retund a node object from the passed grid event 
+ * Parse node in the pased event as BBjGridExWidgetRow
  * 
- * @param {Object} e 
- * @returns {GW_NODE}
+ * @param {Object} e
+ * 
+ * @returns {BBjGridExWidgetRow}
  */
 export function gw_parseNodeFromEvent(e) {
-
-  if (true === e.node.group) return false; // we do not manage groups
-
-  let detail = {
-    id: !e.context.getRowNodeId && e.node.data.__ROW_INDEX ? e.node.data.__ROW_INDEX : e.node.id,
-    index: e.node.data.__ROW_INDEX ? e.node.data.__ROW_INDEX : "",
-    parentKey: e.node.hasOwnProperty('parent') && e.node.parent.hasOwnProperty('key') ? e.node.parent.key : '',
-    childIndex: e.node.childIndex,
-    selected: Boolean(e.node.selected),
-  };
-
-  return detail;
+  return gw_parseNode(e.node, e.context);
 }

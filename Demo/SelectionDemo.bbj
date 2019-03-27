@@ -91,10 +91,8 @@ onSelection:
         
 
         print 'SHOW', 
-        print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
-        print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
-        print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
-        print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
+        print ev!.getSelectedRowCount(), " ROW(s) AFFECTED By Event:"
+        rem print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getSelectedRowCount()
       
         print  "------------------------------------------------------------------------"
       fi

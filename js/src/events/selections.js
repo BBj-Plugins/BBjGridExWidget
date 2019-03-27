@@ -7,26 +7,6 @@
 */
 
 /**
- * An array of selected rows collected 
- * be firing the grid `rowSelected` event 
- */
-export let gw_selectedRowsStack = [];
-
-/**
- * A handler for the grid `rowSelected` event.
- * 
- * The function will add all selected or deselected rows to the 
- * `gw_selectedRowsStack` stack.
- * 
- * @param {Object} e 
- * 
- * @listens agGrid.rowSelected
- */
-export function gw_onRowSelected(id, e) {
-  gw_selectedRowsStack.push(e);
-}
-
-/**
  * An handler for the grid `rowDoubleClicked` event
  * 
  * The function will send a bbj event with `GW_NODE` as payload
@@ -36,15 +16,13 @@ export function gw_onRowSelected(id, e) {
  * @listens agGrid.rowDoubleClicked
  * @fires gw.rowDoubleClick
  */
-export function gw_onRowDoubleClicked(id, e) {
-  const node = gw_parseNodeFromEvent(e);
-
-  if (node) {
-    gw_sendEvent(id, {
-      'type': 'gw.rowDoubleClick',
-      'detail': [[node]]
-    });
-  }
+export function gw_onRowDoubleClicked( e) {
+  console.log(e);
+  const context = e.api.gridOptionsWrapper.gridOptions.context;
+  gw_sendEvent(context.id, {
+    'type': 'gw.rowDoubleClick',
+    'detail': ''
+  });  
 }
 
 /**
@@ -55,22 +33,12 @@ export function gw_onRowDoubleClicked(id, e) {
  * @listens agGrid.selectionChanged
  * @fires gw.rowSelecte
  */
-export function gw_onSelectionChanged(id, e) {
-  let details = [];
-
-  gw_selectedRowsStack.forEach(r => {
-    const detail = gw_parseNodeFromEvent(r);
-    if (detail) details.push(detail);
+export function gw_onSelectionChanged(e) {
+  const context = e.api.gridOptionsWrapper.gridOptions.context;
+  gw_sendEvent(context.id, {
+    'type': 'gw.rowSelect',
+    'detail': ''
   });
-
-  if (details.length) {
-    // empty the stack
-    gw_selectedRowsStack = [];
-    gw_sendEvent(id, {
-      'type': 'gw.rowSelecte',
-      'detail': [details]
-    });
-  }
 }
 
 /**
