@@ -302,7 +302,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @RequiresRefresh
     rem  */    
-    field public BBjNumber RowHeight! = 25
+    field public BBjNumber RowHeight! = 30
     rem /**
     rem  * The grid sidebar
     rem  *
