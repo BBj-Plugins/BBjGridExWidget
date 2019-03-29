@@ -56,7 +56,7 @@ fillGrid:
 
 
     timesRules! = new JsonObject()
-    timesRules!.addProperty("time-nomral","x >= 10 && x <= 50")
+    timesRules!.addProperty("time-normal","x >= 10 && x <= 50")
     timesRules!.addProperty("time-long","x >= 50 && x <= 70")
     timesRules!.addProperty("time-tooLong","x > 70")
     
@@ -71,7 +71,7 @@ fillGrid:
     timeTooLongStyle! = new JsonObject()
     timeTooLongStyle!.addProperty("background","lightcoral")
     
-    grid!.addStyle(".time-nomral" , timeNormalStyle!)
+    grid!.addStyle(".time-normal" , timeNormalStyle!)
     grid!.addStyle(".time-long" , timeLongStyle!)
     grid!.addStyle(".time-tooLong" , timeTooLongStyle!)
 
