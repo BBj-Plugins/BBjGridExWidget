@@ -297,7 +297,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * The grid default row height
     rem  *
     rem  * @RequiresRefresh
-    rem  */    
+    rem  */
     field public BBjNumber RowHeight! = 30
     rem /**
     rem  * The grid sidebar
@@ -314,7 +314,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  * @Enterprise
     rem  */
-    field protected BBjGridExWidgetStatusBar Statusbar! = new BBjGridExWidgetStatusBar()
+    field protected BBjGridExWidgetStatusBar Statusbar! = new BBjGridExWidgetStatusBar(#this!)
     field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
@@ -390,7 +390,8 @@ class public BBjGridExWidget extends BBjWidget
             FI
 
             htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$)
-            htmlview!.setNoEdge(1)   
+            htmlview!.setNoEdge(1)
+
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
@@ -1341,18 +1342,15 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public BBjGridExWidgetRow getSelectedRow()
         returnedRow! = #executeScript("gw_getSelectedRow('" + #GRIDID$ + "')")
-
-        if len(returnedRow!) > 0 then 
+        if len(returnedRow!) > 0 then
             parser! = new JsonParser()
             parsedRow! = parser!.parse(returnedRow!).getAsJsonObject()
             row! = new BBjGridExWidgetRow(#RS!)
-            
             row!.setId(parsedRow!.get("id").getAsString())
             row!.setChildIndex(parsedRow!.get("childIndex").getAsInt())
             row!.setIndex(parsedRow!.get("index").getAsString())
             row!.setParentKey(parsedRow!.get("parentKey").getAsString())
             row!.setIsSelected(iff(parsedRow!.get("selected").getAsString() = "true" ,  1 , 0))
-
             methodret row!
         fi
 
@@ -2269,7 +2267,6 @@ classend
 class public BBjGridExWidgetSelectRowEvent
 
     field public BBjVector SelectedRows! = new BBjVector()
-
     rem /**
     rem  * Get the number of affected rows by the last event
     rem  *
@@ -2278,6 +2275,7 @@ class public BBjGridExWidgetSelectRowEvent
     method public BBjNumber getSelectedRowCount()
         methodret #SelectedRows!.size()
     methodend
+
 classend
 
 class public BBjGridWidgetCellEditingEvent
@@ -2651,6 +2649,7 @@ interface public BBjGridExWidgetStatusBarComponentInterface
 
     method public JsonObject getAsJsonObject()
     methodend
+
 interfaceend
 rem /**
 rem  * AbstractBBjGridExWidgetStatusBarComponent
@@ -2808,6 +2807,18 @@ class public BBjGridExWidgetStatusBar
     rem  */
     field protected HashMap components! = new HashMap()
     rem /**
+    rem  * The BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetStatusBar(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
     rem  * Add statusbar component
     rem  *
     rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
@@ -2847,6 +2858,7 @@ class public BBjGridExWidgetStatusBar
     rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
     rem  */
     method public void setComponentVisibility(BBjGridExWidgetStatusBarComponentInterface component! , BBjNumber visiblity!)
+        #Widget!.__executeScript__("gw_setStatusbarComponentVisiblity('" + #Widget!.getGRIDID() + "','" + component!.getName() + "'," + str(visiblity!) + ")")
     methodend
     rem /**
     rem  * Hide/show statusbar component
@@ -2854,7 +2866,8 @@ class public BBjGridExWidgetStatusBar
     rem  * @param BBjString name$ the component name
     rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
     rem  */
-    method public void setComponentVisibility(name$ , visiblity!)
+    method public void setComponentVisibility(BBjString name$ , BBjNumber visiblity!)
+        #Widget!.__executeScript__("gw_setStatusbarComponentVisiblity('" + #Widget!.getGRIDID() + "','" + name$ + "'," + str(visiblity!) + ")")
     methodend
     rem /**
     rem  * Convert the statusbar into a parsable json string
