@@ -386,8 +386,8 @@ class public BBjGridExWidget extends BBjWidget
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
             FI
 
-            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"")
-
+            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$)
+            htmlview!.setNoEdge(1)   
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
@@ -407,6 +407,7 @@ class public BBjGridExWidget extends BBjWidget
         FI
 
         #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
+        htmlview!.setVisible(1)
     methodend
 
     method protected void injectScript(BBjString script$)
