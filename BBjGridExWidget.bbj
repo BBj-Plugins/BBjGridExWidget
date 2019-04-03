@@ -404,10 +404,12 @@ class public BBjGridExWidget extends BBjWidget
             htmlview!.setText(html$)
             REM             fi
             #HTMLView!=htmlview!
-        FI
+            #HTMLView!.setVisible(1)
+        else
+            #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
+        fi
 
-        #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
-        htmlview!.setVisible(1)
+
     methodend
 
     method protected void injectScript(BBjString script$)
