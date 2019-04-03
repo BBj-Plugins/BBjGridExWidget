@@ -76,7 +76,7 @@ resize:
 ev! = BBjAPI().getLastEvent()
 w=ev!.getWidth()
 h=ev!.getHeight()
-grid!.setSize(w,h)
+grid!.setSize(w-200,h)
 return
 
 onToggle:
