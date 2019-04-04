@@ -16,10 +16,6 @@ rem  * A Grid Widget Plugin for BBj
 rem  */
 class public BBjGridExWidget extends BBjWidget
     rem /**
-    rem  * A map which keeps tracking selected and deselected rows
-    rem  */
-    field public HashMap SelectedRowsMap! = new HashMap()
-    rem /**
     rem  * Ag Grid enterprise key
     rem  *
     rem  * @RequiresRefresh
@@ -599,7 +595,6 @@ class public BBjGridExWidget extends BBjWidget
         #RS!.createIndex()
         #TREE! = null()
         #URL$=""
-        #SelectedRowsMap!.clear()
         #performGridDataUpdate()
 
         if (rs!.size() >0) then
@@ -682,7 +677,6 @@ class public BBjGridExWidget extends BBjWidget
         #RS!.createIndex()
         #TREE! = null()
         #URL$=""
-        #SelectedRowsMap!.clear()
         data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
         #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
     methodend
@@ -747,7 +741,6 @@ class public BBjGridExWidget extends BBjWidget
         #RS!.createIndex()
         #TREE! = null()
         #URL$=""
-        #SelectedRowsMap!.clear()
         #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
     methodend
     rem /**
@@ -980,9 +973,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  * deselect all rows
     rem  */
     method public void deselectAll()
-        rem need to clear old selection
-        rem TODO / missing: create the SelectedRowsMap based on the new programmatic setting
-        #SelectedRowsMap!.clear()
         script$="gw_deselectAll('" + #GRIDID$ + "',0);"
         #executeScript(script$)
     methodend
