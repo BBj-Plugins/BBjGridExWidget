@@ -376,7 +376,7 @@ class public BBjGridExWidget extends BBjWidget
                 #setLicenseKey(lic!)
             FI
 
-            html$="<html><head><style>html,body{margin:0;padding:0}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><head><style>html,body{margin:0;padding:0,height: 100%} .ag-root.ag-layout-normal{height: inherit !important;}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
