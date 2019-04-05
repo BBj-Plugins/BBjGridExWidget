@@ -1832,18 +1832,25 @@ class public BBjGridExWidget extends BBjWidget
         cd! = #ColumnDefinition!
 
         if #AttributesRecord! <> NULL() and cd! <> NULL() then
-            rem TODO: use the new method of components as soon as implemented
-            rem https://github.com/BasisHub/components/issues/87
-            ar! = #AttributesRecord!
-            it! = cd!.getFieldNames().iterator()
-            while it!.hasNext()
-                f$ = it!.next()
-
-                if cd!.contains(f$) then
-                    cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
-                FI
-            wend
+        
+            if REV>"REV 18.11" then
+                cd!.copyAttributes(ar!)
+            else
+                ar! = #AttributesRecord!
+                it! = cd!.getFieldNames().iterator()
+                while it!.hasNext()
+                    f$ = it!.next()
+    
+                    if cd!.contains(f$) then
+                        cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
+                    FI
+                wend
+            fi
         FI
+        
+        if cd! = null() and #AttributesRecord!<> null() then
+            cd! = #AttributesRecord!
+        fi
 
         if cd! = null() or cd!.getFieldNames().size()=0  then
             if #RS! <> null() and #RS!.size()>0 then
@@ -2324,6 +2331,28 @@ class public BBjGridExWidgetState
 
     method public BBjString toString()
         methodret #String$
+    methodend
+    
+    method public BBjVector getVisibleColumns()
+        v! = new BBjVector()
+        if #String$<>null() and #String$>"" then
+            jelement! = new JsonParser().parse(#String$,err=fail)
+            jobject! = jelement!.getAsJsonObject(err=fail)
+            jarray! = jobject!.getAsJsonArray("columns",err=fail)
+            s=jarray!.size()
+            if s>0 then
+                for i=0 to s-1
+                  obj! = jarray!.get(i).getAsJsonObject()
+                  name$ = obj!.get("colId").getAsString()
+                  hide! = obj!.get("hide").getAsBoolean()
+                  if hide! <> BBjAPI.TRUE then
+                        v!.addItem(name$)
+                  fi
+                next
+            fi
+        fi
+        fail:
+        methodret v!
     methodend
 
 classend
