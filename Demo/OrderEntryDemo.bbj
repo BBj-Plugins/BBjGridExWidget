@@ -26,6 +26,8 @@ grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STOPPED(),"cellEditingStopped")
 
 gosub fillGrid
 
+a=msgbox("Editing functions are work in progress and not ready for production!",0,"Caution!")
+
 process_events
 
 fillGrid:
