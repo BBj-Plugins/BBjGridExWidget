@@ -168,6 +168,9 @@ export function gw_setData(json, options, license) {
 
   options.sideBar = JSON.parse(options.sideBar);
   options.sideBar.toolPanels = JSON.parse(options.sideBar.toolPanels);
+  
+  options.statusBar = JSON.parse(options.statusBar);
+  options.statusBar.statusPanels = JSON.parse(options.statusBar.statusPanels);
 
   if (true === options.context.isTree) {
     options.getNodeChildDetails = gw_getNodeChildDetails;

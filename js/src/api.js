@@ -12,4 +12,5 @@ export * from './api/cells.js';
 export * from './api/state.js';
 export * from './api/toolpanel.js';
 export * from './api/menus.js';
+export * from './api/statusbar.js';
 export * from './api/jss.js';
