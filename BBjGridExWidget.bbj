@@ -11,6 +11,30 @@ use java.lang.Integer
 use java.util.ArrayList
 use java.util.HashMap
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
+
+use ::BBjGridExWidget/AbstractBBjGridExWidgetStatusBarComponent.bbj::AbstractBBjGridExWidgetStatusBarComponent
+use ::BBjGridExWidget/BBjGridContextMenu.bbj::BBjGridContextMenu
+use ::BBjGridExWidget/BBjGridContextMenuItem.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/BBjGridDefaultContextMenu.bbj::BBjGridDefaultContextMenu
+use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/BBjGridExWidgetDefaultSidebar.bbj::BBjGridExWidgetDefaultSidebar
+use ::BBjGridExWidget/BBjGridExWidgetFiltersToolpanel.bbj::BBjGridExWidgetFiltersToolpanel
+use ::BBjGridExWidget/BBjGridExWidgetRow.bbj::BBjGridExWidgetRow
+use ::BBjGridExWidget/BBjGridExWidgetSelectRowEvent.bbj::BBjGridExWidgetSelectRowEvent
+use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
+use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
+use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBar
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarComponentInterface.bbj::BBjGridExWidgetStatusBarComponentInterface
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarFilteredRowCountComponent.bbj::BBjGridExWidgetStatusBarFilteredRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarSelectedRowCountComponent.bbj::BBjGridExWidgetStatusBarSelectedRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent.bbj::BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarTotalRowCountComponent.bbj::BBjGridExWidgetStatusBarTotalRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetToolpanel.bbj::BBjGridExWidgetToolpanel
+use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
+use ::BBjGridExWidget/BBjGridWidgetContextMenuEvent.bbj::BBjGridWidgetContextMenuEvent
+use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
+
+
 rem /**
 rem  * A Grid Widget Plugin for BBj
 rem  */
@@ -380,7 +404,7 @@ class public BBjGridExWidget extends BBjWidget
             lic!=System.getProperty("bbjgridexwidget.license")
 
             if lic! <> null() and str(lic!) <> "" then
-                #setLicenseKey(lic!)
+                #setLicenseKey(str(lic!))
             FI
 
             html$="<html><head><style>html,body{margin:0;padding:0,height: 100%} .ag-root.ag-layout-normal{height: inherit !important;}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
@@ -449,7 +473,7 @@ class public BBjGridExWidget extends BBjWidget
         #injectScript(script$)
         rem include locale files
         locale! = stbl("!LOCALE")
-        locale$ = locale!.replaceAll("_","-")
+        locale$ = str(locale!.replaceAll("_","-"))
         dateJsLocalePath$ = distBase$ + "/../vendor/Datejs/build/date-" + locale$ + ".js"
         isLocale = 0
         ch=unt
@@ -482,8 +506,8 @@ class public BBjGridExWidget extends BBjWidget
         FI
 
         it! = #backlog!.iterator()
-        while it!.hasNext()
-            s$=it!.next()
+        while it!.hasNext()=BBjAPI.TRUE
+            s$=str(it!.next())
             #HTMLView!.executeScript(s$)
         wend
 
@@ -502,8 +526,8 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void onNativeEvent ( BBjNativeJavaScriptEvent ev!)
         map! = ev!.getEventMap()
-        type$ = map!.get("type")
-        detail$ = map!.get("detail")
+        type$ = str(map!.get("type"))
+        detail$ = str(map!.get("detail"))
         switch type$
             case "gw.rowSelect"
                 #onSelecteRowChange(detail$, "single")
@@ -1740,6 +1764,8 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
     method private void performGridDataUpdate()
+    
+    
         if (! #IsReady!)
             methodret
         FI
@@ -1885,8 +1911,8 @@ class public BBjGridExWidget extends BBjWidget
 
         f! = cd!.getFieldNames()
         it! = f!.iterator()
-        while it!.hasNext()
-            f$=it!.next()
+        while it!.hasNext()=BBjAPI.TRUE
+            f$=str(it!.next())
             label$=""
             label$=cd!.getFieldAttribute(f$,"LABEL",err=*next)
 
@@ -2052,866 +2078,29 @@ class public BBjGridExWidget extends BBjWidget
 
     method public static BBjString getImageData(BBjString filename$)
         imageSlice!=BBjAPI().getSysGui().getImageManager().loadImageFromFile(filename$)
-        bytes$ = imageSlice!.getBytes("png")
+        bytes$ = str(imageSlice!.getBytes("png"))
         b64$ = java.util.Base64.getEncoder().encode(bytes$)
         methodret "data:image/png;base64, "+b64$
     methodend
 
 classend
-rem /**
-rem  * A class which reprensets grid context menu item
-rem  */
-class public BBjGridContextMenuItem
 
-    field protected JsonObject json! = new JsonObject()
-    rem /**
-    rem  * Construct new Menu item
-    rem  *
-    rem  * @param BBjNumber id!: item's ID
-    rem  * @param BBjString name$: item's name
-    rem  */
-    method public BBjGridContextMenuItem(BBjNumber id! ,BBjString name$)
-        #json!.addProperty("id",str(id!))
-        #json!.addProperty("name",name$)
-    methodend
-    rem /**
-    rem  * Set a sub menu for the current item
-    rem  *
-    rem  * @param BBjGridContextMenu menu!: The menu object
-    rem  */
-    method public void setSubMenu(BBjGridContextMenu menu!)
-        #json!.addProperty("subMenu",menu!.toString())
-    methodend
-    rem /**
-    rem  * Set the item tooltip
-    rem  *
-    rem  * @param BBjString tooltip$: tooltip string
-    rem  */
-    method public void setTooltip(BBjString tooltip$)
-        #json!.addProperty("tooltip",tooltip$)
-    methodend
-    rem /**
-    rem  * Set the item icon
-    rem  *
-    rem  * @param BBjString url$: image url or base64 string
-    rem  * @param BBjNumber width!: image width
-    rem  * @param BBjNumber height!: image height
-    rem  */
-    method public void setIcon(BBjString url$,BBjNumber width!,BBjNumber height!)
-        #json!.addProperty("icon","<img border=0 width=" + str(width!) +  " height=" + str(height!) + " src='" + url$ + "' />")
-    methodend
-    rem /**
-    rem  * Set the item icon
-    rem  *
-    rem  * @param BBjString url$: image url or base64 string
-    rem  * @param BBjNumber width!: image width
-    rem  */
-    method public void setIcon(BBjString url$,BBjNumber width!)
-        #setIcon(url$,width!,15)
-    methodend
-    rem /**
-    rem  * Set the item icon
-    rem  *
-    rem  * @param BBjString url$: image url or base64 string
-    rem  */
-    method public void setIcon(BBjString url$)
-        #setIcon(url$,15,15)
-    methodend
-    rem /**
-    rem  * Set the item css classes
-    rem  *
-    rem  * @param BBjString classes$: space sperated string
-    rem  */
-    method public void setCssClasses(BBjString classes$)
-        #json!.addProperty("cssClasses",classes$)
-    methodend
-    rem /**
-    rem  * Convert the item to JsonObject
-    rem  *
-    rem  * @return  JsonObject
-    rem  */
-    method public JsonObject getAsJsonObject()
-        methodret #json!
-    methodend
-    rem /**
-    rem  * @return shortcode to autoSizeAll menu item
-    rem  */
-    method public static BBjString  AUTO_SIZE_ALL()
-        methodret "autoSizeAll"
-    methodend
-    rem /**
-    rem  * @return shortcode to expandAll menu item
-    rem  */
-    method public static BBjString  EXPAND_ALL()
-        methodret "expandAll"
-    methodend
-    rem /**
-    rem  * @return shortcode to contractAll menu item
-    rem  */
-    method public static BBjString  CONTRACT_ALL()
-        methodret "contractAll"
-    methodend
-    rem /**
-    rem  * @return shortcode to copy menu item
-    rem  */
-    method public static BBjString  COPY()
-        methodret "copy"
-    methodend
-    rem /**
-    rem  * @return shortcode to copyWithHeaders menu item
-    rem  */
-    method public static BBjString  COPY_WITH_HEADERS ()
-        methodret "copyWithHeaders"
-    methodend
-    rem /**
-    rem  * @return shortcode to resetColumns menu item
-    rem  */
-    method public static BBjString  RESET_COLUMNS()
-        methodret "resetColumns"
-    methodend
-    rem /**
-    rem  * @return shortcode to toolPanel menu item
-    rem  * @deprecated
-    rem  */
-    method public static BBjString  TOOLPANEL()
-        methodret "toolPanel"
-    methodend
-    rem /**
-    rem  * @return shortcode to export menu item
-    rem  */
-    method public static BBjString  EXPORT()
-        methodret "export"
-    methodend
-    rem /**
-    rem  * @return shortcode to csvExport menu item
-    rem  */
-    method public static BBjString  CSV_EXPORT()
-        methodret "csvExport"
-    methodend
-    rem /**
-    rem  * @return shortcode to excelExport menu item
-    rem  */
-    method public static BBjString  EXCEL_EXPORT()
-        methodret "excelExport"
-    methodend
 
-classend
-rem /**
-rem  * A class which reprensets grid context menu
-rem  */
-class public BBjGridContextMenu
 
-    field protected JsonArray Items! = new JsonArray()
-    rem /**
-    rem  * Add new context menu item
-    rem  *
-    rem  * @param BBjGridContextMenuItem item!: the item object
-    rem  */
-    method public void addItem(BBjGridContextMenuItem item!)
-        #Items!.add(item!.getAsJsonObject())
-    methodend
-    rem /**
-    rem  * Add a predefined context menu item
-    rem  *
-    rem  * @param BBjString item$: the item ID
-    rem  */
-    method public void addItem(BBjString item$)
-        #Items!.add(new JsonPrimitive(item$))
-    methodend
-    rem /**
-    rem  * Conver the menu to JSON string
-    rem  *
-    rem  * @returns String
-    rem  */
-    method public String toString()
-        methodret #Items!.toString()
-    methodend
 
-classend
-rem /**
-rem  * A class which reprensets the default grid context menu
-rem  */
-class public BBjGridDefaultContextMenu extends BBjGridContextMenu
 
-    method public BBjGridDefaultContextMenu()
-        #addItem(BBjGridContextMenuItem.COPY())
-        #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
-        rem #addItem(BBjGridContextMenuItem.TOOLPANEL())
-        #addItem(BBjGridContextMenuItem.EXPORT())
-    methodend
 
-classend
 
-class public BBjGridExWidgetRow
 
-    field public BBjString Id!
-    field public BBjString Index!
-    field public BBjNumber ChildIndex!
-    field public BBjString ParentKey!
-    field public BBjNumber IsSelected!
-    field public JsonObject Data!
-    field private ResultSet RS!
 
-    method public BBjGridExWidgetRow(ResultSet RS!)
-        #RS! = RS!
-    methodend
 
-    method public String toString()
-        methodret #Id!
-    methodend
 
-    method public DataRow asDataRow()
-        methodret #RS!.get(#Index!)
-    methodend
 
-    method public JsonObject getData()
-        parser! = new JsonParser()
-        methodret parser!.parse(#asDataRow().toJson()).getAsJsonArray().get(0)
-    methodend
 
-classend
 
-class public BBjGridExWidgetSelectRowEvent
 
-    field public BBjVector SelectedRows! = new BBjVector()
-    rem /**
-    rem  * Get the number of affected rows by the last event
-    rem  *
-    rem  * @return BBjNumber
-    rem  */
-    method public BBjNumber getSelectedRowCount()
-        methodret #SelectedRows!.size()
-    methodend
 
-classend
 
-class public BBjGridWidgetCellEditingEvent
 
-    field public BBjGridExWidgetRow Row!
-    field public BBjString Column$
-    field public BBjString Value$
 
-classend
 
-class public BBjGridWidgetRowEditingEvent
-
-    field public BBjGridExWidgetRow Row!
-
-classend
-
-class public BBjGridWidgetContextMenuEvent
-
-    field public BBjGridExWidgetRow Row!
-    field public BBjString Column$
-    field public BBjString Value$
-
-classend
-
-class public BBjGridExWidgetState
-
-    field private BBjString String$
-
-    method public BBjGridExWidgetState(BBjString String$)
-        #setString(String$)
-    methodend
-
-    method public BBjString getString()
-        methodret #String$
-    methodend
-
-    method public void setString(BBjString jsonstr$)
-        if len(jsonstr$)>2 and jsonstr$(1,1)="[" then
-            rem old format that had only columns
-            jsonstr$="{""columns"":"+jsonstr$
-            jsonstr$=jsonstr$+",""groups"":[],""sort"":[],""filters"":{}}"
-        fi
-
-        #String$ = jsonstr$
-    methodend
-
-    method public BBjString toString()
-        methodret #String$
-    methodend
-    
-    method public BBjVector getVisibleColumns()
-        v! = new BBjVector()
-        if #String$<>null() and #String$>"" then
-            jelement! = new JsonParser().parse(#String$,err=fail)
-            jobject! = jelement!.getAsJsonObject(err=fail)
-            jarray! = jobject!.getAsJsonArray("columns",err=fail)
-            s=jarray!.size()
-            if s>0 then
-                for i=0 to s-1
-                  obj! = jarray!.get(i).getAsJsonObject()
-                  name$ = obj!.get("colId").getAsString()
-                  hide! = obj!.get("hide").getAsBoolean()
-                  if hide! <> BBjAPI.TRUE then
-                        v!.addItem(name$)
-                  fi
-                next
-            fi
-        fi
-        fail:
-        methodret v!
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetSidebar
-rem  *
-rem  * A class to manage the grid sidebars
-rem  */
-class public BBjGridExWidgetSidebar
-    rem /**
-    rem  * DefaultToolpanel
-    rem  *
-    rem  * The id of the default panel
-    rem  */
-    field public BBjString DefaulToolpanel$
-    rem /**
-    rem  * Toolpanels
-    rem  *
-    rem  * A hasmap for the registered toolpanels
-    rem  */
-    field public HashMap Toolpanels! = new HashMap()
-    rem /**
-    rem  * The BBjGridExWidget instance
-    rem  */
-    field protected BBjGridExWidget Widget!
-    rem /**
-    rem  * Construct new sidebar
-    rem  *
-    rem  * @param BBjGridExWidget widget!
-    rem  */
-    method public BBjGridExWidgetSidebar(BBjGridExWidget widget!)
-        #Widget! = widget!
-    methodend
-    rem /**
-    rem  * Set Visible
-    rem  *
-    rem  * Enable / Disable the grid sidebar
-    rem  */
-    method public void setVisible(BBjNumber visible!)
-        #Widget!.__executeScript__("gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
-    methodend
-    rem /**
-    rem  * Open toolpanel
-    rem  *
-    rem  * Open the given toolpanel
-    rem  *
-    rem  * @param BBjString id$ the toolpanel id
-    rem  */
-    method public void openToolpanel(BBjString id!)
-        #Widget!.__executeScript__("gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
-    methodend
-    rem /**
-    rem  * Close toolpanel
-    rem  *
-    rem  * Close the given toolpanel
-    rem  *
-    rem  * @param BBjString id$ the toolpanel id
-    rem  */
-    method public void closeToolpanel(BBjString id!)
-        #Widget!.__executeScript__("gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
-    methodend
-    rem /**
-    rem  * Convert the sidebar into a parsable json string
-    rem  * @returns string
-    rem  */
-    method public BBjString toString()
-        declare JsonArray toolpanelsJson!
-
-        toolpanelsJson! = new JsonArray()
-        it! = #Toolpanels!.entrySet().iterator()
-        while it!.hasNext()
-            toolpanelsJson!.add(it!.next().getValue().getAsJsonObject())
-        wend
-
-        declare JsonObject json!
-
-        json! = new JsonObject()
-        json!.addProperty("toolPanels",toolpanelsJson!.toString())
-        json!.addProperty("defaultToolPanel",#DefaulToolpanel$)
-        methodret new Gson().toJson(json!)
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetDefaultSidebar
-rem  *
-rem  * A class to define the default implementation of the grid sidebar
-rem  */
-class public BBjGridExWidgetDefaultSidebar extends BBjGridExWidgetSidebar
-    rem /**
-    rem  * Construct the default grid sidebar
-    rem  *
-    rem  * @param BBjGridExWidget widget!
-    rem  */
-    method public BBjGridExWidgetDefaultSidebar(BBjGridExWidget widget!)
-        #super!(widget!)
-
-        declare BBjGridExWidgetColumnsToolpanel columns!
-
-        columns! = new BBjGridExWidgetColumnsToolpanel()
-        #getToolpanels().put(BBjGridExWidgetColumnsToolpanel.getId() , columns!)
-        rem #setDefaulToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetToolpanel
-rem  *
-rem  * A base class to allow integration the ag-grid toolpanels
-rem  */
-class public BBjGridExWidgetToolpanel
-    rem /**
-    rem  * The default label of the toolpanel
-    rem  */
-    field public BBjString Label$
-    rem /**
-    rem  * The key of the icon to be used as a graphical aid beside the label in the side bar.
-    rem  *  @see <a href="https://www.ag-grid.com/javascript-grid-icons/">javascript-grid-icons/</a>
-    rem  */
-    field protected BBjString Icon$
-    rem /**
-    rem  * The javascript component to use as the panel.
-    rem  */
-    field protected BBjString Component$
-    rem /**
-    rem  * BBjGridExWidgetToolpanel
-    rem  *
-    rem  * Construct new toolpanel
-    rem  *
-    rem  * @param BBjString label the toolpanel label
-    rem  * @param BBjString icon the toolpanel icon
-    rem  * @param BBjString component the javascript component used to render the toolpoanel on the client
-    rem  */
-    method public BBjGridExWidgetToolpanel(BBjString label$ , BBjString icon$ , BBjString component$)
-        #Label$ = label$
-        #Icon$  = icon$
-        #Component$ = component$
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetColumnsToolpanel
-rem  *
-rem  * Create a columns toolpanel
-rem  */
-class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
-    rem /**
-    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
-    rem  */
-    field public static BBjString Id$ = "columns"
-    rem /**
-    rem  * suppress Expand / Collapse all widget.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressColumnExpandAll! = 0
-    rem /**
-    rem  * suppress Select / Un-select all widget.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressColumnSelectAll! = 0
-    rem /**
-    rem  * suppress Column Filter section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressColumnFilter! = 0
-    rem /**
-    rem  * suppress Pivot Mode section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressPivotMode! = 0
-    rem /**
-    rem  * suppress Column Labels (Pivot) section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressPivots! = 0
-    rem /**
-    rem  * suppress Values section
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressValues! = 1
-    rem /**
-    rem  * Suppress Row Groups section.
-    rem  * 1 = enable editing
-    rem  * 0 = disable edition
-    rem  *
-    rem  * @RequiresRefresh
-    rem  * @Enterprise
-    rem  */
-    field public BBjNumber SuppressRowGroups! = 0
-    rem /**
-    rem  * Construct new columns toolpanel
-    rem  */
-    method public BBjGridExWidgetColumnsToolpanel()
-        #super!("Columns","columns","agColumnsToolPanel")
-    methodend
-    rem /**
-    rem  * Get as JsonObject
-    rem  *
-    rem  * Get a json representation for the toolpanel
-    rem  *
-    rem  * @return JsonObject
-    rem  */
-    method public JsonObject getAsJsonObject()
-        declare JsonObject json!
-
-        json! = new JsonObject()
-        json!.addProperty("id",#Id$)
-        json!.addProperty("labelDefault",#getLabel())
-        json!.addProperty("labelKey",#Id$)
-        json!.addProperty("iconKey",#getIcon())
-        json!.addProperty("toolPanel",#getComponent())
-
-        declare JsonObject toolPanelParams!
-
-        toolPanelParams! = new JsonObject()
-        toolPanelParams!.addProperty("suppressRowGroups",Boolean.valueOf(#SuppressRowGroups!))
-        toolPanelParams!.addProperty("suppressValues",Boolean.valueOf(#SuppressValues!))
-        toolPanelParams!.addProperty("suppressPivots",Boolean.valueOf(#SuppressPivots!))
-        toolPanelParams!.addProperty("suppressPivotMode",Boolean.valueOf(#SuppressPivotMode!))
-        toolPanelParams!.addProperty("suppressColumnFilter",Boolean.valueOf(#SuppressColumnFilter!))
-        toolPanelParams!.addProperty("suppressColumnSelectAll",Boolean.valueOf(#SuppressColumnSelectAll!))
-        toolPanelParams!.addProperty("suppressColumnExpandAll",Boolean.valueOf(#SuppressColumnExpandAll!))
-        json!.add("toolPanelParams",toolPanelParams!)
-        methodret json!
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetFiltersToolpanel
-rem  *
-rem  * Create a filters toolpanel
-rem  */
-class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
-    rem /**
-    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
-    rem  */
-    field public static BBjString Id$ = "filters"
-    rem /**
-    rem  * Construct new filters toolpanel
-    rem  */
-    method public BBjGridExWidgetFiltersToolpanel()
-        #super!("Filters","filters","agFiltersToolPanel")
-    methodend
-    rem /**
-    rem  * Get as JsonObject
-    rem  *
-    rem  * Get a json representation for the toolpanel
-    rem  *
-    rem  * @return JsonObject
-    rem  */
-    method public JsonObject getAsJsonObject()
-        declare JsonObject json!
-
-        json! = new JsonObject()
-        json!.addProperty("id",#Id$)
-        json!.addProperty("labelDefault",#getLabel())
-        json!.addProperty("labelKey",#Id$)
-        json!.addProperty("iconKey",#getIcon())
-        json!.addProperty("toolPanel",#getComponent())
-        methodret json!
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetStatusBarComponentInterface
-rem  *
-rem  * A Interface which defines a status bar component
-rem  */
-interface public BBjGridExWidgetStatusBarComponentInterface
-    rem /**
-    rem  * Get the component name
-    rem  *
-    rem  * @returns BBjString the component name
-    rem  */
-
-    method public static BBjString getName()
-    methodend
-    rem /**
-    rem  * Set the component alignment
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-
-    method public void setAlignment(BBjString alignment$)
-    methodend
-    rem /**
-    rem  * Get the component alignment
-    rem  *
-    rem  * @returns BBjString the component alignment
-    rem  */
-
-    method public BBjString getAlignment()
-    methodend
-    rem /**
-    rem  * Get The component's JSON representation
-    rem  *
-    rem  * @return JsonObject
-    rem  */
-
-    method public JsonObject getAsJsonObject()
-    methodend
-
-interfaceend
-rem /**
-rem  * AbstractBBjGridExWidgetStatusBarComponent
-rem  *
-rem  * A basic implementation for BBjGridExWidgetStatusBarComponentInterface
-rem  */
-class public AbstractBBjGridExWidgetStatusBarComponent implements BBjGridExWidgetStatusBarComponentInterface
-    rem /**
-    rem  * The component alignment
-    rem  */
-    field public BBjString Alignment$ = "left"
-    rem /**
-    rem  * Constructor
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-    method public AbstractBBjGridExWidgetStatusBarComponent(BBjString alignment$)
-        #setAlignment(alignment$)
-    methodend
-    rem /**
-    rem  * Set the component alignment
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-    method public void setAlignment(BBjString alignment$)
-        switch alignment$
-            case "right"
-                #Alignment$ = "right"
-                break
-            case "left"
-                #Alignment$ = "left"
-                break
-            case "center"
-                #Alignment$ = "center"
-                break
-            CASE DEFAULT
-                #Alignment$ = "left"
-                break
-        swend
-    methodend
-    rem /**
-    rem  * Get The component's JSON representation
-    rem  *
-    rem  * @return JsonObject
-    rem  */
-    method public JsonObject getAsJsonObject()
-        json! = new JsonObject()
-        json!.addProperty("statusPanel",#getName())
-        json!.addProperty("align",#getAlignment())
-        methodret json!
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetStatusBarTotalRowCountComponent
-rem  *
-rem  * A statusbar component which provides the total row count.
-rem  */
-class public BBjGridExWidgetStatusBarTotalRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
-    rem /**
-    rem  * Constructor
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-    method public BBjGridExWidgetStatusBarTotalRowCountComponent(BBjString alignment$)
-        #super!(alignment$)
-    methodend
-    rem /**
-    rem  * {@inheritDoc}
-    rem  */
-    method public static BBjString getName()
-        methodret "agTotalRowCountComponent"
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetStatusBarFilteredRowCountComponent
-rem  *
-rem  * A statusbar component which provides the filtered row count.
-rem  */
-class public BBjGridExWidgetStatusBarFilteredRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
-    rem /**
-    rem  * Constructor
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-    method public BBjGridExWidgetStatusBarFilteredRowCountComponent(BBjString alignment$)
-        #super!(alignment$)
-    methodend
-    rem /**
-    rem  * {@inheritDoc}
-    rem  */
-    method public static BBjString getName()
-        methodret "agFilteredRowCountComponent"
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent
-rem  *
-rem  * A statusbar component which provides the total and filtered row count.
-rem  */
-class public BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
-    rem /**
-    rem  * Constructor
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-    method public BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent(BBjString alignment$)
-        #super!(alignment$)
-    methodend
-    rem /**
-    rem  * {@inheritDoc}
-    rem  */
-    method public static BBjString getName()
-        methodret "agTotalAndFilteredRowCountComponent"
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetStatusBarSelectedRowCountComponent
-rem  *
-rem  * A statusbar component which provides the total and filtered row count.
-rem  */
-class public BBjGridExWidgetStatusBarSelectedRowCountComponent extends AbstractBBjGridExWidgetStatusBarComponent
-    rem /**
-    rem  * Constructor
-    rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
-    rem  */
-    method public BBjGridExWidgetStatusBarSelectedRowCountComponent(BBjString alignment$)
-        #super!(alignment$)
-    methodend
-    rem /**
-    rem  * {@inheritDoc}
-    rem  */
-    method public static BBjString getName()
-        methodret "agSelectedRowCountComponent"
-    methodend
-
-classend
-rem /**
-rem  * BBjGridExWidgetStatusBar
-rem  *
-rem  * BBjGridExWidget status bar manager.
-rem  * The class can add , remove & hide status bar components
-rem  *
-rem  * @Enterprise
-rem  */
-class public BBjGridExWidgetStatusBar
-    rem /**
-    rem  * Toolpanels
-    rem  *
-    rem  * A hasmap for the registered components
-    rem  */
-    field protected HashMap components! = new HashMap()
-    rem /**
-    rem  * The BBjGridExWidget instance
-    rem  */
-    field protected BBjGridExWidget Widget!
-    rem /**
-    rem  * Construct new sidebar
-    rem  *
-    rem  * @param BBjGridExWidget widget!
-    rem  */
-    method public BBjGridExWidgetStatusBar(BBjGridExWidget widget!)
-        #Widget! = widget!
-    methodend
-    rem /**
-    rem  * Add statusbar component
-    rem  *
-    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
-    rem  */
-    method public void addComponent(BBjGridExWidgetStatusBarComponentInterface component!)
-        #components!.put(component!.getName(),component!)
-    methodend
-    rem /**
-    rem  * Get statusbar component
-    rem  *
-    rem  * @param BBjString name$ the component name
-    rem  */
-    method public void getComponent(name$)
-        c! = #components!.get(name$)
-        methodret c!
-    methodend
-    rem /**
-    rem  * Remove statusbar compoent
-    rem  *
-    rem  * @param BBjString name$ the component name
-    rem  */
-    method public void removeComponent(name$)
-        #components!.remove(name$)
-    methodend
-    rem /**
-    rem  * Remove statusbar component
-    rem  *
-    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
-    rem  */
-    method public void removeComponent(BBjGridExWidgetStatusBarComponentInterface component!)
-        #components!.remove(component!.getName())
-    methodend
-    rem /**
-    rem  * Hide/show statusbar component
-    rem  *
-    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
-    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
-    rem  */
-    method public void setComponentVisibility(BBjGridExWidgetStatusBarComponentInterface component! , BBjNumber visiblity!)
-        #Widget!.__executeScript__("gw_setStatusbarComponentVisiblity('" + #Widget!.getGRIDID() + "','" + component!.getName() + "'," + str(visiblity!) + ")")
-    methodend
-    rem /**
-    rem  * Hide/show statusbar component
-    rem  *
-    rem  * @param BBjString name$ the component name
-    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
-    rem  */
-    method public void setComponentVisibility(BBjString name$ , BBjNumber visiblity!)
-        #Widget!.__executeScript__("gw_setStatusbarComponentVisiblity('" + #Widget!.getGRIDID() + "','" + name$ + "'," + str(visiblity!) + ")")
-    methodend
-    rem /**
-    rem  * Convert the statusbar into a parsable json string
-    rem  * @returns string
-    rem  */
-    method public BBjString toString()
-        defs! = new JsonArray()
-        it! = #components!.entrySet().iterator()
-        while it!.hasNext()
-            defs!.add(it!.next().getValue().getAsJsonObject())
-        wend
-
-        json! = new JsonObject()
-        json!.addProperty("statusPanels",defs!.toString())
-        methodret new Gson().toJson(json!)
-    methodend
-
-classend

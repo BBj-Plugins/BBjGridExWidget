@@ -1,6 +1,6 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridContextMenuItem
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridContextMenu
+use ::BBjGridExWidget/BBjGridContextMenuItem.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/BBjGridContextMenu.bbj::BBjGridContextMenu
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject

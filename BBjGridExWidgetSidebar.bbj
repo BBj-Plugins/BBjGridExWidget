@@ -1,0 +1,92 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.JsonParser
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+use com.google.gson.JsonElement
+use com.google.gson.Gson
+
+use java.util.HashMap
+
+rem /**
+rem  * BBjGridExWidgetSidebar
+rem  *
+rem  * A class to manage the grid sidebars
+rem  */
+class public BBjGridExWidgetSidebar
+    rem /**
+    rem  * DefaultToolpanel
+    rem  *
+    rem  * The id of the default panel
+    rem  */
+    field public BBjString DefaulToolpanel$
+    rem /**
+    rem  * Toolpanels
+    rem  *
+    rem  * A hasmap for the registered toolpanels
+    rem  */
+    field public HashMap Toolpanels! = new HashMap()
+    rem /**
+    rem  * The BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetSidebar(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Set Visible
+    rem  *
+    rem  * Enable / Disable the grid sidebar
+    rem  */
+    method public void setVisible(BBjNumber visible!)
+        #Widget!.__executeScript__("gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
+    methodend
+    rem /**
+    rem  * Open toolpanel
+    rem  *
+    rem  * Open the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void openToolpanel(BBjString id!)
+        #Widget!.__executeScript__("gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Close toolpanel
+    rem  *
+    rem  * Close the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void closeToolpanel(BBjString id!)
+        #Widget!.__executeScript__("gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Convert the sidebar into a parsable json string
+    rem  * @returns string
+    rem  */
+    method public BBjString toString()
+        declare auto JsonArray toolpanelsJson!
+        declare java.util.Iterator it!
+        
+        toolpanelsJson! = new JsonArray()
+        it! = #Toolpanels!.entrySet().iterator()
+        while it!.hasNext()
+            o! = it!.next().getValue()
+            toolpanelsJson!.add(o!.getAsJsonObject())
+        wend
+
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("toolPanels",toolpanelsJson!.toString())
+        json!.addProperty("defaultToolPanel",#DefaulToolpanel$)
+        methodret new Gson().toJson(json!)
+    methodend
+
+classend
+

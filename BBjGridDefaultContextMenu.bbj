@@ -1,0 +1,19 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridContextMenu.bbj::BBjGridContextMenu
+use ::BBjGridExWidget/BBjGridContextMenuItem.bbj::BBjGridContextMenuItem
+
+
+
+rem /**
+rem  * A class which reprensets the default grid context menu
+rem  */
+class public BBjGridDefaultContextMenu extends BBjGridContextMenu
+
+    method public BBjGridDefaultContextMenu()
+        #addItem(BBjGridContextMenuItem.COPY())
+        #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+        rem #addItem(BBjGridContextMenuItem.TOOLPANEL())
+        #addItem(BBjGridContextMenuItem.EXPORT())
+    methodend
+
+classend

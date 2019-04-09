@@ -26,7 +26,8 @@ process_events
 
 fillGrid:
 
-declare SqlQueryBC sbc!
+declare com.basiscomponents.bc.SqlQueryBC sbc!
+declare com.basiscomponents.db.ResultSet rs!
 
 sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
 rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")

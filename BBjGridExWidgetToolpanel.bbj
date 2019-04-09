@@ -1,0 +1,36 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+rem /**
+rem  * BBjGridExWidgetToolpanel
+rem  *
+rem  * A base class to allow integration the ag-grid toolpanels
+rem  */
+class public BBjGridExWidgetToolpanel
+    rem /**
+    rem  * The default label of the toolpanel
+    rem  */
+    field public BBjString Label$
+    rem /**
+    rem  * The key of the icon to be used as a graphical aid beside the label in the side bar.
+    rem  *  @see <a href="https://www.ag-grid.com/javascript-grid-icons/">javascript-grid-icons/</a>
+    rem  */
+    field protected BBjString Icon$
+    rem /**
+    rem  * The javascript component to use as the panel.
+    rem  */
+    field protected BBjString Component$
+    rem /**
+    rem  * BBjGridExWidgetToolpanel
+    rem  *
+    rem  * Construct new toolpanel
+    rem  *
+    rem  * @param BBjString label the toolpanel label
+    rem  * @param BBjString icon the toolpanel icon
+    rem  * @param BBjString component the javascript component used to render the toolpoanel on the client
+    rem  */
+    method public BBjGridExWidgetToolpanel(BBjString label$ , BBjString icon$ , BBjString component$)
+        #Label$ = label$
+        #Icon$  = icon$
+        #Component$ = component$
+    methodend
+
+classend
