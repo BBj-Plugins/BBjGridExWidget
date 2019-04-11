@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://gatsbyjs.org">
-    <img alt="Gatsby" src="https://user-images.githubusercontent.com/4313420/55978691-a8e2e980-5c90-11e9-85eb-ef647efc226e.png" width=200" />
+  <a href="https://github.com/BBj-Plugins/BBjGridExWidget">
+    <img alt="BBjGridExWidget" src="https://user-images.githubusercontent.com/4313420/55978691-a8e2e980-5c90-11e9-85eb-ef647efc226e.png" width=200" />
   </a>
 </p>
 <h1 align="center">
