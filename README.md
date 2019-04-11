@@ -52,10 +52,6 @@ The following is incomplete list of the implemeted features.
 * Clone the project locally , then add BBjGridExWidget to your paths
 * [Use the plugins manager](https://www.bbj-plugins.com/en/get-started)
 
-## How to set the license
-
-Set license key in `bbj.properties` under `bbjgridexwidget.license=<yourlicense>`.
-
 ## 🤝 How to Contribute
 
 Whether you're helping us fix bugs, improve the docs, or spread the word, we'd love to have you as part of the BBjGridExWidget project! :muscle::purple_heart:
