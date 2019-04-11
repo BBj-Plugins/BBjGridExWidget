@@ -33,7 +33,7 @@ BBjGridExWidget is a modern BBj grid for blazing fast data management.
 
 ![Demo Image](https://user-images.githubusercontent.com/4313420/55982533-683b9e00-5c99-11e9-892c-2966de36ffcf.jpg)
 
-## Features:
+## :ballot_box_with_check: Features:
 
 The following is incomplete list of the implemeted features.
 
@@ -62,7 +62,7 @@ Check out the [**Contributing Guide**](https://github.com/necolas/issue-guidelin
 
 Licensed under the [MIT License](./LICENSE).
 
-## Helpful Links :
+## :link: Helpful Links :
 
 * [Pages](https://bbj-plugins.github.io/BBjGridExWidget/)
 * [JavaDoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc)
