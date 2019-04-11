@@ -1,0 +1,25 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
+use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+rem /**
+rem  * BBjGridExWidgetDefaultSidebar
+rem  *
+rem  * A class to define the default implementation of the grid sidebar
+rem  */
+class public BBjGridExWidgetDefaultSidebar extends BBjGridExWidgetSidebar
+    rem /**
+    rem  * Construct the default grid sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetDefaultSidebar(BBjGridExWidget widget!)
+        #super!(widget!)
+
+        declare BBjGridExWidgetColumnsToolpanel columns!
+
+        columns! = new BBjGridExWidgetColumnsToolpanel()
+        #getToolpanels().put(BBjGridExWidgetColumnsToolpanel.getId() , columns!)
+        rem #setDefaulToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+    methodend
+
+classend

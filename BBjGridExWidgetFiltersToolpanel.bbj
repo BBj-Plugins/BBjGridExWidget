@@ -1,0 +1,46 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetToolpanel.bbj::BBjGridExWidgetToolpanel
+
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.db.DataRow
+use com.google.gson.JsonParser
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+
+
+rem /**
+rem  * BBjGridExWidgetFiltersToolpanel
+rem  *
+rem  * Create a filters toolpanel
+rem  */
+class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
+    rem /**
+    rem  * The unique id for this panel. Used in the API and eleswhere to refer to the panel.
+    rem  */
+    field public static BBjString Id$ = "filters"
+    rem /**
+    rem  * Construct new filters toolpanel
+    rem  */
+    method public BBjGridExWidgetFiltersToolpanel()
+        #super!("Filters","filters","agFiltersToolPanel")
+    methodend
+    rem /**
+    rem  * Get as JsonObject
+    rem  *
+    rem  * Get a json representation for the toolpanel
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("id",#Id$)
+        json!.addProperty("labelDefault",#getLabel())
+        json!.addProperty("labelKey",#Id$)
+        json!.addProperty("iconKey",#getIcon())
+        json!.addProperty("toolPanel",#getComponent())
+        methodret json!
+    methodend
+
+classend

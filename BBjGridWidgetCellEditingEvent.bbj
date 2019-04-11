@@ -1,0 +1,10 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetRow.bbj::BBjGridExWidgetRow
+
+class public BBjGridWidgetCellEditingEvent
+
+    field public BBjGridExWidgetRow Row!
+    field public BBjString Column$
+    field public BBjString Value$
+
+classend

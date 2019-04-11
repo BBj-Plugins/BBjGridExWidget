@@ -1,0 +1,145 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridContextMenu.bbj::BBjGridContextMenu
+use com.google.gson.JsonParser
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+use com.google.gson.JsonElement
+
+rem /**
+rem  * A class which reprensets grid context menu item
+rem  */
+class public BBjGridContextMenuItem
+
+    field protected JsonObject json! = new JsonObject()
+    rem /**
+    rem  * Construct new Menu item
+    rem  *
+    rem  * @param BBjNumber id!: item's ID
+    rem  * @param BBjString name$: item's name
+    rem  */
+    method public BBjGridContextMenuItem(BBjNumber id! ,BBjString name$)
+        #json!.addProperty("id",str(id!))
+        #json!.addProperty("name",name$)
+    methodend
+    rem /**
+    rem  * Set a sub menu for the current item
+    rem  *
+    rem  * @param BBjGridContextMenu menu!: The menu object
+    rem  */
+    method public void setSubMenu(BBjGridContextMenu menu!)
+        #json!.addProperty("subMenu",menu!.toString())
+    methodend
+    rem /**
+    rem  * Set the item tooltip
+    rem  *
+    rem  * @param BBjString tooltip$: tooltip string
+    rem  */
+    method public void setTooltip(BBjString tooltip$)
+        #json!.addProperty("tooltip",tooltip$)
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  * @param BBjNumber width!: image width
+    rem  * @param BBjNumber height!: image height
+    rem  */
+    method public void setIcon(BBjString url$,BBjNumber width!,BBjNumber height!)
+        #json!.addProperty("icon","<img border=0 width=" + str(width!) +  " height=" + str(height!) + " src='" + url$ + "' />")
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  * @param BBjNumber width!: image width
+    rem  */
+    method public void setIcon(BBjString url$,BBjNumber width!)
+        #setIcon(url$,width!,15)
+    methodend
+    rem /**
+    rem  * Set the item icon
+    rem  *
+    rem  * @param BBjString url$: image url or base64 string
+    rem  */
+    method public void setIcon(BBjString url$)
+        #setIcon(url$,15,15)
+    methodend
+    rem /**
+    rem  * Set the item css classes
+    rem  *
+    rem  * @param BBjString classes$: space sperated string
+    rem  */
+    method public void setCssClasses(BBjString classes$)
+        #json!.addProperty("cssClasses",classes$)
+    methodend
+    rem /**
+    rem  * Convert the item to JsonObject
+    rem  *
+    rem  * @return  JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        methodret #json!
+    methodend
+    rem /**
+    rem  * @return shortcode to autoSizeAll menu item
+    rem  */
+    method public static BBjString  AUTO_SIZE_ALL()
+        methodret "autoSizeAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to expandAll menu item
+    rem  */
+    method public static BBjString  EXPAND_ALL()
+        methodret "expandAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to contractAll menu item
+    rem  */
+    method public static BBjString  CONTRACT_ALL()
+        methodret "contractAll"
+    methodend
+    rem /**
+    rem  * @return shortcode to copy menu item
+    rem  */
+    method public static BBjString  COPY()
+        methodret "copy"
+    methodend
+    rem /**
+    rem  * @return shortcode to copyWithHeaders menu item
+    rem  */
+    method public static BBjString  COPY_WITH_HEADERS ()
+        methodret "copyWithHeaders"
+    methodend
+    rem /**
+    rem  * @return shortcode to resetColumns menu item
+    rem  */
+    method public static BBjString  RESET_COLUMNS()
+        methodret "resetColumns"
+    methodend
+    rem /**
+    rem  * @return shortcode to toolPanel menu item
+    rem  * @deprecated
+    rem  */
+    method public static BBjString  TOOLPANEL()
+        methodret "toolPanel"
+    methodend
+    rem /**
+    rem  * @return shortcode to export menu item
+    rem  */
+    method public static BBjString  EXPORT()
+        methodret "export"
+    methodend
+    rem /**
+    rem  * @return shortcode to csvExport menu item
+    rem  */
+    method public static BBjString  CSV_EXPORT()
+        methodret "csvExport"
+    methodend
+    rem /**
+    rem  * @return shortcode to excelExport menu item
+    rem  */
+    method public static BBjString  EXCEL_EXPORT()
+        methodret "excelExport"
+    methodend
+
+classend

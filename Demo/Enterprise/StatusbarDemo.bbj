@@ -1,8 +1,8 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetStatusBarTotalRowCountComponent
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetStatusBarFilteredRowCountComponent
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetStatusBarSelectedRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarTotalRowCountComponent.bbj::BBjGridExWidgetStatusBarTotalRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarFilteredRowCountComponent.bbj::BBjGridExWidgetStatusBarFilteredRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent.bbj::BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarSelectedRowCountComponent.bbj::BBjGridExWidgetStatusBarSelectedRowCountComponent
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 

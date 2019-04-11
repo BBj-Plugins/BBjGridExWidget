@@ -64,6 +64,7 @@ byebye:
     bye
     
 resize:
+    declare auto BBjResizeEvent ev!
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight()-35)
 return
@@ -115,8 +116,8 @@ doQuery:
     if (db$>"" and tbl$>"") then
     
         if rev<"REV 17.10" then
-             url! = "jdbc:basis:localhost?DATABASE=ChileCompany&SSL=false"
-             con! = java.sql.DriverManager.getConnection(url!, "admin", "admin123")
+             url$ = "jdbc:basis:localhost?DATABASE=ChileCompany&SSL=false"
+             con! = java.sql.DriverManager.getConnection(url$, "admin", "admin123")
         else
             bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
         fi
@@ -150,6 +151,7 @@ onWinKeypress:
 return
 
 setTheme:
+    declare auto BBjListSelectEvent ev!
     ev! = BBjAPI().getLastEvent()
     theme$ = ev!.getSelectedItem()
     grid!.setTheme(theme$)

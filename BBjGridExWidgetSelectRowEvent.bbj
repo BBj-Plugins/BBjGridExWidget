@@ -1,0 +1,17 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetRow.bbj::BBjGridExWidgetRow
+
+
+class public BBjGridExWidgetSelectRowEvent
+
+    field public BBjVector SelectedRows! = new BBjVector()
+    rem /**
+    rem  * Get the number of affected rows by the last event
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public BBjNumber getSelectedRowCount()
+        methodret #SelectedRows!.size()
+    methodend
+
+classend

@@ -1,0 +1,43 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.JsonObject
+
+rem /**
+rem  * BBjGridExWidgetStatusBarComponentInterface
+rem  *
+rem  * A Interface which defines a status bar component
+rem  */
+interface public BBjGridExWidgetStatusBarComponentInterface
+    rem /**
+    rem  * Get the component name
+    rem  *
+    rem  * @returns BBjString the component name
+    rem  */
+
+    method public static BBjString getName()
+
+    rem /**
+    rem  * Set the component alignment
+    rem  *
+    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  */
+
+    method public void setAlignment(BBjString alignment$)
+
+    rem /**
+    rem  * Get the component alignment
+    rem  *
+    rem  * @returns BBjString the component alignment
+    rem  */
+
+    method public BBjString getAlignment()
+
+    rem /**
+    rem  * Get The component's JSON representation
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+
+
+interfaceend

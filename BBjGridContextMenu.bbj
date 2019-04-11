@@ -1,0 +1,39 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridContextMenuItem.bbj::BBjGridContextMenuItem
+use com.google.gson.JsonParser
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+use com.google.gson.JsonPrimitive
+
+rem /**
+rem  * A class which reprensets grid context menu
+rem  */
+class public BBjGridContextMenu
+
+    field protected JsonArray Items! = new JsonArray()
+    rem /**
+    rem  * Add new context menu item
+    rem  *
+    rem  * @param BBjGridContextMenuItem item!: the item object
+    rem  */
+    method public void addItem(BBjGridContextMenuItem item!)
+        #Items!.add(item!.getAsJsonObject())
+    methodend
+    rem /**
+    rem  * Add a predefined context menu item
+    rem  *
+    rem  * @param BBjString item$: the item ID
+    rem  */
+    method public void addItem(BBjString item$)
+        #Items!.add(new JsonPrimitive(item$))
+    methodend
+    rem /**
+    rem  * Conver the menu to JSON string
+    rem  *
+    rem  * @returns String
+    rem  */
+    method public String toString()
+        methodret #Items!.toString()
+    methodend
+
+classend

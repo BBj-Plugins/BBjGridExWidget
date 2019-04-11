@@ -1,5 +1,5 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidgetState
+use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -20,10 +20,10 @@ grid!.setCallback(grid!.ON_GRID_COLUMN_STATE_CHANGE(),"onColumnStateChange")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
  
-tb_get! = wnd!.addButton(300,10,3,200,25,"GET STATE")
+tb_get! = wnd!.addButton(300,10,3,200,25,"Save current State")
 tb_get!.setEnabled(0)
-tb_set! = wnd!.addButton(301,230,3,200,25,"SET STATE")
-tb_refresh! = wnd!.addButton(302,450,3,200,25,"REFRESH")
+tb_set! = wnd!.addButton(301,230,3,200,25,"Restore State")
+tb_refresh! = wnd!.addButton(302,450,3,200,25,"Refresh")
 
 rem Disable the get and set buttons by default , these buttons will be 
 rem enabled again when the grid state is changed 
@@ -124,6 +124,3 @@ refresh:
     grid!.setData(rs!)
 return
 
-onColumnStateChange:
-    tb_get!.setEnabled(1)
-return

@@ -1,0 +1,107 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetStatusBarComponentInterface.bbj::BBjGridExWidgetStatusBarComponentInterface
+use java.util.HashMap
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+use com.google.gson.Gson
+
+rem /**
+rem  * BBjGridExWidgetStatusBar
+rem  *
+rem  * BBjGridExWidget status bar manager.
+rem  * The class can add , remove & hide status bar components
+rem  *
+rem  * @Enterprise
+rem  */
+class public BBjGridExWidgetStatusBar
+    rem /**
+    rem  * Toolpanels
+    rem  *
+    rem  * A hasmap for the registered components
+    rem  */
+    field protected HashMap components! = new HashMap()
+    rem /**
+    rem  * The BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public BBjGridExWidgetStatusBar(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Add statusbar component
+    rem  *
+    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
+    rem  */
+    method public void addComponent(BBjGridExWidgetStatusBarComponentInterface component!)
+        #components!.put(component!.getName(),component!)
+    methodend
+    rem /**
+    rem  * Get statusbar component
+    rem  *
+    rem  * @param BBjString name$ the component name
+    rem  */
+    method public BBjGridExWidgetStatusBarComponentInterface getComponent(BBjString name$)
+        declare auto BBjGridExWidgetStatusBarComponentInterface c!
+        c! = #components!.get(name$)
+        methodret c!
+    methodend
+    rem /**
+    rem  * Remove statusbar compoent
+    rem  *
+    rem  * @param BBjString name$ the component name
+    rem  */
+    method public void removeComponent(BBjString name$)
+        #components!.remove(name$)
+    methodend
+    rem /**
+    rem  * Remove statusbar component
+    rem  *
+    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
+    rem  */
+    method public void removeComponent(BBjGridExWidgetStatusBarComponentInterface component!)
+        #components!.remove(component!.getName())
+    methodend
+    rem /**
+    rem  * Hide/show statusbar component
+    rem  *
+    rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
+    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
+    rem  */
+    method public void setComponentVisibility(BBjGridExWidgetStatusBarComponentInterface component! , BBjNumber visiblity!)
+        #Widget!.__executeScript__("gw_setStatusbarComponentVisiblity('" + #Widget!.getGRIDID() + "','" + component!.getName() + "'," + str(visiblity!) + ")")
+    methodend
+    rem /**
+    rem  * Hide/show statusbar component
+    rem  *
+    rem  * @param BBjString name$ the component name
+    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
+    rem  */
+    method public void setComponentVisibility(BBjString name$ , BBjNumber visiblity!)
+        #Widget!.__executeScript__("gw_setStatusbarComponentVisiblity('" + #Widget!.getGRIDID() + "','" + name$ + "'," + str(visiblity!) + ")")
+    methodend
+    rem /**
+    rem  * Convert the statusbar into a parsable json string
+    rem  * @returns string
+    rem  */
+    method public BBjString toString()
+        defs! = new JsonArray()
+        it! = #components!.entrySet().iterator()
+        
+        while it!.hasNext()=BBjAPI.TRUE
+            defs!.add(it!.next().getValue().getAsJsonObject())
+        wend
+
+        declare JsonObject json!
+        json! = new JsonObject()
+        json!.addProperty("statusPanels",str(defs!.toString()))
+        
+        
+        methodret new Gson().toJson(json!)
+    methodend
+
+classend
