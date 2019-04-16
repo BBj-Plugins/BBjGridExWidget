@@ -1,0 +1,52 @@
+use ::BBjWidget/BBjWidget.bbj::BBjWidget
+use java.util.HashMap
+
+REM /**
+REM  * BBjGridExWidgetLanguageManager.bbj
+REM  *
+REM  * The language manager will add , remove language files to the grid.
+REM  *
+REM  * The grid will query the language manager in every render to get the translation keys.
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetLanguageManager
+
+    field protected HashMap Languages! = new HashMap()
+    field protected HashMap LoadedLanguages! = new HashMap()
+    rem /**
+    rem  * Add Language File
+    rem  *
+    rem  * @param BBjString language$ the languge key (ex: de_DE)
+    rem  * @param BBjString path$ the language file (JSON file)
+    rem  */
+    method public void addLanguageFile(BBjString language$ , BBjString path$)
+        REM           check if file exits
+        #Languages!.put(language$ , path$)
+        #LoadedLanguages!.put(language$ , "")
+    methodend
+    rem /**
+    rem  * Get the language keys
+    rem  *
+    rem  * Get the translation keys as JSON string
+    rem  *
+    rem  * @returns BBjString
+    rem  */
+    method public BBjString getLanguageKeys(BBjString language$)
+        content$ = ""
+
+        if #LoadedLanguages!.containsKey(language$) then
+            content$ = #LoadedLanguages!.get(language$)
+            rem we did not load the language yet
+            if len(#LoadedLanguages!.get(language$)) = 0 then
+                ch=unt
+                open (ch)#Languages!.get(language$)
+                read record (ch,siz=5512000)content$
+                close (ch)
+                #LoadedLanguages!.put(language$ , content$)
+            FI
+        FI
+
+        methodret content$
+    methodend
+
+classend

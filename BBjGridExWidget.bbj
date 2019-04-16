@@ -33,6 +33,7 @@ use ::BBjGridExWidget/BBjGridExWidgetToolpanel.bbj::BBjGridExWidgetToolpanel
 use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
 use ::BBjGridExWidget/BBjGridWidgetContextMenuEvent.bbj::BBjGridWidgetContextMenuEvent
 use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
+use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
 
 
 rem /**
@@ -332,6 +333,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
+    field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
     rem /**
     rem  * The grid statusbar
     rem  *
@@ -929,6 +931,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public BBjGridExWidgetSidebar getSidebar()
         methodret #Sidebar!
+    methodend
+    rem /**
+    rem  * Get the language manager instance 
+    rem  * 
+    rem  * @returns BBjGridExWidgetLanguageManager
+    rem  */
+    method public BBjGridExWidgetLanguageManager getLanguageManager()
+        methodret #LanguageManager!
     methodend
     rem /**
     rem  * Get the grid statusbar instance
@@ -1836,7 +1846,7 @@ class public BBjGridExWidget extends BBjWidget
         comma$=a$(5,1)
         dot$=a$(6,1)
     fi
-
+    
     options! = new JsonObject()
     options!.addProperty("animateRows",Boolean.valueOf(1))
     options!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
@@ -1858,6 +1868,7 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("rowHeight",#RowHeight!.longValue())
     options!.addProperty("sideBar",#Sidebar!.toString())
     options!.addProperty("statusBar",#Statusbar!.toString())
+    options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys(stbl("!LOCALE")))
     autoGroupColumnDef! = new JsonObject()
 
     if #GroupMultiAutoColumn! = 0 then
@@ -2129,23 +2140,3 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
 classend
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

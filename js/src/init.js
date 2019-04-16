@@ -172,6 +172,10 @@ export function gw_setData(json, options, license) {
   options.statusBar = JSON.parse(options.statusBar);
   options.statusBar.statusPanels = JSON.parse(options.statusBar.statusPanels);
 
+  if(options.localeText && options.localeText.length) {
+    options.localeText = JSON.parse(options.localeText);
+  }
+  
   if (true === options.context.isTree) {
     options.getNodeChildDetails = gw_getNodeChildDetails;
   }

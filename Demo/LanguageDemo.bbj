@@ -1,0 +1,48 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+
+? 'HIDE'
+
+locale! = stbl("!LOCALE", "de_DE")
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton lb_db!
+declare auto BBjListButton lb_tbl!
+declare auto BBjToolButton btn_fit!
+declare BBjGridExWidget grid!
+
+x=0
+y=0
+w=800
+h=600
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+grid! = new BBjGridExWidget(wnd!,100,x,y,w,h)
+grid!.getLanguageManager().addLanguageFile("de_DE","BBjGridExWidget/langs/de_DE.json")
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub fillGrid
+
+process_events
+
+fillGrid:
+
+declare com.basiscomponents.bc.SqlQueryBC sbc!
+declare com.basiscomponents.db.ResultSet rs!
+
+sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+grid!.setData(rs!)
+return
+
+byebye:
+bye
+
+resize:
+ev! = BBjAPI().getLastEvent()
+w=ev!.getWidth()
+h=ev!.getHeight()
+grid!.setSize(w,h)
+return
