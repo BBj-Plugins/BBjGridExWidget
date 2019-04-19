@@ -1384,13 +1384,21 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @return BBjVector with the selected rows
     rem  */
     method public BBjVector getSelectedRows()
+
+        rows! = new BBjVector()
+    
+        if (#RS! = null()) then goto getSelectedRowsErr
+    
         returnedRows! = #executeScript("gw_getSelectedRows('" + #GRIDID$ + "')")
+
+        if returnedRows!=null() then goto getSelectedRowsErr
+        
         parser! = new JsonParser()
         array! = parser!.parse(returnedRows!).getAsJsonArray()
-        rows! = new BBjVector()
+
         it! = array!.iterator()
         while (it!.hasNext())
-            next! = it!.next().getAsJsonObject()
+            next! = it!.next().getAsJsonObject(err=getSelectedRowsErr)
             row! = new BBjGridExWidgetRow(#RS!)
             row!.setId(next!.get("id").getAsString())
             row!.setChildIndex(next!.get("childIndex").getAsInt())
@@ -1399,7 +1407,9 @@ class public BBjGridExWidget extends BBjWidget
             row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
             rows!.add( row!)
         wend
-
+        
+        getSelectedRowsErr:
+        
         methodret rows!
     methodend
     rem /**
