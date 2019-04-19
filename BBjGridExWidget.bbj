@@ -357,6 +357,7 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjString DataFingerprint$
     field private BBjNumber newW!
     field private BBjNumber newH!
+    field private BBjString DoubleClickRowsHistory$
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -1718,6 +1719,22 @@ class public BBjGridExWidget extends BBjWidget
         if type$ = "single" then
             #fireEvent(#ON_GRID_SELECT_ROW(),event!)
         else
+            rem double-click four times on the same row will copy the JSON result set data to the clipboard, in GUI
+            if info(3,6)<>"5" and #RS!<> null() then
+                r$ = str(#getSelectedRows())
+                if #DoubleClickRowsHistory$="" or #DoubleClickRowsHistory$=r$ or #DoubleClickRowsHistory$=r$+r$ then
+                    #DoubleClickRowsHistory$=#DoubleClickRowsHistory$+r$
+                else
+                    if #DoubleClickRowsHistory$=r$+r$+r$ then
+                        clipfromstr 1,#RS!.toJson()
+                        a=msgbox("JSON-Data has been copied to the Clipboard",0,"Grid Data")
+                        #DoubleClickRowsHistory$=""
+                    else
+                        #DoubleClickRowsHistory$=""
+                    fi
+                fi
+            fi 
+
             #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
         FI
     methodend
