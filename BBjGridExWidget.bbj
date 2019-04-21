@@ -722,8 +722,14 @@ class public BBjGridExWidget extends BBjWidget
     method public void setRowData(BBjNumber index!,DataRow row!)
         if #RS!.count() <> 0 then
             #RS!.set(index!,row!)
-            parser! = new JsonParser()
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString()  +")")
+            REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
+            REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
+            if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
+                #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,"__ROW_INDEX",0) +")")
+            else
+                parser! = new JsonParser()
+                #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString()  +")")
+            fi
         FI
     methodend
     rem /**
@@ -734,8 +740,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void addRow(BBjNumber index!,DataRow row!)
         #RS!.add(index! , row!)
-        parser! = new JsonParser()
-        #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+        REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
+        REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
+        if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
+            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,"__ROW_INDEX",0) +")")
+        else
+            parser! = new JsonParser()
+            #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+        fi
     methodend
     rem /**
     rem  * Add new row
@@ -744,8 +756,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void addRow(DataRow row!)
         #RS!.add(row!)
-        parser! = new JsonParser()
-        #executeScript("gw_addRows('" + #GRIDID$ +"',null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+        REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
+        REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
+        if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
+            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,"__ROW_INDEX",0) +")")
+        else
+            parser! = new JsonParser()
+            #executeScript("gw_addRows('" + #GRIDID$ +"',null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
+        fi
     methodend
     rem /**
     rem  * Remove row from grid by index
