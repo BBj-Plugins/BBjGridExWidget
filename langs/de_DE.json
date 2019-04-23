@@ -64,7 +64,7 @@
 	"count": "Anzahl",
 	"average": "Durchschnitt",
 	"filteredRows": "Gefiltert",
-	"selectedRows": "Ausgewählt",
+	"selectedRowCount": "Ausgewählt",
 	"totalRows": "Gesamt",
 	"totalAndFilteredRows": "Zeilen",
 	"copy": "Kopieren",

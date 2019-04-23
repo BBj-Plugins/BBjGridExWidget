@@ -13,6 +13,16 @@ class public BBjGridExWidgetLanguageManager
 
     field protected HashMap Languages! = new HashMap()
     field protected HashMap LoadedLanguages! = new HashMap()
+    
+    rem /**
+    rem  * BBjGridExWidgetLanguageManager
+    rem  * 
+    rem  * Construct a new BBjGridExWidgetLanguageManager instance 
+    rem  */
+    method public BBjGridExWidgetLanguageManager()
+        #addLanguageFile("de_DE","BBjGridExWidget/langs/de_DE.json")
+        #addLanguageFile("nl_NL","BBjGridExWidget/langs/nl_NL.json")
+    methodend
     rem /**
     rem  * Add Language File
     rem  *

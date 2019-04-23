@@ -19,7 +19,7 @@ h=600
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 grid! = new BBjGridExWidget(wnd!,100,x,y,w,h)
-grid!.getLanguageManager().addLanguageFile("de_DE","BBjGridExWidget/langs/de_DE.json")
+REM grid!.getLanguageManager().addLanguageFile("de_DE","BBjGridExWidget/langs/de_DE.json")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
