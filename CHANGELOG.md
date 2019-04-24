@@ -1,5 +1,23 @@
 # Changelog 
 
+## v0.94.0 - 24/04/2019
+
+* [Fix: reset row height to the default before the row height was settable](https://github.com/BBj-Plugins/BBjGridExWidget/commit/88c4d5d10d7f354f05ceec4b93ade7774bbda480)
+* [Fix: typo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d65c8fab75e313f7c9e29bbdea942e6aa11928b5)
+* [Fix: remove black border around html view control](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0a5dff9457f219356ae60b97b6a5e3d1f50dd193)
+* [Fix: error when resizing the control](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6ce0dd1f83f45b5f903651c882a6061931fab19e)
+* [Fix: remove obsolete variable](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b5e9e440794ff154fab2adb04b21b5acb1450bcc)
+* [Fix : Horizontal scrollbar is hidden in GUI after updating to AG Grid 20 (#121)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7457720f44509c91c85349d018e3809962f41f94)
+* [Fix: setSize did not honor the left panel](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6e16a18b06617187cea7a6d802919986bdc38296)
+* [Fix: getVisibleColumns method](https://github.com/BBj-Plugins/BBjGridExWidget/commit/af4f2e2a6ef6f9b3d796b45e57d123b839265faf)
+* [Fix: deprecate tree demo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ad9073324966e4c2b238e306a0bd80db1136eab1)
+* [Fix: clean up demos](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1981b060f3829cb55629cde833295f9c8a2039f2)
+* [Feat: Seperate BBjGridExWidget classes to their own files  (#126)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4036eec11130bffd8ed367fd892454af6453941a)
+* [Feat: add statusbar & statusbar components (#116)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d431f0542e8d7078b1d5d94c8f4b93f368baae3f)
+* [Fix: #140](https://github.com/BBj-Plugins/BBjGridExWidget/commit/46b814b97d3fdcbee7dd0075a74f22c9aa49743a)
+* [Feat: add debug function to copy JSON data to clipboard (GUI only) after double-clicking at least four times on the same row](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0773ca30290d3a43c17fb7ba5b7ca9e7fa278a96)
+* [Feat: use new toJsonObject for BBj versions >= 19.00](https://github.com/BBj-Plugins/BBjGridExWidget/commit/07027859338bb4b3a1ebf024ae2f7c9f83db0830)
+
 ## v0.93.0  - 27/03/2019
 
 * [Fix: The two-grid demo doesn't empty the lower grid when a customer has no orders - #108](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0d115aa4d15891fb369497ccdc1a455dcec3369e)
