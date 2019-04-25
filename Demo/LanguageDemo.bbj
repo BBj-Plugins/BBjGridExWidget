@@ -1,48 +1,78 @@
+rem /**
+rem  * Language Demo  
+rem  * 
+rem  * The demo demonstrates working with the grid Language manager to add new languages
+rem  * or change the current grid language.
+rem  * 
+REM  * @author Hyyan Abo Fakher 
+rem  */
+
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
-use java.sql.Types
 
 ? 'HIDE'
 
-locale! = stbl("!LOCALE", "de_DE")
+REM  By default the grid will use stbl("!LOCALE") to get the default language
+REM  Changing this setting will force the grid to use the defined language unless the 
+REM  default's grid language is set direclty using `grid!.getLanguageManager().setLangauge("LANG")`
+
+REM locale! = stbl("!LOCALE", "de_DE")
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
+declare auto BBjListButton lb_languages!
 declare BBjGridExWidget grid!
+declare BBjVector languages!
 
-x=0
-y=0
-w=800
-h=600
+REM Define a list of supported languages
+languages! = new BBjVector()
+languages!.insertItem(0,"")
+languages!.insertItem(1,"de_DE")
+languages!.insertItem(2,"nl_NL")
+languages!.insertItem(3,"fr_FR"); rem Just a demo language file , not really frensh
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-grid! = new BBjGridExWidget(wnd!,100,x,y,w,h)
-REM grid!.getLanguageManager().addLanguageFile("de_DE","BBjGridExWidget/langs/de_DE.json")
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Language Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+lb_languages! = wnd!.addListButton(201,5,6,160,250,"")
+lb_languages!.insertItemAt(0,"System Language")
+lb_languages!.insertItemAt(1,"German")
+lb_languages!.insertItemAt(2,"Dutch")
+lb_languages!.insertItemAt(3,"French (Demo)")
+lb_languages!.selectIndex(0)
+lb_languages!.setCallback(BBjAPI.ON_LIST_SELECT,"updateLanguage")
+
+grid! = new BBjGridExWidget(wnd!,100,0,35,900,566)
 
 gosub fillGrid
-
 process_events
 
 fillGrid:
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  
+  REM   add frensh languge to the grid
+  grid!.getLanguageManager().add("fr_FR","BBjGridExWidget/Demo/assets/languages/fr_FR.json")
+  
+  grid!.setData(rs!)
+return
 
-declare com.basiscomponents.bc.SqlQueryBC sbc!
-declare com.basiscomponents.db.ResultSet rs!
+updateLanguage:
+  declare auto BBjListSelectEvent ev!
+  ev! = BBjAPI().getLastEvent()
+  langauge$ = languages!.get(ev!.getSelectedIndex())
+  
+  REM setting a new language requires a full rerender
+  grid!.getLanguageManager().setLanguage(langauge$)
+  grid!.setData(rs!)
+return
 
-sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-grid!.setData(rs!)
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
 return
 
 byebye:
 bye
-
-resize:
-ev! = BBjAPI().getLastEvent()
-w=ev!.getWidth()
-h=ev!.getHeight()
-grid!.setSize(w,h)
-return

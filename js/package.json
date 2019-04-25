@@ -26,9 +26,9 @@
     "webpack-command": "^0.3.1"
   },
   "dependencies": {
-    "ag-grid-community": "^20.0.0",
+    "ag-grid-community": "^20.*",
     "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.7.0",
-    "ag-grid-enterprise": "^20.0.0",
+    "ag-grid-enterprise": "^20.*",
     "jss": "https://github.com/dvtng/jss"
   }
 }
