@@ -16,8 +16,6 @@ REM  By default the grid will use stbl("!LOCALE") to get the default language
 REM  Changing this setting will force the grid to use the defined language unless the 
 REM  default's grid language is set direclty using `grid!.getLanguageManager().setLangauge("LANG")`
 
-REM locale! = stbl("!LOCALE", "de_DE")
-
 declare auto BBjTopLevelWindow wnd!
 declare auto BBjListButton lb_languages!
 declare BBjGridExWidget grid!
@@ -28,7 +26,7 @@ languages! = new BBjVector()
 languages!.insertItem(0,"")
 languages!.insertItem(1,"de_DE")
 languages!.insertItem(2,"nl_NL")
-languages!.insertItem(3,"fr_FR"); rem Just a demo language file , not really frensh
+languages!.insertItem(3,"de_SL"); rem Just a demo language file , not really frensh
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Language Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
@@ -38,7 +36,7 @@ lb_languages! = wnd!.addListButton(201,5,6,160,250,"")
 lb_languages!.insertItemAt(0,"System Language")
 lb_languages!.insertItemAt(1,"German")
 lb_languages!.insertItemAt(2,"Dutch")
-lb_languages!.insertItemAt(3,"French (Demo)")
+lb_languages!.insertItemAt(3,"Saarlandish (Custom)")
 lb_languages!.selectIndex(0)
 lb_languages!.setCallback(BBjAPI.ON_LIST_SELECT,"updateLanguage")
 
@@ -51,8 +49,8 @@ fillGrid:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   
-  REM   add frensh languge to the grid
-  grid!.getLanguageManager().add("fr_FR","BBjGridExWidget/Demo/assets/languages/fr_FR.json")
+  REM   add custom languge to the grid
+  grid!.getLanguageManager().add("de_SL","BBjGridExWidget/Demo/assets/languages/de_SL.json")
   
   grid!.setData(rs!)
 return
