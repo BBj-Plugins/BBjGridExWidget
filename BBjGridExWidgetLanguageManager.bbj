@@ -36,6 +36,9 @@ class public BBjGridExWidgetLanguageManager
     methodend
     rem /**
     rem  * Add Language File
+    rem  * This method can be used for new languages, or to
+    rem  * overrule the default translation file that is shipped
+    rem  * with the grid plugin
     rem  *
     rem  * @param BBjString language$ the languge key (ex: de_DE)
     rem  * @param BBjString path$ the language file (JSON file)
