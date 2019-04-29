@@ -615,7 +615,7 @@ class public BBjGridExWidget extends BBjWidget
         rem if the data fed to the grid is the same as before, it's an update.
         rem In this case we want to retain the setting of the columns
         rem and the order and sizes
-        if (rs!.size() >0) then
+        if  rs! <> NULL() AND rs!.size() >0 then
             r1! = rs!.getItem(0)
             datafingerprint$ = r1!.getFieldNames().toString()
             keep=0
@@ -625,12 +625,14 @@ class public BBjGridExWidget extends BBjWidget
             FI
         FI
 
-        #RS!.createIndex()
+        if #RS!<> null() then
+            #RS!.createIndex()
+        fi
         #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
 
-        if (rs!.size() >0) then
+        if rs! <> NULL() AND rs!.size() >0 then
             if tmpstate!<>null() then
                 #setColumnState(tmpstate!)
             FI
