@@ -33,6 +33,7 @@ use ::BBjGridExWidget/BBjGridExWidgetToolpanel.bbj::BBjGridExWidgetToolpanel
 use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
 use ::BBjGridExWidget/BBjGridWidgetContextMenuEvent.bbj::BBjGridWidgetContextMenuEvent
 use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
+use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
 
 
 rem /**
@@ -332,6 +333,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
+    field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
     rem /**
     rem  * The grid statusbar
     rem  *
@@ -408,7 +410,7 @@ class public BBjGridExWidget extends BBjWidget
                 #setLicenseKey(str(lic!))
             FI
 
-            html$="<html><head><style>html,body{margin:0;padding:0,height: 100%} .ag-root.ag-layout-normal{height: inherit !important;}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$="<html><head><meta charset='UTF-8'><style>html,body{margin:0;padding:0,height: 100%}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
@@ -473,8 +475,8 @@ class public BBjGridExWidget extends BBjWidget
         close (ch)
         #injectScript(script$)
         rem include locale files
-        locale! = stbl("!LOCALE")
-        locale$ = str(locale!.replaceAll("_","-"))
+        locale! = #getLanguageManager().getLanguage()
+        locale$ = str(locale!.replaceAll("_","-").replaceAll("_","-"))
         dateJsLocalePath$ = distBase$ + "/../vendor/Datejs/build/date-" + locale$ + ".js"
         isLocale = 0
         ch=unt
@@ -931,6 +933,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public BBjGridExWidgetSidebar getSidebar()
         methodret #Sidebar!
+    methodend
+    rem /**
+    rem  * Get the language manager instance 
+    rem  * 
+    rem  * @returns BBjGridExWidgetLanguageManager
+    rem  */
+    method public BBjGridExWidgetLanguageManager getLanguageManager()
+        methodret #LanguageManager!
     methodend
     rem /**
     rem  * Get the grid statusbar instance
@@ -1812,7 +1822,6 @@ class public BBjGridExWidget extends BBjWidget
 
     method private void performGridDataUpdate()
     
-    
         if (! #IsReady!)
             methodret
         FI
@@ -1838,7 +1847,7 @@ class public BBjGridExWidget extends BBjWidget
         comma$=a$(5,1)
         dot$=a$(6,1)
     fi
-
+    
     options! = new JsonObject()
     options!.addProperty("animateRows",Boolean.valueOf(1))
     options!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
@@ -1860,6 +1869,7 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("rowHeight",#RowHeight!.longValue())
     options!.addProperty("sideBar",#Sidebar!.toString())
     options!.addProperty("statusBar",#Statusbar!.toString())
+    options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
     autoGroupColumnDef! = new JsonObject()
 
     if #GroupMultiAutoColumn! = 0 then
@@ -1882,11 +1892,10 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("columnsGroup", new Gson().toJson(#ColumnGroups!))
     context!.addProperty("numberGroupSep",comma$)
     context!.addProperty("numberDecimalSep",dot$)
-    context!.addProperty("locale",stbl("!LOCALE"))
+    context!.addProperty("locale",#getLanguageManager().getLanguage())
     context!.addProperty("contextMenu",#ContextMenu!.toString())
     context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
     context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
-    context!.addProperty("locale",stbl("!LOCALE"))
     context!.addProperty("contextMenu",#ContextMenu!.toString())
 
     if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
@@ -2131,23 +2140,3 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
 classend
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
