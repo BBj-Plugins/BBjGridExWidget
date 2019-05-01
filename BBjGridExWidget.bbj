@@ -1,6 +1,5 @@
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
-use com.basiscomponents.db.tree.DataTree
 use java.sql.Types
 use com.google.gson.Gson
 use com.google.gson.JsonParser
@@ -169,7 +168,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjNumber EnableFloatingFilter! = 0
     rem /**
-    rem  * set the label for the group column if the grid is a tree-grid
+    rem  * set the label for the group column
     rem  * defaults to "Group"
     rem  *
     rem  * @RequiresRefresh
@@ -347,7 +346,6 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjVector backlog! = new BBjVector()
     field private ResultSet RS!
     field private BBjString URL$
-    field private DataTree TREE!
     field private BBjString RowNodeId$ = "__ROW_INDEX"
     field private BBjString ParentNodeId$
     field private DataRow ColumnDefinition!
@@ -504,7 +502,7 @@ class public BBjGridExWidget extends BBjWidget
         #injectScript(script$)
         #IsReady! = BBjAPI.TRUE
 
-        if #RS! <> null() or #TREE! <> null()  or #URL$>"" then
+        if #RS! <> null() or #URL$>"" then
             #performGridDataUpdate()
         FI
 
@@ -617,7 +615,7 @@ class public BBjGridExWidget extends BBjWidget
         rem if the data fed to the grid is the same as before, it's an update.
         rem In this case we want to retain the setting of the columns
         rem and the order and sizes
-        if  rs! <> NULL() AND rs!.size() >0 then
+        if (rs!.size() >0) then
             r1! = rs!.getItem(0)
             datafingerprint$ = r1!.getFieldNames().toString()
             keep=0
@@ -627,14 +625,11 @@ class public BBjGridExWidget extends BBjWidget
             FI
         FI
 
-        if #RS!<> null() then
-            #RS!.createIndex()
-        fi
-        #TREE! = null()
+        #RS!.createIndex()
         #URL$=""
         #performGridDataUpdate()
 
-        if rs! <> NULL() AND rs!.size() >0 then
+        if (rs!.size() >0) then
             if tmpstate!<>null() then
                 #setColumnState(tmpstate!)
             FI
@@ -652,28 +647,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void setData( ResultSet rs! ,BBjString RowNodeId$)
         #RowNodeId$ = RowNodeId$
         #setData(rs!)
-    methodend
-    rem /**
-    rem  * set the data into the grid, to create a tree grid
-    rem  * @param DataTree: the com.basiscomponents.db.tree.DataTree with the data
-    rem  * organized in hiearchy of ResultSets
-    rem  * @see Demo/TreeDemo.bbj https://github.com/BasisHub/BBjGridExWidget/blob/master/Demo/TreeDemo.bbj
-    rem  */
-    method public void setData( DataTree tree!)
-        #RS! = null()
-        #TREE! = tree!
-        #URL$=""
-        #performGridDataUpdate()
-    methodend
-
-    method public void setData( DataTree rs! ,BBjString RowNodeId$)
-        #RowNodeId$ = RowNodeId$
-        #setData(rs!)
-    methodend
-
-    method public void setData( DataTree rs! ,BBjString RowNodeId$ , BBjString ParentNodeId$)
-        #ParentNodeId$ = ParentNodeId$
-        #setData(rs! , RowNodeId$)
     methodend
     rem /**
     rem  * Set new rows into the grid
@@ -712,7 +685,6 @@ class public BBjGridExWidget extends BBjWidget
         FI
 
         #RS!.createIndex()
-        #TREE! = null()
         #URL$=""
         data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
         #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
@@ -794,7 +766,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void clearRowsData()
         #RS! = new ResultSet()
         #RS!.createIndex()
-        #TREE! = null()
         #URL$=""
         #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
     methodend
@@ -1178,7 +1149,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @param BBjNumber height! - the new row height
     rem  */
-    method public void setRowHeight (BBjNumber height!)
+    method public void setRowHeight(BBjNumber height!)
         #RowHeight! = height!
         #executeScript("gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
     methodend
@@ -1188,7 +1159,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
     rem  */
-    method public void setRowHeight (BBjNumber index!, BBjNumber height!)
+    method public void setRowHeight(BBjNumber index!, BBjNumber height!)
         #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
     methodend
     rem /**
@@ -1198,10 +1169,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber width!: the column width
     rem  */
     method public void setColumnWidth(BBjString Field$, BBjNumber w!)
-        if Field$="$TREENODE" then
-            let Field$="__node__name"
-        FI
-
         #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",num(w!),err=*next)
         script$="gw_setColumnWidth('"+ #GRIDID$ + "','" + Field$ + "'," + str(w!) + ");"
         #executeScript(script$)
@@ -1826,19 +1793,9 @@ class public BBjGridExWidget extends BBjWidget
             methodret
         FI
 
-        tree! = 0
         gson! = new Gson()
-
-        if (#RS! <> null()) then
-            data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
-            cdef!= #getAgGridColumnDefinition(0)
-        else
-            if (#TREE! <> null()) then
-                data$=#TREE!.toJson()
-                tree! = 1
-                cdef!= #getAgGridColumnDefinition(1)
-            FI
-        FI
+                    data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
+            cdef!= #getAgGridColumnDefinition()
 
         comma$=","
         dot$="."
@@ -1888,7 +1845,6 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("getRowNodeId",#RowNodeId$)
     context!.addProperty("getParentNodeId",#ParentNodeId$)
     context!.addProperty("enterKeyBehavior",#EnterKeyBehavior$)
-    context!.addProperty("isTree",tree!)
     context!.addProperty("columnsGroup", new Gson().toJson(#ColumnGroups!))
     context!.addProperty("numberGroupSep",comma$)
     context!.addProperty("numberDecimalSep",dot$)
@@ -1908,7 +1864,7 @@ class public BBjGridExWidget extends BBjWidget
     #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
     methodend
 
-    method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
+    method private JsonArray getAgGridColumnDefinition()
         declare DataRow cd!
 
         cd! = #ColumnDefinition!
@@ -1937,29 +1893,11 @@ class public BBjGridExWidget extends BBjWidget
         if cd! = null() or cd!.getFieldNames().size()=0  then
             if #RS! <> null() and #RS!.size()>0 then
                 cd! = #RS!.get(0)
-            else
-                if #TREE! <> null() then
-                    cd! = #TREE!.getFirstRecord()
-                FI
             FI
         FI
 
         cdef! = new JsonArray()
         first=1
-
-        if fGroup%>0 then
-            node! = new JsonObject()
-            node!.addProperty("headerName",#GroupColumnLabel$)
-            node!.addProperty("field","__node__name")
-            node!.addProperty("cellRenderer","agGroupCellRenderer")
-            node!.addProperty("pinned","left")
-            cellRendererParams! = new JsonObject()
-            cellRendererParams!.addProperty("suppressCount" ,1 - #ShowGroupChildCount!)
-            cellRendererParams!.addProperty("checkbox" , #ShowGroupSelectionCheckbox!)
-            node!.add("cellRendererParams",cellRendererParams!)
-            cdef!.add(node!)
-            first=0
-        FI
 
         if cd! = null() or cd!.getFieldNames().size()=0  then
             methodret cdef!

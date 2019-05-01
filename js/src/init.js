@@ -175,10 +175,6 @@ export function gw_setData(json, options, license) {
   if(options.localeText && options.localeText.length) {
     options.localeText = JSON.parse(options.localeText);
   }
-  
-  if (true === options.context.isTree) {
-    options.getNodeChildDetails = gw_getNodeChildDetails;
-  }
 
   if (
     options.context.hasOwnProperty("navigateToNextCell") &&
