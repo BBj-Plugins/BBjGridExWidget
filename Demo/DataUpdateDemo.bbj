@@ -81,7 +81,7 @@ onRowSelect:
     sel! =  grid!.getSelectedRows()
   
     if INFO(3,6)="5" then
-      a = msgbox(ev!.getNewSelectedRows().toString(), 0, "Selection")
+      a = msgbox(ev!.getSelectedRows().toString(), 0, "Selection")
     else
       print 'SHOW', 
       print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()

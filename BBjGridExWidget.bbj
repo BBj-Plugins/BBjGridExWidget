@@ -1,6 +1,5 @@
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
-use com.basiscomponents.db.tree.DataTree
 use java.sql.Types
 use com.google.gson.Gson
 use com.google.gson.JsonParser
@@ -11,7 +10,6 @@ use java.lang.Integer
 use java.util.ArrayList
 use java.util.HashMap
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
-
 use ::BBjGridExWidget/AbstractBBjGridExWidgetStatusBarComponent.bbj::AbstractBBjGridExWidgetStatusBarComponent
 use ::BBjGridExWidget/BBjGridContextMenu.bbj::BBjGridContextMenu
 use ::BBjGridExWidget/BBjGridContextMenuItem.bbj::BBjGridContextMenuItem
@@ -33,8 +31,7 @@ use ::BBjGridExWidget/BBjGridExWidgetToolpanel.bbj::BBjGridExWidgetToolpanel
 use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
 use ::BBjGridExWidget/BBjGridWidgetContextMenuEvent.bbj::BBjGridWidgetContextMenuEvent
 use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
-
-
+use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
 rem /**
 rem  * A Grid Widget Plugin for BBj
 rem  */
@@ -168,7 +165,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjNumber EnableFloatingFilter! = 0
     rem /**
-    rem  * set the label for the group column if the grid is a tree-grid
+    rem  * set the label for the group column
     rem  * defaults to "Group"
     rem  *
     rem  * @RequiresRefresh
@@ -332,6 +329,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetSidebar Sidebar! = new BBjGridExWidgetDefaultSidebar(#this!)
+    field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
     rem /**
     rem  * The grid statusbar
     rem  *
@@ -345,7 +343,6 @@ class public BBjGridExWidget extends BBjWidget
     field private BBjVector backlog! = new BBjVector()
     field private ResultSet RS!
     field private BBjString URL$
-    field private DataTree TREE!
     field private BBjString RowNodeId$ = "__ROW_INDEX"
     field private BBjString ParentNodeId$
     field private DataRow ColumnDefinition!
@@ -408,7 +405,15 @@ class public BBjGridExWidget extends BBjWidget
                 #setLicenseKey(str(lic!))
             FI
 
-            html$="<html><head><style>html,body{margin:0;padding:0,height: 100%} .ag-root.ag-layout-normal{height: inherit !important;}</style></head><body><div id='event-bridge-"+ str(#GRIDID$) +"' onClick='window.basisDispatchCustomEvent(this, event.payload)'></div><div id='" + str(#GRIDID$) + "' style=""height: 100%"" class=""ag-theme-balham""></div></body></html>"
+            html$ = ""
+            ch=unt
+            open (ch)"BBjGridExWidget/client/index.html"
+            read record (ch,siz=5512000)html$
+            close (ch)
+            html! = html$
+            html! = html!.replaceAll("__id__",#GRIDID$)
+            html! = html!.replaceAll("__lang__",#getLanguageManager().getLanguage())
+            html$ = str(html!)
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
@@ -436,9 +441,7 @@ class public BBjGridExWidget extends BBjWidget
             #HTMLView!.setVisible(1)
         else
             #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
-        fi
-
-
+        FI
     methodend
 
     method protected void injectScript(BBjString script$)
@@ -460,21 +463,21 @@ class public BBjGridExWidget extends BBjWidget
         rem ' only do this once
         #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
         ch=unt
-        distBase$ = "BBjGridExWidget/js/dist"
+        distBase$ = "BBjGridExWidget/client/dist"
         rem include the grid
         if #getDebug() = 1 then
             gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
         else
             gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
-        fi
+        FI
 
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
         rem include locale files
-        locale! = stbl("!LOCALE")
-        locale$ = str(locale!.replaceAll("_","-"))
+        locale! = #getLanguageManager().getLanguage()
+        locale$ = str(locale!.replaceAll("_","-").replaceAll("_","-"))
         dateJsLocalePath$ = distBase$ + "/../vendor/Datejs/build/date-" + locale$ + ".js"
         isLocale = 0
         ch=unt
@@ -495,14 +498,14 @@ class public BBjGridExWidget extends BBjWidget
             open (ch) distBase$ + "/bbj-grid-widget.js"
         else
             open (ch) distBase$ + "/bbj-grid-widget.min.js"
-        fi
+        FI
 
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
         #IsReady! = BBjAPI.TRUE
 
-        if #RS! <> null() or #TREE! <> null()  or #URL$>"" then
+        if #RS! <> null() or #URL$>"" then
             #performGridDataUpdate()
         FI
 
@@ -626,7 +629,6 @@ class public BBjGridExWidget extends BBjWidget
         FI
 
         #RS!.createIndex()
-        #TREE! = null()
         #URL$=""
         #performGridDataUpdate()
 
@@ -648,28 +650,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void setData( ResultSet rs! ,BBjString RowNodeId$)
         #RowNodeId$ = RowNodeId$
         #setData(rs!)
-    methodend
-    rem /**
-    rem  * set the data into the grid, to create a tree grid
-    rem  * @param DataTree: the com.basiscomponents.db.tree.DataTree with the data
-    rem  * organized in hiearchy of ResultSets
-    rem  * @see Demo/TreeDemo.bbj https://github.com/BasisHub/BBjGridExWidget/blob/master/Demo/TreeDemo.bbj
-    rem  */
-    method public void setData( DataTree tree!)
-        #RS! = null()
-        #TREE! = tree!
-        #URL$=""
-        #performGridDataUpdate()
-    methodend
-
-    method public void setData( DataTree rs! ,BBjString RowNodeId$)
-        #RowNodeId$ = RowNodeId$
-        #setData(rs!)
-    methodend
-
-    method public void setData( DataTree rs! ,BBjString RowNodeId$ , BBjString ParentNodeId$)
-        #ParentNodeId$ = ParentNodeId$
-        #setData(rs! , RowNodeId$)
     methodend
     rem /**
     rem  * Set new rows into the grid
@@ -708,7 +688,6 @@ class public BBjGridExWidget extends BBjWidget
         FI
 
         #RS!.createIndex()
-        #TREE! = null()
         #URL$=""
         data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
         #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
@@ -729,7 +708,7 @@ class public BBjGridExWidget extends BBjWidget
             else
                 parser! = new JsonParser()
                 #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString()  +")")
-            fi
+            FI
         FI
     methodend
     rem /**
@@ -747,7 +726,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             parser! = new JsonParser()
             #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
-        fi
+        FI
     methodend
     rem /**
     rem  * Add new row
@@ -763,7 +742,7 @@ class public BBjGridExWidget extends BBjWidget
         else
             parser! = new JsonParser()
             #executeScript("gw_addRows('" + #GRIDID$ +"',null,[" + parser!.parse(row!.toJson("__ROW_INDEX")).getAsJsonArray().get(0).toString() +"])")
-        fi
+        FI
     methodend
     rem /**
     rem  * Remove row from grid by index
@@ -790,7 +769,6 @@ class public BBjGridExWidget extends BBjWidget
     method public void clearRowsData()
         #RS! = new ResultSet()
         #RS!.createIndex()
-        #TREE! = null()
         #URL$=""
         #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
     methodend
@@ -929,6 +907,14 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public BBjGridExWidgetSidebar getSidebar()
         methodret #Sidebar!
+    methodend
+    rem /**
+    rem  * Get the language manager instance
+    rem  *
+    rem  * @returns BBjGridExWidgetLanguageManager
+    rem  */
+    method public BBjGridExWidgetLanguageManager getLanguageManager()
+        methodret #LanguageManager!
     methodend
     rem /**
     rem  * Get the grid statusbar instance
@@ -1166,7 +1152,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @param BBjNumber height! - the new row height
     rem  */
-    method public void setRowHeight (BBjNumber height!)
+    method public void setRowHeight(BBjNumber height!)
         #RowHeight! = height!
         #executeScript("gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
     methodend
@@ -1176,7 +1162,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
     rem  */
-    method public void setRowHeight (BBjNumber index!, BBjNumber height!)
+    method public void setRowHeight(BBjNumber index!, BBjNumber height!)
         #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
     methodend
     rem /**
@@ -1186,10 +1172,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param BBjNumber width!: the column width
     rem  */
     method public void setColumnWidth(BBjString Field$, BBjNumber w!)
-        if Field$="$TREENODE" then
-            let Field$="__node__name"
-        FI
-
         #ColumnDefinition!.setFieldAttribute(Field$,"WIDTH",num(w!),err=*next)
         script$="gw_setColumnWidth('"+ #GRIDID$ + "','" + Field$ + "'," + str(w!) + ");"
         #executeScript(script$)
@@ -1395,7 +1377,7 @@ class public BBjGridExWidget extends BBjWidget
             row!.setParentKey(parsedRow!.get("parentKey").getAsString())
             row!.setIsSelected(iff(parsedRow!.get("selected").getAsString() = "true" ,  1 , 0))
             methodret row!
-        fi
+        FI
 
         methodret null()
     methodend
@@ -1403,18 +1385,19 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @return BBjVector with the selected rows
     rem  */
     method public BBjVector getSelectedRows()
-
         rows! = new BBjVector()
-    
-        if (#RS! = null()) then goto getSelectedRowsErr
-    
-        returnedRows! = #executeScript("gw_getSelectedRows('" + #GRIDID$ + "')")
 
-        if returnedRows!=null() then goto getSelectedRowsErr
-        
+        if (#RS! = null()) then
+            goto getSelectedRowsErr
+        FI
+
+        returnedRows! = #executeScript("gw_getSelectedRows('" + #GRIDID$ + "')")
+        if returnedRows!=null() then
+            goto getSelectedRowsErr
+        FI
+
         parser! = new JsonParser()
         array! = parser!.parse(returnedRows!).getAsJsonArray()
-
         it! = array!.iterator()
         while (it!.hasNext())
             next! = it!.next().getAsJsonObject(err=getSelectedRowsErr)
@@ -1426,10 +1409,9 @@ class public BBjGridExWidget extends BBjWidget
             row!.setIsSelected(iff(next!.get("selected").getAsString() = "true" ,  1 , 0))
             rows!.add( row!)
         wend
-        
+
         getSelectedRowsErr:
-        
-        methodret rows!
+            methodret rows!
     methodend
     rem /**
     rem  * Group Vector of Columns
@@ -1739,22 +1721,23 @@ class public BBjGridExWidget extends BBjWidget
         else
             rem double-click four times on the same row will copy the JSON result set data to the clipboard, in GUI
             if info(3,6)<>"5" and #RS!<> null() then
-                r$ = str(#getSelectedRows())
-                if #DoubleClickRowsHistory$="" or #DoubleClickRowsHistory$=r$ or #DoubleClickRowsHistory$=r$+r$ then
-                    #DoubleClickRowsHistory$=#DoubleClickRowsHistory$+r$
-                else
-                    if #DoubleClickRowsHistory$=r$+r$+r$ then
-                        clipfromstr 1,#RS!.toJson()
-                        a=msgbox("JSON-Data has been copied to the Clipboard",0,"Grid Data")
-                        #DoubleClickRowsHistory$=""
-                    else
-                        #DoubleClickRowsHistory$=""
-                    fi
-                fi
-            fi 
+            r$ = str(#getSelectedRows())
 
-            #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+            if #DoubleClickRowsHistory$="" or #DoubleClickRowsHistory$=r$ or #DoubleClickRowsHistory$=r$+r$ then
+                #DoubleClickRowsHistory$=#DoubleClickRowsHistory$+r$
+            else
+                if #DoubleClickRowsHistory$=r$+r$+r$ then
+                    clipfromstr 1,#RS!.toJson()
+                    a=msgbox("JSON-Data has been copied to the Clipboard",0,"Grid Data")
+                    #DoubleClickRowsHistory$=""
+                else
+                    #DoubleClickRowsHistory$=""
+                FI
+            FI
         FI
+
+        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+    FI
     methodend
 
     method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
@@ -1809,33 +1792,20 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
     method private void performGridDataUpdate()
-    
-    
         if (! #IsReady!)
             methodret
         FI
 
-        tree! = 0
         gson! = new Gson()
-
-        if (#RS! <> null()) then
-            data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
-            cdef!= #getAgGridColumnDefinition(0)
-        else
-            if (#TREE! <> null()) then
-                data$=#TREE!.toJson()
-                tree! = 1
-                cdef!= #getAgGridColumnDefinition(1)
-            FI
-        FI
-
+        data$=#RS!.toJson(BBjAPI.TRUE,"__ROW_INDEX")
+        cdef!= #getAgGridColumnDefinition()
         comma$=","
         dot$="."
         a$=opts
         if AND ( a$(3,1), $02$ ) = $02$ then
         comma$=a$(5,1)
         dot$=a$(6,1)
-    fi
+    FI
 
     options! = new JsonObject()
     options!.addProperty("animateRows",Boolean.valueOf(1))
@@ -1858,6 +1828,7 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("rowHeight",#RowHeight!.longValue())
     options!.addProperty("sideBar",#Sidebar!.toString())
     options!.addProperty("statusBar",#Statusbar!.toString())
+    options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
     autoGroupColumnDef! = new JsonObject()
 
     if #GroupMultiAutoColumn! = 0 then
@@ -1876,15 +1847,13 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("getRowNodeId",#RowNodeId$)
     context!.addProperty("getParentNodeId",#ParentNodeId$)
     context!.addProperty("enterKeyBehavior",#EnterKeyBehavior$)
-    context!.addProperty("isTree",tree!)
     context!.addProperty("columnsGroup", new Gson().toJson(#ColumnGroups!))
     context!.addProperty("numberGroupSep",comma$)
     context!.addProperty("numberDecimalSep",dot$)
-    context!.addProperty("locale",stbl("!LOCALE"))
+    context!.addProperty("locale",#getLanguageManager().getLanguage())
     context!.addProperty("contextMenu",#ContextMenu!.toString())
     context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
     context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
-    context!.addProperty("locale",stbl("!LOCALE"))
     context!.addProperty("contextMenu",#ContextMenu!.toString())
 
     if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
@@ -1897,13 +1866,12 @@ class public BBjGridExWidget extends BBjWidget
     #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
     methodend
 
-    method private JsonArray getAgGridColumnDefinition(BBjInt fGroup%)
+    method private JsonArray getAgGridColumnDefinition()
         declare DataRow cd!
 
         cd! = #ColumnDefinition!
 
         if #AttributesRecord! <> NULL() and cd! <> NULL() then
-        
             if REV>"REV 18.11" then
                 cd!.copyAttributes(ar!)
             else
@@ -1911,202 +1879,184 @@ class public BBjGridExWidget extends BBjWidget
                 it! = cd!.getFieldNames().iterator()
                 while it!.hasNext()
                     f$ = it!.next()
-    
+
                     if cd!.contains(f$) then
                         cd!.setFieldAttributes(f$,ar!.getFieldAttributes(f$))
                     FI
                 wend
-            fi
+            FI
         FI
-        
+
         if cd! = null() and #AttributesRecord!<> null() then
-            cd! = #AttributesRecord!
-        fi
+        cd! = #AttributesRecord!
+    FI
 
-        if cd! = null() or cd!.getFieldNames().size()=0  then
-            if #RS! <> null() and #RS!.size()>0 then
-                cd! = #RS!.get(0)
-            else
-                if #TREE! <> null() then
-                    cd! = #TREE!.getFirstRecord()
-                FI
-            FI
+    if cd! = null() or cd!.getFieldNames().size()=0  then
+        if #RS! <> null() and #RS!.size()>0 then
+            cd! = #RS!.get(0)
         FI
+    FI
 
-        cdef! = new JsonArray()
-        first=1
+    cdef! = new JsonArray()
+    first=1
 
-        if fGroup%>0 then
-            node! = new JsonObject()
-            node!.addProperty("headerName",#GroupColumnLabel$)
-            node!.addProperty("field","__node__name")
-            node!.addProperty("cellRenderer","agGroupCellRenderer")
-            node!.addProperty("pinned","left")
-            cellRendererParams! = new JsonObject()
-            cellRendererParams!.addProperty("suppressCount" ,1 - #ShowGroupChildCount!)
-            cellRendererParams!.addProperty("checkbox" , #ShowGroupSelectionCheckbox!)
-            node!.add("cellRendererParams",cellRendererParams!)
-            cdef!.add(node!)
-            first=0
-        FI
-
-        if cd! = null() or cd!.getFieldNames().size()=0  then
-            methodret cdef!
-        FI
-
-        f! = cd!.getFieldNames()
-        it! = f!.iterator()
-        while it!.hasNext()=BBjAPI.TRUE
-            f$=str(it!.next())
-            label$=""
-            label$=cd!.getFieldAttribute(f$,"LABEL",err=*next)
-
-            if label$="" then
-                label$=f$
-            FI
-
-            node! = new JsonObject()
-            node!.addProperty("headerName",label$)
-            node!.addProperty("field",f$)
-
-            if first then
-                node!.addProperty("checkboxSelection",#ShowSelectionCheckbox!)
-            FI
-
-            pin$=""
-            pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
-
-            if pin$>"" then
-                node!.addProperty("pinned",pin$)
-            FI
-
-            width$=""
-            width$=cd!.getFieldAttribute(f$,"WIDTH",err=*next)
-
-            if width$>"" then
-                node!.addProperty("width",num(width$))
-            FI
-
-            editable! = 0
-            editable!= num(cd!.getFieldAttribute(f$,"EDITABLE",err=*next))
-
-            if editable! > 0 and #Editable! > 0 then
-                node!.addProperty("editable",1)
-            else
-                node!.addProperty("editable",0)
-            FI
-
-            aggFunc$ = cd!.getFieldAttribute(f$,"AGG_FUNC",err=*next)
-
-            if len(aggFunc$) > 0 then
-                node!.addProperty("aggFunc",aggFunc$)
-            FI
-
-            allowedAggFuncs$ = cd!.getFieldAttribute(f$,"ALLOWED_AGG_FUNCS",err=*next)
-
-            if len(aggFunc$) > 0 then
-                node!.addProperty("ALLOWED_AGG_FUNCS",allowedAggFuncs$)
-            FI
-
-            footerValueGetter$ = cd!.getFieldAttribute(f$,"FOOTER_VALUE_GETTER",err=*next)
-
-            if len(footerValueGetter$) > 0 then
-                node!.addProperty("FOOTER_VALUE_GETTER",footerValueGetters$)
-            FI
-
-            enableValue!= num(cd!.getFieldAttribute(f$,"ENABLE_VALUE",err=*next))
-
-            if enableValue! > 0 then
-                node!.addProperty("enableValue",1)
-            else
-                node!.addProperty("enableValue",#EnableValue!)
-            FI
-
-            enableRowGroup!= num(cd!.getFieldAttribute(f$,"ENABLE_ROW_GROUP",err=*next))
-
-            if enableRowGroup! > 0 then
-                node!.addProperty("enableRowGroup",1)
-            else
-                node!.addProperty("enableRowGroup",#EnableRowGroup!)
-            FI
-
-            enablePivot!= num(cd!.getFieldAttribute(f$,"ENABLE_PIVOT",err=*next))
-
-            if enablePivot! > 0 then
-                node!.addProperty("enablePivot",1)
-            else
-                node!.addProperty("enablePivot",#EnablePivot!)
-            FI
-
-            cellClass$=""
-            cellClass$=cd!.getFieldAttribute(f$,"CELL_CLASS")
-
-            if cellClass$>"" then
-                node!.addProperty("cellClass",cellClass$)
-            FI
-
-            type! = ""
-            type!= cd!.getFieldAttribute(f$,"TYPE",err=*next)
-
-            if type! <> "" then
-                node!.addProperty("type",type!)
-            else
-                switch cd!.getFieldType(f$)
-                    case Types.INTEGER
-                    case Types.DECIMAL
-                    case Types.DOUBLE
-                    case Types.NUMERIC
-                        node!.addProperty("type",#GRID_TYPE_BASIC_NUMBER())
-                        break
-                    case Types.DATE
-                        node!.addProperty("type",#GRID_TYPE_BASIC_DATE())
-                        break
-                    case Types.TIMESTAMP
-                        node!.addProperty("type",#GRID_TYPE_BASIC_TIMESTAMP())
-                        break
-                    case Types.BOOLEAN
-                        node!.addProperty("type",#GRID_TYPE_BASIC_BOOLEAN())
-                        break
-                    case default
-                        node!.addProperty("type",#DefaultType$)
-                        break
-                swend
-            FI
-
-            bgc$=""
-            bgc$=cd!.getFieldAttribute(f$,"BGCOLOR",err=*next)
-            fgc$=""
-            fgc$=cd!.getFieldAttribute(f$,"FGCOLOR",err=*next)
-            align$=""
-            align$=cd!.getFieldAttribute(f$,"ALIGN",err=*next)
-            f=0
-
-            if (bgc$>"" OR fgc$>"" or align$>"") then
-                cellStyleDefaults! = new JsonObject()
-
-                if (fgc$>"") then
-                    cellStyleDefaults!.addProperty("FGCOLOR",fgc$)
-                    f=1
-                FI
-
-                if bgc$>"" then
-                    cellStyleDefaults!.addProperty("BGCOLOR",bgc$)
-                    f=1
-                FI
-
-                if align$>"" then
-                    cellStyleDefaults!.addProperty("ALIGN",align$)
-                    f=1
-                FI
-
-                node!.add("cellStyleDefaults",cellStyleDefaults!)
-            FI
-
-            first = 0
-            cdef!.add(node!)
-        wend
-
+    if cd! = null() or cd!.getFieldNames().size()=0  then
         methodret cdef!
+    FI
+
+    f! = cd!.getFieldNames()
+    it! = f!.iterator()
+    while it!.hasNext()=BBjAPI.TRUE
+        f$=str(it!.next())
+        label$=""
+        label$=cd!.getFieldAttribute(f$,"LABEL",err=*next)
+
+        if label$="" then
+            label$=f$
+        FI
+
+        node! = new JsonObject()
+        node!.addProperty("headerName",label$)
+        node!.addProperty("field",f$)
+
+        if first then
+            node!.addProperty("checkboxSelection",#ShowSelectionCheckbox!)
+        FI
+
+        pin$=""
+        pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
+
+        if pin$>"" then
+            node!.addProperty("pinned",pin$)
+        FI
+
+        width$=""
+        width$=cd!.getFieldAttribute(f$,"WIDTH",err=*next)
+
+        if width$>"" then
+            node!.addProperty("width",num(width$))
+        FI
+
+        editable! = 0
+        editable!= num(cd!.getFieldAttribute(f$,"EDITABLE",err=*next))
+
+        if editable! > 0 and #Editable! > 0 then
+            node!.addProperty("editable",1)
+        else
+            node!.addProperty("editable",0)
+        FI
+
+        aggFunc$ = cd!.getFieldAttribute(f$,"AGG_FUNC",err=*next)
+
+        if len(aggFunc$) > 0 then
+            node!.addProperty("aggFunc",aggFunc$)
+        FI
+
+        allowedAggFuncs$ = cd!.getFieldAttribute(f$,"ALLOWED_AGG_FUNCS",err=*next)
+
+        if len(aggFunc$) > 0 then
+            node!.addProperty("ALLOWED_AGG_FUNCS",allowedAggFuncs$)
+        FI
+
+        footerValueGetter$ = cd!.getFieldAttribute(f$,"FOOTER_VALUE_GETTER",err=*next)
+
+        if len(footerValueGetter$) > 0 then
+            node!.addProperty("FOOTER_VALUE_GETTER",footerValueGetters$)
+        FI
+
+        enableValue!= num(cd!.getFieldAttribute(f$,"ENABLE_VALUE",err=*next))
+
+        if enableValue! > 0 then
+            node!.addProperty("enableValue",1)
+        else
+            node!.addProperty("enableValue",#EnableValue!)
+        FI
+
+        enableRowGroup!= num(cd!.getFieldAttribute(f$,"ENABLE_ROW_GROUP",err=*next))
+
+        if enableRowGroup! > 0 then
+            node!.addProperty("enableRowGroup",1)
+        else
+            node!.addProperty("enableRowGroup",#EnableRowGroup!)
+        FI
+
+        enablePivot!= num(cd!.getFieldAttribute(f$,"ENABLE_PIVOT",err=*next))
+
+        if enablePivot! > 0 then
+            node!.addProperty("enablePivot",1)
+        else
+            node!.addProperty("enablePivot",#EnablePivot!)
+        FI
+
+        cellClass$=""
+        cellClass$=cd!.getFieldAttribute(f$,"CELL_CLASS")
+
+        if cellClass$>"" then
+            node!.addProperty("cellClass",cellClass$)
+        FI
+
+        type! = ""
+        type!= cd!.getFieldAttribute(f$,"TYPE",err=*next)
+
+        if type! <> "" then
+            node!.addProperty("type",type!)
+        else
+            switch cd!.getFieldType(f$)
+                case Types.INTEGER
+                case Types.DECIMAL
+                case Types.DOUBLE
+                case Types.NUMERIC
+                    node!.addProperty("type",#GRID_TYPE_BASIC_NUMBER())
+                    break
+                case Types.DATE
+                    node!.addProperty("type",#GRID_TYPE_BASIC_DATE())
+                    break
+                case Types.TIMESTAMP
+                    node!.addProperty("type",#GRID_TYPE_BASIC_TIMESTAMP())
+                    break
+                case Types.BOOLEAN
+                    node!.addProperty("type",#GRID_TYPE_BASIC_BOOLEAN())
+                    break
+                case default
+                    node!.addProperty("type",#DefaultType$)
+                    break
+            swend
+        FI
+
+        bgc$=""
+        bgc$=cd!.getFieldAttribute(f$,"BGCOLOR",err=*next)
+        fgc$=""
+        fgc$=cd!.getFieldAttribute(f$,"FGCOLOR",err=*next)
+        align$=""
+        align$=cd!.getFieldAttribute(f$,"ALIGN",err=*next)
+        f=0
+
+        if (bgc$>"" OR fgc$>"" or align$>"") then
+            cellStyleDefaults! = new JsonObject()
+
+            if (fgc$>"") then
+                cellStyleDefaults!.addProperty("FGCOLOR",fgc$)
+                f=1
+            FI
+
+            if bgc$>"" then
+                cellStyleDefaults!.addProperty("BGCOLOR",bgc$)
+                f=1
+            FI
+
+            if align$>"" then
+                cellStyleDefaults!.addProperty("ALIGN",align$)
+                f=1
+            FI
+
+            node!.add("cellStyleDefaults",cellStyleDefaults!)
+        FI
+
+        first = 0
+        cdef!.add(node!)
+    wend
+
+    methodret cdef!
     methodend
     rem /**
     rem  * A public access to the excute method
@@ -2129,23 +2079,3 @@ class public BBjGridExWidget extends BBjWidget
     methodend
 
 classend
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

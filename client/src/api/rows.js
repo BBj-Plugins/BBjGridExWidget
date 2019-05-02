@@ -68,23 +68,6 @@ export function gw_getRowNodeId(id, data) {
   return data[gw_getGrid(id).options.context.getRowNodeId];
 }
 
-export function gw_getNodeChildDetails(rowItem) {
-
-  const key = rowItem[gw_options.__getParentNodeId];
-  if (rowItem.__node__children) {
-    return {
-      group: true,
-      expanded: false,
-      // provide ag-Grid with the children of this group
-      children: rowItem.__node__children,
-      // the key is used by the default group cellRenderer
-      key: key ? key : -1
-    };
-  } else {
-    return false;
-  }
-}
-
 export function gw_setRowsData(id, json) {
   const options = gw_getGrid(id).options;
 

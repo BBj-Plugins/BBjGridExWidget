@@ -1,105 +1,19 @@
-# Changelog 
-
-## v0.94.0 - 24/04/2019
-
-* [Fix: reset row height to the default before the row height was settable](https://github.com/BBj-Plugins/BBjGridExWidget/commit/88c4d5d10d7f354f05ceec4b93ade7774bbda480)
-* [Fix: typo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d65c8fab75e313f7c9e29bbdea942e6aa11928b5)
-* [Fix: remove black border around html view control](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0a5dff9457f219356ae60b97b6a5e3d1f50dd193)
-* [Fix: error when resizing the control](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6ce0dd1f83f45b5f903651c882a6061931fab19e)
-* [Fix: remove obsolete variable](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b5e9e440794ff154fab2adb04b21b5acb1450bcc)
-* [Fix : Horizontal scrollbar is hidden in GUI after updating to AG Grid 20 (#121)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7457720f44509c91c85349d018e3809962f41f94)
-* [Fix: setSize did not honor the left panel](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6e16a18b06617187cea7a6d802919986bdc38296)
-* [Fix: getVisibleColumns method](https://github.com/BBj-Plugins/BBjGridExWidget/commit/af4f2e2a6ef6f9b3d796b45e57d123b839265faf)
-* [Fix: deprecate tree demo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ad9073324966e4c2b238e306a0bd80db1136eab1)
-* [Fix: clean up demos](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1981b060f3829cb55629cde833295f9c8a2039f2)
-* [Feat: Seperate BBjGridExWidget classes to their own files  (#126)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4036eec11130bffd8ed367fd892454af6453941a)
-* [Feat: add statusbar & statusbar components (#116)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d431f0542e8d7078b1d5d94c8f4b93f368baae3f)
-* [Fix: #140](https://github.com/BBj-Plugins/BBjGridExWidget/commit/46b814b97d3fdcbee7dd0075a74f22c9aa49743a)
-* [Feat: add debug function to copy JSON data to clipboard (GUI only) after double-clicking at least four times on the same row](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0773ca30290d3a43c17fb7ba5b7ca9e7fa278a96)
-* [Feat: use new toJsonObject for BBj versions >= 19.00](https://github.com/BBj-Plugins/BBjGridExWidget/commit/07027859338bb4b3a1ebf024ae2f7c9f83db0830)
-
-## v0.93.0  - 27/03/2019
-
-* [Fix: The two-grid demo doesn't empty the lower grid when a customer has no orders - #108](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0d115aa4d15891fb369497ccdc1a455dcec3369e)
-* [Fix: Using vertical scrollbar sometimes doesn't show the last row completely - #109](https://github.com/BBj-Plugins/BBjGridExWidget/commit/45695cc30cc211ec7b9eceac6c5fee8173a2610c)
-* [feat: Add the ability to set the row height globally and by row - #112](https://github.com/BBj-Plugins/BBjGridExWidget/commit/90d47712432c96e7585bbe796f2377f5a36bffc4)
-* [feat: implement debounced selection api - #69](https://github.com/BBj-Plugins/BBjGridExWidget/commit/831243b3b9090b47d926ead26e1b905f308dde17)
+# v.95.0 (2019-05-02)
 
 
-## v0.92.1 - 05/02/2019
+### Bug Fixes
 
-* [[fix] remove dead code for #72](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4408a9571510dca3f7f4f4ecfb2d0f4a6db629f)
+* NPE when passing null() as a resultset ([4e3c546](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4e3c546))
 
-## v0.92.0 - 25/02/2019
 
-* [Fix #72](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fd6d1980b15cabaf614a46ea4aa73e6de4d2dba9)
-* [introduce unique control type id](https://github.com/BBj-Plugins/BBjGridExWidget/commit/75f13d2de1e3507cc2011497cc563d7fd44d5c33)
-* [adjustments to do better handling of select / deselect stuff](https://github.com/BBj-Plugins/BBjGridExWidget/commit/47c5f07809779b7af5396afd31675ca1c9d1a229)
-* [set rowDeselection:true to make the grid plug-in behave like a BBj Grid](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0934920c882e4d4d764691d3797e858447b63479)
-* [added support for multiple selection in top grid](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f74a1adf2f9e3ac36600736b8eb42519ae927477)
-* [Milestone#2 (#102)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/38fd504b35e0156a28a8e1e33f215e9329106c5d)
-* [Update bbj-plugin.json (#103)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/3ad00579c44e58310adf97a66d3452368a6f4aa4)
-* [Fix #90](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f802abf921aa19dbb78e2c74d2872fccbe5c95dd)
-* [fixed getImageData (always returned sample icon)](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d5e62bfc3b4410fe71de30cd3a5806eb7d57d85d)
-* [enhanced sample](https://github.com/BBj-Plugins/BBjGridExWidget/commit/84f902bd0ac0e3b35a2c1179d3e4bbcf22d1b14d)
-* [add comment to sample](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e324fe66395ad6e6e7dc78c2af732682c7c984eb)
-* [making the JSON String handling in the column state backwards compatible](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c37ef1553898d358cd3efa5a824dba0c5e2de4d2)
-* [adjust the sample dates to show issue https://github.com/BBj-Plugins/BBjGridExWidget/issues/89](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1cfbc39eb6c20a1856f3cbde72c1ab1abe59bb63)
-* [added getImageData method](https://github.com/BBj-Plugins/BBjGridExWidget/commit/aed0df7603e3d473bc8874de7db750d4a6d9fb4a)
-* [suppress events raised when invoking columnApi.setColumnState](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7ada57fc1a1e1a1cf8e3cea9612b38187490c9b5)
-* [Improve the grid state](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fa8553be57051ed33d953a4cea14b6fae037bae6)
-* [Do not open columns toolpanel by default](https://github.com/BBj-Plugins/BBjGridExWidget/commit/024b7ebf404e69ccc0e887ebf753ee513484ce8c)
-* [added sample code for an image on disk](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0a397d6f6102a6142ee1e419e29469d4daa96d79)
-* [a few minor fixes for issues that came up with last version - getWidth was wrong when size changed before first process_events - sidebar should start closed](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7d62525f2758021d9fe1bb7d443fc31c796a1e4c)
-* [added a refresh data button to demonstrate the sidebar status retention during data refreshes](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c1a920aadcf304da54e3a802599a9f46ce10ad7a)
-* [Integrate sidebar basic API](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b055cecd3ae92e3a418e72f2a916cc7d573296fd)
-* [document the sidebar classes](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7b338af2775e4e149bd4171e17479d2866d92e67)
-* [remove method setShowToolPanel](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1cb77b0c96ee239aadf951e099621f9898127fa8)
-* [Fix #82 - after a setSize, subsequent data updates (setData) fail](https://github.com/BBj-Plugins/BBjGridExWidget/commit/24a0a438c10f640a9ed7831cefb98390ecadf537)
-* [delay the setSize if called before the first process_events](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a5e51943afead2666b9a4990af10fd2211a051a1)
-* [Fix #74 - Style is corrupted for ag-grid-community package](https://github.com/BBj-Plugins/BBjGridExWidget/commit/3aeccf0c48dc57836d8c62aceebfe165989c7915)
-* [rename demo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0890d76d4ffe2c2fccaed2ca9d1e32114b198c3f)
-* [rename demo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c51058bedfb453d8d78ddeef7ab06e9b0803b067)
-* [added an additional create method](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6bb3792fa9523f924316841162f79344ffefa856)
-* [First integration for ag-grid#19](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a544ae45b25a4faabd94f09541f2e8abc86cbcf2)
-* [disable webpack anayzer from opening the report file](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b3e34ec5094cfc7de34304f6b6de6ab77250fbc1)
-* [fixed a problem with retaining the column state when an empty resultset is given](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d1c9e29d998404749c04cb5a8e1cdab27dc4037e)
-* [For an ImageList, a value of -1 was a blank cell in legacy grids](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d9713ae4d237b6755581f6032ea47cc5486d5282)
-* [change index for image list slice to be zero based](https://github.com/BBj-Plugins/BBjGridExWidget/commit/142d3d9c1177f229dae6d82510d93b50370caba9)
-* [Fix #68 - BUI: in a window with multiple grids, always the first one gets populated and updated](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5dea7e7351f503949a40e08e3e2b7c489cc3bb07)
-* [Fix #71 - Locale setting (SETOPTS?) broken for numeric masks / values](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e161cdffdbe0737ed5894750404fc978dc9d42ee)
-* [update yarn lock](https://github.com/BBj-Plugins/BBjGridExWidget/commit/72055e72db1faade2c5667727541077266186356)
-* [sidebar default behavior](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5f9b070dc1fc43ebee8398002593887fa686eb48)
-* [corrected to a useful mask like in currency](https://github.com/BBj-Plugins/BBjGridExWidget/commit/45f260bae83712658dd270854d93bd724564a891)
-* [modify selection demo to show https://github.com/BBj-Plugins/BBjGridExWidget/issues/69](https://github.com/BBj-Plugins/BBjGridExWidget/commit/501679e1378c435d70ca1ffa1abb628ad5dea80a)
-* [update documentation](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ca011e6c5cdb9cdd1e357479d2cf9f9089d1dd8b)
-* [retain the column setup if the structure of the data is not changed](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9fb00958219e16362dde72a2eca84eee70b9d79a)
-* [added first shot to support BBj imagelists](https://github.com/BBj-Plugins/BBjGridExWidget/commit/976790eb5500fb8322ad18882ca8866cb68406b2)
-* [Fix #66 - Context Menus is not working In Gui](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8e7e615d779623bdf558dac78ce31ee05ac87d67)
-* [Fix #61 - Column with NULL value produces error when double-clicked](https://github.com/BBj-Plugins/BBjGridExWidget/commit/958053049721c7071f3b311a8ae407e6880cbb27)
-* [Fix #65 - A non-editable grid is now editable](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a97472e3f3a568e34b39c72027be98f8e20783b8)
-* [Rebuild JS](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e9813c4a95a5a497ec43a6b2bf6004c10dfcaca8)
-* [fix flaw with distbase](https://github.com/BBj-Plugins/BBjGridExWidget/commit/bd1652181b5974b335dfd4deceb01a8c0984ac52)
-* [use CDNUMBER as an index](https://github.com/BBj-Plugins/BBjGridExWidget/commit/11a2495fd9f5f52284547d5997b0a3e38846f7bc)
-* [Change some options](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7d599baa9fa858a4ce7d27e884c50b2458278f01)
-* [use Enterprise whenever configured](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c2f9c78c7265a5ba07b8c2be76a1a826d7f9eedc)
-* [update author](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b415ddc1c8d88f45b6f38c75b9d682a2eb633568)
-* [format bbj-plugins file](https://github.com/BBj-Plugins/BBjGridExWidget/commit/22a2f88e79114cc44869a519c50bc77a4eb8e81d)
-* [Fix datejs license issue](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9af2fc560f7634507e47e5e899e1cedba5227c29)
-* [Improve editable to be dynamicall](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f428f6cd5080b83c06d1507e698638c0c21926e4)
-* [resolve #44](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8b6c8b35d21b9ff6c7668a87b604553f3aa318ab)
-* [improve data updating methods](https://github.com/BBj-Plugins/BBjGridExWidget/commit/612b9919c1792c9e1a198f35d165df83e8ecda31)
-* [Integrate `createIndex` method and Fix #55](https://github.com/BBj-Plugins/BBjGridExWidget/commit/108d01cbfe1edacfa7f7238de8afc27455106ad5)
-* [tweaks for demo, fixing url encoding issue in GUI](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8d957d56ae75a93bd92beeed9dfa8779c0cc6ccd)
-* [Add support for context menus](https://github.com/BBj-Plugins/BBjGridExWidget/commit/58117a166bbeb072c97d823f76f95aea055c228f)
-* [added setDebug method to show the debug console in GUI](https://github.com/BBj-Plugins/BBjGridExWidget/commit/65642f9c995a1f3b2bcdba777d6778e33bcb9581)
-* [temporarily remove dependency check](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1e669fe235629ec94dffd91844ae754d8cc8658f)
-* [Fix #53](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4a141ec077ccf620fad500607b532f53af15ca54)
-* [added check for BUI in the Chromium engine check](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e25e9acf60e583ae2e0c0262d644d4b23e9256fb)
-* [Treat rowindex as a String](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2ebbd98b78e6df11d9c94e4ac53e4caff0558e02)
-* [updated dependency](https://github.com/BBj-Plugins/BBjGridExWidget/commit/183840985d22037ba8e6ecde8ed455b0de0b6eb6)
-* [removed the version dependency in the code since this version is tagged to require 18.10](https://github.com/BBj-Plugins/BBjGridExWidget/commit/74ddcbae54a9272d6703a3988f672ca3f47175fa)
-* [adjusted sample](https://github.com/BBj-Plugins/BBjGridExWidget/commit/001f7f6601827f608622a2ce3052ec3637d14465)
-* [added error message when not running on Chromium engine](https://github.com/BBj-Plugins/BBjGridExWidget/commit/341c324641bd30aafe2a4b3c284663fc0838a334)
-* [Add Basic Order Entry Demo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/79db5ead56c1b4481ded7dc465202a535ba2ade7)
-* [enhanced the demo](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4124188c190e503ad3c59d2d3ded7c1b5e058d9e)
+### Features
+
+* allow changing the grid language ([#128](https://github.com/BBj-Plugins/BBjGridExWidget/issues/128)) ([8fe01f0](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8fe01f0)), closes [#122](https://github.com/BBj-Plugins/BBjGridExWidget/issues/122) [#122](https://github.com/BBj-Plugins/BBjGridExWidget/issues/122)
+
+
+### Reverts
+
+* build: configure bumped to auto publish new releases ([930b3d4](https://github.com/BBj-Plugins/BBjGridExWidget/commit/930b3d4))
+
+
+
