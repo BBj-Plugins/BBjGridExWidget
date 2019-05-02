@@ -3,7 +3,7 @@ files:
   - bbj-plugin.json
 plugins:
   postrelease:
-    'Compiling browser version':
+    'Compiling production version':
       plugin: 'bumped-terminal'
       command: 'cd client && NODE_ENV=production yarn build'  
     Generating CHANGELOG file:
@@ -11,3 +11,9 @@ plugins:
       options:
         preset: 'angular'
         filename: 'CHANGELOG.md'
+    'Committing new version':
+      plugin: 'bumped-terminal'
+      command: 'git add client/dist/.* client/package.json bbj-plugin.json CHANGELOG.md && git commit -m "v$newVersion releases" && git push origin master'
+    'Publishing tag at GitHub':
+      plugin: 'bumped-terminal'
+      command: 'git tag v$newVersion && git push origin v$newVersion'        
