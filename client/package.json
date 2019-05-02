@@ -1,7 +1,7 @@
 {
   "name": "bbj-grid-widget",
-  "main": "dist/bbj-grid-widget.min.js",
-  "author": "BASIS",
+  "main": "client/dist/bbj-grid-widget.min.js",
+  "author": "BASIS Europe Distribution GmbH",
   "license": "MIT",
   "private": true,
   "scripts": {

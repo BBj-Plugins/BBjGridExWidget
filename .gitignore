@@ -4,4 +4,5 @@
 /.project
 /.metadata/resourcesModel.json
 /.metadata/
-/node_modules/
+/client/node_modules/
+*.log
