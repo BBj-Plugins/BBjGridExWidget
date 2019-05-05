@@ -53,7 +53,6 @@ selectedRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 selectedRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 grid! = new BBjGridExWidget(wnd!,100,200,0,600,600)
-grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
 grid!.setMultipleSelection(1)
 grid!.setEnableFilter(1)
 rem grid!.setEnableFloatingFilter(1)

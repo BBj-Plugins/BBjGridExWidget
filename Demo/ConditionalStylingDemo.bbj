@@ -75,7 +75,6 @@ fillGrid:
     grid!.addStyle(".time-long" , timeLongStyle!)
     grid!.addStyle(".time-tooLong" , timeTooLongStyle!)
 
-    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(0)
     grid!.setData(rs!,"CDNUMBER")       
 return

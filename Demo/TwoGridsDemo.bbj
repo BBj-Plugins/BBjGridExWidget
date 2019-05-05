@@ -34,7 +34,6 @@ fillGrid:
     grid!.setData(rs!)
 
     grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"showDetails")
-    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(1)
 
     dtlgrid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"showRecord")
