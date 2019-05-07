@@ -112,6 +112,9 @@ selectionInputButton! = wnd!.addButton(218,468,10,80,22,"Select Rows")
 selectionInputButton!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectionInputButton")
 
 grid! = new BBjGridExWidget(wnd!,100,220,40,580,560)
+grid!.setShowSelectionCheckbox(1)
+grid!.setShowHeaderSelectionCheckbox(1); rem this option will enable multi row selection by default
+grid!.setGroupSelectsChildren(1)
 grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onSelectionEvent")
     
     
@@ -210,20 +213,6 @@ onSelectionEvent:
     NumOfSelectedRowsValueStaic!.setText(str(ev!.getSelectedRowCount()) + " Row(s)") 
     SelectedRowsValueStatic!.setText(selectedAsText$)
 return    
-
-onShowConsoleSelectionButton:
-    sel! = grid!.getSelectedRows()
-    it! = sel!.iterator()
-    ? 'CS','SHOW','RAISE',"Selected Rows are:"
-    while it!.hasNext()
-        sr! = it!.next()
-        ? "ChildInde:  ",sr!.getChildIndex()
-        ? "Data:       ",sr!.asDataRow()
-        ? "Id:         ",sr!.getId()
-        ? "Index:      ",sr!.getIndex()
-        ? ""    
-    wend
-return
 
 onMultipleSelectionHelp:
     a! = msgbox("Control the type of row selection. when false then single row selection is enabled , otherwise multi row selection is enabled. by default when you select a row, the previously selected row gets unselected. Multiple allows multiple row selection by holding down ctrl while clicking.",0,"Singe / Multi Row Selection")

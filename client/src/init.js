@@ -193,6 +193,8 @@ export function gw_setData(json, options, license) {
     def.cellStyle           = gw_cellStyler;
     def.cellClass           = gw_getCellClass;
     def.toolPanelClass      = gw_getToolPanelClass;
+    def.checkboxSelection   = def.checkboxSelection || gw_isShowSelectionCheckbox;
+    def.headerCheckboxSelection = def.headerCheckboxSelection || gw_isHeaderCheckboxSelection;
 
     def.cellClassRules      = gw_getGlobalMeta(id, field, 'CELL_CLASS_RULES', null, true);
 

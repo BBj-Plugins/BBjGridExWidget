@@ -93,6 +93,15 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjNumber ShowSelectionCheckbox! = 0
     rem /**
+    rem  * When true, selection box will be show on the first column header
+    rem  * When false, no checkbox will be displayed
+    rem  *
+    rem  * <b>Note:</b> This option will enable multi row selection by default
+    rem  * 
+    rem  * @RequiresRefresh
+    rem  */
+    field public BBjNumber ShowHeaderSelectionCheckbox! = 0
+    rem /**
     rem  * When true, selection box will be show on group column
     rem  * When false, no checkbox will be displayed
     rem  *
@@ -1871,6 +1880,8 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("contextMenu",#ContextMenu!.toString())
     context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
     context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
+    context!.addProperty("showSelectionCheckbox",#ShowSelectionCheckbox!)
+    context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!)
     context!.addProperty("contextMenu",#ContextMenu!.toString())
 
 REM     if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
@@ -1935,10 +1946,6 @@ REM     FI
         node! = new JsonObject()
         node!.addProperty("headerName",label$)
         node!.addProperty("field",f$)
-
-        if first then
-            node!.addProperty("checkboxSelection",#ShowSelectionCheckbox!)
-        FI
 
         pin$=""
         pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
