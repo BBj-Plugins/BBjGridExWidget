@@ -118,6 +118,17 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     field public BBjNumber GroupSelectsChildren! = 0
     rem /**
+    rem  * Navigation Behavior
+    rem  * 
+    rem  * Defines how users can move between rows using arrow keys
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW
+    rem  * @see BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */
+    field public BBjString NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()    
+    rem /**
     rem  * Enable / Disable cell editing for the whole grid
     rem  * 1 = enable editing
     rem  * 0 = disable edition
@@ -1685,6 +1696,18 @@ class public BBjGridExWidget extends BBjWidget
         methodret "next"
     methodend
     rem /**
+    rem  * @return constant value to define navigation behavior (Move to next cell)
+    rem  */
+    method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL()
+        methodret "navigate_next_cell"
+    methodend    
+    rem /**
+    rem  * @return constant value to define navigation behavior (Move to next row)
+    rem  */
+    method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
+        methodret "navigate_next_row"
+    methodend      
+    rem /**
     rem  * @return constant value to define enter key behavior (Stop editing)
     rem  */
     method public static BBjString GRID_ENTER_STOP_EDITING()
@@ -1883,12 +1906,7 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("showSelectionCheckbox",#ShowSelectionCheckbox!)
     context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!)
     context!.addProperty("contextMenu",#ContextMenu!.toString())
-
-REM     if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
-REM         context!.addProperty("navigateToNextCell",1)
-REM     else
-REM         context!.addProperty("navigateToNextCell",0)
-REM     FI
+    context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0))
 
     options!.add("context",context!)
     #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")

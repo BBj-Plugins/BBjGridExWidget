@@ -112,9 +112,20 @@ selectionInputButton! = wnd!.addButton(218,468,10,80,22,"Select Rows")
 selectionInputButton!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectionInputButton")
 
 grid! = new BBjGridExWidget(wnd!,100,220,40,580,560)
+
+rem Defines how users can move between rows using arrow keys
+grid!.setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW())
+
+rem show checkboxs for selection.
+rem note this will not disable rows selection by other methods 
+rem to only allow selection using checkboxs use `setSuppressRowClickSelection(bool)` 
 grid!.setShowSelectionCheckbox(1)
 grid!.setShowHeaderSelectionCheckbox(1); rem this option will enable multi row selection by default
+
+rem enable checkbox selection when grouping 
+grid!.setShowGroupSelectionCheckbox(1)
 grid!.setGroupSelectsChildren(1)
+
 grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onSelectionEvent")
     
     
