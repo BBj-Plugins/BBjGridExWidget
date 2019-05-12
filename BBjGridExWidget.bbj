@@ -124,6 +124,12 @@ class public BBjGridExWidget extends BBjWidget
     rem  */    
     field public BBjNumber RangeSelection! = 0
     rem /**
+    rem  * Enable / diable one range selection even if ctrl key is held down.
+    rem  * 
+    rem  * @RequiresRefresh
+    rem  */        
+    field public BBjNumber SuppressMultiRangeSelection! = 0    
+    rem /**
     rem  * Navigation Behavior
     rem  * 
     rem  * Defines how users can move between rows using arrow keys
@@ -1874,6 +1880,7 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("suppressRowClickSelection",#SuppressRowClickSelection!)
     options!.addProperty("groupSelectsChildren",#GroupSelectsChildren!)
     options!.addProperty("enableRangeSelection",#RangeSelection!)
+    options!.addProperty("suppressMultiRangeSelection",#SuppressMultiRangeSelection!)
     options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
     options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
     options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
