@@ -1,0 +1,11 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+
+REM /**
+REM  * BBjGridExWidgetRangeSelectionChangeEvent.bbj
+REM  * 
+REM  * An object which represents a range selection event
+REM  * 
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetRangeSelectionChangeEvent
+classend

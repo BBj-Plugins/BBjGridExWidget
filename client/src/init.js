@@ -29,6 +29,7 @@ export function gw_setData(json, options, license) {
     getDocument:          ()      => gw_getDocument(),
     onRowDoubleClicked:   gw_debounce(gw_onRowDoubleClicked , debounceDuration ),
     onSelectionChanged:   gw_debounce(gw_onSelectionChanged , debounceDuration ),
+    onRangeSelectionChanged: gw_debounce(gw_onRangeSelectionChanged , debounceDuration ),
     onCellEditingStarted: e       => { gw_onCellEditingsEvent(id, e) },
     onCellEditingStopped: e       => { gw_onCellEditingsEvent(id, e) },
     onCellValueChanged:   e       => { gw_onCellEditingsEvent(id, e) },

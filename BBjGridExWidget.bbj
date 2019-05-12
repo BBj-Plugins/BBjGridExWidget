@@ -32,6 +32,7 @@ use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditin
 use ::BBjGridExWidget/BBjGridWidgetContextMenuEvent.bbj::BBjGridWidgetContextMenuEvent
 use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
 use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
+use ::BBjGridExWidget/BBjGridExWidgetRangeSelectionChangeEvent.bbj::BBjGridExWidgetRangeSelectionChangeEvent
 rem /**
 rem  * A Grid Widget Plugin for BBj
 rem  */
@@ -599,6 +600,9 @@ class public BBjGridExWidget extends BBjWidget
             case "gw.rowDoubleClick"
                 #onSelecteRowChange(detail$,"double")
                 break
+            case "gw.rangeSelection"
+                #onRangeSelectionChange(detail$)
+                break                
             case "gw.cellClicked"
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_CLICK())
                 break
@@ -1580,7 +1584,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public static BBjNumber ON_GRID_DOUBLE_CLICK()
         methodret BBjAPI.ON_GRID_DOUBLE_CLICK
-    methodend
+    methodend  
     rem /**
     rem  * @return constant value to define cell editing start event
     rem  */
@@ -1623,6 +1627,12 @@ class public BBjGridExWidget extends BBjWidget
     method public static BBjNumber ON_GRID_COLUMN_STATE_CHANGE()
         methodret 5008
     methodend
+    rem /**
+    rem  * @return constant value to define range selection event event
+    rem  */
+    method public static BBjNumber ON_GRID_RANGE_SELECTION_CHANGE()
+        methodret 5009
+    methodend  
     rem /**
     rem  * @return constant value to define row position
     rem  */
@@ -1798,7 +1808,15 @@ class public BBjGridExWidget extends BBjWidget
         #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
     FI
     methodend
-
+    rem /**
+    rem  * Handle Range Selections Event
+    rem  *
+    rem  * @see BBjGridExWidgetRangeSelectionEvent
+    rem  */    
+    method private void onRangeSelectionChange(BBjString detail$)
+        event! = new BBjGridExWidgetRangeSelectionChangeEvent()
+        #fireEvent(#ON_GRID_RANGE_SELECTION_CHANGE(),event!)
+    methodend
     method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")

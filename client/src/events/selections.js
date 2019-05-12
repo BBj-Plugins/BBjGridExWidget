@@ -42,6 +42,24 @@ export function gw_onSelectionChanged(e) {
 }
 
 /**
+ * A handler for the grid `rangeSelectionChanged` event
+ * 
+ * @param {Object} e 
+ * 
+ * @listens agGrid.rangeSelectionChanged
+ * @fires gw.rangeSelection
+ */
+export function gw_onRangeSelectionChanged(e){
+  const context = e.api.gridOptionsWrapper.gridOptions.context;
+  if(e.finished) {
+    gw_sendEvent(context.id, {
+      'type': 'gw.rangeSelection',
+      'detail': ''
+    });
+  }
+}
+
+/**
  * A handler for the grid `cellClickEvent` & `cellDoubleClicked` event
  * 
  * @param {Object} e 
