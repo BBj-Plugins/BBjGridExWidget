@@ -37,27 +37,54 @@ rem  * A Grid Widget Plugin for BBj
 rem  */
 class public BBjGridExWidget extends BBjWidget
     rem /**
+    rem  * Unique auto generate id for the grid instance
+    rem  * 
+    rem  * This id is used in the client to distinguish instances  
+    rem  */
+    field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
+    rem /**
     rem  * Ag Grid enterprise key
     rem  *
     rem  * @RequiresRefresh
     rem  */
     field public static BBjString LicenseKey$
     rem /**
-    rem  * set the selection mode of the grid
-    rem  *
-    rem  * @see GRID_SELECT_ROW()
-    rem  * @see GRID_SELECT_CELL()
-    rem  *
-    rem  * @RequiresRefresh
-    rem  */
-    field public BBjNumber SelectionMode! = #GRID_SELECT_ROW()
-    rem /**
     rem  * Allow selection of multiple cells or rows
-    rem  * multiple: 1 allows multiple selection, 0 denies
+    rem  * multiple: 1 to enable multiple selection, 0 to disabled
     rem  *
     rem  * @RequiresRefresh
     rem  */
     field public BBjNumber MultipleSelection! = 0
+    rem /**
+    rem  * Set to true to all multiple rows to be selected with a single click.
+    rem  * E.g. if you click select one row, then click select another row, 
+    rem  * the first row will keep it's selection. 
+    rem  * Clicking a selected row in this mode will deselect the row. 
+    rem  * This is useful for touch devices where ctrl and shift clicking is 
+    rem  * not an option.
+    rem  *
+    rem  * <b>Note:</b> Despite the setting name , it works when MultipleSelection is enabled or disabled 
+    rem  * 
+    rem  * @RequiresRefresh
+    rem  */    
+    field public BBjNumber RowMultiSelectWithClick! = 0
+    rem /**
+    rem  * Set to true or false. If true, then rows will be deselected if you 
+    rem  * hold down ctrl + click the row. Normal behaviour with the grid disallows 
+    rem  * deselection of nodes (ie once a node is selected, it remains selected until 
+    rem  * another row is selected in its place).
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */        
+    field public BBjNumber RowDeselection! = 0
+    rem /**
+    rem  * If true, rows won't be selected when clicked. Use, for example, 
+    rem  * when you want checkbox selection, and don't want to also select when the row
+    rem  * is clicked.
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */        
+    field public BBjNumber SuppressRowClickSelection! = 0
     rem /**
     rem  * When true, selection box will be show on the first column
     rem  * When false, no checkbox will be displayed
@@ -65,6 +92,15 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @RequiresRefresh
     rem  */
     field public BBjNumber ShowSelectionCheckbox! = 0
+    rem /**
+    rem  * When true, selection box will be show on the first column header
+    rem  * When false, no checkbox will be displayed
+    rem  *
+    rem  * <b>Note:</b> This option will enable multi row selection by default
+    rem  * 
+    rem  * @RequiresRefresh
+    rem  */
+    field public BBjNumber ShowHeaderSelectionCheckbox! = 0
     rem /**
     rem  * When true, selection box will be show on group column
     rem  * When false, no checkbox will be displayed
@@ -76,9 +112,22 @@ class public BBjGridExWidget extends BBjWidget
     rem  * When true, selecting a group will have the impact of selecting all its children
     rem  * When false, then the group is selectable independently of the child nodes
     rem  *
+    rem  * <b>Note:</b> this settings has no effect if  MultipleSelection is disabled
+    rem  * 
     rem  * @RequiresRefresh
     rem  */
     field public BBjNumber GroupSelectsChildren! = 0
+    rem /**
+    rem  * Navigation Behavior
+    rem  * 
+    rem  * Defines how users can move between rows using arrow keys
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW
+    rem  * @see BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */
+    field public BBjString NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()    
     rem /**
     rem  * Enable / Disable cell editing for the whole grid
     rem  * 1 = enable editing
@@ -337,7 +386,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetStatusBar Statusbar! = new BBjGridExWidgetStatusBar(#this!)
-    field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -923,7 +971,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public BBjGridExWidgetSidebar getStatusbar()
         methodret #Statusbar!
-    methodend
+    methodend      
     rem /**
     rem  * Add Style block
     rem  *
@@ -949,19 +997,6 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void removeStyle(BBjString selector$)
         #executeScript("gw_removeStyle('" + selector$ + "')")
-    methodend
-    rem /**
-    rem  * When true, selecting a group will have the impact of selecting all its children
-    rem  * When false, then the group is selectable independently of the child nodes
-    rem  *
-    rem  * @param BBJNumber x!: 1 enable , 0 disable
-    rem  *
-    rem  * @RequiresRefresh
-    rem  */
-    method public void setGroupSelectsChildren(BBjNumber x!)
-        rem this only makes sense with mutli-selection switched on!
-        #setMultipleSelection(1)
-        #GroupSelectsChildren!=x!
     methodend
     rem /**
     rem  * Set the grid theme
@@ -1661,6 +1696,18 @@ class public BBjGridExWidget extends BBjWidget
         methodret "next"
     methodend
     rem /**
+    rem  * @return constant value to define navigation behavior (Move to next cell)
+    rem  */
+    method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL()
+        methodret "navigate_next_cell"
+    methodend    
+    rem /**
+    rem  * @return constant value to define navigation behavior (Move to next row)
+    rem  */
+    method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
+        methodret "navigate_next_row"
+    methodend      
+    rem /**
     rem  * @return constant value to define enter key behavior (Stop editing)
     rem  */
     method public static BBjString GRID_ENTER_STOP_EDITING()
@@ -1812,12 +1859,14 @@ class public BBjGridExWidget extends BBjWidget
     options!.addProperty("allowContextMenuWithControlKey",Boolean.valueOf(0))
     options!.addProperty("enableFilter",#EnableFilter!)
     options!.addProperty("floatingFilter",#EnableFloatingFilter!)
-    options!.addProperty("groupSelectsChildren",#GroupSelectsChildren!)
     options!.addProperty("editType",#EditType$)
     options!.addProperty("singleClickEdit",#SingleClickEdit!)
     options!.addProperty("enableGroupEdit",#GroupEdit!)
     options!.addProperty("rowSelection",iff(#MultipleSelection! = 1 , "multiple" ,"single"))
-    options!.addProperty("rowDeselection","true")
+    options!.addProperty("rowMultiSelectWithClick",#RowMultiSelectWithClick!)
+    options!.addProperty("rowDeselection",#RowDeselection!)
+    options!.addProperty("suppressRowClickSelection",#SuppressRowClickSelection!)
+    options!.addProperty("groupSelectsChildren",#GroupSelectsChildren!)
     options!.addProperty("functionsReadOnly",#FunctionsReadOnly!)
     options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
     options!.addProperty("rowGroupPanelShow",#RowGroupPanelShow$)
@@ -1854,13 +1903,10 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("contextMenu",#ContextMenu!.toString())
     context!.addProperty("NUMBERS_RENDERER_GROUP_SEPARATOR",comma$)
     context!.addProperty("NUMBERS_RENDERER_DECIMAL_SEPARATOR",dot$)
+    context!.addProperty("showSelectionCheckbox",#ShowSelectionCheckbox!)
+    context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!)
     context!.addProperty("contextMenu",#ContextMenu!.toString())
-
-    if (#SelectionMode! = BBjGrid.GRID_SELECT_ROW) and #MultipleSelection! = 0 then
-        context!.addProperty("navigateToNextCell",1)
-    else
-        context!.addProperty("navigateToNextCell",0)
-    FI
+    context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0))
 
     options!.add("context",context!)
     #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
@@ -1918,10 +1964,6 @@ class public BBjGridExWidget extends BBjWidget
         node! = new JsonObject()
         node!.addProperty("headerName",label$)
         node!.addProperty("field",f$)
-
-        if first then
-            node!.addProperty("checkboxSelection",#ShowSelectionCheckbox!)
-        FI
 
         pin$=""
         pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)

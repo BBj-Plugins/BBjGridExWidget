@@ -61,7 +61,6 @@ declare SqlQueryBC sbc!
     grid!.pinColumn("CDNUMBER","left")
     grid!.setColumnWidth("CDNUMBER",120)
     grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-    grid!.setSelectionMode(grid!.GRID_SELECT_ROW())
     grid!.setMultipleSelection(0)
     grid!.setEnableFilter(1)
     grid!.setEnableFloatingFilter(1)
