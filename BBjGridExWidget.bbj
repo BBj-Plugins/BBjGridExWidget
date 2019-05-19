@@ -40,8 +40,8 @@ rem  */
 class public BBjGridExWidget extends BBjWidget
     rem /**
     rem  * Unique auto generate id for the grid instance
-    rem  * 
-    rem  * This id is used in the client to distinguish instances  
+    rem  *
+    rem  * This id is used in the client to distinguish instances
     rem  */
     field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     rem /**
@@ -59,33 +59,33 @@ class public BBjGridExWidget extends BBjWidget
     field public BBjNumber MultipleSelection! = 0
     rem /**
     rem  * Set to true to all multiple rows to be selected with a single click.
-    rem  * E.g. if you click select one row, then click select another row, 
-    rem  * the first row will keep it's selection. 
-    rem  * Clicking a selected row in this mode will deselect the row. 
-    rem  * This is useful for touch devices where ctrl and shift clicking is 
+    rem  * E.g. if you click select one row, then click select another row,
+    rem  * the first row will keep it's selection.
+    rem  * Clicking a selected row in this mode will deselect the row.
+    rem  * This is useful for touch devices where ctrl and shift clicking is
     rem  * not an option.
     rem  *
-    rem  * <b>Note:</b> Despite the setting name , it works when MultipleSelection is enabled or disabled 
-    rem  * 
+    rem  * <b>Note:</b> Despite the setting name , it works when MultipleSelection is enabled or disabled
+    rem  *
     rem  * @RequiresRefresh
-    rem  */    
+    rem  */
     field public BBjNumber RowMultiSelectWithClick! = 0
     rem /**
-    rem  * Set to true or false. If true, then rows will be deselected if you 
-    rem  * hold down ctrl + click the row. Normal behaviour with the grid disallows 
-    rem  * deselection of nodes (ie once a node is selected, it remains selected until 
+    rem  * Set to true or false. If true, then rows will be deselected if you
+    rem  * hold down ctrl + click the row. Normal behaviour with the grid disallows
+    rem  * deselection of nodes (ie once a node is selected, it remains selected until
     rem  * another row is selected in its place).
     rem  *
     rem  * @RequiresRefresh
-    rem  */        
+    rem  */
     field public BBjNumber RowDeselection! = 0
     rem /**
-    rem  * If true, rows won't be selected when clicked. Use, for example, 
+    rem  * If true, rows won't be selected when clicked. Use, for example,
     rem  * when you want checkbox selection, and don't want to also select when the row
     rem  * is clicked.
     rem  *
     rem  * @RequiresRefresh
-    rem  */        
+    rem  */
     field public BBjNumber SuppressRowClickSelection! = 0
     rem /**
     rem  * When true, selection box will be show on the first column
@@ -99,7 +99,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * When false, no checkbox will be displayed
     rem  *
     rem  * <b>Note:</b> This option will enable multi row selection by default
-    rem  * 
+    rem  *
     rem  * @RequiresRefresh
     rem  */
     field public BBjNumber ShowHeaderSelectionCheckbox! = 0
@@ -115,25 +115,25 @@ class public BBjGridExWidget extends BBjWidget
     rem  * When false, then the group is selectable independently of the child nodes
     rem  *
     rem  * <b>Note:</b> this settings has no effect if  MultipleSelection is disabled
-    rem  * 
+    rem  *
     rem  * @RequiresRefresh
     rem  */
     field public BBjNumber GroupSelectsChildren! = 0
     rem /**
     rem  * Enable / Disable Range Selection
-    rem  * 
+    rem  *
     rem  * @RequiresRefresh
-    rem  */    
+    rem  */
     field public BBjNumber RangeSelection! = 0
     rem /**
     rem  * Enable / diable one range selection even if ctrl key is held down.
-    rem  * 
+    rem  *
     rem  * @RequiresRefresh
-    rem  */        
-    field public BBjNumber SuppressMultiRangeSelection! = 0    
+    rem  */
+    field public BBjNumber SuppressMultiRangeSelection! = 0
     rem /**
     rem  * Navigation Behavior
-    rem  * 
+    rem  *
     rem  * Defines how users can move between rows using arrow keys
     rem  *
     rem  * @see BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW
@@ -141,7 +141,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  *
     rem  * @RequiresRefresh
     rem  */
-    field public BBjString NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()    
+    field public BBjString NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
     rem /**
     rem  * Enable / Disable cell editing for the whole grid
     rem  * 1 = enable editing
@@ -402,7 +402,7 @@ class public BBjGridExWidget extends BBjWidget
     field protected BBjGridExWidgetStatusBar Statusbar! = new BBjGridExWidgetStatusBar(#this!)
     rem /**
     rem  * The Model Mapper
-    rem  * 
+    rem  *
     rem  * The mapper is used internally to map JSON objects to BBj Objects
     rem  */
     field protected BBjGridExWidgetModelMapper ModelMapper! = new BBjGridExWidgetModelMapper()
@@ -609,7 +609,7 @@ class public BBjGridExWidget extends BBjWidget
                 break
             case "gw.rangeSelection"
                 #onRangeSelectionChange(detail$)
-                break                
+                break
             case "gw.cellClicked"
                 #handleGridCellEditingEvent(detail$,#ON_GRID_CELL_CLICK())
                 break
@@ -641,8 +641,8 @@ class public BBjGridExWidget extends BBjWidget
         swend
     methodend
     rem /**
-    rem  * Set Result Set 
-    rem  * 
+    rem  * Set Result Set
+    rem  *
     rem  * @param ResultSet rs! the resultset instance
     rem  */
     method public void setRS(ResultSet rs!)
@@ -655,7 +655,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public void setData( ResultSet rs!)
         #setRS(rs!)
-        
+
         if #AttributesRecord! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
@@ -1003,7 +1003,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public BBjGridExWidgetSidebar getStatusbar()
         methodret #Statusbar!
-    methodend      
+    methodend
     rem /**
     rem  * Add Style block
     rem  *
@@ -1482,29 +1482,26 @@ class public BBjGridExWidget extends BBjWidget
     methodend
     rem /**
     rem  * Get Selection Range
-    rem  * 
-    rem  * The method will return a vector of the selected ranges including columns and rows 
-    rem  * 
+    rem  *
+    rem  * The method will return a vector of the selected ranges including columns and rows
+    rem  *
     rem  * @see Demo/Enterprise/RangeSelectionDemo.bbj
     rem  * @return BBjVector
     rem  */
     method public BBjVector getSelectionRange()
-    
         rem an array to save the parsed range selections
         rangeSelectionVector! = new BBjVector()
-        
+
         if (#RS! = null()) then
             goto getSelectionRangeErr
         FI
-        
         rem get the range selections from the client
         rem the client will return an array of objects where each object is a range
         rangeSelections! = #executeScript("gw_getRangeSelections('" + #GRIDID$ + "')")
-        
+
         if rangeSelections!=null() then
             goto getSelectionRangeErr
         FI
-        
         rem iterate throw the ranges array and parse the range objects
         parser! = new JsonParser()
         ranges! = parser!.parse(rangeSelections!).getAsJsonArray()
@@ -1512,8 +1509,8 @@ class public BBjGridExWidget extends BBjWidget
         while (rangesIterator!.hasNext())
             model! = #ModelMapper!.getRangeSelection(rangesIterator!.next().getAsJsonObject())
             rangeSelectionVector!.addItem(model!)
-        wend     
-        
+        wend
+
         getSelectionRangeErr:
             methodret rangeSelectionVector!
     methodend
@@ -1637,7 +1634,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public static BBjNumber ON_GRID_DOUBLE_CLICK()
         methodret BBjAPI.ON_GRID_DOUBLE_CLICK
-    methodend  
+    methodend
     rem /**
     rem  * @return constant value to define cell editing start event
     rem  */
@@ -1685,7 +1682,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public static BBjNumber ON_GRID_RANGE_SELECTION_CHANGE()
         methodret 5009
-    methodend  
+    methodend
     rem /**
     rem  * @return constant value to define row position
     rem  */
@@ -1775,13 +1772,13 @@ class public BBjGridExWidget extends BBjWidget
     rem  */
     method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL()
         methodret "navigate_next_cell"
-    methodend    
+    methodend
     rem /**
     rem  * @return constant value to define navigation behavior (Move to next row)
     rem  */
     method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
         methodret "navigate_next_row"
-    methodend      
+    methodend
     rem /**
     rem  * @return constant value to define enter key behavior (Stop editing)
     rem  */
@@ -1865,11 +1862,12 @@ class public BBjGridExWidget extends BBjWidget
     rem  * Handle Range Selections Event
     rem  *
     rem  * @see BBjGridExWidgetRangeSelectionEvent
-    rem  */    
+    rem  */
     method private void onRangeSelectionChange(BBjString detail$)
         event! = new BBjGridExWidgetRangeSelectionChangeEvent()
         #fireEvent(#ON_GRID_RANGE_SELECTION_CHANGE(),event!)
     methodend
+
     method private void handleGridCellEditingEvent(BBjString detail$ , BBjNumber type!)
         parser! = new JsonParser()
         array! = parser!.parse(detail$).getAsJsonObject().get("0")
@@ -1992,7 +1990,6 @@ class public BBjGridExWidget extends BBjWidget
     context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!)
     context!.addProperty("contextMenu",#ContextMenu!.toString())
     context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior$ = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0))
-
     options!.add("context",context!)
     #HTMLView!.executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
     methodend
@@ -2049,7 +2046,6 @@ class public BBjGridExWidget extends BBjWidget
         node! = new JsonObject()
         node!.addProperty("headerName",label$)
         node!.addProperty("field",f$)
-
         pin$=""
         pin$=cd!.getFieldAttribute(f$,"PINNED",err=*next)
 
