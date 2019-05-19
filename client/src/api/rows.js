@@ -203,3 +203,59 @@ export function gw_getSelectedRow(id) {
 
   return '';
 }
+
+/**
+ * Get Range Selections
+ * 
+ * The method will create a range model json which can be parsed in BBj side.
+ * 
+ * @param {Number} id grid's id
+ * 
+ * @returns {String} selected row as JSON
+ */
+export function gw_getRangeSelections(id) {
+  const options = gw_getGrid(id).options;
+  const context = options.context;
+  const api = options.api;
+  const ranges = api.getRangeSelections();
+  const model = api.getModel();
+  let result = [];
+
+  ranges.forEach(range => {
+
+    const start = {
+      row: gw_parseNode(model.getRow(range.start.rowIndex), options.context),
+      column: range.start.column.colId
+    };
+
+    const end = {
+      row: gw_parseNode(model.getRow(range.end.rowIndex), options.context),
+      column: range.end.column.colId
+    };
+
+    if (start.row !== false && end.row !== false) {
+      const columns = range.columns.reduce((accumulator, current) => {
+  
+        if ("ag-Grid-AutoColumn" !== current.colId) {
+          accumulator.push(current.colId);
+        }
+  
+        return accumulator;
+      }, []).filter(Boolean);
+  
+      const starIndex = Math.min(range.start.rowIndex, range.end.rowIndex);
+      const endIndex = Math.max(range.start.rowIndex, range.end.rowIndex);
+      const rows = [];
+
+      for (let rowIndex = starIndex; rowIndex <= endIndex; rowIndex++) {
+        const node = model.getRow(rowIndex);
+  
+        rows.push(gw_parseNode(node, context));
+      }
+
+      result.push({ start, end, rows, columns });
+    }
+  });
+
+  return JSON.stringify(result);
+}

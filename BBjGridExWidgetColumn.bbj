@@ -1,0 +1,66 @@
+use com.basiscomponents.db.ResultSet
+use java.util.HashMap
+REM /**
+REM  * BBjGridExWidgetColumn.bbj
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetColumn
+    rem /**
+    rem  * Instance of the resultset
+    rem  */
+    field protected ResultSet RS!
+    rem /**
+    rem  * The column name
+    rem  */
+    field protected BBjString Name!
+    rem /**
+    rem  * Construct new BBjGridExWidgetColumn
+    rem  *
+    rem  * @param ResultSet rs! instance of the resultset
+    rem  * @param BBjString name! the column's name
+    rem  */
+    method public BBjGridExWidgetColumn(ResultSet rs! , BBjString name!)
+        #Name! = name!
+        #RS! = rs!
+    methodend
+    rem /**
+    rem  * Get the column index
+    rem  *
+    rem  * Returns the index of the column with the specified name.
+    rem  *
+    rem  * @return BBjNumber column's index
+    rem  */
+    method public BBjNumber getIndex()
+        methodret #RS!.getColumnIndex(#Name!)
+    methodend
+    rem /**
+    rem  * Get the column type
+    rem  *
+    rem  * Returns the value of the ColumnType property from the ResultSet's metadata.
+    rem  *
+    rem  * @return BBjNumber column's type
+    rem  */
+    method public BBjNumber getType()
+        methodret #RS!.getColumnType(#getIndex())
+    methodend
+    rem /**
+    rem  * Get the column type
+    rem  *
+    rem  * Returns the metadata of the column.
+    rem  *
+    rem  * @return BBjNumber column's metadata
+    rem  */
+    method public HashMap getMetaData()
+        methodret #RS!.getColumnMetaData(#Name!)
+    methodend
+    rem /**
+    rem  * Get the column name
+    rem  *
+    rem  * @return BBjString column's name
+    rem  */
+    method public BBjString getName()
+        methodret #Name!
+    methodend
+
+classend

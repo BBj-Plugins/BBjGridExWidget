@@ -1,0 +1,99 @@
+use ::BBjGridExWidget/BBjGridExWidgetRow.bbj::BBjGridExWidgetRow
+use ::BBjGridExWidget/BBjGridExWidgetColumn.bbj::BBjGridExWidgetColumn
+use ::BBjGridExWidget/BBjGridExWidgetCell.bbj::BBjGridExWidgetCell
+use ::BBjGridExWidget/BBjGridExWidgetRangeSelection.bbj::BBjGridExWidgetRangeSelection
+use com.basiscomponents.db.ResultSet
+use com.google.gson.JsonObject
+REM /**
+REM  * BBjGridExWidgetModelMapper.bbj
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetModelMapper
+    rem /**
+    rem  * Instance of the result set
+    rem  */
+    field public ResultSet RS!
+    rem /**
+    rem  * Construct new ModelMapper
+    rem  */
+    method public BBjGridExWidgetModelMapper()
+    methodend
+    rem /**
+    rem  * Construct new ModelMapper
+    rem  *
+    rem  * @param ResultSet rs! instance of the resultset
+    rem  */
+    method public BBjGridExWidgetModelMapper(ResultSet rs!)
+        #RS! = rs!
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetRow
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetRow
+    rem  */
+    method public BBjGridExWidgetRow getRow(JsonObject json!)
+        row! = new BBjGridExWidgetRow(#RS!)
+        row!.setId(json!.get("id").getAsString())
+        row!.setChildIndex(json!.get("childIndex").getAsInt())
+        row!.setIndex(json!.get("index").getAsString())
+        row!.setParentKey(json!.get("parentKey").getAsString())
+        row!.setIsSelected(iff(json!.get("selected").getAsString() = "true" ,  1 , 0))
+        methodret row!
+    methodend
+    rem /**
+    rem  * Map Json object to BBjGridExWidgetColumn
+    rem  *
+    rem  * @param BBjString column! column name
+    rem  *
+    rem  * @return BBjGridExWidgetColumn
+    rem  */
+    method public BBjGridExWidgetColumn getColumn(BBjString column!)
+        methodret new BBjGridExWidgetColumn(#RS! , column!)
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetCell
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetCell
+    rem  */
+    method public BBjGridExWidgetCell getCell(JsonObject Json!)
+        cell! = new BBjGridExWidgetCell()
+        cell!.setColumn(#getColumn(json!.get("column").getAsString()))
+        cell!.setRow(#getRow(json!.get("row").getAsJsonObject()))
+        methodret cell!
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetRangeSelection
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetRangeSelection
+    rem  */
+    method public BBjGridExWidgetRangeSelection getRangeSelection(JsonObject json!)
+        rem a model which describes the range object
+        rangeModel! = new BBjGridExWidgetRangeSelection()
+        rangeModel!.setStart(#getCell(json!.get("start").getAsJsonObject()))
+        rangeModel!.setEnd(#getCell(json!.get("end").getAsJsonObject()))
+        rem loop over the range columns and create a column model for each one
+        columns! = json!.get("columns").getAsJsonArray()
+        columnsIterator! = columns!.iterator()
+        while(columnsIterator!.hasNext())
+            rem create a column model and add it to the range
+            rangeModel!.getColumns().add(#getColumn(columnsIterator!.next().getAsString()))
+        wend
+        rem loop over the range rows and create a row model for each one
+        rows! = json!.get("rows").getAsJsonArray()
+        rowsIterator! = rows!.iterator()
+        while(rowsIterator!.hasNext())
+            rem create a row model and add it to the range
+            rangeModel!.getRows().add(#getRow(rowsIterator!.next().getAsJsonObject()))
+        wend
+        
+        methodret rangeModel!
+    methodend
+
+classend

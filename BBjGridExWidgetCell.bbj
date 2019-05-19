@@ -1,0 +1,18 @@
+use ::BBjGridExWidget/BBjGridExWidgetRow.bbj::BBjGridExWidgetRow
+use ::BBjGridExWidget/BBjGridExWidgetColumn.bbj::BBjGridExWidgetColumn
+REM /**
+REM  * BBjGridExWidgetCell.bbj
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetCell
+    rem /**
+    rem  * The cell's row.
+    rem  */
+    field public BBjGridExWidgetRow Row!
+    rem /**
+    rem  * The cell's column
+    rem  */
+    field public BBjGridExWidgetColumn Column!
+
+classend

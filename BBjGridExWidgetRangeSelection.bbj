@@ -1,0 +1,36 @@
+use ::BBjGridExWidget/BBjGridExWidgetCell.bbj::BBjGridExWidgetCell
+use ::BBjGridExWidget/BBjGridExWidgetRow.bbj::BBjGridExWidgetRow
+use ::BBjGridExWidget/BBjGridExWidgetColumn.bbj::BBjGridExWidgetColumn
+REM /**
+REM  * BBjGridExWidgetRangeSelection.bbj
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetRangeSelection
+    rem /**
+    rem  * An array of column objects where every object is instance of  BBjGridExWidgetColumn
+    rem  */
+    field public BBjVector Columns! = new BBjVector()
+    rem /**
+    rem  * An array of rows objects where every object is instance of  BBjGridExWidgetRow
+    rem  */
+    field public BBjVector Rows! = new BBjVector()
+    rem /**
+    rem  * The range's start cell
+    rem  */
+    field public BBjGridExWidgetCell Start! = new BBjGridExWidgetCell()
+    rem /**
+    rem  * The range's end cell
+    rem  */
+    field public BBjGridExWidgetCell End! = new BBjGridExWidgetCell()
+    
+    rem /**
+    rem  * Get Range length
+    rem  * 
+    rem  * @return BBjNumber range's length
+    rem  */
+    method public BBjNumber getLength()
+        methodret #Rows!.size()
+    methodend
+
+classend

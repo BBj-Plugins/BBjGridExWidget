@@ -33,6 +33,7 @@ use ::BBjGridExWidget/BBjGridWidgetContextMenuEvent.bbj::BBjGridWidgetContextMen
 use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
 use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
 use ::BBjGridExWidget/BBjGridExWidgetRangeSelectionChangeEvent.bbj::BBjGridExWidgetRangeSelectionChangeEvent
+use ::BBjGridExWidget/BBjGridExWidgetModelMapper.bbj::BBjGridExWidgetModelMapper
 rem /**
 rem  * A Grid Widget Plugin for BBj
 rem  */
@@ -399,6 +400,12 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @Enterprise
     rem  */
     field protected BBjGridExWidgetStatusBar Statusbar! = new BBjGridExWidgetStatusBar(#this!)
+    rem /**
+    rem  * The Model Mapper
+    rem  * 
+    rem  * The mapper is used internally to map JSON objects to BBj Objects
+    rem  */
+    field protected BBjGridExWidgetModelMapper ModelMapper! = new BBjGridExWidgetModelMapper()
     field private BBjHtmlView HTMLView!
     field private Boolean IsReady! = BBjAPI.FALSE
     field private BBjVector backlog! = new BBjVector()
@@ -634,12 +641,21 @@ class public BBjGridExWidget extends BBjWidget
         swend
     methodend
     rem /**
+    rem  * Set Result Set 
+    rem  * 
+    rem  * @param ResultSet rs! the resultset instance
+    rem  */
+    method public void setRS(ResultSet rs!)
+        #RS! = rs!
+        #ModelMapper!.setRS(rs!)
+    methodend
+    rem /**
     rem  * set the data into the grid
     rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
     rem  */
     method public void setData( ResultSet rs!)
-        #RS! = rs!
-
+        #setRS(rs!)
+        
         if #AttributesRecord! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             rem TODO: use the new method of components as soon as implemented
             rem https://github.com/BasisHub/components/issues/87
@@ -721,7 +737,7 @@ class public BBjGridExWidget extends BBjWidget
     rem  * @param ResultSet: the com.basiscomponents.db.ResultSet with the data
     rem  */
     method public void setRowsData(ResultSet rs!)
-        #RS! = rs!
+        #setRS(rs!)
 
         if #AttributesRecord! <> NULL() AND rs! <> NULL() AND rs!.size() >0 then
             rem TODO: use the new method of components as soon as implemented
@@ -1463,6 +1479,43 @@ class public BBjGridExWidget extends BBjWidget
 
         getSelectedRowsErr:
             methodret rows!
+    methodend
+    rem /**
+    rem  * Get Selection Range
+    rem  * 
+    rem  * The method will return a vector of the selected ranges including columns and rows 
+    rem  * 
+    rem  * @see Demo/Enterprise/RangeSelectionDemo.bbj
+    rem  * @return BBjVector
+    rem  */
+    method public BBjVector getSelectionRange()
+    
+        rem an array to save the parsed range selections
+        rangeSelectionVector! = new BBjVector()
+        
+        if (#RS! = null()) then
+            goto getSelectionRangeErr
+        FI
+        
+        rem get the range selections from the client
+        rem the client will return an array of objects where each object is a range
+        rangeSelections! = #executeScript("gw_getRangeSelections('" + #GRIDID$ + "')")
+        
+        if rangeSelections!=null() then
+            goto getSelectionRangeErr
+        FI
+        
+        rem iterate throw the ranges array and parse the range objects
+        parser! = new JsonParser()
+        ranges! = parser!.parse(rangeSelections!).getAsJsonArray()
+        rangesIterator! = ranges!.iterator()
+        while (rangesIterator!.hasNext())
+            model! = #ModelMapper!.getRangeSelection(rangesIterator!.next().getAsJsonObject())
+            rangeSelectionVector!.addItem(model!)
+        wend     
+        
+        getSelectionRangeErr:
+            methodret rangeSelectionVector!
     methodend
     rem /**
     rem  * Group Vector of Columns

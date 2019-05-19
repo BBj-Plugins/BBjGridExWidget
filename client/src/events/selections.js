@@ -51,6 +51,7 @@ export function gw_onSelectionChanged(e) {
  */
 export function gw_onRangeSelectionChanged(e){
   const context = e.api.gridOptionsWrapper.gridOptions.context;
+  
   if(e.finished) {
     gw_sendEvent(context.id, {
       'type': 'gw.rangeSelection',
