@@ -5,7 +5,6 @@ use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 
-
 class public BBjGridExWidgetRow
 
     field public BBjString Id!
@@ -29,12 +28,9 @@ class public BBjGridExWidgetRow
     methodend
 
     method public JsonObject getData()
-        declare JsonParser parser!
-        declare JsonObject obj!
-        declare JsonArray ar!
+        parser! = new JsonParser()
         ar! = parser!.parse(str(#asDataRow().toJson())).getAsJsonArray()
         obj! = ar!.get(0).getAsJsonObject()
-        parser! = new JsonParser()
         methodret obj!
     methodend
 
