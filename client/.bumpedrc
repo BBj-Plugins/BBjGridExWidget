@@ -1,0 +1,13 @@
+files:
+  - package.json
+  - ../bbj-plugin.json 
+plugins:
+  prerelease:
+    Compiling production version:
+      plugin: 'bumped-terminal'
+      command: 'NODE_ENV=production yarn build'   
+  postrelease: 
+    Generating CHANGELOG file:
+      plugin: bumped-changelog
+      options:
+        filename: ../CHANGELOG.md       
