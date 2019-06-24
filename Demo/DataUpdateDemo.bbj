@@ -1,103 +1,125 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
-use java.sql.Types
+use com.google.gson.JsonObject
 
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
-
-x=0
-y=0
-w=800
-h=600
+declare SqlQueryBC sbc!
+declare ResultSet rs!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-grid! = new BBjGridExWidget(wnd!,100,x,y,w,h-50)
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onRowSelect")
-
-restoreOrginial! = wnd!.addButton(200,10,h-38,150,25,"Restore Original ResultSet")
+restoreOrginial! = wnd!.addButton(200,10,10,150,25,"Restore Original ResultSet")
 restoreOrginial!.setCallback(BBjAPI.ON_BUTTON_PUSH,"restoreOrginialRS")
 
-updateResultSet! = wnd!.addButton(201,160,h-38,150,25,"Set New ResultSet")
+updateResultSet! = wnd!.addButton(201,160,10,150,25,"Set New ResultSet")
 updateResultSet!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setNewRS")
 
-updateFirstRow! = wnd!.addButton(202,310,h-38,100,25,"Update 3rd Row")
+updateFirstRow! = wnd!.addButton(202,310,10,100,25,"Update 3rd Row")
 updateFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"updateThirdRow")
 
-removeFirstRow! = wnd!.addButton(203,410,h-38,100,25,"Remove 2nd Row")
+removeFirstRow! = wnd!.addButton(203,410,10,100,25,"Remove 2nd Row")
 removeFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeSecondRow")
 
-clearRowsData! = wnd!.addButton(204,510,h-38,100,25,"Clear Rows")
+clearRowsData! = wnd!.addButton(204,510,10,100,25,"Clear Rows")
 clearRowsData!.setCallback(BBjAPI.ON_BUTTON_PUSH,"clearRowsData")
 
-gosub fillGrid
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100, 0,50,800,550)
+grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onRowSelect")
 
+sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+
+gosub fillGrid
 process_events
 
-fillGrid:
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY ")
-    grid!.setData(rs!,"CDNUMBER")
+rem /**
+rem  * Retrive the data from the database and configure the grid  
+rem  */
+fillGrid:  
+  rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")  
+  grid!.setData(rs!,"CDNUMBER")
 return
 
+rem /**
+rem  * Restore the older ResultSet  
+rem  */
 restoreOrginialRS:
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY ")
-    grid!.setRowsData(rs!)
-return 
+  rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
+  grid!.setRowsData(rs!)
+return
 
+rem /**
+rem  * Create new ResultSet and update the grid 
+rem  * 
+rem  * Note that unlike grid!.setData(ResultSet) , the method grid!.setRowsData(Set) will not update the column defintions 
+rem  * from the passed ResultSet
+rem  */
 setNewRS:
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT TOP 5 * FROM CDINVENTORY ")
-    grid!.setRowsData(rs!)
+  rs! = sbc!.retrieve("SELECT TOP 5 * FROM CDINVENTORY ")
+  grid!.setRowsData(rs!)
 return
 
+rem /**
+rem  * Update a specific row in the grid
+rem  */
 updateThirdRow:
-    row! = rs!.getItem(2)
-    row!.setFieldValue("TITLE","My New Title")
-    row!.setFieldValue("ARTIST","My New ARTIST")
-    grid!.setRowData(2 , row!)
+  row! = rs!.getItem(2)
+  row!.setFieldValue("TITLE","My New Title")
+  row!.setFieldValue("ARTIST","My New ARTIST")
+  
+  grid!.setRowData(2 , row!)
 return
 
+rem /**
+rem  * Remove a specific row in the grid
+rem  */
 removeSecondRow:
     grid!.removeRow(1)
 return
 
+rem /**
+rem  * Clear data but keep the column defintion
+rem  */
 clearRowsData:
     grid!.clearRowsData()
 return
 
-onRowSelect: 
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    
-    sel! =  grid!.getSelectedRows()
-  
-    if INFO(3,6)="5" then
-      a = msgbox(ev!.getSelectedRows().toString(), 0, "Selection")
-    else
-      print 'SHOW', 
-      print ev!.getRowCount(), " ROW(s) AFFECTED By Event:" , ev!.getChangedRows()
-      print ev!.getSelectedRowCount()," ROW(S) SELECTED By Event: ",ev!.getNewSelectedRows()
-      print ev!.getDeselectedRowCount()," ROW(S) DESELECTED By Event: ",ev!.getNewDeselectedRows()
-      print ev!.getSelectedRows().size()," ROW(S) NOW SELECTED : ", ev!.getSelectedRows()
-      print  "------------------------------------------------------------------------"
-    fi
-return 
-
-resize:
-    ev! = BBjAPI().getLastEvent()
-    w=ev!.getWidth()
-    h=ev!.getHeight()
-    grid!.setSize(w,h-80)
+rem /** 
+rem  * Event handler to show the selected row on clik
+rem  * 
+rem  * @see BBjGridExWidget.ON_GRID_ROW_CLICK()()
+rem  */
+onRowSelect:
+  selection! =  grid!.getSelectedRows()
+  a! = msgbox("Row is indexed by CDNUMBER : " + str(selection!.get(0).getIndex()), 0, "Selected Row")
 return
 
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
 byebye:
 bye

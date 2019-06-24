@@ -1,0 +1,167 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use java.lang.StringBuilder
+REM /**
+REM  * BBjGridExWidgetExpressionInterface
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+interface public BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * Get the expression as string
+    rem  *
+    rem  * @return BBjString The Javascript expression
+    rem  */
+
+    method public BBjString toString()
+
+interfaceend
+rem /**
+rem  * BBjGridExWidgetExpression
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpression implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * Expression string
+    rem  */
+    field public BBjString Expression!
+    rem /**
+    rem  * disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpression()
+    methodend
+    rem /**
+    rem  * @param BBjString expression!
+    rem  */
+    method public BBjGridExWidgetExpression(BBjString expression!)
+        #Expression! = expression!
+    methodend
+    rem /**
+    rem  * @return BBjString
+    rem  */
+    method public BBjString toString()
+        methodret #Expression!
+    methodend
+
+classend
+rem /**
+rem  * The class defines a grid expression to format numbers according to BBj supported masks
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * The Number mask to use.
+    rem  */
+    field public BBjString Mask! = null()
+    rem /**
+    rem  * The numbers group seperator to use. by default the bbj group seperator will be used
+    rem  */
+    field public BBjString GroupSeparator! = ""
+    rem /**
+    rem  * The numbers decimal seperator to use. by default the bbj decimal seperator will be used
+    rem  */
+    field public BBjString DecimalSeparator! = ""
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionNumbersFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  */
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!)
+        #Mask! = mask!
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  */
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator!)
+        #this!(mask!)
+        #GroupSeparator! = groupSeperator!
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  * @param BBjString decimalSeparator! The numbers decimal seperator to use
+    rem  */
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!)
+        #this!(mask! , groupSeperator!)
+        #DecimalSeparator! = decimalSeparator!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString toString()
+        declare StringBuilder ex!
+
+        if(#getMask() = null() ) then
+            methodret null()
+        FI
+
+        ex! = new StringBuilder()
+        ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append(String.format("var groupSep  = '%s' || ctx.numberGroupSep;" , #getGroupSeparator()))
+        ex!.append(String.format("var decimalSep  = '%s' || ctx.numberDecimalSep;" , #getDecimalSeparator()))
+        ex!.append("var theValue = getValue || value;")
+        ex!.append("if ((mask && theValue) && (theValue != null && !isNaN(theValue))) {return BBj.Masks.Types.number(theValue, mask, groupSep, decimalSep)}")
+        ex!.append("return theValue || '';")
+        methodret ex!.toString()
+    methodend
+
+classend
+rem /**
+rem  * The class defines a grid expression to format date/timestamps according to BBj supported masks
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionDatesFormatter implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * The date / timestamp mask to use.
+    rem  */
+    field public BBjString Mask! = null()
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionDatesFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionDatesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  */
+    method public BBjGridExWidgetExpressionDatesFormatter(BBjString mask!)
+        #Mask! = mask!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString toString()
+        declare StringBuilder ex!
+
+        if(#getMask() = null() ) then
+            methodret null()
+        FI
+
+        ex! = new StringBuilder()
+        ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append("var theValue = getValue || value;")
+        ex!.append("if((mask && theValue) && theValue != null) {return BBj.Masks.Types.date(theValue, mask)}")
+        ex!.append("return theValue || '';")
+        methodret ex!.toString()
+    methodend
+
+classend

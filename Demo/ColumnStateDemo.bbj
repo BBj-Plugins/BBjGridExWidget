@@ -1,125 +1,100 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
 use com.basiscomponents.bc.SqlQueryBC
-use java.sql.Types
+use com.basiscomponents.db.ResultSet
 use com.google.gson.JsonObject
+use java.sql.Types
 
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+tb_get! = wnd!.addButton(300,2,3,200,25,"Save current State")
+tb_get!.setEnabled(0)
+tb_get!.setCallback(BBjAPI.ON_BUTTON_PUSH,"getState")
+
+tb_set! = wnd!.addButton(301,230,3,200,25,"Restore State")
+tb_set!.setEnabled(0)
+tb_set!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setState")
+
+tb_refresh! = wnd!.addButton(302,450,3,200,25,"Refresh")
+tb_refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refresh")
 
 grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
 grid!.setCallback(grid!.ON_GRID_COLUMN_STATE_CHANGE(),"onColumnStateChange")
 
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
- 
-tb_get! = wnd!.addButton(300,10,3,200,25,"Save current State")
-tb_get!.setEnabled(0)
-tb_set! = wnd!.addButton(301,230,3,200,25,"Restore State")
-tb_refresh! = wnd!.addButton(302,450,3,200,25,"Refresh")
-
-rem Disable the get and set buttons by default , these buttons will be 
-rem enabled again when the grid state is changed 
-tb_get!.setEnabled(0)
-tb_set!.setEnabled(0)
-
-tb_get!.setCallback(BBjAPI.ON_BUTTON_PUSH,"getState")
-tb_set!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setState")
-tb_refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refresh")
-
 gosub fillGrid
-
-rem this is how you would deserialize the string behind the column state and load it into the grid:
-state$="{""columns"":[{""colId"":""CDNUMBER"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""ARTIST"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""TITLE"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""LABEL"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""PLAYINGTIME"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null}],""groups"":[],""sort"":[],""filters"":{}}"
-st! = new BBjGridExWidgetState(state$)
-grid!.setColumnState(st!)
-
-
 process_events
 
-   
 fillGrid:
-declare SqlQueryBC sbc!
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
-    grid!.addColumn("CDNUMBER","Item#")
-    grid!.addColumn("ARTIST","Artist Name")
-    grid!.addColumn("TITLE","Record Title")
-    grid!.addColumn("LABEL","Publisher")
-    grid!.addColumn("PLAYINGTIME","Playing Time (min)")
-    
-    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
-    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
-    grid!.pinColumn("CDNUMBER","left")
-    grid!.setColumnWidth("CDNUMBER",120)
-    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-    grid!.setMultipleSelection(0)
-    grid!.setEnableFilter(1)
-    grid!.setEnableFloatingFilter(1)
-    
-	groupStyle! = new JsonObject()
-    groupStyle!.addProperty("background","#03a9f4")
-    groupStyle!.addProperty("color","white")
-    groupStyle!.addProperty("font-weight","bolder")
-    groupStyle!.addProperty("border-bottom","3px solid black")
-
-    grid!.addStyle(".my-group-class" , groupStyle!)
-    
-	
-    group! = new BBjVector()
-    group!.addItem("CDNUMBER")
-    grid!.addColumnGroup("group1" , "Inventory",group! , 0 , "my-group-class")
-	
-	group! = new BBjVector()
-    group!.addItem("ARTIST")
-    group!.addItem("TITLE")
-    grid!.addColumnGroup("group2" , "CD Information",group! , 0 , "my-group-class")
-	
-	group! = new BBjVector()
-    group!.addItem("LABEL")
-    group!.addItem("PLAYINGTIME")
-    grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
-	
-    grid!.setData(rs!)
-    
-    grid!.setCallback(grid!.ON_GRID_COLUMN_STATE_CHANGE(),"onColumnStateChange")
-        
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
+  
+  rem create columns defintion but delay the render until we configure columns groups
+  grid!.setData(rs! , 0)
+  
+  rem setup columns group style
+  groupStyle! = new JsonObject()
+  groupStyle!.addProperty("background","#03a9f4")
+  groupStyle!.addProperty("color","white")
+  groupStyle!.addProperty("font-weight","bolder")
+  groupStyle!.addProperty("border-bottom","3px solid black")
+  grid!.addStyle(".my-group-class" , groupStyle!)
+  
+  group! = new BBjVector()
+  group!.addItem("CDNUMBER")
+  grid!.addColumnGroup("group1" , "Inventory", group! , 0 , "my-group-class")
+  
+  group! = new BBjVector()
+  group!.addItem("ARTIST")
+  group!.addItem("TITLE")
+  grid!.addColumnGroup("group2" , "CD Information", group! , 0 , "my-group-class")
+  
+  group! = new BBjVector()
+  group!.addItem("LABEL")
+  group!.addItem("PLAYINGTIME")
+  grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
+  
+  rem render the the grid on the client
+  state! = "{""columns"":[{""colId"":""ARTIST"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""TITLE"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""CDNUMBER"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""LABEL"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""PLAYINGTIME"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null}],""groups"":[{""groupId"":""group1"",""open"":true},{""groupId"":""group2"",""open"":true},{""groupId"":""group3"",""open"":true}],""sort"":[{""colId"":""TITLE"",""sort"":""asc""},{""colId"":""ARTIST"",""sort"":""desc""}],""filters"":{}}"
+  grid!.render()
+REM   //grid!.setColumnState(new BBjGridExWidgetState(state!))
 return
 
-byebye:
-    bye
-    
 resize:
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
+  ev! = BBjAPI().getLastEvent()
+  grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
 return
 
 getState:
-    state! = grid!.getColumnState()
-    clipfromstr 1,state!.toString()
+  state! = grid!.getColumnState()
+  clipfromstr 1,state!.toString()
 return
 
 setState:
-    if state!<>null() then
-        grid!.setColumnState(state!)
-    fi
-    tb_get!.setEnabled(0)
+  tb_get!.setEnabled(0)
+  if state!<>null() then
+      grid!.setColumnState(state!)
+  FI
 return
 
 onColumnStateChange:
     tb_get!.setEnabled(1)
     tb_set!.setEnabled(1)
-return 
-
-refresh:
-    grid!.setData(rs!)
 return
 
+refresh:
+    grid!.render()
+return
+
+byebye:
+bye

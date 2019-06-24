@@ -1,0 +1,206 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.JsonParser
+use com.google.gson.JsonObject
+use com.basiscomponents.db.DataRow
+REM /**
+REM  * A client model for rows
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientRowModel
+    rem /**
+    rem  * The row id
+    rem  */
+    field public BBjString Id!
+    rem /**
+    rem  * The row index
+    rem  */
+    field public BBjString Index!
+    rem /**
+    rem  * The row child index
+    rem  */
+    field public BBjNumber ChildIndex!
+    rem /**
+    rem  * The row parent key , if any
+    rem  */
+    field public BBjString ParentKey!
+    rem /**
+    rem  * True when the row is selected , false otherwise
+    rem  */
+    field public BBjNumber IsSelected!
+    rem /**
+    rem  * BBjGridExWidget instnace
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private BBjGridExWidgetClientRowModel()
+    methodend
+    rem /**
+    rem  * Construct new client row
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instnace
+    rem  */
+    method public BBjGridExWidgetClientRowModel(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget getWidget()
+        methodret #Widget!
+    methodend
+    rem /**
+    rem  * Convert the client row to a DataRow
+    rem  *
+    rem  * @return DataRow
+    rem  */
+    method public DataRow asDataRow()
+        methodret #getWidget().getRS().get(#getIndex())
+    methodend
+    rem /**
+    rem  * Get the row data as JsonObject
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        rowAsJson! = str(#asDataRow().toJson(#getWidget().getRowNodeId()))
+        ar! = parser!.parse(rowAsJson!).getAsJsonArray()
+        obj! = ar!.get(0).getAsJsonObject()
+        methodret obj!
+    methodend
+    rem /**
+    rem  * Aliase for <i>getAsJsonObject()</i>
+    rem  *
+    rem  * @see getAsJsonObject()
+    rem  */
+    method public JsonObject getData()
+        methodret #getAsJsonObject()
+    methodend
+    rem /**
+    rem  * Convert row to string
+    rem  *
+    rem  * @return BBjstring  The row id
+    rem  */
+    method public BBjString toString()
+        methodret #Id!
+    methodend
+
+classend
+REM /**
+REM  * A model for the client column
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientColumnModel
+    rem /**
+    rem  * BBjGridExWidget instnace
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * The column name
+    rem  */
+    field protected BBjString Name!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private BBjGridExWidgetClientColumnModel()
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientColumnModel
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instnace
+    rem  * @param BBjString name! the column's name/id
+    rem  */
+    method public BBjGridExWidgetClientColumnModel(BBjGridExWidget widget! , BBjString name!)
+        #Name! = name!
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget getWidget()
+        methodret #Widget!
+    methodend
+    rem /**
+    rem  * Get the column index
+    rem  *
+    rem  * Returns the index of the column with the specified name.
+    rem  *
+    rem  * @return BBjNumber column's index
+    rem  */
+    method public BBjNumber getIndex()
+        methodret #getWidget().getRS().getColumnIndex(#getName())
+    methodend
+    rem /**
+    rem  * Get the column type
+    rem  *
+    rem  * Returns the value of the ColumnType property from the ResultSet's metadata.
+    rem  *
+    rem  * @return BBjNumber column's type
+    rem  */
+    method public BBjNumber getType()
+        methodret #getWidget().getRS().getColumnType(#getName())
+    methodend
+    rem /**
+    rem  * Get the column type
+    rem  *
+    rem  * Returns the metadata of the column.
+    rem  *
+    rem  * @return BBjNumber column's metadata
+    rem  */
+    method public HashMap getMetaData()
+        methodret #getWidget().getRS().getColumnMetaData(#getName())
+    methodend
+    rem /**
+    rem  * Get the column name
+    rem  *
+    rem  * @return BBjString column's name
+    rem  */
+    method public BBjString getName()
+        methodret #Name!
+    methodend
+    rem /**
+    rem  * Convert column to string
+    rem  *
+    rem  * @return BBjstring  The column 
+    rem  */
+    method public BBjString toString()
+        methodret #getName()
+    methodend
+classend
+REM /**
+REM  * A model for the client cell
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientCellModel
+    rem /**
+    rem  * The cell's row.
+    rem  */
+    field public BBjGridExWidgetClientRowModel Row!
+    rem /**
+    rem  * The cell's column
+    rem  */
+    field public BBjGridExWidgetClientColumnModel Column!
+    rem /**
+    rem  * The cell's value
+    rem  */
+    field public BBjString Value!
+
+classend

@@ -1,13 +1,10 @@
 /*
-* This file is part of the grid project
+* This file is part of the BBjGridExWidget plugin.
 * (c) Basis Europe <eu@basis.com>
 *
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
-
-import 'expose-loader?jss!../node_modules/jss/jss.js';
-import 'expose-loader?Basis.AgGridComponents!../node_modules/ag-grid-components/dist/agc-basic.bundle.js';
 
 require('ag-grid-community/dist/styles/ag-grid.css');
 
@@ -19,7 +16,5 @@ require('ag-grid-community/dist/styles/ag-theme-material.css');
 require('ag-grid-community/dist/styles/ag-theme-balham.css');
 require('ag-grid-community/dist/styles/ag-theme-balham-dark.css');
 
-export * from './utilities.js';
-export * from './events.js';
-export * from './api.js';
-export * from './init.js';
+export * from './pollyfills.js';
+export * from "./api";

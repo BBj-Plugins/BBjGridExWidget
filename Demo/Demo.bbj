@@ -1,3 +1,10 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -8,8 +15,12 @@ declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 ? 'HIDE'
-
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo")
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+if (info(3,6)<>"5") then
+    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
+fi
 
               wnd!.addStaticText(200,5,10,60,25,"Database:")
 lb_db!      = wnd!.addListButton(201,65,5,160,250,"")
@@ -21,25 +32,16 @@ lb_theme!   = wnd!.addListButton(211,610,5,85,250,"")
 
 btn_fit!    = wnd!.addToolButton(205,765,5,25,25,"[/]")
 
-
-
-grid! = new BBjGridExWidget(wnd!,100,0,35,900,563)
-
-grid!.setEnableFilter(1)
-
 lb_db!      .setCallback(BBjAPI.ON_LIST_SELECT,"loadTables")
 btn_query!  .setCallback(BBjAPI.ON_BUTTON_PUSH,"doQuery")
 lb_theme!   .setCallback(BBjAPI.ON_LIST_SELECT,"setTheme")
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
 btn_fit!.setToggleable(1)
 btn_fit!.setCallback(BBjAPI.ON_TOOL_BUTTON_PUSH,"toggleFitToGrid")
 
-if (info(3,6)<>"5") then
-    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
-fi
- 
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,35,900,563)
+grid!.setEnableFilter(1) 
 
 gosub loadDatabases
 gosub doQuery
@@ -47,122 +49,120 @@ gosub doQuery
 rem disable the selection by default to avoid a backdoor if this demo is installed
 rem enable to get the full db browsing functionality
 rem lb_db!.setEnabled(0)
-
-
-lb_theme!.insertItems(0,grid!.getThemes())
+lb_theme!.insertItems(0, grid!.getThemes())
 lb_theme!.selectIndex(0)
-
 
 process_events
 
-loadData:
-
-return
-   
-
-byebye:
-    bye
-    
-resize:
-    declare auto BBjResizeEvent ev!
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight()-35)
-return
-   
 loadDatabases:
-    j=0
-    i=0
-    x$ = sqllist(-1)
-    while x$>""
-        db$=x$(1,pos($0a$=x$)-1)
-        x$=x$(pos($0a$=x$)+1)
-        lb_db!.addItem(db$)
-        if db$="ChileCompany" then
-                j=i
-        fi
-        i=i+1
-    wend
-    lb_db!.selectIndex(j)
-    gosub loadTables
-return    
+  j=0
+  i=0
+  x$ = sqllist(-1)
+  while x$>""
+      db$=x$(1,pos($0a$=x$)-1)
+      x$=x$(pos($0a$=x$)+1)
+      lb_db!.addItem(db$)
+  
+      if db$="ChileCompany" then
+          j=i
+      FI
+  
+      i=i+1
+  wend
+  
+  lb_db!.selectIndex(j)
+  gosub loadTables
+return
 
 loadTables:
-    lb_tbl!.removeAllItems()
-    db$ = lb_db!.getSelectedItem()
-    sqlopen (1,err=no_db)db$
-    x$=sqltables(1)
-    sqlclose(1)
-    j=0
-    i=0
-    while x$>""
-        tbl$=x$(1,pos($0a$=x$)-1)
-        x$=x$(pos($0a$=x$)+1)
-        lb_tbl!.addItem(tbl$)
-        if tbl$="CUSTOMER" then
-                j=i
-        fi
-        i=i+1
-    wend    
-    lb_tbl!.selectIndex(j)
-return
-    
+  lb_tbl!.removeAllItems()
+  db$ = lb_db!.getSelectedItem()
+  sqlopen (1,err=no_db)db$
+  x$=sqltables(1)
+  sqlclose(1)
+  j=0
+  i=0
+  while x$>""
+      tbl$=x$(1,pos($0a$=x$)-1)
+      x$=x$(pos($0a$=x$)+1)
+      lb_tbl!.addItem(tbl$)
+  
+      if tbl$="CUSTOMER" then
+          j=i
+      FI
+  
+      i=i+1
+  wend
+  
+  lb_tbl!.selectIndex(j)
+  return
+  
 no_db:
-    a=msgbox("Database "+db$+" does not exist!",16,"Error")
+  a=msgbox("Database "+db$+" does not exist!",16,"Error")
+  return
+  doQuery:
+  db$ = lb_db!.getSelectedItem()
+  tbl$ = lb_tbl!.getSelectedItem()
+  
+  if (db$>"" and tbl$>"") then
+      bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
+      rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
+      grid!.clearColumnDefinitions()
+      grid!.setData(rs!)
+  FI
 return
-    
-doQuery:
-    db$ = lb_db!.getSelectedItem()
-    tbl$ = lb_tbl!.getSelectedItem()
-    if (db$>"" and tbl$>"") then
-    
-        if rev<"REV 17.10" then
-             url$ = "jdbc:basis:localhost?DATABASE=ChileCompany&SSL=false"
-             con! = java.sql.DriverManager.getConnection(url$, "admin", "admin123")
-        else
-            bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
-        fi
-        
-        rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
-        grid!.setData(rs!)
-        
-        if db$="ChileCompany" AND tbl$="CUSTOMER" then 
-            rs!.setAttribute(23,"MASK","%Y-%Mz-%Dz")
-            rs!.setAttribute(24,"MASK","%Y/%Mz/%Dz")
-        fi
-    fi
-    return
 
 error_sql:
-        a=msgbox(BBjAPI().getLastException().getMessage() ,0,"ERROR")
-return        
-
-toggleFitToGrid:
-    declare auto BBjToolButtonPushEvent toogle_ev!
-    toggle_ev! = BBjAPI().getLastEvent()
-    grid!.setFitToGrid()
+    a=msgbox(BBjAPI().getLastException().getMessage() ,0,"ERROR")
 return
 
 onWinKeypress:
-    declare auto BBjKeypressEvent key_ev!
-    key_ev! = BBjAPI().getLastEvent()
-    if key_ev!.getKeyCode() = 342 then
-       grid!.showDeveloperConsole()
-    fi
+  declare auto BBjKeypressEvent key_ev!
+  
+  key_ev! = BBjAPI().getLastEvent()
+  
+  if key_ev!.getKeyCode() = 342 then
+      grid!.showDeveloperConsole()
+  FI
 return
 
 setTheme:
-    declare auto BBjListSelectEvent ev!
-    ev! = BBjAPI().getLastEvent()
-    theme$ = ev!.getSelectedItem()
-    grid!.setTheme(theme$)
-    if theme$="material" then
-        grid!.setRowHeight(50)
-    else
-        grid!.setRowHeight(25)
-    fi
-
-    if theme$="balham-dark"
-        grid!.setRowHeight(0,50)
-    fi
-    
+  declare auto BBjListSelectEvent ev!
+  
+  ev! = BBjAPI().getLastEvent()
+  theme$ = ev!.getSelectedItem()
+  grid!.setTheme(theme$)
+  
+  if theme$="material" then
+      grid!.setRowHeight(50)
+  else
+      grid!.setRowHeight(25)
+  FI
+  
+  if theme$="balham-dark"
+      grid!.setRowHeight(0,50)
+  FI
 return
+
+toggleFitToGrid:
+  declare auto BBjToolButtonPushEvent toogle_ev!
+  
+  toggle_ev! = BBjAPI().getLastEvent()
+  grid!.setFitToGrid()
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  declare auto BBjResizeEvent ev!
+  ev! = BBjAPI().getLastEvent()
+  grid!.setSize(ev!.getWidth(),ev!.getHeight()-35)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

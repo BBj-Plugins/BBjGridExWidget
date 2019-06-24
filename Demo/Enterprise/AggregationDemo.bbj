@@ -1,5 +1,6 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererGroupCellRenderer
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -7,9 +8,6 @@ use com.google.gson.JsonObject
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 lic!=System.getProperty("bbjgridexwidget.license")
@@ -36,39 +34,35 @@ setupGrid:
 
     declare SqlQueryBC sbc!
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-
-    filter! = new com.basiscomponents.db.DataRow()
-    filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
-    
-    rs! = rs!.filterBy(filter!)
-    playingTimeIndex! =rs!.getColumnIndex("PLAYINGTIME")
-
-    rs!.setAttribute(playingTimeIndex!,"ENABLE_VALUE","1")
-    rs!.setAttribute(playingTimeIndex!,"AGG_FUNC","sum")
-    rs!.setAttribute(playingTimeIndex!,"ALLOWED_AGG_FUNCS","sum,min,max")
-    rem convert string to number 
-    rs!.setAttribute(playingTimeIndex!,"VALUE_GETTER","Number(data.PLAYINGTIME)")
-    rs!.setAttribute(playingTimeIndex!,"FOOTER_VALUE_GETTER","'PlayingTime ' + column.aggFunc +' (' + x + ')' ")
-
-    costIndex! =rs!.getColumnIndex("COST")
-
-    rs!.setAttribute(costIndex!,"ENABLE_VALUE","1")
-    rs!.setAttribute(costIndex!,"AGG_FUNC","sum")
-    rs!.setAttribute(costIndex!,"ALLOWED_AGG_FUNCS","sum,avg,min,max")
-    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","if(x) {return column.aggFunc + ':' + BBj.Masks.Types.number(x, '### ##0.00' , ',' , '.')  + ' $'} else {return x} ")
+    rs! = sbc!.retrieve("SELECT LABEL , MUSICTYPE , PLAYINGTIME , COST  FROM CDINVENTORY")
     
     grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
-
-    cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
+    grid!.setData(rs!,0)
     grid!.setGroupIncludeFooter(1)
     grid!.setGroupIncludeTotalFooter(1)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
-    grid!.setShowGroupChildCount(1)
-    grid!.setShowGroupSelectionCheckbox(1)
-    grid!.setGroupSelectsChildren(1)
-    
-    grid!.setData(rs!,"CDNUMBER")
+         
+        rem Group rows by music type
+        type! = grid!.getColumn("MUSICTYPE")
+        type!.setEnableRowGroup(1)
+        type!.setRowGroupIndex(0)
+        
+        rem aggregate on playingtime
+        timeFooterExp! = "'PlayingTime ' + column.aggFunc + ' (' + x + ')' "
+        time! = grid!.getColumn("PLAYINGTIME")
+        time!.setEnableValue(1)
+        time!.setAggFunc("sum")
+        time!.setValueGetterExpression("data ? Number(data.PLAYINGTIME) : null")
+        time!.setCellRenderer(new BBjGridExWidgetRendererGroupCellRenderer(timeFooterExp!))
+
+        rem aggregate on cost
+        constFooterExp! = "if(x) {return column.aggFunc + ':' + BBj.Masks.Types.number(x.toFixed(2), '### ##0.00' , ',' , '.')  + ' $'} else {return x}"
+        cost! = grid!.getColumn("COST")
+        cost!.setEnableValue(1)
+        cost!.setAggFunc("sum")
+        cost!.setCellRenderer(new BBjGridExWidgetRendererGroupCellRenderer(constFooterExp!))
+    grid!.render()
+ 
 return
 
 onUseCheckbox:

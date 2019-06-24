@@ -1,0 +1,1321 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use java.util.Arrays
+use java.util.ArrayList
+use java.util.HashMap
+use java.util.LinkedHashMap
+use java.util.HashSet
+use java.sql.Types
+use com.google.gson.Gson
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.basiscomponents.db.DataField
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterInterface
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicBoolean
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicDate
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTimestamp
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionNumbersFormatter
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionDatesFormatter
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererInterface
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererBoolean
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererGroupCellRenderer
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorInterface
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGLargeText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBoolean
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicNumber
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicDate
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicTimestamp
+REM /**
+REM  * The class holds the common props between column and column groups
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetColumnDefinition
+    rem /**
+    rem  * The name to render in the column header.
+    rem  */
+    field public BBjString Label! = null()
+    rem /**
+    rem  * Whether to show the column when the group is open / closed.
+    rem  *
+    rem  * @see COLUMN_GROUP_CLOSED()
+    rem  * @see COLUMN_GROUP_OPENED()
+    rem  */
+    field public BBjString ColumnGroupShow! = null()
+    rem /**
+    rem  * A CSS class(s) to use for the header cell.
+    rem  */
+    field public ArrayList HeaderClass! = new ArrayList()
+    rem /**
+    rem  * A css class(s) to use for the tool panel cell.
+    rem  */
+    field public ArrayList ToolPanelClass! = new ArrayList()
+    rem /**
+    rem  * Set to true if you do not want this column or group to appear in the tool panel.
+    rem  */
+    field public BBjNumber SuppressToolPanel! = null()
+    rem /**
+    rem  * A constant which defines the group state as opened
+    rem  *
+    rem  * @return BBjString <b>opened</b>
+    rem  */
+    method public static BBjString COLUMN_GROUP_OPENED()
+        methodret "open"
+    methodend
+    rem /**
+    rem  * A constant which defines the group state as opened
+    rem  *
+    rem  * @return BBjString <b>opened</b>
+    rem  */
+    method public static BBjString COLUMN_GROUP_CLOSED()
+        methodret "closed"
+    methodend
+    rem /**
+    rem  * Convert the defintion to Json Object
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("headerName" , #getLabel(),err=*next)
+        json!.addProperty("columnGroupShow" , #getColumnGroupShow() ,err=*next)
+        json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), null()) ,err=*next)
+        json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) , null()) ,err=*next)
+        json!.addProperty("suppressToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class reprensets the default column defintion which the grid will use.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColumnDefinition
+    rem /**
+    rem  * The Field Type.
+    rem  *
+    rem  * <b>Note :</b> Not all sql types are supported , for example it does not make sense to declare a colum type as STRUCT.
+    rem  *
+    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+    rem  */
+    field public BBjNumber Type! = 12
+    rem /**
+    rem  * Initial width in pixels
+    rem  *
+    rem  * <b>Note:</b> setting the width to zero will not hide the column , use <b>setHidden()</b> instead. And if the width is null()
+    rem  * this means the grid will auto set the width for this column
+    rem  *
+    rem  * @see setHidden()
+    rem  */
+    field public BBjNumber Width! = null()
+    rem /**
+    rem  * Initial min width in pixels
+    rem  */
+    field public BBjNumber MinWidth! = null()
+    rem /**
+    rem  * Initial max width in pixels
+    rem  */
+    field public BBjNumber MaxWidth! = null()
+    rem /**
+    rem  * The filter component to use for this column
+    rem  */
+    field public BBjGridExWidgetFilterInterface Filter! = new BBjGridExWidgetFilterAGText()
+    rem /**
+    rem  * When true the filter is enabled , disabled otherwise
+    rem  */
+    field public BBjNumber EnableFilter! = 1
+    rem /**
+    rem  * Set to true to make a column hidden by default.
+    rem  */
+    field public BBjNumber Hidden! = 0
+    rem /**
+    rem  * Set to 'left' or 'right' to pin.
+    rem  *
+    rem  * @see PINNED_LEFT()
+    rem  * @see PINNED_RIGHT()
+    rem  */
+    field public BBjString Pinned! = null()
+    rem /**
+    rem  * Set to true to always have column displayed first.
+    rem  */
+    field public BBjNumber LockPosition! = 0
+    rem /**
+    rem  * Set to true block making column visible / hidden via the UI (API will still work).
+    rem  */
+    field public BBjNumber LockVisible! = 0
+    rem /**
+    rem  * Set to true block pinning column via the UI (API will still work).
+    rem  */
+    field public BBjNumber LockPinned! = 0
+    rem /**
+    rem  * Set to true to allow sorting on this column.
+    rem  */
+    field public BBjNumber Sortable! = 1
+    rem /**
+    rem  * Set to 'asc' or 'desc' to sort by this column by default.
+    rem  *
+    rem  * @see SORT_DESC()
+    rem  * @see SORT_ASC()
+    rem  */
+    field public BBjString Sort! = null()
+    rem /**
+    rem  * Set to true to allow column to be resized.
+    rem  */
+    field public BBjNumber Resizable! = 1
+    rem /**
+    rem  * Tooltip for the column header
+    rem  */
+    field public BBjString HeaderTooltip! = null()
+    rem /**
+    rem  * Set to true to render a selection checkbox in the column.
+    rem  */
+    field public BBjNumber CheckboxSelection! = null()
+    rem /**
+    rem  * Set to true to render a selection checkbox in the column's header.
+    rem  */
+    field public BBjNumber HeaderCheckboxSelection! = null()
+    rem /**
+    rem  * CSS class(s) to use for the cell.
+    rem  */
+    field public ArrayList CellClass! = new ArrayList()
+    rem /**
+    rem  * A map of css values.
+    rem  */
+    field public JsonObject CellStyle! = new JsonObject()
+    rem /**
+    rem  * Set to true if the column is editable, otherwise false.
+    rem  */
+    field public BBjNumber Editable! = 0
+    rem /**
+    rem  * A cellRenderer to use for this column
+    rem  */
+    field public BBjGridExWidgetRendererInterface CellRenderer! = null()
+    rem /**
+    rem  * CellEditor to use for this column
+    rem  */
+    field public BBjGridExWidgetCellEditorInterface CellEditor! = new BBjGridExWidgetCellEditorAGText()
+    rem /**
+    rem  * Name of function to use for aggregation. One of [sum,min,max,first,last].
+    rem  */
+    field public BBjString AggFunc! = null()
+    rem /**
+    rem  * Aggregation functions allowed on this column eg ['sum','avg'].
+    rem  */
+    field public HashSet AllowedAggFuncs! = new HashSet()
+    rem /**
+    rem  * Set this in columns you want to group by. If only grouping by one column, set this to any number (eg 0). If grouping by multiple columns, set this to where you want this column to be in the group (eg 0 for first, 1 for second, and so on).
+    rem  */
+    field public BBjNumber RowGroupIndex! = null()
+    rem /**
+    rem  * Set this in columns you want to pivot by. If only pivoting by one column, set this to any number (eg 0). If pivoting by multiple columns, set this to where you want this column to be in the order of pivots (eg 0 for first, 1 for second, and so on).
+    rem  */
+    field public BBjNumber PivotIndex! = null()
+    rem /**
+    rem  * Set to true if you want the unsorted icon to be shown when no sort is applied to this column.
+    rem  */
+    field public BBjNumber UnSortIcon! = 0
+    rem /**
+    rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to row group by this column via the UI.
+    rem  */
+    field public BBjNumber EnableRowGroup! = 1
+    rem /**
+    rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to pivot by this column via the UI.
+    rem  */
+    field public BBjNumber EnablePivot! = 0
+    rem /**
+    rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to aggregate by this column via the UI.
+    rem  */
+    field public BBjNumber EnableValue! = 1
+    rem /**
+    rem  * Set to true if no menu should be shown for this column header.
+    rem  */
+    field public BBjNumber SuppressMenu! = 0
+    rem /**
+    rem  * Set to true if you want this columns width to be fixed during 'size to fit' operation.
+    rem  */
+    field public BBjNumber SuppressSizeToFit! = 0
+    rem /**
+    rem  * Set to true if you do not want this column to be movable via dragging.
+    rem  */
+    field public BBjNumber SuppressMovable! = 0
+    rem /**
+    rem  * Set to true if this col is not navigable (ie cannot be tabbed into), otherwise false.
+    rem  */
+    field public BBjNumber SuppressNavigable! = 0
+    rem /**
+    rem  * Set to true to have the grid calculate height of row based on contents of this column.
+    rem  */
+    field public BBjNumber AutoHeight! = 0
+    rem /**
+    rem  * Rules which can be applied to include certain CSS classes. These rules are provided as a map where the keys are the class names and the values are expressions that if evaluated to true, the class gets used.
+    rem  *
+    rem  * Inside the condition you can use serveral predefined params, some of these params are :
+    rem  *
+    rem  *  1. x        => maps value
+    rem  *  2. ctx      => maps the grid context
+    rem  *  3. data     => maps the current data row
+    rem  *  4. rowIndex => maps the current row index
+    rem  * @see https://www.ag-grid.com/javascript-grid-cell-styles/#cell-style-cell-class-cell-class-rules-params
+    rem  */
+    field public JsonObject CellClassRules! = new JsonObject()
+    rem /**
+    rem  * An Ag Grid expresion which can be executed before getting the value from your data for display
+    rem  *
+    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  */
+    field public BBjGridExWidgetExpressionInterface ValueGetterExpression! = null()
+    rem /**
+    rem  * An Ag Grid expresion which can be executed to format the value for display.
+    rem  *
+    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  */
+    field public BBjGridExWidgetExpressionInterface ValueFormatterExpression! = null()
+    rem /**
+    rem  * An Ag Grid expresion which can be executed to get the value for filtering purposes.
+    rem  *
+    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  */
+    field public BBjGridExWidgetExpressionInterface FilterValueGetterExpression! = null()
+    rem /**
+    rem  * An Ag Grid expresion which can be executed before setting the value into your data for saving.
+    rem  *
+    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  */
+    field public BBjGridExWidgetExpressionInterface ValueSetterExpression! = null()
+    rem /**
+    rem  * An Ag Grid expresion which can be executed to parse the value for saving.
+    rem  *
+    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  */
+    field public BBjGridExWidgetExpressionInterface ValueParserExpression! = null()
+    rem /**
+    rem  * The default numbers mask to use. by default null()
+    rem  */
+    field public BBjString DefaultNumbersMask! = null()
+    rem /**
+    rem  * The default dates mask to use. by default <b>%Dz.%Mz.%Yd</b>
+    rem  */
+    field public BBjString DefaultDatesMask! = "%Dz.%Mz.%Yd"
+    rem /**
+    rem  * The default timestamps mask to use. by defualt <b>%Dz.%Mz.%Yl %Hz:%mz:%sz</b>
+    rem  */
+    field public BBjString DefaultTimestampsMask! = "%Dz.%Mz.%Yl %Hz:%mz:%sz"
+    rem /**
+    rem  * Get pinned left constant
+    rem  *
+    rem  * @return BBjString <b>left</b>
+    rem  */
+    method public static BBjString PINNED_LEFT()
+        methodret "left"
+    methodend
+    rem /**
+    rem  * Get pinned right constant
+    rem  *
+    rem  * @return BBjString <b>right</b>
+    rem  */
+    method public static BBjString PINNED_RIGHT()
+        methodret "right"
+    methodend
+    rem /**
+    rem  * Get sort direction constant
+    rem  *
+    rem  * @return BBjString <b>desc</b>
+    rem  */
+    method public static BBjString SORT_DESC()
+        methodret "desc"
+    methodend
+    rem /**
+    rem  * Get sort direction constant
+    rem  *
+    rem  * @return BBjString <b>asc</b>
+    rem  */
+    method public static BBjString SORT_ASC()
+        methodret "asc"
+    methodend
+    rem /**
+    rem  * A constant which defines the group state as opened
+    rem  *
+    rem  * @return BBjString <b>opened</b>
+    rem  */
+    method public static BBjString COLUMN_GROUP_OPENED()
+        methodret "open"
+    methodend
+    rem /**
+    rem  * A constant which defines the group state as opened
+    rem  *
+    rem  * @return BBjString <b>opened</b>
+    rem  */
+    method public static BBjString COLUMN_GROUP_CLOSED()
+        methodret "closed"
+    methodend
+    rem /**
+    rem  * Create a BBjGridExWidgetExpression from string and set it as value getter
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setValueGetterExpression(BBjString expression!)
+        #ValueGetterExpression! = new BBjGridExWidgetExpression(expression!)
+    methodend
+    rem /**
+    rem  * Create a BBjGridExWidgetExpression from string and set it as value setter
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setValueSetterExpression(BBjString expression!)
+        #ValueSetterExpression! = new BBjGridExWidgetExpression(expression!)
+    methodend
+    rem /**
+    rem  * Create a BBjGridExWidgetExpression from string and set it as value formatter
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setValueFormatterExpression(BBjString expression!)
+        #ValueFormatterExpression! = new BBjGridExWidgetExpression(expression!)
+    methodend
+    rem /**
+    rem  * Create a BBjGridExWidgetExpression from string and set it as value parser
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setValueParserExpression(BBjString expression!)
+        #ValueParserExpression! = new BBjGridExWidgetExpression(expression!)
+    methodend
+    rem /**
+    rem  * Set the allowd aggregation functions allowed on this column
+    rem  *
+    rem  * @param BBjString funcs! comma seperated functinos
+    rem  */
+    method public void setAllowedAggFuncs(BBjString funcs!)
+        #AllowedAggFuncs!.addAll(Arrays.asList(funcs!.replaceAll(" ","").split(",")))
+    methodend
+    rem /**
+    rem  * Sets the foreground color for a column
+    rem  *
+    rem  * @param BBjColor color!  the color for the column
+    rem  */
+    method public void setForeColor(BBjColor color!)
+        #getCellStyle().addProperty("color" ,  BBjGridExWidget.makeHexColor(color!))
+    methodend
+    rem /**
+    rem  * Sets the foreground color for a column
+    rem  *
+    rem  * @param BBjString color$ Valid CSS color
+    rem  *
+    rem  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value
+    rem  */
+    method public void setForeColor(BBjString color!)
+        #getCellStyle().addProperty("color" ,  color!)
+    methodend
+    rem /**
+    rem  * Sets the background color of a column
+    rem  *
+    rem  * @param BBjColor color!  The color for the column
+    rem  */
+    method public void setBackColor(BBjColor color!)
+        #getCellStyle().addProperty("background-color" ,  BBjGridExWidget.makeHexColor(color!))
+    methodend
+    rem /**
+    rem  * Sets the background color of a column
+    rem  *
+    rem  * @param BBjColor color$  Valid CSS color
+    rem  *
+    rem  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value
+    rem  */
+    method public void setBackColor(BBjString color!)
+        #getCellStyle().addProperty("background-color" ,  color!)
+    methodend
+    rem /**
+    rem  * Sets the default alignment for a column
+    rem  *
+    rem  * @param BBjNumber align! The column alignment
+    rem  *
+    rem  * valid alignments:
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_ALIGN_LEFT()
+    rem  * @see BBjGridExWidget.GRID_ALIGN_CENTER()
+    rem  * @see BBjGridExWidget.GRID_ALIGN_RIGHT()
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */
+    method public void setAlignment(BBjNumber align!)
+        styleMap! = #getCellStyle()
+        switch align!
+            case BBjGridExWidget.GRID_ALIGN_LEFT()
+                styleMap!.addProperty("text-align" ,  "left")
+                break
+            case BBjGridExWidget.GRID_ALIGN_CENTER()
+                styleMap!.addProperty("text-align" ,  "center")
+                break
+            case BBjGridExWidget.GRID_ALIGN_RIGHT()
+                styleMap!.addProperty("text-align" ,  "right")
+                break
+        swend
+    methodend
+    rem /**
+    rem  * Set the mask of a column using value formatter expression.
+    rem  *
+    rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
+    rem  * the column type to determine the correct value formatter (number , date , ...)
+    rem  *
+    rem  * @param BBjString mask!: The (date or numeric) mask, BBj style
+    rem  */
+    method public void setColumnMask(BBjString mask!)
+        SWITCH #getType()
+            CASE Types.BIGINT
+            CASE Types.BIT
+            CASE Types.DECIMAL
+            CASE Types.DOUBLE
+            CASE Types.FLOAT
+            CASE Types.INTEGER
+            CASE Types.NUMERIC
+            CASE Types.NUMERIC
+            CASE Types.TINYINT
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(mask!))
+                BREAK
+            CASE Types.DATE
+            CASE Types.TIMESTAMP
+            CASE Types.TIMESTAMP_WITH_TIMEZONE
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionDatesFormatter(mask!))
+                BREAK
+            CASE default
+                BREAK
+        SWEND
+    methodend
+    rem /**
+    rem  * Set the column type
+    rem  *
+    rem  * @param BBjString type! SQL type
+    rem  *
+    rem  * <b>Note :</b>
+    rem  * Not all sql types are supported , for example it does not make sense to declare a colum type as STRUCT.
+    rem  * Setting the type will change the column common properites automatically like the filter , cell editor , ....
+    rem  *
+    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+    rem  */
+    method public void setType(BBjNumber type!)
+        #Type! = type!
+        REM BBjGridExWidgetCellEditorAGText
+        REM BBjGridExWidgetCellEditorAGLargeText
+        REM BBjGridExWidgetCellEditorBasicBoolean
+        REM BBjGridExWidgetCellEditorBasicNumber
+        REM BBjGridExWidgetCellEditorBasicDate
+        REM BBjGridExWidgetCellEditorBasicTimestamp
+        SWITCH type!
+            CASE Types.BIGINT
+            CASE Types.BIT
+            CASE Types.DECIMAL
+            CASE Types.DOUBLE
+            CASE Types.FLOAT
+            CASE Types.INTEGER
+            CASE Types.NUMERIC
+            CASE Types.NUMERIC
+            CASE Types.TINYINT
+                #setFilter(new BBjGridExWidgetFilterAGNumber())
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(#getDefaultNumbersMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber())
+                BREAK
+            CASE Types.DATE
+                #setFilter(new BBjGridExWidgetFilterBasicDate())
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionDatesFormatter(#getDefaultDatesMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicDate())
+                BREAK
+            CASE Types.TIMESTAMP
+            CASE Types.TIMESTAMP_WITH_TIMEZONE
+                #setFilter(new BBjGridExWidgetFilterBasicTimestamp())
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionDatesFormatter(#getDefaultTimestampsMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicTimestamp())
+                BREAK
+            CASE Types.BOOLEAN
+                #setFilter(new BBjGridExWidgetFilterBasicBoolean())
+                #setCellRenderer(new BBjGridExWidgetRendererBoolean())
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicBoolean())
+                BREAK
+            CASE default
+                BREAK
+        SWEND
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject column!
+
+        column! = #super!.getAsJsonObject()
+        column!.addProperty("width",#getWidth().longValue(),err=*next)
+        column!.addProperty("minWidth",#getMinWidth().longValue(),err=*next)
+        column!.addProperty("maxWidth",#getMaxWidth().longValue(),err=*next)
+        column!.addProperty("hide",#getHidden().booleanValue(),err=*next)
+        column!.addProperty("pinned",#getPinned(),err=*next)
+        column!.addProperty("lockPosition",#getLockPosition().longValue(),err=*next)
+        column!.addProperty("lockVisible",#getLockVisible().longValue(),err=*next)
+        column!.addProperty("lockPinned",#getLockPinned().longValue(),err=*next)
+        column!.addProperty("sortable",#getSortable().booleanValue(),err=*next)
+        column!.addProperty("sort",#getSort(),err=*next)
+        column!.addProperty("resizable",#getResizable().booleanValue(),err=*next)
+        column!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
+        column!.addProperty("checkboxSelection",#getCheckboxSelection().booleanValue(),err=*next)
+        column!.addProperty("headerCheckboxSelection",#getHeaderCheckboxSelection().booleanValue(),err=*next)
+        column!.addProperty("cellClass" , iff(#getCellClass().size() <> 0 ,new Gson().toJson(#getCellClass()), null()) ,err=*next)
+        column!.        add("cellStyle", iff(#getCellStyle().entrySet().size() <> 0 , #getCellStyle() , null()),err=*next)
+        column!.addProperty("editable",#getEditable().booleanValue(),err=*next)
+        column!.addProperty("aggFunc",#getAggFunc())
+        column!.addProperty("allowedAggFuncs" , iff(#getAllowedAggFuncs().size() <> 0 ,new Gson().toJson(#getAllowedAggFuncs()), null()) ,err=*next)
+        column!.addProperty("rowGroupIndex",#getRowGroupIndex().longValue(),err=*next)
+        column!.addProperty("pivotIndex",#getPivotIndex().longValue(),err=*next)
+        column!.addProperty("unSortIcon",#getUnSortIcon().booleanValue(),err=*next)
+        column!.addProperty("enableRowGroup",#getEnableRowGroup().booleanValue(),err=*next)
+        column!.addProperty("enablePivot",#getEnablePivot().booleanValue(),err=*next)
+        column!.addProperty("enableValue",#getEnableValue().booleanValue(),err=*next)
+        column!.addProperty("suppressMenu",#getSuppressMenu().booleanValue(),err=*next)
+        column!.addProperty("suppressSizeToFit",#getSuppressSizeToFit().booleanValue(),err=*next)
+        column!.addProperty("suppressMovable",#getSuppressMovable().booleanValue(),err=*next)
+        column!.addProperty("suppressNavigable",#getSuppressNavigable().booleanValue(),err=*next)
+        column!.addProperty("autoHeight",#getAutoHeight().booleanValue(),err=*next)
+        column!.        add("cellClassRules", iff(#getCellClassRules().entrySet().size() <> 0 , #getCellClassRules() , null()),err=*next)
+        column!.addProperty("valueGetter",#getValueGetterExpression().toString(),err=*next)
+        column!.addProperty("valueFormatter",#getValueFormatterExpression().toString(),err=*next)
+        column!.addProperty("filterValueGetter",#getFilterValueGetterExpression().toString(),err=*next)
+        column!.addProperty("valueSetter",#getValueSetterExpression().toString(),err=*next)
+        column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
+        filterEnabled! = #getEnableFilter()
+        filter! = #getFilter()
+
+        if(( filterEnabled! <> null() and filterEnabled! = 1) and (filter! <> null())) then
+            filterParams! = filter!.getAsJsonObject()
+            column!.addProperty("filter", filter!.FILTER_NAME() ,err=*next)
+            column!.        add("filterParams",iff(filterParams!.entrySet().size() <> 0 , filterParams!, null() ),err=*next)
+        else
+            column!.addProperty("filter", 0)
+        FI
+
+        renderer! = #getCellRenderer()
+
+        if(renderer! <> null()) then
+            rendererParams! = renderer!.getAsJsonObject()
+            column!.addProperty("cellRenderer", renderer!.RENDERER_NAME(),err=*next)
+            column!.        add("cellRendererParams",iff(rendererParams!.entrySet().size() <> 0 , rendererParams! , null() ),err=*next)
+        FI
+
+        editor! = #getCellEditor()
+
+        if(editor! <> null()) then
+            editorParams! = editor!.getAsJsonObject()
+            column!.addProperty("cellEditor", editor!.CELL_EDITOR_NAME(),err=*next)
+            column!.        add("cellEditorParams",iff(editorParams!.entrySet().size() <> 0 , editorParams! , null() ),err=*next)
+        FI
+
+        methodret column!
+    methodend
+
+classend
+REM /**
+REM  * The class holds the grid column props , it aslo introduces serveral helper methods to update the
+REM  * styles like , fore/back colors.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinition
+    rem /**
+    rem  * The field of the row to get the cells data from<br><b>Note</b>: Once the field name is set , it becomes immutable
+    rem  */
+    field public BBjString Field!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private BBjGridExWidgetColumn()
+    methodend
+    rem /**
+    rem  * Create a new column defintion
+    rem  *
+    rem  * @param BBjString field! The field of the row to get the cells data from
+    rem  */
+    method public BBjGridExWidgetColumn(BBjString field!)
+        #Field! = field!
+        #setLabel(field!)
+        rem we reset the following properties so they can be inheirted from the default column defintion
+        #setHidden(null())
+        #setEnableFilter(null())
+        #setLockPinned(null())
+        #setLockPosition(null())
+        #setLockVisible(null())
+        #setSortable(null())
+        #setSortable(null())
+        #setResizable(null())
+        #setEditable(null())
+        #setUnSortIcon(null())
+        #setEnableRowGroup(null())
+        #setEnablePivot(null())
+        #setEnableValue(null())
+        #setSuppressMenu(null())
+        #setSuppressSizeToFit(null())
+        #setSuppressNavigable(null())
+        #setSuppressMovable(null())
+        #setAutoHeight(null())
+    methodend
+    rem /**
+    rem  * Create a new column defintion
+    rem  *
+    rem  * @param BBjString field! The field of the row to get the cells data from
+    rem  * @param BBjString label! The name to render in the column header
+    rem  */
+    method public BBjGridExWidgetColumn(BBjString field!, BBjString label!)
+        #this!(field!)
+        #setLabel(label!)
+    methodend
+    rem /**
+    rem  * Create a new column defintion
+    rem  *
+    rem  * @param BBjString field! The field of the row to get the cells data from
+    rem  * @param BBjString label! The name to render in the column header
+    rem  * @param BBjNumber type! The field's type
+    rem  */
+    method public BBjGridExWidgetColumn(BBjString field!, BBjString label! , BBjNumber type!)
+        #this!(field! , label!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Throw an error when called becuase the field becomes immutable after
+    rem  * the column's definition creation
+    rem  */
+    method public void setField(BBjString field!)
+        throw "Column's Field is immutable" , 151
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject column!
+
+        column! = #super!.getAsJsonObject()
+        column!.addProperty("field",#getField())
+        methodret column!
+    methodend
+    rem /**
+    rem  * Update the column defintion from a meta map
+    rem  *
+    rem  * @param HashMap meta! The meta map
+    rem  * @param BBjGridExWidgetDefaultColumnDefinition defaultDefinition! The default column defintion in the grid
+    rem  */
+    method public void update(HashMap meta!, BBjGridExWidgetDefaultColumnDefinition defaultDefinition!)
+        iterator!   = meta!.entrySet().iterator()
+        while iterator!.hasNext()
+            next!   = iterator!.next()
+            key!   = CVS(next!.getKey(),8)
+            value! = next!.getValue()
+            SWITCH (key!)
+                CASE "columntype"
+                    #setType((value!))
+
+                    if #getEnableFilter() = null() then
+                        #setEnableFilter(defaultDefinition!.getEnableFilter(),err=*next)
+                    FI
+
+                    BREAK
+                CASE "gw_label"
+                CASE "gw_header_name"
+                CASE "header_name"
+                CASE "label" ; rem common attribute name
+                    #setLabel(str(value!))
+                    BREAK
+                CASE "gw_pinned"
+                CASE "pinned"
+                    #setPinned(str(value!))
+                    BREAK
+                CASE "gw_hide"
+                CASE "hide"
+                CASE "hidden"
+                    #setHidden(num(value!))
+                    BREAK
+                CASE "gw_editable"
+                CASE "editable" ; rem common attribute name
+                    #setEditable(num(value!))
+                    BREAK
+                CASE "gw_enable_value"
+                CASE "enable_value"
+                    #setEnableValue(num(value!))
+                    BREAK
+                CASE "gw_enable_row_group"
+                CASE "enable_row_group"
+                    #setEnableRowGroup(num(value!))
+                    BREAK
+                CASE "gw_row_group_index"
+                CASE "row_group_index"
+                    #setRowGroupIndex(num(value!))
+                    BREAK
+                CASE "gw_enable_pivot"
+                CASE "enable_pivot"
+                    #setEnablePivot(num(value!))
+                    BREAK
+                CASE "gw_cell_class"
+                CASE "cell_class"
+                    #setCellClass(str(value!))
+                    BREAK
+                CASE "gw_value_getter"
+                CASE "value_getter"
+                    #setValueGetterExpression(str(value!))
+                    BREAK
+                CASE "gw_value_setter"
+                CASE "value_setter"
+                    #setValueSetterExpression(str(value!))
+                    BREAK
+                CASE "gw_agg_func"
+                CASE "agg_func"
+                    #setAggFunc(str(value!))
+                    BREAK
+                CASE "gw_allowed_agg_funcs"
+                CASE "allowed_agg_funcs"
+                    #setAllowedAggFuncs(str(value!))
+                    BREAK
+                CASE "gw_sortable"
+                CASE "sortable"
+                    #setSortable(num(value!))
+                    BREAK
+                CASE "gw_sort"
+                CASE "sort"
+                    #setSort(str(value!))
+                    BREAK
+                CASE "gw_resizable"
+                CASE "resizable"
+                    #setResizable(num(value!))
+                    BREAK
+                CASE DEFAULT
+                    BREAK
+            SWEND
+        wend
+    methodend
+
+classend
+REM /**
+REM  * Allows specifying the group 'auto column' if you are not happy with the default.
+REM  * If grouping, this column def is included as the first column definition in the grid.
+REM  * If not grouping, this column is not included.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetAutoGroupColumn extends BBjGridExWidgetDefaultColumnDefinition
+    rem /**
+    rem  * Construct new instance
+    rem  */
+    method public BBjGridExWidgetAutoGroupColumn()
+        rem we reset the following properties so they can be inheirted from the default column defintion
+        #setHidden(null())
+        #setEnableFilter(null())
+        #setLockPinned(null())
+        #setLockPosition(null())
+        #setLockVisible(null())
+        #setSortable(null())
+        #setSortable(null())
+        #setResizable(null())
+        #setEditable(null())
+        #setUnSortIcon(null())
+        #setEnableRowGroup(null())
+        #setEnablePivot(null())
+        #setEnableValue(null())
+        #setSuppressMenu(null())
+        #setSuppressSizeToFit(null())
+        #setSuppressNavigable(null())
+        #setSuppressMovable(null())
+        #setAutoHeight(null())
+        #setCellRenderer(new BBjGridExWidgetRendererGroupCellRenderer())
+    methodend
+    rem /**
+    rem  * Set the column type
+    rem  *
+    rem  * @param BBjString type! SQL type
+    rem  *
+    rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+    rem  */
+    method public void setType(BBjNumber type!)
+        #Type! = type!
+    methodend
+
+classend
+rem /**
+rem  * The inteface defines the common methods for columns and column groups managment
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+interface public BBjGridExWidgetColumnsManagerInterface
+    rem /**
+    rem  * Add column group
+    rem  *
+    rem  * @param BBjGridExWidgetColumnGroup definition! The column group defintion
+    rem  */
+
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjGridExWidgetColumnGroup definition!)
+    rem /**
+    rem  * Add column group
+    rem  *
+    rem  * @param BBjString id! The group id
+    rem  */
+
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!)
+    rem /**
+    rem  * Add column group
+    rem  *
+    rem  * @param BBjString id! The group id
+    rem  * @param BBjString label! The group label
+    rem  */
+
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!)
+    rem /**
+    rem  * Get the column group defintion instance
+    rem  *
+    rem  * @param BBjString id! The column group defintion id
+    rem  *
+    rem  * @return BBjGridExWidgetColumn return the column group definition instance if found , null() otherwise
+    rem  */
+
+    method public BBjGridExWidgetColumnGroup getColumnGroup(BBjString id!)
+    rem /**
+    rem  * Check if the column group defintion exists
+    rem  *
+    rem  * @param BBjString id! The column group defintion id
+    rem  *
+    rem  * @return BBjNumber return 1 when found , 0 otherwise
+    rem  */
+
+    method public BBjNumber hasColumnGroup(BBjString id!)
+    rem /**
+    rem  * Remove a column group defintion
+    rem  *
+    rem  * @param BBjString id! The column group defintion id
+    rem  *
+    rem  * @return BBjGridExWidgetColumnGroup The removed column group instance , null() otherwise
+    rem  */
+
+    method public BBjGridExWidgetColumnGroup removeColumnGroup(BBjString id!)
+    rem /**
+    rem  * Add new column defintion
+    rem  *
+    rem  * @param BBjGridExWidgetColumn definition! The column definition object
+    rem  *
+    rem  * @return BBjGridExWidgetColumn The defintion instance
+    rem  */
+
+    method public BBjGridExWidgetColumn addColumn(BBjGridExWidgetColumn definition!)
+    rem /**
+    rem  * Add new column defintion
+    rem  *
+    rem  * @param BBjString field! The column's defintion field
+    rem  * @param BBjNumber type! The Field Type (java.sql.Types).
+    rem  *
+    rem  * @return BBjGridExWidgetColumn The defintion instance
+    rem  */
+
+    method public BBjGridExWidgetColumn addColumn(BBjString field! ,BBjNumber type!)
+    rem /**
+    rem  * Add new column defintion
+    rem  *
+    rem  * @param BBjString field! The column's defintion field
+    rem  * @param BBjString label! The column's label.
+    rem  *
+    rem  * @return BBjGridExWidgetColumn The defintion instance
+    rem  */
+
+    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjString label!)
+    rem /**
+    rem  * Add new column defintion
+    rem  *
+    rem  * @param BBjString field! The column's defintion field
+    rem  * @param BBjString label! The column's label.
+    rem  * @param BBjNumber type! The Field Type (java.sql.Types).
+    rem  *
+    rem  * @return BBjGridExWidgetColumn The defintion instance
+    rem  */
+
+    method public BBjGridExWidgetColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
+    rem /**
+    rem  * Get the column defintion instance
+    rem  *
+    rem  * @param BBjString field! The column's defintion field
+    rem  *
+    rem  * @return BBjGridExWidgetColumn return the column definition instance if found , null() otherwise
+    rem  */
+
+    method public BBjGridExWidgetColumn getColumn(BBjString field!)
+    rem /**
+    rem  * Check if the column defintion exists
+    rem  *
+    rem  * @param BBjString field! The column's defintion field
+    rem  *
+    rem  * @return BBjNumber return 1 when found , 0 otherwise
+    rem  */
+
+    method public BBjNumber hasColumn(BBjString field!)
+    rem /**
+    rem  * Remove a column defintion
+    rem  *
+    rem  * @param BBjString field! The column's defintion field
+    rem  *
+    rem  * @return BBjGridExWidgetColumn The removed column instance , null() otherwise
+    rem  */
+
+    method public BBjGridExWidgetColumn removeColumn(BBjString field!)
+    rem /**
+    rem  * Clear all columns and colums groups
+    rem  */
+
+    method public void resetAllColumns()
+
+interfaceend
+rem /**
+rem  * The class is a direct implementation for BBjGridExWidgetColumnsManagerInterface and it defines the common
+rem  * logic for all methods
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetColumnsManager implements BBjGridExWidgetColumnsManagerInterface
+    rem /**
+    rem  * The column defintions map
+    rem  */
+    field public LinkedHashMap ColumnsDefinition! = new LinkedHashMap()
+    rem /**
+    rem  * The column groups defintions map
+    rem  */
+    field public LinkedHashMap ColumnsGroupsDefinition! = new LinkedHashMap()
+    rem /**
+    rem  * Column & column groups defintions map
+    rem  */
+    field public LinkedHashMap Columns! = new LinkedHashMap()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjGridExWidgetColumnGroup definition!)
+        id! = definition!.getGroupId()
+        #ColumnsGroupsDefinition!.put(id! ,definition!)
+        #Columns!.put(id!,definition!)
+        methodret definition!
+    methodend
+    rem /**
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!)
+        definition! = new BBjGridExWidgetColumnGroup(id!)
+        methodret #addColumnGroup(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!)
+        definition! = new BBjGridExWidgetColumnGroup(id! , label!)
+        methodret #addColumnGroup(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup getColumnGroup(BBjString id!)
+        if(!#hasColumnGroup(id!))
+            methodret null()
+        FI
+
+        methodret cast(BBjGridExWidgetColumnGroup,#ColumnsGroupsDefinition!.get(id!))
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber hasColumnGroup(BBjString id!)
+        if #ColumnsGroupsDefinition!.containsKey(id!) then
+            methodret 1
+        FI
+
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup removeColumnGroup(BBjString id!)
+        if #ColumnsGroupsDefinition!.containsKey(id!) then
+            group! = #getColumnGroup(id!)
+            #ColumnsGroupsDefinition!.remove(id!)
+            #Columns!.remove(id!)
+            methodret group!
+        FI
+
+        methodret null()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjGridExWidgetColumn definition!)
+        field! = definition!.getField()
+        #ColumnsDefinition!.put(field!,definition!)
+        #Columns!.put(field!,definition!)
+        methodret definition!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjNumber type!)
+        definition! = new BBjGridExWidgetColumn(field!, type!)
+        methodret #addColumn(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjString label!)
+        definition! = new BBjGridExWidgetColumn(field! , label!)
+        methodret #addColumn(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
+        definition! = new BBjGridExWidgetColumn(field! , label! , type!)
+        methodret #addColumn(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn getColumn(BBjString field!)
+        if(!#hasColumn(field!))
+            methodret null()
+        FI
+
+        methodret cast(BBjGridExWidgetColumn,#ColumnsDefinition!.get(field!))
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber hasColumn(BBjString field!)
+        if #ColumnsDefinition!.containsKey(field!) then
+            methodret 1
+        FI
+
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn removeColumn(BBjString field!)
+        if #ColumnsDefinition!.containsKey(field!) then
+            column! = #getColumn(field!)
+            #ColumnsDefinition!.remove(field!)
+            #Columns!.remove(field!)
+            methodret column!
+        FI
+
+        methodret null()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void resetAllColumns()
+        #ColumnsDefinition!.clear()
+        #ColumnsGroupsDefinition!.clear()
+        #Columns!.clear()
+    methodend
+
+classend
+REM /**
+REM  * The class holds the default grid column group.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetDefaultColumnGroup extends BBjGridExWidgetColumnDefinition
+    rem /**
+    rem  * Set to 'true' to keep columns in this group beside each other in the grid. Moving the columns outside of the group (and hence breaking the group) is not allowed.
+    rem  */
+    field public BBjNumber MarryChildren! = 1
+    rem /**
+    rem  * Set to 'true' if this group should be opened by default.
+    rem  */
+    field public BBjNumber OpenByDefault! = 1
+    rem /**
+    rem  * Tooltip for the column group header
+    rem  */
+    field public BBjString HeaderGroupTooltip! = null()
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject group!
+
+        group! = #super!.getAsJsonObject()
+        group!.addProperty("marryChildren",#getMarryChildren().booleanValue(),err=*next)
+        group!.addProperty("openByDefault",#getOpenByDefault().booleanValue(),err=*next)
+        group!.addProperty("headerGroupTooltip",#getHeaderGroupTooltip(),err=*next)
+        methodret group!
+    methodend
+
+classend
+REM /**
+REM  * The class holds the grid column group.
+REM  * With this object you can group serveral columns and serveral column groups togther to create deep nested structure.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetColumnGroup extends BBjGridExWidgetDefaultColumnGroup implements BBjGridExWidgetColumnsManagerInterface
+    rem /**
+    rem  * The unique ID to give the column.
+    rem  */
+    field public BBjString GroupId! = null()
+    rem /**
+    rem  * Columns Manager instance
+    rem  */
+    field protected BBjGridExWidgetColumnsManager ColumnsManager! = new BBjGridExWidgetColumnsManager()
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private BBjGridExWidgetColumnGroup()
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetColumnGroup
+    rem  *
+    rem  * @param BBjString id! The group id
+    rem  */
+    method public BBjGridExWidgetColumnGroup(BBjString id!)
+        #GroupId! = id!
+        #setLabel(id!)
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetColumnGroup
+    rem  *
+    rem  * @param BBjString id! The group id
+    rem  * @param BBjString label! The group label
+    rem  */
+    method public BBjGridExWidgetColumnGroup(BBjString id! , BBjString label!)
+        #this!(id!)
+        #setLabel(label!)
+    methodend
+    rem /**
+    rem  * Throw an error when called becuase the group id becomes immutable after
+    rem  * the column group's definition creation
+    rem  */
+    method public void setGroupId()
+        throw "Group's ID is immutable" , 151
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjGridExWidgetColumnGroup definition!)
+        methodret #ColumnsManager!.addColumnGroup(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!)
+        methodret #ColumnsManager!.addColumnGroup(id!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!)
+        methodret #ColumnsManager!.addColumnGroup(id!,label!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup getColumnGroup(BBjString id!)
+        methodret #ColumnsManager!.getColumnGroup(id!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber hasColumnGroup(BBjString id!)
+        methodret #ColumnsManager!.hasColumnGroup(id!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumnGroup removeColumnGroup(BBjString id!)
+        methodret #ColumnsManager!.removeColumnGroup(id!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjGridExWidgetColumn definition!)
+        methodret #ColumnsManager!.addColumn(definition!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjNumber type!)
+        methodret #ColumnsManager!.addColumn(field! , type!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjString label!)
+        methodret #ColumnsManager!.addColumn(field! , label!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
+        methodret #ColumnsManager!.addColumn(field! , label! ,type!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn getColumn(BBjString field!)
+        methodret #ColumnsManager!.getColumn(field!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber hasColumn(BBjString field!)
+        methodret #ColumnsManager!.hasColumn(field!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjGridExWidgetColumn removeColumn(BBjString field!)
+        methodret #ColumnsManager!.removeColumn(field!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void resetAllColumns()
+        #ColumnsManager!.resetAllColumns()
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject group!
+        declare JsonArray children!
+
+        group! = #super!.getAsJsonObject()
+        group!.addProperty("groupId",#getGroupId(),err=*next)
+        children! = new JsonArray()
+        iterator! = #ColumnsManager!.getColumns().entrySet().iterator()
+        WHILE (iterator!.hasNext())
+            next! = iterator!.next()
+            value! = next!.getValue()
+            casted! = 0
+            value! = cast(BBjGridExWidgetColumnGroup , value! , err=*next); casted! = 1
+
+            IF (casted! = 0) THEN
+                value! = cast(BBjGridExWidgetColumn , value!)
+            FI
+
+            children!.add(value!.getAsJsonObject())
+        WEND
+
+        group!.addProperty("children",children!.toString(),err=*next)
+        methodret group!
+    methodend
+
+classend

@@ -1,71 +1,78 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
-use java.sql.Types
 use com.google.gson.JsonObject
+use java.sql.Types
 
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Defintion Setup")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
+REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
-
-gosub fillGrid
-
+gosub main
 process_events
 
-   
-fillGrid:
-
-    declare SqlQueryBC sbc!
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-
-    grid!.addColumn("CDNUMBER","Item#")
-    grid!.addColumn("ARTIST","Artist Name")
-    grid!.addColumn("TITLE","Record Title")
-    grid!.addColumn("LABEL","Publisher")
-    grid!.addColumn("PLAYINGTIME","Playing Time (min)")
-    
-    grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
-    grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
-    grid!.pinColumn("CDNUMBER","left")
-    grid!.setColumnWidth("CDNUMBER",120)
-    grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
-    
-    rs!.getItem(0).setFieldAttribute("LABEL","BGCOLOR","#FF0000")
-    
-    REM      Another way to set styles for cells
-    cellStyle! = new JsonObject()
-    cellStyle!.addProperty("background","yellow")
-    cellStyle!.addProperty("color","black")
-    cellStyle!.addProperty("text-align","center")
-    cellStyle!.addProperty("font-weight","bolder")
-    cellStyle!.addProperty("font-style","italic")
-    cellStyle!.addProperty("outline","3px solid green")
-    
-    grid!.addStyle(".my-class" , cellStyle!)
-    rs!.getItem(1).setFieldAttribute("LABEL","CELL_CLASS","my-class")
-
-    grid!.setMultipleSelection(0)
-    grid!.setEnableFilter(1)
-    grid!.setEnableFloatingFilter(1)
-    grid!.setData(rs!,"CDNUMBER")    
-    grid!.moveColumn("PLAYINGTIME",1)
+rem /**
+rem  * Retrive the data from the database and configure the grid.
+rem  * 
+rem  * The method shows how to configure the different column attributes using the Columns Manager methods. 
+rem  * Most of these method work on the configuration level which means you need to call them before calling
+rem  * grid!.setData() or grid!.render(). but some of them like grid!.moveColumn() ,  grid!.pinColumn() can call 
+rem  * the client api to force the change even if the grid is already renderer.
+rem  * To know which methods can do this and which can not check the plugin API. 
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
+  
+  grid!.addColumn("CDNUMBER","Item#")
+  grid!.addColumn("ARTIST","Artist Name")
+  grid!.addColumn("TITLE","Record Title")
+  grid!.addColumn("LABEL","Publisher")
+  grid!.addColumn("PLAYINGTIME","Playing Time (min)").setBackColor("lightgreen")
+  
+  grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
+  grid!.setColumnForeColor("CDNUMBER",BBjAPI().makeColor("BLUE"))
+  grid!.pinColumn("CDNUMBER","left")
+  grid!.setColumnWidth("CDNUMBER",120)
+  grid!.setColumnAlignment("CDNUMBER",grid!.GRID_ALIGN_CENTER())
+  
+  grid!.setData(rs!,"CDNUMBER")
+  
+  rem You can move columns after rendering
+  grid!.moveColumn("PLAYINGTIME",1)
 return
 
-byebye:
-    bye
-    
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
 resize:
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
 return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

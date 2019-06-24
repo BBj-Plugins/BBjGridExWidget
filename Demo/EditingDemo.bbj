@@ -45,14 +45,13 @@ grid!.setEnableFloatingFilter(1)
 rem enable grid editing based on EDITABLE flag in DataRow Attribute
 grid!.setEditable(1)
 grid!.setSingleClickEdit(1)
-REM grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
+grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
 REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped")
 
-grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STARTED(),"cellEditingStarted")
-grid!.setCallback(grid!.ON_GRID_CELL_EDITING_STOPPED(),"cellEditingStopped")
+grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
 
 gosub fillGrid
 
@@ -177,23 +176,14 @@ rowEditingStopped:
     print 'SHOW', "Row Editing Stopped  : ID = " , ev!.getRow().getId()
 return
  
-cellEditingStarted:
+cellEditingChanged:
 
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
     
     print 'SHOW', "Cell Editing Started : ROW ID     = " , ev!.getRow().getId()
-    print 'SHOW', "                     : Column     = " , ev!.getColumn()
-    print 'SHOW', "                     : Cell Value = " , ev!.getValue()
+    print 'SHOW', "                     : Column     = " , ev!.getColumn().getName()
+    print 'SHOW', "                     : New Value = " , ev!.getValue()
+    print 'SHOW', "                     : Old Value = " , ev!.getOldValue()
     
-return 
-
-cellEditingStopped:
-
-    ev! = BBjAPI().getLastEvent()
-    ev! = ev!.getObject()
-    
-    print 'SHOW', "Cell Editing Stopped : ROW ID = " , ev!.getRow().getId()
-    print 'SHOW', "                     : Column     = " , ev!.getColumn()
-    print 'SHOW', "                     : Cell Value = " , ev!.getValue()
 return 

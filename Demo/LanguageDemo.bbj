@@ -1,20 +1,15 @@
 rem /**
-rem  * Language Demo  
-rem  * 
-rem  * The demo demonstrates working with the grid Language manager to add new languages
-rem  * or change the current grid language.
-rem  * 
-REM  * @author Hyyan Abo Fakher 
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
 rem  */
-
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
 ? 'HIDE'
-
-REM  By default the grid will use stbl("!LOCALE") to get the default language
-REM  Changing this setting will force the grid to use the defined language unless the 
-REM  default's grid language is set direclty using `grid!.getLanguageManager().setLangauge("LANG")`
 
 declare auto BBjTopLevelWindow wnd!
 declare auto BBjListButton lb_languages!
@@ -40,31 +35,45 @@ lb_languages!.insertItemAt(3,"Saarlandish (Custom)")
 lb_languages!.selectIndex(0)
 lb_languages!.setCallback(BBjAPI.ON_LIST_SELECT,"updateLanguage")
 
+REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,35,900,566)
 
-gosub fillGrid
+gosub main
 process_events
-
-fillGrid:
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  * 
+rem  * By default the grid will use stbl("!LOCALE") to get the default language
+rem  * Changing this setting will force the grid to use the defined language unless the
+rem  * default's grid language is set direclty using grid!.getLanguageManager().setLangauge("LANG")
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-  
   REM   add custom languge to the grid
   grid!.getLanguageManager().add("de_SL","BBjGridExWidget/Demo/assets/languages/de_SL.json")
-  
   grid!.setData(rs!)
 return
 
+rem /**
+rem  * Updating the grid language requires a rerende.
+rem  * Note how we are calling grid!.render() here instead of grid!.setData()
+rem  */
 updateLanguage:
-  declare auto BBjListSelectEvent ev!
   ev! = BBjAPI().getLastEvent()
   langauge$ = languages!.get(ev!.getSelectedIndex())
-  
   REM setting a new language requires a full rerender
   grid!.getLanguageManager().setLanguage(langauge$)
-  grid!.setData(rs!)
+  grid!.render()
 return
 
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
 resize:
   ev! = BBjAPI().getLastEvent()
   w=ev!.getWidth()
@@ -72,5 +81,8 @@ resize:
   grid!.setSize(w,h)
 return
 
+rem /**
+rem  * Close the demo
+rem  */
 byebye:
 bye

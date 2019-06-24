@@ -1,3 +1,11 @@
+/*
+* This file is part of the BBjGridExWidget plugin.
+* (c) Basis Europe <eu@basis.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 /** https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent  */
 (function () {
   if (typeof window.CustomEvent === "function") return false; //If not IE

@@ -1,10 +1,10 @@
-REM /**
-REM  * SelectionDemo.bbj
-REM  * 
-REM  * 
-REM  * @author Hyyan Abo Fakher 
-REM  */
-
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
@@ -112,7 +112,6 @@ selectionInputButton! = wnd!.addButton(218,468,10,80,22,"Select Rows")
 selectionInputButton!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectionInputButton")
 
 grid! = new BBjGridExWidget(wnd!,100,220,40,580,560)
-
 rem Defines how users can move between rows using arrow keys
 grid!.setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW())
 
@@ -125,8 +124,8 @@ grid!.setShowHeaderSelectionCheckbox(1); rem this option will enable multi row s
 rem enable checkbox selection when grouping 
 grid!.setShowGroupSelectionCheckbox(1)
 grid!.setGroupSelectsChildren(1)
+grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onSelectionEvent")
 
-grid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"onSelectionEvent")
     
     
 REM ------------------End Right Panel -------------------------
@@ -138,20 +137,21 @@ process_events
 fillGrid:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-  gosub render
+
+  grid!.setData(rs!) 
 return
 
-render:
+rerender:
     NumOfSelectedRowsValueStaic!.setText("0 Row(s)") 
     SelectedRowsValueStatic!.setText("")
-    grid!.setData(rs!)  
+    grid!.render()
 return
 
 onMultipleSelectionToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
   grid!.setMultipleSelection(control!.isSelected())
-  gosub render
+  gosub rerender
 return
 
 onRowMultiSelectWithClickToggle:
@@ -159,21 +159,21 @@ onRowMultiSelectWithClickToggle:
   control! = event!.getControl()
   isSelected! = control!.isSelected()
   grid!.setRowMultiSelectWithClick(control!.isSelected())
-  gosub render
+  gosub rerender
 return
 
 onRowDeselectionToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
   grid!.setRowDeselection(control!.isSelected())
-  gosub render
+  gosub rerender
 return
 
 onSuppressRowClickSelectionToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
   grid!.setSuppressRowClickSelection(control!.isSelected())
-  gosub render
+  gosub rerender
 return
 
 onSelectionInputButton:

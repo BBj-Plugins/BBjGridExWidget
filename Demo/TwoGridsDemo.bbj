@@ -1,3 +1,10 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.bc.SqlQueryBC
 use com.basiscomponents.db.DataRow
@@ -69,11 +76,7 @@ showDetails:
         sql$="SELECT  * FROM ORDER_HEADER WHERE CUST_NUM IN ("+cust$+")"
         dsbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
         drs! = dsbc!.retrieve(sql$)
-        if  drs!.count() = 0 then
-            dtlgrid!.clearRowsData()
-        else 
-            dtlgrid!.setData(drs!)
-        fi
+        dtlgrid!.setData(drs!)
     else
         dtlgrid!.clearRowsData()
     fi

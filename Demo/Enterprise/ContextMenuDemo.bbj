@@ -1,6 +1,7 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridContextMenuItem.bbj::BBjGridContextMenuItem
-use ::BBjGridExWidget/BBjGridContextMenu.bbj::BBjGridContextMenu
+use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenuPredefinedMenuitem
+use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenu
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -46,30 +47,30 @@ fillGrid:
     menu! = new BBjGridContextMenu()
 
     rem predefined items
-    menu!.addItem(BBjGridContextMenuItem.AUTO_SIZE_ALL())
-    menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
-    menu!.addItem(BBjGridContextMenuItem.EXPORT())
+    menu!.addItem(BBjGridContextMenuPredefinedMenuitem.AUTO_SIZE_ALL())
+    menu!.addItem(BBjGridContextMenuPredefinedMenuitem.RESET_COLUMNS())
+    menu!.addItem(BBjGridContextMenuPredefinedMenuitem.EXPORT())
 
     rem custom item
-    item! = new BBjGridContextMenuItem(5007,"Show Direction")
+    item! = new BBjGridContextMenuItem(6000,"Show Direction")
     item!.setTooltip("Open the location in Google Maps")
     item!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/maps-icon.png" , 20 , 20)
     item!.setCssClasses("maps-style")
     menu!.addItem(item!)
-    grid!.setCallback(5007,"onShowDirection")
+    grid!.setCallback(6000,"onShowDirection")
 
 
     rem custom item
-    item! = new BBjGridContextMenuItem(5008,"Search Firstname in Namepedia")
+    item! = new BBjGridContextMenuItem(6001,"Search Firstname in Namepedia")
     item!.setTooltip("Search First Name in Namepedia")
     item!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
     menu!.addItem(item!)
-    grid!.setCallback(5008,"onShowFirstName")
+    grid!.setCallback(6001,"onShowFirstName")
 
-    item! = new BBjGridContextMenuItem(5009,"Copy Functions")
+    item! = new BBjGridContextMenuItem(6002,"Copy Functions")
     submenu! = new BBjGridContextMenu()
-    submenu!.addItem(BBjGridContextMenuItem.COPY())
-    submenu!.addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+    submenu!.addItem(BBjGridContextMenuPredefinedMenuitem.COPY())
+    submenu!.addItem(BBjGridContextMenuPredefinedMenuitem.COPY_WITH_HEADERS())
     item!.setSubMenu(submenu!)
     menu!.addItem(item!)
 

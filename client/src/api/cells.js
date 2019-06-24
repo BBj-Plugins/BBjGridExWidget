@@ -1,14 +1,25 @@
 /*
-* This file is part of the grid project
+* This file is part of the BBjGridExWidget plugin.
 * (c) Basis Europe <eu@basis.com>
 *
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
 
-export function gw_startEditingCell(id, row, colKey, key, char) {
+import {gw_getGrid} from "./utilities"
 
+/**
+ * Start cell editing
+ * 
+ * @param {String} id The grid's id 
+ * @param {String|number} row The row index
+ * @param {String} colKey The column's key
+ * @param {String|Number} key  Key press
+ * @param {String} char 
+ */
+export function gw_startEditingCell(id, row, colKey, key, char) {
   const options = gw_getGrid(id).options;
+
   options.api.setFocusedCell(Number(row), colKey);
   options.api.startEditingCell({
     rowIndex: Number(row),
@@ -18,6 +29,12 @@ export function gw_startEditingCell(id, row, colKey, key, char) {
   });
 }
 
+/**
+ * Stop cell editing 
+ * 
+ * @param {String} id The grid's id 
+ * @param {Boolean} cancel when true cancel edits , save edits otherwise
+ */
 export function gw_stopEditing(id, cancel) {
   const options = gw_getGrid(id).options;
   options.api.stopEditing(cancel);
@@ -31,53 +48,4 @@ export function gw_editNextCell(id) {
 export function gw_editPreviousCell(id) {
   const options = gw_getGrid(id).options;
   options.api.tabToPreviousCell();
-}
-
-export function gw_cellStyler(params) {
-
-  let cdef = params.column.colDef.cellStyleDefaults || {};
-
-  var meta = {};
-
-  if (params.data && params.data.meta)
-    meta = params.data.meta[params.column.colId] || {};
-
-  let colStyle = {};
-
-  if (meta["FGCOLOR"])
-    colStyle.color = meta["FGCOLOR"];
-  else
-    if (cdef["FGCOLOR"])
-      colStyle["color"] = cdef["FGCOLOR"];
-
-  if (meta["BGCOLOR"])
-    colStyle["background-color"] = meta["BGCOLOR"];
-  else
-    if (cdef["BGCOLOR"])
-      colStyle["background-color"] = cdef["BGCOLOR"];
-
-  if (meta["ALIGN"])
-    colStyle["text-align"] = meta["ALIGN"];
-  else
-    if (cdef["ALIGN"])
-      colStyle["text-align"] = cdef["ALIGN"];
-
-  if (colStyle.color || colStyle["background-color"] || colStyle["text-align"]) {
-    return colStyle;
-  }
-  else {
-    return null;
-  }
-}
-
-export function gw_getCellClass(params) {
-
-  const field = params.colDef.field;
-
-  if (params.data && params.data.hasOwnProperty('meta')) {
-    return (
-      params.data.meta.hasOwnProperty(field) &&
-      params.data.meta[field].hasOwnProperty('CELL_CLASS')
-    ) ? params.data.meta[field].CELL_CLASS : `CELL_CLASS_${field}`
-  }
 }
