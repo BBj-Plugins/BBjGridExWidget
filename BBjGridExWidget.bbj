@@ -425,6 +425,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field protected BBjGridExWidgetColumnsManager ColumnsManager! = new BBjGridExWidgetColumnsManager()
     rem /**
+    rem  * A json object which is used as context to configure the grid and it various components on the client
+    rem  */
+    field protected JsonObject ClientContext! = new JsonObject()
+    rem /**
     rem  * The vector holds the registered events
     rem  */
     field protected HashSet Interests! = new HashSet()
@@ -1294,21 +1298,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #resetAllColumns()
     methodend
     rem /**
-    rem  * Render the grid
+    rem  * Build the grid json configuration object
     rem  *
-    rem  * The method will compose the grid config and send it to the client for a full rerender.
-    rem  * You can use this method to force the client render after you update a setup configuration (ex: column defintions)
+    rem  * @return JsonObject The grid options as JsonObject
     rem  */
-    method public void render()
-        REM         if(!#IsReady!) then
-        REM             methodret
-        REM         fi
-        if rs! <> NULL() AND rs!.size() > 0 then
-            methodret
-        FI
-
-        gson! = new Gson()
-        data$ = #getRS().toJson(1 , #getRowNodeId())
+    method public JsonObject getAsJsonObject()
+        REM build the column defintion
         iterator! = #getColumnsManager().getColumns().entrySet().iterator()
         cdef! = new JsonArray()
         while iterator!.hasNext()
@@ -1329,6 +1324,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         options! = new JsonObject()
         rem Columns options
+        rem ===========================
         options!.        add("columnDefs",cdef!)
         options!.        add("defaultColDef",#getDefaultColumnDefinition().getAsJsonObject() , err=*next)
         options!.        add("defaultColGroupDef",#getDefaultColumnGroupDefinition().getAsJsonObject(), err=*next)
@@ -1341,6 +1337,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
         options!.addProperty("suppressSetColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
         rem Sort & Filter options
+        rem ===========================
         options!.addProperty("accentedSort",#getAccentedSort().booleanValue(), err=*next)
         options!.addProperty("suppressMaintainUnsortedOrder",#getSuppressMaintainUnsortedOrder().booleanValue(), err=*next)
         rem Selection options
@@ -1349,6 +1346,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("rowDeselection",#getRowDeselection().booleanValue())
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
         rem Editing Options
+        rem ===========================
         options!.addProperty("singleClickEdit",#getSingleClickEdit().booleanValue(), err=*next)
         options!.addProperty("suppressClickEdit",#getSuppressClickEdit().booleanValue(), err=*next)
         options!.addProperty("enableGroupEdit",0); rem not really sure how this works and there are not docs
@@ -1357,12 +1355,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("enterMovesDown",#getEnterMovesDown().booleanValue(), err=*next )
         options!.addProperty("enterMovesDownAfterEdit",#getEnterMovesDownAfterEdit().booleanValue(), err=*next )
         rem Headers options
+        rem ===========================
         options!.addProperty("headerHeight",#getHeaderHeight().longValue(), err=*next )
         options!.addProperty("groupHeaderHeight",#getGroupHeaderHeight().longValue(), err=*next )
         options!.addProperty("floatingFiltersHeight",#getFloatingFiltersHeight().longValue(), err=*next )
         options!.addProperty("pivotHeaderHeight",#getPivotHeaderHeight().longValue(), err=*next )
         options!.addProperty("pivotGroupHeaderHeight",#getPivotGroupHeaderHeight().longValue(), err=*next )
         rem Grouping & Pivoting
+        rem ===========================
         options!.addProperty("groupUseEntireRow",#getGroupUseEntireRow().booleanValue() , err=*next)
         options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().longValue() , err=*next)
         options!.        add("autoGroupColumnDef",#getAutoGroupColumnDefinition().getAsJsonObject(), err=*next)
@@ -1386,10 +1386,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("functionsReadOnly",#getFunctionsReadOnly().booleanValue(), err=*next)
         options!.addProperty("suppressMakeVisibleAfterUnGroup",#getSuppressMakeVisibleAfterUnGroup().booleanValue(), err=*next)
         rem Scrolling Options
+        rem ===========================
         options!.addProperty("alwaysShowVerticalScroll",#getAlwaysShowVerticalScroll().booleanValue(), err=*next)
         options!.addProperty("suppressScrollOnNewData",#getSuppressScrollOnNewData().booleanValue(), err=*next)
         options!.addProperty("suppressAnimationFrame",#getSuppressAnimationFrame().booleanValue(), err=*next)
         rem Rendering & Styling options
+        rem ===========================
         options!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons(), null()), err=*next)
         options!.addProperty("rowHeight",#getRowHeight().longValue(), err=*next)
         options!.addProperty("animateRows",#getAnimateRows().booleanValue(), err=*next)
@@ -1398,8 +1400,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.        add("rowClassRules", iff(#getRowClassRules().entrySet().size() <> 0 , #getRowClassRules() , null()),err=*next)
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
         rem Localisation
+        rem ===========================
         options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
         rem Miscellaneous
+        rem ===========================
         options!.addProperty("suppressMiddleClickScrolls",#getSuppressMiddleClickScrolls().booleanValue() , err=*next)
         options!.addProperty("enableBrowserTooltips",#getEnableBrowserTooltips().booleanValue() , err=*next)
         options!.addProperty("suppressDragLeaveHidesColumns",#getSuppressDragLeaveHidesColumns().booleanValue() , err=*next)
@@ -1411,19 +1415,40 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressPropertyNamesCheck",#this!.getDebug().booleanValue() , err=*next)
         options!.addProperty("floatingFilter",#getEnableFloatingFilter())
         options!.        add("sideBar",#getSidebar().getAsJsonObject(), err=*next)
-        context! = new JsonObject()
+        rem Context
+        rem ===========================
+        context! = #getClientContext()
         context!.addProperty("id",#GRIDID$)
         context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), null()) ,err=*next)
-        context!.addProperty("getRowNodeId",#RowNodeId$)
-        context!.addProperty("numberGroupSep",comma$)
-        context!.addProperty("numberDecimalSep",dot$)
-        context!.addProperty("locale",#getLanguageManager().getLanguage())
-        context!.addProperty("contextMenu",#ContextMenu!.toString())
-        context!.addProperty("showSelectionCheckbox",#ShowSelectionCheckbox!)
-        context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!)
-        context!.addProperty("contextMenu",#ContextMenu!.toString())
-        context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0))
+        context!.addProperty("getRowNodeId",#RowNodeId$, err=*next)
+        context!.addProperty("numberGroupSep",comma$, err=*next)
+        context!.addProperty("numberDecimalSep",dot$, err=*next)
+        context!.addProperty("locale",#getLanguageManager().getLanguage(), err=*next)
+        context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
+        context!.addProperty("showSelectionCheckbox",#ShowSelectionCheckbox!, err=*next)
+        context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!, err=*next)
+        context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
+        context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
         options!.add("context",context!)
+        methodret options!
+    methodend
+    rem /**
+    rem  * Render the grid
+    rem  *
+    rem  * The method will compose the grid config and send it to the client for a full rerender.
+    rem  * You can use this method to force the client render after you update a setup configuration (ex: column defintions)
+    rem  */
+    method public void render()
+        REM         if(!#IsReady!) then
+        REM             methodret
+        REM         fi
+        if rs! <> NULL() AND rs!.size() > 0 then
+            methodret null()
+        FI
+
+        gson! = new Gson()
+        data$ = #getRS().toJson(1 , #getRowNodeId())
+        options! = #getAsJsonObject()
         #executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
     methodend
     rem /**
@@ -1673,6 +1698,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public BBjGridExWidgetClientJsonFactory getClientJsonFactory()
         methodret #ClientJsonFactory!
+    methodend
+    rem /**
+    rem  * Get the grid's client context
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getClientContext()
+        methodret #ClientContext!
     methodend
     rem /**
     rem  * Add Style block
