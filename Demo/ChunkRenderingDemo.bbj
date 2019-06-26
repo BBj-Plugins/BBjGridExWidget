@@ -39,6 +39,10 @@ rem create timer so we can go into process_events
 BBjAPI().createTimer("renderColumns" , 1 , "fillGrid")
 process_events
 
+rem /**
+rem  * Build the column defintion from the first row in the ResultSet 
+rem  * and then render the grid empty 
+rem  */
 renderColumns:
   rs! = sbc!.retrieve("SELECT TOP 1  * FROM CDINVENTORY")
   REM build the columns from the passed ResultSet 
@@ -47,6 +51,9 @@ renderColumns:
   grid!.render()   
 return
 
+rem /**
+rem  * Fill the grid with the data 
+rem  */
 fillGrid: 
   rem remove timer as we do not need it anymore
   BBjAPI().removeTimer("renderColumns")
@@ -54,24 +61,6 @@ fillGrid:
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   rem wait some time to simulate a long process
   wait 3
-  grid!.setData(rs!)
-return
-
-rem /**
-rem  * Retrive the data from the database and configure the grid
-rem  * 
-rem  * The grid!.setData(ResultSet) method will read all columns from the passed ResultSet and create the columns 
-rem  * for you. This method respects the column types defined in the ResultSet and it will make sure that all the created
-rem  * columns have the correct components attached (filters , cell renderers , ...). 
-rem  * The method will also respects already defined columns and make sure to update them with columns meta fetched from 
-rem  * the ResultSet.
-rem  * 
-rem  * By default the method will render the grid direcly after setting the data. You can change this and delay the rendering 
-rem  * (for example to configure the columns) by passing a second paramter to the method grid!.setData(ResultSet , 0) 
-rem  * and then call grid!.render().  
-rem  */
-main:  
-  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   grid!.setData(rs!)
 return
 
