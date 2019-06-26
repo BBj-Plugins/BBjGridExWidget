@@ -6,6 +6,8 @@
 * file that was distributed with this source code.
 */
 
+import 'expose-loader?Basis.AgGridComponents!ag-grid-components/dist/agc-basic.bundle.js';
+
 require('ag-grid-community/dist/styles/ag-grid.css');
 
 require('ag-grid-community/dist/styles/ag-theme-bootstrap.css');

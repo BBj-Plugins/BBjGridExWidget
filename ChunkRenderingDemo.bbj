@@ -1,0 +1,93 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+declare SqlQueryBC sbc!
+declare ResultSet rs!
+
+sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Chunk Rendering Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+rem /**
+rem  * We enable the grid chunk rendering mode.
+rem  *  
+rem  * When this mode is enabled , the grid will send the data in chunks. This is done be sending the column defintions 
+rem  * to the client as soon as possible to get fast first render then it sends the data to fill the grid
+rem  * 
+rem  * This mode is usefull when you have a large set of data which sending them to the client will take time.  
+rem  */
+grid!.setChunkRendering(1)
+ 
+gosub renderColumns
+rem create timer so we can go into process_events
+BBjAPI().createTimer("renderColumns" , 1 , "fillGrid")
+process_events
+
+renderColumns:
+  rs! = sbc!.retrieve("SELECT TOP 1  * FROM CDINVENTORY")
+  REM build the columns from the passed ResultSet 
+  grid!.buildColumnsFromResultSet(rs!,1)
+  REM just render the grid empty
+  grid!.render()   
+return
+
+fillGrid: 
+  rem remove timer as we do not need it anymore
+  BBjAPI().removeTimer("renderColumns")
+  
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  rem wait some time to simulate a long process
+  wait 3
+  grid!.setData(rs!)
+return
+
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  * 
+rem  * The grid!.setData(ResultSet) method will read all columns from the passed ResultSet and create the columns 
+rem  * for you. This method respects the column types defined in the ResultSet and it will make sure that all the created
+rem  * columns have the correct components attached (filters , cell renderers , ...). 
+rem  * The method will also respects already defined columns and make sure to update them with columns meta fetched from 
+rem  * the ResultSet.
+rem  * 
+rem  * By default the method will render the grid direcly after setting the data. You can change this and delay the rendering 
+rem  * (for example to configure the columns) by passing a second paramter to the method grid!.setData(ResultSet , 0) 
+rem  * and then call grid!.render().  
+rem  */
+main:  
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  grid!.setData(rs!)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

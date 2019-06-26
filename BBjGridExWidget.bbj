@@ -405,6 +405,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjNumber Debug = 0
     rem /**
+    rem  * When true , the grid will render the UI on the client as soon as possible , put it in the loading state
+    rem  * then send the data. once the data is sent and rendered , the grid will remove the loading state automatically.
+    rem  * 
+    rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time.    
+    rem  */
+    field public BBjNumber ChunkRendering! = 0
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -1442,14 +1449,18 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         REM         if(!#IsReady!) then
         REM             methodret
         REM         fi
-        if rs! <> NULL() AND rs!.size() > 0 then
-            methodret null()
-        FI
-
-        gson! = new Gson()
-        data$ = #getRS().toJson(1 , #getRowNodeId())
+        
         options! = #getAsJsonObject()
-        #executeScript("gw_setData(" + data$ + "," + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
+        data$ = #getRS().toJson(1 , #getRowNodeId())
+        
+        if(#getChunkRendering() = 0) then
+            #executeScript("gw_init(" + options!.toString() + ",'" + #LicenseKey$ + "'," + data$ + ")")
+        else
+            #executeScript("gw_init(" + options!.toString() + ",'" + #LicenseKey$ + "')")
+            if(#getRS() <>  null() AND #getRS().size() > 0) then    
+                #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
+            fi 
+        fi
     methodend
     rem /**
     rem  * Build the column defintions from the passed resultset
@@ -1566,7 +1577,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #RS! = rs!
 
         if rs! <> NULL() AND rs!.size() > 0 then
-            #RS!.createIndex()
+            #RS!.createIndex(err=*next)
             data$=#RS!.toJson(BBjAPI.TRUE,#getRowNodeId())
             #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
         FI
@@ -1645,7 +1656,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void clearRowsData()
         #RS! = new ResultSet()
-        #RS!.createIndex()
+        #RS!.createIndex(err=*next)
         #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
     methodend
     rem /**
