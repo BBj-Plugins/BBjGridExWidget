@@ -705,6 +705,7 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
 
         column! = #super!.getAsJsonObject()
         column!.addProperty("field",#getField())
+        column!.addProperty("colId",#getField())
         methodret column!
     methodend
     rem /**

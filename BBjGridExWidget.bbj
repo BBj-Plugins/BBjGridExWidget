@@ -412,6 +412,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjNumber ChunkRendering! = 0
     rem /**
+    rem  * By default when new columns are loaded into the grid, the following properties 
+    rem  * (Order,Aggregation Function , Width , Pivot , Row Group , Pinned ) are not used
+    rem  * 
+    rem  * To change this behaviour and have column attributes above take effect each time the grid updates the columns, 
+    rem  * then set this option to true
+    rem  */
+    field public BBjNumber DeltaColumnMode! = 0
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -1211,7 +1219,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             if(#hasColumn(current$)) then
                 column! = #getColumn(current$)
             else
-                column! = #addColumn(current$)
+                column! = #addColumn(current$,current$)
             FI
 
             definition!.addColumn(column!)
@@ -1343,6 +1351,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressMultiSort",#getSuppressMultiSort().booleanValue(), err=*next)
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
         options!.addProperty("suppressSetColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
+        options!.addProperty("deltaColumnMode",#getDeltaColumnMode().booleanValue(), err=*next)
         rem Sort & Filter options
         rem ===========================
         options!.addProperty("accentedSort",#getAccentedSort().booleanValue(), err=*next)
@@ -1450,17 +1459,28 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         REM             methodret
         REM         fi
         
+        gson! = new Gson()
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
         
         if(#getChunkRendering() = 0) then
-            #executeScript("gw_init(" + options!.toString() + ",'" + #LicenseKey$ + "'," + data$ + ")")
+            #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
         else
-            #executeScript("gw_init(" + options!.toString() + ",'" + #LicenseKey$ + "')")
+            #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
             if(#getRS() <>  null() AND #getRS().size() > 0) then    
                 #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
             fi 
         fi
+    methodend
+    rem /**
+    rem  * Rerender the column defintions on the client.
+    rem  * 
+    rem  * The method will collect the new changes in columns and column groups and force the client to reflect the 
+    rem  * change.
+    rem  */
+    method public void updateColumns()
+         definition! = #getAsJsonObject().get("columnDefs").getAsJsonArray()
+         #executeScript("gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
     methodend
     rem /**
     rem  * Build the column defintions from the passed resultset

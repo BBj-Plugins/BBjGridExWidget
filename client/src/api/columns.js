@@ -6,87 +6,44 @@
  * file that was distributed with this source code.
  */
 
-import { gw_getContextMenu } from "./menus";
-import { gw_getGrid, gw_getDocument } from "./utilities";
-import {
-  gw_onRowDoubleClicked,
-  gw_onSelectionChanged,
-  gw_onCellClickEvent,
-  gw_onCellEditingEvent,
-  gw_onRowEditingEvent,
-  gw_onReadyEvent,
-  gw_debounce
-} from "events";
+import { gw_getGrid } from "./utilities";
 
 const { deepParseJson } = require("deep-parse-json");
-const template = require('lodash/template');
 
 /**
- * Parse Column Definitions 
+ * Extend the column definitions
  * 
- * Parse the column definitions string and return 
- * an object which can be passed to the grid
+ * Extend the column definitions with options which can not be handled in BBj
+ * (ex: attaching callbacks)
  * 
- * @param {String} definitions Column definitions as JsonString
- * 
- * @return {Object} options object
+ * @param {Array} definitions array of column definitions
  */
-export function gw_parseColumnDefinitions(definitions) {
-  const deepParsedDefinitions = deepParseJson(JSON.stringify(definitions));
-  const id                    = deepParsedDefinitions.context.id;
-  const debounceDuration      = 250;
-  const options = {
-    // deep parse the definitions for any nested json
-    ...deepParsedDefinitions ,
-    ...{
-      deltaColumnMode:                    true,
-      getDocument:            ()     =>   gw_getDocument(),
-      popupParent:                        gw_getDocument().body,
-      onRowDoubleClicked:                 gw_debounce(gw_onRowDoubleClicked, debounceDuration),
-      onSelectionChanged:                 gw_debounce(gw_onSelectionChanged, debounceDuration),
-      onCellEditingStarted:   e      => { gw_onCellEditingEvent(id, e) },
-      onCellEditingStopped:   e      => { gw_onCellEditingEvent(id, e) },
-      onCellValueChanged:     e      => { gw_onCellEditingEvent(id, e) },
-      onRowEditingStarted:    e      => { gw_onRowEditingEvent(id, e)  },
-      onRowEditingStopped:    e      => { gw_onRowEditingEvent(id, e)  },
-      onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  },
-      onCellClicked:          e      => { gw_onCellClickEvent(id, e)   },
-      onCellDoubleClicked:    e      => { gw_onCellClickEvent(id, e)   },
-      onGridReady:            e      => { gw_onReadyEvent(id, e)       },
-      getRowNodeId:           data   =>   gw_getRowNodeId(id, data),
-      getContextMenuItems:    params =>   gw_getContextMenu(id, params),
-      components: {
-        "BasicBooleansRenderer"       : Basis.AgGridComponents.BasicBooleansRenderer,
-        "BasicBooleansEditor"         : Basis.AgGridComponents.BasicBooleansEditor,
-        "BasicBooleansFilter"         : Basis.AgGridComponents.BasicBooleansFilter,
-        "BasicNumbersEditor"          : Basis.AgGridComponents.BasicNumbersEditor,
-        "BasicDateTimesEditor"        : Basis.AgGridComponents.BasicDateTimesEditor,
-        "BasicDateTimesFilter"        : Basis.AgGridComponents.BasicDateTimesFilter,
-        "BasicImagesRenderer"         : Basis.AgGridComponents.BasicImagesRenderer,
-        // lodash template render
-        "GWCustomHTMLTemplateRenderer": params => {
-          const compiled = template(params.__TEMPLATE__);
-          return compiled({ params: params });
-        }
-      }
-    }
-  };
+export function gw_extendColumnDefinitions(definitions) {
 
-  if (
-    options.context.hasOwnProperty("navigateToNextCell") &&
-    options.context.navigateToNextCell
-  ) {
-    options.navigateToNextCell = params => { return gw_navigateToNextRow(id, params) };
-  }
-
-  for (let i in options.columnDefs) {
-    const def = options.columnDefs[i];
+  for (let i in definitions) {
+    const def = definitions[i];
 
     def.checkboxSelection       = def.checkboxSelection       || gw_isShowSelectionCheckbox;
     def.headerCheckboxSelection = def.headerCheckboxSelection || gw_isHeaderCheckboxSelection;
   }
+}
 
-  return options;
+/**
+ * Update the column definitions 
+ * 
+ * @param {String} id The grid id
+ * @param {Array} definitions array of column definitions
+ */
+export function gw_setColumnDefinitions(id, definitions) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const deepParsedDefinitions = deepParseJson(JSON.stringify(definitions));
+    gw_extendColumnDefinitions(deepParsedDefinitions);
+    
+    grid.options.api.setColumnDefs(deepParsedDefinitions);
+    grid.options.columnDefs = deepParsedDefinitions;
+  }
 }
 
 export function gw_sizeColumnsToFit(id) {

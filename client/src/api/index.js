@@ -12,7 +12,6 @@ export * from './rows.js';
 export * from './cells.js';
 export * from './state.js';
 export * from './toolpanel.js';
-export * from './menus.js';
 export * from './statusbar.js';
 export * from './context.js';
 export * from './jss.js';
