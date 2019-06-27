@@ -2001,6 +2001,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
     methodend
     rem /**
+    rem  * Set the grid icons
+    rem  * 
+    rem  * @param BBjString json! The icons as a json object 
+    rem  */
+    method public void setIcons(BBjString json!)
+        declare JsonParser parser!
+        parser! = new JsonParser()
+        #setIcons(parser!.parse(json!).getAsJsonObject())
+    methodend
+    rem /**
     rem  * Perform throw columns search
     rem  *
     rem  * @param BBjNumber filter : filter as a string
