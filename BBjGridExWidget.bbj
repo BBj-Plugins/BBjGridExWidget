@@ -995,6 +995,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * {@inheritDoc}
     rem  */
+    method public BBjGridExWidgetColumn addColumn(BBjString field!)
+        methodret #addColumn(field!,field!)
+    methodend    
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
     method public BBjGridExWidgetColumn getColumn(BBjString field!)
         methodret #getColumnsManager().getColumn(field!)
     methodend
