@@ -329,9 +329,30 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public ArrayList RowClass!  =  new ArrayList()
     rem /**
-    rem  * Rules which can be applied to include certain CSS classes for rows
+    rem  * Rules which can be applied to include certain CSS classes for rows.
     rem  *
-    rem  * @see https://www.ag-grid.com/javascript-grid-row-styles/#row-class-rules
+    rem  * These rules are provided as a JavaScript map where the keys are class names and the values are expressions that 
+    rem  * if evaluated to true, the class gets used. The expression is a string which is treated as a shorthand for a 
+    rem  * function by the grid.
+    rem  * 
+    rem  * The expression has the following attributes available: <br><br>
+    rem  * 
+    rem  * <table border="1" cellpadding="10">
+    rem  *    <tbody>
+    rem  *        <tr>
+    rem  *            <td><strong>&nbsp;rowIndex</strong></td>
+    rem  *            <td>&nbsp;Maps the current row index</td>
+    rem  *        </tr>
+    rem  *        <tr>
+    rem  *            <td>&nbsp;<strong>data</strong></td>
+    rem  *            <td>&nbsp;Mapped from the DataRow</td>
+    rem  *        </tr>
+    rem  *        <tr>
+    rem  *            <td>&nbsp;<strong>ctx</strong></td>
+    rem  *            <td>&nbsp;The grid client context</td>
+    rem  *        </tr>
+    rem  *    </tbody>
+    rem  * </table>
     rem  */
     field public JsonObject RowClassRules! = new JsonObject()
     rem /**

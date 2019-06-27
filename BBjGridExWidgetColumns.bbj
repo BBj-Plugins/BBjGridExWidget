@@ -260,45 +260,61 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  */
     field public BBjNumber AutoHeight! = 0
     rem /**
-    rem  * Rules which can be applied to include certain CSS classes. These rules are provided as a map where the keys are the class names and the values are expressions that if evaluated to true, the class gets used.
-    rem  *
-    rem  * Inside the condition you can use serveral predefined params, some of these params are :
-    rem  *
-    rem  *  1. x        => maps value
-    rem  *  2. ctx      => maps the grid context
-    rem  *  3. data     => maps the current data row
-    rem  *  4. rowIndex => maps the current row index
-    rem  * @see https://www.ag-grid.com/javascript-grid-cell-styles/#cell-style-cell-class-cell-class-rules-params
+    rem  * Rules which can be applied to include certain CSS classes. These rules are provided as a map 
+    rem  * where the keys are the class names and the values are expressions that if evaluated to true, the class gets used.
+    rem  * An expression is evaluated by the grid by executing the string as if it were a Javascript expression. 
+    rem  * The expression has the following attributes available to it. <br><br>
+    rem  *  
+    rem  * <table border="1" cellpadding="10">
+    rem  *    <tbody>
+    rem  *        <tr>
+    rem  *            <td><strong>&nbsp;x</strong></td>
+    rem  *            <td>&nbsp;Mapped from cell value</td>
+    rem  *        </tr>
+    rem  *        <tr>
+    rem  *            <td><strong>&nbsp;rowIndex</strong></td>
+    rem  *            <td>&nbsp;Maps the current row index</td>
+    rem  *        </tr>
+    rem  *        <tr>
+    rem  *            <td>&nbsp;<strong>data</strong></td>
+    rem  *            <td>&nbsp;Mapped from the DataRow</td>
+    rem  *        </tr>
+    rem  *        <tr>
+    rem  *            <td>&nbsp;<strong>ctx</strong></td>
+    rem  *            <td>&nbsp;The grid client context</td>
+    rem  *        </tr>
+    rem  *    </tbody>
+    rem  * </table>
     rem  */
     field public JsonObject CellClassRules! = new JsonObject()
     rem /**
     rem  * An Ag Grid expresion which can be executed before getting the value from your data for display
     rem  *
-    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  * @see BBjGridExWidget.Expression.BBjGridExWidgetExpression
     rem  */
     field public BBjGridExWidgetExpressionInterface ValueGetterExpression! = null()
     rem /**
     rem  * An Ag Grid expresion which can be executed to format the value for display.
     rem  *
-    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  * @see BBjGridExWidget.Expression.BBjGridExWidgetExpression
     rem  */
     field public BBjGridExWidgetExpressionInterface ValueFormatterExpression! = null()
     rem /**
     rem  * An Ag Grid expresion which can be executed to get the value for filtering purposes.
     rem  *
-    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  * @see BBjGridExWidget.Expression.BBjGridExWidgetExpression
     rem  */
     field public BBjGridExWidgetExpressionInterface FilterValueGetterExpression! = null()
     rem /**
     rem  * An Ag Grid expresion which can be executed before setting the value into your data for saving.
     rem  *
-    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  * @see BBjGridExWidget.Expression.BBjGridExWidgetExpression
     rem  */
     field public BBjGridExWidgetExpressionInterface ValueSetterExpression! = null()
     rem /**
     rem  * An Ag Grid expresion which can be executed to parse the value for saving.
     rem  *
-    rem  * @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+    rem  * @see BBjGridExWidget.Expression.BBjGridExWidgetExpression
     rem  */
     field public BBjGridExWidgetExpressionInterface ValueParserExpression! = null()
     rem /**
