@@ -331,12 +331,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Rules which can be applied to include certain CSS classes for rows.
     rem  *
-    rem  * These rules are provided as a JavaScript map where the keys are class names and the values are expressions that 
-    rem  * if evaluated to true, the class gets used. The expression is a string which is treated as a shorthand for a 
+    rem  * These rules are provided as a JavaScript map where the keys are class names and the values are expressions that
+    rem  * if evaluated to true, the class gets used. The expression is a string which is treated as a shorthand for a
     rem  * function by the grid.
-    rem  * 
+    rem  *
     rem  * The expression has the following attributes available: <br><br>
-    rem  * 
+    rem  *
     rem  * <table border="1" cellpadding="10">
     rem  *    <tbody>
     rem  *        <tr>
@@ -428,15 +428,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * When true , the grid will render the UI on the client as soon as possible , put it in the loading state
     rem  * then send the data. once the data is sent and rendered , the grid will remove the loading state automatically.
-    rem  * 
-    rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time.    
+    rem  *
+    rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time.
     rem  */
     field public BBjNumber ChunkRendering! = 0
     rem /**
-    rem  * By default when new columns are loaded into the grid, the following properties 
+    rem  * By default when new columns are loaded into the grid, the following properties
     rem  * (Order,Aggregation Function , Width , Pivot , Row Group , Pinned ) are not used
-    rem  * 
-    rem  * To change this behaviour and have column attributes above take effect each time the grid updates the columns, 
+    rem  *
+    rem  * To change this behaviour and have column attributes above take effect each time the grid updates the columns,
     rem  * then set this option to true
     rem  */
     field public BBjNumber DeltaColumnMode! = 0
@@ -468,6 +468,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * The vector holds the registered events
     rem  */
     field protected HashSet Interests! = new HashSet()
+    rem /**
+    rem  * The client's HTML template to use in order to build the grid.
+    rem  */
+    field protected BBjString Template$ = ""
     field protected BBjHtmlView HTMLView!
     field protected Boolean IsReady! = BBjAPI.FALSE
     field protected BBjVector backlog! = new BBjVector()
@@ -693,22 +697,55 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * The constructor that creates the widget on wnd!
-    rem * @param BBjWindow wnd!: parent window
-    rem * @param BBjInt id: the control ID
-    rem * @param BBjInt x: x-location
-    rem * @param BBjInt y: y-location
-    rem * @param BBjInt w: width
-    rem * @param BBjInt h: height
+    rem  *
+    rem * @param BBjWindow wnd!! parent window
+    rem * @param BBjNumber id! the control ID
+    rem * @param BBjNumber x! x-location
+    rem * @param BBjNumber y! y-location
+    rem * @param BBjNumber w! width
+    rem * @param BBjNumber h! height
     rem */
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
         #RS!.createIndex()
     methodend
     rem /**
-    rem  * The constructor that creates the widget in the ChildWindow
-    rem * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem  * The constructor that creates the widget on wnd!
+    rem  *
+    rem * @param BBjWindow wnd!! parent window
+    rem * @param BBjNumber id! the control ID
+    rem * @param BBjNumber x! x-location
+    rem * @param BBjNumber y! y-location
+    rem * @param BBjNumber w! width
+    rem * @param BBjNumber h! height
+    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
+    rem  *                           By default you will never need  to change the defaultl Template.
+    rem  *                           Unless you want to do somthing really unusual
     rem */
+    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
+        #setTemplate(template$)
+        #super!.create(wnd!,id!,x!,y!,w!,h!)
+        #RS!.createIndex()
+    methodend
+    rem /**
+    rem  * The constructor that creates the widget in the ChildWindow
+    rem  *
+    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!)
+        #super!.create(wnd!)
+        #RS!.createIndex()
+    methodend
+    rem /**
+    rem  * The constructor that creates the widget in the ChildWindow
+    rem  *
+    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem  * @param BBjString template$ The client's HTML template to use in order to build the grid.
+    rem  *                           By default you will never need  to change the defaultl Template.
+    rem  *                           Unless you want to do somthing really unusual
+    rem  */
+    method public BBjGridExWidget(BBjChildWindow wnd!,BBjString template$)
+        #setTemplate(template$)
         #super!.create(wnd!)
         #RS!.createIndex()
     methodend
@@ -764,19 +801,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Fires an event
-    rem  *
-    rem  * @param Int type! The event's type
-    rem  * @param Object payload! The event's payload
-    rem  *
-    rem  * @Override
-    rem  */
-    method protected void fireEvent(int type!, Object payload!)
-        if(#getInterests().contains(type!)) then
-            #super!.fireEvent(type!,payload!)
-        FI
-    methodend
-    rem /**
     rem  * @Override
     rem  *
     rem  * This method is called whenever the widget needs to be rendered
@@ -794,15 +818,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 #setLicenseKey(str(lic!))
             FI
 
-            html$ = ""
-            ch=unt
-            open (ch)"BBjGridExWidget/client/index.html"
-            read record (ch,siz=5512000)html$
-            close (ch)
-            html! = html$
-            html! = html!.replaceAll("__id__",#GRIDID$)
-            html! = html!.replaceAll("__lang__",#getLanguageManager().getLanguage())
-            html$ = str(html!)
+            html$ = #getTemplate()
+
+            if(len(html$) = 0) then
+                ch=unt
+                open (ch)"BBjGridExWidget/client/index.html"
+                read record (ch,siz=5512000)html$
+                close (ch)
+            FI
+
+            html$ = #parseTemplate(html$)
 
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
@@ -997,7 +1022,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public BBjGridExWidgetColumn addColumn(BBjString field!)
         methodret #addColumn(field!,field!)
-    methodend    
+    methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
@@ -1485,29 +1510,29 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         REM         if(!#IsReady!) then
         REM             methodret
         REM         fi
-        
         gson! = new Gson()
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
-        
+
         if(#getChunkRendering() = 0) then
             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
         else
             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
-            if(#getRS() <>  null() AND #getRS().size() > 0) then    
+
+            if(#getRS() <>  null() AND #getRS().size() > 0) then
                 #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
-            fi 
-        fi
+            FI
+        FI
     methodend
     rem /**
     rem  * Rerender the column defintions on the client.
-    rem  * 
-    rem  * The method will collect the new changes in columns and column groups and force the client to reflect the 
+    rem  *
+    rem  * The method will collect the new changes in columns and column groups and force the client to reflect the
     rem  * change.
     rem  */
     method public void updateColumns()
-         definition! = #getAsJsonObject().get("columnDefs").getAsJsonArray()
-         #executeScript("gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
+        definition! = #getAsJsonObject().get("columnDefs").getAsJsonArray()
+        #executeScript("gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
     methodend
     rem /**
     rem  * Build the column defintions from the passed resultset
@@ -2135,6 +2160,32 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
 
         methodret null()
+    methodend
+    rem /**
+    rem  * Parse the grid html template 
+    rem  * 
+    rem  * @param BBjString template$ Template string
+    rem  * 
+    rem  * @return BBjString parsed template
+    rem  */
+    method protected BBjString parseTemplate(BBjString template$)
+        temp! = template$
+        temp! = temp!.replaceAll("__id__" , #GRIDID$)
+        temp! = temp!.replaceAll("__lang__", #getLanguageManager().getLanguage())
+        methodret str(temp!)
+    methodend
+    rem /**
+    rem  * Fires an event
+    rem  *
+    rem  * @param Int type! The event's type
+    rem  * @param Object payload! The event's payload
+    rem  *
+    rem  * @Override
+    rem  */
+    method protected void fireEvent(int type!, Object payload!)
+        if(#getInterests().contains(type!)) then
+            #super!.fireEvent(type!,payload!)
+        FI
     methodend
     rem /**
     rem  * Send the current interests to the client
