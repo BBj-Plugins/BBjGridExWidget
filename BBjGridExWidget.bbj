@@ -310,6 +310,72 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field public BBjNumber SuppressAnimationFrame! = null()
     rem /**
     rem  * Icons to use inside the grid instead of the grid's default icons.
+    rem  * 
+    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group). 
+    rem  * If defined in both the grid options and column definitions, the column definition will get used. 
+    rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for 
+    rem  * specific columns. This is handy if, for example, you want to include 'A..Z' as string sort icons 
+    rem  * and just the simple arrow for other columns.
+    rem  * 
+    rem  * The icons are set as follows:
+    rem  * <pre>
+    rem  * <code>
+    rem *      // column header items
+    rem *      menu
+    rem *      filter
+    rem *      columns
+    rem *      sortAscending
+    rem *      sortDescending
+    rem *      sortUnSort
+    rem *
+    rem *      // expand / contract row group
+    rem *      groupExpanded
+    rem *      groupContracted
+    rem *
+    rem *      // expand / contract column group
+    rem *      columnGroupOpened
+    rem *      columnGroupClosed
+    rem *
+    rem *      // tool panel column group open / close
+    rem *      columnSelectOpen
+    rem *      columnSelectClosed
+    rem *
+    rem *      // row checkbox selection and tool panel column selection
+    rem *      checkboxChecked
+    rem *      checkboxUnchecked
+    rem *      checkboxIndeterminate
+    rem *
+    rem *      // tool panel column selection, when read only (ie disabled checkboxes)
+    rem *      checkboxCheckedReadOnly
+    rem *      checkboxUncheckedReadOnly
+    rem *      checkboxIndeterminateReadOnly
+    rem *
+    rem *      // when moving columns
+    rem *      columnMovePin // when column is to the left, before it gets pinned
+    rem *      columnMoveAdd // when adding a column
+    rem *      columnMoveHide // when removing a column
+    rem *      columnMoveMove // when moving a column
+    rem *      columnMoveLeft // when moving and scrolling left
+    rem *      columnMoveRight // when moving and scrolling right
+    rem *      columnMoveGroup // when about to drop into group panel
+    rem *      columnMoveValue // when about to drop into value panel
+    rem *      columnMovePivot // when about to drop into pivot panel
+    rem *      dropNotAllowed // when trying to drop column into group/value/pivot panel and column doesn't support it
+    rem *
+    rem *      // menu
+    rem *      menuPin // beside the column pin menu item
+    rem *      menuValue // beside the column value menu item
+    rem *      menuAddRowGroup // beside the column row group menu item
+    rem *      menuRemoveRowGroup // beside the column row group menu item
+    rem *      clipboardCopy // beside the copy to clipboard menu item
+    rem *      clipboardPaste // beside the paste from clipboard menu item
+    rem *
+    rem *      // column drop panels
+    rem *      rowGroupPanel // beside where to drop columns for row group
+    rem *      pivotPanel // beside where to drop columns for pivot
+    rem *      valuePanel // beside where to drop columns for value
+    rem  * </code>
+    rem  * </pre>
     rem  */
     field public JsonObject Icons! = new JsonObject()
     rem /**
@@ -2002,11 +2068,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Set the grid icons
-    rem  * 
-    rem  * @param BBjString json! The icons as a json object 
+    rem  *
+    rem  * @param BBjString json! The icons as a json object
     rem  */
     method public void setIcons(BBjString json!)
         declare JsonParser parser!
+
         parser! = new JsonParser()
         #setIcons(parser!.parse(json!).getAsJsonObject())
     methodend
@@ -2172,10 +2239,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret null()
     methodend
     rem /**
-    rem  * Parse the grid html template 
-    rem  * 
+    rem  * Parse the grid html template
+    rem  *
     rem  * @param BBjString template$ Template string
-    rem  * 
+    rem  *
     rem  * @return BBjString parsed template
     rem  */
     method protected BBjString parseTemplate(BBjString template$)
