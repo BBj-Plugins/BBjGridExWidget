@@ -567,7 +567,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_DOUBLE_CLICK()
-        methodret #ON_GRID_DOUBLE_CLICK()
+        methodret BBjAPI.ON_GRID_DOUBLE_CLICK
     methodend
     rem /**
     rem  * Alias to <i>ON_GRID_ROW_DOUBLE_CLICK()</i>
