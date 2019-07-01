@@ -182,3 +182,66 @@ export function gw_removeRowGroupColumn(id, columns) {
     );
   }
 }
+
+export function gw_getPivotMode(id) {
+  const grid = gw_getGrid(id);
+  let result = 0;
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    result = options.columnApi.isPivotMode();
+  }
+
+  return result;
+}
+
+/**
+ * Enable / disbale pivot mode 
+ * 
+ * @param {String} id the grid id
+ * @param {Boolean} mode when true 
+ */
+export function gw_setPivotMode(id, mode) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    options.columnApi.setPivotMode(!!Number(mode));
+  }
+}
+
+/**
+ * Enable pivot for columns
+ * 
+ * @param {String} id the grid id
+ * @param {String} columns  a comma separated string of columns
+ * @param {Boolean} set  When true , `addPivotColumns` will be used , `setPivotColumns` otherwise
+ */
+export function gw_addPivotColumns(id, columns, set) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    const method = set ? "setPivotColumns" : "addPivotColumns";
+    options.columnApi[method](
+      columns.split(",").map(i => i.trim())
+    );
+  }
+}
+
+/**
+ * Disable pivot for columns
+ * 
+ * @param {String} id the grid id
+ * @param {String} columns  a comma separated string of columns
+ */
+export function gw_removePivotColumns(id, columns) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    options.columnApi.removePivotColumns(
+      columns.split(",").map(i => i.trim())
+    );
+  }
+}

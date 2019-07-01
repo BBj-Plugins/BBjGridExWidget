@@ -1348,7 +1348,62 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
           next! = cvs(it!.next(),128)
           #getColumn(next!).setEnableRowGroup(0)
         WEND        
-    methodend    
+    methodend
+    rem /**
+    rem  * Enable pivot for columns.<br>
+    rem  * 
+    rem  * <b>Note</b> This method can update pivot for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */       
+    method public void addPivotColumns(BBjString columns!)
+        #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+          next! = cvs(it!.next(),128)
+          #getColumn(next!).setEnablePivot(1)
+        WEND
+    methodend 
+    rem /**
+    rem  * Disable pivot for all columns and enable it for the passed columns
+    rem  * 
+    rem  * <b>Note</b> This method can update pivot for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */
+    method public void setPivotColumns(BBjString columns!)
+        #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "' , 1);")
+        list! = Arrays.asList(columns!.split(","))
+        it! = #getColumnsManager().getColumns().entrySet().iterator()
+        WHILE (it!.hasNext())
+          next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+          if(list!.contains(next!.getField())) then
+            next!.setEnablePivot(1)
+          else 
+            next!.setEnablePivot(0)
+          fi 
+        WEND
+    methodend
+    rem /**
+    rem  * Disable pivot for columns.<br>
+    rem  * 
+    rem  * <b>Note</b> This method can update pivot for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */    
+    method public void removeRowGroupColumns(BBjString columns!)
+        #executeScript("gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+          next! = cvs(it!.next(),128)
+          #getColumn(next!).setEnablePivot(0)
+        WEND        
+    methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
@@ -2132,6 +2187,30 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         parser! = new JsonParser()
         #setIcons(parser!.parse(json!).getAsJsonObject())
+    methodend
+    rem /**
+    rem  * Enable / disable pivot mode
+    rem  * 
+    rem  * @param BBjNumber mode! when true , the pivot mode will be enabled , disabled otherwise
+    rem  */
+    method public void setPivotMode(BBjNumber mode!)
+        #PivotMode! = mode!
+        if(#IsReady!) then
+            #executeScript("gw_setPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
+        fi
+    methodend
+    rem /**
+    rem  * Check if pivot mode is enabled or disabled 
+    rem  * 
+    rem  * @return BBjNumber 1 when pivot mode is enabled , 0 otherwise
+    rem  */
+    method public BBjNumber getPivotMode()
+        if(#IsReady!) then
+            mode! = #executeScript("gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
+            #PivotMode! = mode!
+        fi  
+        
+        methodret #PivotMode!  
     methodend
     rem /**
     rem  * Perform throw columns search
