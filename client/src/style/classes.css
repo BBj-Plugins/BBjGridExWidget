@@ -1,0 +1,25 @@
+/*
+* This file is part of the BBjGridExWidget plugin.
+* (c) Basis Europe <eu@basis.com>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
+.gw-alignment-right,
+.gw-alignment-right .ag-cell-wrapper {
+    text-align: right !important;
+    justify-content: flex-end !important;
+}
+
+.gw-alignment-left,
+.gw-alignment-left .ag-cell-wrapper {
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
+.gw-alignment-center,
+.gw-alignment-center .ag-cell-wrapper {
+    text-align: center !important;
+    justify-content: center !important;
+}

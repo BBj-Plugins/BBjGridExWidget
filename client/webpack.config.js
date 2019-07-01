@@ -31,7 +31,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      api:  path.resolve(__dirname, './src/api'),
+      api: path.resolve(__dirname, './src/api'),
       events: path.resolve(__dirname, 'src/events/')
     }
   },
@@ -57,7 +57,8 @@ module.exports = {
               insertInto: function () { return window.top.document.head }
             }
           },
-          { loader: "css-loader", options: { minimize: true } }
+          { loader: "postcss-loader" },
+          { loader: "postcss-loader" }
         ]
       }
     ]

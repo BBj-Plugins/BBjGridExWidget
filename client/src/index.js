@@ -18,5 +18,7 @@ require('ag-grid-community/dist/styles/ag-theme-material.css');
 require('ag-grid-community/dist/styles/ag-theme-balham.css');
 require('ag-grid-community/dist/styles/ag-theme-balham-dark.css');
 
+require('./style/classes.css');
+
 export * from './pollyfills.js';
 export * from "./api";

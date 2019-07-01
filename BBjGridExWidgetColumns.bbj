@@ -332,13 +332,13 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     field public BBjString DefaultTimestampsMask! = "%Dz.%Mz.%Yl %Hz:%mz:%sz"
     rem /**
     rem  * Icons to use inside the column instead of the grid's default icons.
-    rem  * 
-    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group). 
-    rem  * If defined in both the grid options and column definitions, the column definition will get used. 
-    rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for 
-    rem  * specific columns. This is handy if, for example, you want to include 'A..Z' as string sort icons 
+    rem  *
+    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group).
+    rem  * If defined in both the grid options and column definitions, the column definition will get used.
+    rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for
+    rem  * specific columns. This is handy if, for example, you want to include 'A..Z' as string sort icons
     rem  * and just the simple arrow for other columns.
-    rem  * 
+    rem  *
     rem  * The icons are set as follows:
     rem  * <pre>
     rem  * <code>
@@ -525,16 +525,15 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * @RequiresRefresh
     rem  */
     method public void setAlignment(BBjNumber align!)
-        styleMap! = #getCellStyle()
         switch align!
             case BBjGridExWidget.GRID_ALIGN_LEFT()
-                styleMap!.addProperty("text-align" ,  "left")
+                #getCellClass().add("gw-alignment-left")
                 break
             case BBjGridExWidget.GRID_ALIGN_CENTER()
-                styleMap!.addProperty("text-align" ,  "center")
+                #getCellClass().add("gw-alignment-center")
                 break
             case BBjGridExWidget.GRID_ALIGN_RIGHT()
-                styleMap!.addProperty("text-align" ,  "right")
+                #getCellClass().add("gw-alignment-right")
                 break
         swend
     methodend
@@ -578,7 +577,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
 
         parser! = new JsonParser()
         #setIcons(parser!.parse(json!).getAsJsonObject())
-    methodend    
+    methodend
     rem /**
     rem  * Set the column type
     rem  *
