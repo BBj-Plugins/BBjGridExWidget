@@ -152,13 +152,15 @@ export function gw_isHeaderCheckboxSelection(param) {
  * 
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
+ * @param {Boolean} set  When true , `setRowGroupColumns` will be used , `addRowGroupColumns` otherwise
  */
-export function gw_addRowGroupColumn(id, columns) {
+export function gw_addRowGroupColumn(id, columns ,set) {
   const grid = gw_getGrid(id);
 
   if (grid) {
     const options = gw_getGrid(id).options;
-    options.columnApi.addRowGroupColumns(
+    const method = set ? "setRowGroupColumns" : "addRowGroupColumns";
+    options.columnApi[method](
       columns.split(",").map(i => i.trim())
     );
   }
