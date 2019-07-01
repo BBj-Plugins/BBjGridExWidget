@@ -6,6 +6,7 @@ rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
+use java.util.Arrays
 use java.util.ArrayList
 use java.util.HashSet
 use com.google.gson.Gson
@@ -1293,6 +1294,40 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #getColumn(field!).setCellRenderer(renderer!)
         FI
     methodend
+    rem /**
+    rem  * Enable row grouping for columns.<br>
+    rem  * 
+    rem  * <b>Note</b> This method can update row grouping for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */
+    method public void addRowGroupColumns(BBjString columns!)
+        #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+          next! = cvs(it!.next(),128)
+          #getColumn(next!).setEnableRowGroup(1)
+        WEND
+    methodend
+    rem /**
+    rem  * Disable row grouping for columns.<br>
+    rem  * 
+    rem  * <b>Note</b> This method can update row grouping for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */    
+    method public void removeRowGroupColumns(BBjString columns!)
+        #executeScript("gw_removeRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+          next! = cvs(it!.next(),128)
+          #getColumn(next!).setEnableRowGroup(0)
+        WEND        
+    methodend    
     rem /**
     rem  * {@inheritDoc}
     rem  */

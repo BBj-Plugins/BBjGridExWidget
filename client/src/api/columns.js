@@ -146,3 +146,37 @@ export function gw_isHeaderCheckboxSelection(param) {
 
   return columns[0].colDef.field === param.colDef.field;
 }
+
+/**
+ * Enable row grouping for columns
+ * 
+ * @param {String} id the grid id
+ * @param {String} columns  a comma separated string of columns
+ */
+export function gw_addRowGroupColumn(id, columns) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    options.columnApi.addRowGroupColumns(
+      columns.split(",").map(i => i.trim())
+    );
+  }
+}
+
+/**
+ * Disable row grouping for columns
+ * 
+ * @param {String} id the grid id
+ * @param {String} columns  a comma separated string of columns
+ */
+export function gw_removeRowGroupColumn(id, columns) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    options.columnApi.removeRowGroupColumns(
+      columns.split(",").map(i => i.trim())
+    );
+  }
+}
