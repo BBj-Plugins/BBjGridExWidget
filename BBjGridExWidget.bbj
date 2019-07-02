@@ -1295,6 +1295,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
+    rem  * Set an aggregation function for the passed column field 
+    rem  * 
+    rem  * @param BBjString field! The column's field
+    rem  * @param BBjString AggFunc! Name of function to use for aggregation. One of [sum,min,max,first,last].
+    rem  */
+    method public void setColumnAggFunc(BBjString field! , BBjString AggFunc!)
+        if(#hasColumn(field!)) then
+            #getColumn(field!).setAggFunc(AggFunc!)
+        FI        
+    methodend
+    rem /**
     rem  * Enable row grouping for columns.<br>
     rem  * 
     rem  * <b>Note</b> This method can update row grouping for columns after/before the grid is rendered 
