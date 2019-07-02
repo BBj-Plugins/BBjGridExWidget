@@ -1306,9 +1306,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
+        count! = 0
         WHILE (it!.hasNext())
-          next! = cvs(it!.next(),128)
-          #getColumn(next!).setEnableRowGroup(1)
+          next! = #getColumn(cvs(it!.next(),128))
+          next!.setRowGroup(1)
+          next!.setEnableRowGroup(1)
+          next!.setRowGroupIndex(count!)
+          count! = count! + 1
         WEND
     methodend
     rem /**
@@ -1323,12 +1327,18 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "' , 1);")
         list! = Arrays.asList(columns!.split(","))
         it! = #getColumnsManager().getColumns().entrySet().iterator()
+        count! = 0
         WHILE (it!.hasNext())
           next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
           if(list!.contains(next!.getField())) then
+            next!.setRowGroup(1)
             next!.setEnableRowGroup(1)
-          else 
+            next!.setRowGroupIndex(count!)
+            count! = count! + 1          
+          else
+            next!.setRowGroup(0) 
             next!.setEnableRowGroup(0)
+            next!.setRowGroupIndex(null())
           fi 
         WEND
     methodend    
@@ -1345,8 +1355,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
-          next! = cvs(it!.next(),128)
-          #getColumn(next!).setEnableRowGroup(0)
+          next! = #getColumn(cvs(it!.next(),128))
+          next!.setRowGroup(0)
+          next!.setEnableRowGroup(0)
+          next!.setRowGroupIndex(null())
         WEND        
     methodend
     rem /**
@@ -1361,9 +1373,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
+        count! = 0
         WHILE (it!.hasNext())
-          next! = cvs(it!.next(),128)
-          #getColumn(next!).setEnablePivot(1)
+          next! = #getColumn(cvs(it!.next(),128))
+          next!.setEnablePivot(1)
+          next!.setPivotIndex(count!)
+          count! = count! + 1
         WEND
     methodend 
     rem /**
@@ -1378,12 +1393,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "' , 1);")
         list! = Arrays.asList(columns!.split(","))
         it! = #getColumnsManager().getColumns().entrySet().iterator()
+        count! = 0
         WHILE (it!.hasNext())
           next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
           if(list!.contains(next!.getField())) then
             next!.setEnablePivot(1)
+            next!.setPivotIndex(count!)
+            count! = count! + 1
           else 
             next!.setEnablePivot(0)
+            next!.setPivotIndex(null())
           fi 
         WEND
     methodend
@@ -1400,8 +1419,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
-          next! = cvs(it!.next(),128)
-          #getColumn(next!).setEnablePivot(0)
+          next! = #getColumn(cvs(it!.next(),128))
+          next!.setEnablePivot(0)
+          next!.setPivotIndex(null())
         WEND        
     methodend
     rem /**
