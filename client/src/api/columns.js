@@ -160,7 +160,6 @@ export function gw_addRowGroupColumn(id, columns ,set) {
   if (grid) {
     const options = gw_getGrid(id).options;
     const method = set ? "setRowGroupColumns" : "addRowGroupColumns";
-    console.log(columns)
     options.columnApi[method](
       columns.split(",").map(i => i.trim())
     );
