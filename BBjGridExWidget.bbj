@@ -1395,7 +1395,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * 
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */    
-    method public void removeRowGroupColumns(BBjString columns!)
+    method public void removePivotColumns(BBjString columns!)
         #executeScript("gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
