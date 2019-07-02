@@ -91,31 +91,31 @@ class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
     rem /**
     rem  * suppress Expand / Collapse all widget.
     rem  */
-    field public BBjNumber SuppressColumnExpandAll! = 0
+    field public BBjNumber SuppressColumnExpandAll! = null()
     rem /**
     rem  * suppress Select / Un-select all widget.
     rem  */
-    field public BBjNumber SuppressColumnSelectAll! = 0
+    field public BBjNumber SuppressColumnSelectAll! = null()
     rem /**
     rem  * suppress Column Filter section.
     rem  */
-    field public BBjNumber SuppressColumnFilter! = 0
+    field public BBjNumber SuppressColumnFilter! = null()
     rem /**
     rem  * suppress Pivot Mode section.
     rem  */
-    field public BBjNumber SuppressPivotMode! = 0
+    field public BBjNumber SuppressPivotMode! = null()
     rem /**
     rem  * suppress Column Labels (Pivot) section.
     rem  */
-    field public BBjNumber SuppressPivots! = 0
+    field public BBjNumber SuppressPivots! = null()
     rem /**
     rem  * suppress Values section
     rem  */
-    field public BBjNumber SuppressValues! = 0
+    field public BBjNumber SuppressValues! = null()
     rem /**
     rem  * Suppress Row Groups section.
     rem  */
-    field public BBjNumber SuppressRowGroups! = 0
+    field public BBjNumber SuppressRowGroups! = null()
     rem /**
     rem  * {@inheritDoc}
     rem  */

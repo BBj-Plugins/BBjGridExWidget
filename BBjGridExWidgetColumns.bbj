@@ -152,15 +152,15 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem /**
     rem  * Set to true to always have column displayed first.
     rem  */
-    field public BBjNumber LockPosition! = 0
+    field public BBjNumber LockPosition! = null()
     rem /**
     rem  * Set to true block making column visible / hidden via the UI (API will still work).
     rem  */
-    field public BBjNumber LockVisible! = 0
+    field public BBjNumber LockVisible! = null()
     rem /**
     rem  * Set to true block pinning column via the UI (API will still work).
     rem  */
-    field public BBjNumber LockPinned! = 0
+    field public BBjNumber LockPinned! = null()
     rem /**
     rem  * Set to true to allow sorting on this column.
     rem  */
@@ -231,7 +231,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to row group by this column via the UI.
     rem  */
-    field public BBjNumber EnableRowGroup! = 0
+    field public BBjNumber EnableRowGroup! = 1
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true To group rows by this column
     rem  * 
@@ -241,11 +241,11 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to pivot by this column via the UI.
     rem  */
-    field public BBjNumber EnablePivot! = 0
+    field public BBjNumber EnablePivot! = 1
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to aggregate by this column via the UI.
     rem  */
-    field public BBjNumber EnableValue! = 0
+    field public BBjNumber EnableValue! = 1
     rem /**
     rem  * Set to true if no menu should be shown for this column header.
     rem  */
@@ -742,18 +742,11 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
         rem we reset the following properties so they can be inheirted from the default column defintion
         #setHidden(null())
         #setEnableFilter(null())
-        #setLockPinned(null())
-        #setLockPosition(null())
-        #setLockVisible(null())
-        #setSortable(null())
         #setSortable(null())
         #setResizable(null())
         #setEditable(null())
         #setUnSortIcon(null())
-        #setEnableRowGroup(null())
         #setRowGroup(null())
-        #setEnablePivot(null())
-        #setEnableValue(null())
         #setSuppressMenu(null())
         #setSuppressSizeToFit(null())
         #setSuppressNavigable(null())
