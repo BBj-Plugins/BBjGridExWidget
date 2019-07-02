@@ -231,7 +231,13 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to row group by this column via the UI.
     rem  */
-    field public BBjNumber EnableRowGroup! = 1
+    field public BBjNumber EnableRowGroup! = 0
+    rem /**
+    rem  * <b>(ag-Grid-Enterprise only)</b> Set to true To group rows by this column
+    rem  * 
+    rem  * @see BBjGridExWidget.Columns.EnableRowGroup!
+    rem  */
+    field public BBjNumber RowGroup! = 0    
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to pivot by this column via the UI.
     rem  */
@@ -239,7 +245,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem /**
     rem  * <b>(ag-Grid-Enterprise only)</b> Set to true if you want to be able to aggregate by this column via the UI.
     rem  */
-    field public BBjNumber EnableValue! = 1
+    field public BBjNumber EnableValue! = 0
     rem /**
     rem  * Set to true if no menu should be shown for this column header.
     rem  */
@@ -663,6 +669,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
         column!.addProperty("pivotIndex",#getPivotIndex().longValue(),err=*next)
         column!.addProperty("unSortIcon",#getUnSortIcon().booleanValue(),err=*next)
         column!.addProperty("enableRowGroup",#getEnableRowGroup().booleanValue(),err=*next)
+        column!.addProperty("rowGroup",#getRowGroup().booleanValue(),err=*next)
         column!.addProperty("enablePivot",#getEnablePivot().booleanValue(),err=*next)
         column!.addProperty("enableValue",#getEnableValue().booleanValue(),err=*next)
         column!.addProperty("suppressMenu",#getSuppressMenu().booleanValue(),err=*next)
