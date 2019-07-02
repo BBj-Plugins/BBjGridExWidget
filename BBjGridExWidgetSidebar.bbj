@@ -75,7 +75,7 @@ class public BBjGridExWidgetToolpanel implements BBjGridExWidgetToolpanelInterfa
 
         json! = new JsonObject()
         json!.addProperty("id",#this!.ID(), err=*next)
-        json!.addProperty("labelKey",#this!.ID() , err=*next)
+        json!.addProperty("labelKey",#getLabel() , err=*next)
         json!.addProperty("labelDefault",#getLabel() , err=*next)
         json!.addProperty("iconKey",#getIcon() , err=*next)
         methodret json!
@@ -126,7 +126,7 @@ class public BBjGridExWidgetColumnsToolpanel extends BBjGridExWidgetToolpanel
     rem  * Construct new columns toolpanel
     rem  */
     method public BBjGridExWidgetColumnsToolpanel()
-        #super!("Columns","columns")
+        #super!("columns","columns")
     methodend
     rem /**
     rem  * Construct new toolpanel
@@ -183,7 +183,8 @@ class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
     rem  * Construct new filters toolpanel
     rem  */
     method public BBjGridExWidgetFiltersToolpanel()
-        #super!("Filters","filters")
+        #super!("filters","filters")
+        #setIcon("filter")
     methodend
     rem /**
     rem  * Construct new toolpanel
