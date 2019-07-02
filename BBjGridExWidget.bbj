@@ -1687,7 +1687,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("groupRemoveLowestSingleChildren",#getGroupRemoveLowestSingleChildren().booleanValue(), err=*next)
         options!.addProperty("groupHideOpenParents",#getGroupHideOpenParents().booleanValue(), err=*next)
         options!.addProperty("rowGroupPanelShow",#getRowGroupPanelShow() , err=*next)
-        options!.addProperty("pivotMode",#getPivotMode().booleanValue(), err=*next)
+        options!.addProperty("pivotMode",#PivotMode!.booleanValue(), err=*next)
         options!.addProperty("rowGroupPanelShow",#getPivotPanelShow(), err=*next)
         options!.addProperty("rememberGroupStateWhenNewData",#getRememberGroupStateWhenNewData().booleanValue(), err=*next)
         options!.addProperty("suppressAggFuncInHeader",#getSuppressAggFuncInHeader().booleanValue(), err=*next)
