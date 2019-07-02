@@ -2271,7 +2271,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public BBjNumber getPivotMode()
         if(#IsReady!) then
             mode! = #executeScript("gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
-            #PivotMode! = mode!
+            #PivotMode! = num(mode!)
         fi  
         
         methodret #PivotMode!  
