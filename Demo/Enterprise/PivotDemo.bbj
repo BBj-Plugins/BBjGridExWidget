@@ -15,6 +15,13 @@ use com.basiscomponents.bc.SqlQueryBC
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
+lic!=System.getProperty("bbjgridexwidget.license")
+
+if lic!=null() or str(lic!)="" then
+    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Demo for Enterprise Features")
+    release
+fi
+
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
