@@ -1,0 +1,113 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
+use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnGroup
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Nested Columns Grouping Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+gosub main
+process_events
+
+rem /**
+rem  * Retrive the data from the database and configure the grid.
+rem  *
+rem  * The demo explains how to create a nested set of column groups. There is really no limit on the level , you can go as deep as
+rem  * you want.
+rem  * 
+rem  * In the following demo we declare our columns and give them labels , after that we set up the data but we 
+rem  * do not render and we ignore any extra columns defined in the resultset(Note the SQL query).
+rem  * 
+rem  * It is important to set the data before we start creating the groups , otherwise the grid will ignore the fetched column types 
+rem  * from the ResultSet. if you do not care about the types or if you are setting the types manually then you can 
+rem  * call grid!!.setData() at the end to auto render grid and avoid any delay.
+rem  * 
+rem  * Also Note that we are removing the columns from the grid and adding them to a column group 
+rem  * (ex: InventoryDetailsGroup!.addColumn(grid!.removeColumn("ONHAND")))
+rem  * Otherwise the grid will display the same column twice once standalone and once in the group.   
+rem  * 
+rem  * The order is kind of an important thing here.
+rem  * 
+rem  * If you want just to create simple column groups then @see ColumnGroupingDemo.bbj
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
+  
+  grid!.addColumnGroup("Inventory")
+  grid!.addColumn("CDNUMBER","Item#")
+  grid!.addColumn("ONHAND","On Hand")
+  grid!.addColumn("RETAIL","Retail")
+  grid!.addColumn("COST","COST")
+  grid!.addColumn("ARTIST","Artist Name")
+  grid!.addColumn("TITLE","Record Title")
+  grid!.addColumn("MUSICTYPE","Gener")
+  
+  rem it is important to set the data before creating the groups , otherwise the column types will ignored
+  grid!.setData(rs! , 0 , 0)
+  
+  declare BBjGridExWidgetColumnGroup InventoryDetailsGroup!
+  
+  InventoryDetailsGroup! = new BBjGridExWidgetColumnGroup("Detials")
+  InventoryDetailsGroup!.setColumnGroupShow(BBjGridExWidgetColumnGroup.COLUMN_GROUP_CLOSED())
+  InventoryDetailsGroup!.getHeaderClass().add("sub-group")
+  InventoryDetailsGroup!.addColumn(grid!.removeColumn("ONHAND"))
+  InventoryDetailsGroup!.addColumn(grid!.removeColumn("RETAIL"))
+  InventoryDetailsGroup!.addColumn(grid!.removeColumn("COST"))
+  
+  declare BBjGridExWidgetColumnGroup InventoryGroup!
+  
+  InventoryGroup! = grid!.getColumnGroup("Inventory")
+  InventoryGroup!.getHeaderClass().add("main-group")
+  InventoryGroup!.addColumn(grid!.removeColumn("CDNUMBER"))
+  InventoryGroup!.addColumnGroup(InventoryDetailsGroup!)
+  
+  rem setup columns group styles
+  MainGroupStyle! = new JsonObject()
+  MainGroupStyle!.addProperty("background","black")
+  MainGroupStyle!.addProperty("color","white")
+  grid!.addStyle(".main-group" , MainGroupStyle!)
+  
+  SubGroupStyle! = new JsonObject()
+  SubGroupStyle!.addProperty("background","#03a9f4")
+  SubGroupStyle!.addProperty("color","white")
+  grid!.addStyle(".sub-group" , SubGroupStyle!)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

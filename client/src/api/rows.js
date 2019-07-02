@@ -1,10 +1,13 @@
 /*
-* This file is part of the grid project
+* This file is part of the BBjGridExWidget plugin.
 * (c) Basis Europe <eu@Basis.AgGridComponents.com>
 *
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
+
+import { gw_getGrid } from "./utilities"
+import { gw_parseNode } from "events/utilities"
 
 export function gw_setQuickFilter(id, filter) {
   const options = gw_getGrid(id).options;
@@ -29,8 +32,8 @@ export function gw_setVisibleRow(id, index, position) {
 export function gw_navigateToNextRow(id, params) {
 
   const options = gw_getGrid(id).options;
-  let previousCell = params.previousCellDef;
-  let suggestedNextCell = params.nextCellDef;
+  let previousCell = params.previousCellPosition;
+  let suggestedNextCell = params.nextCellPosition;
 
   const KEY_UP = 38;
   const KEY_DOWN = 40;
@@ -39,7 +42,6 @@ export function gw_navigateToNextRow(id, params) {
 
   switch (params.key) {
     case KEY_DOWN:
-      previousCell = params.previousCellDef;
       // set selected cell on current cell + 1
       options.api.forEachNode((node) => {
         if (previousCell.rowIndex + 1 === node.rowIndex) {
@@ -48,7 +50,6 @@ export function gw_navigateToNextRow(id, params) {
       });
       return suggestedNextCell;
     case KEY_UP:
-      previousCell = params.previousCellDef;
       // set selected cell on current cell - 1
       options.api.forEachNode((node) => {
         if (previousCell.rowIndex - 1 === node.rowIndex) {

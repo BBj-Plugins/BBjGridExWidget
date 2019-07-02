@@ -1,1 +1,12 @@
-
+BBjGridExWidget
+BBjGridExWidget.CellEditors
+BBjGridExWidget.Client
+BBjGridExWidget.Client.Events
+BBjGridExWidget.Client.Models
+BBjGridExWidget.Columns
+BBjGridExWidget.ContextMenu
+BBjGridExWidget.Expression
+BBjGridExWidget.Filters
+BBjGridExWidget.Renderers
+BBjGridExWidget.Sidebar
+BBjGridExWidget.StatusBar

@@ -1,10 +1,12 @@
 /*
-* This file is part of the grid project
+* This file is part of the BBjGridExWidget plugin.
 * (c) Basis Europe <eu@basis.com>
 *
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
+
+import {gw_getDocument} from "api/utilities"
 
 /** https://davidwalsh.name/javascript-debounce-function */
 export function gw_debounce(func, wait, immediate) {
@@ -31,11 +33,23 @@ export function gw_debounce(func, wait, immediate) {
  * @param {string} id the grid id
  * @param {*} payload the event payload
  */
-export function gw_sendEvent(id, payload) {
-  const div = gw_getDocument().getElementById(`event-bridge-${id}`);
-  const event = new CustomEvent('click');
-  event.payload = payload;
-  div.dispatchEvent(event);
+export function gw_sendEvent(context, payload = {}, interests = []) {
+  const registeredInterests = context.interests || []
+
+  if(registeredInterests.length < 0) return ;
+
+  for (let x = 0; x < interests.length; x++) {
+    const interest = interests[x];
+
+    if(registeredInterests.includes(interest)) {
+      const div = gw_getDocument().getElementById(`event-bridge-${context.id}`);
+      const event = new CustomEvent('click');
+
+      event.payload = payload;
+      div.dispatchEvent(event);
+      break; 
+    }
+  }
 }
 
 /**
@@ -78,7 +92,7 @@ export function gw_parseNode(node, context) {
 /**
  * Parse node from event 
  * 
- * Parse node in the pased event as BBjGridExWidgetRow
+ * Parse node in the paSsed event as BBjGridExWidgetRow
  * 
  * @param {Object} e
  * 

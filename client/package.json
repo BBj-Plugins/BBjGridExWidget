@@ -9,6 +9,10 @@
     "watch": "./node_modules/.bin/webpack --watch --progress",
     "build": "./node_modules/.bin/webpack --mode=production"
   },
+  "browserslist": [
+    "last 2 version",
+    "> 1%"
+  ],  
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.40",
@@ -24,12 +28,16 @@
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^4.12.2",
     "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-command": "^0.3.1"
+    "webpack-command": "^0.3.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.6.0"
   },
   "dependencies": {
-    "ag-grid-community": "^20.*",
+    "ag-grid-community": "^21.*",
     "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.7.0",
-    "ag-grid-enterprise": "^20.*",
-    "jss": "https://github.com/dvtng/jss"
+    "ag-grid-enterprise": "^21.*",
+    "deep-parse-json": "^1.0.1",
+    "jss": "https://github.com/dvtng/jss",
+    "loadsh": "^0.0.4"
   }
 }

@@ -1,5 +1,13 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererGroupCellRenderer
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -7,9 +15,6 @@ use com.google.gson.JsonObject
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 lic!=System.getProperty("bbjgridexwidget.license")
@@ -22,66 +27,76 @@ fi
 BBjGridExWidget.setLicenseKey(lic!)
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-cb! = wnd!.addCheckBox(203,12,10,200,22,"Enable Read Only Mode")
-cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
-cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
-gosub setupGrid
+cb! = wnd!.addCheckBox(203,12,10,200,22,"Enable Read Only Mode")
+cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
+cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
+grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+grid!.setGroupIncludeFooter(1)
+grid!.setGroupIncludeTotalFooter(1)
+grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+    
+gosub main
 process_events
-   
-setupGrid:
 
-    declare SqlQueryBC sbc!
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  */   
+main:
+  declare SqlQueryBC sbc!
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT LABEL , MUSICTYPE , PLAYINGTIME , COST  FROM CDINVENTORY")
 
-    filter! = new com.basiscomponents.db.DataRow()
-    filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>AAD")
-    
-    rs! = rs!.filterBy(filter!)
-    playingTimeIndex! =rs!.getColumnIndex("PLAYINGTIME")
-
-    rs!.setAttribute(playingTimeIndex!,"ENABLE_VALUE","1")
-    rs!.setAttribute(playingTimeIndex!,"AGG_FUNC","sum")
-    rs!.setAttribute(playingTimeIndex!,"ALLOWED_AGG_FUNCS","sum,min,max")
-    rem convert string to number 
-    rs!.setAttribute(playingTimeIndex!,"VALUE_GETTER","Number(data.PLAYINGTIME)")
-    rs!.setAttribute(playingTimeIndex!,"FOOTER_VALUE_GETTER","'PlayingTime ' + column.aggFunc +' (' + x + ')' ")
-
-    costIndex! =rs!.getColumnIndex("COST")
-
-    rs!.setAttribute(costIndex!,"ENABLE_VALUE","1")
-    rs!.setAttribute(costIndex!,"AGG_FUNC","sum")
-    rs!.setAttribute(costIndex!,"ALLOWED_AGG_FUNCS","sum,avg,min,max")
-    rs!.setAttribute(costIndex!,"FOOTER_VALUE_GETTER","if(x) {return column.aggFunc + ':' + BBj.Masks.Types.number(x, '### ##0.00' , ',' , '.')  + ' $'} else {return x} ")
-    
-    grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
-
-    cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
-    grid!.setGroupIncludeFooter(1)
-    grid!.setGroupIncludeTotalFooter(1)
-    grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
-    grid!.setShowGroupChildCount(1)
-    grid!.setShowGroupSelectionCheckbox(1)
-    grid!.setGroupSelectsChildren(1)
-    
-    grid!.setData(rs!,"CDNUMBER")
+  grid!.setData(rs!)
+  
+  rem Group rows by music type
+  type! = grid!.getColumn("MUSICTYPE")
+  type!.setRowGroup(1)
+  
+  rem aggregate on playingtime
+  time! = grid!.getColumn("PLAYINGTIME")
+  time!.setEnableValue(1)
+  time!.setAggFunc("sum")
+  rem /**
+  rem  * playingtime is a column of type string. in this case the sum agg function will not work 
+  rem  * So we setup up a value getter expression to convert the column values to numbers whenever 
+  rem  * the grid tries to aggregate on this column. 
+  rem  */
+  time!.setValueGetterExpression("data ? Number(data.PLAYINGTIME) : null")
+  
+  rem aggregate on cost
+  cost! = grid!.getColumn("COST")
+  cost!.getValueFormatterExpression().setMask("### ##0.00")
+  cost!.setEnableValue(1)
+  cost!.setAggFunc("sum")
 return
 
+rem /**
+rem  * Enable / disable functions (agg , row grouping ,  ...)
+rem  */
 onUseCheckbox:
     useCheckbox! = cb!.isSelected()
     grid!.setFunctionsReadOnly(useCheckbox!)
 return
     
-byebye:
-    bye
-    
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
 resize:
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight()-40)
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h - 40)
 return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
 
 

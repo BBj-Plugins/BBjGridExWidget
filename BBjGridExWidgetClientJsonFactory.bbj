@@ -1,0 +1,117 @@
+rem package BBjGridExWidget.Client
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use com.google.gson.JsonObject
+use com.google.gson.JsonParser
+REM /**
+REM  * The class will create client models from JSON
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientJsonFactory
+    rem /**
+    rem  * BBjGridExWidget instnace
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private BBjGridExWidgetClientJsonFactory()
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientJsonFactory
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instnace
+    rem  */
+    method public BBjGridExWidgetClientJsonFactory(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget getWidget()
+        methodret #Widget!
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetClientRowModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientRowModel
+    rem  */
+    method public BBjGridExWidgetClientRowModel getRow(JsonObject json!)
+        declare BBjGridExWidgetClientRowModel row!
+
+        row! = new BBjGridExWidgetClientRowModel(#getWidget())
+        row!.setId(json!.get("id").getAsString(),err=*next)
+        row!.setChildIndex(json!.get("childIndex").getAsInt(),err=*next)
+        row!.setIndex(json!.get("index").getAsString(),err=*next)
+        row!.setParentKey(json!.get("parentKey").getAsString(),err=*next)
+        row!.setIsSelected(iff(json!.get("selected").getAsString() = "true" ,  1 , 0) , err=*next)
+        methodret row!
+    methodend
+    rem /**
+    rem  * Map a JSON string to BBjGridExWidgetClientRowModel
+    rem  *
+    rem  * @param BBjString json! json string
+    rem  *
+    rem  * @return BBjGridExWidgetClientRowModel
+    rem  */
+    method public BBjGridExWidgetClientRowModel getRow(BBjString json!)
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        parsedRow! = parser!.parse(json!).getAsJsonObject()
+        methodret #getRow(parsedRow!)
+    methodend
+    rem /**
+    rem  * Map column name to BBjGridExWidgetClientColumnModel
+    rem  *
+    rem  * @param BBjString column! The column name
+    rem  *
+    rem  * @return BBjGridExWidgetClientColumnModel
+    rem  */
+    method public BBjGridExWidgetClientColumnModel getColumn(BBjString column!)
+        methodret new BBjGridExWidgetClientColumnModel(#getWidget() , column!)
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetClientCellModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientCellModel
+    rem  */
+    method public BBjGridExWidgetClientCellModel getCell(JsonObject json!)
+        cell! = new BBjGridExWidgetClientCellModel()
+        cell!.setColumn(#getColumn(json!.get("column").getAsString()))
+        cell!.setRow(#getRow(json!.get("row").getAsJsonObject()))
+        cell!.setValue(json!.get("value").getAsString())
+        methodret cell!
+    methodend
+    rem /**
+    rem  * Map a JSON string to BBjGridExWidgetClientCellModel
+    rem  *
+    rem  * @param BBjString json! Json string
+    rem  *
+    rem  * @return BBjGridExWidgetClientCellModel
+    rem  */
+    method public BBjGridExWidgetClientCellModel getCell(BBjString json!)
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        parsedCell!  = parser!.parse(json!).getAsJsonObject()
+        methodret #getCell(parsedCell!)
+    methodend
+
+classend
