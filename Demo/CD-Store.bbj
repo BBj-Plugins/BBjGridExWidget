@@ -1,45 +1,64 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
-use java.sql.Types
 
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-x=0
-y=0
-w=800
-h=600
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-grid! = new BBjGridExWidget(wnd!,100,x,y,w,h)
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 
-gosub fillGrid
-
+gosub main
 process_events
 
-fillGrid:
-
-declare com.basiscomponents.bc.SqlQueryBC sbc!
-declare com.basiscomponents.db.ResultSet rs!
-
-sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-grid!.setData(rs!)
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  * 
+rem  * The grid!.setData(ResultSet) method will read all columns from the passed ResultSet and create the columns 
+rem  * for you. This method respects the column types defined in the ResultSet and it will make sure that all the created
+rem  * columns have the correct components attached (filters , cell renderers , ...). 
+rem  * The method will also respects already defined columns and make sure to update them with columns meta fetched from 
+rem  * the ResultSet.
+rem  * 
+rem  * By default the method will render the grid direcly after setting the data. You can change this and delay the rendering 
+rem  * (for example to configure the columns) by passing a second paramter to the method grid!.setData(ResultSet , 0) 
+rem  * and then call grid!.render().  
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  grid!.setData(rs!)
 return
 
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
 byebye:
 bye
-
-resize:
-ev! = BBjAPI().getLastEvent()
-w=ev!.getWidth()
-h=ev!.getHeight()
-grid!.setSize(w,h)
-return

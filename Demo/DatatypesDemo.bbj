@@ -1,160 +1,152 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use com.basiscomponents.bc.SqlQueryBC
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererBoolean
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImageRenderer
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
-use java.sql.Types
 use com.google.gson.JsonObject
+use java.sql.Types
 
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
+REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 grid!.setEnableFilter(1)
 grid!.setEnableFloatingFilter(1)
 
-wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
-
 rem /**
 rem  * @see http://documentation.basis.com/BASISHelp/WebHelp/commands2/opts_variable.htm
-rem  * Set the default group and deciaml separator for numbers masking 
-rem  * 
-rem  * To override these global option for a specific column set 
-rem  * RENDERER_GROUP_SEPARATOR and RENDERER_DECIMAL_SEPARATOR meta on the column level
+rem  * Set the default group and deciaml separator for numbers masking
+rem  *
+rem  * The grid will pick up this settings and use it be default for numbers masking. 
+rem  * You can also override this setting on column level manually. 
 rem  */
 a$=opts
 a$(3,1)=ior(a$(3,1),$02$)
-a$(5,1)=","; rem set numbers group separator 
+a$(5,1)=","; rem set numbers group separator
 a$(6,1)="."; rem set numbers decimal separator
 setopts A$
 
-gosub prepareGrid
-gosub fillGrid
-
+gosub main
 process_events
 
-   
-fillGrid:
+rem /**
+rem  * Retrive the data from the database and configure the grid.
+rem  * 
+rem  * The demo shows how grid!.setData() setup the column components accoring to it type.
+rem  * for example the DOUBLE column's type is double , this will enable the BBjGridExWidgetExpressionNumbersFormatter
+rem  * by default for this type , Using the formatter you can configure the mask to use or define the group and the decimal 
+rem  * seperators for numbers. 
+rem  * The same applies for other types , for example the boolean columns will be configured automatically to have the 
+rem  * BBjGridExWidgetRendererBoolean where you can configure how ture/false will be render 
+rem  * inside the cell (switch , numbers ,  custom html strings ....).
+rem  * 
+rem  * If for some reasons the default configured components don't meet your app needs , then you can configure them manually 
+rem  * by column.   
+rem  */
+main:
+  declare ResultSet rs!
+  
+  rs! = new ResultSet()
+  REM   We generate random data rows and fill the ResultSet
+  REM   each column is from a supported SQL type
+  REM   @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
+  i=1
+  x=1234
+  for j=1 to 2
+      dr! = new DataRow()
+      dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+      dr!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
+      dr!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i-1))
+      dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+      dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+      dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+      dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+      dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
+      dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"1979-08-03 12:22:13")
+      rs!.addItem(dr!)
+      i = i +1
+      x = x*-i
+      
+      dr! = new DataRow()
+      dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+      dr!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
+      dr!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i-1))
+      dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
+      dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+      dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+      dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
+      dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-10-23")
+      dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2013-10-23 23:22:00")
+      rs!.addItem(dr!)
+      i=i+1
+      x=x*-i
+  next
+  
+  REM create a row with almost all columns empty
+  dr! = new DataRow()
+  dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
+  rs!.addItem(dr!)
+  
+  grid!.setData(rs!)
+  
+  iconImage!    = BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/sampleicon.png")
+  spriteImage!  = BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/images/imagelist.png")
+  jsonIcons!    = new JsonObject()
+  jsonIcons!       .addProperty("ID_1","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_airline_seat_individual_suite_black_36dp.png")
+  jsonIcons!       .addProperty("ID_2","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_confirmation_number_black_36dp.png")
+  jsonIcons!       .addProperty("ID_3","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_drive_eta_black_36dp.png")
+  jsonIcons!       .addProperty("ID_4", iconImage!)
+  
+  icon!      = grid!.getColumn("ICON")
+  imageList! = grid!.getColumn("IMAGELIST")
+  double!    = grid!.getColumn("DOUBLE")
+  boolean1!  = grid!.getColumn("BOOLEAN 1")
+  boolean2!  = grid!.getColumn("BOOLEAN 2")
+  boolean3!  = grid!.getColumn("BOOLEAN 3")
+  date!      = grid!.getColumn("DATE")
+  timestamp! = grid!.getColumn("TIMESTAMP")
+  
+  double!.getValueFormatterExpression().setMask("##,##0.00")
+  
+  boolean2!.getCellRenderer().setTrueValue(BBjGridExWidgetRendererBoolean.SWITCH_RENDERER())
+  boolean2!.getCellRenderer().setFalseValue(BBjGridExWidgetRendererBoolean.SWITCH_RENDERER())
+  
+  boolean3!.getCellRenderer().setTrueValue(String.format("<img src='%s' height='40px' />" , iconImage!))
+  boolean3!.getCellRenderer().setFalseValue("NOPE!")
+  
+  icon!.setCellRenderer(new BBjGridExWidgetRendererImageRenderer(jsonIcons!))
+  grid!.setColumnImageList(imageList!.getField(),spriteImage!)
 
-    rs! = new ResultSet()
-
-    i=1
-    x=1234
-    
-    for j=1 to 2
-       
-        dr! = new DataRow()
-        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-        dr!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
-        dr!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i-1))
-        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
-        dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
-        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"1979-08-03 12:22:13")
-        rs!.addItem(dr!)
-        
-        i=i+1
-        x=x*-i
-        
-        dr! = new DataRow()
-        dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-        dr!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
-        dr!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i-1))
-        dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
-        dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-        dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-10-23")
-        dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2013-10-23 23:22:00")
-        
-        rs!.addItem(dr!)
-
-        i=i+1
-        x=x*-i
-        
-    next
-
-    
-    rem a row with most columns empty
-    dr! = new DataRow()
-    dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
-    rs!.addItem(dr!)
-
-    grid!.setData(rs!)
-
+  grid!.setRowHeight(2 , 50)
 return
 
-prepareGrid:
-
-    rem build the attributes record that describes meta data for the result set
-    rem using the separate method setAttributesRecord to avoid setting this things over and over again for each refresh of the data
-    
-    ar! = new DataRow()
-    ar!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-    ar!.setFieldValue("ICON",java.sql.Types.VARCHAR, "ID_" + STR(i))
-    ar!.setFieldValue("IMAGELIST",java.sql.Types.VARCHAR, STR(i-1))
-    ar!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
-    ar!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-    ar!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-    ar!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-    ar!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
-    ar!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
-
-    ar!.setFieldAttribute("DOUBLE","MASK","##,##0.00"); rem or RENDERER_MASK
-    rem ar!.setFieldAttribute("DOUBLE","RENDERER_GROUP_SEPARATOR","G"); rem change group separator
-    rem ar!.setFieldAttribute("DOUBLE","RENDERER_DECIMAL_SEPARATOR","D"); rem change decimal separator
-    
-    ar!.setFieldAttribute("DOUBLE","LABEL","A Double Value")
-
-    REM this is also the default:    
-    ar!.setFieldAttribute("BOOLEAN 1","RENDERER_TRUE","&#x2714;")
-    ar!.setFieldAttribute("BOOLEAN 1","RENDERER_FALSE","&#x2718;")
-    
-    REM you can use a nice material toggle display
-    ar!.setFieldAttribute("BOOLEAN 2","RENDERER_TRUE","switch")
-    ar!.setFieldAttribute("BOOLEAN 2","RENDERER_FALSE","switch")
-    
-    REM ...or with some HTML also a picture on disc
-    ar!.setFieldAttribute("BOOLEAN 3","RENDERER_TRUE","<img src='"+BBjGridExWidget.getImageData("BBjGridExWidget/Demo/sampleicon.png")+"' height='20px'>")
-    REM ...or text
-    ar!.setFieldAttribute("BOOLEAN 3","RENDERER_FALSE","NOPE!")
-    
-    
-    ar!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yd"); rem // or RENDERER_MASK
-    ar!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
-    
-    list! = new JsonObject()
-    REM the renderers can be image URLs 
-    list!.addProperty("ID_1","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_airline_seat_individual_suite_black_36dp.png")
-    list!.addProperty("ID_2","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_confirmation_number_black_36dp.png")
-    list!.addProperty("ID_3","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_drive_eta_black_36dp.png")
-    REM or use an image on disk
-    list!.addProperty("ID_4",BBjGridExWidget.getImageData("BBjGridExWidget/Demo/sampleicon.png"))
-    
-    
-    ar!.setFieldAttribute("ICON","TYPE",grid!.GRID_TYPE_BASIC_IMAGE_FILTERABLE())
-    ar!.setFieldAttribute("ICON","IMAGES_LIST",list!.toString())
-    grid!.setAttributesRecord(ar!)
-
-    imageList!=BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/imagelist.png")
-    grid!.setColumnImageList("IMAGELIST",imageList!)
-
-return
-
-byebye:
-    bye
-    
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
 resize:
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
 return
 
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

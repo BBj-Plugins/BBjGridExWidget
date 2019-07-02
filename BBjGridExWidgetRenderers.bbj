@@ -1,0 +1,236 @@
+rem package BBjGridExWidget.Renderers
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use com.google.gson.JsonObject
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+REM /**
+REM  * BBjGridExWidgetRendererInterface
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+interface public BBjGridExWidgetRendererInterface
+    rem /**
+    rem  * A constant which holds the client renderer real name
+    rem  */
+
+    method public static BBjString RENDERER_NAME()
+    rem /**
+    rem  * Convert the renderer defintion to Json Object
+    rem  *
+    rem  * @return JsonOobject The renderer as JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+
+interfaceend
+rem /**
+rem  * The class reprensets a boolean cell renderer
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetRendererBoolean implements BBjGridExWidgetRendererInterface
+    rem /**
+    rem  * HTML string which defines how to render true values.
+    rem  */
+    field public BBjString TrueValue! = "&#x2714;"
+    rem /**
+    rem  * HTML string which defines how to render false values
+    rem  */
+    field public BBjString FalseValue! = "&#x2718;"
+    rem /**
+    rem  * A special html string which uses the switch button to show true/false values
+    rem  */
+    method public static BBjString SWITCH_RENDERER()
+        methodret "switch"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString RENDERER_NAME()
+        methodret "BasicBooleansRenderer"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("RENDERER_TRUE" , #getTrueValue(),err=*next)
+        json!.addProperty("RENDERER_FALSE" , #getFalseValue(),err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class can render a custom html using lodash string templates.
+rem  *
+rem  * Inside the template you will have access to the <i>params</i> object
+rem  * which contains value , valueFormatted , ...
+rem  *
+rem  * Use This render if you want to render the data with a custom html.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendererInterface
+    rem /**
+    rem  * String template which will be complied in the client.<br>
+    rem  * <pre>
+    rem  * <code>
+    rem  *  <%= '<strong style=\'color:red\'>' + (params.valueFormatted || '')  + '</strong>' %>
+    rem  * </code>
+    rem  * </pre>
+    rem  */
+    field public BBjString Template! = null()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString RENDERER_NAME()
+        methodret "GWCustomHTMLTemplateRenderer"
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetRendererCustomHTML
+    rem  *
+    rem  * @param BBjString template! The string tempatle
+    rem  *
+    rem  * i.e
+    rem  * <pre>
+    rem  * <code>
+    rem  *  <%= '<strong style=\'color:red\'>' + (params.valueFormatted || '')  + '</strong>' %>
+    rem  * </code>
+    rem  * </pre>
+    rem  */
+    method public BBjGridExWidgetRendererCustomHTML(BBjString template!)
+        #Template! = template!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("__TEMPLATE__" , #getTemplate(),err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The renderer can be used to dispaly a list of images based on the cells values using a json object
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetRendererImageRenderer implements BBjGridExWidgetRendererInterface
+    rem /**
+    rem  * The image's width
+    rem  */
+    field public BBjString Width! = null()
+    rem /**
+    rem  * The image's height
+    rem  */
+    field public BBjString Height! = null()
+    rem /**
+    rem  * A json object
+    rem  */
+    field public JsonObject List! = new JsonObject()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString RENDERER_NAME()
+        methodret "BasicImagesRenderer"
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetRendererImageRenderer
+    rem  *
+    rem  * @param JsonObject list! The images list
+    rem  */
+    method public BBjGridExWidgetRendererImageRenderer(JsonObject list!)
+        #List! = list!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("IMAGES_WIDTH" , #getWidth(),err=*next)
+        json!.addProperty("IMAGES_HEIGHT" , #getHeight(),err=*next)
+        json!.  add("IMAGES_LIST" , #getList(),err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * If you are grouping in the grid, then you will need to provide a group cell renderer as the group cell renderer is what provides the user with the expand and collapse functionality.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidgetRendererInterface
+    rem /**
+    rem  * When true show row counts , hide otherwise
+    rem  */
+    field public BBjNumber SuppressCount! = null()
+    rem /**
+    rem  *  When true disable double click for expand , enable otherwise
+    rem  */
+    field public BBjNumber SuppressDoubleClickExpand! = null()
+    rem /**
+    rem  *  When true enable checkbox selection, disable otherwise
+    rem  */
+    field public BBjNumber Checkbox! = null()
+    rem /**
+    rem  * Provide a footer value getter expression
+    rem  */
+    field public BBjGridExWidgetExpressionInterface FooterValueGetterExpression! = null()
+    rem /**
+    rem  * Construct new BBjGridExWidgetRendererGroupCellRenderer
+    rem  * 
+    rem  * @param BBjGridExWidgetExpressionInterface footerValueGetterExpression! an expression
+    rem  */
+    method public BBjGridExWidgetRendererGroupCellRenderer(BBjGridExWidgetExpressionInterface footerValueGetterExpression!)
+        #FooterValueGetterExpression! = footerValueGetterExpression!
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetRendererGroupCellRenderer
+    rem  * 
+    rem  * @param BBjString footerValueGetterExpression! an expression
+    rem  */
+    method public BBjGridExWidgetRendererGroupCellRenderer(BBjString footerValueGetterExpression!)
+        #setFooterValueGetterExpression(footerValueGetterExpression!)
+    methodend    
+    rem /**
+    rem  * Create a BBjGridExWidgetExpression from string and set it a footer value getter
+    rem  *  
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setFooterValueGetterExpression(BBjString expression!)
+        #FooterValueGetterExpression! = new BBjGridExWidgetExpression(expression!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString RENDERER_NAME()
+        methodret "agGroupCellRenderer"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("suppressCount" , #getSuppressCount().booleanValue(),err=*next)
+        json!.addProperty("suppressDoubleClickExpand" , #getSuppressDoubleClickExpand().booleanValue(),err=*next)
+        json!.addProperty("checkbox" , #getCheckbox().booleanValue(),err=*next)
+        json!.addProperty("footerValueGetter" , #getFooterValueGetterExpression().toString(),err=*next)
+        methodret json!
+    methodend
+
+classend

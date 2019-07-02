@@ -13,11 +13,13 @@ module.exports = {
     "bbj-grid-widget.min": [
       "core-js/fn/string/starts-with.js",
       "core-js/fn/array/for-each.js",
+      "core-js/fn/array/includes.js",
       "./src/index.js"
     ],
     "bbj-grid-widget": [
       "core-js/fn/string/starts-with.js",
       "core-js/fn/array/for-each.js",
+      "core-js/fn/array/includes.js",
       "./src/index.js"
     ],
   },
@@ -27,11 +29,17 @@ module.exports = {
     filename: "[name].js",
     libraryTarget: 'window',
   },
+  resolve: {
+    alias: {
+      api: path.resolve(__dirname, './src/api'),
+      events: path.resolve(__dirname, 'src/events/')
+    }
+  },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!(deep-parse-json)\/).*/,
         loader: "babel-loader",
         options: {
           presets: ['@babel/preset-env'],
@@ -49,7 +57,8 @@ module.exports = {
               insertInto: function () { return window.top.document.head }
             }
           },
-          { loader: "css-loader", options: { minimize: true } }
+          { loader: "postcss-loader" },
+          { loader: "postcss-loader" }
         ]
       }
     ]
@@ -59,19 +68,19 @@ module.exports = {
       include: /\.min\.js$/
     }),
     new CopyWebpackPlugin([
-      { 
+      {
         from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.noStyle.js',
-         to: distPath
+        to: distPath
       },
-      { 
+      {
         from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js',
-         to: distPath
+        to: distPath
       },
-      { 
+      {
         from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.noStyle.js',
         to: distPath
       },
-      { 
+      {
         from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
         to: distPath
       }

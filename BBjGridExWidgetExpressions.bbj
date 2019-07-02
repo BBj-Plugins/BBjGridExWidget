@@ -1,0 +1,231 @@
+rem package BBjGridExWidget.Expression
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use java.lang.StringBuilder
+REM /**
+REM  * BBjGridExWidgetExpressionInterface
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+interface public BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * Get the expression as string
+    rem  *
+    rem  * @return BBjString The Javascript expression
+    rem  */
+
+    method public BBjString toString()
+
+interfaceend
+rem /**
+rem  * Expressions are Javasript functions which are written as strings. When you provide an expression to the grid, 
+rem  * the grid converts the expression into a function for you and then executes the function on the client.
+rem  *  
+rem  * Expressions can be used with the columns <i>ValueGetterExpression</i> , <i>ValueFormatterExpression</i> , 
+rem  * <i>ValueSetterExpression</i> , <i>ValueParserExpression</i>.
+rem  * 
+rem  * For example you can add a virtual column to the grid and define a value getter expression to 
+rem  * get the value of this column based on other two columns.
+rem  * 
+rem  * Expression can be as simple as <i>"data.CDNumber"</i> or more complex as the <i>BBjGridExWidgetExpressionNumbersFormatter</i>
+rem  * which can accepts paramters.
+rem  * 
+rem  * When working with expression keey the following points in mind:
+rem  * 
+rem  * <ol>
+rem  *  <li> If your expression has the word return in it, then the grid will assume it is a multi line expression and will not wrap it
+rem  *  <li> If a ValueGetterExpression does not have the word 'return' in it, then the grid will insert the 'return' statement and the ';' for you
+rem  *  <li> f your expression has many lines, then you will need to provide the ';' at the end of each line and also provide the 'return' statement.
+rem  * </ol>
+rem  * 
+rem  * Expression can access serveral predefined variables :<br><br>
+rem  * 
+rem  * <table border="1" cellpadding="10">
+rem  *    <tbody>
+rem  *        <tr>
+rem  *            <td><strong>&nbsp;x</strong></td>
+rem  *            <td>&nbsp;Mapped from cell value</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>value</strong></td>
+rem  *            <td>&nbsp;Same as x</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>oldValue</strong></td>
+rem  *            <td>&nbsp;Mapped from the cell's old value, this is mapped in editing</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>newValue</strong></td>
+rem  *            <td>&nbsp;Mapped from the cell's new value, this is mapped in editing</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>data</strong></td>
+rem  *            <td>&nbsp;Mapped from the DataRow</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>column</strong></td>
+rem  *            <td>&nbsp;Current column</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>columnGroup</strong></td>
+rem  *            <td>&nbsp;Current column&nbsp;group</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>getValue</strong></td>
+rem  *            <td>&nbsp;The value after it is processed by the ValueGetterExpression</td>
+rem  *        </tr>
+rem  *        <tr>
+rem  *            <td>&nbsp;<strong>ctx</strong></td>
+rem  *            <td>&nbsp;The grid client context</td>
+rem  *        </tr>
+rem  *    </tbody>
+rem  *</table>
+rem  * 
+rem  * @see BBjGridExWidgetExpressionNumbersFormatter 
+rem  *  
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpression implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * Expression string
+    rem  */
+    field public BBjString Expression!
+    rem /**
+    rem  * disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpression()
+    methodend
+    rem /**
+    rem  * @param BBjString expression!
+    rem  */
+    method public BBjGridExWidgetExpression(BBjString expression!)
+        #Expression! = expression!
+    methodend
+    rem /**
+    rem  * @return BBjString
+    rem  */
+    method public BBjString toString()
+        methodret #Expression!
+    methodend
+
+classend
+rem /**
+rem  * The class defines a grid expression to format numbers according to BBj supported masks
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * The Number mask to use.
+    rem  */
+    field public BBjString Mask! = null()
+    rem /**
+    rem  * The numbers group seperator to use. by default the bbj group seperator will be used
+    rem  */
+    field public BBjString GroupSeparator! = ""
+    rem /**
+    rem  * The numbers decimal seperator to use. by default the bbj decimal seperator will be used
+    rem  */
+    field public BBjString DecimalSeparator! = ""
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionNumbersFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  */
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!)
+        #Mask! = mask!
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  */
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator!)
+        #this!(mask!)
+        #GroupSeparator! = groupSeperator!
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  * @param BBjString decimalSeparator! The numbers decimal seperator to use
+    rem  */
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!)
+        #this!(mask! , groupSeperator!)
+        #DecimalSeparator! = decimalSeparator!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString toString()
+        declare StringBuilder ex!
+
+        if(#getMask() = null() ) then
+            methodret null()
+        FI
+
+        ex! = new StringBuilder()
+        ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append(String.format("var groupSep  = '%s' || ctx.numberGroupSep;" , #getGroupSeparator()))
+        ex!.append(String.format("var decimalSep  = '%s' || ctx.numberDecimalSep;" , #getDecimalSeparator()))
+        ex!.append("var theValue = getValue || value;")
+        ex!.append("if ((mask && theValue) && (theValue != null && !isNaN(theValue))) {return BBj.Masks.Types.number(theValue, mask, groupSep, decimalSep)}")
+        ex!.append("return theValue || '';")
+        methodret ex!.toString()
+    methodend
+
+classend
+rem /**
+rem  * The class defines a grid expression to format date/timestamps according to BBj supported masks
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionDatesFormatter implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * The date / timestamp mask to use.
+    rem  */
+    field public BBjString Mask! = null()
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionDatesFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionDatesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  */
+    method public BBjGridExWidgetExpressionDatesFormatter(BBjString mask!)
+        #Mask! = mask!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString toString()
+        declare StringBuilder ex!
+
+        if(#getMask() = null() ) then
+            methodret null()
+        FI
+
+        ex! = new StringBuilder()
+        ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append("var theValue = getValue || value;")
+        ex!.append("if((mask && theValue) && theValue != null) {return BBj.Masks.Types.date(theValue, mask)}")
+        ex!.append("return theValue || '';")
+        methodret ex!.toString()
+    methodend
+
+classend

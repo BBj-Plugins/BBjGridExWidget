@@ -1,0 +1,80 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+declare SqlQueryBC sbc!
+declare ResultSet rs!
+
+sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Chunk Rendering Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+rem /**
+rem  * We enable the grid chunk rendering mode.
+rem  *  
+rem  * When this mode is enabled , the grid will send the data in chunks. This is done be sending the column defintions 
+rem  * to the client as soon as possible to get fast first render then it sends the data to fill the grid
+rem  * 
+rem  * This mode is usefull when you have a large set of data which sending them to the client will take time.  
+rem  */
+grid!.setChunkRendering(1)
+ 
+gosub renderColumns
+rem create timer so we can go into process_events
+BBjAPI().createTimer("renderColumns" , 1 , "fillGrid")
+process_events
+
+rem /**
+rem  * Build the column defintion from the first row in the ResultSet 
+rem  * and then render the grid empty 
+rem  */
+renderColumns:
+  rs! = sbc!.retrieve("SELECT TOP 1  * FROM CDINVENTORY")
+  REM build the columns from the passed ResultSet 
+  grid!.buildColumnsFromResultSet(rs!,1)
+return
+
+rem /**
+rem  * Fill the grid with the data 
+rem  */
+fillGrid: 
+  rem remove timer as we do not need it anymore
+  BBjAPI().removeTimer("renderColumns")
+  
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  rem wait some time to simulate a long process
+  wait 3
+  grid!.setRowsData(rs!)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

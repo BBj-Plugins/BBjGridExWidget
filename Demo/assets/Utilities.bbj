@@ -1,0 +1,17 @@
+REM /**
+REM  * Server Utilities Used in Demos
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetDemoUtilities
+
+    method public static BBjString reasAssestAsString(BBjString file$)
+        template$ = ""
+        ch=unt
+        open (ch)"BBjGridExWidget/Demo/assets/" + file$
+        read record (ch,siz=5512000)template$
+        close (ch)
+        methodret template$
+    methodend
+
+classend

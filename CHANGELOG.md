@@ -1,3 +1,35 @@
+# [0.96.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.95.1...0.96.0) (2019-07-02)
+
+[More Details...](https://github.com/BBj-Plugins/BBjGridExWidget/pull/148)
+
+### Bug Fixes
+
+* BBjGridExWidget.getAsJsonObject should not use getPivotMode() getter ([465634e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/465634e))
+* convert groupDefaultExpanded to boolean ([260d3a6](https://github.com/BBj-Plugins/BBjGridExWidget/commit/260d3a6))
+* correct dutch translation ([ea67518](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ea67518))
+* fix wrong method name for `removePivotColumns` ([2f3b80a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2f3b80a))
+* row double click reference itself ([679e255](https://github.com/BBj-Plugins/BBjGridExWidget/commit/679e255))
+* sidebar toolpanels are not using the default labels and icons ([06ab561](https://github.com/BBj-Plugins/BBjGridExWidget/commit/06ab561))
+* the grid can not align cells when `checkboxSelection` is in use ([321aef0](https://github.com/BBj-Plugins/BBjGridExWidget/commit/321aef0))
+* improve  pivot api methods to handle pivot and grow group index generation ([78c5c12](https://github.com/BBj-Plugins/BBjGridExWidget/commit/78c5c12))
+
+
+### Features
+
+* add api to add/remove pivot columns ([6d07f68](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6d07f68))
+* add api to allow add/removing row groups ([c58784c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c58784c))
+* add `BBjGridExWidget.setRowGroupColumns` ([6584f0d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6584f0d))
+* add `BlockRenderToReady` mode ([db5b352](https://github.com/BBj-Plugins/BBjGridExWidget/commit/db5b352))
+* Add chunk rendering feature with a demo ([4e52454](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4e52454))
+* add new method singture `method public BBjGridExWidgetColumn addColumn(BBjString field!)` ([f7442c3](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f7442c3))
+* add method `method public void setColumnAggFunc(BBjString field! , BBjString AggFunc!)` ([d5802ef](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d5802ef))
+* add new method singture `method public void setIcons(BBjString json!)` ([9c8dbcf](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9c8dbcf))
+* Add the ability to init the grid with a different default template ([00c00b3](https://github.com/BBj-Plugins/BBjGridExWidget/commit/00c00b3))
+* Add the ability to update the column defintions without a full rerender ([9b97956](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9b97956))
+* add values api methods ([88771d1](https://github.com/BBj-Plugins/BBjGridExWidget/commit/88771d1))
+* allow columns to override icons ([6c30fa9](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6c30fa9))
+* seperate enableRowGroup and rowGroup ([9ba7c49](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9ba7c49))
+
 ## <small>0.95.1 (2019-05-20)</small>
 
 * fix(BBj) : parser is not defined in `BBjGridExWidget.getData()` ([22c0966](https://github.com/BBj-Plugins/BBjGridExWidget/commit/22c0966)), closes [#141](https://github.com/BBj-Plugins/BBjGridExWidget/issues/141) [#141](https://github.com/BBj-Plugins/BBjGridExWidget/issues/141)

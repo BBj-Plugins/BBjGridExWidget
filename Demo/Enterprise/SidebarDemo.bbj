@@ -1,5 +1,5 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetColumnsToolpanel
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
@@ -7,10 +7,14 @@ use com.google.gson.JsonObject
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
-declare auto BBjListButton lb_db!
-declare auto BBjListButton lb_tbl!
-declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
+
+lic!=System.getProperty("bbjgridexwidget.license")
+
+if lic!=null() or str(lic!)="" then
+    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Demo for Enterprise Features")
+    release
+fi
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 
@@ -50,7 +54,7 @@ fillGrid:
     grid!.setFunctionsReadOnly(0)
     grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
 
-    columnsToolpanel! = cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get(BBjGridExWidgetColumnsToolpanel.getId()))
+    columnsToolpanel! = cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get(BBjGridExWidgetColumnsToolpanel.ID()))
     columnsToolpanel!.setSuppressValues(1)
 
     musicTypeStyle! = new JsonObject()
@@ -71,9 +75,9 @@ toolpanelToggle:
     sidebar! = grid!.getSidebar()
 
     if toolpanelState! = 0 then 
-        sidebar!.openToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+        sidebar!.openToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
     else 
-        sidebar!.closeToolpanel(BBjGridExWidgetColumnsToolpanel.getId())
+        sidebar!.closeToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
     fi
     
     toolpanelState! = !toolpanelState!
@@ -81,7 +85,7 @@ return
 
 
 refreshData:
-    grid!.setData(rs!,"CDNUMBER")
+    grid!.render()
 return
 
 byebye:
