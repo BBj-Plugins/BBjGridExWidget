@@ -1,3 +1,10 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererGroupCellRenderer
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
@@ -20,62 +27,78 @@ fi
 BBjGridExWidget.setLicenseKey(lic!)
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
-cb! = wnd!.addCheckBox(203,12,10,200,22,"Enable Read Only Mode")
-cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
-cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
-gosub setupGrid
+cb! = wnd!.addCheckBox(203,12,10,200,22,"Enable Read Only Mode")
+cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
+cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
-process_events
-   
-setupGrid:
-
-    declare SqlQueryBC sbc!
-    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-    rs! = sbc!.retrieve("SELECT LABEL , MUSICTYPE , PLAYINGTIME , COST  FROM CDINVENTORY")
+grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+grid!.setGroupIncludeFooter(1)
+grid!.setGroupIncludeTotalFooter(1)
+grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
     
-    grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
-    grid!.setData(rs!,0)
-    grid!.setGroupIncludeFooter(1)
-    grid!.setGroupIncludeTotalFooter(1)
-    grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
-         
-        rem Group rows by music type
-        type! = grid!.getColumn("MUSICTYPE")
-        type!.setEnableRowGroup(1)
-        type!.setRowGroupIndex(0)
-        
-        rem aggregate on playingtime
-        timeFooterExp! = "'PlayingTime ' + column.aggFunc + ' (' + x + ')' "
-        time! = grid!.getColumn("PLAYINGTIME")
-        time!.setEnableValue(1)
-        time!.setAggFunc("sum")
-        time!.setValueGetterExpression("data ? Number(data.PLAYINGTIME) : null")
-        time!.setCellRenderer(new BBjGridExWidgetRendererGroupCellRenderer(timeFooterExp!))
+gosub main
+process_events
 
-        rem aggregate on cost
-        constFooterExp! = "if(x) {return column.aggFunc + ':' + BBj.Masks.Types.number(x.toFixed(2), '### ##0.00' , ',' , '.')  + ' $'} else {return x}"
-        cost! = grid!.getColumn("COST")
-        cost!.setEnableValue(1)
-        cost!.setAggFunc("sum")
-        cost!.setCellRenderer(new BBjGridExWidgetRendererGroupCellRenderer(constFooterExp!))
-    grid!.render()
- 
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  */   
+main:
+  declare SqlQueryBC sbc!
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT LABEL , MUSICTYPE , PLAYINGTIME , COST  FROM CDINVENTORY")
+
+  grid!.setData(rs!,0)
+  
+  rem Group rows by music type
+  type! = grid!.getColumn("MUSICTYPE")
+  type!.setRowGroup(1)
+  
+  rem aggregate on playingtime
+  time! = grid!.getColumn("PLAYINGTIME")
+  time!.setEnableValue(1)
+  time!.setAggFunc("sum")
+  rem /**
+  rem  * playingtime is a column of type string. in this case the sum agg function will not work 
+  rem  * So we setup up a value getter expression to convert the column values to numbers whenever 
+  rem  * the grid tries to aggregate on this column. 
+  rem  */
+  time!.setValueGetterExpression("data ? Number(data.PLAYINGTIME) : null")
+  
+  rem aggregate on cost
+  cost! = grid!.getColumn("COST")
+  cost!.getValueFormatterExpression().setMask("### ##0.00")
+  cost!.setEnableValue(1)
+  cost!.setAggFunc("sum")
+  
+  grid!.render()
 return
 
+rem /**
+rem  * Enable / disable functions (agg , row grouping ,  ...)
+rem  */
 onUseCheckbox:
     useCheckbox! = cb!.isSelected()
     grid!.setFunctionsReadOnly(useCheckbox!)
 return
     
-byebye:
-    bye
-    
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
 resize:
-    ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight()-40)
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h - 40)
 return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
 
 
