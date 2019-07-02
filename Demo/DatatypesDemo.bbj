@@ -101,8 +101,7 @@ main:
   dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
   rs!.addItem(dr!)
   
-  rem do not send the data direclty , delay render , but create the column defintion
-  grid!.setData(rs! , 0)
+  grid!.setData(rs!)
   
   iconImage!    = BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/sampleicon.png")
   spriteImage!  = BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/images/imagelist.png")
@@ -131,9 +130,7 @@ main:
   
   icon!.setCellRenderer(new BBjGridExWidgetRendererImageRenderer(jsonIcons!))
   grid!.setColumnImageList(imageList!.getField(),spriteImage!)
-  
-  grid!.render()
-  
+
   grid!.setRowHeight(2 , 50)
 return
 

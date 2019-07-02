@@ -93,8 +93,6 @@ main:
   SubGroupStyle!.addProperty("background","#03a9f4")
   SubGroupStyle!.addProperty("color","white")
   grid!.addStyle(".sub-group" , SubGroupStyle!)
-  
-  grid!.render()
 return
 
 rem /**

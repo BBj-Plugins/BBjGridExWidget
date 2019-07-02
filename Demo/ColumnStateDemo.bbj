@@ -39,8 +39,7 @@ fillGrid:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
   
-  rem create columns defintion but delay the render until we configure columns groups
-  grid!.setData(rs! , 0)
+  grid!.setData(rs!)
   
   rem setup columns group style
   groupStyle! = new JsonObject()
@@ -63,11 +62,6 @@ fillGrid:
   group!.addItem("LABEL")
   group!.addItem("PLAYINGTIME")
   grid!.addColumnGroup("group3" , "Misc",group! , 0 , "my-group-class")
-  
-  rem render the the grid on the client
-  state! = "{""columns"":[{""colId"":""ARTIST"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""TITLE"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""CDNUMBER"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""LABEL"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null},{""colId"":""PLAYINGTIME"",""hide"":false,""aggFunc"":null,""width"":200,""pivotIndex"":null,""pinned"":null,""rowGroupIndex"":null}],""groups"":[{""groupId"":""group1"",""open"":true},{""groupId"":""group2"",""open"":true},{""groupId"":""group3"",""open"":true}],""sort"":[{""colId"":""TITLE"",""sort"":""asc""},{""colId"":""ARTIST"",""sort"":""desc""}],""filters"":{}}"
-  grid!.render()
-REM   //grid!.setColumnState(new BBjGridExWidgetState(state!))
 return
 
 resize:

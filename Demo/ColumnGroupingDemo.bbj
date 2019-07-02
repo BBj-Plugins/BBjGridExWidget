@@ -28,10 +28,6 @@ process_events
 rem /**
 rem  * Retrive the data from the database and configure the grid.
 rem  *
-rem  * Note that be default grid!.setData(ResultSet rs!) method will set the grid's data and render it direcly on the client.
-rem  * Here we delay the rendering of the grid on the client until we configure the column groups then at the end we call
-rem  * grid!.render() to start the rendering process.
-rem  *
 rem  * The demo uses the helper method grid!.addColumnGroup(..) to configure the columm groups. This method allows creating
 rem  * only one level of column groups. to learn how to configure nested column groups @see ColumnGroupingNestedDemo.bbj
 rem  *
@@ -45,8 +41,8 @@ main:
   
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
-  rem create columns defintion but delay the render until we configure columns groups
-  grid!.setData(rs! , 0)
+  
+  grid!.setData(rs!)
   
   rem setup columns group style
   groupStyle! = new JsonObject()
@@ -69,9 +65,6 @@ main:
   group!.addItem("LABEL")
   group!.addItem("PLAYINGTIME")
   grid!.addColumnGroup("group3" , "Misc" , group! , 0 , "my-group-class")
-  
-  rem render the the grid on the client
-  grid!.render()
 return
 
 rem /**

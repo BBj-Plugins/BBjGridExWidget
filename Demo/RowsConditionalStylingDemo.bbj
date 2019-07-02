@@ -49,12 +49,11 @@ main:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   
-  grid!.setData(rs! , 0)
+  grid!.setData(rs!)
   grid!.addStyle("price-normal" , "{""background"": ""lightgreen !important""}")
   grid!.addStyle("price-above-normal" , "{""background"": ""lightsalmon !important""}")
   grid!.addStyle("price-expensive" , "{""background"": ""lightcoral !important""}")
   grid!.setTheme("bla")
-  grid!.render()
 return
 
 rem /**

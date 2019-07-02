@@ -55,9 +55,8 @@ setupGrid:
   filter! = new com.basiscomponents.db.DataRow()
   filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>=AAD")
   rs! = rs!.filterBy(filter!)
-  
-  rem we delay direct rendering but we set the data to populate the colum defintions 
-  grid!.setData(rs!, 0 , 1 , "CDNUMBER")
+   
+  grid!.setData(rs!, 1 , 1 , "CDNUMBER")
   
   rem First we group by music type
   declare BBjGridExWidgetColumn musicTypeColumn!
@@ -81,9 +80,6 @@ setupGrid:
   playingTimeColumn!.setAggFunc("sum")
   playingTimeColumn!.setAllowedAggFuncs("sum,min,max")
   playingTimeColumn!.setValueGetterExpression("Number(data.PLAYINGTIME)")
-  
-  grid!.render()
-  
 return
 
 onUseCheckbox:

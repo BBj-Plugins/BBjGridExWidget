@@ -41,7 +41,7 @@ main:
   
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
-  grid!.setData(rs! , 0)
+  grid!.setData(rs!)
   
   grid!.setColumnMask("COST","### ##0.00")
   grid!.setColumnAggFunc("COST","sum")
@@ -51,7 +51,6 @@ main:
   grid!.addPivotColumns("MUSICTYPE")
   grid!.addValueColumns("COST")
   
-  grid!.render()
   grid!.getSidebar().openToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
 return
 

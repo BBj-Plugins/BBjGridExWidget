@@ -50,7 +50,7 @@ main:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT LABEL , MUSICTYPE , PLAYINGTIME , COST  FROM CDINVENTORY")
 
-  grid!.setData(rs!,0)
+  grid!.setData(rs!)
   
   rem Group rows by music type
   type! = grid!.getColumn("MUSICTYPE")
@@ -72,8 +72,6 @@ main:
   cost!.getValueFormatterExpression().setMask("### ##0.00")
   cost!.setEnableValue(1)
   cost!.setAggFunc("sum")
-  
-  grid!.render()
 return
 
 rem /**

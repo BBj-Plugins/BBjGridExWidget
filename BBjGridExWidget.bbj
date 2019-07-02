@@ -508,6 +508,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjNumber DeltaColumnMode! = 0
     rem /**
+    rem  * When true the grid will render automatically when event processing starts, when false then the <i>render()</i> method
+    rem  * or <i>setData(ResultSet , 1)</i> must be called.
+    rem  * 
+    rem  * <b>Experimental</b> 
+    rem  */
+    field public BBjNumber BlockRenderToReady! = 1
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -995,6 +1002,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         REM         if #RS! <> null() or #URL$>"" then
         REM             #render()
         REM         FI
+        
+        if(#getBlockRenderToReady() = 1) then
+            #render()
+        fi
         it! = #backlog!.iterator()
         while it!.hasNext()=BBjAPI.TRUE
             s$=str(it!.next())
@@ -1747,10 +1758,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * The method will compose the grid config and send it to the client for a full rerender.
     rem  * You can use this method to force the client render after you update a setup configuration (ex: column defintions)
     rem  */
-    method public void render()
-        REM         if(!#IsReady!) then
-        REM             methodret
-        REM         fi
+    method public void render()        
+        if(#getBlockRenderToReady() = 1) then
+            if(!#IsReady!) then
+                methodret
+            fi
+        fi        
         gson! = new Gson()
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())

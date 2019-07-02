@@ -47,8 +47,6 @@ renderColumns:
   rs! = sbc!.retrieve("SELECT TOP 1  * FROM CDINVENTORY")
   REM build the columns from the passed ResultSet 
   grid!.buildColumnsFromResultSet(rs!,1)
-  REM just render the grid empty
-  grid!.render()   
 return
 
 rem /**
@@ -61,7 +59,7 @@ fillGrid:
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   rem wait some time to simulate a long process
   wait 3
-  grid!.setData(rs!)
+  grid!.setRowsData(rs!)
 return
 
 rem /**
