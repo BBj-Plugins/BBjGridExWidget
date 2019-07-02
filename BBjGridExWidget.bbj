@@ -1674,9 +1674,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem Grouping & Pivoting
         rem ===========================
         options!.addProperty("groupUseEntireRow",#getGroupUseEntireRow().booleanValue() , err=*next)
-        options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().longValue() , err=*next)
+        options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().booleanValue() , err=*next)
         options!.        add("autoGroupColumnDef",#getAutoGroupColumnDefinition().getAsJsonObject(), err=*next)
-        options!.addProperty("groupDefaultExpanded",#getGroupSuppressAutoColumn().booleanValue() , err=*next)
         options!.addProperty("groupMultiAutoColumn",#getGroupMultiAutoColumn().booleanValue() , err=*next)
         options!.addProperty("groupSuppressRow",#getGroupSuppressRow().booleanValue() , err=*next)
         options!.addProperty("groupSelectsChildren",#getGroupSelectsChildren().booleanValue(), err=*next)
