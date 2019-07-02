@@ -160,6 +160,7 @@ export function gw_addRowGroupColumn(id, columns ,set) {
   if (grid) {
     const options = gw_getGrid(id).options;
     const method = set ? "setRowGroupColumns" : "addRowGroupColumns";
+    console.log(columns)
     options.columnApi[method](
       columns.split(",").map(i => i.trim())
     );
@@ -241,6 +242,40 @@ export function gw_removePivotColumns(id, columns) {
   if (grid) {
     const options = gw_getGrid(id).options;
     options.columnApi.removePivotColumns(
+      columns.split(",").map(i => i.trim())
+    );
+  }
+}
+
+/**
+ * Enable value for columns
+ * 
+ * @param {String} id the grid id
+ * @param {String} columns  a comma separated string of columns
+ */
+export function gw_addValueColumns(id, columns, set) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    options.columnApi.addValueColumns(
+      columns.split(",").map(i => i.trim())
+    );
+  }
+}
+
+/**
+ * Disable value for columns
+ * 
+ * @param {String} id the grid id
+ * @param {String} columns  a comma separated string of columns
+ */
+export function gw_removeValueColumns(id, columns) {
+  const grid = gw_getGrid(id);
+
+  if (grid) {
+    const options = gw_getGrid(id).options;
+    options.columnApi.removeValueColumns(
       columns.split(",").map(i => i.trim())
     );
   }

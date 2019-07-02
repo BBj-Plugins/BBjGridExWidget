@@ -1425,6 +1425,40 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         WEND        
     methodend
     rem /**
+    rem  * Enable value for columns.<br>
+    rem  * 
+    rem  * <b>Note</b> This method can update value for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */       
+    method public void addValueColumns(BBjString columns!)
+        #executeScript("gw_addValueColumns('" + #GRIDID$ + "','" + columns! + "');")
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+          next! = cvs(it!.next(),128)
+          #getColumn(next!).setEnableValue(1)
+        WEND
+    methodend 
+    rem /**
+    rem  * Disable value for columns.<br>
+    rem  * 
+    rem  * <b>Note</b> This method can update value for columns after/before the grid is rendered 
+    rem  * on the client
+    rem  * 
+    rem  * @param BBjString columns! A comma separated string of column fields
+    rem  */       
+    method public void removeValueColumns(BBjString columns!)
+        #executeScript("removeValueColumns('" + #GRIDID$ + "','" + columns! + "');")
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+          next! = cvs(it!.next(),128)
+          #getColumn(next!).setEnableValue(0)
+        WEND
+    methodend           
+    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public BBjGridExWidgetColumnGroup addColumnGroup(BBjGridExWidgetColumnGroup definition!)
