@@ -498,7 +498,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time.
     rem  * 
-    rem  * @deprecated You can controll overlays using the api methods. @see Demo/ChunkRenderingDemo.bbj
+    rem  * @deprecated You can control overlays using the api methods. @see Demo/ChunkRenderingDemo.bbj
     rem  */
     field public BBjNumber ChunkRendering! = 0
     rem /**
