@@ -2455,6 +2455,24 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             methodret rows!
     methodend
     rem /**
+    rem  * Show loading overlay
+    rem  */
+    method public void showLoadingOverlay()
+        #executeScript("gw_showLoadingOverlay('" + #GRIDID$ + "')")
+    methodend
+    rem /**
+    rem  * Show 'no rows' overlay
+    rem  */
+    method public void showNoRowsOverlay()
+        #executeScript("gw_showNoRowsOverlay('" + #GRIDID$ + "')")
+    methodend
+    rem /**
+    rem  * Clear all overlays
+    rem  */
+    method public void hideOverlay()
+        #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
+    methodend         
+    rem /**
     rem  * Excute script
     rem  *
     rem  * Excute a javascript code on the client
