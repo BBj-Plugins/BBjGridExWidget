@@ -6,7 +6,7 @@
 * file that was distributed with this source code.
 */
 
-import {gw_getGrid} from "./utilities"
+import { gw_getGrid } from "./utilities";
 
 /**
  * Start cell editing
@@ -36,16 +36,22 @@ export function gw_startEditingCell(id, row, colKey, key, char) {
  * @param {Boolean} cancel when true cancel edits , save edits otherwise
  */
 export function gw_stopEditing(id, cancel) {
-  const options = gw_getGrid(id).options;
-  options.api.stopEditing(cancel);
+  gw_getGrid(id)
+    .options
+    .api
+    .stopEditing(cancel);
 }
 
 export function gw_editNextCell(id) {
-  const options = gw_getGrid(id).options;
-  options.api.tabToNextCell();
+  gw_getGrid(id)
+    .options
+    .api
+    .tabToNextCell();
 };
 
 export function gw_editPreviousCell(id) {
-  const options = gw_getGrid(id).options;
-  options.api.tabToPreviousCell();
+  gw_getGrid(id)
+    .options
+    .api
+    .tabToPreviousCell();
 }

@@ -6,10 +6,12 @@
 * file that was distributed with this source code.
 */
 
-import { gw_getGrid } from "./utilities"
+import { gw_getGrid } from "./utilities";
 
-export function gw_setStatusbarComponentVisiblity(id, key, visiblity) {
-	const options = gw_getGrid(id).options;
-	let statusBarComponent = options.api.getStatusPanel(key);
-	statusBarComponent.setVisible(Boolean(visiblity));
+export function gw_setStatusbarComponentVisibility(id, key, visibility) {
+	gw_getGrid(id)
+		.options
+		.api
+		.getStatusPanel(key)
+		.setVisible(Boolean(visibility));
 }

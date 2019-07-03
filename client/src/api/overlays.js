@@ -14,12 +14,10 @@ import { gw_getGrid } from "./utilities";
  * @param {String} id the grid id
  */
 export function gw_showLoadingOverlay(id) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.api.showLoadingOverlay()
-  }
+  gw_getGrid(id)
+    .options
+    .api
+    .showLoadingOverlay();
 }
 
 /**
@@ -28,12 +26,10 @@ export function gw_showLoadingOverlay(id) {
  * @param {String} id the grid id
  */
 export function gw_showNoRowsOverlay(id) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.api.showNoRowsOverlay()
-  }
+  gw_getGrid(id)
+    .options
+    .api
+    .showNoRowsOverlay();
 }
 
 /**
@@ -42,10 +38,8 @@ export function gw_showNoRowsOverlay(id) {
  * @param {String} id the grid id
  */
 export function gw_hideOverlay(id) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.api.hideOverlay()
-  }
+  gw_getGrid(id)
+    .options
+    .api
+    .hideOverlay();
 }

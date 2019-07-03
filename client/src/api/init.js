@@ -9,7 +9,7 @@
 import { gw_extendColumnDefinitions } from "./columns";
 import { gw_navigateToNextRow }       from "./rows";
 import { gw_getContextMenu }          from "./menus";
-import { gw_getDocument, gw_addGrid}  from "./utilities"
+import { gw_getDocument, gw_addGrid}  from "./utilities";
 import {
   gw_onRowDoubleClicked,
   gw_onSelectionChanged,

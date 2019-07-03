@@ -49,10 +49,25 @@ export function gw_escape(value) {
  * @param {String} id The grid's id
  * 
  * @return {Object|null} The grid's instance ofr null
+ * @throws TypeError when the grid instance is not found
  */
 export function gw_getGrid(id) {
   window.BBjGridExWidget = window.BBjGridExWidget || {};
-  return window.BBjGridExWidget[id] || null;
+  const grid =  window.BBjGridExWidget[id] || null;
+
+  if (!grid) {
+    const registeredGrids = JSON.stringify(Object.keys(window.BBjGridExWidget));
+    //getFuncArgs(func).forEach((key, i) => argsObj[key] = args[i]);
+    
+    throw new TypeError(
+`\n\n[Grid Not Found] The method asked for non-existent grid instance.
+-------------------------------------------------------------------
+Required Grid Id : ${id}   
+Registered Grids : ${registeredGrids}
+`);
+  }
+  
+  return grid;
 }
 
 /**

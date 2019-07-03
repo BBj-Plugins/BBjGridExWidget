@@ -7,7 +7,6 @@
  */
 
 import { gw_getGrid } from "./utilities";
-
 const { deepParseJson } = require("deep-parse-json");
 
 /**
@@ -23,7 +22,7 @@ export function gw_extendColumnDefinitions(definitions) {
   for (let i in definitions) {
     const def = definitions[i];
 
-    def.checkboxSelection       = def.checkboxSelection       || gw_isShowSelectionCheckbox;
+    def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox;
     def.headerCheckboxSelection = def.headerCheckboxSelection || gw_isHeaderCheckboxSelection;
   }
 }
@@ -36,24 +35,26 @@ export function gw_extendColumnDefinitions(definitions) {
  */
 export function gw_setColumnDefinitions(id, definitions) {
   const grid = gw_getGrid(id);
+  const deepParsedDefinitions = deepParseJson(JSON.stringify(definitions));
 
-  if (grid) {
-    const deepParsedDefinitions = deepParseJson(JSON.stringify(definitions));
-    gw_extendColumnDefinitions(deepParsedDefinitions);
-    
-    grid.options.api.setColumnDefs(deepParsedDefinitions);
-    grid.options.columnDefs = deepParsedDefinitions;
-  }
+  gw_extendColumnDefinitions(deepParsedDefinitions);
+
+  grid.options.api.setColumnDefs(deepParsedDefinitions);
+  grid.options.columnDefs = deepParsedDefinitions;
 }
 
 export function gw_sizeColumnsToFit(id) {
-  const options = gw_getGrid(id).options;
-  options.api.sizeColumnsToFit();
+  gw_getGrid(id)
+    .options
+    .api
+    .sizeColumnsToFit();
 }
 
 export function gw_setVisibleColumn(id, columnId) {
-  const options = gw_getGrid(id).options;
-  options.api.ensureColumnVisible(columnId);
+  gw_getGrid(id)
+    .options
+    .api
+    .ensureColumnVisible(columnId);
 }
 
 /**
@@ -64,13 +65,12 @@ export function gw_setVisibleColumn(id, columnId) {
  * @param {Number|String} width The new column width
  */
 export function gw_setColumnWidth(id, columnId, width) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.setColumnWidth(columnId, Number(width));
-  }
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .setColumnWidth(columnId, Number(width));
 }
+
 /**
  * Pin Column
  *
@@ -81,12 +81,10 @@ export function gw_setColumnWidth(id, columnId, width) {
  * @param {String} pin The pin direction
  */
 export function gw_pinColumn(id, columnId, pin) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.setColumnPinned(columnId, pin);
-  }
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .setColumnPinned(columnId, pin);
 }
 
 /**
@@ -99,12 +97,10 @@ export function gw_pinColumn(id, columnId, pin) {
  * @param {Number|String} toIndex The new column index
  */
 export function gw_moveColumn(id, columnId, toIndex) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.moveColumn(columnId, toIndex);
-  }
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .moveColumn(columnId, toIndex);
 }
 
 /**
@@ -154,16 +150,12 @@ export function gw_isHeaderCheckboxSelection(param) {
  * @param {String} columns  a comma separated string of columns
  * @param {Boolean} set  When true , `setRowGroupColumns` will be used , `addRowGroupColumns` otherwise
  */
-export function gw_addRowGroupColumn(id, columns ,set) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    const method = set ? "setRowGroupColumns" : "addRowGroupColumns";
-    options.columnApi[method](
+export function gw_addRowGroupColumn(id, columns, set) {
+  gw_getGrid(id)
+    .options
+    .columnApi[set ? "setRowGroupColumns" : "addRowGroupColumns"](
       columns.split(",").map(i => i.trim())
     );
-  }
 }
 
 /**
@@ -173,26 +165,19 @@ export function gw_addRowGroupColumn(id, columns ,set) {
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_removeRowGroupColumn(id, columns) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.removeRowGroupColumns(
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .removeRowGroupColumns(
       columns.split(",").map(i => i.trim())
     );
-  }
 }
 
 export function gw_getPivotMode(id) {
-  const grid = gw_getGrid(id);
-  let result = 0;
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    result = options.columnApi.isPivotMode();
-  }
-
-  return result;
+  return gw_getGrid(id)
+    .options
+    .columnApi
+    .isPivotMode();
 }
 
 /**
@@ -202,12 +187,10 @@ export function gw_getPivotMode(id) {
  * @param {Boolean} mode when true 
  */
 export function gw_setPivotMode(id, mode) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.setPivotMode(!!Number(mode));
-  }
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .setPivotMode(!!Number(mode));
 }
 
 /**
@@ -218,15 +201,11 @@ export function gw_setPivotMode(id, mode) {
  * @param {Boolean} set  When true , `addPivotColumns` will be used , `setPivotColumns` otherwise
  */
 export function gw_addPivotColumns(id, columns, set) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    const method = set ? "setPivotColumns" : "addPivotColumns";
-    options.columnApi[method](
+  gw_getGrid(id)
+    .options
+    .columnApi[set ? "setPivotColumns" : "addPivotColumns"](
       columns.split(",").map(i => i.trim())
     );
-  }
 }
 
 /**
@@ -236,14 +215,12 @@ export function gw_addPivotColumns(id, columns, set) {
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_removePivotColumns(id, columns) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.removePivotColumns(
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .removePivotColumns(
       columns.split(",").map(i => i.trim())
     );
-  }
 }
 
 /**
@@ -253,14 +230,12 @@ export function gw_removePivotColumns(id, columns) {
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_addValueColumns(id, columns, set) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.addValueColumns(
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .addValueColumns(
       columns.split(",").map(i => i.trim())
     );
-  }
 }
 
 /**
@@ -270,12 +245,10 @@ export function gw_addValueColumns(id, columns, set) {
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_removeValueColumns(id, columns) {
-  const grid = gw_getGrid(id);
-
-  if (grid) {
-    const options = gw_getGrid(id).options;
-    options.columnApi.removeValueColumns(
+  gw_getGrid(id)
+    .options
+    .columnApi
+    .removeValueColumns(
       columns.split(",").map(i => i.trim())
     );
-  }
 }
