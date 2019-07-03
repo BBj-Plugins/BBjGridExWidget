@@ -41,9 +41,7 @@ export function gw_init(options, license , data) {
   container.innerHTML   = '';
 
   const parsedOptions   = gw_parseOptions(options);
-  if(data && data.length > 0) {
-    parsedOptions.rowData = data;
-  }
+  parsedOptions.rowData = data;
 
   const instance        = new agGrid.Grid(container, parsedOptions);
   grid.instance = instance;

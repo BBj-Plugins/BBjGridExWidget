@@ -24,16 +24,7 @@ wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
-rem /**
-rem  * We enable the grid chunk rendering mode.
-rem  *  
-rem  * When this mode is enabled , the grid will send the data in chunks. This is done be sending the column defintions 
-rem  * to the client as soon as possible to get fast first render then it sends the data to fill the grid
-rem  * 
-rem  * This mode is usefull when you have a large set of data which sending them to the client will take time.  
-rem  */
-grid!.setChunkRendering(1)
- 
+
 gosub renderColumns
 rem create timer so we can go into process_events
 BBjAPI().createTimer("renderColumns" , 1 , "fillGrid")
@@ -47,6 +38,7 @@ renderColumns:
   rs! = sbc!.retrieve("SELECT TOP 1  * FROM CDINVENTORY")
   REM build the columns from the passed ResultSet 
   grid!.buildColumnsFromResultSet(rs!,1)
+  grid!.showLoadingOverlay()
 return
 
 rem /**

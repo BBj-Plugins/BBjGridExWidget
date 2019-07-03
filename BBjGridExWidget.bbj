@@ -497,6 +497,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * then send the data. once the data is sent and rendered , the grid will remove the loading state automatically.
     rem  *
     rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time.
+    rem  * 
+    rem  * @deprecated You can controll overlays using the api methods. @see Demo/ChunkRenderingDemo.bbj
     rem  */
     field public BBjNumber ChunkRendering! = 0
     rem /**
@@ -1790,15 +1792,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
 
-        if(#getChunkRendering() = 0) then
-            #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
-        else
-            #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
-
-            if(#getRS() <>  null() AND #getRS().size() > 0) then
-                #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
-            FI
-        FI
+        #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
+        
+REM         if(#getChunkRendering() = 0) then
+REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
+REM         else
+REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
+REM 
+REM             if(#getRS() <>  null() AND #getRS().size() > 0) then
+REM                 #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
+REM             FI
+REM         FI
     methodend
     rem /**
     rem  * Rerender the column defintions on the client.
