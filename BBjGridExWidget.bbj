@@ -515,6 +515,22 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjNumber BlockRenderToReady! = 1
     rem /**
+    rem  * Disables the 'loading' overlay.
+    rem  */
+    field public BBjNumber SuppressLoadingOverlay! = null()
+    rem /**
+    rem  * Disables the 'no rows' overlay.
+    rem  */
+    field public BBjNumber SuppressNoRowsOverlay! = null()
+    rem /**
+    rem  * Provide a template for 'loading' overlay if not happy with the default one.
+    rem  */
+    field public BBjString OverlayLoadingTemplate! = null()
+    rem /**
+    rem  * Provide a template for 'no rows' overlay if not happy with the provided.
+    rem  */
+    field public BBjString OverlayNoRowsTemplate! = null()
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -1722,6 +1738,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem Localisation
         rem ===========================
         options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
+        rem Overlays
+        rem =========================== 
+        options!.addProperty("suppressLoadingOverlay",#getSuppressLoadingOverlay().booleanValue(), err=*next)       
+        options!.addProperty("suppressNoRowsOverlay",#getSuppressNoRowsOverlay().booleanValue(), err=*next)
+        options!.addProperty("overlayLoadingTemplate",#getOverlayLoadingTemplate(), err=*next)
+        options!.addProperty("overlayNoRowsTemplate",#getOverlayNoRowsTemplate(), err=*next)
         rem Miscellaneous
         rem ===========================
         options!.addProperty("suppressMiddleClickScrolls",#getSuppressMiddleClickScrolls().booleanValue() , err=*next)
