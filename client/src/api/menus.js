@@ -10,7 +10,7 @@ import { gw_getGrid } from "./utilities"
 import {
   gw_parseNodeFromEvent,
   gw_sendEvent
-} from "events/utilities"
+} from "events/utilities";
 
 export function gw_getContextMenu(gridId, params) {
 

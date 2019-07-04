@@ -6,27 +6,35 @@
 * file that was distributed with this source code.
 */
 
-import { gw_getGrid } from "./utilities"
-import { gw_parseNode } from "events/utilities"
+import { gw_getGrid } from "./utilities";
+import { gw_parseNode } from "events/utilities";
 
 export function gw_setQuickFilter(id, filter) {
-  const options = gw_getGrid(id).options;
-  options.api.setQuickFilter(filter);
+  gw_getGrid(id)
+    .options
+    .api
+    .setQuickFilter(filter);
 }
 
 export function gw_expandAll(id) {
-  const options = gw_getGrid(id).options;
-  options.api.expandAll();
+  gw_getGrid(id)
+    .options
+    .api
+    .expandAll();
 }
 
 export function gw_collapseAll(id) {
-  const options = gw_getGrid(id).options;
-  options.api.collapseAll();
+  gw_getGrid(id)
+    .options
+    .api
+    .collapseAll();
 }
 
 export function gw_setVisibleRow(id, index, position) {
-  const options = gw_getGrid(id).options;
-  options.api.ensureIndexVisible(index, position);
+  gw_getGrid(id)
+    .options
+    .api
+    .ensureIndexVisible(index, position);
 }
 
 export function gw_navigateToNextRow(id, params) {
@@ -115,7 +123,7 @@ export function gw_setRowsHeight(id, height) {
   options.api.forEachNode(row => {
     row.setRowHeight(height);
   });
-  options.api.onRowHeightChanged()
+  options.api.onRowHeightChanged();
 }
 
 /**
@@ -131,7 +139,7 @@ export function gw_setRowHeight(id, index, height) {
 
   if (row) {
     row.setRowHeight(height);
-    options.api.onRowHeightChanged()
+    options.api.onRowHeightChanged();
   } else {
     console.warn(`Failed to set height for row ${index}. Row can not be found`);
   }

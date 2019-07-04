@@ -7,7 +7,7 @@
 */
 
 import 'expose-loader?jss!jss/jss.js';
-import {gw_getDocument} from "./utilities"
+import {gw_getDocument} from "./utilities";
 
 /**
  * Formate the css selector 

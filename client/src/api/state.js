@@ -6,10 +6,11 @@
 * file that was distributed with this source code.
 */
 
-import { gw_getGrid } from "./utilities"
+import { gw_getGrid } from "./utilities";
 
 export function gw_setState(id, state) {
   const options = gw_getGrid(id).options;
+
   try {
     options.columnApi.setColumnState(state.columns);
     options.columnApi.setColumnGroupState(state.groups);
@@ -26,12 +27,7 @@ export function gw_getState(id) {
   const groups = options.columnApi.getColumnGroupState();
   const sort = options.api.getSortModel();
   const filters = options.api.getFilterModel();
-  console.log(JSON.stringify({
-    columns,
-    groups,
-    sort,
-    filters
-  }))
+
   try {
     return JSON.stringify({
       columns,

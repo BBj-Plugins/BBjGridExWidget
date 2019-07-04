@@ -6,7 +6,7 @@
 * file that was distributed with this source code.
 */
 
-import {gw_getGrid} from "./utilities"
+import { gw_getGrid } from "./utilities";
 
 /**
  * Update context 
@@ -15,11 +15,8 @@ import {gw_getGrid} from "./utilities"
  * @param {String} key The context's key to update
  * @param {String} value  The new context's value 
  */
-export function gw_updateContext(id , key , value) {
-	const grid = gw_getGrid(id);
-
-	if(grid) {
-		const context = grid.options.context
-		context[key] = JSON.parse(value)
-	}
+export function gw_updateContext(id, key, value) {
+	gw_getGrid(id)
+		.options
+		.context[key] = JSON.parse(value);
 }

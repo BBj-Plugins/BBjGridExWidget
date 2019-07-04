@@ -9,7 +9,7 @@
 import { gw_extendColumnDefinitions } from "./columns";
 import { gw_navigateToNextRow }       from "./rows";
 import { gw_getContextMenu }          from "./menus";
-import { gw_getDocument, gw_addGrid}  from "./utilities"
+import { gw_getDocument, gw_addGrid}  from "./utilities";
 import {
   gw_onRowDoubleClicked,
   gw_onSelectionChanged,
@@ -41,9 +41,7 @@ export function gw_init(options, license , data) {
   container.innerHTML   = '';
 
   const parsedOptions   = gw_parseOptions(options);
-  if(data && data.length > 0) {
-    parsedOptions.rowData = data;
-  }
+  parsedOptions.rowData = data;
 
   const instance        = new agGrid.Grid(container, parsedOptions);
   grid.instance = instance;

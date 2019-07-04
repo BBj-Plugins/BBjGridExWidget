@@ -1,3 +1,32 @@
+# [0.97.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.96.0...0.97.0) (2019-07-04)
+
+
+### Bug Fixes
+
+* Chunk rendering implementation disallows rendering empty grids ([1329870](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1329870))
+
+
+### Code Refactoring
+
+* remove `isEditing()` method ([7565668](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7565668))
+
+
+### Features
+
+* add overlay api methods to show/hide overlays ([9c3adad](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9c3adad))
+* add overlay properties setters/getters ([885f8b0](https://github.com/BBj-Plugins/BBjGridExWidget/commit/885f8b0))
+
+
+### BREAKING CHANGES
+
+* `isEditing()` is removed. The method will not work after implementing event interests.
+The client will not send events to bbj unless there a
+callback registerd for that event in bbj. a developer can implement this
+method again easily by registering callbacks for editing events.
+* `ChunkRendering` flag is deprecated now and will be removed on the next version. @see `Demo/ChunkRenderingDemo.bbj`
+
+
+
 # [0.96.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.95.1...0.96.0) (2019-07-02)
 
 [More Details...](https://github.com/BBj-Plugins/BBjGridExWidget/pull/148)

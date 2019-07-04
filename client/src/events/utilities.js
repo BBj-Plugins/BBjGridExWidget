@@ -6,7 +6,7 @@
 * file that was distributed with this source code.
 */
 
-import {gw_getDocument} from "api/utilities"
+import { gw_getDocument } from "api/utilities";
 
 /** https://davidwalsh.name/javascript-debounce-function */
 export function gw_debounce(func, wait, immediate) {
@@ -34,20 +34,20 @@ export function gw_debounce(func, wait, immediate) {
  * @param {*} payload the event payload
  */
 export function gw_sendEvent(context, payload = {}, interests = []) {
-  const registeredInterests = context.interests || []
+  const registeredInterests = context.interests || [];
 
-  if(registeredInterests.length < 0) return ;
+  if (registeredInterests.length < 0) return;
 
   for (let x = 0; x < interests.length; x++) {
     const interest = interests[x];
 
-    if(registeredInterests.includes(interest)) {
+    if (registeredInterests.includes(interest)) {
       const div = gw_getDocument().getElementById(`event-bridge-${context.id}`);
       const event = new CustomEvent('click');
 
       event.payload = payload;
       div.dispatchEvent(event);
-      break; 
+      break;
     }
   }
 }
@@ -75,8 +75,7 @@ export function gw_parseNode(node, context) {
 
   if (true === node.group) return false; // we do not manage groups
 
-  const rowNodeId = context.hasOwnProperty('getRowNodeId')
-    && node.data[context.getRowNodeId] ?
+  const rowNodeId = context.hasOwnProperty('getRowNodeId') && node.data[context.getRowNodeId] ?
     node.data[context.getRowNodeId] : '';
 
   return {

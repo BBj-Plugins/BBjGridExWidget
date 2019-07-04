@@ -20,5 +20,5 @@ require('ag-grid-community/dist/styles/ag-theme-balham-dark.css');
 
 require('./style/classes.css');
 
-export * from './pollyfills.js';
+export * from './polyfills.js';
 export * from "./api";
