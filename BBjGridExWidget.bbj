@@ -44,11 +44,44 @@ use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEven
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
 rem /**
-rem  * An Advanced BBj Data Grid / Data Table Widget
+rem  * The Grid Core Class.This class works as a columns manager and api provider. 
+rem  * It contains a big number of methods and properties to configure the column from A..Z.
+rem  * Every property and method has one or more tag attached.  
+rem  * 
+rem  * The following is the meanging for each tag :<br><br>
+rem  * 
+rem  * 
+rem  * <table border="1" cellpadding="10">
+rem  *  <tbody>
+rem  *      <tr>
+rem  *          <td><strong>&nbsp;Enterprise</strong></td>
+rem  *          <td>The property/method is used only with the enterprise version&#183; using it without having a valid license will<br />be ignored&#183;</td>
+rem  *      </tr>
+rem  *      <tr>
+rem  *          <td>&nbsp;<strong>Configuration</strong></td>
+rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to rerender the whole grid <br />or rerender the column definition once again&#183;</td>
+rem  *      </tr>
+rem  *      <tr>
+rem  *          <td>&nbsp;<strong>API</strong></td>
+rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh&#183;</td>
+rem  *      </tr>
+rem  *      <tr>
+rem  *          <td><strong>&nbsp;ColumnsRerender</strong></td>
+rem  *          <td>Changing this property or calling this method after the first render require columns rerender using <i>updateColumns()</i> method</td>
+rem  *      </tr>
+rem  *      <tr>
+rem  *          <td><strong>&nbsp;GridRerender</strong></td>
+rem  *          <td>Changing this property or calling this method after the first render require full rerender using <i>render()</i> method</td>
+rem  *      </tr>
+rem  *  </tbody>
+rem  * </table>
+rem  * 
+rem  * @author Stephan Wald
+rem  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumnsManagerInterface
     rem /**
-    rem  * Unique auto generate id for the grid instance. This id is used in the client to distinguish instances
+    rem  * Unique auto generate id for the grid instance&#183; This id is used in the client to distinguish instances
     rem  */
     field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     rem /**
@@ -56,203 +89,287 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjString LicenseKey$
     rem /**
-    rem  * Contains column properties all columns will inherit.
+    rem  * Contains column properties all columns will inherit&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjGridExWidgetDefaultColumnDefinition DefaultColumnDefinition! = new BBjGridExWidgetDefaultColumnDefinition()
     rem /**
-    rem  * Contains column group properties all column groups will inherit.
+    rem  * Contains column group properties all column groups will inherit&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjGridExWidgetDefaultColumnGroup DefaultColumnGroupDefinition! = new BBjGridExWidgetDefaultColumnGroup()
     rem /**
-    rem  * Suppresses auto-sizing columns for columns. In other words, double clicking a columns headers edge will not auto-size.Default is false
+    rem  * Suppresses auto-sizing columns for columns&#183; In other words, double clicking a columns headers edge will not auto-size&#183;Default is false
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressAutoSize! = null()
     rem /**
-    rem  * How many pixels to add to a column width after the auto-sizing calculation. The default is 4 pixels. Set this if you want to add extra room to accommodate (for example) sort icons, or some other dynamic nature of the header.
+    rem  * How many pixels to add to a column width after the auto-sizing calculation&#183; The default is 4 pixels&#183; Set this if you want to add extra room to accommodate (for example) sort icons, or some other dynamic nature of the header&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber AutoSizePadding! = null()
     rem /**
-    rem  * If true, the ag-column-moving class is not added to the grid while columns are moving. In the default themes, this transpires to no animation for moving columns.
+    rem  * If true, the ag-column-moving class is not added to the grid while columns are moving&#183; In the default themes, this transpires to no animation for moving columns&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressColumnMoveAnimation! = null()
     rem /**
-    rem  * Set to true to suppress column moving. In other words, set to true to make the columns fixed position.
+    rem  * Set to true to suppress column moving&#183; In other words, set to true to make the columns fixed position&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressMovableColumns! = null()
     rem /**
-    rem  * Set to true to show the 'no sort' icon.
+    rem  * Set to true to show the 'no sort' icon&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber UnSortIcon! = null()
     rem /**
-    rem  * Set to true to suppress multi-sort when the user shift-clicks a column header.
+    rem  * Set to true to suppress multi-sort when the user shift-clicks a column header&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressMultiSort! = null()
     rem /**
-    rem  * Set to true to always show the column menu button, rather than only showing when the mouse is over the column header.
+    rem  * Set to true to always show the column menu button, rather than only showing when the mouse is over the column header&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressMenuHide! = null()
     rem /**
-    rem  * Allows specifying the group 'auto column' if you are not happy with the default.
-    rem  * If grouping, this column def is included as the first column definition in the grid.
-    rem  * If not grouping, this column is not included.
+    rem  * Allows specifying the group 'auto column' if you are not happy with the default&#183;
+    rem  * If grouping, this column def is included as the first column definition in the grid&#183;
+    rem  * If not grouping, this column is not included&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjGridExWidgetAutoGroupColumn AutoGroupColumnDefinition! = new BBjGridExWidgetAutoGroupColumn()
     rem /**
     rem  * Set to true to suppress column events being raised when state is changed throw the API methods
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressSetColumnStateEvents! = null()
     rem /**
-    rem  * Set to true to specify that the sort should take into account accented characters, if this feature is turned on the sort will perform slower.
+    rem  * Set to true to specify that the sort should take into account accented characters, if this feature is turned on the sort will perform slower&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber AccentedSort! = null()
     rem /**
     rem  * Set to true to suppress sorting of un-sorted data to match original row data
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressMaintainUnsortedOrder! = null()
     rem /**
-    rem  * Allow selection of multiple cells or rows. When true enable multiselection , disable otherwise
+    rem  * Allow selection of multiple cells or rows&#183; When true enable multiselection , disable otherwise
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber MultipleSelection! = 0
     rem /**
-    rem  * Set to true to allow multiple rows to be selected with a single click.
+    rem  * Set to true to allow multiple rows to be selected with a single click&#183;
     rem  *
-    rem  * E.g. if you click select one row, then click select another row, the first row will keep it's selection.
-    rem  * Clicking a selected row in this mode will deselect the row.
+    rem  * E&#183;g&#183; if you click select one row, then click select another row, the first row will keep it's selection&#183;
+    rem  * Clicking a selected row in this mode will deselect the row&#183;
     rem  * This is useful for touch devices where ctrl and shift clicking is
-    rem  * not an option.<
-    rem  *
+    rem  * not an option&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  * <br>
     rem  * <b>Note</b> that Despite the setting name , it works when MultipleSelection is enabled or disabled
     rem  */
     field public BBjNumber RowMultiSelectWithClick! = 0
     rem /**
-    rem  * Set to true or false. If true, then rows will be deselected if you
-    rem  * hold down ctrl + click the row. Normal behaviour with the grid disallows
+    rem  * Set to true or false&#183; If true, then rows will be deselected if you
+    rem  * hold down ctrl + click the row&#183; Normal behaviour with the grid disallows
     rem  * deselection of nodes (ie once a row is selected, it remains selected until
-    rem  * another row is selected in its place).
+    rem  * another row is selected in its place)&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber RowDeselection! = 0
     rem /**
-    rem  * If true, rows won't be selected when clicked. Use, for example,
+    rem  * If true, rows won't be selected when clicked&#183; Use, for example,
     rem  * when you want checkbox selection, and don't want to also select when the row
-    rem  * is clicked.
+    rem  * is clicked&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressRowClickSelection! = 0
     rem /**
-    rem  * Set to true to enable Single Click Editing for cells, to start editing with a single click.
+    rem  * Set to true to enable Single Click Editing for cells, to start editing with a single click&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SingleClickEdit! = null()
     rem /**
-    rem  * Set to true so that neither single or double click starts editing.
+    rem  * Set to true so that neither single or double click starts editing&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressClickEdit! = null()
     rem /**
-    rem  * Set to 'fullRow' to enable Full Row Editing. Otherwise leave blank to edit one cell at a time.
+    rem  * Set to 'fullRow' to enable Full Row Editing&#183; Otherwise leave blank to edit one cell at a time&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  *
     rem  * @see GRID_EDITTYPE_ROW()
     rem  * @see GRID_EDITTYPE_CELL()
     rem  */
     field public BBjString EditType! = #GRID_EDITTYPE_CELL()
     rem /**
-    rem  * Set this to true to stop cell editing when grid loses focus. The default is the grid stays editing until focus goes onto another cell. For inline (non-popup) editors only.
+    rem  * Set this to true to stop cell editing when grid loses focus&#183; The default is the grid stays editing until focus goes onto another cell&#183; For inline (non-popup) editors only&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber StopEditingWhenGridLosesFocus! = null()
     rem /**
-    rem  *  Set to true to have Enter key move focus to the cell below if not editing. The default is Enter key starts editing the currently focused cell.
+    rem  *  Set to true to have Enter key move focus to the cell below if not editing&#183; The default is Enter key starts editing the currently focused cell&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber EnterMovesDown! = null()
     rem /**
-    rem  * Set to true to have Enter key move focus to the cell below after Enter is pressed while editing. The default is editing will stop and focus will remain on the editing cell.
+    rem  * Set to true to have Enter key move focus to the cell below after Enter is pressed while editing&#183; The default is editing will stop and focus will remain on the editing cell&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber EnterMovesDownAfterEdit! = null()
     rem /**
-    rem  * The height for the row containing the column label header. If not specified the default is 25px.
+    rem  * The height for the row containing the column label header&#183; If not specified the default is 25px&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber HeaderHeight! = null()
     rem /**
-    rem  * The height for the rows containing header column groups. If not specified, it uses headerHeight
+    rem  * The height for the rows containing header column groups&#183; If not specified, it uses headerHeight
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupHeaderHeight! = null()
     rem /**
-    rem  * The height for the row containing the floating filters. If not specified the default is 20px.
+    rem  * The height for the row containing the floating filters&#183; If not specified the default is 20px&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber FloatingFiltersHeight! = null()
     rem /**
-    rem  * The height for the row containing the columns when in pivot mode. If not specified, it uses headerHeight.
+    rem  * The height for the row containing the columns when in pivot mode&#183; If not specified, it uses headerHeight&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber PivotHeaderHeight! = null()
     rem /**
-    rem  * The height for the row containing header column groups when in pivot mode. If not specified, it uses groupHeaderHeight
+    rem  * The height for the row containing header column groups when in pivot mode&#183; If not specified, it uses groupHeaderHeight
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber PivotGroupHeaderHeight! = null()
     rem /**
-    rem  * If grouping, set to true or false (default is false).
-    rem  * If true, a group row will span all columns across the entire width of the table.
+    rem  * If grouping, set to true or false (default is false)&#183;
+    rem  * If true, a group row will span all columns across the entire width of the table&#183;
     rem  * If false, the cells will be rendered as normal and you will have the opportunity to include
     rem  * a grouping column (normally the first on the left) to show the group
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupUseEntireRow! = null()
     rem /**
-    rem  * If grouping, set to the number of levels to expand by default. Eg 0 for none, 1 first level only, etc. Default is 0 (expand none). Set to -1 for expand everything
+    rem  * If grouping, set to the number of levels to expand by default&#183; Eg 0 for none, 1 first level only, etc&#183; Default is 0 (expand none)&#183; Set to -1 for expand everything
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupDefaultExpanded! = null()
     rem /**
-    rem  * If true, the grid will not swap in the grouping column when grouping is enabled.
-    rem  * Use this if you want complete control on the column displayed and don't want the grids help.
+    rem  * If true, the grid will not swap in the grouping column when grouping is enabled&#183;
+    rem  * Use this if you want complete control on the column displayed and don't want the grids help&#183;
     rem  * In other words, you already have a column in your column definitions that is responsible for displaying the groups
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupSuppressAutoColumn! = null()
     rem /**
     rem  * If using auto column, set to true to have each group in its own column separate column, eg if group by Country then Year, two auto columns will be created, one for country and one for year
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupMultiAutoColumn! = null()
     rem /**
-    rem  * If true, the group row won't be displayed and the groups will be expanded by default with no ability to expand / contract the groups. Useful when you want to just 'group' the rows, but not add parent group row to each group
+    rem  * If true, the group row won't be displayed and the groups will be expanded by default with no ability to expand / contract the groups&#183; Useful when you want to just 'group' the rows, but not add parent group row to each group
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupSuppressRow! = null()
     rem /**
     rem  * When true, selecting a group will have the impact of selecting all its children
-    rem  * When false, then the group is selectable independently of the child nodes.
-    rem  *
+    rem  * When false, then the group is selectable independently of the child nodes&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  * <br>
     rem  * <b>Note</b>That this settings has no effect if MultipleSelection is disabled
     rem  */
     field public BBjNumber GroupSelectsChildren! = null()
     rem /**
-    rem  * If grouping, whether to show a group footer when the group is expanded.
+    rem  * If grouping, whether to show a group footer when the group is expanded&#183;
     rem  * If true, then by default, the footer will contain aggregate data (if any)
-    rem  * when shown and the header will be blank.
+    rem  * when shown and the header will be blank&#183;
     rem  * When closed, the header will contain the aggregate data regardless
-    rem  * of this setting (as footer is hidden anyway).
+    rem  * of this setting (as footer is hidden anyway)&#183;
     rem  * This is handy for 'total' rows, that are displayed below the data when
     rem  * the group is open, and alongside the group when it is closed
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupIncludeFooter! = null()
     rem /**
-    rem  * Set to true to show a 'grand' total group footer across all groups.
+    rem  * Set to true to show a 'grand' total group footer across all groups&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupIncludeTotalFooter! = null()
     rem /**
-    rem  * If true, and showing footer, aggregate data will be displayed at both the header and footer levels always.
-    rem  * This stops the possibly undesirable behaviour of the header details 'jumping' to the footer on expand.
+    rem  * If true, and showing footer, aggregate data will be displayed at both the header and footer levels always&#183;
+    rem  * This stops the possibly undesirable behaviour of the header details 'jumping' to the footer on expand&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupSuppressBlankHeader! = null()
     rem /**
     rem  * If using groupSelectsChildren, then only the children that pass the current filter will get selected
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupSelectsFiltered! = null()
     rem /**
-    rem  * Set to true to collapse groups that only have one child.
+    rem  * Set to true to collapse groups that only have one child&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupRemoveSingleChildren! = null()
     rem /**
-    rem  * Set to true to collapse lowest level groups that only have one child.
+    rem  * Set to true to collapse lowest level groups that only have one child&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupRemoveLowestSingleChildren! = null()
     rem /**
-    rem  * Set to true to hide parents that are open. When used with multiple columns for showing groups, it can give more pleasing user experience
+    rem  * Set to true to hide parents that are open&#183; When used with multiple columns for showing groups, it can give more pleasing user experience
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber GroupHideOpenParents! = null()
     rem /**
-    rem  * When to show the 'row group panel' (where you drag rows to group) at the top. Default is never. Set to either 'always' or 'onlyWhenGrouping'
+    rem  * When to show the 'row group panel' (where you drag rows to group) at the top&#183; Default is never&#183; Set to either 'always' or 'onlyWhenGrouping'
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  *
     rem  * @see GRID_GROUPPANEL_SHOW_HIDDEN()
     rem  * @see GRID_GROUPPANEL_SHOW_VISIBLE()
@@ -261,12 +378,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field public BBjString RowGroupPanelShow! = #GRID_GROUPPANEL_SHOW_ONGROUPING()
     rem /**
     rem  * Set to true to enable pivot mode
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
     rem  */
     field public BBjNumber PivotMode! = null()
     rem /**
-    rem  * When to show the 'pivot panel' (where you drag rows to pivot) at the top.
-    rem  * Default is never. Set to either 'always' or 'onlyWhenPivoting'.
-    rem  * Note that the pivot panel will never show if pivotMode is off.
+    rem  * When to show the 'pivot panel' (where you drag rows to pivot) at the top&#183;
+    rem  * Default is never&#183; Set to either 'always' or 'onlyWhenPivoting'&#183;
+    rem  * Note that the pivot panel will never show if pivotMode is off&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  *
     rem  * @see GRID_GROUPPANEL_SHOW_HIDDEN()
     rem  * @see GRID_GROUPPANEL_SHOW_VISIBLE()
@@ -275,49 +396,67 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field public BBjNumber PivotPanelShow! = null()
     rem /**
     rem  * When true, if you set new data into the grid and have groups open, the grid will keep groups open if they exist in the new dataset
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber RememberGroupStateWhenNewData! = null()
     rem /**
-    rem  * When true, column headers won't include the aggFunc, eg 'sum(Bank Balance)' will just be 'Bank Balance'.
+    rem  * When true, column headers won't include the aggFunc, eg 'sum(Bank Balance)' will just be 'Bank Balance'&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressAggFuncInHeader! = null()
     rem /**
     rem  * When true, the aggregations won't be computed for root node of the grid
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressAggAtRootLevel! = null()
     rem /**
-    rem  * If true, then row group, pivot and value aggregation will be read only from the UI.
+    rem  * If true, then row group, pivot and value aggregation will be read only from the UI&#183;
     rem  * The grid will display what values are used for each, but will not allow the use to change the selection
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
     rem  */
     field public BBjNumber FunctionsReadOnly! = null()
     rem /**
-    rem  * By default when a column is un-grouped, it is made visible.
-    rem  * This property stops the column becoming visible again when un-grouping.
+    rem  * By default when a column is un-grouped, it is made visible&#183;
+    rem  * This property stops the column becoming visible again when un-grouping&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressMakeVisibleAfterUnGroup! = null()
     rem /**
-    rem  * Set to true to always show the vertical scrollbar.
+    rem  * Set to true to always show the vertical scrollbar&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber AlwaysShowVerticalScroll! = null()
     rem /**
-    rem  * When true, the grid will not scroll to the top when new row data is provided.
-    rem  * Use this if you don't want the default behaviour of scrolling to the top every time you load new data.
+    rem  * When true, the grid will not scroll to the top when new row data is provided&#183;
+    rem  * Use this if you don't want the default behaviour of scrolling to the top every time you load new data&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressScrollOnNewData! = null()
     rem /**
-    rem  * When true, the grid will not use animation frames when drawing rows while scrolling.
-    rem  * Use this if the grid is working fast enough that you don't need animations frame and you don't want the grid to flicker.
+    rem  * When true, the grid will not use animation frames when drawing rows while scrolling&#183;
+    rem  * Use this if the grid is working fast enough that you don't need animations frame and you don't want the grid to flicker&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressAnimationFrame! = null()
     rem /**
-    rem  * Icons to use inside the grid instead of the grid's default icons.
-    rem  * 
-    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group). 
-    rem  * If defined in both the grid options and column definitions, the column definition will get used. 
-    rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for 
-    rem  * specific columns. This is handy if, for example, you want to include 'A..Z' as string sort icons 
-    rem  * and just the simple arrow for other columns.
-    rem  * 
+    rem  * Icons to use inside the grid instead of the grid's default icons&#183;
+    rem  *
+    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group)&#183;
+    rem  * If defined in both the grid options and column definitions, the column definition will get used&#183;
+    rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for
+    rem  * specific columns&#183; This is handy if, for example, you want to include 'A&#183;&#183;Z' as string sort icons
+    rem  * and just the simple arrow for other columns&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>.
+    rem  * <br>
     rem  * The icons are set as follows:
     rem  * <pre>
     rem  * <code>
@@ -380,29 +519,37 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public JsonObject Icons! = new JsonObject()
     rem /**
-    rem  * Default Row Height in pixels. Default is 25 pixels.
+    rem  * Default Row Height in pixels&#183; Default is 25 pixels&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
     rem  */
     field public BBjNumber RowHeight! = null()
     rem /**
-    rem  * Set to true to enable Row Animation.
+    rem  * Set to true to enable Row Animation&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber AnimateRows! = null()
     rem /**
-    rem  * Property to set style for all rows. Set to an object of key (style names) and values (style values)
+    rem  * Property to set style for all rows&#183; Set to an object of key (style names) and values (style values)
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public JsonObject RowStyle! = new JsonObject()
     rem /**
     rem  * Property to set CSS class for all rows
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public ArrayList RowClass!  =  new ArrayList()
     rem /**
-    rem  * Rules which can be applied to include certain CSS classes for rows.
+    rem  * Rules which can be applied to include certain CSS classes for rows&#183;
     rem  *
     rem  * These rules are provided as a JavaScript map where the keys are class names and the values are expressions that
-    rem  * if evaluated to true, the class gets used. The expression is a string which is treated as a shorthand for a
-    rem  * function by the grid.
+    rem  * if evaluated to true, the class gets used&#183; The expression is a string which is treated as a shorthand for a
+    rem  * function by the grid.<br><b><small>#Configuration</small></b><br><b><small>#GridRerender</small></b>.
     rem  *
-    rem  * The expression has the following attributes available: <br><br>
+    rem  * The expression has the following attributes available: <br>
     rem  *
     rem  * <table border="1" cellpadding="10">
     rem  *    <tbody>
@@ -423,54 +570,76 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public JsonObject RowClassRules! = new JsonObject()
     rem /**
-    rem  * Set to true to not highlight rows by adding the ag-row-hover CSS class.
+    rem  * Set to true to not highlight rows by adding the ag-row-hover CSS class&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressRowHoverHighlight! = null()
     rem /**
-    rem  * If true, then middle clicks will result in 'click' events for cell and row. Otherwise the browser will use middle click to scroll the grid.
+    rem  * If true, then middle clicks will result in 'click' events for cell and row&#183; Otherwise the browser will use middle click to scroll the grid&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressMiddleClickScrolls! = null()
     rem /**
-    rem  * Set to true to use the browser's default tooltip instead of using Ag-Grid's Tooltip Component.
+    rem  * Set to true to use the browser's default tooltip instead of using Ag-Grid's Tooltip Component&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber EnableBrowserTooltips! = null()
     rem /**
-    rem  * If true, when you drag a column out of the grid (eg to the group zone) the column is not hidden.
+    rem  * If true, when you drag a column out of the grid (eg to the group zone) the column is not hidden&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressDragLeaveHidesColumns! = null()
     rem /**
-    rem  * Set to true to operate grid in RTL (Right to Left) mode.
+    rem  * Set to true to operate grid in RTL (Right to Left) mode&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber EnableRtl! = null()
     rem /**
-    rem  * Set to true to not show context menu. Use if you don't want to use the default 'right click' context menu.
+    rem  * Set to true to not show context menu&#183; Use if you don't want to use the default 'right click' context menu&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressContextMenu! = null()
     rem /**
-    rem  * Disables touch support (but does not remove the browsers efforts to simulate mouse events on touch).
+    rem  * Disables touch support (but does not remove the browsers efforts to simulate mouse events on touch)&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressTouch! = null()
     rem /**
     rem  * When true enables the floating filters , disable otherwise
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber EnableFloatingFilter! = 0
     rem /**
     rem  * When true, A selection box will be shown on the first column
-    rem  * When false, no checkbox will be displayed.
-    rem  *
+    rem  * When false, no checkbox will be displayed&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  * <br>
     rem  * <b>Note</b> The first column can override this settings when it sets the <i>CheckboxSelection</i> to true
     rem  */
     field public BBjNumber ShowSelectionCheckbox! = 0
     rem /**
     rem  * When true, selection box will be show on the first column's header
-    rem  * When false, no checkbox will be displayed.
-    rem  *
+    rem  * When false, no checkbox will be displayed&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  * <br>
     rem  * <b>Note</b> The first column can override this settings when it sets the <i>tHeaderCheckboxSelection</i> to true
     rem  * <b>Note</b> This option will ignore multi row selection option by default so it is always enabled
     rem  */
     field public BBjNumber ShowHeaderSelectionCheckbox! = 0
     rem /**
-    rem  * Defines how users can move between rows using arrow keys.
+    rem  * Defines how users can move between rows using arrow keys&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  *
     rem  * @see GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
     rem  * @see GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL()
@@ -478,6 +647,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field public BBjString NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
     rem /**
     rem  * The grid context menu
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
     rem /**
@@ -485,7 +656,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public ResultSet RS! = new ResultSet()
     rem /**
-    rem  * The unique string to use as row inedx. defualt is __ROW_INDEX
+    rem  * The unique string to use as row inedx&#183; defualt is __ROW_INDEX
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjString RowNodeId$ = "__ROW_INDEX"
     rem /**
@@ -494,11 +667,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field public static BBjNumber Debug = 0
     rem /**
     rem  * When true , the grid will render the UI on the client as soon as possible , put it in the loading state
-    rem  * then send the data. once the data is sent and rendered , the grid will remove the loading state automatically.
+    rem  * then send the data&#183; once the data is sent and rendered , the grid will remove the loading state automatically&#183;
     rem  *
-    rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time.
-    rem  * 
-    rem  * @deprecated You can control overlays using the api methods. @see Demo/ChunkRenderingDemo.bbj
+    rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  *
+    rem  * @deprecated You can control overlays using the api methods&#183; @see Demo/ChunkRenderingDemo&#183;bbj
     rem  */
     field public BBjNumber ChunkRendering! = 0
     rem /**
@@ -507,29 +682,42 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * To change this behaviour and have column attributes above take effect each time the grid updates the columns,
     rem  * then set this option to true
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber DeltaColumnMode! = 0
     rem /**
     rem  * When true the grid will render automatically when event processing starts, when false then the <i>render()</i> method
-    rem  * or <i>setData(ResultSet , 1)</i> must be called.
-    rem  * 
-    rem  * <b>Experimental</b> 
+    rem  * or <i>setData(ResultSet , 1)</i> must be called&#183;
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  * <br><b><small>#Experimental</small></b>
     rem  */
     field public BBjNumber BlockRenderToReady! = 1
     rem /**
-    rem  * Disables the 'loading' overlay.
+    rem  * Disables the 'loading' overlay&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressLoadingOverlay! = null()
     rem /**
-    rem  * Disables the 'no rows' overlay.
+    rem  * Disables the 'no rows' overlay&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjNumber SuppressNoRowsOverlay! = null()
     rem /**
-    rem  * Provide a template for 'loading' overlay if not happy with the default one.
+    rem  * Provide a template for 'loading' overlay if not happy with the default one&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjString OverlayLoadingTemplate! = null()
     rem /**
-    rem  * Provide a template for 'no rows' overlay if not happy with the provided.
+    rem  * Provide a template for 'no rows' overlay if not happy with the provided&#183;
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
     rem  */
     field public BBjString OverlayNoRowsTemplate! = null()
     rem /**
@@ -561,7 +749,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field protected HashSet Interests! = new HashSet()
     rem /**
-    rem  * The client's HTML template to use in order to build the grid.
+    rem  * The client's HTML template to use in order to build the grid&#183;
     rem  */
     field protected BBjString Template$ = ""
     field protected BBjHtmlView HTMLView!
@@ -572,7 +760,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field protected BBjNumber newW!
     field protected BBjNumber newH!
     rem /**
-    rem  * constant value to define row selection event
+    rem  * Constant value to define row selection event
     rem  *
     rem  * @return BBjNumber
     rem  */
@@ -583,12 +771,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Alias to <i>ON_GRID_ROW_CLICK()</i>
     rem  *
     rem  * @see ON_GRID_ROW_CLICK()
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_SELECT_ROW()
         methodret #ON_GRID_ROW_CLICK()
     methodend
     rem /**
-    rem  * constant value to define row double click event
+    rem  * Constant value to define row double click event
     rem  *
     rem  * @return BBjNumber
     rem  */
@@ -599,54 +789,72 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Alias to <i>ON_GRID_ROW_DOUBLE_CLICK()</i>
     rem  *
     rem  * @see ON_GRID_ROW_DOUBLE_CLICK()
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_DOUBLE_CLICK()
         methodret #ON_GRID_ROW_DOUBLE_CLICK()
     methodend
     rem /**
-    rem  * @return constant value to define cell click event
+    rem  * Constant value to define cell click event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_CLICK()
         methodret 5001
     methodend
     rem /**
-    rem  * @return constant value to define cell double click event
+    rem  * Constant value to define cell double click event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_DOUBLE_CLICK()
         methodret 5002
     methodend
     rem /**
-    rem  * @return constant value to define cell editing start event
+    rem  * Constant value to define cell editing start event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_EDITING_STARTED()
         methodret 5003
     methodend
     rem /**
-    rem  * @return constant value to define cell editing stop event
+    rem  * Constant value to define cell editing stop event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_EDITING_STOPPED()
         methodret 5004
     methodend
     rem /**
-    rem  * @return constant value to define cell value changed event
+    rem  * Constant value to define cell value changed event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_VALUE_CHANGED()
         methodret 5005
     methodend
     rem /**
-    rem  * @return constant value to define row editing start event
+    rem  * Constant value to define row editing start event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_EDITING_STARTED()
         methodret 5006
     methodend
     rem /**
-    rem  * @return constant value to define row editing stop event
+    rem  * Constant value to define row editing stop event
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_EDITING_STOPPED()
         methodret 5007
     methodend
     rem /**
-    rem  * @return constant value to define grid state changes
+    rem  * Constant value to define grid state changes
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_STATE_CHANGE()
         methodret 5008
@@ -655,96 +863,128 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
     rem  *
     rem  * @see ON_GRID_STATE_CHANGE()
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_COLUMN_STATE_CHANGE()
         methodret #ON_GRID_STATE_CHANGE()
     methodend
     rem /**
-    rem  * @return constant value to define left aligned column
+    rem  * Constant value to define left aligned column
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber GRID_ALIGN_LEFT()
         methodret BBjGrid.GRID_ALIGN_LEFT
     methodend
     rem /**
-    rem  * @return constant value to define right aligned column
+    rem  * Constant value to define right aligned column
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber GRID_ALIGN_RIGHT()
         methodret BBjGrid.GRID_ALIGN_RIGHT
     methodend
     rem /**
-    rem  * @return constant value to define centered column
+    rem  * Constant value to define centered column
+    rem  * 
+    rem  * @return BBjNumber
     rem  */
     method public static BBjNumber GRID_ALIGN_CENTER()
         methodret BBjGrid.GRID_ALIGN_CENTER
     methodend
     rem /**
-    rem  * @return constant value to define row position
+    rem  * Constant value to define row position
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ROWPOS_TOP()
         methodret "top"
     methodend
     rem /**
-    rem  * @return constant value to define row position
+    rem  * Constant value to define row position
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ROWPOS_MIDDLE()
         methodret "middle"
     methodend
     rem /**
-    rem  * @return constant value to define row position
+    rem  * Constant value to define row position
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ROWPOS_BOTTOM()
         methodret "bottom"
     methodend
     rem /**
-    rem  * @return constant value to define editing mode "row"
+    rem  * Constant value to define editing mode "row"
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_EDITTYPE_ROW()
         methodret "fullRow"
     methodend
     rem /**
-    rem  * @return constant value to define editing mode "cell"
+    rem  * Constant value to define editing mode "cell"
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_EDITTYPE_CELL()
         methodret ""
     methodend
     rem /**
-    rem  * @return constant value to define enter key behavior (Move to next cell)
+    rem  * Constant value to define enter key behavior (Move to next cell)
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ENTER_NEXT_CELL()
         methodret "next"
     methodend
     rem /**
-    rem  * @return constant value to define navigation behavior (Move to next cell)
+    rem  * Constant value to define navigation behavior (Move to next cell)
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL()
         methodret "navigate_next_cell"
     methodend
     rem /**
-    rem  * @return constant value to define navigation behavior (Move to next row)
+    rem  * Constant value to define navigation behavior (Move to next row)
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
         methodret "navigate_next_row"
     methodend
     rem /**
-    rem  * @return constant value to define enter key behavior (Stop editing)
+    rem  * Constant value to define enter key behavior (Stop editing)
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ENTER_STOP_EDITING()
         methodret "stop"
     methodend
     rem /**
-    rem  * @return constant value which defines that group panel must always be shown
+    rem  * Constant value which defines that group panel must always be shown
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_GROUPPANEL_SHOW_VISIBLE()
         methodret "always"
     methodend
     rem /**
-    rem  * @return constant value which defines that group panel must be shown only when grouping
+    rem  * Constant value which defines that group panel must be shown only when grouping
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_GROUPPANEL_SHOW_ONGROUPING()
         methodret "onlyWhenGrouping"
     methodend
     rem /**
-    rem  * @return constant value which defines that group panel must always be hidden
+    rem  * Constant value which defines that group panel must always be hidden
+    rem  * 
+    rem  * @return BBjString
     rem  */
     method public static BBjString GRID_GROUPPANEL_SHOW_HIDDEN()
         methodret "never"
@@ -1020,10 +1260,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         REM         if #RS! <> null() or #URL$>"" then
         REM             #render()
         REM         FI
-        
         if(#getBlockRenderToReady() = 1) then
             #render()
-        fi
+        FI
+
         it! = #backlog!.iterator()
         while it!.hasNext()=BBjAPI.TRUE
             s$=str(it!.next())
@@ -1140,6 +1380,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Sets the foreground color for a column
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color!  the color for the column
     rem  */
@@ -1149,6 +1392,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Sets the foreground color for a column
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjString color$ Valid CSS color
     rem  *
@@ -1160,6 +1406,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Sets the background color of a column
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color!  The color for the column
     rem  */
@@ -1169,6 +1418,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Sets the background color of a column
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color$  Valid CSS color
     rem  *
@@ -1180,6 +1432,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Sets the default alignment for a column
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjString field! The field name of the column definition
     rem  * @param BBjNumber align! The column alignment
     rem  *
@@ -1197,6 +1452,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Sets the default column width for all columns
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjNumber width! The column width
     rem  */
     method public void setColumnWidth(BBjNumber width!)
@@ -1204,7 +1462,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Sets the width of a column
-    rem  *
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * <br>
     rem  * <b>Note:</b> Unline setting the width in the column defintion , this method will update a column width without
     rem  * a full rerender.
     rem  *
@@ -1220,7 +1482,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Pin a column of the grid to the left or the right margin
     rem  *
-    rem  * <b>Note:</b> This method will pin a column without a full rerender. even after the grid is renderer
+    rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjString field$ The field name of the column
     rem  * @param BBjString pin$  The pin direction ("right" or "left")
@@ -1239,6 +1501,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Change column position
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjString field$ The field name of the column
     rem  * @param BBjNumber toIndex! The new column position/index
     rem  */
@@ -1247,9 +1511,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript(script$)
     methodend
     rem /**
-    rem  * Enable / Disable column Filters.
-    rem  *
-    rem  * This method updates only the default column defintion , columns can still override this setting individually
+    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion , 
+    rem  * columns can still override this setting individually&#183;
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  *
     rem  * @param BBjNumber enable! When true enable on added columns , disable otherwise
     rem  * @param BBjNumber enableFiltersToolpanel! When true the filters toolpanel will be enabled in the sidebar , disabled otherwise
@@ -1267,10 +1533,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Enable / Disable column Filters.
+    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion , 
+    rem  * columns can still override this setting individually&#183;
     rem  *
-    rem  * This method updates only the default column defintion , columns can still override this setting individually
-    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjNumber enable! When true enable on added columns , disable otherwise
     rem  */
     method public void setEnableFilter(BBjNumber enable!)
@@ -1279,14 +1547,21 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Enable / disable column editing
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjNumber editable! When true all columns will be editable , otherwise disable editing
     rem  */
     method public void setEditable(BBjNumber editable!)
         #getDefaultColumnDefinition().setEditable(editable!)
     methodend
     rem /**
-    rem  * Set the mask of a column using value formatter expression.
+    rem  * Set the mask of a column using value formatter expression&#183;
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br>
+    rem  * 
     rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
     rem  * the column type to determine the correct value formatter (number , date , ...)
     rem  *
@@ -1299,9 +1574,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Set an image list for a given column using BBjGridExWidgetRendererImageRenderer
+    rem  * Set an image list for a given column using BBjGridExWidgetRendererImageRenderer&#183;
     rem  *
-    rem  * <b>Note:</b> This method will override the CellRenderer of the column.
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br>
+    rem  * 
+    rem  * <b>Note:</b> This method will override the CellRenderer of the column&#183;
     rem  * The column has to contain the values "1","2","3" to x to reference the slices in the BBjImage list
     rem  *
     rem  * @param BBjString field! The column's field
@@ -1324,7 +1603,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Set an aggregation function for the passed column field 
+    rem  * Set an aggregation function for the passed column field
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  * 
     rem  * @param BBjString field! The column's field
     rem  * @param BBjString AggFunc! Name of function to use for aggregation. One of [sum,min,max,first,last].
@@ -1332,14 +1615,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void setColumnAggFunc(BBjString field! , BBjString AggFunc!)
         if(#hasColumn(field!)) then
             #getColumn(field!).setAggFunc(AggFunc!)
-        FI        
+        FI
     methodend
     rem /**
-    rem  * Enable row grouping for columns.<br>
+    rem  * Enable row grouping for columns
     rem  * 
-    rem  * <b>Note</b> This method can update row grouping for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addRowGroupColumns(BBjString columns!)
@@ -1348,19 +1632,20 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         it! = list!.iterator()
         count! = 0
         WHILE (it!.hasNext())
-          next! = #getColumn(cvs(it!.next(),128))
-          next!.setRowGroup(1)
-          next!.setEnableRowGroup(1)
-          next!.setRowGroupIndex(count!)
-          count! = count! + 1
+            next! = #getColumn(cvs(it!.next(),128))
+            next!.setRowGroup(1)
+            next!.setEnableRowGroup(1)
+            next!.setRowGroupIndex(count!)
+            count! = count! + 1
         WEND
     methodend
     rem /**
     rem  * Disable row grouping for all columns and enable it for the passed columns
-    rem  * 
-    rem  * <b>Note</b> This method can update row grouping for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void setRowGroupColumns(BBjString columns!)
@@ -1369,64 +1654,68 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
         WHILE (it!.hasNext())
-          next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
-          if(list!.contains(next!.getField())) then
-            next!.setRowGroup(1)
-            next!.setEnableRowGroup(1)
-            next!.setRowGroupIndex(count!)
-            count! = count! + 1          
-          else
-            next!.setRowGroup(0) 
-            next!.setEnableRowGroup(0)
-            next!.setRowGroupIndex(null())
-          fi 
+            next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+
+            if(list!.contains(next!.getField())) then
+                next!.setRowGroup(1)
+                next!.setEnableRowGroup(1)
+                next!.setRowGroupIndex(count!)
+                count! = count! + 1
+            else
+                next!.setRowGroup(0)
+                next!.setEnableRowGroup(0)
+                next!.setRowGroupIndex(null())
+            FI
         WEND
-    methodend    
+    methodend
     rem /**
-    rem  * Disable row grouping for columns.<br>
-    rem  * 
-    rem  * <b>Note</b> This method can update row grouping for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  * Disable row grouping for columns.
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
-    rem  */    
+    rem  */
     method public void removeRowGroupColumns(BBjString columns!)
         #executeScript("gw_removeRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
-          next! = #getColumn(cvs(it!.next(),128))
-          next!.setRowGroup(0)
-          next!.setEnableRowGroup(0)
-          next!.setRowGroupIndex(null())
-        WEND        
+            next! = #getColumn(cvs(it!.next(),128))
+            next!.setRowGroup(0)
+            next!.setEnableRowGroup(0)
+            next!.setRowGroupIndex(null())
+        WEND
     methodend
     rem /**
-    rem  * Enable pivot for columns.<br>
+    rem  * Enable pivot for columns
     rem  * 
-    rem  * <b>Note</b> This method can update pivot for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
-    rem  */       
+    rem  */
     method public void addPivotColumns(BBjString columns!)
         #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         count! = 0
         WHILE (it!.hasNext())
-          next! = #getColumn(cvs(it!.next(),128))
-          next!.setEnablePivot(1)
-          next!.setPivotIndex(count!)
-          count! = count! + 1
+            next! = #getColumn(cvs(it!.next(),128))
+            next!.setEnablePivot(1)
+            next!.setPivotIndex(count!)
+            count! = count! + 1
         WEND
-    methodend 
+    methodend
     rem /**
     rem  * Disable pivot for all columns and enable it for the passed columns
-    rem  * 
-    rem  * <b>Note</b> This method can update pivot for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void setPivotColumns(BBjString columns!)
@@ -1435,69 +1724,73 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
         WHILE (it!.hasNext())
-          next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
-          if(list!.contains(next!.getField())) then
-            next!.setEnablePivot(1)
-            next!.setPivotIndex(count!)
-            count! = count! + 1
-          else 
-            next!.setEnablePivot(0)
-            next!.setPivotIndex(null())
-          fi 
+            next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+
+            if(list!.contains(next!.getField())) then
+                next!.setEnablePivot(1)
+                next!.setPivotIndex(count!)
+                count! = count! + 1
+            else
+                next!.setEnablePivot(0)
+                next!.setPivotIndex(null())
+            FI
         WEND
     methodend
     rem /**
-    rem  * Disable pivot for columns.<br>
+    rem  * Disable pivot for columns.
     rem  * 
-    rem  * <b>Note</b> This method can update pivot for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
-    rem  */    
+    rem  */
     method public void removePivotColumns(BBjString columns!)
         #executeScript("gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
-          next! = #getColumn(cvs(it!.next(),128))
-          next!.setEnablePivot(0)
-          next!.setPivotIndex(null())
-        WEND        
+            next! = #getColumn(cvs(it!.next(),128))
+            next!.setEnablePivot(0)
+            next!.setPivotIndex(null())
+        WEND
     methodend
     rem /**
-    rem  * Enable value for columns.<br>
+    rem  * Enable value for columns
     rem  * 
-    rem  * <b>Note</b> This method can update value for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
-    rem  */       
+    rem  */
     method public void addValueColumns(BBjString columns!)
         #executeScript("gw_addValueColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
-          next! = cvs(it!.next(),128)
-          #getColumn(next!).setEnableValue(1)
+            next! = cvs(it!.next(),128)
+            #getColumn(next!).setEnableValue(1)
         WEND
-    methodend 
+    methodend
     rem /**
-    rem  * Disable value for columns.<br>
-    rem  * 
-    rem  * <b>Note</b> This method can update value for columns after/before the grid is rendered 
-    rem  * on the client
-    rem  * 
+    rem  * Disable value for columns.
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjString columns! A comma separated string of column fields
-    rem  */       
+    rem  */
     method public void removeValueColumns(BBjString columns!)
         #executeScript("removeValueColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
-          next! = cvs(it!.next(),128)
-          #getColumn(next!).setEnableValue(0)
+            next! = cvs(it!.next(),128)
+            #getColumn(next!).setEnableValue(0)
         WEND
-    methodend           
+    methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
@@ -1519,14 +1812,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Add column group
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem * @param BBjString id! The group id
     rem * @param BBjString label! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
     rem * @param BBjNumber marryChildren! Set to 'true' to keep columns in this group beside each other in the grid.
     rem *                                 Moving the columns outside of the group (and hence breaking the group) is not allowed.
     rem * @param BBjString headerClass!  A CSS class to apply
-    rem  *
-    rem  * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem *
+    rem * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
     rem */
     method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label! ,  BBjVector columns! , BBjNumber marryChildren! ,BBjString headerClass! )
         declare BBjGridExWidgetColumnGroup definition!
@@ -1554,6 +1850,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Group Vector of Columns
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem * @param BBjString id! The group id
     rem * @param BBjString label! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
@@ -1568,6 +1867,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Group Vector of Columns
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem * @param BBjString id! The group id
     rem * @param BBjString name! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
@@ -1598,6 +1900,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Set the default label used when a new group is created
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjString label! The column label
     rem  */
     method public void setGroupColumnLabel(BBjString label!)
@@ -1606,6 +1911,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Enable / disable showing row counts beside group labels
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjNumber enabled! When true show row counts , hide otherwise
     rem  */
     method public void setShowGroupChildCount(BBjNumber enabled!)
@@ -1615,6 +1923,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Enable/ disable checkbox selection on groups
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @param BBjNumber enabled! When true enable checkbox selection, disable otherwise
     rem  */
     method public void setShowGroupSelectionCheckbox(BBjNumber enabled!)
@@ -1630,6 +1941,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Alais for <i>resetAllColumns()</i>
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * 
     rem  * @see resetAllColumns()
     rem  */
     method public void clearColumnDefinitions()
@@ -1741,8 +2055,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem ===========================
         options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
         rem Overlays
-        rem =========================== 
-        options!.addProperty("suppressLoadingOverlay",#getSuppressLoadingOverlay().booleanValue(), err=*next)       
+        rem ===========================
+        options!.addProperty("suppressLoadingOverlay",#getSuppressLoadingOverlay().booleanValue(), err=*next)
         options!.addProperty("suppressNoRowsOverlay",#getSuppressNoRowsOverlay().booleanValue(), err=*next)
         options!.addProperty("overlayLoadingTemplate",#getOverlayLoadingTemplate(), err=*next)
         options!.addProperty("overlayNoRowsTemplate",#getOverlayNoRowsTemplate(), err=*next)
@@ -1782,31 +2096,32 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * The method will compose the grid config and send it to the client for a full rerender.
     rem  * You can use this method to force the client render after you update a setup configuration (ex: column defintions)
     rem  */
-    method public void render()        
+    method public void render()
         if(#getBlockRenderToReady() = 1) then
             if(!#IsReady!) then
                 methodret
-            fi
-        fi        
+            FI
+        FI
+
         gson! = new Gson()
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
-
         #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
-        
-REM         if(#getChunkRendering() = 0) then
-REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
-REM         else
-REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
-REM 
-REM             if(#getRS() <>  null() AND #getRS().size() > 0) then
-REM                 #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
-REM             FI
-REM         FI
+        REM         if(#getChunkRendering() = 0) then
+        REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
+        REM         else
+        REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
+        REM
+        REM             if(#getRS() <>  null() AND #getRS().size() > 0) then
+        REM                 #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
+        REM             FI
+        REM         FI
     methodend
     rem /**
     rem  * Rerender the column defintions on the client.
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * The method will collect the new changes in columns and column groups and force the client to reflect the
     rem  * change.
     rem  */
@@ -1916,11 +2231,13 @@ REM         FI
     rem /**
     rem  * Feed the grid with a new rows set
     rem  *
-    rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full rerender.
-    rem  * The column defintion will not be synced from the passed ResultSet in this case.
+    rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full rerender&#183;
+    rem  * The column defintion will not be synced from the passed ResultSet in this case&#183;
     rem  *
-    rem  * Use this method in case you want to replace the whole data in the grid at once.
+    rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param ResultSet rs! ResultSet with the data
     rem  *
     rem  * @see setData()
@@ -1937,6 +2254,8 @@ REM         FI
     rem /**
     rem  * Update row data
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  */
@@ -1956,6 +2275,8 @@ REM         FI
     rem /**
     rem  * Add new row
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber index! The insert index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  */
@@ -1973,6 +2294,8 @@ REM         FI
     rem /**
     rem  * Add new row
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param DataRow row! The DataRow object which contains the update
     rem  */
     method public void addRow(DataRow row!)
@@ -1989,6 +2312,8 @@ REM         FI
     rem /**
     rem  * Remove row from grid by index
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber index! The row index
     rem  */
     method public void removeRow(BBjNumber index!)
@@ -2005,6 +2330,8 @@ REM         FI
     methodend
     rem /**
     rem  * Clear row data (Empty the grid )
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void clearRowsData()
         #RS! = new ResultSet()
@@ -2014,6 +2341,8 @@ REM         FI
     rem /**
     rem  * Apply columns state
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjGridExWidgetState state! : the state object
     rem  */
     method public void setColumnState(BBjGridExWidgetState state!)
@@ -2022,6 +2351,8 @@ REM         FI
     rem /**
     rem  * Get Column state
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @returns BBjGridExWidgetState
     rem  */
     method public BBjGridExWidgetState getColumnState()
@@ -2073,6 +2404,8 @@ REM         FI
     rem /**
     rem  * Add Style block
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param selector$ : Css Selector
     rem  * @param rules! : Css Rules object as json object
     rem  */
@@ -2082,6 +2415,8 @@ REM         FI
     rem /**
     rem  * Add Style block
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param selector$ : Css Selector
     rem  * @param rules! : Css Rules object as string
     rem  */
@@ -2091,6 +2426,8 @@ REM         FI
     rem /**
     rem  * Remove Style Block
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param selector$ : Css Selector
     rem  */
     method public void removeStyle(BBjString selector$)
@@ -2099,9 +2436,11 @@ REM         FI
     rem /**
     rem  * Set the grid theme
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjString theme$
     rem  *
-    rem  * @see BBjGridExWidget.getThemes()
+    rem  * @see getThemes()
     rem  */
     method public void setTheme(BBjString theme$)
         if pos(theme$="dark#fresh#blue#bootstrap#material#balham#balham-dark")>0 then
@@ -2115,9 +2454,11 @@ REM         FI
         FI
     methodend
     rem /**
-    rem  * Get themes
-    rem  *
     rem  * Get the grid supported themes
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @return BBjVector array of theme names
     rem  */
     method public BBjVector getThemes()
         v! = new BBjVector()
@@ -2132,6 +2473,8 @@ REM         FI
     methodend
     rem /**
     rem  * select all rows
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void selectAll()
         script$="gw_selectAll('" + #GRIDID$ + "',0);"
@@ -2140,6 +2483,8 @@ REM         FI
     rem /**
     rem  * select all rows
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBJNumber x!: 0 select all , 1 select all filtered
     rem  */
     method public void selectAll(BBjNumber x!)
@@ -2149,6 +2494,8 @@ REM         FI
     methodend
     rem /**
     rem  * deselect all rows
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void deselectAll()
         script$="gw_deselectAll('" + #GRIDID$ + "',0);"
@@ -2157,6 +2504,8 @@ REM         FI
     rem /**
     rem  * deselect all rows
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBJNumber x!: 0 deselect all , 1 deselect all filtered
     rem  */
     method public void deselectAll(BBjNumber x!)
@@ -2166,6 +2515,8 @@ REM         FI
     rem /**
     rem  * Select a row
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBJNumber x!: the row index to select
     rem  */
     method public void setSelectedRow(BBjNumber x!)
@@ -2176,6 +2527,8 @@ REM         FI
     rem /**
     rem  * Select verctor of rows
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBJNumber x!: vector of row indices to select
     rem  */
     method public void setSelectedRows(BBjVector x!)
@@ -2197,14 +2550,18 @@ REM         FI
         #executeScript(script$)
     methodend
     rem /**
-    rem  *  Expand all groups.
+    rem  * Expand all groups
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void expandAll()
         script$="gw_expandAll('" + #GRIDID$ +"');"
         #executeScript(script$)
     methodend
     rem /**
-    rem  *  collapse all groups.
+    rem  * collapse all groups
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void collapseAll()
         script$="gw_collapseAll('" + #GRIDID$ +"');"
@@ -2213,10 +2570,12 @@ REM         FI
     rem /**
     rem  * Set visible row
     rem  *
-    rem  * Ensures the row index is visible by vertically scrolling the grid.
-    rem  * The valid values for positions are {'top', 'middle', 'bottom'}.
+    rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
+    rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
     rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber index!: the row index
     rem  * @param BBjString position!: the scrolling poistion
     rem  *
@@ -2229,10 +2588,10 @@ REM         FI
         #executeScript(script$)
     methodend
     rem /**
-    rem  * Set visible column
-    rem  *
-    rem  * Ensures the column is visible, scrolling the table if needed.
-    rem  *
+    rem  * Set visible column&#183; Ensures the column is visible, scrolling the table if needed&#183;
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBJString columnid!: the column id
     rem  */
     method public void setVisibleColumn(BBjString columnId!)
@@ -2241,12 +2600,17 @@ REM         FI
     methodend
     rem /**
     rem  * set the grid to scroll horizontally or fit into the client area
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void setFitToGrid()
         ret! = #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"')")
     methodend
     rem /**
     rem  * setSize - set the size of the control
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber w! - width
     rem  * @param BBjNumber h! - height
     rem  */
@@ -2265,6 +2629,8 @@ REM         FI
     rem /**
     rem  * Set all rows height
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber height! - the new row height
     rem  */
     method public void setRowHeight(BBjNumber height!)
@@ -2274,6 +2640,8 @@ REM         FI
     rem /**
     rem  * Set the given row height
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
     rem  */
@@ -2283,6 +2651,9 @@ REM         FI
     rem /**
     rem  * Set the grid icons
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  * 
     rem  * @param BBjString json! The icons as a json object
     rem  */
     method public void setIcons(BBjString json!)
@@ -2293,17 +2664,24 @@ REM         FI
     methodend
     rem /**
     rem  * Enable / disable pivot mode
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
     rem  * 
     rem  * @param BBjNumber mode! when true , the pivot mode will be enabled , disabled otherwise
     rem  */
     method public void setPivotMode(BBjNumber mode!)
         #PivotMode! = mode!
+
         if(#IsReady!) then
             #executeScript("gw_setPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
-        fi
+        FI
     methodend
     rem /**
-    rem  * Check if pivot mode is enabled or disabled 
+    rem  * Check if pivot mode is enabled or disabled
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
     rem  * 
     rem  * @return BBjNumber 1 when pivot mode is enabled , 0 otherwise
     rem  */
@@ -2311,13 +2689,15 @@ REM         FI
         if(#IsReady!) then
             mode! = #executeScript("gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
             #PivotMode! = num(mode!)
-        fi  
-        
-        methodret #PivotMode!  
+        FI
+
+        methodret #PivotMode!
     methodend
     rem /**
     rem  * Perform throw columns search
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber filter : filter as a string
     rem  */
     method public void setQuickFilter(BBjNumber filter)
@@ -2326,6 +2706,8 @@ REM         FI
     rem /**
     rem  * Perform throw columns search
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber filter : filter as number
     rem  */
     method public void setQuickFilter(BBjString filter!)
@@ -2333,12 +2715,16 @@ REM         FI
     methodend
     rem /**
     rem  * Start Next Cell Editing
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToNextCell()
         #executeScript("gw_editNextCell('"+ #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Move to previous cell
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToPreviousCell()
         #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
@@ -2346,6 +2732,8 @@ REM         FI
     rem /**
     rem  * Start Cell Editing
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber row!: The row number
     rem  * @param BBjString colId!: The column ID
     rem  */
@@ -2355,6 +2743,8 @@ REM         FI
     rem /**
     rem  * Start Cell Editing
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber row!: The row number
     rem  * @param BBjString colId$: The column ID
     rem  * @param BBjNumber char$: key chars to press on editors when editors support it
@@ -2365,6 +2755,8 @@ REM         FI
     rem /**
     rem  * Start Cell Editing
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber row!: The row number
     rem  * @param BBjString colId$: The column ID
     rem  * @param BBjNumber key!: key codes to press on editors when editors support it
@@ -2374,21 +2766,24 @@ REM         FI
     methodend
     rem /**
     rem  * Start next Cell Editing
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void startNextCellEditing()
         #executeScript("gw_editNextCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Start previous Cell Editing
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void startPreviousCellEditing()
         #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Stop Editing and accept any changes
-    rem  */
-    rem /**
     rem  * Stop editing and discard changes
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void stopEditing()
         #executeScript("gw_stopEditing('" + #GRIDID$ + "',0)")
@@ -2396,15 +2791,21 @@ REM         FI
     rem /**
     rem  * Stop Editing
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber cancel!: 1 = discard changes , 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
         #executeScript("gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
     methodend
     rem /**
-    rem  * If true, then row group, pivot and value aggregation will be read only from the Ui.
+    rem  * If true, then row group, pivot and value aggregation will be read only from the Ui&#183;
     rem  * The grid will display what values are used for each, but will not allow the use to change the selection
     rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @param BBjNumber readonly! when true disable , enable otherwise
     rem  */
     method public void setFunctionsReadOnly(BBjNumber readonly!)
@@ -2412,7 +2813,9 @@ REM         FI
         #executeScript("gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
     methodend
     rem /**
-    rem  * @return one if ag grid is in the editing mode , 0 otherwise
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @return BBjNumber One if ag grid is in the editing mode , 0 otherwise
     rem  */
     method public BBjNumber isEditing()
         return #Editing
@@ -2420,6 +2823,8 @@ REM         FI
     rem /**
     rem  * Get the current selected row
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @return BBjGridExWidgetClientRowModel The selected row if any , null() otherwise
     rem  */
     method public BBjGridExWidgetClientRowModel getSelectedRow()
@@ -2433,6 +2838,8 @@ REM         FI
     rem /**
     rem  * Get Array of selected rows
     rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
     rem  * @return BBjVector A vector filled with the selected rows
     rem  */
     method public BBjVector getSelectedRows()
@@ -2460,22 +2867,28 @@ REM         FI
     methodend
     rem /**
     rem  * Show loading overlay
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showLoadingOverlay()
         #executeScript("gw_showLoadingOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Show 'no rows' overlay
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showNoRowsOverlay()
         #executeScript("gw_showNoRowsOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Clear all overlays
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
     rem  */
     method public void hideOverlay()
         #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
-    methodend         
+    methodend
     rem /**
     rem  * Excute script
     rem  *
@@ -2606,3 +3019,4 @@ REM         FI
     methodend
 
 classend
+
