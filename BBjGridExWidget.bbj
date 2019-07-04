@@ -756,7 +756,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field protected Boolean IsReady! = BBjAPI.FALSE
     field protected BBjVector backlog! = new BBjVector()
     field protected BBjString URL$
-    field protected BBjNumber Editing! = 0
     field protected BBjNumber newW!
     field protected BBjNumber newH!
     rem /**
@@ -1303,22 +1302,18 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 #onCellEvent(detail$,#ON_GRID_CELL_DOUBLE_CLICK())
                 break
             case "gw.cellEditingStarted"
-                #Editing! = 1
                 #onCellEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
                 break
             case "gw.cellEditingStopped"
-                #Editing! = 0
                 #onCellEvent(detail$,#ON_GRID_CELL_EDITING_STOPPED())
                 break
             case "gw.cellValueChanged"
                 #onCellEvent(detail$,#ON_GRID_CELL_VALUE_CHANGED())
                 break
             case "gw.rowEditingStarted"
-                #Editing! = 1
                 #onRowEditing(detail$,#ON_GRID_ROW_EDITING_STARTED())
                 break
             case "gw.rowEditingStopped"
-                #Editing! = 0
                 #onRowEditing(detail$,#ON_GRID_ROW_EDITING_STOPPED())
                 break
             case "gw.stateChanged"
@@ -1326,7 +1321,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 break
             case "gw.contextmenu"
                 #onContextmenuEvent(detail$)
-                break
+                break   
         swend
     methodend
     rem /**
@@ -2811,14 +2806,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void setFunctionsReadOnly(BBjNumber readonly!)
         #FunctionsReadOnly! = readonly!
         #executeScript("gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
-    methodend
-    rem /**
-    rem  * <br><b><small>#API</small></b>
-    rem  * 
-    rem  * @return BBjNumber One if ag grid is in the editing mode , 0 otherwise
-    rem  */
-    method public BBjNumber isEditing()
-        return #Editing
     methodend
     rem /**
     rem  * Get the current selected row
