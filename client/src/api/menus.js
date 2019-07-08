@@ -25,7 +25,7 @@ export function gw_getContextMenu(gridId, params) {
       gw_sendEvent(gw_getGrid(gridId).options.context, {
         'type': 'gw.contextmenu',
         'detail': JSON.stringify({ row: node, column: colId, value, id })
-      },[id]);
+      }, id);
     };
   };
 
