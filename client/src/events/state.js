@@ -9,7 +9,7 @@
 import { gw_sendEvent, gw_debounce } from "./utilities";
 import { gw_getGrid } from "api/utilities";
 import {
-	GW_EVENT_GRID_STATE_CHANGE
+  GW_EVENT_GRID_STATE_CHANGE
 } from "./constants";
 
 /**
@@ -23,36 +23,36 @@ import {
  */
 export function gw_onReadyEvent(id, e) {
 
-	// register state debounce monitor 
-	const stateDebounce = gw_debounce(changeEvent => {
+  // register state debounce monitor 
+  const stateDebounce = gw_debounce(changeEvent => {
 
-		// We skip the first render state changes
-		// if (!gw_getGrid(id).hasOwnProperty('isFirstRender')) {
-		// 	gw_getGrid(id).isFirstRender = true;
-		// 	return;
-		// }
+    // We skip the first render state changes
+    // if (!gw_getGrid(id).hasOwnProperty('isFirstRender')) {
+    // 	gw_getGrid(id).isFirstRender = true;
+    // 	return;
+    // }
 
-		gw_onStateChanged(id, changeEvent);
-	}, 500);
+    gw_onStateChanged(id, changeEvent);
+  }, 500);
 
-	[
-		'sortChanged',
-		'filterChanged',
-		'columnVisible',
-		'columnPinned',
-		'columnResized',
-		'columnMoved',
-		'newColumnsLoaded',
-		'gridColumnsChanged',
-		'displayedColumnsChanged',
-		'virtualColumnsChanged',
-		'columnEverythingChanged',
-		//'gridSizeChanged',
-		'expandOrCollapseAll',
-		//'toolPanelVisibleChanged'
-	].forEach(event => {
-		gw_getGrid(id).options.api.addEventListener(event, stateDebounce);
-	});
+  [
+    'sortChanged',
+    'filterChanged',
+    'columnVisible',
+    'columnPinned',
+    'columnResized',
+    'columnMoved',
+    'newColumnsLoaded',
+    'gridColumnsChanged',
+    'displayedColumnsChanged',
+    'virtualColumnsChanged',
+    'columnEverythingChanged',
+    //'gridSizeChanged',
+    'expandOrCollapseAll',
+    //'toolPanelVisibleChanged'
+  ].forEach(event => {
+    gw_getGrid(id).options.api.addEventListener(event, stateDebounce);
+  });
 }
 
 /**
@@ -67,12 +67,12 @@ export function gw_onReadyEvent(id, e) {
  * @fires gw.stateChanged
  */
 export function gw_onStateChanged(id, e) {
-	gw_sendEvent(
-		gw_getGrid(id).options.context,
-		{
-			'type': 'gw.stateChanged',
-			'detail': []
-		},
-		[GW_EVENT_GRID_STATE_CHANGE]
-	);
+  gw_sendEvent(
+    gw_getGrid(id).options.context,
+    {
+      'type': 'gw.stateChanged',
+      'detail': []
+    },
+    GW_EVENT_GRID_STATE_CHANGE
+  );
 }

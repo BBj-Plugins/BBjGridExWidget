@@ -16,6 +16,17 @@ import {
   GW_EVENT_ROW_EDITING_STOPPED
 } from "./constants";
 
+const CELL_EDITING_EVENTS_MAP = {
+  'cellEditingStarted'  : GW_EVENT_CELL_EDITING_STARTED,
+  'cellEditingStopped'  : GW_EVENT_CELL_EDITING_STOPPED,
+  'cellValueChanged'  : GW_EVENT_CELL_VALUE_CHANGED,
+};
+
+const ROW_EDITING_EVENTS_MAP = {
+  'rowEditingStarted'  : GW_EVENT_ROW_EDITING_STARTED,
+  'rowEditingStopped'  : GW_EVENT_ROW_EDITING_STOPPED,
+};
+
 /**
  * An handler for the grid `cellEditingStarted` , `cellEditingStopped` and 
  * `cellValueChanged` events
@@ -36,7 +47,7 @@ export function gw_onCellEditingEvent(id, e) {
   const value = gw_escape(e.newValue) || gw_escape(e.value);
   const oldValue = gw_escape(e.oldValue) || gw_escape(e.newValue) || gw_escape(e.value);
 
-  if (value === oldValue) return;
+  //if (value === oldValue) return;
 
   const parsed = gw_parseNodeFromEvent(e);
   const type = e.type;
@@ -46,7 +57,7 @@ export function gw_onCellEditingEvent(id, e) {
     gw_sendEvent(
       gw_getGrid(id).options.context,
       {
-        'type': `gw.${e.type}`,
+        'type': `gw.${type}`,
         'detail': JSON.stringify({
           row: parsed,
           value,
@@ -54,11 +65,7 @@ export function gw_onCellEditingEvent(id, e) {
           column: colId
         })
       },
-      [
-        GW_EVENT_CELL_EDITING_STARTED,
-        GW_EVENT_CELL_EDITING_STOPPED,
-        GW_EVENT_CELL_VALUE_CHANGED
-      ]
+      CELL_EDITING_EVENTS_MAP[type]
     );
   }
 }
@@ -79,16 +86,14 @@ export function gw_onRowEditingEvent(id, e) {
   const parsed = gw_parseNodeFromEvent(e);
 
   if (parsed) {
+    const type = e.type;
     gw_sendEvent(
       gw_getGrid(id).options.context,
       {
         'type': `gw.${e.type}`,
         'detail': JSON.stringify(parsed)
       },
-      [
-        GW_EVENT_ROW_EDITING_STARTED,
-        GW_EVENT_ROW_EDITING_STOPPED
-      ]
+      ROW_EDITING_EVENTS_MAP[type]
     );
   }
 }

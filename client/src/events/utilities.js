@@ -30,25 +30,19 @@ export function gw_debounce(func, wait, immediate) {
  * The function will trigger a custom click event on the `event-bridge-${id}` div
  * then the div will use basisDispatchCustomEvent to dispatch the event to BBj
  * 
- * @param {string} id the grid id
+ * @param {Array} context the grid's context
  * @param {*} payload the event payload
+ * @param {String} eventId the event's id 
  */
-export function gw_sendEvent(context, payload = {}, interests = []) {
+export function gw_sendEvent(context, payload = {}, eventId = []) {
   const registeredInterests = context.interests || [];
 
-  if (registeredInterests.length < 0) return;
+  if (registeredInterests.includes(eventId)) {
+    const div = gw_getDocument().getElementById(`event-bridge-${context.id}`);
+    const event = new CustomEvent('click');
 
-  for (let x = 0; x < interests.length; x++) {
-    const interest = interests[x];
-
-    if (registeredInterests.includes(interest)) {
-      const div = gw_getDocument().getElementById(`event-bridge-${context.id}`);
-      const event = new CustomEvent('click');
-
-      event.payload = payload;
-      div.dispatchEvent(event);
-      break;
-    }
+    event.payload = payload;
+    div.dispatchEvent(event);
   }
 }
 
