@@ -1,3 +1,12 @@
+## [0.97.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.97.0...0.97.1) (2019-07-08)
+
+
+### Bug Fixes
+
+* gw_sendEvent is firing events for none registred interests and skiping registered ones ([947c071](https://github.com/BBj-Plugins/BBjGridExWidget/commit/947c071))
+
+
+
 # [0.97.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.96.0...0.97.0) (2019-07-04)
 
 
