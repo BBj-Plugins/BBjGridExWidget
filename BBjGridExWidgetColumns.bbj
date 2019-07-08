@@ -505,11 +505,11 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem /**
     rem  * The default dates mask to use&#183; by default <b>%Dz&#183;%Mz&#183;%Yd</b>
     rem  */
-    field public BBjString DefaultDatesMask! = "%Dz&#183;%Mz&#183;%Yd"
+    field public BBjString DefaultDatesMask! = "%Dz.%Mz.%Yd"
     rem /**
     rem  * The default timestamps mask to use&#183; by defualt <b>%Dz&#183;%Mz&#183;%Yl %Hz:%mz:%sz</b>
     rem  */
-    field public BBjString DefaultTimestampsMask! = "%Dz&#183;%Mz&#183;%Yl %Hz:%mz:%sz"
+    field public BBjString DefaultTimestampsMask! = "%Dz.%Mz.%Yl %Hz:%mz:%sz"
     rem /**
     rem  * Icons to use inside the column instead of the grid's default icons&#183;
     rem  *
