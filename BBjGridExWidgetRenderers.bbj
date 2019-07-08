@@ -186,12 +186,16 @@ class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidget
     rem  */
     field public BBjNumber Checkbox! = null()
     rem /**
+    rem  * Provide an inner renderer
+    rem  */
+    field public BBjGridExWidgetRendererInterface InnerRenderer! = null()
+    rem /**
     rem  * Provide a footer value getter expression
     rem  */
     field public BBjGridExWidgetExpressionInterface FooterValueGetterExpression! = null()
     rem /**
     rem  * Construct new BBjGridExWidgetRendererGroupCellRenderer
-    rem  * 
+    rem  *
     rem  * @param BBjGridExWidgetExpressionInterface footerValueGetterExpression! an expression
     rem  */
     method public BBjGridExWidgetRendererGroupCellRenderer(BBjGridExWidgetExpressionInterface footerValueGetterExpression!)
@@ -199,15 +203,15 @@ class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidget
     methodend
     rem /**
     rem  * Construct new BBjGridExWidgetRendererGroupCellRenderer
-    rem  * 
+    rem  *
     rem  * @param BBjString footerValueGetterExpression! an expression
     rem  */
     method public BBjGridExWidgetRendererGroupCellRenderer(BBjString footerValueGetterExpression!)
         #setFooterValueGetterExpression(footerValueGetterExpression!)
-    methodend    
+    methodend
     rem /**
     rem  * Create a BBjGridExWidgetExpression from string and set it a footer value getter
-    rem  *  
+    rem  *
     rem  * @param BBjString expression! Javascript expression
     rem  */
     method public void setFooterValueGetterExpression(BBjString expression!)
@@ -230,6 +234,20 @@ class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidget
         json!.addProperty("suppressDoubleClickExpand" , #getSuppressDoubleClickExpand().booleanValue(),err=*next)
         json!.addProperty("checkbox" , #getCheckbox().booleanValue(),err=*next)
         json!.addProperty("footerValueGetter" , #getFooterValueGetterExpression().toString(),err=*next)
+
+        if(#getInnerRenderer() <> null()) then
+            json!.addProperty("innerRenderer" , #getInnerRenderer().RENDERER_NAME(),err=*next)
+
+            declare JsonObject innerJson!
+
+            innerJson! = #getInnerRenderer().getAsJsonObject()
+            it! = innerJson!.entrySet().iterator()
+            WHILE (it!.hasNext())
+                next! = it!.next()
+                json!.addProperty(str(next!.getKey()) , str(next!.getValue()),err=*next)
+            WEND
+        FI
+
         methodret json!
     methodend
 
