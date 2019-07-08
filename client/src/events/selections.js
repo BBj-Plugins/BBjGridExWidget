@@ -15,6 +15,11 @@ import {
   GW_EVENT_CELL_DOUBLE_CLICK
 } from "./constants";
 
+const CELL_CLICKING_EVENTS_MAP = {
+  'cellClicked': GW_EVENT_CELL_CLICK,
+  'cellDoubleClicked': GW_EVENT_CELL_DOUBLE_CLICK,
+};
+
 /**
  * An handler for the grid `rowDoubleClicked` event
  * 
@@ -30,7 +35,7 @@ export function gw_onRowDoubleClicked(e) {
   gw_sendEvent(context, {
     'type': 'gw.rowDoubleClick',
     'detail': ''
-  }, [GW_EVENT_ROW_DOUBLE_CLICK]);
+  }, GW_EVENT_ROW_DOUBLE_CLICK);
 }
 
 /**
@@ -46,7 +51,7 @@ export function gw_onSelectionChanged(e) {
   gw_sendEvent(context, {
     'type': 'gw.rowSelect',
     'detail': ''
-  }, [GW_EVENT_ROW_CLICK]);
+  }, GW_EVENT_ROW_CLICK);
 }
 
 /**
@@ -65,6 +70,7 @@ export function gw_onCellClickEvent(id, e) {
   const parsed = gw_parseNodeFromEvent(e);
 
   if (parsed) {
+    const type = e.type;
     gw_sendEvent(gw_getGrid(id).options.context, {
       'type': `gw.${e.type}`,
       'detail': JSON.stringify({
@@ -73,6 +79,6 @@ export function gw_onCellClickEvent(id, e) {
         oldValue: gw_escape(e.value),
         column: e.column.colId
       })
-    }, [GW_EVENT_CELL_CLICK, GW_EVENT_CELL_DOUBLE_CLICK]);
+    }, CELL_CLICKING_EVENTS_MAP[type]);
   }
 }
