@@ -6,6 +6,7 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererCustomHTML
 use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
 use com.basiscomponents.db.ResultSet
 
@@ -25,15 +26,30 @@ ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 grid!.setGroupDefaultExpanded(0)
-grid!.setTreeData(1)
-grid!.setDataPathTemplate("<% return data.filepath.split(""\" + java.io.File.separator + """); %>")
 grid!.setGroupColumnLabel("Files")
 grid!.setShowGroupChildCount(0)
+
+REM Enable tree mode and load a lodash template to convert the "filepath" property in the rows data
+REM to an JS array which will be used to compose the tree hierarchy
+grid!.setTreeData(1)
+grid!.setDataPathTemplate("<% return data.filepath.split(""\" + java.io.File.separator + """); %>")
+
+REM load a lodash template and replace the icons in the template with the
+REM base64 strings for the selected images on the disk
+template! = BBjGridExWidgetDemoUtilities.reasAssestAsString("templates/tree-icons-custom-template.tpl")
+template! = template!.replaceAll("__FILE_ICON", BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/file.png"))
+template! = template!.replaceAll("__FOLDER_ICON",BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/folder.png"))
+innerRenderer! = new BBjGridExWidgetRendererCustomHTML(template!)
+
+REM get instnace of the default group's cell renderer (BBjGridExWidgetRendererGroupCellRenderer) and
+REM set its inner renderer.
+groupRenderer! = grid!.getAutoGroupColumnDefinition().getCellRenderer()
+groupRenderer!.setInnerRenderer(innerRenderer!)
+
 grid!.setCallback(grid!.ON_GRID_CELL_DOUBLE_CLICK(),"onSelectionEvent")
 
 gosub main
 process_events
-
 rem /**
 rem  * Retrive the data from the database and configure the grid
 rem  */
@@ -41,14 +57,14 @@ main:
   declare ResultSet rs!
   
   grid!.setData(BBjGridExWidgetDemoUtilities.buildResultSetFromDir("BBjGridExWidget/Demo"))
-  grid!.getColumn("filepath").setHidden(1) 
+  grid!.getColumn("filepath").setHidden(1)
   grid!.setFitToGrid()
   grid!.getSidebar().setVisible(0)
 return
 
 rem /**
 rem  * Set a quick filter on the grid to achieve through data search.
-rem  * 
+rem  *
 rem  * Note : this filter is applied on the client data not the passed ResultSet
 rem  */
 onSearchButton:
@@ -59,15 +75,15 @@ return
 rem /**
 rem  * pormpt the current selected file
 rem  */
-onSelectionEvent: 
-    row! = grid!.getSelectedRow()    
-    dataRow! = row!.asDataRow()
-    let x=MSGBOX(str(dataRow!.getFieldAsString("filepath")) , 0 , "Selected File")
-return    
+onSelectionEvent:
+  row! = grid!.getSelectedRow()
+  dataRow! = row!.asDataRow()
+  let x=MSGBOX(str(dataRow!.getFieldAsString("filepath")) , 0 , "Selected File")
+return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()
