@@ -721,6 +721,22 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjString OverlayNoRowsTemplate! = null()
     rem /**
+    rem  * Enable / Disable Tree Data mode
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  */
+    field public BBjNumber TreeData! = null()  
+    rem /**
+    rem  * A string template which will be complied on the client to return an array 
+    rem  * for the tree hierarchy.
+    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b> 
+    rem  */
+    field public BBjString DataPathTemplate! = null()
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -2012,7 +2028,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem Grouping & Pivoting
         rem ===========================
         options!.addProperty("groupUseEntireRow",#getGroupUseEntireRow().booleanValue() , err=*next)
-        options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().booleanValue() , err=*next)
+        options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().longValue(), err=*next)
         options!.        add("autoGroupColumnDef",#getAutoGroupColumnDefinition().getAsJsonObject(), err=*next)
         options!.addProperty("groupMultiAutoColumn",#getGroupMultiAutoColumn().booleanValue() , err=*next)
         options!.addProperty("groupSuppressRow",#getGroupSuppressRow().booleanValue() , err=*next)
@@ -2055,6 +2071,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressNoRowsOverlay",#getSuppressNoRowsOverlay().booleanValue(), err=*next)
         options!.addProperty("overlayLoadingTemplate",#getOverlayLoadingTemplate(), err=*next)
         options!.addProperty("overlayNoRowsTemplate",#getOverlayNoRowsTemplate(), err=*next)
+        rem Tree Data
+        rem ===========================
+        options!.addProperty("treeData",#getTreeData().booleanValue(), err=*next)
         rem Miscellaneous
         rem ===========================
         options!.addProperty("suppressMiddleClickScrolls",#getSuppressMiddleClickScrolls().booleanValue() , err=*next)
@@ -2082,6 +2101,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!, err=*next)
         context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
         context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
+        context!.addProperty("getDataPath",#getDataPathTemplate(), err=*next)
         options!.add("context",context!)
         methodret options!
     methodend

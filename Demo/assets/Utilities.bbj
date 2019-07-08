@@ -1,5 +1,10 @@
+use java.io.File
+use java.util.ArrayList
+use com.google.gson.JsonObject
+use com.google.gson.Gson
+use com.basiscomponents.db.ResultSet
 REM /**
-REM  * Server Utilities Used in Demos
+REM  * Several Utilities Used in Demos
 REM  *
 REM  * @author Hyyan Abo Fakher
 REM  */
@@ -12,6 +17,52 @@ class public BBjGridExWidgetDemoUtilities
         read record (ch,siz=5512000)template$
         close (ch)
         methodret template$
+    methodend
+
+    method public static ArrayList buildArrayListFromDir(BBjString root$, BBjString sub!)
+        rootResolved! = BBjAPI().getFileSystem().resolvePath(root$)
+        path! = iff(sub! > "" , sub! , rootResolved!)
+        
+        data! = new ArrayList()
+        
+        folder! = new File(path!)
+        list! = folder!.list()
+        length! = list!.length - 1
+        
+        files! = new ArrayList()
+        dirs! = new ArrayList()
+        
+        FOR i = 0 TO length!
+            current! = new File(path! + "/" + list![i])
+
+            if(!current!.isDirectory()) then
+                files!.add(list![i])
+            else
+                dirs!.add(list![i])
+            FI
+        NEXT i
+
+        dirs!.addAll(files!)
+        it! = dirs!.iterator()
+        WHILE (it!.hasNext())
+            current! = new File(path! + "/" + it!.next())
+
+            if(!current!.isDirectory()) then
+                row! = new JsonObject()
+                row!.addProperty("filepath", current!.getAbsolutePath().substring(len(rootResolved!) + 1))
+                row!.addProperty("size", current!.length())
+                data!.add(row!)
+            else
+                data!.addAll(BBjGridExWidgetDemoUtilities.buildArrayListFromDir(root$ , current!.getAbsolutePath()))
+            FI
+        WEND
+
+        methodret data!
+    methodend
+
+    method public static ResultSet buildResultSetFromDir(BBjString path$)
+        json! = new Gson().toJson(BBjGridExWidgetDemoUtilities.buildArrayListFromDir(path$,""))
+        methodret ResultSet.fromJson(json!)
     methodend
 
 classend
