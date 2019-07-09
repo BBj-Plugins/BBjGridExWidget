@@ -30,7 +30,7 @@ ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,wnd!.getWidth(),wnd!.getHeight() - 40)
 grid!.setGroupDefaultExpanded(0)
-grid!.setGroupColumnLabel("Files")
+grid!.setGroupColumnLabel("BBjGridExWidget Demo")
 grid!.setShowGroupChildCount(0)
 grid!.setTheme("balham-dark")
 
