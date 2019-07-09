@@ -50,7 +50,7 @@ rem  * load a lodash template and replace the icons in the template with base64 
 rem  * on the disk. then we create a custom html renderer. the renderer will be used inside the default group renderer
 rem  * (BBjGridExWidgetRendererGroupCellRenderer).
 rem  */
-template! = BBjGridExWidgetDemoUtilities.reasAssestAsString("templates/tree-icons-custom-template.tpl")
+template! = BBjGridExWidgetDemoUtilities.readAssetsAsString("templates/tree-icons-custom-template.tpl")
 template! = template!.replaceAll("__FILE_ICON", BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/file.png"))
 template! = template!.replaceAll("__FOLDER_ICON",BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/folder.png"))
 

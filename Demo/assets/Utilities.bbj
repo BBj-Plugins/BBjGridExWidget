@@ -10,7 +10,7 @@ REM  * @author Hyyan Abo Fakher
 REM  */
 class public BBjGridExWidgetDemoUtilities
 
-    method public static BBjString reasAssestAsString(BBjString file$)
+    method public static BBjString readAssetsAsString(BBjString file$)
         template$ = ""
         ch=unt
         open (ch)"BBjGridExWidget/Demo/assets/" + file$
