@@ -7,6 +7,7 @@ rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererCustomHTML
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionBytesFormatter
 use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
 use com.basiscomponents.db.ResultSet
 
@@ -27,33 +28,41 @@ ed!.setForeColor(new BBjColor(245,245,245))
 ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 
 REM init the grid
-grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+grid! = new BBjGridExWidget(wnd!,100,0,40,wnd!.getWidth(),wnd!.getHeight() - 40)
 grid!.setGroupDefaultExpanded(0)
 grid!.setGroupColumnLabel("Files")
 grid!.setShowGroupChildCount(0)
 grid!.setTheme("balham-dark")
 
-REM Enable tree mode and load a lodash template to convert the "filepath" property in the rows data
-REM to an JS array which will be used to compose the tree hierarchy
+rem /**
+rem  * Enable tree mode and load a lodash template to convert the "filepath" property in the rows data 
+rem  * to an JS array which will be used to compose the tree hierarchy
+rem  */
 grid!.setTreeData(1)
 grid!.setDataPathTemplate("<% return data.filepath.split(""\" + java.io.File.separator + """); %>")
 
-REM load a lodash template and replace the icons in the template with the
-REM base64 strings for the selected images on the disk
+rem /**
+rem  * Configure the group column (files). 
+rem  * 
+rem  * The grid provides be default sensible configuration , but 
+rem  * you can hook on and change these settings using the AutoGroupColumnDefinition
+rem  * load a lodash template and replace the icons in the template with base64 strings of the selected images 
+rem  * on the disk. then we create a custom html renderer. the renderer will be used inside the default group renderer
+rem  * (BBjGridExWidgetRendererGroupCellRenderer).
+rem  */
 template! = BBjGridExWidgetDemoUtilities.reasAssestAsString("templates/tree-icons-custom-template.tpl")
 template! = template!.replaceAll("__FILE_ICON", BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/file.png"))
 template! = template!.replaceAll("__FOLDER_ICON",BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/folder.png"))
-innerRenderer! = new BBjGridExWidgetRendererCustomHTML(template!)
 
-REM get instnace of the default group's cell renderer (BBjGridExWidgetRendererGroupCellRenderer) and
-REM set its inner renderer.
-groupRenderer! = grid!.getAutoGroupColumnDefinition().getCellRenderer()
-groupRenderer!.setInnerRenderer(innerRenderer!)
+autoGroupDef! = grid!.getAutoGroupColumnDefinition()
+autoGroupDef!.setPinned("left")
+autoGroupDef!.getCellRenderer().setInnerRenderer(new BBjGridExWidgetRendererCustomHTML(template!))
 
 grid!.setCallback(grid!.ON_GRID_CELL_DOUBLE_CLICK(),"onSelectionEvent")
 
 gosub main
 process_events
+
 rem /**
 rem  * Retrive the data from the database and configure the grid
 rem  */
@@ -61,7 +70,14 @@ main:
   declare ResultSet rs!
   
   grid!.setData(BBjGridExWidgetDemoUtilities.buildResultSetFromDir("BBjGridExWidget/Demo"))
-  grid!.getColumn("filepath").setHidden(1)
+  
+  filePath! = grid!.getColumn("filepath") 
+  filePath!.setHidden(1)
+  
+  size! = grid!.getColumn("size") 
+  size!.setValueFormatterExpression(new BBjGridExWidgetExpressionBytesFormatter("### ##0.00"))
+  size!.setAggFunc("sum")
+  
   grid!.setFitToGrid()
   grid!.getSidebar().setVisible(0)
 return
@@ -93,7 +109,7 @@ resize:
   ev! = BBjAPI().getLastEvent()
   w=ev!.getWidth()
   h=ev!.getHeight()
-  grid!.setSize(w,h)
+  grid!.setSize(w,h - 40)
   grid!.setFitToGrid()
 return
 
