@@ -29,6 +29,7 @@ ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,wnd!.getWidth(),wnd!.getHeight() - 40)
+grid!.getSidebar().setHiddenByDefault(1)
 grid!.setGroupDefaultExpanded(0)
 grid!.setGroupColumnLabel("BBjGridExWidget Demo")
 grid!.setShowGroupChildCount(0)
@@ -56,6 +57,7 @@ template! = template!.replaceAll("__FOLDER_ICON",BBjGridExWidget.imageToBase64("
 
 autoGroupDef! = grid!.getAutoGroupColumnDefinition()
 autoGroupDef!.setPinned("left")
+autoGroupDef!.setWidth(500)
 autoGroupDef!.getCellRenderer().setInnerRenderer(new BBjGridExWidgetRendererCustomHTML(template!))
 
 grid!.setCallback(grid!.ON_GRID_CELL_DOUBLE_CLICK(),"onSelectionEvent")
@@ -79,7 +81,6 @@ main:
   size!.setAggFunc("sum")
   
   grid!.setFitToGrid()
-  grid!.getSidebar().setVisible(0)
 return
 
 rem /**
