@@ -1193,7 +1193,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
             REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
             REM             else
-            htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
+            htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
             htmlview!.setOpaque(0)
             htmlview!.setText(html$)
@@ -1221,15 +1221,30 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * On Load
+    rem  * Excute script
     rem  *
-    rem  * An Event listener excuted after the initial load
+    rem  * Excute a javascript code on the client
+    rem  *
+    rem  * @param BBjString script$ The javascript code
+    rem  *
+    rem  * @return Object returned value , if any
+    rem  */
+    method public Object executeScript(BBjString script$)
+        if #IsReady! then
+            methodret #HTMLView!.executeScript(script$)
+        else
+            #backlog!.addItem(script$)
+        FI
+
+        methodret null()
+    methodend    
+    rem /**
+    rem  * An Event listener excuted after the initial load. The method will injected all required file 
+    rem  * on the client to make the grid functionable
     rem  *
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
-    method public void onLoad(BBjEvent ev!)
-        rem ' only do this once
-        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
+    method public void onInit(BBjEvent ev!)
         ch=unt
         distBase$ = "BBjGridExWidget/client/dist"
         rem include the grid
@@ -1238,7 +1253,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         else
             gridPath$ = iff(LEN(#LicenseKey$) > 0,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
         FI
-
+        
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
@@ -1271,27 +1286,48 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
+        
+        #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+    methodend
+    
+    rem /**
+    rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
+    rem  * callbacks
+    rem  */
+    method public void onLoaded(BBjEvent ev!)
+        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
         #IsReady! = BBjAPI.TRUE
         REM         if #RS! <> null() or #URL$>"" then
         REM             #render()
         REM         FI
         if(#getBlockRenderToReady() = 1) then
             #render()
-        FI
-
+        FI        
+          
+        firstScripts$  = ""   
+        secondScripts$ = ""
         it! = #backlog!.iterator()
-        while it!.hasNext()=BBjAPI.TRUE
-            s$=str(it!.next())
-            #HTMLView!.executeScript(s$)
+        while it!.hasNext() = BBjAPI.TRUE
+            next!=str(it!.next())
+            if(next!.contains("gw_init"))
+                firstScripts$ = firstScripts$ + str(next!) + ";"
+            fi
+            
+            secondScripts$ = secondScripts$ + str(next!) + ";" 
         wend
-
-        #backlog! = null()
-        if #newW! <> null() and #newH!<> null() then
-        #super!.setSize(#newW!,#newH!)
-        #newW! = null()
-        #newH! = null()
-    FI
-    methodend
+        #backlog! = null() 
+            
+        scripts$ =  firstScripts$ + secondScripts$
+        if(scripts$ > "") then
+            #HTMLView!.executeScript(scripts$) 
+        fi        
+            
+        if (#newW! <> null() and #newH!<> null()) then
+          #super!.setSize(#newW!,#newH!)
+          #newW! = null()
+          #newH! = null()
+        FI        
+    methodend    
     rem /**
     rem  * On NativeEvent
     rem  *
@@ -1304,7 +1340,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         map! = ev!.getEventMap()
         type$ = str(map!.get("type"))
         detail$ = str(map!.get("detail"))
-        switch type$
+        switch type$  
             case "gw.rowSelect"
                 #onSelecteRowChange(detail$, "single")
                 break
@@ -2897,24 +2933,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Excute script
-    rem  *
-    rem  * Excute a javascript code on the client
-    rem  *
-    rem  * @param BBjString script$ The javascript code
-    rem  *
-    rem  * @return Object returned value , if any
-    rem  */
-    method public Object executeScript(BBjString script$)
-        if #IsReady! then
-            methodret #HTMLView!.executeScript(script$)
-        else
-            #backlog!.addItem(script$)
-        FI
-
-        methodret null()
-    methodend
-    rem /**
     rem  * Parse the grid html template
     rem  *
     rem  * @param BBjString template$ Template string
@@ -2950,7 +2968,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method protected void handleStateChangedEvent(BBjString detail$, BBjNumber type!)
         event! = #getColumnState()
         #fireEvent(type!, event!)
-    methodend
+    methodend  
     rem /**
     rem  * On rows selections event
     rem  *
