@@ -77,8 +77,9 @@ main:
   filePath!.setHidden(1)
   
   size! = grid!.getColumn("size") 
-  size!.setValueFormatterExpression(new BBjGridExWidgetExpressionBytesFormatter("### ##0.00"))
   size!.setAggFunc("sum")
+  size!.setAlignment(BBjGridExWidget.GRID_ALIGN_RIGHT() , 1)
+  size!.setValueFormatterExpression(new BBjGridExWidgetExpressionBytesFormatter("### ##0.00"))
   
   grid!.setFitToGrid()
 return
