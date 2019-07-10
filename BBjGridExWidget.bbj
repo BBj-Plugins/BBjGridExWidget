@@ -1497,6 +1497,26 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #getColumn(field!).setAlignment(align!)
     methodend
     rem /**
+    rem  * Sets the default alignment for a column's header
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  *
+    rem  * @param BBjString field! The field name of the column definition
+    rem  * @param BBjNumber align! The column's header alignment
+    rem  *
+    rem  * valid alignments:
+    rem  *
+    rem  * @see GRID_ALIGN_LEFT()
+    rem  * @see GRID_ALIGN_CENTER()
+    rem  * @see GRID_ALIGN_RIGHT()
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */
+    method public void setColumnHeaderAlignment(BBjString field!, BBjNumber align!)
+        #getColumn(field!).setHeaderAlignment(align!)
+    methodend    
+    rem /**
     rem  * Sets the default column width for all columns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>

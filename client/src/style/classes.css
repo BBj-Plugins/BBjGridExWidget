@@ -6,20 +6,29 @@
 * file that was distributed with this source code.
 */
 
-.gw-alignment-right,
-.gw-alignment-right .ag-cell-wrapper {
-    text-align: right !important;
-    justify-content: flex-end !important;
+.gw-alignment-cell-right,
+.gw-alignment-cell-right .ag-cell-value {
+    text-align: right;
+    justify-content: flex-end;
+    flex: 1;
 }
 
-.gw-alignment-left,
-.gw-alignment-left .ag-cell-wrapper {
-    text-align: left !important;
-    justify-content: flex-start !important;
+.gw-alignment-cell-center,
+.gw-alignment-cell-center .ag-cell-value {
+    text-align: center;
+    justify-content: center;
+    flex: 1;
 }
 
-.gw-alignment-center,
-.gw-alignment-center .ag-cell-wrapper {
-    text-align: center !important;
-    justify-content: center !important;
+.gw-alignment-header-right .ag-header-cell-label {
+    flex-direction: row-reverse;    
+}
+
+.gw-alignment-header-center .ag-header-cell-label {
+    flex-direction: column;
+}
+
+.gw-alignment-header-right .ag-cell-label-container,
+.gw-alignment-header-center .ag-cell-label-container {
+    flex-direction: row;
 }

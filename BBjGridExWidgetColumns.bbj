@@ -40,11 +40,11 @@ use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorB
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicTimestamp
 REM /**
 REM  * The class holds the common props between column and column groups.
-rem  * Every property and method has one or more tag attached.  
-rem  * 
+rem  * Every property and method has one or more tag attached.
+rem  *
 rem  * The following is the meanging for each tag :<br><br>
-rem  * 
-rem  * 
+rem  *
+rem  *
 rem  * <table border="1" cellpadding="10">
 rem  *  <tbody>
 rem  *      <tr>
@@ -69,7 +69,7 @@ rem  *          <td>Changing this property or calling this method after the firs
 rem  *      </tr>
 rem  *  </tbody>
 rem  * </table>
-rem  * 
+rem  *
 REM  * @author Hyyan Abo Fakher
 REM  */
 class public BBjGridExWidgetColumnDefinition
@@ -698,6 +698,46 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * Sets the default alignment for a column
     rem  *
     rem  * @param BBjNumber align! The column alignment
+    rem  * @param BBjNumber alignHeader! when true the column's header will use the same alignment
+    rem  *
+    rem  * valid alignments:
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_ALIGN_LEFT()
+    rem  * @see BBjGridExWidget.GRID_ALIGN_CENTER()
+    rem  * @see BBjGridExWidget.GRID_ALIGN_RIGHT()
+    rem  */
+    method public void setAlignment(BBjNumber align! , BBjNumber alignHeader!)
+        switch align!
+            case BBjGridExWidget.GRID_ALIGN_LEFT()
+                #getCellClass().remove("gw-alignment-cell-left")
+
+                if alignHeader! = 1
+                    #setHeaderAlignment(align!)
+                FI
+
+                break
+            case BBjGridExWidget.GRID_ALIGN_CENTER()
+                #getCellClass().add("gw-alignment-cell-center")
+
+                if alignHeader! = 1
+                    #setHeaderAlignment(align!)
+                FI
+
+                break
+            case BBjGridExWidget.GRID_ALIGN_RIGHT()
+                #getCellClass().add("gw-alignment-cell-right")
+
+                if alignHeader! = 1
+                    #setHeaderAlignment(align!)
+                FI
+
+                break
+        swend
+    methodend
+    rem /**
+    rem  * Sets the default alignment for a column
+    rem  *
+    rem  * @param BBjNumber align! The column alignment
     rem  *
     rem  * valid alignments:
     rem  *
@@ -708,15 +748,29 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * @RequiresRefresh
     rem  */
     method public void setAlignment(BBjNumber align!)
+        #setAlignment(align! , 0)
+    methodend    
+    rem /**
+    rem  * Sets the default alignment for a column's header
+    rem  *
+    rem  * @param BBjNumber align! The column's header alignment
+    rem  *
+    rem  * valid alignments:
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_ALIGN_LEFT()
+    rem  * @see BBjGridExWidget.GRID_ALIGN_CENTER()
+    rem  * @see BBjGridExWidget.GRID_ALIGN_RIGHT()
+    rem  */
+    method public void setHeaderAlignment(BBjNumber align!)
         switch align!
             case BBjGridExWidget.GRID_ALIGN_LEFT()
-                #getCellClass().add("gw-alignment-left")
+                #getHeaderClass().remove("gw-alignment-header-left")
                 break
             case BBjGridExWidget.GRID_ALIGN_CENTER()
-                #getCellClass().add("gw-alignment-center")
+                #getHeaderClass().add("gw-alignment-header-center")
                 break
             case BBjGridExWidget.GRID_ALIGN_RIGHT()
-                #getCellClass().add("gw-alignment-right")
+                #getHeaderClass().add("gw-alignment-header-right")
                 break
         swend
     methodend
@@ -1120,10 +1174,10 @@ rem  */
 interface public BBjGridExWidgetColumnsManagerInterface
     rem /**
     rem  * Add column group
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjGridExWidgetColumnGroup definition! The column group defintion
     rem  */
 
@@ -1133,7 +1187,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString id! The group id
     rem  */
 
@@ -1143,7 +1197,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString id! The group id
     rem  * @param BBjString label! The group label
     rem  */
@@ -1154,7 +1208,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString id! The column group defintion id
     rem  *
     rem  * @return BBjGridExWidgetColumn return the column group definition instance if found , null() otherwise
@@ -1166,7 +1220,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString id! The column group defintion id
     rem  *
     rem  * @return BBjNumber return 1 when found , 0 otherwise
@@ -1178,7 +1232,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString id! The column group defintion id
     rem  *
     rem  * @return BBjGridExWidgetColumnGroup The removed column group instance , null() otherwise
@@ -1190,7 +1244,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjGridExWidgetColumn definition! The column definition object
     rem  *
     rem  * @return BBjGridExWidgetColumn The defintion instance
@@ -1202,7 +1256,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  * @param BBjNumber type! The Field Type (java.sql.Types).
     rem  *
@@ -1215,7 +1269,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  * @param BBjString label! The column's label.
     rem  *
@@ -1228,7 +1282,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  * @param BBjString label! The column's label.
     rem  * @param BBjNumber type! The Field Type (java.sql.Types).
@@ -1242,7 +1296,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  *
     rem  * @return BBjGridExWidgetColumn The defintion instance
@@ -1254,7 +1308,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  *
     rem  * @return BBjGridExWidgetColumn return the column definition instance if found , null() otherwise
@@ -1266,7 +1320,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  *
     rem  * @return BBjNumber return 1 when found , 0 otherwise
@@ -1278,7 +1332,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's defintion field
     rem  *
     rem  * @return BBjGridExWidgetColumn The removed column instance , null() otherwise
@@ -1286,7 +1340,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
 
     method public BBjGridExWidgetColumn removeColumn(BBjString field!)
     rem /**
-    rem  * Clear all columns and colums groups 
+    rem  * Clear all columns and colums groups
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
