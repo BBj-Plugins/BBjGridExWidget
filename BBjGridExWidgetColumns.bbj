@@ -135,8 +135,8 @@ class public BBjGridExWidgetColumnDefinition
         json! = new JsonObject()
         json!.addProperty("headerName" , #getLabel(),err=*next)
         json!.addProperty("columnGroupShow" , #getColumnGroupShow() ,err=*next)
-        json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), null()) ,err=*next)
-        json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) , null()) ,err=*next)
+        json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), listIsEmpty!) ,err=*next)
+        json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) ,listIsEmpty!) ,err=*next)
         json!.addProperty("suppressToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
         methodret json!
     methodend
@@ -891,8 +891,8 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
         column!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
         column!.addProperty("checkboxSelection",#getCheckboxSelection().booleanValue(),err=*next)
         column!.addProperty("headerCheckboxSelection",#getHeaderCheckboxSelection().booleanValue(),err=*next)
-        column!.addProperty("cellClass" , iff(#getCellClass().size() <> 0 ,new Gson().toJson(#getCellClass()), null()) ,err=*next)
-        column!.        add("cellStyle", iff(#getCellStyle().entrySet().size() <> 0 , #getCellStyle() , null()),err=*next)
+        column!.addProperty("cellClass" , iff(#getCellClass().size() <> 0 ,new Gson().toJson(#getCellClass()), listIsEmpty!) ,err=*next)
+        column!.        add("cellStyle", iff(#getCellStyle().entrySet().size() <> 0 , #getCellStyle() , listIsEmpty!),err=*next)
         column!.addProperty("editable",#getEditable().booleanValue(),err=*next)
         column!.addProperty("aggFunc",#getAggFunc())
         column!.addProperty("allowedAggFuncs" , iff(#getAllowedAggFuncs().size() <> 0 ,new Gson().toJson(#getAllowedAggFuncs()), null()) ,err=*next)

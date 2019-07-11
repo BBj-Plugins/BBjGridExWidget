@@ -2115,7 +2115,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("rowHeight",#getRowHeight().longValue(), err=*next)
         options!.addProperty("animateRows",#getAnimateRows().booleanValue(), err=*next)
         options!.        add("rowStyle",iff(#getRowStyle().entrySet().size() <> 0 , #getRowStyle() , null()), err=*next)
-        options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), null()) ,err=*next)
+        options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), listIsEmpty!) ,err=*next)
         options!.        add("rowClassRules", iff(#getRowClassRules().entrySet().size() <> 0 , #getRowClassRules() , null()),err=*next)
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
         rem Localisation
@@ -2147,7 +2147,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem ===========================
         context! = #getClientContext()
         context!.addProperty("id",#GRIDID$)
-        context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), null()) ,err=*next)
+        context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), listIsEmpty!) ,err=*next)
         context!.addProperty("getRowNodeId",#RowNodeId$, err=*next)
         context!.addProperty("numberGroupSep",comma$, err=*next)
         context!.addProperty("numberDecimalSep",dot$, err=*next)
