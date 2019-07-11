@@ -1,3 +1,23 @@
+# [0.98.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.97.1...0.98.0) (2019-07-11)
+
+
+### Bug Fixes
+
+* fix the wrong default numbers & dates mask ([3a1cbe2](https://github.com/BBj-Plugins/BBjGridExWidget/commit/3a1cbe2))
+* cells, headers & rows classes are ignored in BBj 19 ([dd431a1](https://github.com/BBj-Plugins/BBjGridExWidget/commit/dd431a1))
+
+
+### Features
+
+* add an api method `setHeaderAlignment(BBjNumber align!)` to allow column's header alignment ([4e3684a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4e3684a))
+* add bytes formatter expression (BBjGridExWidgetExpressionBytesFormatter) ([eae69a5](https://github.com/BBj-Plugins/BBjGridExWidget/commit/eae69a5))
+* add support for tree data ([9de7e29](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9de7e29))
+* allow the sidebar to be hidden by default ([5fdfb29](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5fdfb29))
+* setTheme can set the theme before/after the grid is renderer ([cf965bc](https://github.com/BBj-Plugins/BBjGridExWidget/commit/cf965bc))
+* support inner renderers in `BBjGridExWidgetRendererGroupCellRenderer` ([536c905](https://github.com/BBj-Plugins/BBjGridExWidget/commit/536c905))
+
+
+
 ## [0.97.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.97.0...0.97.1) (2019-07-08)
 
 
