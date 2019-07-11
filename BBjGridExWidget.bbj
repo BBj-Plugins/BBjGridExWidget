@@ -737,6 +737,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjString DataPathTemplate! = null()
     rem /**
+    rem  * Set the grid theme
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    field public BBjString Theme! = "balham"
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -1167,15 +1174,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
             html$ = #getTemplate()
 
-            if(len(html$) = 0) then
-                ch=unt
-                open (ch)"BBjGridExWidget/client/index.html"
-                read record (ch,siz=5512000)html$
-                close (ch)
-            FI
-
-            html$ = #parseTemplate(html$)
-
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
             FI
@@ -1515,7 +1513,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void setColumnHeaderAlignment(BBjString field!, BBjNumber align!)
         #getColumn(field!).setHeaderAlignment(align!)
-    methodend    
+    methodend
     rem /**
     rem  * Sets the default column width for all columns
     rem  *
@@ -2507,6 +2505,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Set the grid theme
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjString theme$
@@ -2514,7 +2513,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see getThemes()
     rem  */
     method public void setTheme(BBjString theme$)
-        if pos(theme$="dark#fresh#blue#bootstrap#material#balham#balham-dark")>0 then
+        #Theme! = theme$
+
+        if(#IsReady!) then
             if info(3,6)="5" then
                 s$="$doc.getElementById('" + str(#GRIDID$) + "').className='ag-theme-"+theme$+"';"
             else
@@ -2522,6 +2523,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             FI
 
             #executeScript(s$)
+        else
+            template! = #getTemplate()
+            #HTMLView!.setText(template!)
         FI
     methodend
     rem /**
@@ -2953,19 +2957,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Parse the grid html template
-    rem  *
-    rem  * @param BBjString template$ Template string
-    rem  *
-    rem  * @return BBjString parsed template
-    rem  */
-    method protected BBjString parseTemplate(BBjString template$)
-        temp! = template$
-        temp! = temp!.replaceAll("__id__" , #GRIDID$)
-        temp! = temp!.replaceAll("__lang__", #getLanguageManager().getLanguage())
-        methodret str(temp!)
-    methodend
-    rem /**
     rem  * Fires an event
     rem  *
     rem  * @param Int type! The event's type
@@ -2983,6 +2974,27 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method protected void updateClientWithInterests()
         #executeScript("gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
+    methodend
+    rem /**
+    rem  * Get the grid template
+    rem  *
+    rem  * @return BBjString parsed html template
+    rem  */
+    method protected BBjString getTemplate()
+        html$ = #Template$
+
+        if(len(html$) = 0) then
+            ch=unt
+            open (ch)"BBjGridExWidget/client/index.html"
+            read record (ch,siz=5512000)html$
+            close (ch)
+        FI
+
+        html! = html$
+        html! = html!.replaceAll("__id__" , #GRIDID$)
+        html! = html!.replaceAll("__lang__", #getLanguageManager().getLanguage())
+        html! = html!.replaceAll("__THEME__", #getTheme())
+        methodret html!
     methodend
 
     method protected void handleStateChangedEvent(BBjString detail$, BBjNumber type!)
