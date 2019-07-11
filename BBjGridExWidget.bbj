@@ -2993,7 +2993,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         html! = html$
         html! = html!.replaceAll("__id__" , #GRIDID$)
         html! = html!.replaceAll("__lang__", #getLanguageManager().getLanguage())
-        html! = html!.replaceAll("__THEME__", #getTheme())
+        html! = html!.replaceAll("__THEME__", "ag-theme-" + #getTheme())
         methodret html!
     methodend
 
