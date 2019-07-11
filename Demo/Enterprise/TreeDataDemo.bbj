@@ -29,6 +29,7 @@ ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,wnd!.getWidth(),wnd!.getHeight() - 40)
+wnd!.setBackColor(new BBjColor(45,52,54))
 grid!.getSidebar().setHiddenByDefault(1)
 grid!.setGroupDefaultExpanded(0)
 grid!.setGroupColumnLabel("BBjGridExWidget Demo")
