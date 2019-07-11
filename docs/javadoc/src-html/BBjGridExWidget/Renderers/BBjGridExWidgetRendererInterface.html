@@ -153,36 +153,40 @@
 <span class="sourceLineNo">145</span>*/<a name="line.145"></a>
 <span class="sourceLineNo">146</span>public BBjNumber Checkbox!;<a name="line.146"></a>
 <span class="sourceLineNo">147</span>/**<a name="line.147"></a>
-<span class="sourceLineNo">148</span> * Provide a footer value getter expression<a name="line.148"></a>
+<span class="sourceLineNo">148</span> * Provide an inner renderer<a name="line.148"></a>
 <span class="sourceLineNo">149</span>*/<a name="line.149"></a>
-<span class="sourceLineNo">150</span>public BBjGridExWidgetExpressionInterface FooterValueGetterExpression!;<a name="line.150"></a>
+<span class="sourceLineNo">150</span>public BBjGridExWidgetRendererInterface InnerRenderer!;<a name="line.150"></a>
 <span class="sourceLineNo">151</span>/**<a name="line.151"></a>
-<span class="sourceLineNo">152</span> * Construct new BBjGridExWidgetRendererGroupCellRenderer<a name="line.152"></a>
-<span class="sourceLineNo">153</span> *<a name="line.153"></a>
-<span class="sourceLineNo">154</span> * @param BBjGridExWidgetExpressionInterface footerValueGetterExpression! an expression<a name="line.154"></a>
-<span class="sourceLineNo">155</span>*/<a name="line.155"></a>
-<span class="sourceLineNo">156</span>public BBjGridExWidgetRendererGroupCellRenderer(BBjGridExWidgetExpressionInterface footerValueGetterExpression!) { }<a name="line.156"></a>
-<span class="sourceLineNo">157</span>/**<a name="line.157"></a>
-<span class="sourceLineNo">158</span> * Construct new BBjGridExWidgetRendererGroupCellRenderer<a name="line.158"></a>
-<span class="sourceLineNo">159</span> *<a name="line.159"></a>
-<span class="sourceLineNo">160</span> * @param BBjString footerValueGetterExpression! an expression<a name="line.160"></a>
-<span class="sourceLineNo">161</span>*/<a name="line.161"></a>
-<span class="sourceLineNo">162</span>public BBjGridExWidgetRendererGroupCellRenderer(BBjString footerValueGetterExpression!) { }<a name="line.162"></a>
-<span class="sourceLineNo">163</span>/**<a name="line.163"></a>
-<span class="sourceLineNo">164</span> * Create a BBjGridExWidgetExpression from string and set it a footer value getter<a name="line.164"></a>
-<span class="sourceLineNo">165</span> *<a name="line.165"></a>
-<span class="sourceLineNo">166</span> * @param BBjString expression! Javascript expression<a name="line.166"></a>
-<span class="sourceLineNo">167</span>*/<a name="line.167"></a>
-<span class="sourceLineNo">168</span>public void setFooterValueGetterExpression(BBjString expression!) { }<a name="line.168"></a>
-<span class="sourceLineNo">169</span>/**<a name="line.169"></a>
-<span class="sourceLineNo">170</span> * {@inheritDoc}<a name="line.170"></a>
+<span class="sourceLineNo">152</span> * Provide a footer value getter expression<a name="line.152"></a>
+<span class="sourceLineNo">153</span>*/<a name="line.153"></a>
+<span class="sourceLineNo">154</span>public BBjGridExWidgetExpressionInterface FooterValueGetterExpression!;<a name="line.154"></a>
+<span class="sourceLineNo">155</span>/**<a name="line.155"></a>
+<span class="sourceLineNo">156</span> * Construct new BBjGridExWidgetRendererGroupCellRenderer<a name="line.156"></a>
+<span class="sourceLineNo">157</span> *<a name="line.157"></a>
+<span class="sourceLineNo">158</span> * @param BBjGridExWidgetExpressionInterface footerValueGetterExpression! an expression<a name="line.158"></a>
+<span class="sourceLineNo">159</span>*/<a name="line.159"></a>
+<span class="sourceLineNo">160</span>public BBjGridExWidgetRendererGroupCellRenderer(BBjGridExWidgetExpressionInterface footerValueGetterExpression!) { }<a name="line.160"></a>
+<span class="sourceLineNo">161</span>/**<a name="line.161"></a>
+<span class="sourceLineNo">162</span> * Construct new BBjGridExWidgetRendererGroupCellRenderer<a name="line.162"></a>
+<span class="sourceLineNo">163</span> *<a name="line.163"></a>
+<span class="sourceLineNo">164</span> * @param BBjString footerValueGetterExpression! an expression<a name="line.164"></a>
+<span class="sourceLineNo">165</span>*/<a name="line.165"></a>
+<span class="sourceLineNo">166</span>public BBjGridExWidgetRendererGroupCellRenderer(BBjString footerValueGetterExpression!) { }<a name="line.166"></a>
+<span class="sourceLineNo">167</span>/**<a name="line.167"></a>
+<span class="sourceLineNo">168</span> * Create a BBjGridExWidgetExpression from string and set it a footer value getter<a name="line.168"></a>
+<span class="sourceLineNo">169</span> *<a name="line.169"></a>
+<span class="sourceLineNo">170</span> * @param BBjString expression! Javascript expression<a name="line.170"></a>
 <span class="sourceLineNo">171</span>*/<a name="line.171"></a>
-<span class="sourceLineNo">172</span>public static BBjString RENDERER_NAME() { }<a name="line.172"></a>
+<span class="sourceLineNo">172</span>public void setFooterValueGetterExpression(BBjString expression!) { }<a name="line.172"></a>
 <span class="sourceLineNo">173</span>/**<a name="line.173"></a>
 <span class="sourceLineNo">174</span> * {@inheritDoc}<a name="line.174"></a>
 <span class="sourceLineNo">175</span>*/<a name="line.175"></a>
-<span class="sourceLineNo">176</span>public JsonObject getAsJsonObject() { }<a name="line.176"></a>
-<span class="sourceLineNo">177</span>}<a name="line.177"></a>
+<span class="sourceLineNo">176</span>public static BBjString RENDERER_NAME() { }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>/**<a name="line.177"></a>
+<span class="sourceLineNo">178</span> * {@inheritDoc}<a name="line.178"></a>
+<span class="sourceLineNo">179</span>*/<a name="line.179"></a>
+<span class="sourceLineNo">180</span>public JsonObject getAsJsonObject() { }<a name="line.180"></a>
+<span class="sourceLineNo">181</span>}<a name="line.181"></a>
 
 
 

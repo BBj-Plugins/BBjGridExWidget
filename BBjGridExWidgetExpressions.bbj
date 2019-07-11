@@ -188,6 +188,78 @@ class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidge
 
 classend
 rem /**
+rem  * The class defines a grid expression to format bytes to one of the following measuring terms : 
+rem  * <i>['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']</i>
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionBytesFormatter extends BBjGridExWidgetExpressionNumbersFormatter
+    rem /**
+    rem  * Number of decimal to use when parsing the size. default is 2
+    rem  */
+    field public BBjNumber Decimals! = 4
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionBytesFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  */
+    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!)
+        #super!(mask!) 
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  */
+    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask! , BBjString groupSeperator!)
+        #super!(mask!,groupSeperator!)
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  * @param BBjString decimalSeparator! The numbers decimal seperator to use
+    rem  */
+    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!)
+        #super!(mask!,groupSeperator!,decimalSeparator!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString toString()
+        declare StringBuilder ex!
+
+        if(#getMask() = null() ) then
+            methodret null()
+        FI
+
+        ex! = new StringBuilder()
+        ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append(String.format("var groupSep  = '%s' || ctx.numberGroupSep;" , #getGroupSeparator()))
+        ex!.append(String.format("var decimalSep  = '%s' || ctx.numberDecimalSep;" , #getDecimalSeparator()))
+        ex!.append("var theValue = getValue || value;")
+        ex!.append("if ((mask && theValue) && (theValue != null && !isNaN(theValue))) {")
+        ex!.append("  if (theValue === 0) return '0 Bytes';")
+        ex!.append("  var k = 1024;")
+        ex!.append(String.format("var dm = %1$s < 0 ? 0 : %1$s;" , #getDecimals()))
+        ex!.append("  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];")
+        ex!.append("  var i = Math.floor(Math.log(theValue) / Math.log(k));")
+        ex!.append("  var r = parseFloat((theValue / Math.pow(k, i)).toFixed(dm));")
+        ex!.append("  return BBj.Masks.Types.number(r, mask, groupSep, decimalSep) + ' ' + sizes[i];")
+        ex!.append("}")
+        ex!.append("return theValue || '';")
+        methodret ex!.toString()
+    methodend
+classend 
+
+rem /**
 rem  * The class defines a grid expression to format date/timestamps according to BBj supported masks
 rem  *
 rem  * @author Hyyan Abo Fakher

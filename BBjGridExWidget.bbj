@@ -44,13 +44,13 @@ use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEven
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
 rem /**
-rem  * The Grid Core Class.This class works as a columns manager and api provider. 
+rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
-rem  * Every property and method has one or more tag attached.  
-rem  * 
+rem  * Every property and method has one or more tag attached.
+rem  *
 rem  * The following is the meanging for each tag :<br><br>
-rem  * 
-rem  * 
+rem  *
+rem  *
 rem  * <table border="1" cellpadding="10">
 rem  *  <tbody>
 rem  *      <tr>
@@ -75,7 +75,7 @@ rem  *          <td>Changing this property or calling this method after the firs
 rem  *      </tr>
 rem  *  </tbody>
 rem  * </table>
-rem  * 
+rem  *
 rem  * @author Stephan Wald
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -721,6 +721,29 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjString OverlayNoRowsTemplate! = null()
     rem /**
+    rem  * Enable / Disable Tree Data mode
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  */
+    field public BBjNumber TreeData! = null()
+    rem /**
+    rem  * A string template which will be complied on the client to return an array
+    rem  * for the tree hierarchy.
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  */
+    field public BBjString DataPathTemplate! = null()
+    rem /**
+    rem  * Set the grid theme
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    field public BBjString Theme! = "balham"
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -770,7 +793,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Alias to <i>ON_GRID_ROW_CLICK()</i>
     rem  *
     rem  * @see ON_GRID_ROW_CLICK()
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_SELECT_ROW()
@@ -788,7 +811,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Alias to <i>ON_GRID_ROW_DOUBLE_CLICK()</i>
     rem  *
     rem  * @see ON_GRID_ROW_DOUBLE_CLICK()
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_DOUBLE_CLICK()
@@ -796,7 +819,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define cell click event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_CLICK()
@@ -804,7 +827,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define cell double click event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_DOUBLE_CLICK()
@@ -812,7 +835,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define cell editing start event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_EDITING_STARTED()
@@ -820,7 +843,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define cell editing stop event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_EDITING_STOPPED()
@@ -828,7 +851,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define cell value changed event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_CELL_VALUE_CHANGED()
@@ -836,7 +859,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define row editing start event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_EDITING_STARTED()
@@ -844,7 +867,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define row editing stop event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_EDITING_STOPPED()
@@ -852,7 +875,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define grid state changes
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_STATE_CHANGE()
@@ -862,7 +885,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
     rem  *
     rem  * @see ON_GRID_STATE_CHANGE()
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_COLUMN_STATE_CHANGE()
@@ -870,7 +893,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define left aligned column
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber GRID_ALIGN_LEFT()
@@ -878,7 +901,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define right aligned column
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber GRID_ALIGN_RIGHT()
@@ -886,7 +909,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define centered column
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber GRID_ALIGN_CENTER()
@@ -894,7 +917,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define row position
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ROWPOS_TOP()
@@ -902,7 +925,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define row position
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ROWPOS_MIDDLE()
@@ -910,7 +933,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define row position
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ROWPOS_BOTTOM()
@@ -918,7 +941,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define editing mode "row"
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_EDITTYPE_ROW()
@@ -926,7 +949,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define editing mode "cell"
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_EDITTYPE_CELL()
@@ -934,7 +957,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define enter key behavior (Move to next cell)
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ENTER_NEXT_CELL()
@@ -942,7 +965,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define navigation behavior (Move to next cell)
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL()
@@ -950,7 +973,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define navigation behavior (Move to next row)
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW()
@@ -958,7 +981,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define enter key behavior (Stop editing)
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_ENTER_STOP_EDITING()
@@ -966,7 +989,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value which defines that group panel must always be shown
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_GROUPPANEL_SHOW_VISIBLE()
@@ -974,7 +997,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value which defines that group panel must be shown only when grouping
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_GROUPPANEL_SHOW_ONGROUPING()
@@ -982,7 +1005,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value which defines that group panel must always be hidden
-    rem  * 
+    rem  *
     rem  * @return BBjString
     rem  */
     method public static BBjString GRID_GROUPPANEL_SHOW_HIDDEN()
@@ -1151,15 +1174,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
             html$ = #getTemplate()
 
-            if(len(html$) = 0) then
-                ch=unt
-                open (ch)"BBjGridExWidget/client/index.html"
-                read record (ch,siz=5512000)html$
-                close (ch)
-            FI
-
-            html$ = #parseTemplate(html$)
-
             if (info(3,6)<>"5" and #Debug>0) then
                 call "BBjGridExWidget/util/EnableDebugger.bbj"
             FI
@@ -1177,7 +1191,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
             REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
             REM             else
-            htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoad")
+            htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
             htmlview!.setOpaque(0)
             htmlview!.setText(html$)
@@ -1205,15 +1219,30 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * On Load
+    rem  * Excute script
     rem  *
-    rem  * An Event listener excuted after the initial load
+    rem  * Excute a javascript code on the client
+    rem  *
+    rem  * @param BBjString script$ The javascript code
+    rem  *
+    rem  * @return Object returned value , if any
+    rem  */
+    method public Object executeScript(BBjString script$)
+        if #IsReady! then
+            methodret #HTMLView!.executeScript(script$)
+        else
+            #backlog!.addItem(script$)
+        FI
+
+        methodret null()
+    methodend
+    rem /**
+    rem  * An Event listener excuted after the initial load. The method will injected all required file
+    rem  * on the client to make the grid functionable
     rem  *
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
-    method public void onLoad(BBjEvent ev!)
-        rem ' only do this once
-        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
+    method public void onInit(BBjEvent ev!)
         ch=unt
         distBase$ = "BBjGridExWidget/client/dist"
         rem include the grid
@@ -1255,6 +1284,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         read record (ch,siz=5512000)script$
         close (ch)
         #injectScript(script$)
+        #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+    methodend
+    rem /**
+    rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
+    rem  * callbacks
+    rem  */
+    method public void onLoaded(BBjEvent ev!)
+        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
         #IsReady! = BBjAPI.TRUE
         REM         if #RS! <> null() or #URL$>"" then
         REM             #render()
@@ -1263,18 +1300,31 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #render()
         FI
 
+        firstScripts$  = ""
+        secondScripts$ = ""
         it! = #backlog!.iterator()
-        while it!.hasNext()=BBjAPI.TRUE
-            s$=str(it!.next())
-            #HTMLView!.executeScript(s$)
+        while it!.hasNext() = BBjAPI.TRUE
+            next!=str(it!.next())
+
+            if(next!.contains("gw_init"))
+                firstScripts$ = firstScripts$ + str(next!) + ";"
+            FI
+
+            secondScripts$ = secondScripts$ + str(next!) + ";"
         wend
 
         #backlog! = null()
-        if #newW! <> null() and #newH!<> null() then
-        #super!.setSize(#newW!,#newH!)
-        #newW! = null()
-        #newH! = null()
-    FI
+        scripts$ =  firstScripts$ + secondScripts$
+
+        if(scripts$ > "") then
+            #HTMLView!.executeScript(scripts$)
+        FI
+
+        if (#newW! <> null() and #newH!<> null()) then
+            #super!.setSize(#newW!,#newH!)
+            #newW! = null()
+            #newH! = null()
+        FI
     methodend
     rem /**
     rem  * On NativeEvent
@@ -1321,7 +1371,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 break
             case "gw.contextmenu"
                 #onContextmenuEvent(detail$)
-                break   
+                break
         swend
     methodend
     rem /**
@@ -1377,7 +1427,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color!  the color for the column
     rem  */
@@ -1389,7 +1439,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjString color$ Valid CSS color
     rem  *
@@ -1403,7 +1453,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color!  The color for the column
     rem  */
@@ -1415,7 +1465,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color$  Valid CSS color
     rem  *
@@ -1429,7 +1479,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The field name of the column definition
     rem  * @param BBjNumber align! The column alignment
     rem  *
@@ -1445,11 +1495,31 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #getColumn(field!).setAlignment(align!)
     methodend
     rem /**
+    rem  * Sets the default alignment for a column's header
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  *
+    rem  * @param BBjString field! The field name of the column definition
+    rem  * @param BBjNumber align! The column's header alignment
+    rem  *
+    rem  * valid alignments:
+    rem  *
+    rem  * @see GRID_ALIGN_LEFT()
+    rem  * @see GRID_ALIGN_CENTER()
+    rem  * @see GRID_ALIGN_RIGHT()
+    rem  *
+    rem  * @RequiresRefresh
+    rem  */
+    method public void setColumnHeaderAlignment(BBjString field!, BBjNumber align!)
+        #getColumn(field!).setHeaderAlignment(align!)
+    methodend
+    rem /**
     rem  * Sets the default column width for all columns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber width! The column width
     rem  */
     method public void setColumnWidth(BBjNumber width!)
@@ -1457,10 +1527,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Sets the width of a column
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * <br>
     rem  * <b>Note:</b> Unline setting the width in the column defintion , this method will update a column width without
     rem  * a full rerender.
@@ -1497,7 +1567,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Change column position
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field$ The field name of the column
     rem  * @param BBjNumber toIndex! The new column position/index
     rem  */
@@ -1506,9 +1576,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript(script$)
     methodend
     rem /**
-    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion , 
+    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion ,
     rem  * columns can still override this setting individually&#183;
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  *
@@ -1528,12 +1598,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion , 
+    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion ,
     rem  * columns can still override this setting individually&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber enable! When true enable on added columns , disable otherwise
     rem  */
     method public void setEnableFilter(BBjNumber enable!)
@@ -1544,7 +1614,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber editable! When true all columns will be editable , otherwise disable editing
     rem  */
     method public void setEditable(BBjNumber editable!)
@@ -1556,7 +1626,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  * <br>
-    rem  * 
+    rem  *
     rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
     rem  * the column type to determine the correct value formatter (number , date , ...)
     rem  *
@@ -1574,7 +1644,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  * <br>
-    rem  * 
+    rem  *
     rem  * <b>Note:</b> This method will override the CellRenderer of the column&#183;
     rem  * The column has to contain the values "1","2","3" to x to reference the slices in the BBjImage list
     rem  *
@@ -1603,7 +1673,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString field! The column's field
     rem  * @param BBjString AggFunc! Name of function to use for aggregation. One of [sum,min,max,first,last].
     rem  */
@@ -1614,7 +1684,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Enable row grouping for columns
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
@@ -1685,7 +1755,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Enable pivot for columns
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
@@ -1733,7 +1803,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Disable pivot for columns.
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
@@ -1752,7 +1822,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Enable value for columns
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
@@ -1809,7 +1879,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem * @param BBjString id! The group id
     rem * @param BBjString label! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
@@ -1847,7 +1917,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem * @param BBjString id! The group id
     rem * @param BBjString label! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
@@ -1864,7 +1934,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem * @param BBjString id! The group id
     rem * @param BBjString name! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
@@ -1897,7 +1967,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString label! The column label
     rem  */
     method public void setGroupColumnLabel(BBjString label!)
@@ -1908,7 +1978,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber enabled! When true show row counts , hide otherwise
     rem  */
     method public void setShowGroupChildCount(BBjNumber enabled!)
@@ -1920,7 +1990,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber enabled! When true enable checkbox selection, disable otherwise
     rem  */
     method public void setShowGroupSelectionCheckbox(BBjNumber enabled!)
@@ -1938,7 +2008,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @see resetAllColumns()
     rem  */
     method public void clearColumnDefinitions()
@@ -2012,7 +2082,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem Grouping & Pivoting
         rem ===========================
         options!.addProperty("groupUseEntireRow",#getGroupUseEntireRow().booleanValue() , err=*next)
-        options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().booleanValue() , err=*next)
+        options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().longValue(), err=*next)
         options!.        add("autoGroupColumnDef",#getAutoGroupColumnDefinition().getAsJsonObject(), err=*next)
         options!.addProperty("groupMultiAutoColumn",#getGroupMultiAutoColumn().booleanValue() , err=*next)
         options!.addProperty("groupSuppressRow",#getGroupSuppressRow().booleanValue() , err=*next)
@@ -2043,7 +2113,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("rowHeight",#getRowHeight().longValue(), err=*next)
         options!.addProperty("animateRows",#getAnimateRows().booleanValue(), err=*next)
         options!.        add("rowStyle",iff(#getRowStyle().entrySet().size() <> 0 , #getRowStyle() , null()), err=*next)
-        options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), null()) ,err=*next)
+        options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), listIsEmpty!) ,err=*next)
         options!.        add("rowClassRules", iff(#getRowClassRules().entrySet().size() <> 0 , #getRowClassRules() , null()),err=*next)
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
         rem Localisation
@@ -2055,6 +2125,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressNoRowsOverlay",#getSuppressNoRowsOverlay().booleanValue(), err=*next)
         options!.addProperty("overlayLoadingTemplate",#getOverlayLoadingTemplate(), err=*next)
         options!.addProperty("overlayNoRowsTemplate",#getOverlayNoRowsTemplate(), err=*next)
+        rem Tree Data
+        rem ===========================
+        options!.addProperty("treeData",#getTreeData().booleanValue(), err=*next)
         rem Miscellaneous
         rem ===========================
         options!.addProperty("suppressMiddleClickScrolls",#getSuppressMiddleClickScrolls().booleanValue() , err=*next)
@@ -2072,7 +2145,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem ===========================
         context! = #getClientContext()
         context!.addProperty("id",#GRIDID$)
-        context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), null()) ,err=*next)
+        context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), listIsEmpty!) ,err=*next)
         context!.addProperty("getRowNodeId",#RowNodeId$, err=*next)
         context!.addProperty("numberGroupSep",comma$, err=*next)
         context!.addProperty("numberDecimalSep",dot$, err=*next)
@@ -2082,6 +2155,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!, err=*next)
         context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
         context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
+        context!.addProperty("getDataPath",#getDataPathTemplate(), err=*next)
         options!.add("context",context!)
         methodret options!
     methodend
@@ -2116,7 +2190,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Rerender the column defintions on the client.
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * The method will collect the new changes in columns and column groups and force the client to reflect the
     rem  * change.
     rem  */
@@ -2232,7 +2306,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param ResultSet rs! ResultSet with the data
     rem  *
     rem  * @see setData()
@@ -2250,7 +2324,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Update row data
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  */
@@ -2271,7 +2345,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add new row
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber index! The insert index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  */
@@ -2290,7 +2364,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add new row
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param DataRow row! The DataRow object which contains the update
     rem  */
     method public void addRow(DataRow row!)
@@ -2308,7 +2382,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Remove row from grid by index
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber index! The row index
     rem  */
     method public void removeRow(BBjNumber index!)
@@ -2325,7 +2399,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Clear row data (Empty the grid )
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void clearRowsData()
@@ -2337,7 +2411,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Apply columns state
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjGridExWidgetState state! : the state object
     rem  */
     method public void setColumnState(BBjGridExWidgetState state!)
@@ -2347,7 +2421,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Get Column state
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @returns BBjGridExWidgetState
     rem  */
     method public BBjGridExWidgetState getColumnState()
@@ -2400,7 +2474,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add Style block
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param selector$ : Css Selector
     rem  * @param rules! : Css Rules object as json object
     rem  */
@@ -2411,7 +2485,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add Style block
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param selector$ : Css Selector
     rem  * @param rules! : Css Rules object as string
     rem  */
@@ -2422,7 +2496,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Remove Style Block
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param selector$ : Css Selector
     rem  */
     method public void removeStyle(BBjString selector$)
@@ -2431,14 +2505,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Set the grid theme
     rem  *
+    rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString theme$
     rem  *
     rem  * @see getThemes()
     rem  */
     method public void setTheme(BBjString theme$)
-        if pos(theme$="dark#fresh#blue#bootstrap#material#balham#balham-dark")>0 then
+        #Theme! = theme$
+
+        if(#IsReady!) then
             if info(3,6)="5" then
                 s$="$doc.getElementById('" + str(#GRIDID$) + "').className='ag-theme-"+theme$+"';"
             else
@@ -2446,13 +2523,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             FI
 
             #executeScript(s$)
+        else
+            template! = #getTemplate()
+            #HTMLView!.setText(template!)
         FI
     methodend
     rem /**
     rem  * Get the grid supported themes
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @return BBjVector array of theme names
     rem  */
     method public BBjVector getThemes()
@@ -2468,7 +2548,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * select all rows
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void selectAll()
@@ -2479,7 +2559,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * select all rows
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBJNumber x!: 0 select all , 1 select all filtered
     rem  */
     method public void selectAll(BBjNumber x!)
@@ -2489,7 +2569,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * deselect all rows
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void deselectAll()
@@ -2500,7 +2580,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * deselect all rows
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBJNumber x!: 0 deselect all , 1 deselect all filtered
     rem  */
     method public void deselectAll(BBjNumber x!)
@@ -2511,7 +2591,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Select a row
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBJNumber x!: the row index to select
     rem  */
     method public void setSelectedRow(BBjNumber x!)
@@ -2523,7 +2603,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Select verctor of rows
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBJNumber x!: vector of row indices to select
     rem  */
     method public void setSelectedRows(BBjVector x!)
@@ -2546,7 +2626,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Expand all groups
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void expandAll()
@@ -2555,7 +2635,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * collapse all groups
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void collapseAll()
@@ -2570,7 +2650,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber index!: the row index
     rem  * @param BBjString position!: the scrolling poistion
     rem  *
@@ -2584,9 +2664,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Set visible column&#183; Ensures the column is visible, scrolling the table if needed&#183;
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBJString columnid!: the column id
     rem  */
     method public void setVisibleColumn(BBjString columnId!)
@@ -2595,7 +2675,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * set the grid to scroll horizontally or fit into the client area
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void setFitToGrid()
@@ -2603,9 +2683,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * setSize - set the size of the control
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber w! - width
     rem  * @param BBjNumber h! - height
     rem  */
@@ -2625,7 +2705,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Set all rows height
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber height! - the new row height
     rem  */
     method public void setRowHeight(BBjNumber height!)
@@ -2636,7 +2716,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Set the given row height
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
     rem  */
@@ -2648,7 +2728,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString json! The icons as a json object
     rem  */
     method public void setIcons(BBjString json!)
@@ -2662,7 +2742,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber mode! when true , the pivot mode will be enabled , disabled otherwise
     rem  */
     method public void setPivotMode(BBjNumber mode!)
@@ -2677,7 +2757,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @return BBjNumber 1 when pivot mode is enabled , 0 otherwise
     rem  */
     method public BBjNumber getPivotMode()
@@ -2692,7 +2772,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Perform throw columns search
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber filter : filter as a string
     rem  */
     method public void setQuickFilter(BBjNumber filter)
@@ -2702,7 +2782,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Perform throw columns search
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber filter : filter as number
     rem  */
     method public void setQuickFilter(BBjString filter!)
@@ -2710,7 +2790,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Start Next Cell Editing
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToNextCell()
@@ -2718,7 +2798,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Move to previous cell
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToPreviousCell()
@@ -2728,7 +2808,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Start Cell Editing
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber row!: The row number
     rem  * @param BBjString colId!: The column ID
     rem  */
@@ -2739,7 +2819,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Start Cell Editing
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber row!: The row number
     rem  * @param BBjString colId$: The column ID
     rem  * @param BBjNumber char$: key chars to press on editors when editors support it
@@ -2751,7 +2831,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Start Cell Editing
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber row!: The row number
     rem  * @param BBjString colId$: The column ID
     rem  * @param BBjNumber key!: key codes to press on editors when editors support it
@@ -2761,7 +2841,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Start next Cell Editing
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void startNextCellEditing()
@@ -2769,7 +2849,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Start previous Cell Editing
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void startPreviousCellEditing()
@@ -2777,7 +2857,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Stop editing and discard changes
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void stopEditing()
@@ -2787,7 +2867,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Stop Editing
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber cancel!: 1 = discard changes , 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
@@ -2800,7 +2880,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber readonly! when true disable , enable otherwise
     rem  */
     method public void setFunctionsReadOnly(BBjNumber readonly!)
@@ -2811,7 +2891,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Get the current selected row
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @return BBjGridExWidgetClientRowModel The selected row if any , null() otherwise
     rem  */
     method public BBjGridExWidgetClientRowModel getSelectedRow()
@@ -2826,7 +2906,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Get Array of selected rows
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @return BBjVector A vector filled with the selected rows
     rem  */
     method public BBjVector getSelectedRows()
@@ -2854,7 +2934,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Show loading overlay
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showLoadingOverlay()
@@ -2862,7 +2942,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Show 'no rows' overlay
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showNoRowsOverlay()
@@ -2870,42 +2950,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Clear all overlays
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void hideOverlay()
         #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
-    methodend
-    rem /**
-    rem  * Excute script
-    rem  *
-    rem  * Excute a javascript code on the client
-    rem  *
-    rem  * @param BBjString script$ The javascript code
-    rem  *
-    rem  * @return Object returned value , if any
-    rem  */
-    method public Object executeScript(BBjString script$)
-        if #IsReady! then
-            methodret #HTMLView!.executeScript(script$)
-        else
-            #backlog!.addItem(script$)
-        FI
-
-        methodret null()
-    methodend
-    rem /**
-    rem  * Parse the grid html template
-    rem  *
-    rem  * @param BBjString template$ Template string
-    rem  *
-    rem  * @return BBjString parsed template
-    rem  */
-    method protected BBjString parseTemplate(BBjString template$)
-        temp! = template$
-        temp! = temp!.replaceAll("__id__" , #GRIDID$)
-        temp! = temp!.replaceAll("__lang__", #getLanguageManager().getLanguage())
-        methodret str(temp!)
     methodend
     rem /**
     rem  * Fires an event
@@ -2925,6 +2974,27 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method protected void updateClientWithInterests()
         #executeScript("gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
+    methodend
+    rem /**
+    rem  * Get the grid template
+    rem  *
+    rem  * @return BBjString parsed html template
+    rem  */
+    method protected BBjString getTemplate()
+        html$ = #Template$
+
+        if(len(html$) = 0) then
+            ch=unt
+            open (ch)"BBjGridExWidget/client/index.html"
+            read record (ch,siz=5512000)html$
+            close (ch)
+        FI
+
+        html! = html$
+        html! = html!.replaceAll("__id__" , #GRIDID$)
+        html! = html!.replaceAll("__lang__", #getLanguageManager().getLanguage())
+        html! = html!.replaceAll("__THEME__", "ag-theme-" + #getTheme())
+        methodret html!
     methodend
 
     method protected void handleStateChangedEvent(BBjString detail$, BBjNumber type!)
@@ -3006,4 +3076,3 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
 
 classend
-

@@ -67,6 +67,7 @@ export function gw_init(options, license , data) {
 function gw_parseOptions(options) {
   const deepParsedOptions     = deepParseJson(JSON.stringify(options));
   const id                    = deepParsedOptions.context.id;
+  const getDataPathTemplate   = deepParsedOptions.context.getDataPath || "";
   // TODO: do we need to control this setting from BBj ?
   const debounceDuration      = 250;
   const finalOptions = {
@@ -109,6 +110,11 @@ function gw_parseOptions(options) {
     finalOptions.context.navigateToNextCell
   ) {
     finalOptions.navigateToNextCell = params => { return gw_navigateToNextRow(id, params) };
+  }
+
+  if (getDataPathTemplate && finalOptions.treeData) {
+    const getDataPathTemplateComplied = template(getDataPathTemplate);
+    finalOptions.getDataPath = data => getDataPathTemplateComplied({ data: data });
   }
 
   // extend the column definitions
