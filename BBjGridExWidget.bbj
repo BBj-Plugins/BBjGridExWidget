@@ -2547,6 +2547,57 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret v!
     methodend
     rem /**
+    rem  * Set the focus on the given row id and the given column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * @param BBjString row! The row id
+    rem  * @param BBjStrinf column! The column id
+    rem  */
+    method public void focus(BBjString row! , BBjString column!)
+        #super!.focus()
+        script$="gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
+        #executeScript(script$)
+    methodend
+    rem /**
+    rem  * Set the focus on the given row id and the given column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber row! The row id
+    rem  * @param BBjStrinf column! The column id
+    rem  */
+    method public void focus(BBjNumber row! , BBjString column!)
+        #focus(str(row!) , column!)
+    methodend
+    rem /**
+    rem  * Set the focus on the given row id and the first column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString row! The row id
+    rem  */
+    method public void focus(BBjString row!)
+        #focus(str(row!) , "")
+    methodend
+    rem /**
+    rem  * Set the focus on the given row id and the first column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber row! The row id
+    rem  */
+    method public void focus(BBjNumber row!)
+        #focus(str(row!))
+    methodend
+    rem /**
+    rem  * Will set the focus on the first cell of the first row
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void focus()
+        #focus(0)
+    methodend
+    rem /**
     rem  * select all rows
     rem  *
     rem  * <br><b><small>#API</small></b>

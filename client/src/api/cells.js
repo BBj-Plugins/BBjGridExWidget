@@ -55,3 +55,21 @@ export function gw_editPreviousCell(id) {
     .api
     .tabToPreviousCell();
 }
+
+/**
+ * Set Focus on the given row and column
+ * 
+ * @param {String} id The grid's id 
+ * @param {String|Number} row The row's index/id
+ * @param {String} column The column id
+ */
+export function gw_setFocusedCell(id, row, column) {
+  const options = gw_getGrid(id).options;
+  const r = !row ? 0 : (Number.isInteger(+row) ? +row : options.api.getRowNode(row).rowIndex);
+  const c = column ? column : options.columnApi.getAllGridColumns()[0].colId;
+  console.log(c,r)
+  gw_getGrid(id)
+    .options
+    .api
+    .setFocusedCell(r, c);
+}

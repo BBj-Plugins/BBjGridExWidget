@@ -14,12 +14,14 @@ module.exports = {
       "core-js/fn/string/starts-with.js",
       "core-js/fn/array/for-each.js",
       "core-js/fn/array/includes.js",
+      "core-js/fn/number/is-integer.js",
       "./src/index.js"
     ],
     "bbj-grid-widget": [
       "core-js/fn/string/starts-with.js",
       "core-js/fn/array/for-each.js",
       "core-js/fn/array/includes.js",
+      "core-js/fn/number/is-integer.js",
       "./src/index.js"
     ],
   },
