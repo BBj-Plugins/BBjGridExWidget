@@ -156,7 +156,7 @@ class public BBjGridExWidgetClientColumnModel
     rem  * @return BBjNumber column's type
     rem  */
     method public BBjNumber getType()
-        methodret #getWidget().getRS().getColumnType(#getName())
+        methodret #getWidget().getRS().getColumnType(#getIndex())
     methodend
     rem /**
     rem  * Get the column type
