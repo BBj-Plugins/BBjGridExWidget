@@ -179,11 +179,12 @@ class public BBjGridExWidgetClientColumnModel
     rem /**
     rem  * Convert column to string
     rem  *
-    rem  * @return BBjstring  The column 
+    rem  * @return BBjstring  The column
     rem  */
     method public BBjString toString()
         methodret #getName()
     methodend
+
 classend
 REM /**
 REM  * A model for the client cell
@@ -218,5 +219,6 @@ class public BBjGridExWidgetClientRangeSelectionModel
     rem /**
     rem  * An array of rows objects where every object is instance of  BBjGridExWidgetClientRowModel
     rem  */
-    field public BBjVector Rows! = new BBjVector()    
+    field public BBjVector Rows! = new BBjVector()
+
 classend

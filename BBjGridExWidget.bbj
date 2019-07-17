@@ -746,14 +746,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field public BBjString Theme! = "balham"
     rem /**
     rem  * Set to true to enable Range Selection
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  */
     field public BBjNumber EnableRangeSelection! = null()
     rem /**
     rem  * Enable / diable one range selection even if ctrl key is held down
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  */
@@ -898,12 +898,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Constant value to define range selection event
-    rem  * 
+    rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_RANGE_SELECTION_CHANGED()
         methodret 5009
-    methodend      
+    methodend
     rem /**
     rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
     rem  *
@@ -1376,7 +1376,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 break
             case "gw.rangeSelection"
                 #onRangeSelectionChange(detail$)
-                break                 
+                break
             case "gw.cellEditingStarted"
                 #onCellEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
                 break
@@ -3013,26 +3013,22 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             methodret rows!
     methodend
     rem /**
-    rem  * The method will return a vector of the selected ranges including columns and rows 
-    rem  * 
+    rem  * The method will return a vector of the selected ranges including columns and rows
+    rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @return BBjVector
     rem  */
     method public BBjVector getRangeSelection()
-
         rem an array to save the parsed range selections
         rangeSelectionVector! = new BBjVector()
-
-
         rem get the range selections from the client
         rem the client will return an array of objects where each object is a range
         rangeSelections! = #executeScript("gw_getRangeSelections('" + #GRIDID$ + "')")
-        
+
         if (rangeSelections! = "[]") then
             goto getSelectionRangeErr
         FI
-
         rem iterate throw the ranges array and parse the range objects
         parser! = new JsonParser()
         ranges! = parser!.parse(rangeSelections!).getAsJsonArray()
@@ -3040,11 +3036,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         while (rangesIterator!.hasNext())
             model! = #getClientJsonFactory().getRangeSelection(rangesIterator!.next().getAsJsonObject())
             rangeSelectionVector!.addItem(model!)
-        wend     
+        wend
 
         getSelectionRangeErr:
             methodret rangeSelectionVector!
-    methodend    
+    methodend
     rem /**
     rem  * Show loading overlay
     rem  *
@@ -3118,11 +3114,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Handle Range Selections Event
     rem  *
     rem  * @see BBjGridExWidgetClientEventsRangeSelection
-    rem  */    
+    rem  */
     method private void onRangeSelectionChange(BBjString detail$)
         event! = new BBjGridExWidgetClientEventsRangeSelection()
         #fireEvent(#ON_GRID_RANGE_SELECTION_CHANGED(),event!)
-    methodend    
+    methodend
     rem /**
     rem  * On rows selections event
     rem  *
