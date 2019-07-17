@@ -284,3 +284,15 @@ export function gw_addCellRange(id, range) {
     columns: pr.columns
   });
 }
+
+/**
+ * Clears the selected range.
+ * 
+ * @param {Number} id grid's id
+ */
+export function gw_clearRangeSelection(id) {
+  gw_getGrid(id)
+    .options
+    .api
+    .clearRangeSelection();
+}

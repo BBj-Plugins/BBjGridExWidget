@@ -3046,7 +3046,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add new range selection
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjGridExWidgetClienAddRangeSelectionModel model! the add selection model
     rem  *
     rem  * @return BBjGridExWidgetClienAddRangeSelectionModel
@@ -3059,7 +3059,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add new range selection
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
     rem  * @param BBjString start! start row id or index
     rem  * @param BBjString end! end row id or index
@@ -3077,7 +3077,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add new range selection
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
     rem  * @param BBjNumber start! start row id or index
     rem  * @param BBjNumber end! end row id or index
@@ -3091,13 +3091,21 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Add new range selection
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
     rem  *
     rem  * @return BBjGridExWidgetClienAddRangeSelectionModel
     rem  */
     method public BBjGridExWidgetClienAddRangeSelectionModel addRangeSelection(BBjString columns!)
         methodret #addRangeSelection(columns!,null() , null())
+    methodend
+    rem /**
+    rem  * Clears the selected range.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void clearRangeSelection()
+        #executeScript("gw_clearRangeSelection('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Show loading overlay
