@@ -751,6 +751,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjNumber RangeSelection! = null()
     rem /**
+    rem  * Enable / diable one range selection even if ctrl key is held down
+    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  */
+    field public BBjNumber SuppressMultiRangeSelection! = null()
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -2072,6 +2079,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("rowDeselection",#getRowDeselection().booleanValue())
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
         options!.addProperty("enableRangeSelection",#getRangeSelection().booleanValue(), err=*next)
+        options!.addProperty("suppressMultiRangeSelection",#getSuppressMultiRangeSelection().booleanValue(), err=*next)
         rem Editing Options
         rem ===========================
         options!.addProperty("singleClickEdit",#getSingleClickEdit().booleanValue(), err=*next)
