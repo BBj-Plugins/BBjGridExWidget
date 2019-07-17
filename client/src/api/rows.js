@@ -9,6 +9,8 @@
 import { gw_getGrid } from "./utilities";
 import { gw_parseNode } from "events/utilities";
 
+const { deepParseJson } = require("deep-parse-json");
+
 export function gw_setQuickFilter(id, filter) {
   gw_getGrid(id)
     .options
@@ -255,9 +257,30 @@ export function gw_getRangeSelections(id) {
       rows.push(gw_parseNode(node, context));
     }
 
-    result.push({rows, columns });
+    result.push({ rows, columns });
     //}
   });
 
   return JSON.stringify(result);
-} 
+}
+
+/**
+ * Add new cell range
+ * 
+ * @param {Number} id grid's id
+ * @param {Object} range  bounded or unbounded range model
+ */
+export function gw_addCellRange(id, range) {
+  const options = gw_getGrid(id).options;
+  const pr = deepParseJson(JSON.stringify(range));
+  const start = !(pr.start || null) ?
+    0 : (Number.isInteger(+pr.start) ? +pr.start : options.api.getRowNode(pr.start).rowIndex);
+  const end = !(pr.end || null) ?
+    (options.rowData.length - 1) : (Number.isInteger(+pr.end) ? +pr.end : options.api.getRowNode(pr.end).rowIndex);
+
+  options.api.addCellRange({
+    rowStartIndex: Math.abs(start),
+    rowEndIndex: Math.abs(end),
+    columns: pr.columns
+  });
+}

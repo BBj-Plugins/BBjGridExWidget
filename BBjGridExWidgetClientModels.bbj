@@ -7,9 +7,12 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.basiscomponents.db.DataRow
+use java.util.ArrayList
+use java.util.Arrays
 REM /**
 REM  * A client model for rows
 REM  *
@@ -220,5 +223,57 @@ class public BBjGridExWidgetClientRangeSelectionModel
     rem  * An array of rows objects where every object is instance of  BBjGridExWidgetClientRowModel
     rem  */
     field public BBjVector Rows! = new BBjVector()
+
+classend
+rem /**
+rem  * The model is used to compose a range selection model in order to be applied on the client.
+rem  *
+rem  * Ranges are normally bounded by a start and end row. However it is also possible to define a range unbounded
+rem  * by rows (ie to contain all rows). For an unbounded range, do not provided start or end row positions.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClienAddRangeSelectionModel
+    rem /**
+    rem  * A list of column ids to use . Note that none existing columns will be ignored silently
+    rem  */
+    field public ArrayList Columns! = new ArrayList()
+    rem /**
+    rem  * Start row id or index
+    rem  */
+    field public BBjString Start! = null()
+    rem /**
+    rem  * End row id or index
+    rem  */
+    field public BBjString End! = null()
+    rem /**
+    rem  * Add columns as comma seperated string
+    rem  *
+    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  */
+    method public void setColumns(BBjString columns!)
+        arrayList! = new ArrayList()
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+            arrayList!.add(cvs(it!.next(),128))
+        WEND
+
+        #setColumns(arrayList!)
+    methodend
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("columns" , iff(#getColumns().size() <> 0 ,new Gson().toJson(#getColumns()), listIsEmpty!) , err=*next)
+        json!.addProperty("start" , #getStart(), err=*next)
+        json!.addProperty("end" , #getEnd(), err=*next)
+        methodret json!
+    methodend
 
 classend

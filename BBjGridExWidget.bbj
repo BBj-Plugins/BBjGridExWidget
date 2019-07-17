@@ -39,6 +39,7 @@ use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManager
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImageRenderer
 use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClienAddRangeSelectionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
@@ -3040,6 +3041,55 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         getSelectionRangeErr:
             methodret rangeSelectionVector!
+    methodend
+    rem /**
+    rem  * Add new range selection
+    rem  *
+    rem  * @param BBjGridExWidgetClienAddRangeSelectionModel model! the add selection model
+    rem  *
+    rem  * @return BBjGridExWidgetClienAddRangeSelectionModel
+    rem  */
+    method public BBjGridExWidgetClienAddRangeSelectionModel addRangeSelection(BBjGridExWidgetClienAddRangeSelectionModel model!)
+        #executeScript("gw_addCellRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+        methodret model!
+    methodend
+    rem /**
+    rem  * Add new range selection
+    rem  *
+    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  * @param BBjString start! start row id or index
+    rem  * @param BBjString end! end row id or index
+    rem  *
+    rem  * @return BBjGridExWidgetClienAddRangeSelectionModel
+    rem  */
+    method public BBjGridExWidgetClienAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjString start! , BBjString end!)
+        model! = new BBjGridExWidgetClienAddRangeSelectionModel()
+        model!.setColumns(columns!)
+        model!.setStart(start!)
+        model!.setEnd(end!)
+        methodret #addRangeSelection(model!)
+    methodend
+    rem /**
+    rem  * Add new range selection
+    rem  *
+    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  * @param BBjNumber start! start row id or index
+    rem  * @param BBjNumber end! end row id or index
+    rem  *
+    rem  * @return BBjGridExWidgetClienAddRangeSelectionModel
+    rem  */
+    method public BBjGridExWidgetClienAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjNumber start! , BBjNumber end!)
+        methodret #addRangeSelection(columns! , str(start!),str(end!))
+    methodend
+    rem /**
+    rem  * Add new range selection
+    rem  *
+    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  *
+    rem  * @return BBjGridExWidgetClienAddRangeSelectionModel
+    rem  */
+    method public BBjGridExWidgetClienAddRangeSelectionModel addRangeSelection(BBjString columns!)
+        methodret #addRangeSelection(columns!,null() , null())
     methodend
     rem /**
     rem  * Show loading overlay
