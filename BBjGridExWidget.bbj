@@ -3019,7 +3019,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @return BBjVector
     rem  */
-    method public BBjVector getRangeSelection()
+    method public BBjVector getRangeSelections()
         rem an array to save the parsed range selections
         rangeSelectionVector! = new BBjVector()
         rem get the range selections from the client
