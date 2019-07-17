@@ -10,6 +10,7 @@ use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRangeSelectionModel
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 REM /**
@@ -112,6 +113,33 @@ class public BBjGridExWidgetClientJsonFactory
         parser! = new JsonParser()
         parsedCell!  = parser!.parse(json!).getAsJsonObject()
         methodret #getCell(parsedCell!)
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetClientRangeSelectionModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientRangeSelectionModel
+    rem  */
+    method public BBjGridExWidgetClientRangeSelectionModel getRangeSelection(JsonObject json!)
+        rem a model which describes the range object
+        rangeModel! = new BBjGridExWidgetClientRangeSelectionModel()
+        rem loop over the range columns and create a column model for each one
+        columns! = json!.get("columns").getAsJsonArray()
+        columnsIterator! = columns!.iterator()
+        while(columnsIterator!.hasNext())
+            rem create a column model and add it to the range
+            rangeModel!.getColumns().add(#getColumn(columnsIterator!.next().getAsString()))
+        wend
+        rem loop over the range rows and create a row model for each one
+        rows! = json!.get("rows").getAsJsonArray()
+        rowsIterator! = rows!.iterator()
+        while(rowsIterator!.hasNext())
+            rem create a row model and add it to the range
+            rangeModel!.getRows().add(#getRow(rowsIterator!.next().getAsJsonObject()))
+        wend
+
+        methodret rangeModel!
     methodend
 
 classend

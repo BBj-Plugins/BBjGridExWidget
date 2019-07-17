@@ -212,3 +212,52 @@ export function gw_getSelectedRow(id) {
 
   return '';
 }
+
+/**
+ * Get Range Selections
+ * 
+ * The method will create a range json model for each range which can be parsed in BBj side.
+ * 
+ * @param {Number} id grid's id
+ * 
+ * @returns {String} selected ranges as JSON
+ */
+export function gw_getRangeSelections(id) {
+  const options = gw_getGrid(id).options;
+  const context = options.context;
+  const api = options.api;
+  const ranges = api.getCellRanges();
+  const model = api.getModel();
+  let result = [];
+
+  ranges.forEach(range => {
+
+    // const start = gw_parseNode(model.getRow(range.startRow.rowIndex), options.context);
+    // const end = gw_parseNode(model.getRow(range.endRow.rowIndex), options.context);
+
+    //if (start !== false && end !== false) {
+    const columns = range.columns.reduce((accumulator, current) => {
+
+      if ("ag-Grid-AutoColumn" !== current.colId) {
+        accumulator.push(current.colId);
+      }
+
+      return accumulator;
+    }, []).filter(Boolean);
+
+    const starIndex = Math.min(range.startRow.rowIndex, range.endRow.rowIndex);
+    const endIndex = Math.max(range.startRow.rowIndex, range.endRow.rowIndex);
+    const rows = [];
+
+    for (let rowIndex = starIndex; rowIndex <= endIndex; rowIndex++) {
+      const node = model.getRow(rowIndex);
+
+      rows.push(gw_parseNode(node, context));
+    }
+
+    result.push({rows, columns });
+    //}
+  });
+
+  return JSON.stringify(result);
+} 

@@ -750,7 +750,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  */
-    field public BBjNumber RangeSelection! = null()
+    field public BBjNumber EnableRangeSelection! = null()
     rem /**
     rem  * Enable / diable one range selection even if ctrl key is held down
     rem  * 
@@ -2090,7 +2090,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("rowMultiSelectWithClick",#getRowMultiSelectWithClick().booleanValue() , err=*next)
         options!.addProperty("rowDeselection",#getRowDeselection().booleanValue())
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
-        options!.addProperty("enableRangeSelection",#getRangeSelection().booleanValue(), err=*next)
+        options!.addProperty("enableRangeSelection",#getEnableRangeSelection().booleanValue(), err=*next)
         options!.addProperty("suppressMultiRangeSelection",#getSuppressMultiRangeSelection().booleanValue(), err=*next)
         rem Editing Options
         rem ===========================
@@ -3012,6 +3012,39 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         getSelectedRowsErr:
             methodret rows!
     methodend
+    rem /**
+    rem  * The method will return a vector of the selected ranges including columns and rows 
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @return BBjVector
+    rem  */
+    method public BBjVector getRangeSelection()
+
+        rem an array to save the parsed range selections
+        rangeSelectionVector! = new BBjVector()
+
+
+        rem get the range selections from the client
+        rem the client will return an array of objects where each object is a range
+        rangeSelections! = #executeScript("gw_getRangeSelections('" + #GRIDID$ + "')")
+        
+        if (rangeSelections! = "[]") then
+            goto getSelectionRangeErr
+        FI
+
+        rem iterate throw the ranges array and parse the range objects
+        parser! = new JsonParser()
+        ranges! = parser!.parse(rangeSelections!).getAsJsonArray()
+        rangesIterator! = ranges!.iterator()
+        while (rangesIterator!.hasNext())
+            model! = #getClientJsonFactory().getRangeSelection(rangesIterator!.next().getAsJsonObject())
+            rangeSelectionVector!.addItem(model!)
+        wend     
+
+        getSelectionRangeErr:
+            methodret rangeSelectionVector!
+    methodend    
     rem /**
     rem  * Show loading overlay
     rem  *
