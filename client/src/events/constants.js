@@ -21,3 +21,6 @@ export const GW_EVENT_ROW_EDITING_STOPPED = 5007;
 
 // state constants
 export const GW_EVENT_GRID_STATE_CHANGE = 5008;
+
+// range selection
+export const GW_EVENT_RANGE_SELECTION_CHANGED = 5009;

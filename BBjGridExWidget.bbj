@@ -43,6 +43,7 @@ use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEven
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRangeSelection
 rem /**
 rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
@@ -896,6 +897,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret 5008
     methodend
     rem /**
+    rem  * Constant value to define range selection event
+    rem  * 
+    rem  * @return BBjNumber
+    rem  */
+    method public static BBjNumber ON_GRID_RANGE_SELECTION_CHANGED()
+        methodret 5009
+    methodend      
+    rem /**
     rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
     rem  *
     rem  * @see ON_GRID_STATE_CHANGE()
@@ -1365,6 +1374,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             case "gw.cellDoubleClicked"
                 #onCellEvent(detail$,#ON_GRID_CELL_DOUBLE_CLICK())
                 break
+            case "gw.rangeSelection"
+                #onRangeSelectionChange(detail$)
+                break                 
             case "gw.cellEditingStarted"
                 #onCellEvent(detail$,#ON_GRID_CELL_EDITING_STARTED())
                 break
@@ -3069,6 +3081,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         event! = #getColumnState()
         #fireEvent(type!, event!)
     methodend
+    rem /**
+    rem  * Handle Range Selections Event
+    rem  *
+    rem  * @see BBjGridExWidgetClientEventsRangeSelection
+    rem  */    
+    method private void onRangeSelectionChange(BBjString detail$)
+        event! = new BBjGridExWidgetClientEventsRangeSelection()
+        #fireEvent(#ON_GRID_RANGE_SELECTION_CHANGED(),event!)
+    methodend    
     rem /**
     rem  * On rows selections event
     rem  *

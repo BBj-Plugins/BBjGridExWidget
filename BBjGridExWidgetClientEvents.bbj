@@ -89,3 +89,11 @@ class public BBjGridExWidgetClientEventsRowEditing
     rem  */
     field public BBjGridExWidgetClientRowModel Row!
 classend
+
+REM /**
+REM  * Cells range selection event
+REM  * 
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientEventsRangeSelection
+classend 

@@ -9,7 +9,8 @@
 import {
 	gw_onRowDoubleClicked,
 	gw_onSelectionChanged,
-	gw_onCellClickEvent
+	gw_onCellClickEvent,
+	gw_onRangeSelectionChanged
 } from "./selections";
 
 import {
@@ -28,6 +29,7 @@ import {
 export {
 	gw_onRowDoubleClicked,
 	gw_onSelectionChanged,
+	gw_onRangeSelectionChanged,
 	gw_onCellClickEvent,
 	gw_onCellEditingEvent,
 	gw_onRowEditingEvent,

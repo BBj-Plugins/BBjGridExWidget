@@ -13,6 +13,7 @@ import { gw_getDocument, gw_addGrid}  from "./utilities";
 import {
   gw_onRowDoubleClicked,
   gw_onSelectionChanged,
+  gw_onRangeSelectionChanged,
   gw_onCellClickEvent,
   gw_onCellEditingEvent,
   gw_onRowEditingEvent,
@@ -86,8 +87,9 @@ function gw_parseOptions(options) {
       getRowNodeId:           data   =>   gw_getRowNodeId(id, data)                           ,
       getContextMenuItems:    params =>   gw_getContextMenu(id, params)                       ,
       "popupParent":                      gw_getDocument().body,
-      "onRowDoubleClicked":               gw_debounce(gw_onRowDoubleClicked, debounceDuration),
-      "onSelectionChanged":               gw_debounce(gw_onSelectionChanged, debounceDuration),
+      "onRowDoubleClicked":               gw_debounce(gw_onRowDoubleClicked, debounceDuration)         ,
+      "onSelectionChanged":               gw_debounce(gw_onSelectionChanged, debounceDuration)         ,
+      "onRangeSelectionChanged":          gw_debounce(gw_onRangeSelectionChanged , debounceDuration)  ,
       "components": {
         "BasicBooleansRenderer"       : Basis.AgGridComponents.BasicBooleansRenderer,
         "BasicBooleansEditor"         : Basis.AgGridComponents.BasicBooleansEditor  ,

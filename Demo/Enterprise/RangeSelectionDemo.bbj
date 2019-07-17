@@ -1,0 +1,129 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+use com.google.gson.JsonObject
+use java.util.ArrayList
+use java.util.Collections
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+static! = wnd!.addStaticText(100,-10,575,800,25,"Count : 0 - Sum : 0 - Min : 0 - Max : 0 - Average : 0" , $0000$ )
+static!.setAlignment(static!.ALIGN_RIGHT)
+
+grid! = new BBjGridExWidget(wnd!,101, 0  , 0 , 800 , 560)
+grid!.setEnableRangeSelection(1)
+grid!.setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL())
+grid!.setSuppressRowClickSelection(1)
+grid!.setCallback(grid!.ON_GRID_RANGE_SELECTION_CHANGED(),"onRangeSelectionChange")
+
+gosub main
+process_events
+
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER , TITLE , MUSICTYPE,COST FROM CDINVENTORY")
+  
+  grid!.setData(rs!)
+return
+
+onRangeSelectionChange:
+    rem array of ranges
+    ranges! = grid!.getRangeSelection()
+    IF (ranges!.size() = 0) THEN
+      return
+    ENDIF
+
+    rangesLength! = ranges!.size() - 1
+
+    sum! = 0
+    count! = 0
+    min! = 0
+    max! = 0
+    average! = 0
+    values! = new ArrayList()
+
+    rem we start by looping over all ranges
+    FOR rangeIndex! = 0 TO rangesLength!
+
+        currentRange! = ranges!.get(rangeIndex!)
+
+        rows! = currentRange!.getRows()
+        rowsLength! = rows!.size() - 1
+
+        columns! = currentRange!.getColumns()
+        columnsLength! = columns!.size() - 1
+
+        count! = count! + (columns!.size() * rows!.size())
+
+        FOR rowIndex! = 0 TO rowsLength!
+
+          FOR columnsIndex! = 0 TO columnsLength!
+
+            column! = columns!.get(columnsIndex!)
+            type! = column!.getType()
+
+            SWITCH (type!)
+               case Types.INTEGER
+               case Types.DECIMAL
+               case Types.DOUBLE
+               case Types.NUMERIC
+
+                row! = rows!.get(rowIndex!).asDataRow()
+                value! = num(row!.getField(column!.getName()).getValue())
+                sum! = sum! + value!
+                values!.add(value!)
+
+                BREAK
+               CASE DEFAULT
+                BREAK
+            SWEND
+
+          NEXT columnsIndex!
+
+        NEXT rowIndex!
+
+    NEXT rangeIndex!
+
+    IF (values!.size() > 0) THEN      
+      min! = Collections.min(values!)
+      max! = Collections.max(values!)
+      average! = sum! / values!.size()
+    ENDIF  
+
+    static!.setText("Count : " + str(count!) +  " - Sum : " +  str(sum!) + " - Min : " + str(min!) + " - Max : " + str(max!) + " - Average : " + str(average!))
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
