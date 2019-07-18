@@ -252,9 +252,10 @@ export function gw_getRangeSelections(id) {
     const rows = [];
 
     for (let rowIndex = starIndex; rowIndex <= endIndex; rowIndex++) {
-      const node = gw_parseNode(model.getRow(rowIndex), context);
+      const node = model.getRow(rowIndex);
       if (node) {
-        rows.push(node);
+        const parsedNode = gw_parseNode(node, context);
+        if(parsedNode) rows.push(parsedNode);
       }
     }
 
