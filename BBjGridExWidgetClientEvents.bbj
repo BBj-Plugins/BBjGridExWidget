@@ -77,7 +77,6 @@ class public BBjGridExWidgetClientEventsCell extends BBjGridExWidgetClientEvents
     field public BBjString OldValue!
 
 classend
-
 rem /**
 rem  * Cell Editing / Clicking Event
 rem  *
@@ -88,4 +87,13 @@ class public BBjGridExWidgetClientEventsRowEditing
     rem  * The Row being edited
     rem  */
     field public BBjGridExWidgetClientRowModel Row!
+
+classend
+REM /**
+REM  * Cells range selection event
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientEventsRangeSelection
+
 classend

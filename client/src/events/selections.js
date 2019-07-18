@@ -12,7 +12,8 @@ import {
   GW_EVENT_ROW_CLICK,
   GW_EVENT_ROW_DOUBLE_CLICK,
   GW_EVENT_CELL_CLICK,
-  GW_EVENT_CELL_DOUBLE_CLICK
+  GW_EVENT_CELL_DOUBLE_CLICK,
+  GW_EVENT_RANGE_SELECTION_CHANGED
 } from "./constants";
 
 const CELL_CLICKING_EVENTS_MAP = {
@@ -52,6 +53,22 @@ export function gw_onSelectionChanged(e) {
     'type': 'gw.rowSelect',
     'detail': ''
   }, GW_EVENT_ROW_CLICK);
+}
+
+/**
+ * A handler for the grid `rangeSelectionChanged` event
+ * 
+ * @param {Object} e 
+ * 
+ * @listens agGrid.rangeSelectionChanged
+ * @fires gw.rangeSelection
+ */
+export function gw_onRangeSelectionChanged(e) {
+  const context = e.api.gridOptionsWrapper.gridOptions.context;
+  gw_sendEvent(context, {
+    'type': 'gw.rangeSelection',
+    'detail': ''
+  }, GW_EVENT_RANGE_SELECTION_CHANGED);
 }
 
 /**
