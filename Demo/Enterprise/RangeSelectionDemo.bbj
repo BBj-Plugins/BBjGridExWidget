@@ -80,7 +80,7 @@ main:
   grid!.setCallback(grid!.ON_GRID_RANGE_SELECTION_CHANGED(),"onRangeSelectionChange")
   
   grid!.setFitToGrid()
-REM   grid!.getSidebar().setHiddenByDefault(1)
+  grid!.getSidebar().setHiddenByDefault(1)
   
   grid!.setData(rs!)  
   
