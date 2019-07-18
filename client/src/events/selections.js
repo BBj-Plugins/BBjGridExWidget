@@ -91,10 +91,10 @@ export function gw_onCellClickEvent(id, e) {
     gw_sendEvent(gw_getGrid(id).options.context, {
       'type': `gw.${e.type}`,
       'detail': JSON.stringify({
-        row: parsed,
-        value: gw_escape(e.value),
-        oldValue: gw_escape(e.value),
-        column: e.column.colId
+        r: parsed, // row
+        v: gw_escape(e.value),  // new value
+        o: gw_escape(e.value), // odl value
+        c: e.column.colId // columns
       })
     }, CELL_CLICKING_EVENTS_MAP[type]);
   }

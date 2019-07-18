@@ -3241,7 +3241,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         cell! = #getClientJsonFactory().getCell(parsedCell!)
         event! = new BBjGridExWidgetClientEventsCell()
         event!.setCell(cell!)
-        event!.setOldValue(parsedCell!.get("oldValue").getAsString())
+        event!.setOldValue(parsedCell!.get("o").getAsString())
         #fireEvent(type!, event!)
     methodend
     rem /**
