@@ -55,11 +55,11 @@ class public BBjGridExWidgetClientJsonFactory
         declare BBjGridExWidgetClientRowModel row!
 
         row! = new BBjGridExWidgetClientRowModel(#getWidget())
-        row!.setId(json!.get("id").getAsString(),err=*next)
-        row!.setChildIndex(json!.get("childIndex").getAsInt(),err=*next)
-        row!.setIndex(json!.get("index").getAsString(),err=*next)
-        row!.setParentKey(json!.get("parentKey").getAsString(),err=*next)
-        row!.setIsSelected(iff(json!.get("selected").getAsString() = "true" ,  1 , 0) , err=*next)
+        row!.setId(json!.get("i").getAsString(),err=*next)
+        row!.setIndex(json!.get("x").getAsString(),err=*next)
+        row!.setChildIndex(json!.get("c").getAsInt(),err=*next)
+        row!.setParentKey(json!.get("p").getAsString(),err=*next)
+        row!.setIsSelected(iff(json!.get("s").getAsString() = "true" ,  1 , 0) , err=*next)
         methodret row!
     methodend
     rem /**
@@ -95,9 +95,9 @@ class public BBjGridExWidgetClientJsonFactory
     rem  */
     method public BBjGridExWidgetClientCellModel getCell(JsonObject json!)
         cell! = new BBjGridExWidgetClientCellModel()
-        cell!.setColumn(#getColumn(json!.get("column").getAsString()))
-        cell!.setRow(#getRow(json!.get("row").getAsJsonObject()))
-        cell!.setValue(json!.get("value").getAsString())
+        cell!.setColumn(#getColumn(json!.get("c").getAsString()))
+        cell!.setRow(#getRow(json!.get("r").getAsJsonObject()))
+        cell!.setValue(json!.get("v").getAsString())
         methodret cell!
     methodend
     rem /**
@@ -125,14 +125,14 @@ class public BBjGridExWidgetClientJsonFactory
         rem a model which describes the range object
         rangeModel! = new BBjGridExWidgetClientRangeSelectionModel()
         rem loop over the range columns and create a column model for each one
-        columns! = json!.get("columns").getAsJsonArray()
+        columns! = json!.get("c").getAsJsonArray()
         columnsIterator! = columns!.iterator()
         while(columnsIterator!.hasNext())
             rem create a column model and add it to the range
             rangeModel!.getColumns().add(#getColumn(columnsIterator!.next().getAsString()))
         wend
         rem loop over the range rows and create a row model for each one
-        rows! = json!.get("rows").getAsJsonArray()
+        rows! = json!.get("r").getAsJsonArray()
         rowsIterator! = rows!.iterator()
         while(rowsIterator!.hasNext())
             rem create a row model and add it to the range

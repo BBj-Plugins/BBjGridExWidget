@@ -3219,7 +3219,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         cell! = #getClientJsonFactory().getCell(parsedCell!)
         event! = new BBjGridExWidgetClientEventsContextMenu()
         event!.setCell(cell!)
-        #fireEvent(parsedCell!.get("id").getAsInt(),event!)
+        #fireEvent(parsedCell!.get("i").getAsInt(),event!)
     methodend
     rem /**
     rem  * On cell Event. handles cell clicking and editing events

@@ -260,7 +260,7 @@ export function gw_getRangeSelections(id) {
     }
 
     if (rows.length && columns.length) {
-      result.push({ rows, columns });
+      result.push({ r:rows, c:columns });
     }
     //}
   });

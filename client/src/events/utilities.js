@@ -73,12 +73,12 @@ export function gw_parseNode(node, context) {
     node.data[context.getRowNodeId] : '';
 
   return {
-    id: rowNodeId ? rowNodeId : node.id,
-    index: rowNodeId,
-    parentKey: node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key') ?
-      node.parent.key : '',
-    childIndex: node.childIndex,
-    selected: Boolean(node.selected),
+    i: rowNodeId ? rowNodeId : node.id, // id
+    x: rowNodeId, // index
+    p: node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key') ?
+      node.parent.key : '', // parent key
+    c: node.childIndex, //childIndex
+    s: Boolean(node.selected), // selected 
   };
 }
 
