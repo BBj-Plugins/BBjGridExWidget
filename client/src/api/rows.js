@@ -252,12 +252,15 @@ export function gw_getRangeSelections(id) {
     const rows = [];
 
     for (let rowIndex = starIndex; rowIndex <= endIndex; rowIndex++) {
-      const node = model.getRow(rowIndex);
-
-      rows.push(gw_parseNode(node, context));
+      const node = gw_parseNode(model.getRow(rowIndex), context);
+      if (node) {
+        rows.push(node);
+      }
     }
 
-    result.push({ rows, columns });
+    if (rows.length && columns.length) {
+      result.push({ rows, columns });
+    }
     //}
   });
 
