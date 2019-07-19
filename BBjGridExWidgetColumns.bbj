@@ -571,6 +571,20 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  */
     field public JsonObject Icons! = new JsonObject()
     rem /**
+    rem  * Defines the chart data type that should be used for a column&#183;
+    rem  * There are two types of charting ranges; a category range that is highlighted in green and a series range that is 
+    rem  * highlighted in blue&#183;
+    rem  * A category range can only contain cells from a single column, whereas a series range can contain 
+    rem  * values from many columns&#183;
+    rem  * Columns can be explicitly configured or left for the grid to infer the type based on the data contained in the cells
+    rem  * where columns containing string values will map to 'categories' and columns containing number values will map to 'series' 
+    rem  * charting columns&#183;
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  */
+    field public BBjString ChartType! = null()
+    rem /**
     rem  * Get pinned left constant
     rem  *
     rem  * @return BBjString <b>left</b>
@@ -618,6 +632,30 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     method public static BBjString COLUMN_GROUP_CLOSED()
         methodret "closed"
     methodend
+   rem /**
+   rem  * A constant which defines column chart category
+   rem  * 
+   rem  * @return BBjString <b>category</b>
+   rem  */
+    method public static BBjString CHART_TYPE_CATEGORY()
+        methodret "category"
+    methodend    
+   rem /**
+   rem  * A constant which defines column chart series
+   rem  * 
+   rem  * @return BBjString <b>series</b>
+   rem  */
+    method public static BBjString CHART_TYPE_SERIES()
+        methodret "series"
+    methodend
+   rem /**
+   rem  * A constant which defines column chart excluded, columns which set chart type to excluded will be excluded from charts
+   rem  * 
+   rem  * @return BBjString <b>excluded</b>
+   rem  */
+    method public static BBjString CHART_TYPE_EXCLUDED()
+        methodret "excluded"
+    methodend         
     rem /**
     rem  * Create a BBjGridExWidgetExpression from string and set it as value getter
     rem  *
@@ -915,6 +953,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
         column!.addProperty("valueSetter",#getValueSetterExpression().toString(),err=*next)
         column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
         column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)
+        column!.addProperty("chartDataType",#getChartType(),err=*next)
         filterEnabled! = #getEnableFilter()
         filter! = #getFilter()
 
