@@ -9,7 +9,7 @@ use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBarAggregationComponent
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRangeSelectionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClienAddRangeSelectionModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
@@ -175,7 +175,7 @@ rem /**
 rem  * Add a random add range model
 rem  */
 onRandomRange:
-    declare BBjGridExWidgetClienAddRangeSelectionModel addModel!
+    declare BBjGridExWidgetClientAddRangeSelectionModel addModel!
     
     REM  list of columns which can be included in the range
     columns! = new ArrayList()
@@ -195,7 +195,7 @@ onRandomRange:
      columns!.remove(randomIndex!) 
     NEXT index
     
-    addModel! =  new BBjGridExWidgetClienAddRangeSelectionModel()
+    addModel! =  new BBjGridExWidgetClientAddRangeSelectionModel()
     addModel!.setColumns(rangeColumns!)
     addModel!.setStart(str(rnd(10)))
     addModel!.setEnd(str(rnd(10)))

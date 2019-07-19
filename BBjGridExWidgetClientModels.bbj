@@ -233,7 +233,7 @@ rem  * by rows (ie to contain all rows). For an unbounded range, do not provided
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetClienAddRangeSelectionModel
+class public BBjGridExWidgetClientAddRangeSelectionModel
     rem /**
     rem  * A list of column ids to use . Note that none existing columns will be ignored silently
     rem  */
