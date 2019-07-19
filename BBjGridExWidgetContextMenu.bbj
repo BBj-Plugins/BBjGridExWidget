@@ -32,8 +32,7 @@ class public BBjGridContextMenu
     rem  * @param BBjString item! the item ID
     rem  */
     method public void addItem(BBjString item!)
-        predefined! = new BBjGridContextMenuPredefinedMenuitem(item!)
-        #Items!.put(predefined!.getId() , predefined!)
+        #Items!.put(str(System.nanoTime()), item!)
     methodend
     rem /**
     rem  * Conver the menu to a JSON string
@@ -57,24 +56,23 @@ class public BBjGridContextMenu
 classend
 rem /**
 rem  * A class which reprensets the default grid context menu
-rem  * 
+rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridDefaultContextMenu extends BBjGridContextMenu
-    
     rem /**
     rem  * Construct the default grid context menu
     rem  */
     method public BBjGridDefaultContextMenu()
-        #addItem(BBjGridContextMenuPredefinedMenuitem.COPY())
-        #addItem(BBjGridContextMenuPredefinedMenuitem.COPY_WITH_HEADERS())
-        #addItem(BBjGridContextMenuPredefinedMenuitem.EXPORT())
+        #addItem(BBjGridContextMenuItem.COPY())
+        #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+        #addItem(BBjGridContextMenuItem.EXPORT())
     methodend
 
 classend
 rem /**
 rem  * An interface which defines a menu item
-rem  * 
+rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 interface public BBjGridContextMenuItemInteface
@@ -95,15 +93,33 @@ interface public BBjGridContextMenuItemInteface
 
 interfaceend
 rem /**
-rem  * A class which represents predefined menu items. The items are packed with the grid 
-rem  * you can not change the icon of these items or add css classes to them. 
-rem  * If you need to change the label any of these items then you need to do in the translation file.
-rem  * 
+rem  * A class which reprensetsa  grid context menu item
+rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridContextMenuPredefinedMenuitem implements BBjGridContextMenuItemInteface
+class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
     rem /**
-    rem  * The item id
+    rem  * The item's label
+    rem  */
+    field public BBjString Label! = null()
+    rem /**
+    rem  * Optional tooltip for the menu item
+    rem  */
+    field public BBjString Tooltip! = null()
+    rem /**
+    rem  * The icon to display beside the icon, either a DOM element or HTML string
+    rem  */
+    field public BBjString Icon! = null()
+    rem /**
+    rem  * Additional CSS classes to be applied to the menu item
+    rem  */
+    field public BBjString CssClasses! = null()
+    rem /**
+    rem  * if this menu is a sub menu, contains a list of sub menu item definitions
+    rem  */
+    field public BBjGridContextMenu SubMenu! = null()
+    rem /**
+    rem  * The item's ID
     rem  */
     field protected BBjString Id! = null()
     rem /**
@@ -166,63 +182,6 @@ class public BBjGridContextMenuPredefinedMenuitem implements BBjGridContextMenuI
     method public static BBjString EXCEL_XML_EXPORT()
         methodret "excelXmlExport"
     methodend
-    rem /**
-    rem  * Disable default constructor
-    rem  */
-    method private BBjGridContextMenuPredefinedMenuitem()
-    methodend
-    rem /**
-    rem  * Construct new BBjGridContextMenuPredefinedtitem
-    rem  *
-    rem  * @param BBjString id! The item id
-    rem  */
-    method public BBjGridContextMenuPredefinedMenuitem(BBjString Id!)
-        #Id! = id!
-    methodend
-    rem /**
-    rem  * {@inheritDoc}
-    rem  */
-    method public BBjString getId()
-        methodret #Id!
-    methodend
-    rem /**
-    rem  * {@inheritDoc}
-    rem  */
-    method public BBjString toString()
-        methodret #getId()
-    methodend
-
-classend
-rem /**
-rem  * A class which reprensetsa  grid context menu item
-rem  *
-rem  * @author Hyyan Abo Fakher
-rem  */
-class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
-    rem /**
-    rem  * The item's label
-    rem  */
-    field public BBjString Label! = null()
-    rem /**
-    rem  * Optional tooltip for the menu item
-    rem  */
-    field public BBjString Tooltip! = null()
-    rem /**
-    rem  * The icon to display beside the icon, either a DOM element or HTML string
-    rem  */
-    field public BBjString Icon! = null()
-    rem /**
-    rem  * Additional CSS classes to be applied to the menu item
-    rem  */
-    field public BBjString CssClasses! = null()
-    rem /**
-    rem  * if this menu is a sub menu, contains a list of sub menu item definitions
-    rem  */
-    field public BBjGridContextMenu SubMenu! = null()
-    rem /**
-    rem  * The item's ID
-    rem  */
-    field protected BBjString Id! = null()
     rem /**
     rem  * Disable default constructor
     rem  */
