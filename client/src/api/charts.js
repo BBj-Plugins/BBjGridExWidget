@@ -13,10 +13,10 @@
  * @returns {Array} array of supported chart items
  */
 export function gw_getChartToolbarItems(params) {
-    return params
-        .api
-        .gridOptionsWrapper
-        .gridOptions
-        .context
-        .chartToolbarItems || [];
+  return params
+    .api
+    .gridOptionsWrapper
+    .gridOptions
+    .context
+    .chartToolbarItems || [];
 }
