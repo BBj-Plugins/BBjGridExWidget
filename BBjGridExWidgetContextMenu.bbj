@@ -171,6 +171,12 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
         methodret "export"
     methodend
     rem /**
+    rem  * @return shortcode to chartRange menu item
+    rem  */
+    method public static BBjString CHART_RANGE()
+        methodret "chartRange"
+    methodend     
+    rem /**
     rem  * @return shortcode to csvExport menu item
     rem  */
     method public static BBjString CSV_EXPORT()
