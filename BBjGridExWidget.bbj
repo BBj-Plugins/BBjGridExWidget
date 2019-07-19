@@ -40,6 +40,7 @@ use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImage
 use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
@@ -3200,6 +3201,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void clearRangeSelection()
         #executeScript("gw_clearRangeSelection('" + #GRIDID$ + "')")
     methodend
+    rem /**
+    rem  * Add new chart range 
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  *  @param BBjGridExWidgetClientAddRangeChartModel model! the add range model
+    rem  */
+    method public BBjGridExWidgetClientAddRangeChartModel addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
+        #executeScript("gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+        methodret model!
+    methodend    
     rem /**
     rem  * Show loading overlay
     rem  *

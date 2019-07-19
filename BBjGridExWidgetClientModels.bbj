@@ -277,3 +277,43 @@ class public BBjGridExWidgetClientAddRangeSelectionModel
     methodend
 
 classend
+rem /**
+rem  * The model is used to compose a range chart model in order to be applied on the client.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientAddRangeChartModel
+    rem /**
+    rem  * Defines the range of cells to be charted , A range is normally defined with start and end rows and a list of columns,
+    rem  * If the start and end rows are omitted, the range covers all rows (ie entire columns are selected). 
+    rem  */
+    field public BBjGridExWidgetClientAddRangeSelectionModel RangeSelection! = null()
+    rem /**
+    rem  * The type of chart to create 
+    rem  */
+    field public BBjString Type! = null()
+    rem /**
+    rem  * Normally when a chart is displayed using the grid, the grid will highlight the range the chart is charting 
+    rem  * when the chart gets focus, to suppress this behaviour, set the field to false
+    rem  */
+    field public BBjNumber SuppressChartRanges! = null()
+    rem /**
+    rem  * When set to true, series values will be summed for each category before charting.
+    rem  */
+    field public BBjNumber Aggregate! = null()
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+     
+        json! = new JsonObject()
+        json!.        add("cellRange" , #getRangeSelection().getAsJsonObject() , err=*next)
+        json!.addProperty("chartType" , #getType(), err=*next)
+        json!.addProperty("suppressChartRanges" , #getSuppressChartRanges().booleanValue(), err=*next)
+        json!.addProperty("aggregate" , #getAggregate().booleanValue(), err=*next)
+        methodret json!
+    methodend    
+classend
