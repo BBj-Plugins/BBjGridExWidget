@@ -760,6 +760,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjNumber SuppressMultiRangeSelection! = null()
     rem /**
+    rem  * Set to true to enable charting
+    rem  * 
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  */
+    field public BBjNumber EnableCharts! = null()
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -2155,6 +2162,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressNoRowsOverlay",#getSuppressNoRowsOverlay().booleanValue(), err=*next)
         options!.addProperty("overlayLoadingTemplate",#getOverlayLoadingTemplate(), err=*next)
         options!.addProperty("overlayNoRowsTemplate",#getOverlayNoRowsTemplate(), err=*next)
+        rem Charts
+        rem ===========================        
+        options!.addProperty("enableCharts",#getEnableCharts().booleanValue(), err=*next)
         rem Tree Data
         rem ===========================
         options!.addProperty("treeData",#getTreeData().booleanValue(), err=*next)
