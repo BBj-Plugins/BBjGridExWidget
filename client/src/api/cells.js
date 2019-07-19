@@ -7,6 +7,7 @@
 */
 
 import { gw_getGrid } from "./utilities";
+import { gw_parseNode } from "events/utilities";
 
 const { deepParseJson } = require("deep-parse-json");
 
@@ -129,6 +130,26 @@ export function gw_getRangeSelections(id) {
 }
 
 /**
+ * Parse the cells range in a format the grid can understand when it is passed 
+ * to `api.addCellRange`
+ * 
+ * @param {Object} options The grid's options
+ * @param {Object} range  bounded or unbounded range model
+ */
+export function gw_parseAddCellRange(options , range) {
+  const pr = deepParseJson(JSON.stringify(range));
+  const start = !(pr.start || null) ?
+    0 : (Number.isInteger(+pr.start) ? +pr.start : options.api.getRowNode(pr.start).rowIndex);
+  const end = !(pr.end || null) ?
+    (options.rowData.length - 1) : (Number.isInteger(+pr.end) ? +pr.end : options.api.getRowNode(pr.end).rowIndex);
+
+  return {
+    rowStartIndex: Math.abs(start),
+    rowEndIndex: Math.abs(end),
+    columns: pr.columns
+  };
+}
+/**
  * Add new cell range
  * 
  * @param {Number} id grid's id
@@ -136,17 +157,7 @@ export function gw_getRangeSelections(id) {
  */
 export function gw_addCellRange(id, range) {
   const options = gw_getGrid(id).options;
-  const pr = deepParseJson(JSON.stringify(range));
-  const start = !(pr.start || null) ?
-    0 : (Number.isInteger(+pr.start) ? +pr.start : options.api.getRowNode(pr.start).rowIndex);
-  const end = !(pr.end || null) ?
-    (options.rowData.length - 1) : (Number.isInteger(+pr.end) ? +pr.end : options.api.getRowNode(pr.end).rowIndex);
-
-  options.api.addCellRange({
-    rowStartIndex: Math.abs(start),
-    rowEndIndex: Math.abs(end),
-    columns: pr.columns
-  });
+  options.api.addCellRange(gw_parseAddCellRange(options, range));
 }
 
 /**
