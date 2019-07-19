@@ -123,6 +123,12 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
     rem  */
     field protected BBjString Id! = null()
     rem /**
+    rem  * @return shortcode to separator menu item
+    rem  */
+    method public static BBjString SEPARATOR()
+        methodret "separator"
+    methodend
+    rem /**
     rem  * @return shortcode to autoSizeAll menu item
     rem  */
     method public static BBjString AUTO_SIZE_ALL()

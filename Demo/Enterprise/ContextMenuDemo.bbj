@@ -45,6 +45,7 @@ main:
   menu!.addItem(BBjGridContextMenuItem.AUTO_SIZE_ALL())
   menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
   menu!.addItem(BBjGridContextMenuItem.EXPORT())
+  menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
   
   rem /**
   rem  * Create custom menu items
@@ -63,6 +64,8 @@ main:
   namepedia!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
   namepedia!.setTooltip("Search First Name in Namepedia")
   menu!.addItem(namepedia!)
+  
+  menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
   
   copy! = new BBjGridContextMenuItem(6002,"Copy Functions")
     submenu! = new BBjGridContextMenu()
