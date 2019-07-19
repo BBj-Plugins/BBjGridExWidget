@@ -8,6 +8,8 @@
 
 import { gw_getGrid } from "./utilities";
 
+const { deepParseJson } = require("deep-parse-json");
+
 /**
  * Start cell editing
  * 
