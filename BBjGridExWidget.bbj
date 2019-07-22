@@ -40,6 +40,7 @@ use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImage
 use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
@@ -760,6 +761,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjNumber SuppressMultiRangeSelection! = null()
     rem /**
+    rem  * Set to true to enable charting
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  */
+    field public BBjNumber EnableCharts! = null()
+    rem /**
+    rem  * An array which contains the supported toolbar items
+    rem  */
+    field protected HashSet ChartToolbarItems! = new HashSet()
+    rem /**
     rem  * The grid languages manager
     rem  */
     field protected BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
@@ -1036,6 +1048,38 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret "never"
     methodend
     rem /**
+    rem  * Constant value which defines that chart toolbar settings item
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString CAHRT_TOOLBAR_SETTINGS()
+        methodret "chartSettings"
+    methodend
+    rem /**
+    rem  * Constant value which defines that chart toolbar data item
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString CAHRT_TOOLBAR_DATA()
+        methodret "chartData"
+    methodend
+    rem /**
+    rem  * Constant value which defines that chart toolbar format item
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString CAHRT_TOOLBAR_FORMAT()
+        methodret "chartFormat"
+    methodend
+    rem /**
+    rem  * Constant value which defines that chart toolbar download item
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString CAHRT_TOOLBAR_DOWNLOAD()
+        methodret "chartDownload"
+    methodend
+    rem /**
     rem  * Make Hex Color
     rem  *
     rem  * Convert the given BBjColor to a hex color string
@@ -1086,6 +1130,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
         #RS!.createIndex()
+        #fillChartToolbarItems()
     methodend
     rem /**
     rem  * The constructor that creates the widget on wnd!
@@ -1104,6 +1149,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #setTemplate(template$)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
         #RS!.createIndex()
+        #fillChartToolbarItems()
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -1113,6 +1159,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public BBjGridExWidget(BBjChildWindow wnd!)
         #super!.create(wnd!)
         #RS!.createIndex()
+        #fillChartToolbarItems()
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -1126,6 +1173,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #setTemplate(template$)
         #super!.create(wnd!)
         #RS!.createIndex()
+        #fillChartToolbarItems()
     methodend
     REM /**
     REM  * Get the unique control type
@@ -2155,6 +2203,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options!.addProperty("suppressNoRowsOverlay",#getSuppressNoRowsOverlay().booleanValue(), err=*next)
         options!.addProperty("overlayLoadingTemplate",#getOverlayLoadingTemplate(), err=*next)
         options!.addProperty("overlayNoRowsTemplate",#getOverlayNoRowsTemplate(), err=*next)
+        rem Charts
+        rem ===========================
+        options!.addProperty("enableCharts",#getEnableCharts().booleanValue(), err=*next)
         rem Tree Data
         rem ===========================
         options!.addProperty("treeData",#getTreeData().booleanValue(), err=*next)
@@ -2186,6 +2237,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
         context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
         context!.addProperty("getDataPath",#getDataPathTemplate(), err=*next)
+
+        if(#getEnableCharts() <> null() and #getEnableCharts() = 1) then
+            context!.addProperty("chartToolbarItems",new Gson().toJson(#getChartToolbarItems()), err=*next)
+        FI
+
         options!.add("context",context!)
         methodret options!
     methodend
@@ -2575,6 +2631,46 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         v!.addItem("bootstrap")
         v!.addItem("material")
         methodret v!
+    methodend
+    rem /**
+    rem  * Enable a chart toolbar item
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @see CAHRT_TOOLBAR_SETTINGS()
+    rem  * @see CAHRT_TOOLBAR_DATA()
+    rem  * @see CAHRT_TOOLBAR_FORMAT()
+    rem  * @see CAHRT_TOOLBAR_DOWNLOAD()
+    rem  */
+    method public void addChartToolbarItem(BBjString item!)
+        #ChartToolbarItems!.add(item!)
+
+        if(#IsReady! and (#getEnableCharts() <> null() and #getEnableCharts() = 1)) then
+            #executeScript("gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+        FI
+    methodend
+    rem /**
+    rem  * Disable a chart toolbar item
+    rem  *
+    rem  * <br><b><small>#Enterprise</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @see CAHRT_TOOLBAR_SETTINGS()
+    rem  * @see CAHRT_TOOLBAR_DATA()
+    rem  * @see CAHRT_TOOLBAR_FORMAT()
+    rem  * @see CAHRT_TOOLBAR_DOWNLOAD()
+    rem  */
+    method public void removeChartToolbarItem(BBjString item!)
+        if #ChartToolbarItems!.contains(item!) then
+            #ChartToolbarItems!.remove(item!)
+        FI
+
+        if(#IsReady! and (#getEnableCharts() <> null() and #getEnableCharts() = 1)) then
+            #executeScript("gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+        FI
     methodend
     rem /**
     rem  * Set the focus on the given row id and the given column
@@ -3108,6 +3204,39 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_clearRangeSelection('" + #GRIDID$ + "')")
     methodend
     rem /**
+    rem  * Clear already created charts&#183;
+    rem  * <b>Note</b> that this method does not clear user created charts
+    rem  * 
+    rem  * <br><b><small>#API</small></b> 
+    rem  * 
+    rem  * @param BBjGridExWidgetClientAddRangeChartModel model! the add range model
+    rem  * @return BBjString A unique id for the created chart
+    rem  */
+    method public BBjString addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
+        uuid! = #executeScript("gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+        methodret str(uuid!)
+    methodend
+    rem /**
+    rem  * Clear already created chart by its id
+    rem  * 
+        rem  * <br><b><small>#API</small></b>
+    rem  * Note that this method does not clear user created charts 
+    rem  * 
+    rem  * @param BBjString id! the chart's id to destory 
+    rem  */
+    method public void clearChart(BBjString id!)
+        #executeScript("gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Clear already created charts&#183;
+    rem  * <b>Note</b> that this method does not clear user created charts
+    rem  * 
+    rem  * <br><b><small>#API</small></b> 
+    rem  */
+    method public void clearChart()
+        #executeScript("gw_destroyChart('" + #GRIDID$ + "')")
+    methodend    
+    rem /**
     rem  * Show loading overlay
     rem  *
     rem  * <br><b><small>#API</small></b>
@@ -3149,6 +3278,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method protected void updateClientWithInterests()
         #executeScript("gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
+    methodend
+    rem /**
+    rem  * The method will add the default chart toolbar items
+    rem  */
+    method protected void fillChartToolbarItems()
+        #getChartToolbarItems().add(#CAHRT_TOOLBAR_SETTINGS())
+        #getChartToolbarItems().add(#CAHRT_TOOLBAR_DATA())
+        #getChartToolbarItems().add(#CAHRT_TOOLBAR_FORMAT())
+        #getChartToolbarItems().add(#CAHRT_TOOLBAR_DOWNLOAD())
     methodend
     rem /**
     rem  * Get the grid template
