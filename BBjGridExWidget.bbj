@@ -2237,9 +2237,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
         context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
         context!.addProperty("getDataPath",#getDataPathTemplate(), err=*next)
+
         if(#getEnableCharts() <> null() and #getEnableCharts() = 1) then
-            context!.addProperty("chartToolbarItems",new Gson().toJson(#getChartToolbarItems()), err=*next) 
-        fi
+            context!.addProperty("chartToolbarItems",new Gson().toJson(#getChartToolbarItems()), err=*next)
+        FI
+
         options!.add("context",context!)
         methodret options!
     methodend
@@ -3202,15 +3204,37 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_clearRangeSelection('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Add new chart range 
+    rem  * Clear already created charts&#183;
+    rem  * <b>Note</b> that this method does not clear user created charts
     rem  * 
-    rem  * <br><b><small>#API</small></b>
-    rem  *
-    rem  *  @param BBjGridExWidgetClientAddRangeChartModel model! the add range model
+    rem  * <br><b><small>#API</small></b> 
+    rem  * 
+    rem  * @param BBjGridExWidgetClientAddRangeChartModel model! the add range model
+    rem  * @return BBjString A unique id for the created chart
     rem  */
-    method public BBjGridExWidgetClientAddRangeChartModel addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
-        #executeScript("gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
-        methodret model!
+    method public BBjString addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
+        uuid! = #executeScript("gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+        methodret str(uuid!)
+    methodend
+    rem /**
+    rem  * Clear already created chart by its id
+    rem  * 
+        rem  * <br><b><small>#API</small></b>
+    rem  * Note that this method does not clear user created charts 
+    rem  * 
+    rem  * @param BBjString id! the chart's id to destory 
+    rem  */
+    method public void clearChart(BBjString id!)
+        #executeScript("gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Clear already created charts&#183;
+    rem  * <b>Note</b> that this method does not clear user created charts
+    rem  * 
+    rem  * <br><b><small>#API</small></b> 
+    rem  */
+    method public void clearChart()
+        #executeScript("gw_destroyChart('" + #GRIDID$ + "')")
     methodend    
     rem /**
     rem  * Show loading overlay
