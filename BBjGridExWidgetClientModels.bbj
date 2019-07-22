@@ -285,15 +285,15 @@ rem  */
 class public BBjGridExWidgetClientAddRangeChartModel
     rem /**
     rem  * Defines the range of cells to be charted , A range is normally defined with start and end rows and a list of columns,
-    rem  * If the start and end rows are omitted, the range covers all rows (ie entire columns are selected). 
+    rem  * If the start and end rows are omitted, the range covers all rows (ie entire columns are selected).
     rem  */
     field public BBjGridExWidgetClientAddRangeSelectionModel RangeSelection! = null()
     rem /**
-    rem  * The type of chart to create 
+    rem  * The type of chart to create
     rem  */
     field public BBjString Type! = null()
     rem /**
-    rem  * Normally when a chart is displayed using the grid, the grid will highlight the range the chart is charting 
+    rem  * Normally when a chart is displayed using the grid, the grid will highlight the range the chart is charting
     rem  * when the chart gets focus, to suppress this behaviour, set the field to false
     rem  */
     field public BBjNumber SuppressChartRanges! = null()
@@ -302,18 +302,115 @@ class public BBjGridExWidgetClientAddRangeChartModel
     rem  */
     field public BBjNumber Aggregate! = null()
     rem /**
+    rem  * Constant value to define groupedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_GROUPEDBAR()
+        methodret "groupedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDBAR()
+        methodret "stackedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDBAR()
+        methodret "normalizedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define groupedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_GROUPEDCOLUMN()
+        methodret "groupedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDCOLUMN()
+        methodret "stackedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDCOLUMN()
+        methodret "normalizedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define line chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_LINE()
+        methodret "line"
+    methodend
+    rem /**
+    rem  * Constant value to define pie chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_PIE()
+        methodret "pie"
+    methodend
+    rem /**
+    rem  * Constant value to define doughnut chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_DOUGHNUT()
+        methodret "doughnut"
+    methodend
+    rem /**
+    rem  * Constant value to define area chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_AREA()
+        methodret "area"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedArea chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDAREA()
+        methodret "stackedArea"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedArea chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDAREA()
+        methodret "normalizedArea"
+    methodend
+    rem /**
     rem  * Convert the model to JSON object
     rem  *
     rem  * @return JsonObject
     rem  */
     method public JsonObject getAsJsonObject()
         declare JsonObject json!
-     
+
         json! = new JsonObject()
         json!.        add("cellRange" , #getRangeSelection().getAsJsonObject() , err=*next)
         json!.addProperty("chartType" , #getType(), err=*next)
         json!.addProperty("suppressChartRanges" , #getSuppressChartRanges().booleanValue(), err=*next)
         json!.addProperty("aggregate" , #getAggregate().booleanValue(), err=*next)
         methodret json!
-    methodend    
+    methodend
+
 classend
