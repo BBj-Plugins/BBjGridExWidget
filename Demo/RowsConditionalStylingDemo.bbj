@@ -27,14 +27,12 @@ rem  * The row style is a JSON object , in here we are attaching
 rem  * two css propties to the object in order to change the font 
 rem  * weight and style
 rem  */
-grid!.getRowStyle().addProperty("font-weight","bold")
-grid!.getRowStyle().addProperty("font-style","italic")
+grid!.getOptions().getRowStyle().addProperty("font-weight","bold")
+grid!.getOptions().getRowStyle().addProperty("font-style","italic")
 
 constRules! = new JsonObject()
-constRules!.addProperty("price-normal","data.COST < 6")
-constRules!.addProperty("price-above-normal","data.COST > 6 && data.COST < 8")
-constRules!.addProperty("price-expensive","data.COST > 8")
-grid!.setRowClassRules(constRules!)
+constRules!.addProperty("cost-normal","data.COST < 6")
+grid!.getOptions().setRowClassRules(constRules!)
   
 gosub main
 process_events
@@ -50,10 +48,7 @@ main:
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   
   grid!.setData(rs!)
-  grid!.addStyle("price-normal" , "{""background"": ""lightgreen !important""}")
-  grid!.addStyle("price-above-normal" , "{""background"": ""lightsalmon !important""}")
-  grid!.addStyle("price-expensive" , "{""background"": ""lightcoral !important""}")
-  grid!.setTheme("bla")
+  grid!.addStyle("cost-normal" , "{""background"": ""lightgreen !important""}")
 return
 
 rem /**

@@ -39,13 +39,13 @@ wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
 grid! = new BBjGridExWidget(wnd!,100,0,70,1200,800)
-grid!.setEnableFilter(1)
-grid!.setEnableFloatingFilter(1)
+grid!.getOptions().setEnableFilter(1)
+grid!.getOptions().setEnableFloatingFilter(1)
 
 rem enable grid editing based on EDITABLE flag in DataRow Attribute
-grid!.setEditable(1)
-grid!.setSingleClickEdit(1)
-grid!.setEditType(grid!.GRID_EDITTYPE_ROW())
+grid!.getOptions().setEditable(1)
+grid!.getOptions().setSingleClickEdit(1)
+grid!.getOptions().setEditType(grid!.GRID_EDITTYPE_ROW())
 REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")

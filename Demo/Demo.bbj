@@ -41,7 +41,7 @@ btn_fit!.setCallback(BBjAPI.ON_TOOL_BUTTON_PUSH,"toggleFitToGrid")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,35,900,563)
-grid!.setEnableFilter(1) 
+grid!.getOptions().setEnableFilter(1) 
 
 gosub loadDatabases
 gosub doQuery

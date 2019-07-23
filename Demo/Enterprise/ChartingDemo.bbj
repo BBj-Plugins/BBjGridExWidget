@@ -43,20 +43,20 @@ main:
   grid! = new BBjGridExWidget(wnd!,101, 0 , 50 , 800 , 550)
   
   REM   we start by enabling the charts feature 
-  grid!.setEnableCharts(1)
+  grid!.getOptions().setEnableCharts(1)
   
   REM   Set to true to enable Range Selection
-  grid!.setEnableRangeSelection(1)
-  
-  REM  Enable User Charts (allow uses to create charts by selecting a range)
-  grid!.getContextMenu().addItem(BBjGridContextMenuItem.CHART_RANGE())
+  grid!.getOptions().setEnableRangeSelection(1)
   
   REM   Allow users to move between cells using arrow keys instead of rows
-  grid!.setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL())
-  
+  grid!.getOptions().setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL())
+
   REM   Disable row selection on row click
-  grid!.setSuppressRowClickSelection(1) 
-  
+  grid!.getOptions().setSuppressRowClickSelection(1)
+      
+  REM  Enable User Charts (allow uses to create charts by selecting a range)
+  grid!.getContextMenu().addItem(BBjGridContextMenuItem.CHART_RANGE())
+   
   REM  Here we add a range selection to the grid by defining the columns which are included 
   REM  in the range and the start and end row's index/id
     
@@ -84,7 +84,6 @@ main:
   rem  * @see BBjGridExWidget.CAHRT_TOOLBAR_DOWNLOAD()
   rem  */
   grid!.addChartToolbarItem(BBjGridExWidget.CAHRT_TOOLBAR_DOWNLOAD())  
-  
       
   grid!.setFitToGrid()
   grid!.getSidebar().setHiddenByDefault(1)

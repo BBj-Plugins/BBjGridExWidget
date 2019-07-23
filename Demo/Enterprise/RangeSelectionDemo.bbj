@@ -60,13 +60,13 @@ main:
   grid! = new BBjGridExWidget(wnd!,101, 0 , 50 , 800 , 530)
   
   REM   Set to true to enable Range Selection
-  grid!.setEnableRangeSelection(1)
+  grid!.getOptions().setEnableRangeSelection(1)
   
   REM   Allow users to move between cells using arrow keys instead of rows
-  grid!.setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL())
+  grid!.getOptions().setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL())
   
   REM   Disable row selection on row click
-  grid!.setSuppressRowClickSelection(1) 
+  grid!.getOptions().setSuppressRowClickSelection(1) 
   
   REM  Attach the aggregation component to the grid's built-in statusbar.
   REM  The component provides aggregations on the selected range.   

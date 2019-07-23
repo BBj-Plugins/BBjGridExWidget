@@ -30,18 +30,16 @@ ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,wnd!.getWidth(),wnd!.getHeight() - 40)
 wnd!.setBackColor(new BBjColor(45,52,54))
-grid!.getSidebar().setHiddenByDefault(1)
-grid!.setGroupDefaultExpanded(0)
-grid!.setGroupColumnLabel("BBjGridExWidget Demo")
-grid!.setShowGroupChildCount(0)
-grid!.setTheme("balham-dark")
+grid!.getOptions().setGroupDefaultExpanded(0)
+grid!.getOptions().setGroupColumnLabel("BBjGridExWidget Demo")
+grid!.getOptions().setShowGroupChildCount(0)
 
 rem /**
 rem  * Enable tree mode and load a lodash template to convert the "filepath" property in the rows data 
 rem  * to an JS array which will be used to compose the tree hierarchy
 rem  */
-grid!.setTreeData(1)
-grid!.setDataPathTemplate("<% return data.filepath.split(""\" + java.io.File.separator + """); %>")
+grid!.getOptions().setTreeData(1)
+grid!.getOptions().setDataPathTemplate("<% return data.filepath.split(""\" + java.io.File.separator + """); %>")
 
 rem /**
 rem  * Configure the group column (files). 
@@ -56,10 +54,13 @@ template! = BBjGridExWidgetDemoUtilities.readAssetsAsString("templates/tree-icon
 template! = template!.replaceAll("__FILE_ICON", BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/file.png"))
 template! = template!.replaceAll("__FOLDER_ICON",BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/folder.png"))
 
-autoGroupDef! = grid!.getAutoGroupColumnDefinition()
+autoGroupDef! = grid!.getOptions().getAutoGroupColumnDefinition()
 autoGroupDef!.setPinned("left")
 autoGroupDef!.setWidth(500)
 autoGroupDef!.getCellRenderer().setInnerRenderer(new BBjGridExWidgetRendererCustomHTML(template!))
+
+grid!.getSidebar().setHiddenByDefault(1)
+grid!.setTheme("balham-dark")
 
 grid!.setCallback(grid!.ON_GRID_CELL_DOUBLE_CLICK(),"onSelectionEvent")
 

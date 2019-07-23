@@ -35,9 +35,9 @@ cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
 cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
 
 grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
-grid!.setGroupIncludeFooter(1)
-grid!.setGroupIncludeTotalFooter(1)
-grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+grid!.getOptions().setGroupIncludeFooter(1)
+grid!.getOptions().setGroupIncludeTotalFooter(1)
+grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
     
 gosub main
 process_events

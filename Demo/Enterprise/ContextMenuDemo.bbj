@@ -78,7 +78,7 @@ main:
   rem  * init the grid and attache the menu items callbacks
   rem  */
   grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
-  grid!.setContextMenu(menu!)
+  grid!.getOptions().setContextMenu(menu!)
   grid!.setData(rs!)
   grid!.setCallback(6000,"onShowDirection")
   grid!.setCallback(6001,"onShowFirstName")
