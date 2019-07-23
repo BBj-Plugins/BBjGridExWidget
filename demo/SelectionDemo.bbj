@@ -180,6 +180,7 @@ return
 onSelectionInputButton:
     selection! = selectionInput!.getText()
     sel = num(selection!,err=onMultiSelectionInput)
+    grid!.deselectAll()
     grid!.setSelectedRow(sel)
     
     rem now make sure this row is visible, in the middle
@@ -199,6 +200,7 @@ onMultiSelectionInput:
       s!.addItem(num(x!.get(i),err=*continue))
     next i
     
+    grid!.deselectAll()
     grid!.setSelectedRows(s!)
     
     if (s!.size() > 0) then

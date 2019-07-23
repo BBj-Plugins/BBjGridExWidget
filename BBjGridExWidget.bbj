@@ -1882,7 +1882,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBJNumber x!: the row index to select
     rem  */
     method public void setSelectedRow(BBjNumber x!)
-        #deselectAll()
         script$="gw_setSelectedRows('" + #GRIDID$ + "',[" + str(x!) + "]);"
         #executeScript(script$)
     methodend
@@ -1894,7 +1893,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBJNumber x!: vector of row indices to select
     rem  */
     method public void setSelectedRows(BBjVector x!)
-        #deselectAll()
         script$="gw_setSelectedRows('" + #GRIDID$ + "',["
         it! = x!.iterator()
         first=1
