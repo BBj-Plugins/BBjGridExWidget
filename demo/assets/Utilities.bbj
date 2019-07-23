@@ -13,7 +13,7 @@ class public BBjGridExWidgetDemoUtilities
     method public static BBjString readAssetsAsString(BBjString file$)
         template$ = ""
         ch=unt
-        open (ch)"BBjGridExWidget/Demo/assets/" + file$
+        open (ch)"BBjGridExWidget/demo/assets/" + file$
         read record (ch,siz=5512000)template$
         close (ch)
         methodret template$
