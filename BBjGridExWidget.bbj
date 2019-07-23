@@ -1298,7 +1298,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret null()
     methodend
     rem /**
-    rem  * An Event listener excuted after the initial load. The method will injected all required file
+    rem  * An Event listener excuted after the initial load. The method will inject all required file
     rem  * on the client to make the grid functionable
     rem  *
     rem  * @param BBjEvent ev! The onLoad event
