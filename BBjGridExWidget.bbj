@@ -669,17 +669,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjNumber Debug = 0
     rem /**
-    rem  * When true , the grid will render the UI on the client as soon as possible , put it in the loading state
-    rem  * then send the data&#183; once the data is sent and rendered , the grid will remove the loading state automatically&#183;
-    rem  *
-    rem  * Use this mode if you have a large set of data(rows) which sending them to the client will take some time&#183;
-    rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#GridRerender</small></b>
-    rem  *
-    rem  * @deprecated You can control overlays using the api methods&#183; @see Demo/ChunkRenderingDemo&#183;bbj
-    rem  */
-    field public BBjNumber ChunkRendering! = 0
-    rem /**
     rem  * By default when new columns are loaded into the grid, the following properties
     rem  * (Order,Aggregation Function , Width , Pivot , Row Group , Pinned ) are not used
     rem  *
@@ -2262,15 +2251,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
         #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
-        REM         if(#getChunkRendering() = 0) then
-        REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
-        REM         else
-        REM             #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "')")
-        REM
-        REM             if(#getRS() <>  null() AND #getRS().size() > 0) then
-        REM                 #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
-        REM             FI
-        REM         FI
     methodend
     rem /**
     rem  * Rerender the column defintions on the client.
