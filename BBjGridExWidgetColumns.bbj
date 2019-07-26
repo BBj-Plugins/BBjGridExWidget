@@ -572,14 +572,14 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     field public JsonObject Icons! = new JsonObject()
     rem /**
     rem  * Defines the chart data type that should be used for a column&#183;
-    rem  * There are two types of charting ranges; a category range that is highlighted in green and a series range that is 
+    rem  * There are two types of charting ranges; a category range that is highlighted in green and a series range that is
     rem  * highlighted in blue&#183;
-    rem  * A category range can only contain cells from a single column, whereas a series range can contain 
+    rem  * A category range can only contain cells from a single column, whereas a series range can contain
     rem  * values from many columns&#183;
     rem  * Columns can be explicitly configured or left for the grid to infer the type based on the data contained in the cells
-    rem  * where columns containing string values will map to 'categories' and columns containing number values will map to 'series' 
+    rem  * where columns containing string values will map to 'categories' and columns containing number values will map to 'series'
     rem  * charting columns&#183;
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>.
     rem  */
@@ -632,30 +632,30 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     method public static BBjString COLUMN_GROUP_CLOSED()
         methodret "closed"
     methodend
-   rem /**
-   rem  * A constant which defines column chart category
-   rem  * 
-   rem  * @return BBjString <b>category</b>
-   rem  */
+    rem /**
+    rem  * A constant which defines column chart category
+    rem  *
+    rem  * @return BBjString <b>category</b>
+    rem  */
     method public static BBjString CHART_TYPE_CATEGORY()
         methodret "category"
-    methodend    
-   rem /**
-   rem  * A constant which defines column chart series
-   rem  * 
-   rem  * @return BBjString <b>series</b>
-   rem  */
+    methodend
+    rem /**
+    rem  * A constant which defines column chart series
+    rem  *
+    rem  * @return BBjString <b>series</b>
+    rem  */
     method public static BBjString CHART_TYPE_SERIES()
         methodret "series"
     methodend
-   rem /**
-   rem  * A constant which defines column chart excluded, columns which set chart type to excluded will be excluded from charts
-   rem  * 
-   rem  * @return BBjString <b>excluded</b>
-   rem  */
+    rem /**
+    rem  * A constant which defines column chart excluded, columns which set chart type to excluded will be excluded from charts
+    rem  *
+    rem  * @return BBjString <b>excluded</b>
+    rem  */
     method public static BBjString CHART_TYPE_EXCLUDED()
         methodret "excluded"
-    methodend         
+    methodend
     rem /**
     rem  * Create a BBjGridExWidgetExpression from string and set it as value getter
     rem  *
@@ -787,7 +787,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  */
     method public void setAlignment(BBjNumber align!)
         #setAlignment(align! , 0)
-    methodend    
+    methodend
     rem /**
     rem  * Sets the default alignment for a column's header
     rem  *
@@ -1071,20 +1071,51 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
     rem  * @param BBjGridExWidgetDefaultColumnDefinition defaultDefinition! The default column defintion in the grid
     rem  */
     method public void update(HashMap meta!, BBjGridExWidgetDefaultColumnDefinition defaultDefinition!)
+        if(!meta!.containsKey("ColumnType"))
+            methodret
+        FI
+        
+        rem sync with default column defintion
+        #setEnableFilter(defaultDefinition!.getEnableFilter(),err=*next)
+           
+        rem define the column type
+        type! = int(meta!.get("ColumnType"))
+        
+        if(meta!.containsKey("MASK")) then
+            mask! = meta!.get("MASK")
+            SWITCH type!
+                CASE Types.BIGINT
+                CASE Types.BIT
+                CASE Types.DECIMAL
+                CASE Types.DOUBLE
+                CASE Types.FLOAT
+                CASE Types.INTEGER
+                CASE Types.NUMERIC
+                CASE Types.NUMERIC
+                CASE Types.TINYINT
+                     #setDefaultNumbersMask(mask!)
+                    BREAK
+                CASE Types.DATE
+                    #setDefaultDatesMask(mask!)
+                    BREAK
+                CASE Types.TIMESTAMP
+                CASE Types.TIMESTAMP_WITH_TIMEZONE
+                    #setDefaultTimestampsMask(mask!)
+                    BREAK
+                CASE default
+                    BREAK
+            SWEND
+        fi
+        
+        rem set the column type now
+        #setType(type!)
+
         iterator!   = meta!.entrySet().iterator()
         while iterator!.hasNext()
             next!   = iterator!.next()
             key!   = CVS(next!.getKey(),8)
             value! = next!.getValue()
             SWITCH (key!)
-                CASE "columntype"
-                    #setType((value!))
-
-                    if #getEnableFilter() = null() then
-                        #setEnableFilter(defaultDefinition!.getEnableFilter(),err=*next)
-                    FI
-
-                    BREAK
                 CASE "gw_label"
                 CASE "gw_header_name"
                 CASE "header_name"
