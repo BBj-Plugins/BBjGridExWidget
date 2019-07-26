@@ -113,6 +113,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjGridExWidgetOptions Options! = new BBjGridExWidgetOptions(#this!)
     rem /**
+    rem  * An attribute record which can be used to override the column's attributes fetched from the resultset
+    rem  * or applied using the api methods&#183;
+    rem  * This field is honored only when <i>setData()</i> method is called 
+    rem  */
+    field public  DataRow AttributesRecord! = null()
+    rem /**
     rem  * Instnace of BBjGridExWidgetClientJsonFactory to convert client JSON strings to Client Models
     rem  */
     field protected BBjGridExWidgetClientJsonFactory ClientJsonFactory! = new BBjGridExWidgetClientJsonFactory(#this!)
@@ -1429,6 +1435,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         if rs! <> NULL() then
             #buildColumnsFromResultSet(rs!,addAll!)
+            if (#getAttributesRecord() <> null()) then
+              rsa! = new ResultSet()
+              rsa!.add(#getAttributesRecord())
+              #buildColumnsFromResultSet(rsa!,addAll!)
+            fi
             #RS!.createIndex()
         FI
 
