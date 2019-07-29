@@ -20,7 +20,7 @@ import {
 
 import {
 	gw_onReadyEvent
-} from "./state";
+} from "./ready";
 
 import {
 	gw_debounce

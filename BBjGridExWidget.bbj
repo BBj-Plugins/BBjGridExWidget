@@ -47,6 +47,7 @@ use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEven
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRangeSelection
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsKeypress
 rem /**
 rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
@@ -241,6 +242,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public static BBjNumber ON_GRID_RANGE_SELECTION_CHANGED()
         methodret 5009
+    methodend
+    rem /**
+    rem  * Constant value to define keyboard keypress
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public static BBjNumber ON_GRID_KEYPRESS()
+        methodret 5010
     methodend
     rem /**
     rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
@@ -451,13 +460,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber y! y-location
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
-    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
-    rem  *                           By default you will never need  to change the defaultl Template.
-    rem  *                           Unless you want to do somthing really unusual
     rem */
-    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
-        #super!()
-        #setTemplate(template$)
+    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
         #RS!.createIndex()
         #fillChartToolbarItems()
@@ -471,10 +475,26 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber y! y-location
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
+    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
+    rem  *                           By default you will never need  to change the defaultl Template.
+    rem  *                           Unless you want to do somthing really unusual
     rem */
-    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
-       #this!(wnd!,id!,x!,y!,w!,h!,"")
-    methodend    
+    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
+        #setTemplate(template$)
+        #super!.create(wnd!,id!,x!,y!,w!,h!)
+        #RS!.createIndex()
+        #fillChartToolbarItems()
+    methodend
+    rem /**
+    rem  * The constructor that creates the widget in the ChildWindow
+    rem  *
+    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget(BBjChildWindow wnd!)
+        #super!.create(wnd!)
+        #RS!.createIndex()
+        #fillChartToolbarItems()
+    methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
     rem  *
@@ -484,19 +504,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *                           Unless you want to do somthing really unusual
     rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!,BBjString template$)
-        #super!()
         #setTemplate(template$)
         #super!.create(wnd!)
         #RS!.createIndex()
         #fillChartToolbarItems()
-    methodend    
-    rem /**
-    rem  * The constructor that creates the widget in the ChildWindow
-    rem  *
-    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
-    rem  */
-    method public BBjGridExWidget(BBjChildWindow wnd!)
-        #this!(wnd!,"")
     methodend
     REM /**
     REM  * Get the unique control type
@@ -769,6 +780,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 break
             case "gw.contextmenu"
                 #onContextmenuEvent(detail$)
+                break
+            case "gw.keypress"
+                #onKeypressEvent(detail$)
                 break
         swend
     methodend
@@ -1351,7 +1365,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if(#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1) then
             context!.addProperty("chartToolbarItems",new Gson().toJson(#getChartToolbarItems()), err=*next)
         FI
-        
+
         methodret options!
     methodend
     rem /**
@@ -2487,6 +2501,23 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         event! = new BBjGridExWidgetClientEventsRowEditing()
         event!.setRow(#getClientJsonFactory().getRow(detail$))
         #fireEvent(type!, event!)
+    methodend
+    rem /**
+    rem  * Fire an keypress event when keypress is passed from the client
+    rem  *
+    rem  * @param BBjString detail$ The event detail as json
+    rem  *
+    rem  * @see ON_GRID_KEYPRESS()
+    rem  */
+    method protected void onKeypressEvent(BBjString detail$)
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        parsedKeypress!  = parser!.parse(detail$).getAsJsonObject()
+        keypress! = #getClientJsonFactory().getKeypress(parsedKeypress!)
+        event! = new BBjGridExWidgetClientEventsKeypress()
+        event!.setKey(keypress!)
+        #fireEvent(#ON_GRID_KEYPRESS(), event!)
     methodend
 
 classend

@@ -9,6 +9,7 @@ rem  */
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientKeypressModel
 REM /**
 REM  * Row Selection Event (single & double)
 REM  *
@@ -95,5 +96,17 @@ REM  *
 REM  * @author Hyyan Abo Fakher
 REM  */
 class public BBjGridExWidgetClientEventsRangeSelection
+
+classend
+REM /**
+REM  * Keypress event
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientEventsKeypress
+    rem /**
+    rem  * A keypress model which is received from the client
+    rem  */
+    field public BBjGridExWidgetClientKeypressModel Key!
 
 classend

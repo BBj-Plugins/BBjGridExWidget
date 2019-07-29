@@ -11,6 +11,7 @@ use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowM
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRangeSelectionModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientKeypressModel
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 REM /**
@@ -141,5 +142,20 @@ class public BBjGridExWidgetClientJsonFactory
 
         methodret rangeModel!
     methodend
-
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetClientKeypressModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientKeypressModel
+    rem  */    
+    method public BBjGridExWidgetClientKeypressModel getKeypress(JsonObject json!)
+        keyPress! = new BBjGridExWidgetClientKeypressModel()
+        keyPress!.setCode(json!.get("c").getAsString())
+        keyPress!.setKeyCode(json!.get("kc").getAsInt())
+        keyPress!.setIsAltDown(iff(json!.get("ak").getAsString() = "true" ,  1 , 0) , err=*next)
+        keyPress!.setIsShiftDown(iff(json!.get("sk").getAsString() = "true" ,  1 , 0) , err=*next)
+        keyPress!.setIsCtrlDown(iff(json!.get("ck").getAsString() = "true" ,  1 , 0) , err=*next)
+        methodret keyPress!
+    methodend
 classend
