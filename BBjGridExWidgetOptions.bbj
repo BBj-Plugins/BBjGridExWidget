@@ -976,7 +976,7 @@ class public BBjGridExWidgetOptions
         context!.addProperty("showSelectionCheckbox",#ShowSelectionCheckbox!, err=*next)
         context!.addProperty("showHeaderSelectionCheckbox",#ShowHeaderSelectionCheckbox!, err=*next)
         context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
-        context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = #GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
+        context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
         context!.addProperty("getDataPath",#getDataPathTemplate(), err=*next)
         options!.add("context",context!)
         methodret options!
