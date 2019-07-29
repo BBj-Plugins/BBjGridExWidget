@@ -451,8 +451,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber y! y-location
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
+    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
+    rem  *                           By default you will never need  to change the defaultl Template.
+    rem  *                           Unless you want to do somthing really unusual
     rem */
-    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
+    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
+        #super!()
+        #setTemplate(template$)
         #super!.create(wnd!,id!,x!,y!,w!,h!)
         #RS!.createIndex()
         #fillChartToolbarItems()
@@ -466,26 +471,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber y! y-location
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
-    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
-    rem  *                           By default you will never need  to change the defaultl Template.
-    rem  *                           Unless you want to do somthing really unusual
     rem */
-    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
-        #setTemplate(template$)
-        #super!.create(wnd!,id!,x!,y!,w!,h!)
-        #RS!.createIndex()
-        #fillChartToolbarItems()
-    methodend
-    rem /**
-    rem  * The constructor that creates the widget in the ChildWindow
-    rem  *
-    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
-    rem  */
-    method public BBjGridExWidget(BBjChildWindow wnd!)
-        #super!.create(wnd!)
-        #RS!.createIndex()
-        #fillChartToolbarItems()
-    methodend
+    method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
+       #this!(wnd!,id!,x!,y!,w!,h!,"")
+    methodend    
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
     rem  *
@@ -495,10 +484,19 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *                           Unless you want to do somthing really unusual
     rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!,BBjString template$)
+        #super!()
         #setTemplate(template$)
         #super!.create(wnd!)
         #RS!.createIndex()
         #fillChartToolbarItems()
+    methodend    
+    rem /**
+    rem  * The constructor that creates the widget in the ChildWindow
+    rem  *
+    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget(BBjChildWindow wnd!)
+        #this!(wnd!,"")
     methodend
     REM /**
     REM  * Get the unique control type
