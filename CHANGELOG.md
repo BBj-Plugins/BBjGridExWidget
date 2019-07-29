@@ -1,3 +1,64 @@
+# [0.99.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.98.0...0.99.0) (2019-07-29)
+
+
+* refactor : move predefined menu items to `BBjGridContextMenuItem` and remove `BBjGridContextMenuPredefinedMenuitem` ([2614d51](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2614d51))
+
+
+### Bug Fixes
+
+* `BBjGridExWidgetClientColumnModel.getType()` should use the column index to get the column type from the RS ([80f4fb2](https://github.com/BBj-Plugins/BBjGridExWidget/commit/80f4fb2))
+* **JS:** `gw_getRangeSelections` should ignore empty ranges ([54fcbe5](https://github.com/BBj-Plugins/BBjGridExWidget/commit/54fcbe5))
+* `gw_getRangeSelections` does not check for the node type ([176be07](https://github.com/BBj-Plugins/BBjGridExWidget/commit/176be07))
+* Dutch translation ([77c5d89](https://github.com/BBj-Plugins/BBjGridExWidget/commit/77c5d89))
+* fix missing 't' in `BBjGridExWidgetClientAddRangeSelectionModel` ([e172d06](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e172d06))
+* **JS:** fix `gw_parseNode` is not defined when `gw_getRangeSelections` ([f25d5ae](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f25d5ae))
+* NavigationBehavior is not working after `BBjGridExWidgetOptions` is added ([1a8b048](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1a8b048))
+* onCellEvent can't parse the json response coming from the client ([b23c82a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b23c82a))
+* setSelectedRows/setSelectedRows must not deselect all rows by default ([7da00b0](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7da00b0))
+
+
+### Features
+
+* add `addRangeChart` method to create charts programmatically ([1ec9008](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1ec9008))
+* add `BBjGridExWidgetStatusBarAggregationComponent` ([0d4841e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0d4841e))
+* add api method to clear range selections ([31cab40](https://github.com/BBj-Plugins/BBjGridExWidget/commit/31cab40)), closes [#167](https://github.com/BBj-Plugins/BBjGridExWidget/issues/167) [#167](https://github.com/BBj-Plugins/BBjGridExWidget/issues/167)
+* add api methods to add range selection ([019727c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/019727c)), closes [#166](https://github.com/BBj-Plugins/BBjGridExWidget/issues/166) [#166](https://github.com/BBj-Plugins/BBjGridExWidget/issues/166)
+* add api methods to control the chart toolbar items ([cedd618](https://github.com/BBj-Plugins/BBjGridExWidget/commit/cedd618))
+* add api methods to fetch the range selection from the client ([7ee65ef](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7ee65ef)), closes [#165](https://github.com/BBj-Plugins/BBjGridExWidget/issues/165) [#165](https://github.com/BBj-Plugins/BBjGridExWidget/issues/165)
+* add api to clear charts from BBj ([d9ee157](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d9ee157))
+* add constant for chart types ([6bf64e8](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6bf64e8))
+* add EnableCharts boolean flag ([cb43255](https://github.com/BBj-Plugins/BBjGridExWidget/commit/cb43255))
+* add new grid's event `BBjGridExWidgetClientEventsKeypress` ([7e77a09](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7e77a09))
+* add predefine menu item `BBjGridContextMenuItem.SEPARATOR()` ([af3fc1d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/af3fc1d))
+* add range selection event `ON_GRID_RANGE_SELECTION_CHANGED()` ([6f6213f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6f6213f))
+* add the predefined menu item `CHART_RANGE` ([fb5f948](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fb5f948))
+* group configuration properties and methods in onc class `BBjGridExWidgetOptions` ([870d45a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/870d45a))
+* implement `focus` method ([6369d69](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6369d69))
+* improve `BBjGridExWidgetColumn.update` to detect the column masks ([b32033c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b32033c))
+* support controlling the chart type from column definetion ([13a5871](https://github.com/BBj-Plugins/BBjGridExWidget/commit/13a5871))
+* support enableRangeSelection property ([7d7976a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7d7976a)), closes [#169](https://github.com/BBj-Plugins/BBjGridExWidget/issues/169) [#169](https://github.com/BBj-Plugins/BBjGridExWidget/issues/169)
+* support suppressCellSelection property ([713d789](https://github.com/BBj-Plugins/BBjGridExWidget/commit/713d789)), closes [#168](https://github.com/BBj-Plugins/BBjGridExWidget/issues/168) [#168](https://github.com/BBj-Plugins/BBjGridExWidget/issues/168)
+
+
+### Performance Improvements
+
+* reduce response sizes sent from the client ([e834e09](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e834e09))
+
+### BREAKING CHANGES
+
+* setSelectedRows/setSelectedRows methods used to
+deselect all rows before appling the new selection, this is not the case
+anymore , if you still need the old behavior then call `grid!.deselectAlldeselectAll()` before
+applying the new selection
+* all propeties and methods used to configure the grid
+before render are grouped in one class `BBjGridExWidgetOptions` ,
+instead of settings these properties/calling these methods from the
+`BBjGridExWidget` directly use the options property `(ex
+grid!.getOptions.enableFilter(1))`
+* `BBjGridContextMenuPredefinedMenuitem` is removed , use `BBjGridContextMenuItem` instead (@see Enterprise/ContextMenuDemo.bbj).
+
+
+
 # [0.98.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.97.1...0.98.0) (2019-07-11)
 
 
