@@ -24,3 +24,6 @@ export const GW_EVENT_GRID_STATE_CHANGE = 5008;
 
 // range selection
 export const GW_EVENT_RANGE_SELECTION_CHANGED = 5009;
+
+// keyboard events
+export const GW_EVENT_KEYPRESS = 5010;

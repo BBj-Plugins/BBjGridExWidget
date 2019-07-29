@@ -414,3 +414,33 @@ class public BBjGridExWidgetClientAddRangeChartModel
     methodend
 
 classend
+
+rem /**
+rem  * The model is used to represent a keypress on the client
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+rem  */
+class public BBjGridExWidgetClientKeypressModel
+    rem /**
+    rem  * A DOMString with the code value of the physical key represented by the event.
+    rem  */
+    field public BBjString Code! = null()
+    rem /**
+    rem  * A Number representing the Unicode reference number of the key. 
+    rem  * For keys whose char attribute contains multiple characters, this is the Unicode value of the first character in that attribute.
+    rem  */
+    field public BBjNumber KeyCode! = null()
+    rem /**
+    rem  * A Boolean that is true if the Alt key was active when the key event was generated.
+    rem  */    
+    field public BBjNumber IsAltDown! = null()
+    rem /**
+    rem  * A Boolean that is true if the Shift key was active when the key event was generated.
+    rem  */    
+    field public BBjNumber IsShiftDown! = null()
+    rem /**
+    rem  * A Boolean that is true if the Ctrl key was active when the key event was generated.
+    rem  */
+    field public BBjNumber IsCtrlDown! = null()
+classend
