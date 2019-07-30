@@ -59,10 +59,10 @@ export function gw_onCellEditingEvent(id, e) {
       {
         'type': `gw.${type}`,
         'detail': JSON.stringify({
-          row: parsed,
-          value,
-          oldValue,
-          column: colId
+          r: parsed, // row
+          v: value, // new value
+          o: oldValue, // old value
+          c: colId // column
         })
       },
       CELL_EDITING_EVENTS_MAP[type]

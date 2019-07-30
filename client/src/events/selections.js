@@ -12,7 +12,8 @@ import {
   GW_EVENT_ROW_CLICK,
   GW_EVENT_ROW_DOUBLE_CLICK,
   GW_EVENT_CELL_CLICK,
-  GW_EVENT_CELL_DOUBLE_CLICK
+  GW_EVENT_CELL_DOUBLE_CLICK,
+  GW_EVENT_RANGE_SELECTION_CHANGED
 } from "./constants";
 
 const CELL_CLICKING_EVENTS_MAP = {
@@ -55,6 +56,22 @@ export function gw_onSelectionChanged(e) {
 }
 
 /**
+ * A handler for the grid `rangeSelectionChanged` event
+ * 
+ * @param {Object} e 
+ * 
+ * @listens agGrid.rangeSelectionChanged
+ * @fires gw.rangeSelection
+ */
+export function gw_onRangeSelectionChanged(e) {
+  const context = e.api.gridOptionsWrapper.gridOptions.context;
+  gw_sendEvent(context, {
+    'type': 'gw.rangeSelection',
+    'detail': ''
+  }, GW_EVENT_RANGE_SELECTION_CHANGED);
+}
+
+/**
  * A handler for the grid `cellClickEvent` & `cellDoubleClicked` event
  * 
  * @param {String} id The grid's id
@@ -74,10 +91,10 @@ export function gw_onCellClickEvent(id, e) {
     gw_sendEvent(gw_getGrid(id).options.context, {
       'type': `gw.${e.type}`,
       'detail': JSON.stringify({
-        row: parsed,
-        value: gw_escape(e.value),
-        oldValue: gw_escape(e.value),
-        column: e.column.colId
+        r: parsed, // row
+        v: gw_escape(e.value),  // new value
+        o: gw_escape(e.value), // odl value
+        c: e.column.colId // columns
       })
     }, CELL_CLICKING_EVENTS_MAP[type]);
   }

@@ -10,6 +10,8 @@ use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRangeSelectionModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientKeypressModel
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 REM /**
@@ -54,11 +56,11 @@ class public BBjGridExWidgetClientJsonFactory
         declare BBjGridExWidgetClientRowModel row!
 
         row! = new BBjGridExWidgetClientRowModel(#getWidget())
-        row!.setId(json!.get("id").getAsString(),err=*next)
-        row!.setChildIndex(json!.get("childIndex").getAsInt(),err=*next)
-        row!.setIndex(json!.get("index").getAsString(),err=*next)
-        row!.setParentKey(json!.get("parentKey").getAsString(),err=*next)
-        row!.setIsSelected(iff(json!.get("selected").getAsString() = "true" ,  1 , 0) , err=*next)
+        row!.setId(json!.get("i").getAsString(),err=*next)
+        row!.setIndex(json!.get("x").getAsString(),err=*next)
+        row!.setChildIndex(json!.get("c").getAsInt(),err=*next)
+        row!.setParentKey(json!.get("p").getAsString(),err=*next)
+        row!.setIsSelected(iff(json!.get("s").getAsString() = "true" ,  1 , 0) , err=*next)
         methodret row!
     methodend
     rem /**
@@ -94,9 +96,9 @@ class public BBjGridExWidgetClientJsonFactory
     rem  */
     method public BBjGridExWidgetClientCellModel getCell(JsonObject json!)
         cell! = new BBjGridExWidgetClientCellModel()
-        cell!.setColumn(#getColumn(json!.get("column").getAsString()))
-        cell!.setRow(#getRow(json!.get("row").getAsJsonObject()))
-        cell!.setValue(json!.get("value").getAsString())
+        cell!.setColumn(#getColumn(json!.get("c").getAsString()))
+        cell!.setRow(#getRow(json!.get("r").getAsJsonObject()))
+        cell!.setValue(json!.get("v").getAsString())
         methodret cell!
     methodend
     rem /**
@@ -113,5 +115,47 @@ class public BBjGridExWidgetClientJsonFactory
         parsedCell!  = parser!.parse(json!).getAsJsonObject()
         methodret #getCell(parsedCell!)
     methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetClientRangeSelectionModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientRangeSelectionModel
+    rem  */
+    method public BBjGridExWidgetClientRangeSelectionModel getRangeSelection(JsonObject json!)
+        rem a model which describes the range object
+        rangeModel! = new BBjGridExWidgetClientRangeSelectionModel()
+        rem loop over the range columns and create a column model for each one
+        columns! = json!.get("c").getAsJsonArray()
+        columnsIterator! = columns!.iterator()
+        while(columnsIterator!.hasNext())
+            rem create a column model and add it to the range
+            rangeModel!.getColumns().add(#getColumn(columnsIterator!.next().getAsString()))
+        wend
+        rem loop over the range rows and create a row model for each one
+        rows! = json!.get("r").getAsJsonArray()
+        rowsIterator! = rows!.iterator()
+        while(rowsIterator!.hasNext())
+            rem create a row model and add it to the range
+            rangeModel!.getRows().add(#getRow(rowsIterator!.next().getAsJsonObject()))
+        wend
 
+        methodret rangeModel!
+    methodend
+    rem /**
+    rem  * Map a JSON object to BBjGridExWidgetClientKeypressModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientKeypressModel
+    rem  */    
+    method public BBjGridExWidgetClientKeypressModel getKeypress(JsonObject json!)
+        keyPress! = new BBjGridExWidgetClientKeypressModel()
+        keyPress!.setCode(json!.get("c").getAsString())
+        keyPress!.setKeyCode(json!.get("kc").getAsInt())
+        keyPress!.setIsAltDown(iff(json!.get("ak").getAsString() = "true" ,  1 , 0) , err=*next)
+        keyPress!.setIsShiftDown(iff(json!.get("sk").getAsString() = "true" ,  1 , 0) , err=*next)
+        keyPress!.setIsCtrlDown(iff(json!.get("ck").getAsString() = "true" ,  1 , 0) , err=*next)
+        methodret keyPress!
+    methodend
 classend

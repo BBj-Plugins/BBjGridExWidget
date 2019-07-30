@@ -9,6 +9,8 @@
 import { gw_getGrid } from "./utilities";
 import { gw_parseNode } from "events/utilities";
 
+const { deepParseJson } = require("deep-parse-json");
+
 export function gw_setQuickFilter(id, filter) {
   gw_getGrid(id)
     .options

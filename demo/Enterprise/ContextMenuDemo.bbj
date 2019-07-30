@@ -1,0 +1,118 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenu
+use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenuItem
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
+  rs! = sbc!.retrieve("SELECT * FROM CUSTOMER")
+  
+  rem /**
+  rem  * Create a new context menu to attach to the grid
+  rem  */
+  menu! = new BBjGridContextMenu()
+  
+  rem /**
+  rem  * Add some predefined items with their actions to the menu
+  rem  * @see <a href="https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget/ContextMenu/BBjGridContextMenuItem.html">BBjGridContextMenuItem</a>
+  rem  */
+  menu!.addItem(BBjGridContextMenuItem.AUTO_SIZE_ALL())
+  menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
+  menu!.addItem(BBjGridContextMenuItem.EXPORT())
+  menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
+  
+  rem /**
+  rem  * Create custom menu items
+  rem  * 
+  rem  * Any custom menu item requires two params , an id (used for handling events) and a label
+  rem  * When the item is clicked on the client , the client will notify the grid with an event 
+  rem  * using the chosen id so you can use the grid's setCallback method to handle the event  
+  rem  */
+  
+  direction! = new BBjGridContextMenuItem(6000,"Show Direction")
+  direction!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/maps-icon.png" , 20 , 20)
+  direction!.setTooltip("Open the location in Google Maps")
+  menu!.addItem(direction!)
+  
+  namepedia! = new BBjGridContextMenuItem(6001,"Search Firstname in Namepedia")
+  namepedia!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
+  namepedia!.setTooltip("Search First Name in Namepedia")
+  menu!.addItem(namepedia!)
+  
+  menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
+  
+  copy! = new BBjGridContextMenuItem(6002,"Copy Functions")
+    submenu! = new BBjGridContextMenu()
+    submenu!.addItem(BBjGridContextMenuItem.COPY())
+    submenu!.addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+  copy!.setSubMenu(submenu!)
+  menu!.addItem(copy!)
+  
+  rem /**
+  rem  * init the grid and attache the menu items callbacks
+  rem  */
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.getOptions().setContextMenu(menu!)
+  grid!.setData(rs!)
+  grid!.setCallback(6000,"onShowDirection")
+  grid!.setCallback(6001,"onShowFirstName")
+return
+
+onShowDirection:
+  ev! = BBjAPI().getLastEvent()
+  ev! = ev!.getObject()
+  row! = ev!.getRow().asDataRow()
+  url$ = "https://www.google.com/maps/search/?api=1&query=" + java.net.URLEncoder.encode(row!.getFieldAsString("BILL_ADDR1").trim() + ","  + row!.getFieldAsString("COUNTRY").trim())
+  BBjAPI().getThinClient().browse(url$)
+return
+
+onShowFirstName:
+  ev! = BBjAPI().getLastEvent()
+  ev! = ev!.getObject()
+  row! = ev!.getRow().asDataRow()
+  url$ = "http://www.namepedia.org/en/firstname/?q="+java.net.URLEncoder.encode(row!.getFieldAsString("FIRST_NAME").trim())
+  BBjAPI().getThinClient().browse(url$)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

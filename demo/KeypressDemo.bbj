@@ -1,0 +1,87 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsKeypress
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Keypress Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+txt! = "Press CTR + F to auto size the columns. Press Enter on any selected row to get its ID"
+desc! = wnd!.addStaticText(99,10,10,500,25,txt! , $0000$ )
+
+gosub main
+process_events
+
+rem /**
+rem  * Retrive the data from the database and configure the grid
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER , TITLE FROM CDINVENTORY")
+  
+  REM init the grid
+  grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
+  grid!.setCallback(grid!.ON_GRID_KEYPRESS(),"onKeyPress")
+  grid!.setData(rs!)
+return
+
+rem /**
+rem  * We listen to the sent key from the client and apply the resprected action
+rem  */
+onKeyPress:
+  declare auto BBjGridExWidgetClientEventsKeypress eventObject!
+  lastEvent! = BBjAPI().getLastEvent()
+  eventObject! = lastEvent!.getObject()
+  
+  code! = eventObject!.getKey().getKeyCode()
+  isCtrlDown! = eventObject!.getKey().getIsCtrlDown()
+  
+  SWITCH (code!)
+      CASE 13; rem enter
+        declare BBjGridExWidgetClientRowModel row!
+        row! = grid!.getSelectedRow()
+        let x=MSGBOX(row!.getData().get("CDNUMBER").getAsString(),num,"Selected Row ID")
+      BREAK
+      CASE 70; rem char "F"
+        if(isCtrlDown!)
+         grid!.setFitToGrid()
+        fi
+      BREAK      
+      CASE DEFAULT
+      BREAK
+  SWEND
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h - 30)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

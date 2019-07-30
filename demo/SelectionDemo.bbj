@@ -113,17 +113,18 @@ selectionInputButton!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSelectionInputButton"
 
 grid! = new BBjGridExWidget(wnd!,100,220,40,580,560)
 rem Defines how users can move between rows using arrow keys
-grid!.setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW())
+grid!.getOptions().setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW())
 
 rem show checkboxs for selection.
 rem note this will not disable rows selection by other methods 
 rem to only allow selection using checkboxs use `setSuppressRowClickSelection(bool)` 
-grid!.setShowSelectionCheckbox(1)
-grid!.setShowHeaderSelectionCheckbox(1); rem this option will enable multi row selection by default
+grid!.getOptions().setShowSelectionCheckbox(1)
+grid!.getOptions().setShowHeaderSelectionCheckbox(1); rem this option will enable multi row selection by default
 
 rem enable checkbox selection when grouping 
-grid!.setShowGroupSelectionCheckbox(1)
-grid!.setGroupSelectsChildren(1)
+grid!.getOptions().setShowGroupSelectionCheckbox(1)
+grid!.getOptions().setGroupSelectsChildren(1)
+
 grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onSelectionEvent")
 
     
@@ -150,7 +151,7 @@ return
 onMultipleSelectionToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
-  grid!.setMultipleSelection(control!.isSelected())
+  grid!.getOptions().setMultipleSelection(control!.isSelected())
   gosub rerender
 return
 
@@ -158,27 +159,28 @@ onRowMultiSelectWithClickToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
   isSelected! = control!.isSelected()
-  grid!.setRowMultiSelectWithClick(control!.isSelected())
+  grid!.getOptions().setRowMultiSelectWithClick(control!.isSelected())
   gosub rerender
 return
 
 onRowDeselectionToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
-  grid!.setRowDeselection(control!.isSelected())
+  grid!.getOptions().setRowDeselection(control!.isSelected())
   gosub rerender
 return
 
 onSuppressRowClickSelectionToggle:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
-  grid!.setSuppressRowClickSelection(control!.isSelected())
+  grid!.getOptions().setSuppressRowClickSelection(control!.isSelected())
   gosub rerender
 return
 
 onSelectionInputButton:
     selection! = selectionInput!.getText()
     sel = num(selection!,err=onMultiSelectionInput)
+    grid!.deselectAll()
     grid!.setSelectedRow(sel)
     
     rem now make sure this row is visible, in the middle
@@ -198,6 +200,7 @@ onMultiSelectionInput:
       s!.addItem(num(x!.get(i),err=*continue))
     next i
     
+    grid!.deselectAll()
     grid!.setSelectedRows(s!)
     
     if (s!.size() > 0) then

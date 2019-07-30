@@ -15,4 +15,5 @@ export * from './toolpanel.js';
 export * from './statusbar.js';
 export * from './overlays.js';
 export * from './context.js';
+export * from './charts.js';
 export * from './jss.js';

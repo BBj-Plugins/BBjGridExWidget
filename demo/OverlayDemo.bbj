@@ -29,8 +29,8 @@ hideOverlay!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onHideOverlay")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,50,800,550)
-grid!.setOverlayLoadingTemplate("<span class=""ag-overlay-loading-center"">Please wait while your rows are loading</span>")
-grid!.setOverlayNoRowsTemplate ("<span style=""padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;"">This is a custom 'no rows' overlay</span>")
+grid!.getOptions().setOverlayLoadingTemplate("<span class=""ag-overlay-loading-center"">Please wait while your rows are loading</span>")
+grid!.getOptions().setOverlayNoRowsTemplate ("<span style=""padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;"">This is a custom 'no rows' overlay</span>")
 
 gosub main
 process_events

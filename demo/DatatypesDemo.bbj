@@ -24,8 +24,8 @@ wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
-grid!.setEnableFilter(1)
-grid!.setEnableFloatingFilter(1)
+grid!.getOptions().setEnableFilter(1)
+grid!.getOptions().setEnableFloatingFilter(1)
 
 rem /**
 rem  * @see http://documentation.basis.com/BASISHelp/WebHelp/commands2/opts_variable.htm

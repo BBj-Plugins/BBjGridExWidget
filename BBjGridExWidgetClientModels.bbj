@@ -7,9 +7,12 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.basiscomponents.db.DataRow
+use java.util.ArrayList
+use java.util.Arrays
 REM /**
 REM  * A client model for rows
 REM  *
@@ -156,7 +159,7 @@ class public BBjGridExWidgetClientColumnModel
     rem  * @return BBjNumber column's type
     rem  */
     method public BBjNumber getType()
-        methodret #getWidget().getRS().getColumnType(#getName())
+        methodret #getWidget().getRS().getColumnType(#getIndex())
     methodend
     rem /**
     rem  * Get the column type
@@ -179,11 +182,12 @@ class public BBjGridExWidgetClientColumnModel
     rem /**
     rem  * Convert column to string
     rem  *
-    rem  * @return BBjstring  The column 
+    rem  * @return BBjstring  The column
     rem  */
     method public BBjString toString()
         methodret #getName()
     methodend
+
 classend
 REM /**
 REM  * A model for the client cell
@@ -204,4 +208,239 @@ class public BBjGridExWidgetClientCellModel
     rem  */
     field public BBjString Value!
 
+classend
+REM /**
+REM  * This model is used when range selections are read from the client
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientRangeSelectionModel
+    rem /**
+    rem  * An array of column objects where every object is instance of BBjGridExWidgetClientColumnModel
+    rem  */
+    field public BBjVector Columns! = new BBjVector()
+    rem /**
+    rem  * An array of rows objects where every object is instance of  BBjGridExWidgetClientRowModel
+    rem  */
+    field public BBjVector Rows! = new BBjVector()
+
+classend
+rem /**
+rem  * The model is used to compose a range selection model in order to be applied on the client.
+rem  *
+rem  * Ranges are normally bounded by a start and end row. However it is also possible to define a range unbounded
+rem  * by rows (ie to contain all rows). For an unbounded range, do not provided start or end row positions.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientAddRangeSelectionModel
+    rem /**
+    rem  * A list of column ids to use . Note that none existing columns will be ignored silently
+    rem  */
+    field public ArrayList Columns! = new ArrayList()
+    rem /**
+    rem  * Start row id or index
+    rem  */
+    field public BBjString Start! = null()
+    rem /**
+    rem  * End row id or index
+    rem  */
+    field public BBjString End! = null()
+    rem /**
+    rem  * Add columns as comma seperated string
+    rem  *
+    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  */
+    method public void setColumns(BBjString columns!)
+        arrayList! = new ArrayList()
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+            arrayList!.add(cvs(it!.next(),128))
+        WEND
+
+        #setColumns(arrayList!)
+    methodend
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("columns" , iff(#getColumns().size() <> 0 ,new Gson().toJson(#getColumns()), listIsEmpty!) , err=*next)
+        json!.addProperty("start" , #getStart(), err=*next)
+        json!.addProperty("end" , #getEnd(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The model is used to compose a range chart model in order to be applied on the client.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientAddRangeChartModel
+    rem /**
+    rem  * Defines the range of cells to be charted , A range is normally defined with start and end rows and a list of columns,
+    rem  * If the start and end rows are omitted, the range covers all rows (ie entire columns are selected).
+    rem  */
+    field public BBjGridExWidgetClientAddRangeSelectionModel RangeSelection! = null()
+    rem /**
+    rem  * The type of chart to create
+    rem  */
+    field public BBjString Type! = null()
+    rem /**
+    rem  * Normally when a chart is displayed using the grid, the grid will highlight the range the chart is charting
+    rem  * when the chart gets focus, to suppress this behaviour, set the field to false
+    rem  */
+    field public BBjNumber SuppressChartRanges! = null()
+    rem /**
+    rem  * When set to true, series values will be summed for each category before charting.
+    rem  */
+    field public BBjNumber Aggregate! = null()
+    rem /**
+    rem  * Constant value to define groupedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_GROUPEDBAR()
+        methodret "groupedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDBAR()
+        methodret "stackedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDBAR()
+        methodret "normalizedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define groupedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_GROUPEDCOLUMN()
+        methodret "groupedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDCOLUMN()
+        methodret "stackedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDCOLUMN()
+        methodret "normalizedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define line chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_LINE()
+        methodret "line"
+    methodend
+    rem /**
+    rem  * Constant value to define pie chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_PIE()
+        methodret "pie"
+    methodend
+    rem /**
+    rem  * Constant value to define doughnut chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_DOUGHNUT()
+        methodret "doughnut"
+    methodend
+    rem /**
+    rem  * Constant value to define area chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_AREA()
+        methodret "area"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedArea chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDAREA()
+        methodret "stackedArea"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedArea chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDAREA()
+        methodret "normalizedArea"
+    methodend
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.        add("cellRange" , #getRangeSelection().getAsJsonObject() , err=*next)
+        json!.addProperty("chartType" , #getType(), err=*next)
+        json!.addProperty("suppressChartRanges" , #getSuppressChartRanges().booleanValue(), err=*next)
+        json!.addProperty("aggregate" , #getAggregate().booleanValue(), err=*next)
+        methodret json!
+    methodend
+
+classend
+
+rem /**
+rem  * The model is used to represent a keypress on the client
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+rem  */
+class public BBjGridExWidgetClientKeypressModel
+    rem /**
+    rem  * A DOMString with the code value of the physical key represented by the event.
+    rem  */
+    field public BBjString Code! = null()
+    rem /**
+    rem  * A Number representing the Unicode reference number of the key. 
+    rem  * For keys whose char attribute contains multiple characters, this is the Unicode value of the first character in that attribute.
+    rem  */
+    field public BBjNumber KeyCode! = null()
+    rem /**
+    rem  * A Boolean that is true if the Alt key was active when the key event was generated.
+    rem  */    
+    field public BBjNumber IsAltDown! = null()
+    rem /**
+    rem  * A Boolean that is true if the Shift key was active when the key event was generated.
+    rem  */    
+    field public BBjNumber IsShiftDown! = null()
+    rem /**
+    rem  * A Boolean that is true if the Ctrl key was active when the key event was generated.
+    rem  */
+    field public BBjNumber IsCtrlDown! = null()
 classend

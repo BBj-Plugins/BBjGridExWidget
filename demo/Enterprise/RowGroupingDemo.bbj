@@ -32,12 +32,12 @@ grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 
 rem grouping options
 rem =======================
-grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
-grid!.setMultipleSelection(1)
-grid!.setGroupColumnLabel("My Custom Group")
-grid!.setShowGroupChildCount(1)
-grid!.setShowGroupSelectionCheckbox(1)
-grid!.setGroupSelectsChildren(1)
+grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+grid!.getOptions().setMultipleSelection(1)
+grid!.getOptions().setGroupColumnLabel("My Custom Group")
+grid!.getOptions().setShowGroupChildCount(1)
+grid!.getOptions().setShowGroupSelectionCheckbox(1)
+grid!.getOptions().setGroupSelectsChildren(1)
 REM grid!.setGroupUseEntireRow(1)
 REM grid!.setGroupMultiAutoColumn(1)
 

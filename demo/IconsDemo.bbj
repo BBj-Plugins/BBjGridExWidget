@@ -24,7 +24,7 @@ icons! = BBjGridExWidgetDemoUtilities.readAssetsAsString("templates/icons.json")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600 ,template!)
-grid!.setIcons(icons!)
+grid!.getOptions().setIcons(icons!)
 
 gosub main
 process_events

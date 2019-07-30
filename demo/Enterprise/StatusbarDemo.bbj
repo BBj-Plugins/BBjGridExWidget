@@ -53,9 +53,7 @@ selectedRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 selectedRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 grid! = new BBjGridExWidget(wnd!,100,200,0,600,600)
-grid!.setMultipleSelection(1)
-grid!.setEnableFilter(1)
-rem grid!.setEnableFloatingFilter(1)
+grid!.getOptions().setMultipleSelection(1)
 
 statusbar! = grid!.getStatusbar()
 statusbar!.addComponent(new BBjGridExWidgetStatusBarTotalRowCountComponent())

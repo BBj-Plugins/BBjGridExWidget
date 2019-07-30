@@ -9,6 +9,7 @@ rem  */
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientKeypressModel
 REM /**
 REM  * Row Selection Event (single & double)
 REM  *
@@ -77,7 +78,6 @@ class public BBjGridExWidgetClientEventsCell extends BBjGridExWidgetClientEvents
     field public BBjString OldValue!
 
 classend
-
 rem /**
 rem  * Cell Editing / Clicking Event
 rem  *
@@ -88,4 +88,25 @@ class public BBjGridExWidgetClientEventsRowEditing
     rem  * The Row being edited
     rem  */
     field public BBjGridExWidgetClientRowModel Row!
+
+classend
+REM /**
+REM  * Cells range selection event
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientEventsRangeSelection
+
+classend
+REM /**
+REM  * Keypress event
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public BBjGridExWidgetClientEventsKeypress
+    rem /**
+    rem  * A keypress model which is received from the client
+    rem  */
+    field public BBjGridExWidgetClientKeypressModel Key!
+
 classend

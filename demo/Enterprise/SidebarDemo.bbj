@@ -51,8 +51,7 @@ fillGrid:
     rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
     rs!.setAttribute(6,"TOOLPANEL_CLASS","music-type")
 
-    grid!.setFunctionsReadOnly(0)
-    grid!.setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+    grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
 
     columnsToolpanel! = cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get(BBjGridExWidgetColumnsToolpanel.ID()))
     columnsToolpanel!.setSuppressValues(1)
