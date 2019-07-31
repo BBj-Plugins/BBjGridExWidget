@@ -90,7 +90,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjString LicenseKey$
     rem /**
-    rem  * When true enable debug mode , disable otherwise
+    rem  * When true the grid will use the unminifed version of the Javascript code then open the debugger 
+    rem  * in the browser when the CHROMIUM_HTMLVIEW is in use&#183;<br>
+    rem  * <b>Note :</b> in BBj 19.10 and higher the grid will open the debugger only when the debugging port is set
+    rem  * <pre><code>
+    rem  *      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=9222")
+    rem  * </code></pre>
     rem  */
     field public static BBjNumber Debug = 0
     rem /**
@@ -581,11 +586,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             html$ = #getTemplate()
 
             if (info(3,6)<>"5" and #Debug>0) then
-                call "BBjGridExWidget/util/EnableDebugger.bbj"
+                if (REV < "REV 19.10")
+                    call "BBjGridExWidget/util/EnableDebugger.bbj"
+                FI
             FI
 
-            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$)
-            htmlview!.setNoEdge(1)
+            if (REV < "REV 19.10")
+                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$)
+            else
+                switches$ = stbl("!CHROMIUM_SWITCHES",err=*next)
+                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$,switches$)
+            FI
 
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
@@ -594,16 +605,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                     BBjAPI().getThinClient().browse(url$)
                 FI
             FI
-            REM             if (htmlview!.getClientType() <> "Chromium" AND INFO(3,6)<>"5")
-            REM                 htmlview!.setText("<html><center>Error: Need the Chromium Engine in BBj 18.10 or later. Please check your BBj SAM coverage!</center></html>")
-            REM             else
+
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
             htmlview!.setOpaque(0)
+            htmlview!.setNoEdge(1)
+            htmlview!.setVisible(1)
             htmlview!.setText(html$)
-            REM             fi
+
             #HTMLView!=htmlview!
-            #HTMLView!.setVisible(1)
         else
             #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
         FI
