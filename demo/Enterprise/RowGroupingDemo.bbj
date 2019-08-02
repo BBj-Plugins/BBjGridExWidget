@@ -1,6 +1,14 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
 use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 use com.google.gson.JsonObject
@@ -8,17 +16,10 @@ use java.sql.Types
 
 ? 'HIDE'
 
+BBjGridExWidgetDemoUtilities.nagAboutLicense()
+
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
-
-lic!=System.getProperty("bbjgridexwidget.license")
-
-if lic!=null() or str(lic!)="" then
-    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Row Grouping Demo")
-    release
-FI
-
-BBjGridExWidget.setLicenseKey(lic!)
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
