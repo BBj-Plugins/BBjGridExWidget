@@ -677,13 +677,22 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             isLicensed! = #isLicensed()
         FI
 
+        bui = INFO(3,6)="5"
         ch=unt
         distBase$ = "BBjGridExWidget/client/dist"
         rem include the grid
         if #getDebug() = 1 then
-            gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
+            if bui then
+                gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.noStyle.js",distBase$ +"/bui/ag-grid-community.noStyle.js")
+            else
+                gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
+            fi
         else
-            gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
+            if bui then
+                gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.min.noStyle.js",distBase$ +"/bui/ag-grid-community.min.noStyle.js")
+            else
+                gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
+            fi
         FI
 
         open (ch)gridPath$
