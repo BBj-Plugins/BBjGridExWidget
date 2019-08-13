@@ -22,8 +22,8 @@ export function gw_onKeydown(id, keydownEvent) {
     {
       'type': `gw.keypress`,
       'detail': JSON.stringify({
-        c: keydownEvent.code,
-        kc: keydownEvent.keyCode,
+        c:  keydownEvent.key,
+        kc: keydownEvent.which || Number(keydownEvent.keyCode),
         ak: keydownEvent.altKey,
         sk: keydownEvent.shiftKey,
         ck: keydownEvent.ctrlKey,
