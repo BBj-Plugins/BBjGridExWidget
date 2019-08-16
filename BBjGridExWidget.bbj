@@ -536,7 +536,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *                           By default you will never need  to change the defaultl Template.
     rem  *                           Unless you want to do somthing really unusual
     rem  */
-    method public void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!, BBjString template$)
+    method protected void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!, BBjString template$)
         #super!.setCanvas(wnd!.addChildWindow(id!,x!,y!,w!,h!,"",$00000800$,BBjAPI().getSysGui().getAvailableContext()))
         #super!.setX(x!)
         #super!.setY(y!)
