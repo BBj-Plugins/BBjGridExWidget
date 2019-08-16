@@ -91,10 +91,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjString LicenseKey$
     rem /**
-    rem  * When true , the grid will force using the community version of the grid whether there 
+    rem  * When true , the grid will force using the community version of the grid whether there
     rem  * is a license key or not.
     rem  */
-    field public static BBjNumber ForceCommunityBuild! = 0    
+    field public static BBjNumber ForceCommunityBuild! = 0
     rem /**
     rem  * When true the grid will use the unminifed version of the Javascript code then open the debugger
     rem  * in the browser when the CHROMIUM_HTMLVIEW is in use&#183;<br>
@@ -469,7 +469,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public static BBjNumber isLicensed()
         #getLicenseManager().setLicenseKey(#getLicenseKey())
         methodret #getLicenseManager().isLicensed()
-    methodend    
+    methodend
     rem /**
     rem  * disabled default constructor
     rem  */
@@ -486,9 +486,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber h! height
     rem */
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
-        #super!.create(wnd!,id!,x!,y!,w!,h!)
-        #RS!.createIndex()
-        #fillChartToolbarItems()
+        #create(wnd!,id!,x!,y!,w!,h!,"")
     methodend
     rem /**
     rem  * The constructor that creates the widget on wnd!
@@ -504,10 +502,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *                           Unless you want to do somthing really unusual
     rem */
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
-        #setTemplate(template$)
-        #super!.create(wnd!,id!,x!,y!,w!,h!)
-        #RS!.createIndex()
-        #fillChartToolbarItems()
+        #create(wnd!,id!,x!,y!,w!,h!,template$)
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -515,9 +510,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
     rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!)
-        #super!.create(wnd!)
-        #RS!.createIndex()
-        #fillChartToolbarItems()
+        #create(wnd!)
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -528,10 +521,73 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *                           Unless you want to do somthing really unusual
     rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!,BBjString template$)
-        #setTemplate(template$)
-        #super!.create(wnd!)
+        #create(wnd!,template$)
+    methodend
+    rem /**
+    rem  * Create the widget
+    rem  *
+    rem * @param BBjWindow wnd!! parent window
+    rem * @param BBjNumber id! the control ID
+    rem * @param BBjNumber x! x-location
+    rem * @param BBjNumber y! y-location
+    rem * @param BBjNumber w! width
+    rem * @param BBjNumber h! height
+    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
+    rem  *                           By default you will never need  to change the defaultl Template.
+    rem  *                           Unless you want to do somthing really unusual
+    rem  */
+    method public void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!, BBjString template$)
+        #super!.setCanvas(wnd!.addChildWindow(id!,x!,y!,w!,h!,"",$00000800$,BBjAPI().getSysGui().getAvailableContext()))
+        #super!.setX(x!)
+        #super!.setY(y!)
+        #super!.setW(w!)
+        #super!.setH(h!)
         #RS!.createIndex()
         #fillChartToolbarItems()
+        #setTemplate(template$)
+        #redraw(BBjAPI.TRUE)
+    methodend
+    rem /**
+    rem  * Create the widget
+    rem  *
+    rem * @param BBjWindow wnd!! parent window
+    rem * @param BBjNumber id! the control ID
+    rem * @param BBjNumber x! x-location
+    rem * @param BBjNumber y! y-location
+    rem * @param BBjNumber w! width
+    rem * @param BBjNumber h! height
+    rem  */
+    method protected void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
+        #create(wnd!,id!,x!,y!,w!,h!,"")
+    methodend
+    rem /**
+    rem  * Create the widget
+    rem  *
+    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
+    rem  *                           By default you will never need  to change the defaultl Template.
+    rem  *                           Unless you want to do somthing really unusual
+    rem  */
+    method protected void create(BBjChildWindow wnd!,BBjString template$)
+        #OnChildWidnow! = 1
+        #super!.setCanvas(wnd!)
+        #super!.setX(wnd!.getX())
+        #super!.setY(wnd!.getY())
+        #super!.setW(wnd!.getWidth())
+        #super!.setH(wnd!.getHeight())
+        #RS!.createIndex()
+        #fillChartToolbarItems()
+        #setTemplate(template$)
+        #redraw(BBjAPI.TRUE)
+    methodend
+    rem /**
+    rem  * Create the widget
+    rem  *
+    rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+    rem  * @param BBjString template$ the html template to use for the grid initialization
+    rem  */
+    method protected void create(BBjChildWindow wnd!)
+        #create(wnd!,"")
     methodend
     REM /**
     REM  * Get the unique control type
@@ -686,13 +742,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.noStyle.js",distBase$ +"/bui/ag-grid-community.noStyle.js")
             else
                 gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
-            fi
+            FI
         else
             if bui then
                 gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.min.noStyle.js",distBase$ +"/bui/ag-grid-community.min.noStyle.js")
             else
                 gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
-            fi
+            FI
         FI
 
         open (ch)gridPath$
@@ -2403,6 +2459,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void hideOverlay()
         #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
+    methodend
+    rem /**
+    rem  * Destory the grid
+    rem  */
+    method public void destroy()
+        #super!.destroy()
+        #IsReady! = BBjAPI.FALSE
+        #backlog! = new BBjVector()
     methodend
     rem /**
     rem  * Fires an event
