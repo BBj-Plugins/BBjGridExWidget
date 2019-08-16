@@ -510,7 +510,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
     rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!)
-        #create(wnd!)
+        #create(wnd!,"")
     methodend
     rem /**
     rem  * The constructor that creates the widget in the ChildWindow
@@ -575,7 +575,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @Override
     rem  */
     method protected void create(BBjChildWindow wnd!,BBjString template$)
-        #OnChildWidnow! = 1
         #super!.setCanvas(wnd!)
         #super!.setX(wnd!.getX())
         #super!.setY(wnd!.getY())
