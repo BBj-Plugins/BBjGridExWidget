@@ -668,10 +668,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             FI
 
             if (REV < "REV 19.10")
-                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$)
+                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
             else
                 switches$ = stbl("!CHROMIUM_SWITCHES",err=*next)
-                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0010$,switches$)
+                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$,switches$)
             FI
 
             if (info(3,6)<>"5" and #Debug>0) then
@@ -686,7 +686,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
             htmlview!.setOpaque(0)
             htmlview!.setNoEdge(1)
-            htmlview!.setVisible(1)
             htmlview!.setText(html$)
             #HTMLView!=htmlview!
         else
