@@ -1,0 +1,12 @@
+{
+    "bbj.bui.apps": {
+        "CD-Store.bbj": {
+            "name": "CD-Store",
+            "style": ""
+        },
+        "CustomGridDemo.bbj": {
+            "name": "CustomGridDemo",
+            "style": ""
+        }
+    }
+}
