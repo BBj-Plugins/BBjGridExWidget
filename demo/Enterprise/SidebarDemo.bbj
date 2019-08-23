@@ -1,20 +1,23 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
 
 ? 'HIDE'
 
+BBjGridExWidgetDemoUtilities.nagAboutLicense()
+
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
-
-lic!=System.getProperty("bbjgridexwidget.license")
-
-if lic!=null() or str(lic!)="" then
-    a=msgbox("set license key in bbj.properties under bbjgridexwidget.license=<yourlicense>",48,"Demo for Enterprise Features")
-    release
-fi
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
 

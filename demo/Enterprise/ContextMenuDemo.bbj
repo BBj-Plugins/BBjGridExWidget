@@ -8,10 +8,13 @@ rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
 ? 'HIDE'
+
+BBjGridExWidgetDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!

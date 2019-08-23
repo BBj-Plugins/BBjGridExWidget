@@ -960,7 +960,7 @@ class public BBjGridExWidgetOptions
         options!.addProperty("suppressDragLeaveHidesColumns",#getSuppressDragLeaveHidesColumns().booleanValue() , err=*next)
         options!.addProperty("enableRtl",#getEnableRtl().booleanValue() , err=*next)
         options!.addProperty("suppressContextMenu",#getSuppressContextMenu().booleanValue() , err=*next)
-        options!.addProperty("allowContextMenuWithControlKey", 0)
+        options!.addProperty("allowContextMenuWithControlKey", iff(INFO(3,6)="5" , 0 , 1))
         options!.addProperty("statusBar",#getStatusbar().toString(), err=*next)
         options!.addProperty("suppressTouch",#getSuppressTouch().booleanValue() , err=*next)
         options!.addProperty("suppressPropertyNamesCheck",BBjGridExWidget.getDebug().booleanValue() , err=*next)

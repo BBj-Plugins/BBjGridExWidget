@@ -1,3 +1,22 @@
+# [0.100.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.99.0...0.100.0) (2019-08-23)
+
+
+### Bug Fixes
+
+* all popup features are not working in BUI ([f0275cf](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f0275cf))
+* context menu does not open when using BBj 19.10 ([08f90a7](https://github.com/BBj-Plugins/BBjGridExWidget/commit/08f90a7))
+* **JS:** `keydown.code` is not defined in Edge & IE11 ([0efb6ab](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0efb6ab))
+* **JS:** add a pollfill for `Array.find` method ([50964c0](https://github.com/BBj-Plugins/BBjGridExWidget/commit/50964c0))
+* rendering the BBjHTMLView invisible and then later making it visible resulted in the grid sometimes not rendering at all, starting always visible now ([cc9f504](https://github.com/BBj-Plugins/BBjGridExWidget/commit/cc9f504))
+
+
+### Features
+
+* implmenet a license manager ([fcc9329](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fcc9329))
+* pass the `CHROMIUM_SWITCHES` in BBj 19.10 to the html view ([5b7e626](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5b7e626))
+
+
+
 # [0.99.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.98.0...0.99.0) (2019-07-29)
 
 

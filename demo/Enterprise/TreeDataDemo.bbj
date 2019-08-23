@@ -13,6 +13,8 @@ use com.basiscomponents.db.ResultSet
 
 ? 'HIDE'
 
+BBjGridExWidgetDemoUtilities.nagAboutLicense()
+
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 

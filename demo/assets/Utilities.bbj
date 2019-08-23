@@ -3,12 +3,19 @@ use java.util.ArrayList
 use com.google.gson.JsonObject
 use com.google.gson.Gson
 use com.basiscomponents.db.ResultSet
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 REM /**
 REM  * Several Utilities Used in Demos
 REM  *
 REM  * @author Hyyan Abo Fakher
 REM  */
 class public BBjGridExWidgetDemoUtilities
+
+    method public static void nagAboutLicense()
+        if(!BBjGridExWidget.isLicensed())
+            let x=MSGBOX("This is a BBjGridWidget enterprise demo and it requires a license key in order to work." ,48," Failed To Set License" )
+        FI
+    methodend
 
     method public static BBjString readAssetsAsString(BBjString file$)
         template$ = ""
@@ -22,16 +29,12 @@ class public BBjGridExWidgetDemoUtilities
     method public static ArrayList buildArrayListFromDir(BBjString root$, BBjString sub!)
         rootResolved! = BBjAPI().getFileSystem().resolvePath(root$)
         path! = iff(sub! > "" , sub! , rootResolved!)
-        
         data! = new ArrayList()
-        
         folder! = new File(path!)
         list! = folder!.list()
         length! = list!.length - 1
-        
         files! = new ArrayList()
         dirs! = new ArrayList()
-        
         FOR i = 0 TO length!
             current! = new File(path! + "/" + list![i])
 
