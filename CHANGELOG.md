@@ -1,3 +1,12 @@
+## [0.100.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.0...0.100.1) (2019-08-28)
+
+
+### Bug Fixes
+
+* The license manager does not catch checkout errors ([3714748](https://github.com/BBj-Plugins/BBjGridExWidget/commit/3714748))
+
+
+
 # [0.100.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.99.0...0.100.0) (2019-08-23)
 
 
