@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "ag-grid-community": "^21.*",
-    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.7.0",
+    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.16.0",
     "ag-grid-enterprise": "^21.*",
     "deep-parse-json": "^1.0.1",
     "jss": "https://github.com/dvtng/jss",

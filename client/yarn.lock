@@ -854,9 +854,9 @@ ag-grid-community@^21.*:
   resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-21.1.0.tgz#d8dba9486c2ef1879f9d97496183711b406258c2"
   integrity sha512-giWg653lxihzRulz4tiiSAewaZVeSvA3GN+uIY5LEHfJ8Eb2FWbI2IZ1n+KMhnuvMy7936dOflTYm8m0sxXplA==
 
-"ag-grid-components@https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.7.0":
-  version "1.14.0"
-  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#e91fe42af2fc62e705e562301baccff275b0885e"
+"ag-grid-components@https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.16.0":
+  version "1.16.0"
+  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#0f38ebe80b2c91460193c03d36111ad2586816b4"
   dependencies:
     ag-grid "^18.0.1"
     bbj-masks "https://git.storesandbox.de/hyyan/bbj-masks.git#^v1.3.1"
