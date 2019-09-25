@@ -60,7 +60,7 @@ module.exports = {
         use: [
           {
             loader: "style-loader", options: {
-              insertInto: function () { return window.top.document.head }
+              insertInto: function () { return window.parent.document.head }
             }
           },
           { loader: "postcss-loader" },

@@ -673,6 +673,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 switches$ = stbl("!CHROMIUM_SWITCHES",err=*next)
                 htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$,switches$)
             FI
+            htmlview!.setOpaque(0)
+            htmlview!.setNoEdge(1)
+            
+            
 
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
@@ -684,9 +688,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
-            htmlview!.setOpaque(0)
-            htmlview!.setNoEdge(1)
             htmlview!.setText(html$)
+            
             #HTMLView!=htmlview!
         else
             #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
@@ -733,6 +736,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onInit(BBjEvent ev!)
+    
+        #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
+
         isLicensed! = 0
 
         if (#getForceCommunityBuild() = 0) then
@@ -760,7 +766,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         open (ch)gridPath$
         read record (ch,siz=5512000)script$
         close (ch)
-        #injectScript(script$)
+        s$=script$
         rem include locale files
         locale! = #getLanguageManager().getLanguage()
         locale$ = str(locale!.replaceAll("_","-").replaceAll("_","-"))
@@ -772,12 +778,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if isLocale = 0 then
             close (ch)
             dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
-            open (ch,err=*next)dateJsLocalePath$
-        FI
-
-        read record (ch,siz=5512000)script$
-        close (ch)
-        #injectScript(script$)
+            open (ch,err=*next)dateJsLocalePath$;isLocale=1
+        fi
+        if isLocale = 1 then
+            read record (ch,siz=5512000)script$
+            close (ch)
+            s$=s$+script$
+        else
+            a=msgbox("Error loading library for locale "+locale$,0,"Error")
+        fi
+        
+       
         ch=unt
 
         if #getDebug() = 1 then
@@ -788,15 +799,27 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         read record (ch,siz=5512000)script$
         close (ch)
-        #injectScript(script$)
-        #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+        
+        s$=s$+script$
+        #injectScript(s$)
+        
+REM         rem could even directly call the onLoaded Method from here        
+REM         #onLoaded(null())
+
+
+        BBjAPI().createTimer(str(#this!)+"onLoadFallback",.2,#this!,"onLoaded")
+        
     methodend
     rem /**
     rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
     rem  * callbacks
     rem  */
     method public void onLoaded(BBjEvent ev!)
-        #HTMLView!.clearCallback(#HTMLView!.ON_PAGE_LOADED)
+    
+    
+        #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
+        BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
+        
         #getLicenseManager().register(#this!)
         #IsReady! = BBjAPI.TRUE
         REM         if #RS! <> null() or #URL$>"" then
@@ -831,6 +854,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #newW! = null()
             #newH! = null()
         FI
+        
     methodend
     rem /**
     rem  * On NativeEvent
