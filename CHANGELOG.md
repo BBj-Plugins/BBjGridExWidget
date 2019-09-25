@@ -1,3 +1,14 @@
+## [0.100.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.1...0.100.2) (2019-09-25)
+
+
+### Bug Fixes
+
+* added workaround using a timer to fight the "blank window" problem in later BBj releases, that was probably triggered by the later Chromium engine in BBj ([0b54745](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0b54745))
+* harden potential failure when second file is also not found ([c044063](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c044063))
+* inject styles in the document of the windows's parent ([58925c9](https://github.com/BBj-Plugins/BBjGridExWidget/commit/58925c9))
+
+
+
 ## [0.100.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.0...0.100.1) (2019-08-28)
 
 
