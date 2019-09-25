@@ -772,12 +772,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if isLocale = 0 then
             close (ch)
             dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
-            open (ch,err=*next)dateJsLocalePath$
-        FI
-
-        read record (ch,siz=5512000)script$
-        close (ch)
-        #injectScript(script$)
+            open (ch,err=*next)dateJsLocalePath$;isLocale=1
+        fi
+        if isLocale = 1 then
+            read record (ch,siz=5512000)script$
+            close (ch)
+            #injectScript(script$)
+        else
+            a=msgbox("Error loading library for locale "+locale$,0,"Error")
+        fi
+        
+        
         ch=unt
 
         if #getDebug() = 1 then
