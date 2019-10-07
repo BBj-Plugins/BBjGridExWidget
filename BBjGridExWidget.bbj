@@ -2263,7 +2263,7 @@ REM         #onLoaded(null())
         #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Stop editing and discard changes
+    rem  * Stop editing and accepts changes
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
