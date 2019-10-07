@@ -32,15 +32,15 @@ class public BBjGridExWidgetClientRowModel
     rem  */
     field public BBjNumber ChildIndex!
     rem /**
-    rem  * The row parent key , if any
+    rem  * The row parent key, if any
     rem  */
     field public BBjString ParentKey!
     rem /**
-    rem  * True when the row is selected , false otherwise
+    rem  * True when the row is selected, false otherwise
     rem  */
     field public BBjNumber IsSelected!
     rem /**
-    rem  * BBjGridExWidget instnace
+    rem  * BBjGridExWidget instance
     rem  */
     field protected BBjGridExWidget Widget!
     rem /**
@@ -51,7 +51,7 @@ class public BBjGridExWidgetClientRowModel
     rem /**
     rem  * Construct new client row
     rem  *
-    rem  * @param BBjGridExWidget widget! The widget instnace
+    rem  * @param BBjGridExWidget widget! The widget instance
     rem  */
     method public BBjGridExWidgetClientRowModel(BBjGridExWidget widget!)
         #Widget! = widget!
@@ -87,7 +87,7 @@ class public BBjGridExWidgetClientRowModel
         methodret obj!
     methodend
     rem /**
-    rem  * Aliase for <i>getAsJsonObject()</i>
+    rem  * Alias for <i>getAsJsonObject()</i>
     rem  *
     rem  * @see getAsJsonObject()
     rem  */
@@ -111,7 +111,7 @@ REM  * @author Hyyan Abo Fakher
 REM  */
 class public BBjGridExWidgetClientColumnModel
     rem /**
-    rem  * BBjGridExWidget instnace
+    rem  * BBjGridExWidget instance
     rem  */
     field protected BBjGridExWidget Widget!
     rem /**
@@ -126,7 +126,7 @@ class public BBjGridExWidgetClientColumnModel
     rem /**
     rem  * Construct new BBjGridExWidgetClientColumnModel
     rem  *
-    rem  * @param BBjGridExWidget widget! The widget instnace
+    rem  * @param BBjGridExWidget widget! The widget instance
     rem  * @param BBjString name! the column's name/id
     rem  */
     method public BBjGridExWidgetClientColumnModel(BBjGridExWidget widget! , BBjString name!)
@@ -220,7 +220,7 @@ class public BBjGridExWidgetClientRangeSelectionModel
     rem  */
     field public BBjVector Columns! = new BBjVector()
     rem /**
-    rem  * An array of rows objects where every object is instance of  BBjGridExWidgetClientRowModel
+    rem  * An array of rows objects where every object is instance of BBjGridExWidgetClientRowModel
     rem  */
     field public BBjVector Rows! = new BBjVector()
 
@@ -235,7 +235,7 @@ REM  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetClientAddRangeSelectionModel
     rem /**
-    rem  * A list of column ids to use . Note that none existing columns will be ignored silently
+    rem  * A list of column ids to use. Note that none existing columns will be ignored silently
     rem  */
     field public ArrayList Columns! = new ArrayList()
     rem /**
@@ -247,9 +247,9 @@ class public BBjGridExWidgetClientAddRangeSelectionModel
     rem  */
     field public BBjString End! = null()
     rem /**
-    rem  * Add columns as comma seperated string
+    rem  * Add columns as comma separated string
     rem  *
-    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
     rem  */
     method public void setColumns(BBjString columns!)
         arrayList! = new ArrayList()
@@ -284,7 +284,7 @@ REM  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetClientAddRangeChartModel
     rem /**
-    rem  * Defines the range of cells to be charted , A range is normally defined with start and end rows and a list of columns,
+    rem  * Defines the range of cells to be charted. A range is normally defined with start and end rows and a list of columns,
     rem  * If the start and end rows are omitted, the range covers all rows (ie entire columns are selected).
     rem  */
     field public BBjGridExWidgetClientAddRangeSelectionModel RangeSelection! = null()

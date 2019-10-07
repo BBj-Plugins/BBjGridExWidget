@@ -27,7 +27,7 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid.
+rem  * Retrieve the data from the database and configure the grid.
 rem  * 
 rem  * The method shows how to configure the different column attributes using the Columns Manager methods. 
 rem  * Most of these method work on the configuration level which means you need to call them before calling

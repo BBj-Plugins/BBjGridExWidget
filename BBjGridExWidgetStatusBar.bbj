@@ -13,7 +13,7 @@ use com.google.gson.JsonObject
 use com.google.gson.Gson
 use java.util.HashSet
 rem /**
-rem  * A Interface which defines a status bar component
+rem  * An interface which defines a status bar component
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
@@ -28,7 +28,7 @@ interface public BBjGridExWidgetStatusBarComponentInterface
     rem /**
     rem  * Set the component alignment
     rem  *
-    rem  * @param BBjString alignment$ "right" , "left" or "center"
+    rem  * @param BBjString alignment$ "right", "left" or "center"
     rem  */
 
     method public void setAlignment(BBjString alignment!)
@@ -40,7 +40,7 @@ interface public BBjGridExWidgetStatusBarComponentInterface
 
     method public BBjString getAlignment()
     rem /**
-    rem  * Get The component's JSON representation
+    rem  * Get the component's JSON representation
     rem  *
     rem  * @return JsonObject
     rem  */
@@ -61,13 +61,13 @@ class public BBjGridExWidgetStatusBarComponent implements BBjGridExWidgetStatusB
     rem /**
     rem  * Constructor
     rem  *
-    rem  * @param BBjString alignment! "right" , "left" or "center"
+    rem  * @param BBjString alignment! "right", "left" or "center"
     rem  */
     method public BBjGridExWidgetStatusBarComponent(BBjString alignment!)
         #Alignment! = alignment!
     methodend
     rem /**
-    rem  * Get The component's JSON representation
+    rem  * Get the component's JSON representation
     rem  *
     rem  * @return JsonObject
     rem  */
@@ -90,7 +90,7 @@ class public BBjGridExWidgetStatusBarSelectedRowCountComponent extends BBjGridEx
     rem /**
     rem  * Constructor
     rem  *
-    rem  * @param BBjString alignment! "right" , "left" or "center"
+    rem  * @param BBjString alignment! "right", "left" or "center"
     rem  */
     method public BBjGridExWidgetStatusBarSelectedRowCountComponent(BBjString alignment!)
         #super!(alignment!)
@@ -112,7 +112,7 @@ class public BBjGridExWidgetStatusBarFilteredRowCountComponent extends BBjGridEx
     rem /**
     rem  * Constructor
     rem  *
-    rem  * @param BBjString alignment! "right" , "left" or "center"
+    rem  * @param BBjString alignment! "right", "left" or "center"
     rem  */
     method public BBjGridExWidgetStatusBarFilteredRowCountComponent(BBjString alignment!)
         #super!(alignment!)
@@ -134,7 +134,7 @@ class public BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent extends B
     rem /**
     rem  * Constructor
     rem  *
-    rem  * @param BBjString alignment! "right" , "left" or "center"
+    rem  * @param BBjString alignment! "right", "left" or "center"
     rem  */
     method public BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent(BBjString alignment!)
         #super!(alignment!)
@@ -156,7 +156,7 @@ class public BBjGridExWidgetStatusBarTotalRowCountComponent extends BBjGridExWid
     rem /**
     rem  * Constructor
     rem  *
-    rem  * @param BBjString alignment! "right" , "left" or "center"
+    rem  * @param BBjString alignment! "right", "left" or "center"
     rem  */
     method public BBjGridExWidgetStatusBarTotalRowCountComponent(BBjString alignment!)
         #super!(alignment!)
@@ -176,7 +176,7 @@ REM  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetStatusBarAggregationComponent extends BBjGridExWidgetStatusBarComponent
     rem /**
-    rem  * agg fucntions to show on the panel. possible values are: 'count', 'sum', 'min', 'max', 'avg'
+    rem  * agg functions to show on the panel. possible values are: 'count', 'sum', 'min', 'max', 'avg'
     rem  */
     field public HashSet AggFuncs! =  new HashSet()
     rem /**
@@ -188,7 +188,7 @@ class public BBjGridExWidgetStatusBarAggregationComponent extends BBjGridExWidge
     rem /**
     rem  * Construct new Aggregation Component
     rem  *
-    rem  * @param BBjString alignment! "right" , "left" or "center"
+    rem  * @param BBjString alignment! "right", "left" or "center"
     rem  */
     method public BBjGridExWidgetStatusBarAggregationComponent(BBjString alignment!)
         #super!(alignment!)
@@ -226,7 +226,7 @@ rem /**
 rem  * BBjGridExWidgetStatusBar
 rem  *
 rem  * BBjGridExWidget status bar manager.
-rem  * The class can add , remove & hide status bar components
+rem  * The class can add, remove & hide status bar components
 rem  *
 rem  * @Enterprise
 rem  */
@@ -267,7 +267,7 @@ class public BBjGridExWidgetStatusBar
         methodret c!
     methodend
     rem /**
-    rem  * Remove statusbar compoent
+    rem  * Remove statusbar component
     rem  *
     rem  * @param BBjString name! the component name
     rem  */
@@ -286,7 +286,7 @@ class public BBjGridExWidgetStatusBar
     rem  * Hide/show statusbar component
     rem  *
     rem  * @param BBjGridExWidgetStatusBarComponentInterface component! a statusbar component
-    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
+    rem  * @param BBjNumber visiblity! 0 to hide component, 1 to show component
     rem  */
     method public void setComponentVisibility(BBjGridExWidgetStatusBarComponentInterface component! , BBjNumber visiblity!)
         #Widget!.executeScript("gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + component!.NAME() + "'," + str(visiblity!) + ")")
@@ -295,7 +295,7 @@ class public BBjGridExWidgetStatusBar
     rem  * Hide/show statusbar component
     rem  *
     rem  * @param BBjString name! the component name
-    rem  * @param BBjNumber visiblity! 0 to hide component , 1 to show compoent
+    rem  * @param BBjNumber visiblity! 0 to hide component, 1 to show component
     rem  */
     method public void setComponentVisibility(BBjString name! , BBjNumber visiblity!)
         #Widget!.executeScript("gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + name! + "'," + str(visiblity!) + ")")

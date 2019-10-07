@@ -44,12 +44,12 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid.
+rem  * Retrieve the data from the database and configure the grid.
 rem  * 
 rem  * The demo shows how grid!.setData() setup the column components accoring to it type.
 rem  * for example the DOUBLE column's type is double , this will enable the BBjGridExWidgetExpressionNumbersFormatter
 rem  * by default for this type , Using the formatter you can configure the mask to use or define the group and the decimal 
-rem  * seperators for numbers. 
+rem  * separators for numbers. 
 rem  * The same applies for other types , for example the boolean columns will be configured automatically to have the 
 rem  * BBjGridExWidgetRendererBoolean where you can configure how ture/false will be render 
 rem  * inside the cell (switch , numbers ,  custom html strings ....).

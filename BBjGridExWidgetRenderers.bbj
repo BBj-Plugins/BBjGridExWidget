@@ -21,7 +21,7 @@ interface public BBjGridExWidgetRendererInterface
 
     method public static BBjString RENDERER_NAME()
     rem /**
-    rem  * Convert the renderer defintion to Json Object
+    rem  * Convert the renderer definition to Json Object
     rem  *
     rem  * @return JsonOobject The renderer as JsonObject
     rem  */
@@ -30,7 +30,7 @@ interface public BBjGridExWidgetRendererInterface
 
 interfaceend
 rem /**
-rem  * The class reprensets a boolean cell renderer
+rem  * The class represents a boolean cell renderer
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
@@ -72,7 +72,7 @@ rem /**
 rem  * The class can render a custom html using lodash string templates.
 rem  *
 rem  * Inside the template you will have access to the <i>params</i> object
-rem  * which contains value , valueFormatted , ...
+rem  * which contains value, valueFormatted, ...
 rem  *
 rem  * Use This render if you want to render the data with a custom html.
 rem  *
@@ -80,7 +80,7 @@ REM  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendererInterface
     rem /**
-    rem  * String template which will be complied in the client.<br>
+    rem  * String template which will be compiled in the client.<br>
     rem  * <pre>
     rem  * <code>
     rem  *  <%= '<strong style=\'color:red\'>' + (params.valueFormatted || '')  + '</strong>' %>
@@ -97,7 +97,7 @@ class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendere
     rem /**
     rem  * Construct new BBjGridExWidgetRendererCustomHTML
     rem  *
-    rem  * @param BBjString template! The string tempatle
+    rem  * @param BBjString template! The string template
     rem  *
     rem  * i.e
     rem  * <pre>
@@ -122,7 +122,7 @@ class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendere
 
 classend
 rem /**
-rem  * The renderer can be used to dispaly a list of images based on the cells values using a json object
+rem  * The renderer can be used to display a list of images based on the cells values using a json object
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
@@ -174,15 +174,15 @@ REM  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidgetRendererInterface
     rem /**
-    rem  * When true show row counts , hide otherwise
+    rem  * When true show row counts, hide otherwise
     rem  */
     field public BBjNumber SuppressCount! = null()
     rem /**
-    rem  *  When true disable double click for expand , enable otherwise
+    rem  * When true disable double-click for expand, enable otherwise
     rem  */
     field public BBjNumber SuppressDoubleClickExpand! = null()
     rem /**
-    rem  *  When true enable checkbox selection, disable otherwise
+    rem  * When true enable checkbox selection, disable otherwise
     rem  */
     field public BBjNumber Checkbox! = null()
     rem /**

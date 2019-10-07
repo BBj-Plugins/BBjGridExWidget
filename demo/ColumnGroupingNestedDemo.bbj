@@ -28,7 +28,7 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid.
+rem  * Retrieve the data from the database and configure the grid.
 rem  *
 rem  * The demo explains how to create a nested set of column groups. There is really no limit on the level , you can go as deep as
 rem  * you want.

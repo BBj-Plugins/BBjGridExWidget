@@ -52,7 +52,7 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid
+rem  * Retrieve the data from the database and configure the grid
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -65,7 +65,7 @@ main:
 return
 
 rem /**
-rem  * Update the CDNUMBER colum defintion
+rem  * Update the CDNUMBER colum definition
 rem  */
 onCDNumberUpdate:
     declare BBjGridExWidgetColumn column!

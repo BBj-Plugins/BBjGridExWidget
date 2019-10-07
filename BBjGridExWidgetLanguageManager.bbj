@@ -11,11 +11,11 @@ use java.util.HashMap
 REM /**
 REM  * BBjGridExWidgetLanguageManager.bbj
 REM  *
-REM  * The language manager will add , remove language files to the grid.
+REM  * The language manager will add, remove language files to the grid.
 REM  *
 REM  * The grid will query the language manager in every render to get the translation keys.
 REM  *
-REM  * <b>Note</b> Changing the language in the language manager will not trigger automatically a grid rerender.
+REM  * <b>Note</b> Changing the language in the language manager will not automatically trigger a grid rerender.
 REM  *
 REM  * @author Hyyan Abo Fakher
 REM  */
@@ -36,7 +36,7 @@ class public BBjGridExWidgetLanguageManager
     rem /**
     rem  * Get the selected language
     rem  *
-    rem  * @return BBjString the selected language if any , otherwise fallback to `stbl("!LOCALE")`
+    rem  * @return BBjString the selected language if any, otherwise fallback to `stbl("!LOCALE")`
     rem  */
     method public BBjString getLanguage()
         locale$ = stbl("!LOCALE")
@@ -48,7 +48,7 @@ class public BBjGridExWidgetLanguageManager
     rem  * overrule the default translation file that is shipped
     rem  * with the grid plugin
     rem  *
-    rem  * @param BBjString language$ the languge key (ex: de_DE)
+    rem  * @param BBjString language$ the language key (ex: de_DE)
     rem  * @param BBjString path$ the language file (JSON file)
     rem  */
     method public void add(BBjString language$ , BBjString path$)
@@ -59,7 +59,7 @@ class public BBjGridExWidgetLanguageManager
     rem /**
     rem  * Remove an added language
     rem  *
-    rem  * @param BBjString language$ the languge key (ex: de_DE)
+    rem  * @param BBjString language$ the language key (ex: de_DE)
     rem  */
     method public void remove(BBjString language$)
         if #Languages!.containsKey(language$)

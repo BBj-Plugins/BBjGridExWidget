@@ -17,7 +17,7 @@ interface public BBjGridExWidgetFilterInterface
 
     method public static BBjString FILTER_NAME()
     rem /**
-    rem  * Convert the filter defintion to Json Object
+    rem  * Convert the filter definition to Json Object
     rem  *
     rem  * @return JsonOobject The filter as JsonObject
     rem  */
@@ -26,17 +26,17 @@ interface public BBjGridExWidgetFilterInterface
 
 interfaceend
 rem /**
-rem  * The class holds the shared ag filter options between all filter types. This is the base clasas for all filter types
+rem  * The class holds the shared ag filter options between all filter types. This is the base class for all filter types
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInterface
     rem /**
-    rem  *Set to true to have the filter us an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
+    rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
     rem  */
     field public BBjNumber ApplyButton! = 0
     rem /**
-    rem  * Set to true to have the filter us a Clear button. The Clear button will clear the details of the filter thus resetting it.
+    rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
     rem  */
     field public BBjNumber ClearButton! = 0
     rem /**
@@ -44,7 +44,7 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
     rem  */
     field public BBjNumber DebounceMs! = 500
     rem /**
-    rem  *  If set to 'clear', then setting data into the grid will clear (reset) the filte If set to 'keep' then the grid will keep it's currently set filter. The default is 'clear'
+    rem  *  If set to 'clear', then setting data into the grid will clear (reset) the filter If set to 'keep' then the grid will keep it's currently set filter. The default is 'clear'
     rem  */
     field public BBjString NewRowsAction! = BBjGridExWidgetColumnFilterAG.NEW_ROWS_ACTION_CLEAR()
     rem /**
@@ -52,7 +52,7 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
     rem  */
     field public BBjNumber SuppressAndOrCondition! = 1
     rem /**
-    rem  * A constant which descripe the NewRowsAction behavior
+    rem  * A constant which describes the NewRowsAction behavior
     rem  *
     rem  * @return BBjString <b>clear</b>
     rem  */
@@ -60,7 +60,7 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
         methodret "clear"
     methodend
     rem /**
-    rem  * A constant which descripe the NewRowsAction behavior
+    rem  * A constant which describes the NewRowsAction behavior
     rem  *
     rem  * @return BBjString <b>keep</b>
     rem  */
@@ -84,13 +84,13 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
 
 classend
 rem /**
-rem  * The class represents the defualt ag-grid text filter
+rem  * The class represents the default ag-grid text filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetFilterAGText extends BBjGridExWidgetColumnFilterAG
     rem /**
-    rem  * Set to true to make text filtering case sensitive. Otherwise the filtering will be case insensitive
+    rem  * Set to true to make text filtering case sensitive, otherwise the filtering will be case insensitive
     rem  */
     field public BBjNumber CaseSensitive! = 0
     rem /**
@@ -114,7 +114,7 @@ class public BBjGridExWidgetFilterAGText extends BBjGridExWidgetColumnFilterAG
 
 classend
 rem /**
-rem  * The class represents the defualt ag-grid number filter
+rem  * The class represents the default ag-grid number filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -159,7 +159,7 @@ class public BBjGridExWidgetFilterAGNumber extends BBjGridExWidgetColumnFilterAG
 
 classend
 rem /**
-rem  * The class represents the defualt ag-grid date filter
+rem  * The class represents the default ag-grid date filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */

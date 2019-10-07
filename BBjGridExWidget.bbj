@@ -54,7 +54,7 @@ rem  * The Grid Core Class.This class works as a columns manager and api provide
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
 rem  * Every property and method has one or more tag attached.
 rem  *
-rem  * The following is the meanging for each tag :<br><br>
+rem  * The following is the meaning for each tag :<br><br>
 rem  *
 rem  *
 rem  * <table border="1" cellpadding="10">
@@ -91,7 +91,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjString LicenseKey$
     rem /**
-    rem  * When true , the grid will force using the community version of the grid whether there
+    rem  * When true, the grid will force using the community version of the grid whether there
     rem  * is a license key or not.
     rem  */
     field public static BBjNumber ForceCommunityBuild! = 0
@@ -109,7 +109,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjString GRIDID$ = java.util.UUID.randomUUID().toString()
     rem /**
-    rem  * The unique string to use as row inedx&#183; defualt is __ROW_INDEX
+    rem  * The unique string to use as row inedx&#183; default is __ROW_INDEX
     rem  */
     field public BBjString RowNodeId$ = "__ROW_INDEX"
     rem /**
@@ -125,7 +125,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjGridExWidgetOptions Options! = new BBjGridExWidgetOptions(#this!)
     rem /**
-    rem  * Instnace of BBjGridExWidgetClientJsonFactory to convert client JSON strings to Client Models
+    rem  * Instance of BBjGridExWidgetClientJsonFactory to convert client JSON strings to Client Models
     rem  */
     field protected BBjGridExWidgetClientJsonFactory ClientJsonFactory! = new BBjGridExWidgetClientJsonFactory(#this!)
     rem /**
@@ -141,7 +141,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field protected BBjString Template$ = ""
     rem /**
-    rem  * Instnace of the grid's license manager
+    rem  * Instance of the grid's license manager
     rem  */
     field protected static LicenseManager LicenseManager! = new LicenseManager()
     field protected BBjHtmlView HTMLView!
@@ -169,7 +169,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret #ON_GRID_ROW_CLICK()
     methodend
     rem /**
-    rem  * Constant value to define row double click event
+    rem  * Constant value to define row double-click event
     rem  *
     rem  * @return BBjNumber
     rem  */
@@ -195,7 +195,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret 5001
     methodend
     rem /**
-    rem  * Constant value to define cell double click event
+    rem  * Constant value to define cell double-click event
     rem  *
     rem  * @return BBjNumber
     rem  */
@@ -464,7 +464,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * The method will check whether the grid has license key or not.
     rem  *
-    rem  * @return BBjNumber true when a license key is found , false otherwise
+    rem  * @return BBjNumber true when a license key is found, false otherwise
     rem  */
     method public static BBjNumber isLicensed()
         #getLicenseManager().setLicenseKey(#getLicenseKey())
@@ -498,8 +498,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
-    rem  *                           By default you will never need  to change the defaultl Template.
-    rem  *                           Unless you want to do somthing really unusual
+    rem  *                           By default you will never need  to change the default Template.
+    rem  *                           Unless you want to do something really unusual
     rem */
     method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
         #create(wnd!,id!,x!,y!,w!,h!,template$)
@@ -517,8 +517,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
     rem  * @param BBjString template$ The client's HTML template to use in order to build the grid.
-    rem  *                           By default you will never need  to change the defaultl Template.
-    rem  *                           Unless you want to do somthing really unusual
+    rem  *                           By default you will never need  to change the default Template.
+    rem  *                           Unless you want to do something really unusual
     rem  */
     method public BBjGridExWidget(BBjChildWindow wnd!,BBjString template$)
         #create(wnd!,template$)
@@ -533,8 +533,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
-    rem  *                           By default you will never need  to change the defaultl Template.
-    rem  *                           Unless you want to do somthing really unusual
+    rem  *                           By default you will never need  to change the default Template.
+    rem  *                           Unless you want to do something really unusual
     rem  * 
     rem  * @Override
     rem  */
@@ -569,8 +569,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
-    rem  *                           By default you will never need  to change the defaultl Template.
-    rem  *                           Unless you want to do somthing really unusual
+    rem  *                           By default you will never need  to change the default Template.
+    rem  *                           Unless you want to do something really unusual
     rem  * 
     rem  * @Override
     rem  */
@@ -718,7 +718,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjString script$ The javascript code
     rem  *
-    rem  * @return Object returned value , if any
+    rem  * @return Object returned value, if any
     rem  */
     method public Object executeScript(BBjString script$)
         if #IsReady! then
@@ -1057,10 +1057,10 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * <br>
-    rem  * <b>Note:</b> Unline setting the width in the column defintion , this method will update a column width without
+    rem  * <b>Note:</b> Unline setting the width in the column definition, this method will update a column width without
     rem  * a full rerender.
     rem  *
-    rem  * @param BBjString field$ The field name of the column defintion
+    rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjNumber width! The column width
     rem  */
     method public void setColumnWidth(BBjString field$, BBjNumber width!)
@@ -1108,7 +1108,7 @@ REM         #onLoaded(null())
     rem  * <br>
     rem  *
     rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
-    rem  * the column type to determine the correct value formatter (number , date , ...)
+    rem  * the column type to determine the correct value formatter (number, date, ...)
     rem  *
     rem ng field! The column's field
     rem  * @param BBjString mask!: The (date or numeric) mask, BBj style
@@ -1465,7 +1465,7 @@ REM         #onLoaded(null())
     rem  * @return JsonObject The grid options as JsonObject
     rem  */
     method public JsonObject getAsJsonObject()
-        REM build the column defintion
+        REM build the column definition
         iterator! = #getColumnsManager().getColumns().entrySet().iterator()
         cdef! = new JsonArray()
         while iterator!.hasNext()
@@ -1496,7 +1496,7 @@ REM         #onLoaded(null())
     rem  * Render the grid
     rem  *
     rem  * The method will compose the grid config and send it to the client for a full rerender.
-    rem  * You can use this method to force the client render after you update a setup configuration (ex: column defintions)
+    rem  * You can use this method to force the client render after you update a setup configuration (ex: column definitions)
     rem  */
     method public void render()
         if(#getOptions().getBlockRenderToReady() = 1) then
@@ -1511,7 +1511,7 @@ REM         #onLoaded(null())
         #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
     methodend
     rem /**
-    rem  * Rerender the column defintions on the client.
+    rem  * Rerender the column definitions on the client.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -1523,11 +1523,11 @@ REM         #onLoaded(null())
         #executeScript("gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
     methodend
     rem /**
-    rem  * Build the column defintions from the passed resultset
+    rem  * Build the column definitions from the passed resultset
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
     rem  *
-    rem  * @param BBjNumber addAll! When true , We will create a column defintion for every column in the resultset , otherwise update the existing ones only
+    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the resultset, otherwise update the existing ones only
     rem  */
     method public void buildColumnsFromResultSet(ResultSet rs! , BBjNumber addAll!)
         if rs! <> NULL() then
@@ -1553,8 +1553,8 @@ REM         #onLoaded(null())
     rem  * Feed the grid with data
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
-    rem  * @param BBjNumber render! When true the grid will render direclty on the client , otherwise you need to call <b>render()</b> direclty
-    rem  * @param BBjNumber addAll! When true , We will create a column defintion for every column in the resultset , otherwise update the existing ones only
+    rem  * @param BBjNumber render! When true the grid will render directly on the client, otherwise you need to call <b>render()</b> directly
+    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the resultset, otherwise update the existing ones only
     rem  * @param BBjString indexdBy$ The field used for creating the unique row index
     rem  *
     rem  * @see render()
@@ -1575,12 +1575,12 @@ REM         #onLoaded(null())
     rem /**
     rem  * Feed the grid with data
     rem  *
-    rem  * The method will sync the result set column defintions with the current column defintions ,
+    rem  * The method will sync the result set column definitions with the current column definitions ,
     rem  * update the data and render the grid on the client
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
-    rem  * @param BBjNumber render! When true the grid will render direclty on the client , otherwise you need to call <b>render()</b> direclty
-    rem  * @param BBjNumber addAll! When true , We will create a column defintion for every column in the resultset , otherwise update the existing ones only
+    rem  * @param BBjNumber render! When true the grid will render directly on the client, otherwise you need to call <b>render()</b> directly
+    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the resultset, otherwise update the existing ones only
     rem  *
     rem  * @see render()
     rem  */
@@ -1590,11 +1590,11 @@ REM         #onLoaded(null())
     rem /**
     rem  * Feed the grid with data
     rem  *
-    rem  * The method will sync the result set column defintions with the current column defintions ,
+    rem  * The method will sync the result set column definitions with the current column definitions ,
     rem  * update the data and render the grid on the client
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
-    rem  * @param BBjNumber render! When true the grid will render direclty on the client , otherwise you need to call <b>render()</b> direclty
+    rem  * @param BBjNumber render! When true the grid will render directly on the client, otherwise you need to call <b>render()</b> directly
     rem  *
     rem  * @see render()
     rem  */
@@ -1613,7 +1613,7 @@ REM         #onLoaded(null())
     rem /**
     rem  * Feed the grid with data
     rem  *
-    rem  * The method will sync the result set column defintions with the current column defintions ,
+    rem  * The method will sync the result set column definitions with the current column definitions ,
     rem  * update the data and render the grid on the client
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
@@ -1625,7 +1625,7 @@ REM         #onLoaded(null())
     rem  * Feed the grid with a new rows set
     rem  *
     rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full rerender&#183;
-    rem  * The column defintion will not be synced from the passed ResultSet in this case&#183;
+    rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
     rem  *
     rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
     rem  *
@@ -1795,7 +1795,7 @@ REM         #onLoaded(null())
         methodret #getOptions().getClientContext()
     methodend
     rem /**
-    rem  * Get instnace of BBjGridExWidgetClientJsonFactory
+    rem  * Get instance of BBjGridExWidgetClientJsonFactory
     rem  *
     rem  * @return BBjGridExWidgetClientJsonFactory
     rem  */
@@ -1983,7 +1983,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBJNumber x!: 0 select all , 1 select all filtered
+    rem  * @param BBJNumber x!: 0 select all, 1 select all filtered
     rem  */
     method public void selectAll(BBjNumber x!)
         #deselectAll()
@@ -2004,7 +2004,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBJNumber x!: 0 deselect all , 1 deselect all filtered
+    rem  * @param BBJNumber x!: 0 deselect all, 1 deselect all filtered
     rem  */
     method public void deselectAll(BBjNumber x!)
         script$="gw_deselectAll('"+ #GRIDID$ + "'," + str(x!) + ");"
@@ -2073,7 +2073,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjNumber index!: the row index
-    rem  * @param BBjString position!: the scrolling poistion
+    rem  * @param BBjString position!: the scrolling position
     rem  *
     rem  * @see GRID_ROWPOS_TOP()
     rem  * @see GRID_ROWPOS_MIDDLE()
@@ -2150,7 +2150,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber mode! when true , the pivot mode will be enabled , disabled otherwise
+    rem  * @param BBjNumber mode! when true, the pivot mode will be enabled, disabled otherwise
     rem  */
     method public void setPivotMode(BBjNumber mode!)
         #getOptions().setPivotMode(mode!)
@@ -2165,7 +2165,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @return BBjNumber 1 when pivot mode is enabled , 0 otherwise
+    rem  * @return BBjNumber 1 when pivot mode is enabled, 0 otherwise
     rem  */
     method public BBjNumber getPivotMode()
         if(#IsReady!) then
@@ -2275,7 +2275,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber cancel!: 1 = discard changes , 0 = accept changes
+    rem  * @param BBjNumber cancel!: 1 = discard changes, 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
         #executeScript("gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
@@ -2288,7 +2288,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber readonly! when true disable , enable otherwise
+    rem  * @param BBjNumber readonly! when true disable, enable otherwise
     rem  */
     method public void setFunctionsReadOnly(BBjNumber readonly!)
         #getOptions().setFunctionsReadOnly(readonly!)
@@ -2299,11 +2299,11 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @return BBjGridExWidgetClientRowModel The selected row if any , null() otherwise
+    rem  * @return BBjGridExWidgetClientRowModel The selected row if any, null() otherwise
     rem  */
     method public BBjGridExWidgetClientRowModel getSelectedRow()
         returnedRow! = #executeScript("gw_getSelectedRow('" + #GRIDID$ + "')")
-        if len(returnedRow!) > 0 then
+        if returnedRow!<>null() and len(returnedRow!) > 0 then
             methodret #getClientJsonFactory().getRow(returnedRow!)
         FI
 
@@ -2386,7 +2386,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
     rem  * @param BBjString start! start row id or index
     rem  * @param BBjString end! end row id or index
     rem  *
@@ -2404,7 +2404,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
     rem  * @param BBjNumber start! start row id or index
     rem  * @param BBjNumber end! end row id or index
     rem  *
@@ -2418,7 +2418,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjString columns! columns as comma seperated string (ex: CDNUMBER , COST)
+    rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
     rem  *
     rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
     rem  */
@@ -2452,7 +2452,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  * Note that this method does not clear user created charts
     rem  *
-    rem  * @param BBjString id! the chart's id to destory
+    rem  * @param BBjString id! the chart's id to destroy
     rem  */
     method public void clearChart(BBjString id!)
         #executeScript("gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')")
@@ -2491,7 +2491,7 @@ REM         #onLoaded(null())
         #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Destory the grid
+    rem  * Destroy the grid
     rem  */
     method public void destroy()
         #super!.destroy()
@@ -2600,7 +2600,7 @@ REM         #onLoaded(null())
     rem /**
     rem  * On cell Event. handles cell clicking and editing events
     rem  *
-    rem  * @param BBjString detail$ The event detial as Json
+    rem  * @param BBjString detail$ The event detail as Json
     rem  * @param BBjNumber type! The event type
     rem  *
     rem  * @see ON_GRID_CELL_VALUE_CHANGED()
@@ -2621,7 +2621,7 @@ REM         #onLoaded(null())
         #fireEvent(type!, event!)
     methodend
     rem /**
-    rem  * Fire an row editing event when row editing starts or stop
+    rem  * Fire an row editing event when row editing starts or stops
     rem  *
     rem  * @param BBjString detail$ The event detail as json
     rem  * @param BBjNumber type! The event type

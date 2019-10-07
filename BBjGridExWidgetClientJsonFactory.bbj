@@ -21,7 +21,7 @@ REM  * @author Hyyan Abo Fakher
 REM  */
 class public BBjGridExWidgetClientJsonFactory
     rem /**
-    rem  * BBjGridExWidget instnace
+    rem  * BBjGridExWidget instance
     rem  */
     field protected BBjGridExWidget Widget!
     rem /**
@@ -32,7 +32,7 @@ class public BBjGridExWidgetClientJsonFactory
     rem /**
     rem  * Construct new BBjGridExWidgetClientJsonFactory
     rem  *
-    rem  * @param BBjGridExWidget widget! The widget instnace
+    rem  * @param BBjGridExWidget widget! The widget instance
     rem  */
     method public BBjGridExWidgetClientJsonFactory(BBjGridExWidget widget!)
         #Widget! = widget!
