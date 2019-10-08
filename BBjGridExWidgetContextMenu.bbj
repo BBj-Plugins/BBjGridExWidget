@@ -11,7 +11,7 @@ use com.google.gson.JsonArray
 use com.google.gson.JsonObject
 use com.google.gson.JsonPrimitive
 rem /**
-rem  * A class which reprensets grid context menu
+rem  * A class which represents grid context menu
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -35,7 +35,7 @@ class public BBjGridContextMenu
         #Items!.put(str(System.nanoTime()), item!)
     methodend
     rem /**
-    rem  * Conver the menu to a JSON string
+    rem  * Convert the menu to a JSON string
     rem  *
     rem  * @returns String
     rem  */
@@ -55,7 +55,7 @@ class public BBjGridContextMenu
 
 classend
 rem /**
-rem  * A class which reprensets the default grid context menu
+rem  * A class which represents the default grid context menu
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -93,7 +93,7 @@ interface public BBjGridContextMenuItemInteface
 
 interfaceend
 rem /**
-rem  * A class which reprensetsa  grid context menu item
+rem  * A class which represents a grid context menu item
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -115,7 +115,7 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
     rem  */
     field public BBjString CssClasses! = null()
     rem /**
-    rem  * if this menu is a sub menu, contains a list of sub menu item definitions
+    rem  * if this menu is a submenu, contains a list of submenu item definitions
     rem  */
     field public BBjGridContextMenu SubMenu! = null()
     rem /**
@@ -233,7 +233,7 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
         methodret #Id!
     methodend
     rem /**
-    rem  * Costruct an html image to use as an icon
+    rem  * Construct an html image to use as an icon
     rem  *
     rem  * @param BBjString url$ image url or base64 string
     rem  * @param BBjNumber width! image width
@@ -243,7 +243,7 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
         #setIcon("<img border=0 width=" + str(width!) +  " height=" + str(height!) + " src='" + url$ + "' />")
     methodend
     rem /**
-    rem  * Costruct an html image to use as an icon
+    rem  * Construct an html image to use as an icon
     rem  *
     rem  * @param BBjString url$: image url or base64 string
     rem  * @param BBjNumber width!: image width

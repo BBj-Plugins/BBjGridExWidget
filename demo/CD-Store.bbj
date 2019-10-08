@@ -25,7 +25,7 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid
+rem  * Retrieve the data from the database and configure the grid
 rem  * 
 rem  * The grid!.setData(ResultSet) method will read all columns from the passed ResultSet and create the columns 
 rem  * for you. This method respects the column types defined in the ResultSet and it will make sure that all the created
@@ -34,7 +34,7 @@ rem  * The method will also respects already defined columns and make sure to up
 rem  * the ResultSet.
 rem  * 
 rem  * By default the method will render the grid direcly after setting the data. You can change this and delay the rendering 
-rem  * (for example to configure the columns) by passing a second paramter to the method grid!.setData(ResultSet , 0) 
+rem  * (for example to configure the columns) by passing a second parameter to the method grid!.setData(ResultSet, 0) 
 rem  * and then call grid!.render().  
 rem  */
 main:

@@ -19,7 +19,7 @@ interface public BBjGridExWidgetCellEditorInterface
 
     method public static BBjString CELL_EDITOR_NAME()
     rem /**
-    rem  * Convert the filter defintion to Json Object
+    rem  * Convert the filter definition to Json Object
     rem  *
     rem  * @return JsonOobject The filter as JsonObject
     rem  */

@@ -34,7 +34,7 @@ interface public BBjGridExWidgetToolpanelInterface
 
 interfaceend
 rem /**
-rem  * An abtract class which represents a toolpanel which can be attached to a sidebar
+rem  * An abstract class which represents a toolpanel which can be attached to a sidebar
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -187,7 +187,7 @@ class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
         #setIcon("filter")
     methodend
     rem /**
-    rem  * Construct new toolpanel
+    rem  * Construct new filters toolpanel
     rem  *
     rem  * @param BBjString label! the toolpanel label
     rem  */
@@ -195,7 +195,7 @@ class public BBjGridExWidgetFiltersToolpanel extends BBjGridExWidgetToolpanel
         #super!(label!)
     methodend
     rem /**
-    rem  * Construct new toolpanel
+    rem  * Construct new filters toolpanel
     rem  *
     rem  * @param BBjString label! the toolpanel label
     rem  * @param BBjString icon! the toolpanel icon
@@ -226,7 +226,7 @@ class public BBjGridExWidgetSidebar
     rem  */
     field public BBjString DefaulToolpanel$
     rem /**
-    rem  * When true , the sidebar will be hidden on the first draw , visible otherwise.default is false
+    rem  * When true, the sidebar will be hidden on the first draw, visible otherwise. default is false
     rem  */
     field public BBjNumber HiddenByDefault! = 0
     rem /**

@@ -31,7 +31,7 @@ BBjAPI().createTimer("renderColumns" , 1 , "fillGrid")
 process_events
 
 rem /**
-rem  * Build the column defintion from the first row in the ResultSet 
+rem  * Build the column definition from the first row in the ResultSet 
 rem  * and then render the grid empty 
 rem  */
 renderColumns:

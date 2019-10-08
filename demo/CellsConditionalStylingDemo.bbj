@@ -26,7 +26,7 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid.
+rem  * Retrieve the data from the database and configure the grid.
 rem  * 
 rem  * The demo shows how to achieve cell condition styling using cell class rules. 
 rem  * Ever column has its own cell class rules (JsonObject) every entry in the rules 
@@ -35,7 +35,7 @@ rem  *
 rem  * The (RuleNme/Selector) is used later to pickup any style object bounded to the same (RuleNme/Selector)
 rem  * The condition should return true or false , when true the style is applied , ignored otherwise  
 rem  * 
-rem  * Inside the condition you can use serveral predefined params, some of these params are :
+rem  * Inside the condition you can use several predefined params, some of these params are :
 rem  * 
 rem  *  1. x        => maps value
 rem  *  2. ctx      => maps the grid context

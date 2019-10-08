@@ -26,7 +26,7 @@ rem  * The class holds the grid configuration properties
 rem  *
 rem  * Every property and method has one or more tag attached.
 rem  *
-rem  * The following is the meanging for each tag :<br><br>
+rem  * The following is the meaning for each tag :<br><br>
 rem  *
 rem  *
 rem  * <table border="1" cellpadding="10">
@@ -69,7 +69,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjGridExWidgetDefaultColumnGroup DefaultColumnGroupDefinition! = new BBjGridExWidgetDefaultColumnGroup()
     rem /**
-    rem  * Suppresses auto-sizing columns for columns&#183; In other words, double clicking a columns headers edge will not auto-size&#183;Default is false
+    rem  * Suppresses auto-sizing columns for columns&#183; In other words, double-clicking a column header's edge will not auto-size&#183;Default is false
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
     rem  */
@@ -137,7 +137,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjNumber SuppressMaintainUnsortedOrder! = null()
     rem /**
-    rem  * Allow selection of multiple cells or rows&#183; When true enable multiselection , disable otherwise
+    rem  * Allow selection of multiple cells or rows&#183; When true enable multiselection, disable otherwise
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
     rem  */
@@ -152,7 +152,7 @@ class public BBjGridExWidgetOptions
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
     rem  * <br>
-    rem  * <b>Note</b> that Despite the setting name , it works when MultipleSelection is enabled or disabled
+    rem  * <b>Note</b> that Despite the setting name, it works when MultipleSelection is enabled or disabled
     rem  */
     field public BBjNumber RowMultiSelectWithClick! = 0
     rem /**
@@ -179,7 +179,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjNumber SingleClickEdit! = null()
     rem /**
-    rem  * Set to true so that neither single or double click starts editing&#183;
+    rem  * Set to true so that neither single or double-click starts editing&#183;
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
     rem  */
@@ -580,7 +580,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjNumber SuppressTouch! = null()
     rem /**
-    rem  * When true enables the floating filters , disable otherwise
+    rem  * When true enables the floating filters, disable otherwise
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
     rem  */
@@ -621,7 +621,7 @@ class public BBjGridExWidgetOptions
     field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
     rem /**
     rem  * By default when new columns are loaded into the grid, the following properties
-    rem  * (Order,Aggregation Function , Width , Pivot , Row Group , Pinned ) are not used
+    rem  * (Order, Aggregation Function, Width, Pivot, Row Group, Pinned ) are not used
     rem  *
     rem  * To change this behaviour and have column attributes above take effect each time the grid updates the columns,
     rem  * then set this option to true
@@ -632,7 +632,7 @@ class public BBjGridExWidgetOptions
     field public BBjNumber DeltaColumnMode! = 0
     rem /**
     rem  * When true the grid will render automatically when event processing starts, when false then the <i>render()</i> method
-    rem  * or <i>setData(ResultSet , 1)</i> must be called&#183;
+    rem  * or <i>setData(ResultSet, 1)</i> must be called&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRerender</small></b>
@@ -671,7 +671,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjNumber TreeData! = null()
     rem /**
-    rem  * A string template which will be complied on the client to return an array
+    rem  * A string template which will be compiled on the client to return an array
     rem  * for the tree hierarchy.
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
@@ -687,7 +687,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjNumber EnableRangeSelection! = null()
     rem /**
-    rem  * Enable / diable one range selection even if ctrl key is held down
+    rem  * Enable / disable one range selection even if ctrl key is held down
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
@@ -708,7 +708,7 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjString Theme! = "balham"
     rem /**
-    rem  * The grid languages manager
+    rem  * The grid language manager
     rem  */
     field public BBjGridExWidgetLanguageManager LanguageManager! = new BBjGridExWidgetLanguageManager()
     rem /**
@@ -729,9 +729,9 @@ class public BBjGridExWidgetOptions
     method private BBjGridExWidgetOptions()
     methodend
     rem /**
-    rem  * Construct new BBjGridExWidgetOptions instnace 
+    rem  * Construct new BBjGridExWidgetOptions instance 
     rem  * 
-    rem  * @param BBjGridExWidget widget! widget instnace
+    rem  * @param BBjGridExWidget widget! widget instance
     rem  */
     method public BBjGridExWidgetOptions(BBjGridExWidget widget!)
         #setSidebar(new BBjGridExWidgetDefaultSidebar(widget!))
@@ -749,14 +749,14 @@ class public BBjGridExWidgetOptions
         #getDefaultColumnDefinition().setWidth(Width!)
     methodend
     rem /**
-    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion ,
+    rem  * Enable / Disable column Filters&#183;This method updates only the default column definition,
     rem  * columns can still override this setting individually&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  *
-    rem  * @param BBjNumber enable! When true enable on added columns , disable otherwise
-    rem  * @param BBjNumber enableFiltersToolpanel! When true the filters toolpanel will be enabled in the sidebar , disabled otherwise
+    rem  * @param BBjNumber enable! When true enable on added columns, disable otherwise
+    rem  * @param BBjNumber enableFiltersToolpanel! When true the filters toolpanel will be enabled in the sidebar, disabled otherwise
     rem  */
     method public void setEnableFilter(BBjNumber enable! , BBjNumber enableFiltersToolpanel!)
         #getDefaultColumnDefinition().setEnableFilter(enable!)
@@ -771,13 +771,13 @@ class public BBjGridExWidgetOptions
         FI
     methodend
     rem /**
-    rem  * Enable / Disable column Filters&#183;This method updates only the default column defintion ,
+    rem  * Enable / Disable column Filters&#183;This method updates only the default column definition,
     rem  * columns can still override this setting individually&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  *
-    rem  * @param BBjNumber enable! When true enable on added columns , disable otherwise
+    rem  * @param BBjNumber enable! When true enable on added columns, disable otherwise
     rem  */
     method public void setEnableFilter(BBjNumber enable!)
         #setEnableFilter(enable! , enable!)
@@ -788,7 +788,7 @@ class public BBjGridExWidgetOptions
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  *
-    rem  * @param BBjNumber editable! When true all columns will be editable , otherwise disable editing
+    rem  * @param BBjNumber editable! When true all columns will be editable, otherwise disable editing
     rem  */
     method public void setEditable(BBjNumber editable!)
         #getDefaultColumnDefinition().setEditable(editable!)
@@ -810,7 +810,7 @@ class public BBjGridExWidgetOptions
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  *
-    rem  * @param BBjNumber enabled! When true show row counts , hide otherwise
+    rem  * @param BBjNumber enabled! When true show row counts, hide otherwise
     rem  */
     method public void setShowGroupChildCount(BBjNumber enabled!)
         renderer! = #getAutoGroupColumnDefinition().getCellRenderer()

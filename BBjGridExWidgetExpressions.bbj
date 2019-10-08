@@ -26,24 +26,24 @@ rem /**
 rem  * Expressions are Javasript functions which are written as strings. When you provide an expression to the grid, 
 rem  * the grid converts the expression into a function for you and then executes the function on the client.
 rem  *  
-rem  * Expressions can be used with the columns <i>ValueGetterExpression</i> , <i>ValueFormatterExpression</i> , 
-rem  * <i>ValueSetterExpression</i> , <i>ValueParserExpression</i>.
+rem  * Expressions can be used with the columns <i>ValueGetterExpression</i>, <i>ValueFormatterExpression</i>, 
+rem  * <i>ValueSetterExpression</i>, <i>ValueParserExpression</i>.
 rem  * 
 rem  * For example you can add a virtual column to the grid and define a value getter expression to 
 rem  * get the value of this column based on other two columns.
 rem  * 
 rem  * Expression can be as simple as <i>"data.CDNumber"</i> or more complex as the <i>BBjGridExWidgetExpressionNumbersFormatter</i>
-rem  * which can accepts paramters.
+rem  * which can accepts parameters.
 rem  * 
-rem  * When working with expression keey the following points in mind:
+rem  * When working with expression key the following points in mind:
 rem  * 
 rem  * <ol>
-rem  *  <li> If your expression has the word return in it, then the grid will assume it is a multi line expression and will not wrap it
+rem  *  <li> If your expression has the word return in it, then the grid will assume it is a multi-line expression and will not wrap it
 rem  *  <li> If a ValueGetterExpression does not have the word 'return' in it, then the grid will insert the 'return' statement and the ';' for you
 rem  *  <li> f your expression has many lines, then you will need to provide the ';' at the end of each line and also provide the 'return' statement.
 rem  * </ol>
 rem  * 
-rem  * Expression can access serveral predefined variables :<br><br>
+rem  * Expression can access several predefined variables :<br><br>
 rem  * 
 rem  * <table border="1" cellpadding="10">
 rem  *    <tbody>
@@ -125,11 +125,11 @@ class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidge
     rem  */
     field public BBjString Mask! = null()
     rem /**
-    rem  * The numbers group seperator to use. by default the bbj group seperator will be used
+    rem  * The number's group separator to use. by default the bbj group separator will be used
     rem  */
     field public BBjString GroupSeparator! = ""
     rem /**
-    rem  * The numbers decimal seperator to use. by default the bbj decimal seperator will be used
+    rem  * The number's decimal separator to use. by default the bbj decimal separator will be used
     rem  */
     field public BBjString DecimalSeparator! = ""
     rem /**
@@ -140,7 +140,7 @@ class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidge
     rem /**
     rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
     rem  *
-    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString mask! The number's mask
     rem  */
     method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!)
         #Mask! = mask!
@@ -148,22 +148,22 @@ class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidge
     rem /**
     rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
     rem  *
-    rem  * @param BBjString mask! The numbers mask
-    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  * @param BBjString mask! The number's mask
+    rem  * @param BBjString groupSeparator! The number's group separator to use
     rem  */
-    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator!)
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!, BBjString groupSeparator!)
         #this!(mask!)
-        #GroupSeparator! = groupSeperator!
+        #GroupSeparator! = groupSeparator!
     methodend
     rem /**
     rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
     rem  *
-    rem  * @param BBjString mask! The numbers mask
-    rem  * @param BBjString groupSeperator! The numbers group seperator to use
-    rem  * @param BBjString decimalSeparator! The numbers decimal seperator to use
+    rem  * @param BBjString mask! The number's mask
+    rem  * @param BBjString groupSeparator! The number's group separator to use
+    rem  * @param BBjString decimalSeparator! The number's decimal separator to use
     rem  */
-    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!)
-        #this!(mask! , groupSeperator!)
+    method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!, BBjString groupSeparator!, BBjString decimalSeparator!)
+        #this!(mask!, groupSeparator!)
         #DecimalSeparator! = decimalSeparator!
     methodend
     rem /**
@@ -206,7 +206,7 @@ class public BBjGridExWidgetExpressionBytesFormatter extends BBjGridExWidgetExpr
     rem /**
     rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
     rem  *
-    rem  * @param BBjString mask! The numbers mask
+    rem  * @param BBjString mask! The number's mask
     rem  */
     method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!)
         #super!(mask!) 
@@ -214,21 +214,21 @@ class public BBjGridExWidgetExpressionBytesFormatter extends BBjGridExWidgetExpr
     rem /**
     rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
     rem  *
-    rem  * @param BBjString mask! The numbers mask
-    rem  * @param BBjString groupSeperator! The numbers group seperator to use
+    rem  * @param BBjString mask! The number's mask
+    rem  * @param BBjString groupSeparator! The number's group separator to use
     rem  */
-    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask! , BBjString groupSeperator!)
-        #super!(mask!,groupSeperator!)
+    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!, BBjString groupSeparator!)
+        #super!(mask!,groupSeparator!)
     methodend
     rem /**
     rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
     rem  *
-    rem  * @param BBjString mask! The numbers mask
-    rem  * @param BBjString groupSeperator! The numbers group seperator to use
-    rem  * @param BBjString decimalSeparator! The numbers decimal seperator to use
+    rem  * @param BBjString mask! The number's mask
+    rem  * @param BBjString groupSeparator! The number's group separator to use
+    rem  * @param BBjString decimalSeparator! The number's decimal separator to use
     rem  */
-    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!)
-        #super!(mask!,groupSeperator!,decimalSeparator!)
+    method public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!, BBjString groupSeparator!, BBjString decimalSeparator!)
+        #super!(mask!,groupSeparator!,decimalSeparator!)
     methodend
     rem /**
     rem  * {@inheritDoc}

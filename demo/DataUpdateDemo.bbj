@@ -46,7 +46,7 @@ gosub fillGrid
 process_events
 
 rem /**
-rem  * Retrive the data from the database and configure the grid  
+rem  * Retrieve the data from the database and configure the grid  
 rem  */
 fillGrid:  
   rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")  
@@ -64,7 +64,7 @@ return
 rem /**
 rem  * Create new ResultSet and update the grid 
 rem  * 
-rem  * Note that unlike grid!.setData(ResultSet) , the method grid!.setRowsData(Set) will not update the column defintions 
+rem  * Note that unlike grid!.setData(ResultSet), the method grid!.setRowsData(Set) will not update the column definitions 
 rem  * from the passed ResultSet
 rem  */
 setNewRS:
@@ -91,7 +91,7 @@ removeSecondRow:
 return
 
 rem /**
-rem  * Clear data but keep the column defintion
+rem  * Clear data but keep the column definition
 rem  */
 clearRowsData:
     grid!.clearRowsData()
