@@ -675,7 +675,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             FI
             htmlview!.setOpaque(0)
             htmlview!.setNoEdge(1)
-            
+            htmlview!.setTabTraversable(1)
+            htmlview!.setFocusable(1)
+
             
 
             if (info(3,6)<>"5" and #Debug>0) then
@@ -688,6 +690,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
+            htmlview!.setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")            
             htmlview!.setText(html$)
             
             #HTMLView!=htmlview!
@@ -809,6 +812,10 @@ REM         #onLoaded(null())
 
         BBjAPI().createTimer(str(#this!)+"onLoadFallback",.2,#this!,"onLoaded")
         
+    methodend
+    method public void onGainedFocus( BBjEvent ev! )
+        rem @Hyyan: need something here to make the grid just grab the focus, but not change it
+        #focus()
     methodend
     rem /**
     rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
@@ -1926,7 +1933,9 @@ REM         #onLoaded(null())
     rem  * @param BBjStrinf column! The column id
     rem  */
     method public void focus(BBjString row! , BBjString column!)
-        #super!.focus()
+        if #HTMLView!.getParentWindow().getFocusedControlID() <>  #HTMLView!.getID() then
+            #HTMLView!.focus()
+        fi
         script$="gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
         #executeScript(script$)
     methodend

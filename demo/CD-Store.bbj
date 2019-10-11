@@ -22,6 +22,7 @@ REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 
 gosub main
+grid!.focus()
 process_events
 
 rem /**

@@ -15,7 +15,7 @@ declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
 ? 'HIDE'
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo",$00010083$)
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 if (info(3,6)<>"5") then
@@ -43,6 +43,7 @@ REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,35,900,563)
 grid!.getOptions().setEnableFilter(1) 
 
+
 gosub loadDatabases
 gosub doQuery
 
@@ -51,6 +52,8 @@ rem enable to get the full db browsing functionality
 rem lb_db!.setEnabled(0)
 lb_theme!.insertItems(0, grid!.getThemes())
 lb_theme!.selectIndex(0)
+
+lb_db!.focus()
 
 process_events
 
