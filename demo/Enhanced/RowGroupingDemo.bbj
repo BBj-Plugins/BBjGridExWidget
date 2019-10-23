@@ -1,0 +1,97 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
+use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+use java.sql.Types
+
+? 'HIDE'
+
+BBjGridExWidgetDemoUtilities.nagAboutLicense()
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+cb! = wnd!.addCheckBox(203,12,10,200,22,"Enable Read Only Mode")
+cb!.setCallback(BBjAPI.ON_CHECK_OFF,"onUseCheckbox")
+cb!.setCallback(BBjAPI.ON_CHECK_ON,"onUseCheckbox")
+
+grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
+
+rem grouping options
+rem =======================
+grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+grid!.getOptions().setMultipleSelection(1)
+grid!.getOptions().setGroupColumnLabel("My Custom Group")
+grid!.getOptions().setShowGroupChildCount(1)
+grid!.getOptions().setShowGroupSelectionCheckbox(1)
+grid!.getOptions().setGroupSelectsChildren(1)
+REM grid!.setGroupUseEntireRow(1)
+REM grid!.setGroupMultiAutoColumn(1)
+
+REM cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
+
+gosub setupGrid
+process_events
+
+setupGrid:
+  declare SqlQueryBC sbc!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  
+  filter! = new com.basiscomponents.db.DataRow()
+  filter!.setFieldValue("RECORDINGTYPE","cond:<DDD&>=AAD")
+  rs! = rs!.filterBy(filter!)
+   
+  grid!.setData(rs!, 1 , 1 , "CDNUMBER")
+  
+  rem First we group by music type
+  declare BBjGridExWidgetColumn musicTypeColumn!
+  musicTypeColumn! = grid!.getColumn("MUSICTYPE")
+  musicTypeColumn!.setEnableRowGroup(1)
+  musicTypeColumn!.setRowGroupIndex(0)
+  
+  rem Second we group by artist
+  rem @see https://www.ag-grid.com/javascript-grid-cell-expressions/
+  declare BBjGridExWidgetColumn artistColumn!
+  artistColumn! = grid!.getColumn("ARTIST")
+  artistColumn!.setEnableRowGroup(1)
+  artistColumn!.setRowGroupIndex(1)
+  artistColumn!.setValueGetterExpression("if(data) return 'Artist : ' +  data.ARTIST")
+  
+  rem Finally we aggreagate by playingtime
+  rem @see https://www.ag-grid.com/javascript-grid-cell-expressions/ 
+  declare BBjGridExWidgetColumn playingTimeColumn!
+  playingTimeColumn! = grid!.getColumn("PLAYINGTIME")
+  playingTimeColumn!.setEnableValue(1)
+  playingTimeColumn!.setAggFunc("sum")
+  playingTimeColumn!.setAllowedAggFuncs("sum,min,max")
+  playingTimeColumn!.setValueGetterExpression("Number(data.PLAYINGTIME)")
+return
+
+onUseCheckbox:
+  useCheckbox! = cb!.isSelected()
+  grid!.setFunctionsReadOnly(useCheckbox!)
+return
+
+resize:
+  ev! = BBjAPI().getLastEvent()
+  grid!.setSize(ev!.getWidth(),ev!.getHeight())
+return
+
+byebye:
+bye

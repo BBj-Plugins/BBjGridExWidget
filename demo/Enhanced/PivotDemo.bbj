@@ -1,0 +1,69 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+BBjGridExWidgetDemoUtilities.nagAboutLicense()
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+gosub main
+process_events
+
+rem /**
+rem  * Retrieve the data from the database and configure the grid
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
+  grid!.setData(rs!)
+  
+  grid!.setColumnMask("COST","### ##0.00")
+  grid!.setColumnAggFunc("COST","sum")
+  
+  grid!.setPivotMode(1)
+  grid!.addRowGroupColumns("LABEL")
+  grid!.addPivotColumns("MUSICTYPE")
+  grid!.addValueColumns("COST")
+  
+  grid!.getSidebar().openToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
