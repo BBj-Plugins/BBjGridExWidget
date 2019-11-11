@@ -1079,7 +1079,11 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
         #setEnableFilter(defaultDefinition!.getEnableFilter(),err=*next)
            
         rem define the column type
-        type! = int(meta!.get("ColumnType"))
+        if meta!.get("ColumnType").getClass().equals(java.lang.String.class) then
+            type! = Integer.parseInt(cast(String, meta!.get("ColumnType")))
+        else
+            type! = int(meta!.get("ColumnType"))
+        endif
         
         if(meta!.containsKey("MASK")) then
             mask! = meta!.get("MASK")
