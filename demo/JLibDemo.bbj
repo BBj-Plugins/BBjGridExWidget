@@ -15,7 +15,7 @@ use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo - fill directly from physical file with JLib")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"JLib Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -50,13 +50,13 @@ main:
   REM
   REM     importer!.setFilter(filter!)
   rs! = importer!.retrieve()
-  
+
   grid!.setData(rs!)
 return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

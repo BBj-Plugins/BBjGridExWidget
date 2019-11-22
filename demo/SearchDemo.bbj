@@ -14,13 +14,13 @@ use com.basiscomponents.bc.SqlQueryBC
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Search Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
 st! = wnd!.addStaticText(200,20,14,210,25,"Enter a term to search inside the grid data:")
 ed! = wnd!.addEditBox(250,240,10,250,22,"")
-ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchButton")
+ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchEntry")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
@@ -29,29 +29,29 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrieve the data from the database and configure the grid  
+rem  * Retrieve the data from the database and configure the grid
 rem  */
 main:
   declare SqlQueryBC sbc!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   grid!.setData(rs!)
 return
 
 rem /**
-rem  * Set a quick filter on the grid to achieve through data search.
-rem  * 
-rem  * Note : this filter is applied on the client data not the passed ResultSet
+rem  * Set a quick filter on the grid to perform the search.
+rem  *
+rem  * Note : this filter is applied on the client data, not the passed ResultSet.
 rem  */
-onSearchButton:
+onSearchEntry:
   search! = ed!.getText()
   grid!.setQuickFilter(search!)
 return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

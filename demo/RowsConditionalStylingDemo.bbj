@@ -16,16 +16,15 @@ use com.google.gson.JsonObject
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Rows Conditional Styling Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Conditional Row Styling Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 rem /**
-rem  * The row style is a JSON object , in here we are attaching 
-rem  * two css propties to the object in order to change the font 
-rem  * weight and style
+rem  * The row style is a JSON object. Here we are attaching
+rem  * two CSS properties to change the font weight and style.
 rem  */
 grid!.getOptions().getRowStyle().addProperty("font-weight","bold")
 grid!.getOptions().getRowStyle().addProperty("font-style","italic")
@@ -33,7 +32,7 @@ grid!.getOptions().getRowStyle().addProperty("font-style","italic")
 constRules! = new JsonObject()
 constRules!.addProperty("cost-normal","data.COST < 6")
 grid!.getOptions().setRowClassRules(constRules!)
-  
+
 gosub main
 process_events
 
@@ -43,17 +42,17 @@ rem  */
 main:
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-  
+
   grid!.setData(rs!)
   grid!.addStyle("cost-normal" , "{""background"": ""lightgreen !important""}")
 return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

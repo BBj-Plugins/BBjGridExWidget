@@ -10,7 +10,7 @@ use java.sql.Types
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column State Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -35,12 +35,12 @@ fillGrid:
 
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
-  
+
   grid!.setData(rs!)
-  
+
   rem setup columns group style
   groupStyle! = new JsonObject()
   groupStyle!.addProperty("background","#03a9f4")
@@ -48,16 +48,16 @@ fillGrid:
   groupStyle!.addProperty("font-weight","bolder")
   groupStyle!.addProperty("border-bottom","3px solid black")
   grid!.addStyle(".my-group-class" , groupStyle!)
-  
+
   group! = new BBjVector()
   group!.addItem("CDNUMBER")
   grid!.addColumnGroup("group1" , "Inventory", group! , 0 , "my-group-class")
-  
+
   group! = new BBjVector()
   group!.addItem("ARTIST")
   group!.addItem("TITLE")
   grid!.addColumnGroup("group2" , "CD Information", group! , 0 , "my-group-class")
-  
+
   group! = new BBjVector()
   group!.addItem("LABEL")
   group!.addItem("PLAYINGTIME")

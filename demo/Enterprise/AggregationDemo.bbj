@@ -20,7 +20,7 @@ BBjGridExWidgetDemoUtilities.nagAboutLicense()
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Aggregation Demo")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -32,35 +32,35 @@ grid! = new BBjGridExWidget(wnd!,100,0,40,800,560)
 grid!.getOptions().setGroupIncludeFooter(1)
 grid!.getOptions().setGroupIncludeTotalFooter(1)
 grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
-    
+
 gosub main
 process_events
 
 rem /**
 rem  * Retrieve the data from the database and configure the grid
-rem  */   
+rem  */
 main:
   declare SqlQueryBC sbc!
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT LABEL , MUSICTYPE , PLAYINGTIME , COST  FROM CDINVENTORY")
 
   grid!.setData(rs!)
-  
+
   rem Group rows by music type
   type! = grid!.getColumn("MUSICTYPE")
   type!.setRowGroup(1)
-  
+
   rem aggregate on playingtime
   time! = grid!.getColumn("PLAYINGTIME")
   time!.setEnableValue(1)
   time!.setAggFunc("sum")
   rem /**
-  rem  * playingtime is a column of type string. in this case the sum agg function will not work 
-  rem  * So we setup up a value getter expression to convert the column values to numbers whenever 
-  rem  * the grid tries to aggregate on this column. 
+  rem  * playingtime is a column of type string. in this case the sum agg function will not work
+  rem  * So we setup up a value getter expression to convert the column values to numbers whenever
+  rem  * the grid tries to aggregate on this column.
   rem  */
   time!.setValueGetterExpression("data ? Number(data.PLAYINGTIME) : null")
-  
+
   rem aggregate on cost
   cost! = grid!.getColumn("COST")
   cost!.getValueFormatterExpression().setMask("### ##0.00")
@@ -75,10 +75,10 @@ onUseCheckbox:
     useCheckbox! = cb!.isSelected()
     grid!.setFunctionsReadOnly(useCheckbox!)
 return
-    
+
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

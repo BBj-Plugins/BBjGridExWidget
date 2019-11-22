@@ -12,7 +12,7 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1200,800,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1200,800,"Editing Demo")
 
 startEditingZero! = wnd!.addButton(300,10,10,200,25,"Start Editing (1 , DOUBLE)")
 startEditingZero!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingZeroFunc")
@@ -68,17 +68,17 @@ return
 startEditingDeleteFunc:
     grid!.stopEditing(1)
     rem KEY CODE for DELETE key is 46
-    grid!.setStartCellEditing(1,"DOUBLE",46) 
+    grid!.setStartCellEditing(1,"DOUBLE",46)
 return
 
 startEditingFillFunc:
     grid!.stopEditing(1)
     grid!.setStartCellEditing(1,"DOUBLE","200")
 return
-   
+
 stopEditingFunc:
     grid!.stopEditing(0)
-return   
+return
 
 stopAndCancelEditingFunc:
     grid!.stopEditing(1)
@@ -95,13 +95,13 @@ return
 fillGrid:
 
     rs! = new ResultSet()
-    
+
 
     i=1
     x=2.13
-    
+
     for j=1 to 2
-       
+
         dr! = new DataRow()
         dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
@@ -109,28 +109,28 @@ fillGrid:
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-        
+
         if i=1 then
-            
+
             dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
-            
+
             dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
-            
+
             dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("DATE","EDITOR_MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("DATE","EDITABLE","1")
-            
+
             dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
             dr!.setFieldAttribute("TIMESTAMP","EDITOR_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
             dr!.setFieldAttribute("TIMESTAMP","EDITABLE","1")
         fi
-        
+
         rs!.addItem(dr!)
-        
+
         i=i+1
         x=x*-i
-        
+
         dr! = new DataRow()
         dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
@@ -138,22 +138,22 @@ fillGrid:
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
-        
+
         rs!.addItem(dr!)
         grid!.setStartCellEditing(1,"DOUBLE")
 
         i=i+1
         x=x*-i
-        
-    next 
-    
+
+    next
+
     grid!.setData(rs!,"ID")
 
 return
 
 byebye:
     bye
-    
+
 resize:
     ev! = BBjAPI().getLastEvent()
     grid!.setSize(ev!.getWidth(),ev!.getHeight())
@@ -164,26 +164,26 @@ rowEditingStarted:
 
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    
-    print 'SHOW', "Row Editing Started  : ID = " , ev!.getRow().getId()    
+
+    print 'SHOW', "Row Editing Started  : ID = " , ev!.getRow().getId()
 return
 
 rowEditingStopped:
 
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    
+
     print 'SHOW', "Row Editing Stopped  : ID = " , ev!.getRow().getId()
 return
- 
+
 cellEditingChanged:
 
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    
+
     print 'SHOW', "Cell Editing Started : ROW ID     = " , ev!.getRow().getId()
     print 'SHOW', "                     : Column     = " , ev!.getColumn().getName()
     print 'SHOW', "                     : New Value = " , ev!.getValue()
     print 'SHOW', "                     : Old Value = " , ev!.getOldValue()
-    
-return 
+
+return

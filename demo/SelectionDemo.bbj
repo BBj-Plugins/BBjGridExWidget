@@ -28,27 +28,27 @@ icon! =SysGui!.getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/
 
 REM ------------------Start Left Panel -------------------------
 
-leftPanelTitle! = wnd!.addStaticText(202,10,10,200,25,"Selection Behaviours." , $0000$ )
+leftPanelTitle! = wnd!.addStaticText(202,10,10,200,25,"Selection Behaviours" , $0000$ )
 leftPanelTitle!.setFont(boldFont!)
 
 REM --- Start Mutli Selection Controls
 multipleSelectionHelp! = wnd!.addButton(203,10,50,20,22,"")
 multipleSelectionHelp!.setImage(icon!)
 multipleSelectionHelp!.setImageSize(10 , 10)
-multipleSelectionHelp!.setToolTipText("Click to learn more")
+multipleSelectionHelp!.setToolTipText("Click to learn more.")
 multipleSelectionHelp!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onMultipleSelectionHelp")
 multipleSelectionHelp!.setNoEdge(1)
 
 multipleSelection! = wnd!.addCheckBox(204,32,50,200,22,"Multiple Selection")
 multipleSelection!.setCallback(BBjAPI.ON_CHECK_OFF,"onMultipleSelectionToggle")
 multipleSelection!.setCallback(BBjAPI.ON_CHECK_ON,"onMultipleSelectionToggle")
-REM --- End Mutli Selection Controls 
+REM --- End Mutli Selection Controls
 
 REM --- Start Row Multi Select With Click Controls
 rowMultiSelectWithClickHelp! = wnd!.addButton(205,10,90,20,22,"")
 rowMultiSelectWithClickHelp!.setImage(icon!)
 rowMultiSelectWithClickHelp!.setImageSize(10 , 10)
-rowMultiSelectWithClickHelp!.setToolTipText("Click to learn more")
+rowMultiSelectWithClickHelp!.setToolTipText("Click to learn more.")
 rowMultiSelectWithClickHelp!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onRowMultiSelectWithClickHelp")
 rowMultiSelectWithClickHelp!.setNoEdge(1)
 
@@ -61,7 +61,7 @@ REM --- Start Row Deselection Controls
 rowDeselectionHelp! = wnd!.addButton(207,10,130,20,22,"")
 rowDeselectionHelp!.setImage(icon!)
 rowDeselectionHelp!.setImageSize(10 , 10)
-rowDeselectionHelp!.setToolTipText("Click to learn more")
+rowDeselectionHelp!.setToolTipText("Click to learn more.")
 rowDeselectionHelp!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onRowDeselectionHelp")
 rowDeselectionHelp!.setNoEdge(1)
 
@@ -74,7 +74,7 @@ REM --- Start Suppress Row Click Selection Controls
 suppressRowClickSelectionHelp! = wnd!.addButton(209,10,170,20,22,"")
 suppressRowClickSelectionHelp!.setImage(icon!)
 suppressRowClickSelectionHelp!.setImageSize(10 , 10)
-suppressRowClickSelectionHelp!.setToolTipText("Click to learn more")
+suppressRowClickSelectionHelp!.setToolTipText("Click to learn more.")
 suppressRowClickSelectionHelp!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSuppressRowClickSelectionHelp")
 suppressRowClickSelectionHelp!.setNoEdge(1)
 
@@ -87,13 +87,13 @@ REM --- End Suppress Row Click Selection Controls
 REM --- Start Selection Detailes
 currentSelectionTitle! = wnd!.addStaticText(212,10,240,200,25,"__________________________________________" , $0000$ )
 
-NumOfSelectedRowsKeyStaic! = wnd!.addStaticText(213,10,270,200,25,"Selected Count: " , $0000$ )
-NumOfSelectedRowsValueStaic! = wnd!.addStaticText(214,150,270,200,25," 0 Row" , $0000$ )
+NumOfSelectedRowsKeyStatic! = wnd!.addStaticText(213,10,270,200,25,"Selected Count: " , $0000$ )
+NumOfSelectedRowsValueStatic! = wnd!.addStaticText(214,150,270,200,25," 0 Row" , $0000$ )
 
-NumOfSelectedRowsKeyStaic!.setFont(boldFontSmall!)
-NumOfSelectedRowsValueStaic!.setFont(fontSmall!)
+NumOfSelectedRowsKeyStatic!.setFont(boldFontSmall!)
+NumOfSelectedRowsValueStatic!.setFont(fontSmall!)
 
-SelectedRowsKeyStatic! = wnd!.addStaticText(215,10,300,200,200,"Selected Titles : " , $0000$ )
+SelectedRowsKeyStatic! = wnd!.addStaticText(215,10,300,200,200,"Selected Titles: " , $0000$ )
 SelectedRowsValueStatic! = wnd!.addStaticText(216,10,320,200,200," " , $0000$ )
 
 SelectedRowsKeyStatic!.setFont(boldFontSmall!)
@@ -115,22 +115,22 @@ grid! = new BBjGridExWidget(wnd!,100,220,40,580,560)
 rem Defines how users can move between rows using arrow keys
 grid!.getOptions().setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW())
 
-rem show checkboxs for selection.
-rem note this will not disable rows selection by other methods 
-rem to only allow selection using checkboxs use `setSuppressRowClickSelection(bool)` 
+rem show checkboxs for selection
+rem note this will not disable rows selection by other methods
+rem to only allow selection using checkboxs use `setSuppressRowClickSelection(bool)`
 grid!.getOptions().setShowSelectionCheckbox(1)
 grid!.getOptions().setShowHeaderSelectionCheckbox(1); rem this option will enable multi row selection by default
 
-rem enable checkbox selection when grouping 
+rem enable checkbox selection when grouping
 grid!.getOptions().setShowGroupSelectionCheckbox(1)
 grid!.getOptions().setGroupSelectsChildren(1)
 
 grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onSelectionEvent")
 
-    
-    
+
+
 REM ------------------End Right Panel -------------------------
-    
+
 gosub fillGrid
 
 process_events
@@ -139,11 +139,11 @@ fillGrid:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
-  grid!.setData(rs!) 
+  grid!.setData(rs!)
 return
 
 rerender:
-    NumOfSelectedRowsValueStaic!.setText("0 Row(s)") 
+    NumOfSelectedRowsValueStatic!.setText("0 Row(s)")
     SelectedRowsValueStatic!.setText("")
     grid!.render()
 return
@@ -182,66 +182,66 @@ onSelectionInputButton:
     sel = num(selection!,err=onMultiSelectionInput)
     grid!.deselectAll()
     grid!.setSelectedRow(sel)
-    
-    rem now make sure this row is visible, in the middle
+
+    rem now make sure this row is visible in the middle of the grid
     grid!.setVisibleRow(sel,grid!.GRID_ROWPOS_MIDDLE())
-return    
- 
+return
+
 onMultiSelectionInput:
     if pos(","=selection!) = 0 then
-        a=msgbox("Enter row numbers, separated by comma!",0,"INPUT ERROR")
+        a=msgbox("Enter a comma separated list of row numbers.",0,"INPUT ERROR")
         return
     fi
     x! = java.util.Arrays.asList(selection!.split(","))
-    
+
     s! = new BBjVector()
 
     for i = 0 to x!.size()
       s!.addItem(num(x!.get(i),err=*continue))
     next i
-    
+
     grid!.deselectAll()
     grid!.setSelectedRows(s!)
-    
+
     if (s!.size() > 0) then
-        rem now make sure the first selected row is visible on top
+        rem now make sure the first selected row is visible at the top of the grid
         grid!.setVisibleRow(s!.getItem(0),grid!.GRID_ROWPOS_TOP())
     fi
 return
 
-onSelectionEvent: 
+onSelectionEvent:
 
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    
+
     rows! =  grid!.getSelectedRows()
     row! = grid!.getSelectedRow()
-    
+
     selectedAsText$ = ""
     it! = rows!.iterator()
     while it!.hasNext()
         row! = it!.next()
-        selectedAsText$ = selectedAsText$ + str(row!.asDataRow().getFieldAsString("TITLE")) + " , " 
+        selectedAsText$ = selectedAsText$ + str(row!.asDataRow().getFieldAsString("TITLE")) + " , "
     wend
-        
-    NumOfSelectedRowsValueStaic!.setText(str(ev!.getSelectedRowCount()) + " Row(s)") 
+
+    NumOfSelectedRowsValueStatic!.setText(str(ev!.getSelectedRowCount()) + " Row(s)")
     SelectedRowsValueStatic!.setText(selectedAsText$)
-return    
+return
 
 onMultipleSelectionHelp:
-    a! = msgbox("Control the type of row selection. when false then single row selection is enabled , otherwise multi row selection is enabled. by default when you select a row, the previously selected row gets unselected. Multiple allows multiple row selection by holding down ctrl while clicking.",0,"Singe / Multi Row Selection")
-return 
+    a! = msgbox("Control the type of row selection. When false, then single row selection is enabled, otherwise multi-row selection is enabled. By default, when you select a row, the previously selected row gets unselected. 'Multiple' allows multi-row selection by holding down the Ctrl key while clicking.",0,"Single/Multi-Row Selection")
+return
 
 onRowMultiSelectWithClickHelp:
-    a! = msgbox("Set to true to allow multiple/single row(s) to be selected with a single click. E.g. if you click select one row, then click select another row, the first row will keep it's selection. Clicking a selected row in this mode will deselect the row. This is useful for touch devices where ctrl and shift clicking is not an option.",0,"Multi / Single Select With Click")
+    a! = msgbox("With Multiple Selection checked, set to true to allow multiple/single row(s) to be selected with a single click. For example, if you click to select one row, then click to select another row, the first row will stay selected. Clicking a selected row in this mode will deselect the row. This is useful for touch devices where Ctrl- and Shift-clicking is not an option.",0,"Multi/Single Select With Click")
 return
 
 onRowDeselectionHelp:
-    a! = msgbox("Set to true or false. If true, then rows will be deselected if you hold down ctrl + click the row. Normal behaviour with the grid disallows deselection of nodes (ie once a node is selected, it remains selected until another row is selected in its place).",0,"Row Deselection")
+    a! = msgbox("If true, then rows will be deselected if you Ctrl+click the row. Normal behaviour with the grid disallows deselection of nodes, i.e. once a node is selected, it remains selected until another row is selected in its place.",0,"Row Deselection")
 return
 
 onSuppressRowClickSelectionHelp:
-    a! = msgbox("If true, rows won't be selected when clicked. Use, for example, when you want checkbox selection, and don't want to also select when the row is clicked.",0,"Suppress Row Click Selection")
+    a! = msgbox("If true, rows won't be selected when clicked. Use, for example, when you want checkbox selection and don't want to also select the row when clicked.",0,"Suppress Row Click Selection")
 return
 
 resize:
