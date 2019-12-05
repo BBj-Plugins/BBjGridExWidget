@@ -19,7 +19,7 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,800,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,800,"Two Grids Demo")
 
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,290)
 dtlgrid! = new BBjGridExWidget(wnd!,101,0,295,800,290)
@@ -62,7 +62,7 @@ showDetails:
     recs! = grid!.getSelectedRows()
     it! = recs!.iterator()
     cust$=""
-   
+
     while it!.hasNext()
         r! = it!.next()
         rec! = r!.asDataRow()
@@ -71,7 +71,7 @@ showDetails:
         fi
         cust$=cust$+"'"+rec!.getFieldAsString("CUST_NUM")+"'"
     wend
-    
+
     if cust$>"" then
         sql$="SELECT  * FROM ORDER_HEADER WHERE CUST_NUM IN ("+cust$+")"
         dsbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
@@ -80,8 +80,8 @@ showDetails:
     else
         dtlgrid!.clearRowsData()
     fi
-    
-    
+
+
     recfield!.setText("")
 return
 
@@ -97,5 +97,5 @@ showRecord:
     else
         recfield!.setText("")
     fi
-    
+
 return

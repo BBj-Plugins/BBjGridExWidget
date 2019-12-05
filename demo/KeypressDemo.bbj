@@ -20,7 +20,7 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Keypress Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-txt! = "Press CTR + F to auto size the columns. Press Enter on any selected row to get its ID"
+txt! = "Press CTRL+F to auto size the columns. Press ENTER on any selected row to get its ID."
 desc! = wnd!.addStaticText(99,10,10,500,25,txt! , $0000$ )
 
 gosub main
@@ -32,10 +32,10 @@ rem  */
 main:
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT CDNUMBER , TITLE FROM CDINVENTORY")
-  
+
   REM init the grid
   grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
   grid!.setCallback(grid!.ON_GRID_KEYPRESS(),"onKeyPress")
@@ -43,16 +43,16 @@ main:
 return
 
 rem /**
-rem  * We listen to the sent key from the client and apply the resprected action
+rem  * We listen to the key sent from the client and apply the respective action
 rem  */
 onKeyPress:
   declare auto BBjGridExWidgetClientEventsKeypress eventObject!
   lastEvent! = BBjAPI().getLastEvent()
   eventObject! = lastEvent!.getObject()
-  
+
   code! = eventObject!.getKey().getKeyCode()
   isCtrlDown! = eventObject!.getKey().getIsCtrlDown()
-  
+
   SWITCH (code!)
       CASE 13; rem enter
         declare BBjGridExWidgetClientRowModel row!
@@ -63,7 +63,7 @@ onKeyPress:
         if(isCtrlDown!)
          grid!.setFitToGrid()
         fi
-      BREAK      
+      BREAK
       CASE DEFAULT
       BREAK
   SWEND
@@ -71,7 +71,7 @@ return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

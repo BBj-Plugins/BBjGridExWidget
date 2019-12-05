@@ -18,7 +18,7 @@ BBjGridExWidgetDemoUtilities.nagAboutLicense()
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Pivot Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -35,25 +35,25 @@ rem  */
 main:
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
   grid!.setData(rs!)
-  
+
   grid!.setColumnMask("COST","### ##0.00")
   grid!.setColumnAggFunc("COST","sum")
-  
+
   grid!.setPivotMode(1)
   grid!.addRowGroupColumns("LABEL")
   grid!.addPivotColumns("MUSICTYPE")
   grid!.addValueColumns("COST")
-  
+
   grid!.getSidebar().openToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
 return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

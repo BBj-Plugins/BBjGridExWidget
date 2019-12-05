@@ -18,7 +18,7 @@ BBjGridExWidgetDemoUtilities.nagAboutLicense()
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Tree Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Tree Data Demo")
 wnd!.setBackColor(new BBjColor(45,52,54))
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
@@ -37,18 +37,18 @@ grid!.getOptions().setGroupColumnLabel("BBjGridExWidget Demo")
 grid!.getOptions().setShowGroupChildCount(0)
 
 rem /**
-rem  * Enable tree mode and load a lodash template to convert the "filepath" property in the rows data 
+rem  * Enable tree mode and load a lodash template to convert the "filepath" property in the rows data
 rem  * to an JS array which will be used to compose the tree hierarchy
 rem  */
 grid!.getOptions().setTreeData(1)
 grid!.getOptions().setDataPathTemplate("<% return data.filepath.split(""\" + java.io.File.separator + """); %>")
 
 rem /**
-rem  * Configure the group column (files). 
-rem  * 
-rem  * The grid provides be default sensible configuration , but 
+rem  * Configure the group column (files).
+rem  *
+rem  * The grid provides be default sensible configuration , but
 rem  * you can hook on and change these settings using the AutoGroupColumnDefinition
-rem  * load a lodash template and replace the icons in the template with base64 strings of the selected images 
+rem  * load a lodash template and replace the icons in the template with base64 strings of the selected images
 rem  * on the disk. then we create a custom html renderer. the renderer will be used inside the default group renderer
 rem  * (BBjGridExWidgetRendererGroupCellRenderer).
 rem  */
@@ -74,17 +74,17 @@ rem  * Retrieve the data from the database and configure the grid
 rem  */
 main:
   declare ResultSet rs!
-  
+
   grid!.setData(BBjGridExWidgetDemoUtilities.buildResultSetFromDir("BBjGridExWidget/Demo"))
-  
-  filePath! = grid!.getColumn("filepath") 
+
+  filePath! = grid!.getColumn("filepath")
   filePath!.setHidden(1)
-  
-  size! = grid!.getColumn("size") 
+
+  size! = grid!.getColumn("size")
   size!.setAggFunc("sum")
   size!.setAlignment(BBjGridExWidget.GRID_ALIGN_RIGHT() , 1)
   size!.setValueFormatterExpression(new BBjGridExWidgetExpressionBytesFormatter("### ##0.00"))
-  
+
   grid!.setFitToGrid()
 return
 

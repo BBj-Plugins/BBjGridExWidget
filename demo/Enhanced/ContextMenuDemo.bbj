@@ -19,7 +19,7 @@ BBjGridExWidgetDemoUtilities.nagAboutLicense()
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Context Menu Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -32,15 +32,15 @@ rem  */
 main:
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
   rs! = sbc!.retrieve("SELECT * FROM CUSTOMER")
-  
+
   rem /**
   rem  * Create a new context menu to attach to the grid
   rem  */
   menu! = new BBjGridContextMenu()
-  
+
   rem /**
   rem  * Add some predefined items with their actions to the menu
   rem  * @see <a href="https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget/ContextMenu/BBjGridContextMenuItem.html">BBjGridContextMenuItem</a>
@@ -49,34 +49,34 @@ main:
   menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
   menu!.addItem(BBjGridContextMenuItem.EXPORT())
   menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
-  
+
   rem /**
   rem  * Create custom menu items
-  rem  * 
+  rem  *
   rem  * Any custom menu item requires two params , an id (used for handling events) and a label
-  rem  * When the item is clicked on the client , the client will notify the grid with an event 
-  rem  * using the chosen id so you can use the grid's setCallback method to handle the event  
+  rem  * When the item is clicked on the client , the client will notify the grid with an event
+  rem  * using the chosen id so you can use the grid's setCallback method to handle the event
   rem  */
-  
+
   direction! = new BBjGridContextMenuItem(6000,"Show Direction")
   direction!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/maps-icon.png" , 20 , 20)
   direction!.setTooltip("Open the location in Google Maps")
   menu!.addItem(direction!)
-  
+
   namepedia! = new BBjGridContextMenuItem(6001,"Search Firstname in Namepedia")
   namepedia!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
   namepedia!.setTooltip("Search First Name in Namepedia")
   menu!.addItem(namepedia!)
-  
+
   menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
-  
+
   copy! = new BBjGridContextMenuItem(6002,"Copy Functions")
     submenu! = new BBjGridContextMenu()
     submenu!.addItem(BBjGridContextMenuItem.COPY())
     submenu!.addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
   copy!.setSubMenu(submenu!)
   menu!.addItem(copy!)
-  
+
   rem /**
   rem  * init the grid and attache the menu items callbacks
   rem  */
@@ -105,7 +105,7 @@ return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

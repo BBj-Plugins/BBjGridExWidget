@@ -31,29 +31,29 @@ rem  */
 main:
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
-  
+
   rem add CDNumber column
   grid!.addColumn("CDNUMBER","CDNUMBER")
-  
+
   rem /**
-  rem  * Here we are creating a column which is composed of other two columns (LABEL & TITLE)
-  rem  * Note how we are using the value getter expression to teach the grid where to get the column 
+  rem  * Here we are creating a column which is composed of two other columns (LABEL & TITLE).
+  rem  * Note how we are using the value getter expression to teach the grid where to get the column
   rem  * value from.
   rem  */
   declare BBjGridExWidgetColumn vcolumn!
-  vcolumn! = grid!.addColumn("TITLE+LABEL","Title & Label")
+  vcolumn! = grid!.addColumn("LABEL+TITLE","Label & Title")
   vcolumn!.setValueGetterExpression("data.LABEL + ' - ' + data.TITLE")
- 
+
   grid!.setData(rs! , 1 , 0)
   grid!.setFitToGrid()
 return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()

@@ -22,7 +22,7 @@ BBjGridExWidgetDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Range Selection Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Charting Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -39,37 +39,37 @@ main:
   declare BBjGridExWidget grid!
   declare SqlQueryBC sbc!
   declare ResultSet rs!
-  
+
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT ARTIST , MUSICTYPE , COST , RETAIL , PLAYINGTIME FROM CDINVENTORY")
-  
+
   grid! = new BBjGridExWidget(wnd!,101, 0 , 50 , 800 , 550)
-  
-  REM   we start by enabling the charts feature 
+
+  REM   we start by enabling the charts feature
   grid!.getOptions().setEnableCharts(1)
-  
+
   REM   Set to true to enable Range Selection
   grid!.getOptions().setEnableRangeSelection(1)
-  
+
   REM   Allow users to move between cells using arrow keys instead of rows
   grid!.getOptions().setNavigationBehavior(grid!.GRID_NAVIGATION_BEHAVIOUR_NEXT_CELL())
 
   REM   Disable row selection on row click
   grid!.getOptions().setSuppressRowClickSelection(1)
-      
+
   REM  Enable User Charts (allow uses to create charts by selecting a range)
   grid!.getContextMenu().addItem(BBjGridContextMenuItem.CHART_RANGE())
-   
-  REM  Here we add a range selection to the grid by defining the columns which are included 
+
+  REM  Here we add a range selection to the grid by defining the columns which are included
   REM  in the range and the start and end row's index/id
-    
+
   declare BBjGridExWidgetClientAddRangeChartModel chart!
   rem /**
   rem  * In Order to create a chart , we need to setup an addRangeChartModel.
   rem  * The models requires the chart type to create and a range selection model
-  rem  * 
-  rem  * Note how we are using a bounded range selection in this demo. Ranges are normally bounded by a start and end row. 
-  rem  * However it is also possible to define a range unbounded by rows (ie to contain all rows). 
+  rem  *
+  rem  * Note how we are using a bounded range selection in this demo. Ranges are normally bounded by a start and end row.
+  rem  * However it is also possible to define a range unbounded by rows (ie to contain all rows).
   rem  * For an unbounded range, do not provided start or end row positions.
   rem  */
   chart! = new BBjGridExWidgetClientAddRangeChartModel()
@@ -77,7 +77,7 @@ main:
   chart!.setType(BBjGridExWidgetClientAddRangeChartModel.TYPE_GROUPEDCOLUMN())
   chart!.setAggregate(1)
   grid!.addRangeChart(chart!)
-  
+
   rem /**
   rem  * You can add / remove items to the chart toolbar 
   rem  * 
@@ -90,9 +90,9 @@ main:
       
   grid!.setFitToGrid()
   grid!.getSidebar().setHiddenByDefault(1)
-  
-  grid!.setData(rs!)  
-  
+
+  grid!.setData(rs!)
+
   REM  align columns of type number to the right to get better presentation
   grid!.getColumn("COST").setAlignment(BBjGridExWidget.GRID_ALIGN_RIGHT() , 1)
   grid!.getColumn("RETAIL").setAlignment(BBjGridExWidget.GRID_ALIGN_RIGHT() , 1)
@@ -105,7 +105,7 @@ rem  */
 onRandomChart:
   REM   clear all charts
   grid!.clearChart()
-  
+
   chart!.setRangeSelection(grid!.addRangeSelection("MUSICTYPE,COST" , rnd(20) , rnd(20)))
   grid!.addRangeChart(chart!)
 return

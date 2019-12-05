@@ -17,7 +17,7 @@ declare BBjGridExWidget grid!
 declare SqlQueryBC sbc!
 declare ResultSet rs!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"BBj Grid Ex Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Data Update Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -46,15 +46,15 @@ gosub fillGrid
 process_events
 
 rem /**
-rem  * Retrieve the data from the database and configure the grid  
+rem  * Retrieve the data from the database and configure the grid
 rem  */
-fillGrid:  
-  rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")  
+fillGrid:
+  rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
   grid!.setData(rs!,"CDNUMBER")
 return
 
 rem /**
-rem  * Restore the older ResultSet  
+rem  * Restore the older ResultSet
 rem  */
 restoreOrginialRS:
   rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
@@ -62,9 +62,9 @@ restoreOrginialRS:
 return
 
 rem /**
-rem  * Create new ResultSet and update the grid 
-rem  * 
-rem  * Note that unlike grid!.setData(ResultSet), the method grid!.setRowsData(Set) will not update the column definitions 
+rem  * Create new ResultSet and update the grid
+rem  *
+rem  * Note that unlike grid!.setData(ResultSet), the method grid!.setRowsData(Set) will not update the column definitions
 rem  * from the passed ResultSet
 rem  */
 setNewRS:
@@ -77,16 +77,16 @@ rem  * Update a specific row in the grid
 rem  */
 updateThirdRow:
   row! = rs!.getItem(2)
-  row!.setFieldValue("TITLE","My New Title")
-  row!.setFieldValue("ARTIST","My New ARTIST")
-  
+  row!.setFieldValue("TITLE","My Updated Title")
+  row!.setFieldValue("ARTIST","My Updated Artist")
+
   grid!.setRowData(2 , row!)
 return
 
 rem /**
 rem  * Remove a specific row in the grid
 rem  */
-removeSecondRow:
+removeSecondRow:rem note 0-based
     grid!.removeRow(1)
 return
 
@@ -97,9 +97,9 @@ clearRowsData:
     grid!.clearRowsData()
 return
 
-rem /** 
+rem /**
 rem  * Event handler to show the selected row on clik
-rem  * 
+rem  *
 rem  * @see BBjGridExWidget.ON_GRID_ROW_CLICK()()
 rem  */
 onRowSelect:
@@ -109,7 +109,7 @@ return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   ev! = BBjAPI().getLastEvent()
