@@ -12,7 +12,7 @@ A Grid Widget Plugin for BBj:
 - Available for BBj 18.21 and later
 - SAM required
 
-![2018-05-08_1035](https://user-images.githubusercontent.com/4833070/39746783-b33abe8e-52ab-11e8-9fe2-59b53c6bc984.png)
+![image](https://user-images.githubusercontent.com/4833070/70705285-13db3900-1cd4-11ea-8061-6b92071ad737.png)
 
 Included Features:
 ------------------
@@ -52,7 +52,7 @@ Enhanced Grid - Features:
 - Ad-hoc Charting
 - Data Export
 
-![clipboard01](https://user-images.githubusercontent.com/4833070/38723387-302ac934-3f01-11e8-8c8a-13d3e96b39a3.jpg)
+![2018-05-08_1035](https://user-images.githubusercontent.com/4833070/39746783-b33abe8e-52ab-11e8-9fe2-59b53c6bc984.png)
 
 
 Documentation:
