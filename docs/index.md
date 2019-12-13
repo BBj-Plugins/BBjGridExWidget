@@ -1,6 +1,6 @@
 BBjGridExWidget
 ==============
-A Grid Widget for BBj, based on https://github.com/ag-grid/ag-grid.
+A Grid Widget for BBj
 
 - based on [com.basiscomponents.db.ResultSet](http://basishub.github.io/components/javadoc/com/basiscomponents/db/ResultSet.html)
 - which is a collection of  [com.basiscomponents.db.DataRow](http://basishub.github.io/components/javadoc/com/basiscomponents/db/DataRow.html)s
@@ -22,7 +22,7 @@ grid!.setData(rs!)
 (...)
 ```
 
-##samples
+## samples
 
 Commented samples from the [Demo](https://github.com/BBj-Plugins/BBjGridExWidget/tree/master/Demo) subdirectory
 
@@ -30,7 +30,7 @@ Commented samples from the [Demo](https://github.com/BBj-Plugins/BBjGridExWidget
 
 
 
-##Documentation
+## Documentation
 
 [javadoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget.html)
 
