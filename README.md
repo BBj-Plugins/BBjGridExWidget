@@ -17,7 +17,7 @@
 A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and loads quickly in GUI and BUI
 , optimized for large data sets and uses the BBjHtmlView Leveraging Chromium engine in GUI.
 
-<img style="box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4833070/70705285-13db3900-1cd4-11ea-8061-6b92071ad737.png" width="100%" />
+<img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/70804755-8a9d3280-1db7-11ea-8161-53c660947ccd.png" width="100%" />
 
 ## ☑️ Included Features:
 
