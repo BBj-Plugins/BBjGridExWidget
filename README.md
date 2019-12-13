@@ -103,7 +103,9 @@ bye
 
 Whether you're helping us fix bugs, improve the docs, or spread the word, we'd love to have you as part of the BBjGridExWidget project! 💪💜
 
-Check out the [**Contributing Guide**](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md) for ideas on contributing.
+* [Bug reports](CONTRIBUTING.md#bugs)
+* [Feature requests](CONTRIBUTING.md#features)
+* [Pull requests](CONTRIBUTING.md#pull-requests)
 
 ## 📝 License
 
