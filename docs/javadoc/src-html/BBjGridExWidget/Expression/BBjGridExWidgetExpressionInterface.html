@@ -32,24 +32,24 @@
 <span class="sourceLineNo">024</span> * Expressions are Javasript functions which are written as strings. When you provide an expression to the grid,<a name="line.24"></a>
 <span class="sourceLineNo">025</span> * the grid converts the expression into a function for you and then executes the function on the client.<a name="line.25"></a>
 <span class="sourceLineNo">026</span> *<a name="line.26"></a>
-<span class="sourceLineNo">027</span> * Expressions can be used with the columns &lt;i&gt;ValueGetterExpression&lt;/i&gt; , &lt;i&gt;ValueFormatterExpression&lt;/i&gt; ,<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * &lt;i&gt;ValueSetterExpression&lt;/i&gt; , &lt;i&gt;ValueParserExpression&lt;/i&gt;.<a name="line.28"></a>
+<span class="sourceLineNo">027</span> * Expressions can be used with the columns &lt;i&gt;ValueGetterExpression&lt;/i&gt;, &lt;i&gt;ValueFormatterExpression&lt;/i&gt;,<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * &lt;i&gt;ValueSetterExpression&lt;/i&gt;, &lt;i&gt;ValueParserExpression&lt;/i&gt;.<a name="line.28"></a>
 <span class="sourceLineNo">029</span> *<a name="line.29"></a>
 <span class="sourceLineNo">030</span> * For example you can add a virtual column to the grid and define a value getter expression to<a name="line.30"></a>
 <span class="sourceLineNo">031</span> * get the value of this column based on other two columns.<a name="line.31"></a>
 <span class="sourceLineNo">032</span> *<a name="line.32"></a>
 <span class="sourceLineNo">033</span> * Expression can be as simple as &lt;i&gt;"data.CDNumber"&lt;/i&gt; or more complex as the &lt;i&gt;BBjGridExWidgetExpressionNumbersFormatter&lt;/i&gt;<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * which can accepts paramters.<a name="line.34"></a>
+<span class="sourceLineNo">034</span> * which can accepts parameters.<a name="line.34"></a>
 <span class="sourceLineNo">035</span> *<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * When working with expression keey the following points in mind:<a name="line.36"></a>
+<span class="sourceLineNo">036</span> * When working with expression key the following points in mind:<a name="line.36"></a>
 <span class="sourceLineNo">037</span> *<a name="line.37"></a>
 <span class="sourceLineNo">038</span> * &lt;ol&gt;<a name="line.38"></a>
-<span class="sourceLineNo">039</span> * &lt;li&gt; If your expression has the word return in it, then the grid will assume it is a multi line expression and will not wrap it<a name="line.39"></a>
+<span class="sourceLineNo">039</span> * &lt;li&gt; If your expression has the word return in it, then the grid will assume it is a multi-line expression and will not wrap it<a name="line.39"></a>
 <span class="sourceLineNo">040</span> * &lt;li&gt; If a ValueGetterExpression does not have the word 'return' in it, then the grid will insert the 'return' statement and the ';' for you<a name="line.40"></a>
 <span class="sourceLineNo">041</span> * &lt;li&gt; f your expression has many lines, then you will need to provide the ';' at the end of each line and also provide the 'return' statement.<a name="line.41"></a>
 <span class="sourceLineNo">042</span> * &lt;/ol&gt;<a name="line.42"></a>
 <span class="sourceLineNo">043</span> *<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * Expression can access serveral predefined variables :&lt;br&gt;&lt;br&gt;<a name="line.44"></a>
+<span class="sourceLineNo">044</span> * Expression can access several predefined variables :&lt;br&gt;&lt;br&gt;<a name="line.44"></a>
 <span class="sourceLineNo">045</span> *<a name="line.45"></a>
 <span class="sourceLineNo">046</span> * &lt;table border = "1" cellpadding = "10"&gt;<a name="line.46"></a>
 <span class="sourceLineNo">047</span> * &lt;tbody&gt;<a name="line.47"></a>
@@ -125,11 +125,11 @@
 <span class="sourceLineNo">117</span>*/<a name="line.117"></a>
 <span class="sourceLineNo">118</span>public BBjString Mask!;<a name="line.118"></a>
 <span class="sourceLineNo">119</span>/**<a name="line.119"></a>
-<span class="sourceLineNo">120</span> * The numbers group seperator to use. by default the bbj group seperator will be used<a name="line.120"></a>
+<span class="sourceLineNo">120</span> * The number's group separator to use. by default the bbj group separator will be used<a name="line.120"></a>
 <span class="sourceLineNo">121</span>*/<a name="line.121"></a>
 <span class="sourceLineNo">122</span>public BBjString GroupSeparator!;<a name="line.122"></a>
 <span class="sourceLineNo">123</span>/**<a name="line.123"></a>
-<span class="sourceLineNo">124</span> * The numbers decimal seperator to use. by default the bbj decimal seperator will be used<a name="line.124"></a>
+<span class="sourceLineNo">124</span> * The number's decimal separator to use. by default the bbj decimal separator will be used<a name="line.124"></a>
 <span class="sourceLineNo">125</span>*/<a name="line.125"></a>
 <span class="sourceLineNo">126</span>public BBjString DecimalSeparator!;<a name="line.126"></a>
 <span class="sourceLineNo">127</span>/**<a name="line.127"></a>
@@ -139,24 +139,24 @@
 <span class="sourceLineNo">131</span>/**<a name="line.131"></a>
 <span class="sourceLineNo">132</span> * Construct a new BBjGridExWidgetExpressionNumbersFormatter<a name="line.132"></a>
 <span class="sourceLineNo">133</span> *<a name="line.133"></a>
-<span class="sourceLineNo">134</span> * @param BBjString mask! The numbers mask<a name="line.134"></a>
+<span class="sourceLineNo">134</span> * @param BBjString mask! The number's mask<a name="line.134"></a>
 <span class="sourceLineNo">135</span>*/<a name="line.135"></a>
 <span class="sourceLineNo">136</span>public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!) { }<a name="line.136"></a>
 <span class="sourceLineNo">137</span>/**<a name="line.137"></a>
 <span class="sourceLineNo">138</span> * Construct a new BBjGridExWidgetExpressionNumbersFormatter<a name="line.138"></a>
 <span class="sourceLineNo">139</span> *<a name="line.139"></a>
-<span class="sourceLineNo">140</span> * @param BBjString mask! The numbers mask<a name="line.140"></a>
-<span class="sourceLineNo">141</span> * @param BBjString groupSeperator! The numbers group seperator to use<a name="line.141"></a>
+<span class="sourceLineNo">140</span> * @param BBjString mask! The number's mask<a name="line.140"></a>
+<span class="sourceLineNo">141</span> * @param BBjString groupSeparator! The number's group separator to use<a name="line.141"></a>
 <span class="sourceLineNo">142</span>*/<a name="line.142"></a>
-<span class="sourceLineNo">143</span>public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator!) { }<a name="line.143"></a>
+<span class="sourceLineNo">143</span>public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!, BBjString groupSeparator!) { }<a name="line.143"></a>
 <span class="sourceLineNo">144</span>/**<a name="line.144"></a>
 <span class="sourceLineNo">145</span> * Construct a new BBjGridExWidgetExpressionNumbersFormatter<a name="line.145"></a>
 <span class="sourceLineNo">146</span> *<a name="line.146"></a>
-<span class="sourceLineNo">147</span> * @param BBjString mask! The numbers mask<a name="line.147"></a>
-<span class="sourceLineNo">148</span> * @param BBjString groupSeperator! The numbers group seperator to use<a name="line.148"></a>
-<span class="sourceLineNo">149</span> * @param BBjString decimalSeparator! The numbers decimal seperator to use<a name="line.149"></a>
+<span class="sourceLineNo">147</span> * @param BBjString mask! The number's mask<a name="line.147"></a>
+<span class="sourceLineNo">148</span> * @param BBjString groupSeparator! The number's group separator to use<a name="line.148"></a>
+<span class="sourceLineNo">149</span> * @param BBjString decimalSeparator! The number's decimal separator to use<a name="line.149"></a>
 <span class="sourceLineNo">150</span>*/<a name="line.150"></a>
-<span class="sourceLineNo">151</span>public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!) { }<a name="line.151"></a>
+<span class="sourceLineNo">151</span>public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!, BBjString groupSeparator!, BBjString decimalSeparator!) { }<a name="line.151"></a>
 <span class="sourceLineNo">152</span>/**<a name="line.152"></a>
 <span class="sourceLineNo">153</span> * {@inheritDoc}<a name="line.153"></a>
 <span class="sourceLineNo">154</span>*/<a name="line.154"></a>
@@ -180,24 +180,24 @@
 <span class="sourceLineNo">172</span>/**<a name="line.172"></a>
 <span class="sourceLineNo">173</span> * Construct a new BBjGridExWidgetExpressionNumbersFormatter<a name="line.173"></a>
 <span class="sourceLineNo">174</span> *<a name="line.174"></a>
-<span class="sourceLineNo">175</span> * @param BBjString mask! The numbers mask<a name="line.175"></a>
+<span class="sourceLineNo">175</span> * @param BBjString mask! The number's mask<a name="line.175"></a>
 <span class="sourceLineNo">176</span>*/<a name="line.176"></a>
 <span class="sourceLineNo">177</span>public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!) { }<a name="line.177"></a>
 <span class="sourceLineNo">178</span>/**<a name="line.178"></a>
 <span class="sourceLineNo">179</span> * Construct a new BBjGridExWidgetExpressionNumbersFormatter<a name="line.179"></a>
 <span class="sourceLineNo">180</span> *<a name="line.180"></a>
-<span class="sourceLineNo">181</span> * @param BBjString mask! The numbers mask<a name="line.181"></a>
-<span class="sourceLineNo">182</span> * @param BBjString groupSeperator! The numbers group seperator to use<a name="line.182"></a>
+<span class="sourceLineNo">181</span> * @param BBjString mask! The number's mask<a name="line.181"></a>
+<span class="sourceLineNo">182</span> * @param BBjString groupSeparator! The number's group separator to use<a name="line.182"></a>
 <span class="sourceLineNo">183</span>*/<a name="line.183"></a>
-<span class="sourceLineNo">184</span>public BBjGridExWidgetExpressionBytesFormatter(BBjString mask! , BBjString groupSeperator!) { }<a name="line.184"></a>
+<span class="sourceLineNo">184</span>public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!, BBjString groupSeparator!) { }<a name="line.184"></a>
 <span class="sourceLineNo">185</span>/**<a name="line.185"></a>
 <span class="sourceLineNo">186</span> * Construct a new BBjGridExWidgetExpressionNumbersFormatter<a name="line.186"></a>
 <span class="sourceLineNo">187</span> *<a name="line.187"></a>
-<span class="sourceLineNo">188</span> * @param BBjString mask! The numbers mask<a name="line.188"></a>
-<span class="sourceLineNo">189</span> * @param BBjString groupSeperator! The numbers group seperator to use<a name="line.189"></a>
-<span class="sourceLineNo">190</span> * @param BBjString decimalSeparator! The numbers decimal seperator to use<a name="line.190"></a>
+<span class="sourceLineNo">188</span> * @param BBjString mask! The number's mask<a name="line.188"></a>
+<span class="sourceLineNo">189</span> * @param BBjString groupSeparator! The number's group separator to use<a name="line.189"></a>
+<span class="sourceLineNo">190</span> * @param BBjString decimalSeparator! The number's decimal separator to use<a name="line.190"></a>
 <span class="sourceLineNo">191</span>*/<a name="line.191"></a>
-<span class="sourceLineNo">192</span>public BBjGridExWidgetExpressionBytesFormatter(BBjString mask! , BBjString groupSeperator! , BBjString decimalSeparator!) { }<a name="line.192"></a>
+<span class="sourceLineNo">192</span>public BBjGridExWidgetExpressionBytesFormatter(BBjString mask!, BBjString groupSeparator!, BBjString decimalSeparator!) { }<a name="line.192"></a>
 <span class="sourceLineNo">193</span>/**<a name="line.193"></a>
 <span class="sourceLineNo">194</span> * {@inheritDoc}<a name="line.194"></a>
 <span class="sourceLineNo">195</span>*/<a name="line.195"></a>
