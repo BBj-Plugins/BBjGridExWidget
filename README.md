@@ -55,6 +55,7 @@ A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and
 - Data Export
 
 <img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/70803637-d3072100-1db4-11ea-9bf8-2552108408e4.png" width="100%" />
+
 ## 🚀 How to install 
 
 * Clone the project locally , then add BBjGridExWidget to your paths
