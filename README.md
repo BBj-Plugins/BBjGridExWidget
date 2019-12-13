@@ -1,6 +1,14 @@
 
-A Grid Widget Plugin for BBj:
+A Grid Widget Plugin for BBj
 -----------------------------
+<p>
+  <a href="https://github.com/BBj-Plugins/BBjGridExWidget/blob/master/README.md">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjGridExWidget is released under the MIT license." />
+  </a>
+  <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
+  </a>
+</p>
 
 - Feature-rich grid component for BBj
 - Based on HTML and JavaScript
