@@ -1,3 +1,15 @@
+## [0.100.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.2...0.100.3) (2019-12-18)
+
+
+### Bug Fixes
+
+* Rename Enterprise demo folder to Enhanced to match corporate naming convention ([2a11a7f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2a11a7f38d74996ab5e591199eecabb6aed71e9c))
+* transcribe German Umlauts ([fb365ae](https://github.com/BBj-Plugins/BBjGridExWidget/commit/fb365aee85cb770a62d33e5cf1f57386188bbce7))
+* typo in ChartingDemo.bbj and API ([a2030af](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a2030af7d8e97e3e484c178c29554d534036e263))
+* typo in samples ([46be4f4](https://github.com/BBj-Plugins/BBjGridExWidget/commit/46be4f4d2903e23c144ec97f3407550f5fa8ec38))
+
+
+
 ## [0.100.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.1...0.100.2) (2019-09-25)
 
 
