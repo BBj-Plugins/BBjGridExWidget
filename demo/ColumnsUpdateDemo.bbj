@@ -87,7 +87,7 @@ rem  */
 onGroupByMusicType:
     group! = new BBjVector()
     group!.addItem("MUSICTYPE")
-    grid!.addColumnGroup("Gener" , "Gener", group!)
+    grid!.addColumnGroup("Genre" , "Genre", group!)
     grid!.updateColumns()
 return
 

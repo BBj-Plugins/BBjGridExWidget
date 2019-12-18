@@ -79,15 +79,15 @@ main:
   grid!.addRangeChart(chart!)
 
   rem /**
-  rem  * You can add / remove items to the chart toolbar
-  rem  *
-  rem  * @see BBjGridExWidget.CAHRT_TOOLBAR_SETTINGS()
-  rem  * @see BBjGridExWidget.CAHRT_TOOLBAR_DATA()
-  rem  * @see BBjGridExWidget.CAHRT_TOOLBAR_FORMAT()
-  rem  * @see BBjGridExWidget.CAHRT_TOOLBAR_DOWNLOAD()
+  rem  * You can add / remove items to the chart toolbar 
+  rem  * 
+  rem  * @see BBjGridExWidget.CHART_TOOLBAR_SETTINGS()
+  rem  * @see BBjGridExWidget.CHART_TOOLBAR_DATA()
+  rem  * @see BBjGridExWidget.CHART_TOOLBAR_FORMAT()
+  rem  * @see BBjGridExWidget.CHART_TOOLBAR_DOWNLOAD()
   rem  */
-  grid!.addChartToolbarItem(BBjGridExWidget.CAHRT_TOOLBAR_DOWNLOAD())
-
+  grid!.addChartToolbarItem(BBjGridExWidget.CHART_TOOLBAR_DOWNLOAD())  
+      
   grid!.setFitToGrid()
   grid!.getSidebar().setHiddenByDefault(1)
 

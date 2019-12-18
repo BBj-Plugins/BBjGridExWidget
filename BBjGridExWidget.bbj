@@ -401,7 +401,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @return BBjString
     rem  */
-    method public static BBjString CAHRT_TOOLBAR_SETTINGS()
+    method public static BBjString CHART_TOOLBAR_SETTINGS()
         methodret "chartSettings"
     methodend
     rem /**
@@ -409,7 +409,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @return BBjString
     rem  */
-    method public static BBjString CAHRT_TOOLBAR_DATA()
+    method public static BBjString CHART_TOOLBAR_DATA()
         methodret "chartData"
     methodend
     rem /**
@@ -417,7 +417,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @return BBjString
     rem  */
-    method public static BBjString CAHRT_TOOLBAR_FORMAT()
+    method public static BBjString CHART_TOOLBAR_FORMAT()
         methodret "chartFormat"
     methodend
     rem /**
@@ -425,7 +425,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @return BBjString
     rem  */
-    method public static BBjString CAHRT_TOOLBAR_DOWNLOAD()
+    method public static BBjString CHART_TOOLBAR_DOWNLOAD()
         methodret "chartDownload"
     methodend
     rem /**
@@ -1885,10 +1885,10 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @see CAHRT_TOOLBAR_SETTINGS()
-    rem  * @see CAHRT_TOOLBAR_DATA()
-    rem  * @see CAHRT_TOOLBAR_FORMAT()
-    rem  * @see CAHRT_TOOLBAR_DOWNLOAD()
+    rem  * @see CHART_TOOLBAR_SETTINGS()
+    rem  * @see CHART_TOOLBAR_DATA()
+    rem  * @see CHART_TOOLBAR_FORMAT()
+    rem  * @see CHART_TOOLBAR_DOWNLOAD()
     rem  */
     method public void addChartToolbarItem(BBjString item!)
         #ChartToolbarItems!.add(item!)
@@ -1904,10 +1904,10 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @see CAHRT_TOOLBAR_SETTINGS()
-    rem  * @see CAHRT_TOOLBAR_DATA()
-    rem  * @see CAHRT_TOOLBAR_FORMAT()
-    rem  * @see CAHRT_TOOLBAR_DOWNLOAD()
+    rem  * @see CHART_TOOLBAR_SETTINGS()
+    rem  * @see CHART_TOOLBAR_DATA()
+    rem  * @see CHART_TOOLBAR_FORMAT()
+    rem  * @see CHART_TOOLBAR_DOWNLOAD()
     rem  */
     method public void removeChartToolbarItem(BBjString item!)
         if #ChartToolbarItems!.contains(item!) then
@@ -2263,7 +2263,7 @@ REM         #onLoaded(null())
         #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Stop editing and discard changes
+    rem  * Stop editing and accepts changes
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
@@ -2521,10 +2521,10 @@ REM         #onLoaded(null())
     rem  * The method will add the default chart toolbar items
     rem  */
     method protected void fillChartToolbarItems()
-        #getChartToolbarItems().add(#CAHRT_TOOLBAR_SETTINGS())
-        #getChartToolbarItems().add(#CAHRT_TOOLBAR_DATA())
-        #getChartToolbarItems().add(#CAHRT_TOOLBAR_FORMAT())
-        #getChartToolbarItems().add(#CAHRT_TOOLBAR_DOWNLOAD())
+        #getChartToolbarItems().add(#CHART_TOOLBAR_SETTINGS())
+        #getChartToolbarItems().add(#CHART_TOOLBAR_DATA())
+        #getChartToolbarItems().add(#CHART_TOOLBAR_FORMAT())
+        #getChartToolbarItems().add(#CHART_TOOLBAR_DOWNLOAD())
     methodend
     rem /**
     rem  * Get the grid template

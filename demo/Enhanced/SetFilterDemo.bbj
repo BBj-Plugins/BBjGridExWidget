@@ -1,0 +1,86 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterInterface
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+rem /**
+rem  * BBjGridExWidgetFiltersSetFilter
+rem  */
+class public SetFilter implements BBjGridExWidgetFilterInterface
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString FILTER_NAME()
+        methodret "agSetColumnFilter"
+    methodend  
+
+    method public JsonObject getAsJsonObject()
+      methodret new JsonObject()
+    methodend
+classend
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+gosub main
+process_events
+
+rem /**
+rem  * Retrieve the data from the database and configure the grid
+rem  * 
+rem  * The grid!.setData(ResultSet) method will read all columns from the passed ResultSet and create the columns 
+rem  * for you. This method respects the column types defined in the ResultSet and it will make sure that all the created
+rem  * columns have the correct components attached (filters , cell renderers , ...). 
+rem  * The method will also respects already defined columns and make sure to update them with columns meta fetched from 
+rem  * the ResultSet.
+rem  * 
+rem  * By default the method will render the grid direcly after setting the data. You can change this and delay the rendering 
+rem  * (for example to configure the columns) by passing a second parameter to the method grid!.setData(ResultSet, 0) 
+rem  * and then call grid!.render().  
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT TITLE , MUSICTYPE FROM CDINVENTORY")
+  grid!.setData(rs!)
+  type! = grid!.getColumn("MUSICTYPE")
+  type!.setFilter(new SetFilter())
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space. 
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

@@ -62,8 +62,8 @@ main:
   grid!.addColumn("COST","COST")
   grid!.addColumn("ARTIST","Artist Name")
   grid!.addColumn("TITLE","Record Title")
-  grid!.addColumn("MUSICTYPE","Gener")
-
+  grid!.addColumn("MUSICTYPE","Genre")
+  
   rem it is important to set the data before creating the groups , otherwise the column types will ignored
   grid!.setData(rs! , 0 , 0)
 

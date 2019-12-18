@@ -53,7 +53,7 @@ main:
   grid!.addColumn("ARTIST","Artist Name")
   grid!.addColumn("PLAYINGTIME","Playing Time (min)")
   grid!.addColumn("TITLE","Record Title")
-  grid!.addColumn("MUSICTYPE","Gener")
+  grid!.addColumn("MUSICTYPE","Genre")
   grid!.addColumn("LABEL","Publisher")
 
   grid!.setColumnBackColor("CDNUMBER",BBjAPI().makeColor("LTGRAY"))
