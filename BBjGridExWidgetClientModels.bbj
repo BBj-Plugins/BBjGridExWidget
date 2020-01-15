@@ -70,7 +70,21 @@ class public BBjGridExWidgetClientRowModel
     rem  * @return DataRow
     rem  */
     method public DataRow asDataRow()
-        methodret #getWidget().getRS().get(#getIndex())
+        nodeId! = #getWidget().getRowNodeId()
+        rs! = #getWidget().getRS()
+
+        if(rs!.getColumnIndex(nodeId!) <> -1 ) then
+            rem indexed by an existing column
+            rs! = rs!.filterBy(nodeId! + "=" +  #getIndex())
+
+            if(rs!.count() <> 1) then
+                throw "Cannot query the selected row from the ReseultSet. [RowNodeId = " +  nodeId! + " , Index = " + #getIndex() + "]"
+            fi
+
+            methodret rs!.get(0)
+        fi
+
+        methodret rs!.get(#getIndex())
     methodend
     rem /**
     rem  * Get the row data as JsonObject
@@ -414,7 +428,6 @@ class public BBjGridExWidgetClientAddRangeChartModel
     methodend
 
 classend
-
 rem /**
 rem  * The model is used to represent a keypress on the client
 rem  *
@@ -427,20 +440,21 @@ class public BBjGridExWidgetClientKeypressModel
     rem  */
     field public BBjString Code! = null()
     rem /**
-    rem  * A Number representing the Unicode reference number of the key. 
+    rem  * A Number representing the Unicode reference number of the key.
     rem  * For keys whose char attribute contains multiple characters, this is the Unicode value of the first character in that attribute.
     rem  */
     field public BBjNumber KeyCode! = null()
     rem /**
     rem  * A Boolean that is true if the Alt key was active when the key event was generated.
-    rem  */    
+    rem  */
     field public BBjNumber IsAltDown! = null()
     rem /**
     rem  * A Boolean that is true if the Shift key was active when the key event was generated.
-    rem  */    
+    rem  */
     field public BBjNumber IsShiftDown! = null()
     rem /**
     rem  * A Boolean that is true if the Ctrl key was active when the key event was generated.
     rem  */
     field public BBjNumber IsCtrlDown! = null()
+
 classend
