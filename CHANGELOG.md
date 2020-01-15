@@ -1,3 +1,13 @@
+## [0.100.4](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.3...0.100.4) (2020-01-15)
+
+
+### Bug Fixes
+
+* **BBj:** `BBjGridExWidgetClientRowModel.asDataRow` cannot retirve rows which are indexed using custom index([ecfe4e7](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ecfe4e7d8095265a3fb5a605a2df7d9742499dab))
+* **BBj:** BBjGridExWidgetColumn:update error `java.lang.String.class` undefined ([2d14d3f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2d14d3fda974e1d20dc31c117e2ca80422f8a1cd))
+
+
+
 ## [0.100.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.2...0.100.3) (2019-12-18)
 
 
