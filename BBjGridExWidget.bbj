@@ -2084,7 +2084,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript(script$)
     methodend
     rem /**
-    rem  * Ensures the row index is visible by vertically scrolling the grid
+    rem  * Ensures the row key is visible by vertically scrolling the grid
     rem  *
     rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
     rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
@@ -2102,7 +2102,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void ensureIndexVisible(BBjString key! , BBjString position!)
         script$="gw_ensureIndexVisible('" + #GRIDID$ + "','" + str(key!) + "','" + str(position!) +"');"
         #executeScript(script$)
-    methodend  
+    methodend
     rem /**
     rem  * Ensures the row index is visible by vertically scrolling the grid
     rem  *
@@ -2121,23 +2121,29 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void ensureIndexVisible(BBjNumber index! , BBjString position!)
         #ensureIndexVisible(str(index!),position!)
-    methodend      
+    methodend
     rem /**
     rem  * @deprecated use ensureIndexVisible instead
     rem  */
     method public void setVisibleRow(BBjNumber index! , BBjString position!)
         #ensureIndexVisible(index!,position!)
-    methodend    
+    methodend
     rem /**
-    rem  * Set visible column&#183; Ensures the column is visible, scrolling the table if needed&#183;
+    rem  * Ensures the column is visible, scrolling the table if needed.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBJString columnid!: the column id
     rem  */
-    method public void setVisibleColumn(BBjString columnId!)
-        script$="gw_setVisibleColumn('" + #GRIDID$ +  "','" + columnId! + "');"
+    method public void ensureColumnVisible(BBjString columnId!)
+        script$="gw_ensureColumnVisible('" + #GRIDID$ +  "','" + columnId! + "');"
         #executeScript(script$)
+    methodend
+    rem /**
+    rem  * @deprecated use ensureColumnVisible instead
+    rem  */
+    method public void setVisibleColumn(BBjString columnId!)
+        #ensureColumnVisible(columnId!)
     methodend
     rem /**
     rem  * Make the currently visible columns fit the screen.
@@ -2157,12 +2163,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Gets the grid to size the columns to the specified with
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjNumber width! the width to use to fit all columns in
     rem  */
     method public void setFitToGrid(BBjNumber width!)
         #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"','" + str(width!) + "')")
-    methodend    
+    methodend
     rem /**
     rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
     rem  * It cannot see the columns that are not rendered due to column virtualisation.
@@ -2198,7 +2204,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param HashSet columns! A set of columns to auto size
-    rem  */    
+    rem  */
     method public void autoSizeColumns(HashSet columns!)
         #autoSizeColumns(columns! , 0)
     methodend
@@ -2238,10 +2244,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjString columns! A commoa seperated list of columns to auto size
-    rem  */    
+    rem  */
     method public void autoSizeColumns(BBjString columns!)
         #autoSizeColumns(columns! , 0)
-    methodend    
+    methodend
     rem /**
     rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
     rem  * It cannot see the columns that are not rendered due to column virtualisation.

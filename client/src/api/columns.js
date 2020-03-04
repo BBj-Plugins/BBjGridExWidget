@@ -81,8 +81,13 @@ export function gw_autoSizeColumns(id, skipHeader = false, columns = null) {
     columnsAPI.autoSizeColumns(columns, Boolean(skipHeader));
   }
 }
-
-export function gw_setVisibleColumn(id, columnId) {
+/**
+ * Ensures the column is visible, scrolling the table if needed.
+ * 
+ * @param {String} id  the grid's id
+ * @param {String} columnId  the column id
+ */
+export function gw_ensureColumnVisible(id, columnId) {
   gw_getGrid(id).options.api.ensureColumnVisible(columnId);
 }
 
