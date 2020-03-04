@@ -1,0 +1,45 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicDate
+
+class public BBjGridExWidgetCellEditorBasicDateTest
+
+    field private BBjGridExWidgetCellEditorBasicDate Instance!
+
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetCellEditorBasicDate()
+    methodend
+
+    rem @Test
+    method public void testCanConstructWithMask()
+        mask! = "my mask"
+        obj! = new BBjGridExWidgetCellEditorBasicDate(mask!); rem this is not valid dateTime mask
+        Assert.Equals(obj!.getMask() , mask!)
+    methodend
+    
+    rem @Test
+    method public void testTimeIsDisabled()
+        Assert.Equals(#Instance!.getEnableTime() = 0 , BBjAPI.TRUE)
+        
+        mask! = "my mask"
+        obj! = new BBjGridExWidgetCellEditorBasicDate(mask!); rem this is not valid dateTime mask
+        Assert.Equals(obj!.getEnableTime() = 0 , BBjAPI.TRUE)
+    methodend
+
+    rem @Test
+    method public void testMaskIsForDate()
+        Assert.Equals(#Instance!.getMask() = "%Y/%Mz/%Dz", BBjAPI.TRUE)
+    methodend
+
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

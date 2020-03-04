@@ -10,6 +10,7 @@ use java.util.ArrayList
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
+use com.google.gson.JsonArray
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
@@ -21,6 +22,197 @@ use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridDefaultContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnDefinition
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetAutoGroupColumn
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnGroup
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+rem /**
+rem  * The class defines the common boolean options shared between components which
+rem  * manipulate booleans
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetOptionsBoolean
+    rem /**
+    rem  * A hashset of what is considered true
+    rem  */
+    field public JsonArray PossibleTrueValues! = new JsonArray()
+    rem /**
+    rem  * A hashset of what is considered false
+    rem  */
+    field public JsonArray PossibleFalseValues! = new JsonArray()
+    rem /**
+    rem  * Transofmr the options object to json
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.        add("booleanTrueValue", iff(#getPossibleTrueValues().size() > 0, #getPossibleTrueValues(), listEmpty!) ,err=*next)
+        json!.        add("booleanFalseValue", iff(#getPossibleFalseValues().size() > 0, #getPossibleFalseValues(), listEmpty!) ,err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class defines the common date time options shared between components which
+rem  * manipulate dates , times & timestamps
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetOptionsDateTime
+    rem /**
+    rem  * Enable / disable time selection
+    rem  */
+    field public BBjNumber EnableTime! = 1
+    rem /**
+    rem  * Enable / disable time 24 format.
+    rem  */
+    field public BBjNumber Enable24HR! = 1
+    rem /**
+    rem  * Enable / disable seconds selection
+    rem  */
+    field public BBjNumber EnableSeconds! = 0
+    rem /**
+    rem  * Enable / disable Calendar input.
+    rem  */
+    field public BBjNumber EnableCalendar! = 1
+    rem /**
+    rem  * Set disableMobile to true to always use the non-native picker.
+    rem  */
+    field public BBjNumber DisableMobile! = 1
+    rem /**
+    rem  * Enables display of week numbers in calendar.
+    rem  */
+    field public BBjNumber EnableWeekNumber! = 0
+    rem /**
+    rem  * The Date mask for calander input
+    rem  */
+    field public BBjString Mask! = "%Y/%Mz/%Dz %Hz:%mz:%sz"
+    rem /**
+    rem  * Initial value of the hour element.
+    rem  */
+    field public BBjNumber DefaultHour! = 12
+    rem /**
+    rem  * Initial value of the minute element.
+    rem  */
+    field public BBjNumber DefaultMinute! = 0
+    rem /**
+    rem  * A valid iso 8601 datetime which defines the max allowd value in the
+    rem  * calander
+    rem  */
+    field public BBjString Max! = null()
+    rem /**
+    rem  * A valid iso 8601 datetime which defines the min allowd value in the
+    rem  * calander
+    rem  */
+    field public BBjString Min! = null()
+    rem /**
+    rem  * A valid expression which validates the datetime
+    rem  */
+    field public BBjGridExWidgetExpressionInterface FormatterExpression! = null()
+    rem /**
+    rem  * The locale used to format and display dates and times. default to the System settings
+    rem  */
+    field public BBjString Locale! = null()
+    rem /**
+    rem  * When true then accepts direct user's input from the input field.
+    rem  *
+    rem  * @deprecated direct input is always disabled
+    rem  */
+    field public BBjNumber AllowInput! = 1
+    rem /**
+    rem  * Create a BBjGridExWidgetExpression from string and set it as FormatterExpression
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setFormatterExpression(BBjString expression!)
+        #FormatterExpression! = new BBjGridExWidgetExpression(expression!)
+    methodend
+    rem /**
+    rem  * Set the initial value of the hour element.
+    rem  *
+    rem  * @param hour! - if Enable24HR is true , the hour must be between 0 & 24 , otherwise between 0 & 12
+    rem  *
+    rem  * @return void
+    rem  */
+    method public void setDefaultHour(BBjNumber hour!)
+        isEnable24HR! = #getEnable24HR().booleanValue()
+
+        if(isEnable24HR!) then
+            if(!(hour! >= 0 AND hour! <= 24))
+                throw "Invalid Default Hour, Value must be in range 0 ~ 24", 256
+            FI
+        else
+            if(!(hour! >= 0 AND hour! <= 12))
+                throw "Invalid Default Hour, Value must be in range 0 ~ 12", 256
+            FI
+        FI
+
+        #DefaultHour! = hour!
+    methodend
+    rem /**
+    rem  * Set the initial value of the minute element.
+    rem  *
+    rem  * @param minute! - value in range 0 ~ 60
+    rem  *
+    rem  * @return void
+    rem  */
+    method public void setDefaultMinute(BBjNumber minute!)
+        if(!(minute! >= 0 AND minute! <= 60))
+            throw "Invalid Default Minute, Value must be in range 0 ~ 60", 256
+        FI
+
+        #DefaultMinute! = minute!
+    methodend
+    rem /**
+    rem  * Enable / disable time 24 format.
+    rem  *
+    rem  * @param hour! - 1 for enabled , 0 for disabled
+    rem  *
+    rem  * @return void
+    rem  */
+    method public void setEnable24HR(BBjNumber enabled!)
+        hour! = #getDefaultHour()
+
+        if(enabled!) then
+            if(!(hour! >= 0 AND hour! <= 24))
+                throw "Invalid Default Hour, Value must be in range 0 ~ 24", 256
+            FI
+        else
+            if(!(hour! >= 0 AND hour! <= 12))
+                throw "Invalid Default Hour, Value must be in range 0 ~ 12", 256
+            FI
+        FI
+
+        #Enable24HR! = enabled!
+    methodend
+    rem /**
+    rem  * Transofmr the options object to json
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("dateTimeEnableTime" , #getEnableTime().booleanValue(),err=*next)
+        json!.addProperty("dateTimeEnable24HR" , #getEnable24HR().booleanValue(),err=*next)
+        json!.addProperty("dateTimeEnableSeconds" , #getEnableSeconds().booleanValue(),err=*next)
+        json!.addProperty("dateTimeEnableCalendar" , #getEnableCalendar().booleanValue(),err=*next)
+        json!.addProperty("dateTimeDisableMobile", #getDisableMobile().booleanValue(),err=*next)
+        json!.addProperty("dateTimeEnableWeekNumber", #getEnableWeekNumber().booleanValue(),err=*next)
+        json!.addProperty("dateTimeDefaultHour", #getDefaultHour().longValue(),err=*next)
+        json!.addProperty("dateTimeDefaultMinute", #getDefaultMinute().longValue(),err=*next)
+        json!.addProperty("dateTimeMask", #getMask(),err=*next)
+        json!.addProperty("dateTimeMax", #getMax(),err=*next)
+        json!.addProperty("dateTimeMin", #getMin(),err=*next)
+        json!.addProperty("dateTimeLocale", #getLocale(),err=*next)
+        json!.addProperty("dateTimeFormatter",#getFormatterExpression().toString(),err=*next)
+        methodret json!
+    methodend
+
+classend
 rem /**
 rem  * The class holds the grid configuration properties
 rem  *
@@ -729,8 +921,8 @@ class public BBjGridExWidgetOptions
     method private BBjGridExWidgetOptions()
     methodend
     rem /**
-    rem  * Construct new BBjGridExWidgetOptions instance 
-    rem  * 
+    rem  * Construct new BBjGridExWidgetOptions instance
+    rem  *
     rem  * @param BBjGridExWidget widget! widget instance
     rem  */
     method public BBjGridExWidgetOptions(BBjGridExWidget widget!)

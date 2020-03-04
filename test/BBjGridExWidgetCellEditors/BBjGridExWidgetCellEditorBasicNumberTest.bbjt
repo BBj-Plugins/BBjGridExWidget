@@ -1,0 +1,123 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicNumber
+use com.google.gson.JsonObject
+use com.google.gson.JsonNull
+
+class public BBjGridExWidgetCellEditorBasicNumberTest
+
+    field private BBjGridExWidgetCellEditorBasicNumber Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance!  = new BBjGridExWidgetCellEditorBasicNumber()
+    methodend
+
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , "NumberEditor")
+    methodend
+   
+   rem @Test
+   method public void testCanSetMinValue()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.IsNull(json!.get("numberMinValue"))
+      
+      #Instance!.setMin(100)
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberMinValue").getAsInt() , 100)
+   methodend  
+   
+   rem @Test
+   method public void testCanSetMaxValue()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.IsNull(json!.get("numberMaxValue"))
+      
+      #Instance!.setMax(100)
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberMaxValue").getAsInt() , 100)
+   methodend  
+   
+   rem @Test
+   method public void testCanSetStepValue()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.IsNull(json!.get("numberStepValue"))
+      
+      #Instance!.setStep(0.01)
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberStepValue").getAsDouble() , 0.01)
+   methodend
+         
+   rem @Test
+   method public void testCanSetMaskValue()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberMask").equals(new JsonNull()) , BBjAPI.TRUE)
+      
+      #Instance!.setMask("#")
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberMask").getAsString(), "#")
+   methodend
+   
+   rem @Test
+   method public void testCanSetGroupingSeparator()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberGroupingSeparator").equals(new JsonNull()) , BBjAPI.TRUE)
+      
+      #Instance!.setGroupSeparator("G")
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberGroupingSeparator").getAsString(), "G")
+   methodend   
+   
+   rem @Test
+   method public void testCanSetDecimalSeparator()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberDecimalSeparator").equals(new JsonNull()) , BBjAPI.TRUE)
+      
+      #Instance!.setDecimalSeparator("D")
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberDecimalSeparator").getAsString(), "D")
+   methodend     
+            
+   rem @Test
+   method public void testCanSetForceTrailingZeros()
+      declare auto JsonObject json!
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberForceTrailingZeros").getAsBoolean() , BBjAPI.FALSE)
+      
+      #Instance!.setForceTrailingZeros(1)
+      json! = #Instance!.getAsJsonObject()
+      
+      Assert.Equals(json!.get("numberForceTrailingZeros").getAsBoolean() , BBjAPI.TRUE)
+   methodend  
+               
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

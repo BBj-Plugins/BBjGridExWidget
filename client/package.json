@@ -26,20 +26,21 @@
     "expose-loader": "^0.7.5",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
+    "replace-in-file-webpack-plugin": "^1.0.6",
     "style-loader": "^0.20.2",
     "uglify-js": "^3.4.4",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^4.12.2",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-command": "^0.3.1",
-    "replace-in-file-webpack-plugin": "^1.0.6"
+    "webpack-command": "^0.3.1"
   },
   "dependencies": {
-    "ag-grid-community": "^21.*",
-    "ag-grid-components": "https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.16.0",
-    "ag-grid-enterprise": "^21.*",
+    "ag-grid-community": "21.1.0",
+    "ag-grid-enterprise": "21.1.0",
     "deep-parse-json": "^1.0.1",
+    "flatpickr": "^4.6.3",
     "jss": "https://github.com/dvtng/jss",
-    "lodash": "^4.17.14"
+    "lodash": "^4.17.14",
+    "lodash-es": "^4.17.15"
   }
 }

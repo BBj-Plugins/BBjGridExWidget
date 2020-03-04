@@ -44,8 +44,8 @@ const ROW_EDITING_EVENTS_MAP = {
  */
 export function gw_onCellEditingEvent(id, e) {
 
-  const value = gw_escape(e.newValue) || gw_escape(e.value);
-  const oldValue = gw_escape(e.oldValue) || gw_escape(e.newValue) || gw_escape(e.value);
+  const value = e.hasOwnProperty("newValue") ? gw_escape(e.newValue) : gw_escape(e.value);
+  const oldValue = e.hasOwnProperty("oldValue") ?  gw_escape(e.oldValue) : (e.hasOwnProperty("newValue") ? gw_escape(e.newValue) : gw_escape(e.value))
 
   //if (value === oldValue) return;
 

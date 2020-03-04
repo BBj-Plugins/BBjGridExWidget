@@ -1,0 +1,18 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run BBj Tests",
+      "type": "shell",
+      "command": "echo \"Not Implemented yet\"",
+      "windows": {
+        "command": ".\\scripts\\bbj\\test.cmd"
+      },
+      "group": "test",
+      "presentation": {
+        "reveal": "never",
+      }
+    }
+  ]
+}

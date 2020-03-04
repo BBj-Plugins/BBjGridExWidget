@@ -6,9 +6,13 @@ rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
+use java.util.HashSet
+use com.google.gson.Gson
 use com.google.gson.JsonObject
+use com.google.gson.JsonArray
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptionsBoolean
 REM /**
 REM  * BBjGridExWidgetRendererInterface
 REM  *
@@ -19,7 +23,7 @@ interface public BBjGridExWidgetRendererInterface
     rem  * A constant which holds the client renderer real name
     rem  */
 
-    method public static BBjString RENDERER_NAME()
+    method public static BBjString getCellRendererName()
     rem /**
     rem  * Convert the renderer definition to Json Object
     rem  *
@@ -27,24 +31,70 @@ interface public BBjGridExWidgetRendererInterface
     rem  */
 
     method public JsonObject getAsJsonObject()
+    rem /**
+    rem  * Compare two cell renderers
+    rem  *
+    rem  * @param cellRenderer! - Another cell renderer instnace to compare with
+    rem  *
+    rem  * @return bool - true when they are equal , false otherwise
+    rem  */
+
+    method public boolean equals(BBjGridExWidgetRendererInterface cellRenderer!)
 
 interfaceend
+rem /**
+rem  * Compare two cell renderers components
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetCellRendererComparator
+    rem /**
+    rem  * Compare two cell renderers
+    rem  *
+    rem  * @param one! - First cell renderer instance
+    rem  * @param two! - Second cell renderer instnace
+    rem  *
+    rem  * @return boolean true when they are equal , false otherwise
+    rem  */
+    method public static boolean compare(BBjGridExWidgetRendererInterface one! , BBjGridExWidgetRendererInterface two!)
+        if(one!.getCellRendererName() <> two!.getCellRendererName())
+            methodret BBjAPI.FALSE
+        FI
+
+        methodret one!.getAsJsonObject().equals(two!.getAsJsonObject())
+    methodend
+
+classend
+rem /**
+rem  * Abstract implementation for BBjGridExWidgetRendererInterface
+rem  */
+class public BBjGridExWidgetRendererAbstract implements BBjGridExWidgetRendererInterface
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(BBjGridExWidgetRendererInterface cellRenderer!)
+        methodret BBjGridExWidgetCellRendererComparator.compare(#this!,cellRenderer!)
+    methodend
+
+classend
 rem /**
 rem  * The class represents a boolean cell renderer
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetRendererBoolean implements BBjGridExWidgetRendererInterface
+class public BBjGridExWidgetRendererBoolean extends BBjGridExWidgetOptionsBoolean implements BBjGridExWidgetRendererInterface
     rem /**
-    rem  * HTML string which defines how to render true values.
+    rem  * The value to use when when the component needs to render true values.
+    rem  * in case it is null() then we use the first item in PossibleTrueValues!
     rem  */
-    field public BBjString TrueValue! = "&#x2714;"
+    field public BBjString TrueValue! = null()
     rem /**
-    rem  * HTML string which defines how to render false values
+    rem  * The value to use when when the component needs to render false values.
+    rem  * in case it is null() then we use the first item in PossibleFalseValues!
     rem  */
-    field public BBjString FalseValue! = "&#x2718;"
+    field public BBjString FalseValue! = null()
     rem /**
-    rem  * A special html string which uses the switch button to show true/false values
+    rem  * A special html string which uses the switch button to render true/false values
     rem  */
     method public static BBjString SWITCH_RENDERER()
         methodret "switch"
@@ -52,8 +102,8 @@ class public BBjGridExWidgetRendererBoolean implements BBjGridExWidgetRendererIn
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString RENDERER_NAME()
-        methodret "BasicBooleansRenderer"
+    method public static BBjString getCellRendererName()
+        methodret "BooleanRenderer"
     methodend
     rem /**
     rem  * {@inheritDoc}
@@ -61,10 +111,16 @@ class public BBjGridExWidgetRendererBoolean implements BBjGridExWidgetRendererIn
     method public JsonObject getAsJsonObject()
         declare JsonObject json!
 
-        json! = new JsonObject()
-        json!.addProperty("RENDERER_TRUE" , #getTrueValue(),err=*next)
-        json!.addProperty("RENDERER_FALSE" , #getFalseValue(),err=*next)
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("booleanTrueRenderValue",#getTrueValue(), err=*next)
+        json!.addProperty("booleanFalseRenderValue",#getFalseValue(), err=*next)
         methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(BBjGridExWidgetRendererInterface cellRenderer!)
+        methodret BBjGridExWidgetCellRendererComparator.compare(#this!,cellRenderer!)
     methodend
 
 classend
@@ -76,14 +132,16 @@ rem  * which contains value, valueFormatted, ...
 rem  *
 rem  * Use This render if you want to render the data with a custom html.
 rem  *
+rem  * @see <a href="https://lodash.com/docs/4.17.15#template">Lodash Tempaltes</a>
+rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendererInterface
+class public BBjGridExWidgetRendererCustomHTML extends BBjGridExWidgetRendererAbstract
     rem /**
     rem  * String template which will be compiled in the client.<br>
     rem  * <pre>
     rem  * <code>
-    rem  *  <%= '<strong style=\'color:red\'>' + (params.valueFormatted || '')  + '</strong>' %>
+    rem  *  <%= '<strong style=\'color:red\'>' + (params.valueFormatted || params.value)  + '</strong>' %>
     rem  * </code>
     rem  * </pre>
     rem  */
@@ -91,8 +149,8 @@ class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendere
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString RENDERER_NAME()
-        methodret "GWCustomHTMLTemplateRenderer"
+    method public static BBjString getCellRendererName()
+        methodret "TemplateRenderer"
     methodend
     rem /**
     rem  * Construct new BBjGridExWidgetRendererCustomHTML
@@ -116,7 +174,7 @@ class public BBjGridExWidgetRendererCustomHTML implements BBjGridExWidgetRendere
         declare JsonObject json!
 
         json! = new JsonObject()
-        json!.addProperty("__TEMPLATE__" , #getTemplate(),err=*next)
+        json!.addProperty("renderTemplate" , #getTemplate(),err=*next)
         methodret json!
     methodend
 
@@ -126,7 +184,7 @@ rem  * The renderer can be used to display a list of images based on the cells v
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetRendererImageRenderer implements BBjGridExWidgetRendererInterface
+class public BBjGridExWidgetRendererImageRenderer extends BBjGridExWidgetRendererAbstract
     rem /**
     rem  * The image's width
     rem  */
@@ -142,8 +200,8 @@ class public BBjGridExWidgetRendererImageRenderer implements BBjGridExWidgetRend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString RENDERER_NAME()
-        methodret "BasicImagesRenderer"
+    method public static BBjString getCellRendererName()
+        methodret "ImageRenderer"
     methodend
     rem /**
     rem  * Construct new BBjGridExWidgetRendererImageRenderer
@@ -160,9 +218,9 @@ class public BBjGridExWidgetRendererImageRenderer implements BBjGridExWidgetRend
         declare JsonObject json!
 
         json! = new JsonObject()
-        json!.addProperty("IMAGES_WIDTH" , #getWidth(),err=*next)
-        json!.addProperty("IMAGES_HEIGHT" , #getHeight(),err=*next)
-        json!.  add("IMAGES_LIST" , #getList(),err=*next)
+        json!.addProperty("imageRendererWidth" , #getWidth(),err=*next)
+        json!.addProperty("imageRendererHeight" , #getHeight(),err=*next)
+        json!.        add("imageRendererList" , #getList(),err=*next)
         methodret json!
     methodend
 
@@ -172,7 +230,7 @@ rem  * If you are grouping in the grid, then you will need to provide a group ce
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidgetRendererInterface
+class public BBjGridExWidgetRendererGroupCellRenderer extends BBjGridExWidgetRendererAbstract
     rem /**
     rem  * When true show row counts, hide otherwise
     rem  */
@@ -220,7 +278,7 @@ class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidget
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString RENDERER_NAME()
+    method public static BBjString getCellRendererName()
         methodret "agGroupCellRenderer"
     methodend
     rem /**
@@ -236,7 +294,7 @@ class public BBjGridExWidgetRendererGroupCellRenderer implements BBjGridExWidget
         json!.addProperty("footerValueGetter" , #getFooterValueGetterExpression().toString(),err=*next)
 
         if(#getInnerRenderer() <> null()) then
-            json!.addProperty("innerRenderer" , #getInnerRenderer().RENDERER_NAME(),err=*next)
+            json!.addProperty("innerRenderer" , #getInnerRenderer().getCellRendererName(),err=*next)
 
             declare JsonObject innerJson!
 

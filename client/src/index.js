@@ -6,8 +6,11 @@
 * file that was distributed with this source code.
 */
 
-import 'expose-loader?Basis.AgGridComponents!ag-grid-components/dist/agc-basic.bundle.js';
+import 'expose-loader?BBj.Masks!bbj-masks/dist/bbj-masks.js'
+import 'expose-loader?Basis.InputMasking!basis-input-masking/dist/basis-input-masking.js'
+import 'expose-loader?Basis.AgGridComponents!basis-aggrid-components/dist/basis-aggrid-components.js';
 
+require('flatpickr/dist/flatpickr.css');
 require('ag-grid-community/dist/styles/ag-grid.css');
 
 require('ag-grid-community/dist/styles/ag-theme-bootstrap.css');

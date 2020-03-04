@@ -19,9 +19,29 @@ interface public BBjGridExWidgetExpressionInterface
     rem  * @return BBjString The Javascript expression
     rem  */
 
-    method public BBjString toString()
+    method public String toString()
 
+    rem /**
+    rem  * Compare two expressions
+    rem  *
+    rem  * @param expression! - Another expression instnace to compare with
+    rem  *
+    rem  * @return bool - true when they are equal , false otherwise
+    rem  */
+
+    method public boolean equals(BBjGridExWidgetExpressionInterface expression!)
 interfaceend
+rem /**
+rem  * Abstract implementation for BBjGridExWidgetExpressionInterface
+rem  */
+class public BBjGridExWidgetExpressionAbstract implements BBjGridExWidgetExpressionInterface
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(BBjGridExWidgetExpressionInterface expression!)
+        methodret #toString().equals(expression!.toString())
+    methodend
+classend 
 rem /**
 rem  * Expressions are Javasript functions which are written as strings. When you provide an expression to the grid, 
 rem  * the grid converts the expression into a function for you and then executes the function on the client.
@@ -90,7 +110,7 @@ rem  * @see BBjGridExWidgetExpressionNumbersFormatter
 rem  *  
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetExpression implements BBjGridExWidgetExpressionInterface
+class public BBjGridExWidgetExpression extends BBjGridExWidgetExpressionAbstract
     rem /**
     rem  * Expression string
     rem  */
@@ -104,22 +124,65 @@ class public BBjGridExWidgetExpression implements BBjGridExWidgetExpressionInter
     rem  * @param BBjString expression!
     rem  */
     method public BBjGridExWidgetExpression(BBjString expression!)
+        #super!()
         #Expression! = expression!
     methodend
     rem /**
     rem  * @return BBjString
     rem  */
-    method public BBjString toString()
+    method public String toString()
         methodret #Expression!
     methodend
 
+classend
+rem /**
+rem  * The class defines a grid expression to format strings according to BBj supported masks
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionStringsFormatter extends BBjGridExWidgetExpressionAbstract
+    rem /**
+    rem  * The String mask to use.
+    rem  */
+    field public BBjString Mask! = null()
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionStringsFormatter()
+    methodend 
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionNumbersFormatter
+    rem  *
+    rem  * @param BBjString mask! The number's mask
+    rem  */
+    method public BBjGridExWidgetExpressionStringsFormatter(BBjString mask!)
+        #super!()
+        #Mask! = mask!
+    methodend  
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public String toString()
+        declare StringBuilder ex!
+
+        if(#getMask() = null() ) then
+            methodret null()
+        FI
+
+        ex! = new StringBuilder()
+        ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append("var theValue = getValue || value;")
+        ex!.append("if ((mask && theValue) && (theValue != null)) {return BBj.Masks.Types.string(theValue, mask)}")
+        ex!.append("return theValue || '';")
+        methodret ex!.toString()
+    methodend         
 classend
 rem /**
 rem  * The class defines a grid expression to format numbers according to BBj supported masks
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidgetExpressionInterface
+class public BBjGridExWidgetExpressionNumbersFormatter extends BBjGridExWidgetExpressionAbstract
     rem /**
     rem  * The Number mask to use.
     rem  */
@@ -143,6 +206,7 @@ class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidge
     rem  * @param BBjString mask! The number's mask
     rem  */
     method public BBjGridExWidgetExpressionNumbersFormatter(BBjString mask!)
+        #super!()
         #Mask! = mask!
     methodend
     rem /**
@@ -169,7 +233,7 @@ class public BBjGridExWidgetExpressionNumbersFormatter implements BBjGridExWidge
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjString toString()
+    method public String toString()
         declare StringBuilder ex!
 
         if(#getMask() = null() ) then
@@ -233,7 +297,7 @@ class public BBjGridExWidgetExpressionBytesFormatter extends BBjGridExWidgetExpr
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjString toString()
+    method public String toString()
         declare StringBuilder ex!
 
         if(#getMask() = null() ) then
@@ -264,7 +328,7 @@ rem  * The class defines a grid expression to format date/timestamps according t
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetExpressionDatesFormatter implements BBjGridExWidgetExpressionInterface
+class public BBjGridExWidgetExpressionDateTimesFormatter extends BBjGridExWidgetExpressionAbstract
     rem /**
     rem  * The date / timestamp mask to use.
     rem  */
@@ -272,20 +336,21 @@ class public BBjGridExWidgetExpressionDatesFormatter implements BBjGridExWidgetE
     rem /**
     rem  * Disable the default constructor
     rem  */
-    method private BBjGridExWidgetExpressionDatesFormatter()
+    method private BBjGridExWidgetExpressionDateTimesFormatter()
     methodend
     rem /**
-    rem  * Construct a new BBjGridExWidgetExpressionDatesFormatter
+    rem  * Construct a new BBjGridExWidgetExpressionDateTimesFormatter
     rem  *
     rem  * @param BBjString mask! The date/timestamp mask
     rem  */
-    method public BBjGridExWidgetExpressionDatesFormatter(BBjString mask!)
+    method public BBjGridExWidgetExpressionDateTimesFormatter(BBjString mask!)
+        #super!()
         #Mask! = mask!
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjString toString()
+    method public String toString()
         declare StringBuilder ex!
 
         if(#getMask() = null() ) then
@@ -300,4 +365,46 @@ class public BBjGridExWidgetExpressionDatesFormatter implements BBjGridExWidgetE
         methodret ex!.toString()
     methodend
 
+classend
+rem /**
+rem  * Alias for BBjGridExWidgetExpressionDateTimesFormatter
+rem  * 
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionTimestampsFormatter extends BBjGridExWidgetExpressionDateTimesFormatter
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionTimestampsFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionDatesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  */
+    method public BBjGridExWidgetExpressionTimestampsFormatter(BBjString mask!)
+        #super!(mask!)
+    methodend
+classend
+rem /**
+rem  * The class defines a grid expression to format date/timestamps according to BBj supported masks
+rem  * 
+rem  * @deprecated Use BBjGridExWidgetExpressionDateTimesFormatter
+rem  * 
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetExpressionDatesFormatter extends BBjGridExWidgetExpressionDateTimesFormatter
+    rem /**
+    rem  * Disable the default constructor
+    rem  */
+    method private BBjGridExWidgetExpressionDatesFormatter()
+    methodend
+    rem /**
+    rem  * Construct a new BBjGridExWidgetExpressionDatesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  */
+    method public BBjGridExWidgetExpressionDatesFormatter(BBjString mask!)
+        #super!(mask!)
+    methodend
 classend

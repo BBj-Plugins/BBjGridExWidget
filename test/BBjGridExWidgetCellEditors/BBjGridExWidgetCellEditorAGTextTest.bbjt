@@ -1,0 +1,43 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGText
+use com.google.gson.JsonObject
+
+class public BBjGridExWidgetCellEditorAGTextTest
+
+    field private BBjGridExWidgetCellEditorAGText Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance!  = new BBjGridExWidgetCellEditorAGText()
+    methodend
+
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , "agTextCellEditor")
+    methodend
+        
+    rem @Test
+    method public void testCanSetUserFormatter()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("useFormatter").getAsBoolean() , BBjAPI.FALSE)
+        
+        #Instance!.setUserFormmatter(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("useFormatter").getAsBoolean() , BBjAPI.TRUE)
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+
+classend

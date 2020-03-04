@@ -10,7 +10,7 @@ import { gw_extendColumnDefinitions } from "./columns";
 import { gw_navigateToNextRow }       from "./rows";
 import { gw_getContextMenu }          from "./menus";
 import { gw_getChartToolbarItems }    from "./charts";
-import { gw_getDocument, gw_addGrid}  from "./utilities";
+import { gw_getDocument, gw_getWindow , gw_addGrid}  from "./utilities";
 import {
   gw_onRowDoubleClicked,
   gw_onSelectionChanged,
@@ -21,9 +21,9 @@ import {
   gw_onReadyEvent,
   gw_debounce
 } from "events";
+import template from 'lodash-es/template'
 
 const { deepParseJson } = require("deep-parse-json");
-const template          = require('lodash/template');
 
 export function gw_init(options, license , data) {
   
@@ -76,34 +76,38 @@ function gw_parseOptions(options) {
     ...deepParsedOptions ,
     ...{
       getDocument:            ()     =>   gw_getDocument(),
-      onCellEditingStarted:   e      => { gw_onCellEditingEvent(id, e) }                      ,
-      onCellEditingStopped:   e      => { gw_onCellEditingEvent(id, e) }                      ,
-      onCellValueChanged:     e      => { gw_onCellEditingEvent(id, e) }                      ,
-      onRowEditingStarted:    e      => { gw_onRowEditingEvent(id, e)  }                      ,
-      onRowEditingStopped:    e      => { gw_onRowEditingEvent(id, e)  }                      ,
-      onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  }                      ,
-      onCellClicked:          e      => { gw_onCellClickEvent(id, e)   }                      ,
-      onCellDoubleClicked:    e      => { gw_onCellClickEvent(id, e)   }                      ,
-      onGridReady:            e      => { gw_onReadyEvent(id, e)       }                      ,
-      getRowNodeId:           data   =>   gw_getRowNodeId(id, data)                           ,
-      getContextMenuItems:    params =>   gw_getContextMenu(id, params)                       ,
-      "getChartToolbarItems":             gw_getChartToolbarItems                             ,
-      "popupParent":                      gw_getDocument().body,
+      onCellEditingStarted:   e      => { gw_onCellEditingEvent(id, e) }                               ,                                 
+      onCellEditingStopped:   e      => { gw_onCellEditingEvent(id, e) }                               ,
+      onCellValueChanged:     e      => { gw_onCellEditingEvent(id, e) }                               ,
+      onRowEditingStarted:    e      => { gw_onRowEditingEvent(id, e)  }                               ,
+      onRowEditingStopped:    e      => { gw_onRowEditingEvent(id, e)  }                               ,
+      onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  }                               ,
+      onCellClicked:          e      => { gw_onCellClickEvent(id, e)   }                               ,
+      onCellDoubleClicked:    e      => { gw_onCellClickEvent(id, e)   }                               ,
+      onGridReady:            e      => { gw_onReadyEvent(id, e)       }                               ,
+      getRowNodeId:           data   =>   gw_getRowNodeId(id, data)                                    ,
+      getContextMenuItems:    params =>   gw_getContextMenu(id, params)                                ,
+      "getChartToolbarItems":             gw_getChartToolbarItems                                      ,
+      "popupParent":                      gw_getDocument().body                                        ,
       "onRowDoubleClicked":               gw_debounce(gw_onRowDoubleClicked, debounceDuration)         ,
       "onSelectionChanged":               gw_debounce(gw_onSelectionChanged, debounceDuration)         ,
-      "onRangeSelectionChanged":          gw_debounce(gw_onRangeSelectionChanged , debounceDuration)  ,
+      "onRangeSelectionChanged":          gw_debounce(gw_onRangeSelectionChanged , debounceDuration)   ,
       "components": {
-        "BasicBooleansRenderer"       : Basis.AgGridComponents.BasicBooleansRenderer,
-        "BasicBooleansEditor"         : Basis.AgGridComponents.BasicBooleansEditor  ,
-        "BasicBooleansFilter"         : Basis.AgGridComponents.BasicBooleansFilter  ,
-        "BasicNumbersEditor"          : Basis.AgGridComponents.BasicNumbersEditor   ,
-        "BasicDateTimesEditor"        : Basis.AgGridComponents.BasicDateTimesEditor ,
-        "BasicDateTimesFilter"        : Basis.AgGridComponents.BasicDateTimesFilter ,
-        "BasicImagesRenderer"         : Basis.AgGridComponents.BasicImagesRenderer  ,
-        // lodash template render
-        "GWCustomHTMLTemplateRenderer": params => {
-          const compiled = template(params.__TEMPLATE__);
-          return compiled({ params: params });
+        "BooleanFilter"               : Basis.AgGridComponents.BooleanFilter        ,
+        "BooleanRenderer"             : Basis.AgGridComponents.BooleanRenderer      ,
+        "BooleanEditor"               : Basis.AgGridComponents.BooleanEditor        ,
+        "NumberEditor"                : Basis.AgGridComponents.NumberEditor         ,
+        "TextEditor"                  : Basis.AgGridComponents.TextEditor           ,
+        "DateTimeEditor"              : Basis.AgGridComponents.DateTimeEditor       ,
+        "DateTimeFilter"              : Basis.AgGridComponents.DateTimeFilter       ,
+        "ImageRenderer"               : Basis.AgGridComponents.ImageRenderer        ,
+        "TemplateRenderer"            : Basis.AgGridComponents.TemplateRenderer     ,
+      },
+      "context": {
+        ...deepParsedOptions.context,
+        ...{
+          "document": gw_getDocument(),
+          "window"  : gw_getWindow()
         }
       }
     }

@@ -121,8 +121,8 @@ fillGrid:
             dr!.setFieldAttribute("DATE","EDITOR_MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("DATE","EDITABLE","1")
 
-            dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
-            dr!.setFieldAttribute("TIMESTAMP","EDITOR_MASK","%Dz.%Mz.%Yl %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Yd-%Mz-%Dz %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","EDITOR_MASK","%Yd-%Mz-%Dz %Hz:%mz:%sz")
             dr!.setFieldAttribute("TIMESTAMP","EDITABLE","1")
         fi
 

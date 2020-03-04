@@ -78,7 +78,8 @@ main:
       dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
       dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
       dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"1979-08-03 12:22:13.010")
-      dr!.setFieldValue("TIME",java.sql.Types.TIME,"12:22:13")
+      rem in older version of basis components time was not supported 
+      dr!.setFieldValue("TIME",java.sql.Types.TIME,"14:00:00")
       rs!.addItem(dr!)
       i = i+1
       x = x*-i
@@ -91,18 +92,14 @@ main:
       dr!.setFieldValue("BOOLEAN 1",java.sql.Types.BOOLEAN,MOD(i,3)=0)
       dr!.setFieldValue("BOOLEAN 2",java.sql.Types.BOOLEAN,MOD(i,3)=0)
       dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
-      dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-10-23")
-      dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2013-10-23 23:22:00.020")
-      dr!.setFieldValue("TIME",java.sql.Types.TIME,"23:22:00")
+      dr!.setFieldValue("DATE",java.sql.Types.DATE,"2020-03-03")
+      dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2020-03-03 13:00:00")
+      rem in older version of basis components time was not supported
+      dr!.setFieldValue("TIME",java.sql.Types.TIME,"13:00:00")
       rs!.addItem(dr!)
       i=i+1
       x=x*-i
   next
-
-  REM create a row with almost all columns empty
-  dr! = new DataRow()
-  dr!.setFieldValue("STRING","ROW NUMBER "+str(i))
-  rs!.addItem(dr!)
 
   grid!.setData(rs!)
 

@@ -1,0 +1,77 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicText
+use com.google.gson.JsonObject
+use com.google.gson.JsonNull
+
+class public BBjGridExWidgetCellEditorBasicTextTest
+
+    field private BBjGridExWidgetCellEditorBasicText Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance!  = new BBjGridExWidgetCellEditorBasicText()
+    methodend
+
+    rem @Test
+    method public void testCanSetMask()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+
+        Assert.Equals(json!.get("textMask").equals(new JsonNull()) , BBjAPI.TRUE)
+
+        #Instance!.setMask("#")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("textMask").getAsString(), "#")
+    methodend
+
+    rem @Test
+    method public void testCanSetPattern()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+
+        Assert.Equals(json!.get("textPattern").equals(new JsonNull()) , BBjAPI.TRUE)
+
+        #Instance!.setPattern("\d")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("textPattern").getAsString(), "\d")
+    methodend 
+    
+    rem @Test
+    method public void testCanSetTitle()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+
+        Assert.Equals(json!.get("textTitle").equals(new JsonNull()) , BBjAPI.TRUE)
+
+        m! = "Fill the required input"
+        #Instance!.setTitle(m!)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("textTitle").getAsString(), m!)
+    methodend     
+    
+    rem @Test
+    method public void testCanSetRequired()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+
+        Assert.Equals(json!.get("textRequired").getAsBoolean(), BBjAPI.TRUE)
+
+        #Instance!.setRequired(0)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("textRequired").getAsBoolean(), BBjAPI.FALSE)
+    methodend  
+
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+
+classend

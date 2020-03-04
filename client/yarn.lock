@@ -849,28 +849,15 @@ acorn@^6.0.7, acorn@^6.2.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.2.0.tgz#67f0da2fc339d6cfb5d6fb244fd449f33cd8bbe3"
   integrity sha512-8oe72N3WPMjA+2zVG71Ia0nXZ8DpQH+QyyHO+p06jT8eg8FGG3FbcUIi8KziHlAfheJQZeoqbvq1mQSQHXKYLw==
 
-ag-grid-community@^21.*:
+ag-grid-community@21.1.0:
   version "21.1.0"
   resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-21.1.0.tgz#d8dba9486c2ef1879f9d97496183711b406258c2"
   integrity sha512-giWg653lxihzRulz4tiiSAewaZVeSvA3GN+uIY5LEHfJ8Eb2FWbI2IZ1n+KMhnuvMy7936dOflTYm8m0sxXplA==
 
-"ag-grid-components@https://git.storesandbox.de/hyyan/ag-grid-components.git#^v1.16.0":
-  version "1.16.0"
-  resolved "https://git.storesandbox.de/hyyan/ag-grid-components.git#0f38ebe80b2c91460193c03d36111ad2586816b4"
-  dependencies:
-    ag-grid "^18.0.1"
-    bbj-masks "https://git.storesandbox.de/hyyan/bbj-masks.git#^v1.3.1"
-    flatpickr "^4.3.2"
-
-ag-grid-enterprise@^21.*:
+ag-grid-enterprise@21.1.0:
   version "21.1.0"
   resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-21.1.0.tgz#d89111b44e2f1adaf73ca6c0eda1fd055f88f9a5"
   integrity sha512-D5CUrMGl5YclrQibEQl6mGwA/bgzkjpqzpT1HhQuRrPkaXT1496q1qb6NHE8hlazvur6c7iGKOQHajY20xZTnQ==
-
-ag-grid@^18.0.1:
-  version "18.1.2"
-  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-18.1.2.tgz#d98b3dd824b9cb82d9f638e4bab5a5771513869b"
-  integrity sha512-HtJt8iFcRKCBj5UHBDmwSLLr72F3XDACeBNarH4nJWFHIqcnu7u0Ifrd2nftPmfEBj6YjFHawDqcZL2yo3YfmQ==
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -1132,10 +1119,6 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
-
-"bbj-masks@https://git.storesandbox.de/hyyan/bbj-masks.git#^v1.3.1":
-  version "1.7.0"
-  resolved "https://git.storesandbox.de/hyyan/bbj-masks.git#66fcfa27f07046c45162dc86f7c3bab6a61d6379"
 
 bfj@^6.1.1:
   version "6.1.2"
@@ -2526,10 +2509,10 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-flatpickr@^4.3.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.2.tgz#50e1b4fc84fbf67c5b0919ba3ddc330221f126da"
-  integrity sha512-bRfBPyxohUQWgCTg6jPALUO1t/x+sRJ/S/RVti/NzYvHqGRpCAesKSWKLzOuLmpu+vGHfXBld4SXvOCLFgYb+g==
+flatpickr@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.3.tgz#15a8b76b6e34e3a072861250503a5995b9d3bc60"
+  integrity sha512-007VucCkqNOMMb9ggRLNuJowwaJcyOh4sKAFcdGfahfGc7JQbf94zSzjdBq/wVyHWUEs5o3+idhFZ0wbZMRmVQ==
 
 flatten@^1.0.2:
   version "1.0.2"
@@ -3364,6 +3347,11 @@ locate-path@^3.0.0:
   dependencies:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
+
+lodash-es@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
 
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"

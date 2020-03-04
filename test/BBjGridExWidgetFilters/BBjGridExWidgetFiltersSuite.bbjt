@@ -1,0 +1,20 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetColumnFilterAGTest.bbjt::BBjGridExWidgetColumnFilterAGTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterAGTextTest.bbjt::BBjGridExWidgetFilterAGTextTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterAGNumberTest.bbjt::BBjGridExWidgetFilterAGNumberTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicBooleanTest.bbjt::BBjGridExWidgetFilterBasicBooleanTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicDateTimeTest.bbjt::BBjGridExWidgetFilterBasicDateTimeTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicDateTimeTest.bbjt::BBjGridExWidgetFilterBasicDateTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicTimeTest.bbjt::BBjGridExWidgetFilterBasicTimeTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterAGSetFilterTest.bbjt::BBjGridExWidgetFilterAGSetFilterTest
+
+rem @SuiteClasses("BBjGridExWidgetColumnFilterAGTest","BBjGridExWidgetFilterAGTextTest","BBjGridExWidgetFilterAGNumberTest","BBjGridExWidgetFilterBasicBooleanTest","BBjGridExWidgetFilterBasicDateTimeTest","BBjGridExWidgetFilterBasicDateTest","BBjGridExWidgetFilterBasicTimeTest","BBjGridExWidgetFilterAGSetFilterTest")
+class public BBjGridExWidgetBBjGridExWidgetFiltersSuite
+classend

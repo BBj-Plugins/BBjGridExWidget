@@ -7,6 +7,130 @@
         "CustomGridDemo.bbj": {
             "name": "CustomGridDemo",
             "style": ""
+        },
+        "Playground.delete.bbj": {
+            "name": "Playground.delete",
+            "style": ""
+        },
+        "DatatypesDemo.bbj": {
+            "name": "DatatypesDemo",
+            "style": ""
+        },
+        "AggregationDemo.bbj": {
+            "name": "AggregationDemo",
+            "style": ""
+        },
+        "ChartingDemo.bbj": {
+            "name": "ChartingDemo",
+            "style": ""
+        },
+        "ContextMenuDemo.bbj": {
+            "name": "ContextMenuDemo",
+            "style": ""
+        },
+        "PivotDemo.bbj": {
+            "name": "PivotDemo",
+            "style": ""
+        },
+        "RangeSelectionDemo.bbj": {
+            "name": "RangeSelectionDemo",
+            "style": ""
+        },
+        "RowGroupingDemo.bbj": {
+            "name": "RowGroupingDemo",
+            "style": ""
+        },
+        "SidebarDemo.bbj": {
+            "name": "SidebarDemo",
+            "style": ""
+        },
+        "StatusbarDemo.bbj": {
+            "name": "StatusbarDemo",
+            "style": ""
+        },
+        "TreeDataDemo.bbj": {
+            "name": "TreeDataDemo",
+            "style": ""
+        },
+        "CellsConditionalStylingDemo.bbj": {
+            "name": "CellsConditionalStylingDemo",
+            "style": ""
+        },
+        "ChunkRenderingDemo.bbj": {
+            "name": "ChunkRenderingDemo",
+            "style": ""
+        },
+        "ColumnGroupingDemo.bbj": {
+            "name": "ColumnGroupingDemo",
+            "style": ""
+        },
+        "ColumnGroupingNestedDemo.bbj": {
+            "name": "ColumnGroupingNestedDemo",
+            "style": ""
+        },
+        "ColumnSetupDemo.bbj": {
+            "name": "ColumnSetupDemo",
+            "style": ""
+        },
+        "ColumnsUpdateDemo.bbj": {
+            "name": "ColumnsUpdateDemo",
+            "style": ""
+        },
+        "DataUpdateDemo.bbj": {
+            "name": "DataUpdateDemo",
+            "style": ""
+        },
+        "Demo.bbj": {
+            "name": "Demo",
+            "style": ""
+        },
+        "EditingDemo.bbj": {
+            "name": "EditingDemo",
+            "style": ""
+        },
+        "ExpressionDemo.bbj": {
+            "name": "ExpressionDemo",
+            "style": ""
+        },
+        "IconsDemo.bbj": {
+            "name": "IconsDemo",
+            "style": ""
+        },
+        "JLibDemo.bbj": {
+            "name": "JLibDemo",
+            "style": ""
+        },
+        "KeypressDemo.bbj": {
+            "name": "KeypressDemo",
+            "style": ""
+        },
+        "LanguageDemo.bbj": {
+            "name": "LanguageDemo",
+            "style": ""
+        },
+        "OverlayDemo.bbj": {
+            "name": "OverlayDemo",
+            "style": ""
+        },
+        "RowsConditionalStylingDemo.bbj": {
+            "name": "RowsConditionalStylingDemo",
+            "style": ""
+        },
+        "SearchDemo.bbj": {
+            "name": "SearchDemo",
+            "style": ""
+        },
+        "SelectionDemo.bbj": {
+            "name": "SelectionDemo",
+            "style": ""
+        },
+        "TwoGridsDemo.bbj": {
+            "name": "TwoGridsDemo",
+            "style": ""
         }
-    }
+    },
+    "cSpell.words": [
+        "aggrid",
+        "flatpickr"
+    ]
 }

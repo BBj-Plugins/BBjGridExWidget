@@ -1,0 +1,40 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
+use com.google.gson.JsonObject
+
+class public BBjGridExWidgetFilterAGTextTest
+
+    field private BBjGridExWidgetFilterAGText Instance!
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetFilterAGText()
+    methodend
+
+    rem @Test
+    method public void testFilterNameIsSet()
+        Assert.Equals(#Instance!.getFilterName(), "agTextColumnFilter")
+    methodend
+
+    rem @Test
+    method public void testCanSetCaseSenstive()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("caseSensitive").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setCaseSensitive(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("caseSensitive").getAsBoolean() , BBjAPI.TRUE)
+    methodend
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

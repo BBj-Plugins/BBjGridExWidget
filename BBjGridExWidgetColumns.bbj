@@ -9,6 +9,7 @@ rem  */
 use java.util.Arrays
 use java.util.ArrayList
 use java.util.HashMap
+use java.util.TreeMap
 use java.util.LinkedHashMap
 use java.util.HashSet
 use java.sql.Types
@@ -18,25 +19,36 @@ use com.google.gson.JsonArray
 use com.google.gson.JsonParser
 use com.basiscomponents.db.DataField
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+rem BBjGridExWidgetFilters
+rem =========================
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterInterface
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicBoolean
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicDate
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTime
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTimestamp
+rem BBjGridExWidgetExpressions
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionNumbersFormatter
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionDatesFormatter
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionStringsFormatter
+use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionDateTimesFormatter
+rem BBjGridExWidgetRenderers
+rem =========================
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererInterface
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererBoolean
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererGroupCellRenderer
+rem BBjGridExWidgetCellEditors
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorInterface
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicText
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGLargeText
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBoolean
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicNumber
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicDate
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicTime
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicTimestamp
 REM /**
 REM  * The class holds the common props between column and column groups.
@@ -317,7 +329,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  */
-    field public BBjGridExWidgetCellEditorInterface CellEditor! = new BBjGridExWidgetCellEditorAGText()
+    field public BBjGridExWidgetCellEditorInterface CellEditor! = new BBjGridExWidgetCellEditorBasicText()
     rem /**
     rem  * Name of function to use for aggregation&#183; One of [sum,min,max,first,last]&#183;
     rem  *
@@ -503,13 +515,21 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  */
     field public BBjString DefaultNumbersMask! = null()
     rem /**
+    rem  * The default strings  mask to use&#183; by default null()
+    rem  */
+    field public BBjString DefaultStringsMask! = null()
+    rem /**
     rem  * The default dates mask to use&#183; by default <b>%Dz&#183;%Mz&#183;%Yd</b>
     rem  */
-    field public BBjString DefaultDatesMask! = "%Dz.%Mz.%Yd"
+    field public BBjString DefaultDatesMask! = "%Yd-%Mz-%Dz"
+    rem /**
+    rem  * The default dates mask to use&#183; by default <b>%Dz&#183;%Hz:%mz:%sz</b>
+    rem  */
+    field public BBjString DefaultTimesMask! = "%Hz:%mz:%sz"
     rem /**
     rem  * The default timestamps mask to use&#183; by default <b>%Dz&#183;%Mz&#183;%Yl %Hz:%mz:%sz</b>
     rem  */
-    field public BBjString DefaultTimestampsMask! = "%Dz.%Mz.%Yl %Hz:%mz:%sz"
+    field public BBjString DefaultTimestampsMask! = "%Yd-%Mz-%Dz %Hz:%mz:%sz"
     rem /**
     rem  * Icons to use inside the column instead of the grid's default icons&#183;
     rem  *
@@ -813,34 +833,62 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
         swend
     methodend
     rem /**
-    rem  * Set the mask of a column using value formatter expression.
+    rem  * Set the mask of a column in all supported components (filters , cell editors , ...)
     rem  *
-    rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
-    rem  * the column type to determine the correct value formatter (number, date, ...)
+    rem  * In case the column has no value formatter expression , then the method will create one
     rem  *
-    rem  * @param BBjString mask!: The (date or numeric) mask, BBj style
+    rem  * @param mask! - The BBj (date , numeric or string) mask
     rem  */
     method public void setColumnMask(BBjString mask!)
-        SWITCH #getType()
-            CASE Types.BIGINT
-            CASE Types.BIT
-            CASE Types.DECIMAL
-            CASE Types.DOUBLE
-            CASE Types.FLOAT
-            CASE Types.INTEGER
-            CASE Types.NUMERIC
-            CASE Types.NUMERIC
-            CASE Types.TINYINT
-                #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(mask!))
-                BREAK
-            CASE Types.DATE
-            CASE Types.TIMESTAMP
-            CASE Types.TIMESTAMP_WITH_TIMEZONE
-                #setValueFormatterExpression(new BBjGridExWidgetExpressionDatesFormatter(mask!))
-                BREAK
-            CASE default
-                BREAK
-        SWEND
+        rem update filter mask
+        filter! = #getFilter()
+        filter!.setMask(mask!,err=*next)
+        rem update cell renderer mask
+        cellRenderer! = #getCellRenderer()
+        cellRenderer!.setMask(mask!,err=*next)
+        rem update cell editor mask
+        cellEditor! = #getCellEditor()
+        cellEditor!.setMask(mask!,err=*next)
+        rem update value formatter mask
+        valueFormatter! = #getValueFormatterExpression()
+
+        if(valueFormatter! <> null())
+            valueFormatter!.setMask(mask!,err=*next)
+        else
+            SWITCH #getType()
+                CASE Types.BIGINT
+                CASE Types.TINYINT
+                CASE Types.SMALLINT
+                CASE Types.INTEGER
+                CASE Types.DECIMAL
+                CASE Types.DOUBLE
+                CASE Types.FLOAT
+                CASE Types.REAL
+                CASE Types.NUMERIC
+                    #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(mask!))
+                    BREAK
+                CASE Types.DATE
+                    #setValueFormatterExpression(new BBjGridExWidgetExpressionDateTimesFormatter(mask!))
+                    BREAK
+                CASE Types.TIME
+                CASE Types.TIME_WITH_TIMEZONE
+                    #setValueFormatterExpression(new BBjGridExWidgetExpressionDateTimesFormatter(mask!))
+                    BREAK
+                CASE Types.TIMESTAMP
+                CASE Types.TIMESTAMP_WITH_TIMEZONE
+                    #setValueFormatterExpression(new BBjGridExWidgetExpressionDateTimesFormatter(mask!))
+                    BREAK
+                CASE Types.CHAR
+                CASE Types.VARCHAR
+                CASE Types.NVARCHAR
+                CASE Types.NCHAR
+                CASE Types.LONGVARCHAR
+                CASE Types.LONGNVARCHAR
+                CASE default
+                    #setValueFormatterExpression(new BBjGridExWidgetExpressionStringsFormatter(mask!))
+                    BREAK
+            SWEND
+        FI
     methodend
     rem /**
     rem  * Set the grid icons
@@ -866,43 +914,59 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  */
     method public void setType(BBjNumber type!)
         #Type! = type!
-        REM BBjGridExWidgetCellEditorAGText
-        REM BBjGridExWidgetCellEditorAGLargeText
-        REM BBjGridExWidgetCellEditorBasicBoolean
-        REM BBjGridExWidgetCellEditorBasicNumber
-        REM BBjGridExWidgetCellEditorBasicDate
-        REM BBjGridExWidgetCellEditorBasicTimestamp
-        SWITCH type!
+        SWITCH (type!)
             CASE Types.BIGINT
-            CASE Types.BIT
+            CASE Types.TINYINT
+            CASE Types.SMALLINT
+            CASE Types.INTEGER
             CASE Types.DECIMAL
             CASE Types.DOUBLE
             CASE Types.FLOAT
-            CASE Types.INTEGER
+            CASE Types.REAL
             CASE Types.NUMERIC
-            CASE Types.NUMERIC
-            CASE Types.TINYINT
                 #setFilter(new BBjGridExWidgetFilterAGNumber())
                 #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(#getDefaultNumbersMask()))
-                #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber())
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber(#getDefaultNumbersMask()))
                 BREAK
             CASE Types.DATE
-                #setFilter(new BBjGridExWidgetFilterBasicDate())
-                #setValueFormatterExpression(new BBjGridExWidgetExpressionDatesFormatter(#getDefaultDatesMask()))
-                #setCellEditor(new BBjGridExWidgetCellEditorBasicDate())
+                #setFilter(new BBjGridExWidgetFilterBasicDate(#getDefaultDatesMask()))
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionDateTimesFormatter(#getDefaultDatesMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicDate(#getDefaultDatesMask()))
+                BREAK
+            CASE Types.TIME
+            CASE Types.TIME_WITH_TIMEZONE
+                #setFilter(new BBjGridExWidgetFilterBasicTime(#getDefaultTimesMask()))
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionDateTimesFormatter(#getDefaultTimesMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicTime(#getDefaultTimesMask()))
                 BREAK
             CASE Types.TIMESTAMP
             CASE Types.TIMESTAMP_WITH_TIMEZONE
-                #setFilter(new BBjGridExWidgetFilterBasicTimestamp())
-                #setValueFormatterExpression(new BBjGridExWidgetExpressionDatesFormatter(#getDefaultTimestampsMask()))
-                #setCellEditor(new BBjGridExWidgetCellEditorBasicTimestamp())
+                #setFilter(new BBjGridExWidgetFilterBasicTimestamp(#getDefaultTimestampsMask()))
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionDateTimesFormatter(#getDefaultTimestampsMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicTimestamp(#getDefaultTimestampsMask()))
                 BREAK
             CASE Types.BOOLEAN
+            CASE Types.BIT
                 #setFilter(new BBjGridExWidgetFilterBasicBoolean())
                 #setCellRenderer(new BBjGridExWidgetRendererBoolean())
                 #setCellEditor(new BBjGridExWidgetCellEditorBasicBoolean())
                 BREAK
+            CASE Types.CHAR
+            CASE Types.VARCHAR
+            CASE Types.NVARCHAR
+            CASE Types.NCHAR
+            CASE Types.LONGVARCHAR
+            CASE Types.LONGNVARCHAR
             CASE default
+                #setFilter(new BBjGridExWidgetFilterAGText())
+                #setValueFormatterExpression(new BBjGridExWidgetExpressionStringsFormatter(#getDefaultStringsMask()))
+
+                if(type! = Types.LONGVARCHAR OR type! = Types.LONGNVARCHAR )
+                    #setCellEditor(new BBjGridExWidgetCellEditorAGLargeText())
+                else
+                    #setCellEditor(new BBjGridExWidgetCellEditorBasicText(#getDefaultStringsMask()))
+                FI
+
                 BREAK
         SWEND
     methodend
@@ -959,7 +1023,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
 
         if(( filterEnabled! <> null() and filterEnabled! = 1) and (filter! <> null())) then
             filterParams! = filter!.getAsJsonObject()
-            column!.addProperty("filter", filter!.FILTER_NAME() ,err=*next)
+            column!.addProperty("filter", filter!.getFilterName() ,err=*next)
             column!.        add("filterParams",iff(filterParams!.entrySet().size() <> 0 , filterParams!, null() ),err=*next)
         else
             column!.addProperty("filter", 0)
@@ -969,7 +1033,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
 
         if(renderer! <> null()) then
             rendererParams! = renderer!.getAsJsonObject()
-            column!.addProperty("cellRenderer", renderer!.RENDERER_NAME(),err=*next)
+            column!.addProperty("cellRenderer", renderer!.getCellRendererName(),err=*next)
             column!.        add("cellRendererParams",iff(rendererParams!.entrySet().size() <> 0 , rendererParams! , null() ),err=*next)
         FI
 
@@ -977,7 +1041,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
 
         if(editor! <> null()) then
             editorParams! = editor!.getAsJsonObject()
-            column!.addProperty("cellEditor", editor!.CELL_EDITOR_NAME(),err=*next)
+            column!.addProperty("cellEditor", editor!.getCellEditorName(),err=*next)
             column!.        add("cellEditorParams",iff(editorParams!.entrySet().size() <> 0 , editorParams! , null() ),err=*next)
         FI
 
@@ -1071,54 +1135,66 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
     rem  * @param BBjGridExWidgetDefaultColumnDefinition defaultDefinition! The default column definition in the grid
     rem  */
     method public void update(HashMap meta!, BBjGridExWidgetDefaultColumnDefinition defaultDefinition!)
-        if(!meta!.containsKey("ColumnType"))
+        rem using a TreeMap with case-insensitive ordering.
+        rem This would avoid the need to create a lower-case version of each key
+        metaMap! = new TreeMap(String.CASE_INSENSITIVE_ORDER)
+        metaMap!.putAll(meta!)
+        
+        if(!metaMap!.containsKey("columntype"))
             methodret
         FI
-        
         rem sync with default column definition
         #setEnableFilter(defaultDefinition!.getEnableFilter(),err=*next)
-           
         rem define the column type
-        if meta!.get("ColumnType").getClass().equals(new java.lang.String().getClass()) then
-            type! = Integer.parseInt(cast(String, meta!.get("ColumnType")))
+        if metaMap!.get("columntype").getClass().equals(new java.lang.String().getClass()) then
+            type! = Integer.parseInt(cast(String, metaMap!.get("columntype")))
         else
-            type! = int(meta!.get("ColumnType"))
-        endif
+            type! = int(metaMap!.get("columntype"))
+        FI
 
-        if(meta!.containsKey("MASK")) then
-            mask! = meta!.get("MASK")
+        if(metaMap!.containsKey("mask")) then
+            mask! = metaMap!.get("mask")
             SWITCH type!
                 CASE Types.BIGINT
-                CASE Types.BIT
+                CASE Types.TINYINT
+                CASE Types.SMALLINT
+                CASE Types.INTEGER
                 CASE Types.DECIMAL
                 CASE Types.DOUBLE
                 CASE Types.FLOAT
-                CASE Types.INTEGER
+                CASE Types.REAL
                 CASE Types.NUMERIC
-                CASE Types.NUMERIC
-                CASE Types.TINYINT
-                     #setDefaultNumbersMask(mask!)
+                    #setDefaultNumbersMask(mask!)
                     BREAK
                 CASE Types.DATE
                     #setDefaultDatesMask(mask!)
+                    BREAK
+                CASE Types.TIME
+                CASE Types.TIME_WITH_TIMEZONE
+                    #setDefaultTimesMask(mask!)
                     BREAK
                 CASE Types.TIMESTAMP
                 CASE Types.TIMESTAMP_WITH_TIMEZONE
                     #setDefaultTimestampsMask(mask!)
                     BREAK
+                CASE Types.CHAR
+                CASE Types.VARCHAR
+                CASE Types.NVARCHAR
+                CASE Types.NCHAR
+                CASE Types.LONGVARCHAR
+                CASE Types.LONGNVARCHAR
                 CASE default
+                    #setDefaultStringsMask(mask!)
                     BREAK
             SWEND
-        fi
-
+        FI
         rem set the column type now
         #setType(type!)
-
-        iterator!   = meta!.entrySet().iterator()
+        iterator!   = metaMap!.entrySet().iterator()
         while iterator!.hasNext()
             next!   = iterator!.next()
-            key!   = CVS(next!.getKey(),8)
-            value! = next!.getValue()
+            key!    = next!.getKey()
+            value!  = next!.getValue()
             SWITCH (key!)
                 CASE "gw_label"
                 CASE "gw_header_name"

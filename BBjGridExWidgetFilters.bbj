@@ -6,16 +6,22 @@ rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
+use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptionsBoolean
+use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptionsDateTime
+use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererInterface
 use com.google.gson.JsonObject
+use com.google.gson.JsonArray
 rem /**
 rem  * Column Filter Public Interface
+rem  *
+rem  * @author Hyyan Abo Fakher
 rem  */
 interface public BBjGridExWidgetFilterInterface
     rem /**
     rem  * A constant which holds the client filter real name
     rem  */
 
-    method public static BBjString FILTER_NAME()
+    method public static BBjString getFilterName()
     rem /**
     rem  * Convert the filter definition to Json Object
     rem  *
@@ -23,14 +29,148 @@ interface public BBjGridExWidgetFilterInterface
     rem  */
 
     method public JsonObject getAsJsonObject()
+    rem /**
+    rem  * Compare two filters
+    rem  *
+    rem  * @param filter! - Another filter instnace to compare with
+    rem  *
+    rem  * @return bool - true when they are equal , false otherwise
+    rem  */
+
+    method public boolean equals(BBjGridExWidgetFilterInterface filter!)
 
 interfaceend
 rem /**
-rem  * The class holds the shared ag filter options between all filter types. This is the base class for all filter types
+rem  * Compare two filter components
+rem  * 
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetFilterComparator
+    rem /**
+    rem  * Compare two filters
+    rem  *
+    rem  * @param one! - First filter instance
+    rem  * @param two! - Second filter instnace
+    rem  *
+    rem  * @return boolean true when they are equal , false otherwise
+    rem  */
+    method public static boolean compare(BBjGridExWidgetFilterInterface one! , BBjGridExWidgetFilterInterface two!)
+        if(one!.getFilterName() <> two!.getFilterName())
+            methodret BBjAPI.FALSE
+        FI
+
+        methodret one!.getAsJsonObject().equals(two!.getAsJsonObject())
+    methodend
+
+classend
+rem /**
+rem  * Filter options constansts for texts filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInterface
+class public BBjGridExWidgetColumnFilterTextFilterOptions
+    rem /**
+    rem  * @return BBjString <b>Equals</b>
+    rem  */
+    method public static BBjString EQUALS()
+        methodret "equals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>notEquals</b>
+    rem  */
+    method public static BBjString NOT_EQUALS()
+        methodret "notEquals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>contains</b>
+    rem  */
+    method public static BBjString CONTAINS()
+        methodret "contains"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>notContains</b>
+    rem  */
+    method public static BBjString NOT_CONTAINS()
+        methodret "notContains"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>startsWith</b>
+    rem  */
+    method public static BBjString STARTS_WITH()
+        methodret "startsWith"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>endsWith</b>
+    rem  */
+    method public static BBjString ENDS_WITH()
+        methodret "endsWith"
+    methodend
+
+classend
+rem /**
+rem  * Filter options constansts for date/time filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetColumnFilterDateTimeFilterOptions
+    rem /**
+    rem  * @return BBjString <b>Equals</b>
+    rem  */
+    method public static BBjString EQUALS()
+        methodret "equals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>notEquals</b>
+    rem  */
+    method public static BBjString NOT_EQUALS()
+        methodret "notEquals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>greaterThan</b>
+    rem  */
+    method public static BBjString GREATER_THAN()
+        methodret "greaterThan"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>lessThan</b>
+    rem  */
+    method public static BBjString LESS_THAN()
+        methodret "lessThan"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>IN_RANGE</b>
+    rem  */
+    method public static BBjString IN_RANGE()
+        methodret "inRange"
+    methodend
+
+classend
+rem /**
+rem  * Filter options constansts for numbers filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetColumnFilterNumberFilterOptions extends BBjGridExWidgetColumnFilterDateTimeFilterOptions
+    rem /**
+    rem  * @return BBjString <b>greaterThanOrEqual</b>
+    rem  */
+    method public static BBjString GREATER_THAN_OR_EQUALS()
+        methodret "greaterThanOrEqual"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>lessThanOrEqual</b>
+    rem  */
+    method public static BBjString LESS_THAN_OR_EQUALS()
+        methodret "lessThanOrEqual"
+    methodend
+
+classend
+rem /**
+rem  * The class holds the shared ag filter options between all filter types. This is the base class for all ag filter types
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInterface
     rem /**
     rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
     rem  */
@@ -39,6 +179,10 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
     rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
     rem  */
     field public BBjNumber ClearButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
+    rem  */
+    field public BBjNumber RestButton! = 0
     rem /**
     rem  * The number of milliseconds to debounce by before applying the filter
     rem  */
@@ -50,7 +194,20 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
     rem /**
     rem  * If true, the filter will only offer Condition 1.
     rem  */
-    field public BBjNumber SuppressAndOrCondition! = 1
+    field public BBjNumber SuppressAndOrCondition! = 0
+    rem /**
+    rem  * What Filter Options to present to the user.
+    rem  * By default all supported options are presented
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterTextFilterOptions
+    rem  * @see BBjGridExWidgetColumnFilterNumberFilterOptions
+    rem  */
+    field public JsonArray FilterOptions! = new JsonArray()
+    rem /**
+    rem  * The default Filter Options to be selected.
+    rem  * By default it is Equals
+    rem  */
+    field public BBjString DefaultOption! = null()
     rem /**
     rem  * A constant which describes the NewRowsAction behavior
     rem  *
@@ -76,10 +233,19 @@ class private BBjGridExWidgetColumnFilterAG implements BBjGridExWidgetFilterInte
         json! = new JsonObject()
         json!.addProperty("applyButton" , #getApplyButton().booleanValue(),err=*next)
         json!.addProperty("clearButton" , #getClearButton().booleanValue(),err=*next)
-        json!.addProperty("debounceMs" , iff(#getApplyButton() , null() , #getDebounceMs().longValue()),err=*next)
+        json!.addProperty("resetButton" , #getRestButton().booleanValue(),err=*next)
+        json!.addProperty("debounceMs" , iff(#getApplyButton().booleanValue() , #getDebounceMs().longValue() , empty!),err=*next)
         json!.addProperty("newRowsAction" , #getNewRowsAction(),err=*next)
         json!.addProperty("suppressAndOrCondition" , #getSuppressAndOrCondition().booleanValue(),err=*next)
+        json!.addProperty("defaultOption" , #getDefaultOption(),err=*next)
+        json!.        add("filterOptions" , iff(#getFilterOptions().size() > 0 , #getFilterOptions() , empty!),err=*next)
         methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(BBjGridExWidgetFilterInterface filter!)
+        methodret BBjGridExWidgetFilterComparator.compare(#this!, filter!)
     methodend
 
 classend
@@ -96,7 +262,7 @@ class public BBjGridExWidgetFilterAGText extends BBjGridExWidgetColumnFilterAG
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString FILTER_NAME()
+    method public static BBjString getFilterName()
         methodret "agTextColumnFilter"
     methodend
     rem /**
@@ -138,7 +304,7 @@ class public BBjGridExWidgetFilterAGNumber extends BBjGridExWidgetColumnFilterAG
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString FILTER_NAME()
+    method public static BBjString getFilterName()
         methodret "agNumberColumnFilter"
     methodend
     rem /**
@@ -162,6 +328,8 @@ rem /**
 rem  * The class represents the default ag-grid date filter
 rem  *
 rem  * @author Hyyan Abo Fakher
+rem  *
+rem  * @deprecated Use BBjGridExWidgetFilterBasicDate
 rem  */
 class public BBjGridExWidgetFilterAGDate extends BBjGridExWidgetFilterAGNumber
     rem /**
@@ -169,8 +337,77 @@ class public BBjGridExWidgetFilterAGDate extends BBjGridExWidgetFilterAGNumber
     rem  *
     rem  * {@inheritDoc}
     rem  */
-    method public static BBjString FILTER_NAME()
+    method public static BBjString getFilterName()
         methodret "agDateColumnFilter"
+    methodend
+
+classend
+rem /**
+rem  * BBjGridExWidgetFilterAGSetFilter allow you to filter on set data, influenced by how filters work in Microsoft Excel
+rem  *
+rem  * <br><b><small>#Enterprise</small></b>
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetFilterAGSetFilter extends BBjGridExWidgetColumnFilterAG
+    rem /**
+    rem  * Provide a cell renderer for each value
+    rem  */
+    field public BBjGridExWidgetRendererInterface CellRenderer! = null()
+    rem /**
+    rem  * The values to display in the filter. If this is not set, then the filter will takes its values
+    rem  * from what is loaded in the table.
+    rem  * Setting it allows you to set values where the value may not be present in the list
+    rem  * (for example, if you want to show all states in America so that the user is not confused by missing states, even though states are missing from the data set in the grid)
+    rem  */
+    field public JsonArray Values! = new JsonArray()
+    rem /**
+    rem  * Set to true to have the values inside the set filter NOT refresh after values are changed inside the grid.
+    rem  */
+    field public BBjNumber SuppressSyncValuesAfterDataChange! = 0
+    rem /**
+    rem  * Set to true to stop the filter from removing values that are no longer available (like what Excel does).
+    rem  */
+    field public BBjNumber SuppressRemoveEntries! = 0
+    rem /**
+    rem  * If true, sorting will not be done on the set filter values. Use this if providing your own values and don't want them sorted as you are providing in the order you want.
+    rem  */
+    field public BBjNumber SuppressSorting! = 0
+    rem /**
+    rem  * Set to true to hide the mini filter.
+    rem  */
+    field public BBjNumber SuppressMiniFilter! = 0
+    rem /**
+    rem  * Set to true to remove the "select all" checkbox.
+    rem  */
+    field public BBjNumber SuppressSelectAll! = 0
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "agSetColumnFilter"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("suppressSyncValuesAfterDataChange" , #getSuppressSyncValuesAfterDataChange().booleanValue() , err=*next)
+        json!.addProperty("suppressRemoveEntries" , #getSuppressRemoveEntries().booleanValue() , err=*next)
+        json!.addProperty("suppressSorting" , #getSuppressSorting().booleanValue() , err=*next)
+        json!.addProperty("suppressMiniFilter" , #getSuppressMiniFilter().booleanValue() , err=*next)
+        json!.addProperty("suppressSelectAll" , #getSuppressSelectAll().booleanValue() , err=*next)
+        json!.add("values", iff(#getValues().size() > 0 , #getValues() , empty!), err=*next)
+        renderer! = #getCellRenderer()
+
+        if(renderer! <> null()) then
+            json!.addProperty("cellRenderer" , renderer!.getCellRendererName(),err=*next)
+            json!.        add("cellRendererParams" , renderer!.getAsJsonObject(),err=*next)
+        FI
+
+        methodret json!
     methodend
 
 classend
@@ -179,92 +416,124 @@ rem  * The class represents the boolean filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetFilterBasicBoolean implements BBjGridExWidgetFilterInterface
+class public BBjGridExWidgetFilterBasicBoolean extends BBjGridExWidgetOptionsBoolean implements BBjGridExWidgetFilterInterface
     rem /**
-    rem  * HTML string which defines how to render true values.
+    rem  * The value to use when when the component needs to render true values.
+    rem  * in case it is null() then we use the first item in PossibleTrueValues!
     rem  */
-    field public BBjString TrueValue! = "&#9673 True"
+    field public BBjString UsedTrueValue! = null()
     rem /**
-    rem  * HTML string which defines how to render false values
+    rem  * The value to use when when the component needs to render false values.
+    rem  * in case it is null() then we use the first item in PossibleFalseValues!
     rem  */
-    field public BBjString FalseValue! = "&#9678; False"
+    field public BBjString UsedFalseValue! = null()
     rem /**
-    rem  * HTML string which defines how to render not true of false values
+    rem  * True value translation
     rem  */
-    field public BBjString NoneValue! = "&#9677; None"
+    field public BBjString TrueValue! = "&#x2714; True"
+    rem /**
+    rem  * False value translation
+    rem  */
+    field public BBjString FalseValue! = "&#x2718; False"
+    rem /**
+    rem  * None value Translation
+    rem  */
+    field public BBjString NoneValue! = "&#8709; None"
+    rem /**
+    rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
+    rem  */
+    field public BBjNumber ApplyButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
+    rem  */
+    field public BBjNumber ClearButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
+    rem  */
+    field public BBjNumber RestButton! = 0
     rem /**
     rem  * @override
-    rem  *
-    rem  * {@inheritDoc}
     rem  */
-    method public static BBjString FILTER_NAME()
-        methodret "BasicBooleansFilter"
+    method public static BBjString getFilterName()
+        methodret "BooleanFilter"
     methodend
     rem /**
-    rem  * {@inheritDoc}
+    rem  * @override
     rem  */
     method public JsonObject getAsJsonObject()
         declare JsonObject json!
 
-        json! = new JsonObject()
-        json!.addProperty("FILTER_TRUE" , #getTrueValue(),err=*next)
-        json!.addProperty("FILTER_FAlSE" , #getFalseValue(),err=*next)
-        json!.addProperty("FILTER_NONE" , #getNoneValue(),err=*next)
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("booleanUsedTrueValue",#getUsedTrueValue(), err=*next)
+        json!.addProperty("booleanUsedFalseValue",#getUsedFalseValue(), err=*next)
+        json!.addProperty("applyButton" , #getApplyButton().booleanValue(),err=*next)
+        json!.addProperty("clearButton" , #getClearButton().booleanValue(),err=*next)
+        json!.addProperty("resetButton" , #getRestButton().booleanValue(),err=*next)
+        translation! = new JsonObject()
+        translation!.addProperty("true" , #getTrueValue(),err=*next)
+        translation!.addProperty("false" , #getFalseValue(),err=*next)
+        translation!.addProperty("reset" , #getNoneValue(),err=*next)
+        json!.        add("booleanFilterTranslation" , translation!)
         methodret json!
     methodend
-
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(BBjGridExWidgetFilterInterface filter!)
+        methodret BBjGridExWidgetFilterComparator.compare(#this!, filter!)
+    methodend
 classend
 rem /**
-rem  * The class represents the date filter
+rem  * The class represents the date tiem filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetFilterBasicDate implements BBjGridExWidgetFilterInterface
+class public BBjGridExWidgetFilterBasicDateTime extends BBjGridExWidgetOptionsDateTime implements BBjGridExWidgetFilterInterface
     rem /**
-    rem  * The Date mask for calander input
+    rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
     rem  */
-    field public BBjString Mask! = "%Y/%Mz/%Dz"
+    field public BBjNumber ApplyButton! = 0
     rem /**
-    rem  * Allow Input Editing
+    rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
     rem  */
-    field public BBjNumber AllowInput! = 1
+    field public BBjNumber ClearButton! = 0
     rem /**
-    rem  * @override
+    rem  * Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
+    rem  */
+    field public BBjNumber RestButton! = 0
+    rem /**
+    rem  * What Filter Options to present to the user.
+    rem  * By default all supported options are presented
     rem  *
-    rem  * {@inheritDoc}
+    rem  * @see BBjGridExWidgetColumnFilterDateTimeFilterOptions
     rem  */
-    method public static BBjString FILTER_NAME()
-        methodret "BasicDateTimesFilter"
+    field public JsonArray FilterOptions! = new JsonArray()
+    rem /**
+    rem  * The default Filter Options to be selected.
+    rem  * By default it is Equals
+    rem  */
+    field public BBjString DefaultOption! = null()
+    rem /**
+    rem  * If true, the filter will only offer Condition 1.
+    rem  */
+    field public BBjNumber SuppressAndOrCondition! = 0
+    rem /**
+    rem  * If true then doing 'inRange' filter option will include values equal to the start and end of the range.
+    rem  */
+    field public BBjNumber InRangeInclusive! = 1
+    rem /**
+    rem  * Construct new BBjGridExWidgetFilterBasicDateTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public BBjGridExWidgetFilterBasicDateTime(BBjString mask!)
+        #setMask(mask!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public JsonObject getAsJsonObject()
-        declare JsonObject json!
-
-        json! = new JsonObject()
-        json!.addProperty("FILTER_MASK" , #getMask(),err=*next)
-        json!.addProperty("FILTER_ALLOW_INPUT" , #getAllowInput().booleanValue(),err=*next)
-        methodret json!
-    methodend
-
-classend
-rem /**
-rem  * The class represents the timestamp filter
-rem  *
-rem  * @author Hyyan Abo Fakher
-rem  */
-class public BBjGridExWidgetFilterBasicTimestamp extends BBjGridExWidgetFilterBasicDate
-    rem /**
-    rem  * Enable/disable seconds in time picker
-    rem  */
-    field public BBjNumber EnableSeconds! = 0
-    rem /**
-    rem  * Enable/disable 24 hours mode
-    rem  */
-    field public BBjNumber Enable24H! = 0
-    method public BBjGridExWidgetFilterBasicTimestamp()
-        #setMask("%Y/%Mz/%Dz %Hz:%mz:%sz")
+    method public static BBjString getFilterName()
+        methodret "DateTimeFilter"
     methodend
     rem /**
     rem  * {@inheritDoc}
@@ -273,10 +542,85 @@ class public BBjGridExWidgetFilterBasicTimestamp extends BBjGridExWidgetFilterBa
         declare JsonObject json!
 
         json! = #super!.getAsJsonObject()
-        json!.addProperty("FILTER_ENABLE_TIME" , 1)
-        json!.addProperty("FILTER_ENABLE_SECONDS" , #getEnableSeconds().booleanValue(),err=*next)
-        json!.addProperty("FILTER_24H" , #getEnable24H().booleanValue(),err=*next)
+        json!.addProperty("applyButton" , #getApplyButton().booleanValue(),err=*next)
+        json!.addProperty("clearButton" , #getClearButton().booleanValue(),err=*next)
+        json!.addProperty("resetButton" , #getRestButton().booleanValue(),err=*next)
+        json!.addProperty("suppressAndOrCondition" , #getSuppressAndOrCondition().booleanValue(),err=*next)
+        json!.addProperty("inRangeInclusive" , #getInRangeInclusive().booleanValue(),err=*next)
+        json!.addProperty("defaultOption" , #getDefaultOption(),err=*next)
+        json!.        add("filterOptions" , iff(#getFilterOptions().size() > 0 , #getFilterOptions() , empty!),err=*next)
         methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(BBjGridExWidgetFilterInterface filter!)
+        methodret BBjGridExWidgetFilterComparator.compare(#this!, filter!)
+    methodend
+classend
+rem /**
+rem  * Aliase for BBjGridExWidgetFilterBasicDateTime
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetFilterBasicTimestamp extends BBjGridExWidgetFilterBasicDateTime
+    rem /**
+    rem  * Construct new BBjGridExWidgetFilterBasicTimestamp
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public BBjGridExWidgetFilterBasicTimestamp(BBjString mask!)
+        #super!(mask!)
+    methodend
+
+classend
+rem /**
+rem  * The class represents the date filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetFilterBasicDate extends BBjGridExWidgetFilterBasicDateTime
+    rem /**
+    rem  * Construct a new BBjGridExWidgetFilterBasicDateTime
+    rem  */
+    method public BBjGridExWidgetFilterBasicDate()
+        #setEnableTime(0)
+        #setMask("%Y/%Mz/%Dz")
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetFilterBasicDate
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public BBjGridExWidgetFilterBasicDate(BBjString mask!)
+        #super!(mask!)
+        #setEnableTime(0)
+    methodend
+
+classend
+rem /**
+rem  * The class represents the time filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetFilterBasicTime extends BBjGridExWidgetFilterBasicDateTime
+    rem /**
+    rem  * Construct a new BBjGridExWidgetFilterBasicTime
+    rem  */
+    method public BBjGridExWidgetFilterBasicTime()
+        #setEnableTime(1)
+        #setEnableCalendar(0)
+        #setMask("%Hz:%mz:%sz")
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetFilterBasicTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public BBjGridExWidgetFilterBasicTime(BBjString mask!)
+        #super!(mask!)
+        #setEnableTime(1)
+        #setEnableCalendar(0)
     methodend
 
 classend

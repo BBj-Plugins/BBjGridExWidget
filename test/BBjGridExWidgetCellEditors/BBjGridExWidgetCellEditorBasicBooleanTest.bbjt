@@ -1,0 +1,46 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBoolean
+use com.google.gson.JsonObject
+use com.google.gson.JsonObject
+use com.google.gson.JsonNull
+
+class public BBjGridExWidgetCellEditorBasicBooleanTest
+
+    field private BBjGridExWidgetCellEditorBasicBoolean Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance!  = new BBjGridExWidgetCellEditorBasicBoolean()
+    methodend
+    
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , "BooleanEditor")
+    methodend
+    
+     rem @Test
+    method public void testCansetUsedTrueValue()
+        #Instance!.setUsedTrueValue("t")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanUsedTrueValue").getAsString(),"t")
+    methodend
+    
+    rem @Test
+    method public void testCansetUsedFalseValue()
+        #Instance!.setUsedFalseValue("f")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanUsedFalseValue").getAsString(),"f")
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

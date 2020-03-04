@@ -1,0 +1,78 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use com.google.gson.JsonObject
+
+class public BBjGridExWidgetFilterAGNumberTest
+
+    field private BBjGridExWidgetFilterAGNumber Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetFilterAGNumber()
+    methodend
+
+    rem @Test
+    method public void testFilterNameIsSet()
+        Assert.Equals(#Instance!.getFilterName(), "agNumberColumnFilter")
+    methodend
+
+    rem @Test
+    method public void testCanSetInRangeInclusive()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("inRangeInclusive").getAsBoolean(), BBjAPI.TRUE)
+
+        #Instance!.setInRangeInclusive(0)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("inRangeInclusive").getAsBoolean(), BBjAPI.FALSE)
+    methodend
+
+    rem @Test
+    method public void testCanSetIncludeBlanksInEquals()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("includeBlanksInEquals").getAsBoolean(), BBjAPI.FALSE)
+
+        #Instance!.setIncludeBlanksInEquals(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("includeBlanksInEquals").getAsBoolean(), BBjAPI.TRUE)
+    methodend    
+
+    rem @Test
+    method public void testCanSetIncludeBlanksInLessThan()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("includeBlanksInLessThan").getAsBoolean(), BBjAPI.FALSE)
+
+        #Instance!.setIncludeBlanksInLessThan(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("includeBlanksInLessThan").getAsBoolean(), BBjAPI.TRUE)
+    methodend  
+    
+    rem @Test
+    method public void testCanSetIncludeBlanksInGreaterThan()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("includeBlanksInGreaterThan").getAsBoolean(), BBjAPI.FALSE)
+
+        #Instance!.setIncludeBlanksInGreaterThan(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("includeBlanksInGreaterThan").getAsBoolean(), BBjAPI.TRUE)
+    methodend     
+
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

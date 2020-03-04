@@ -535,7 +535,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
     rem  *                           By default you will never need  to change the default Template.
     rem  *                           Unless you want to do something really unusual
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!, BBjString template$)
@@ -558,7 +558,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber y! y-location
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
@@ -571,7 +571,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
     rem  *                           By default you will never need  to change the default Template.
     rem  *                           Unless you want to do something really unusual
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjChildWindow wnd!,BBjString template$)
@@ -590,7 +590,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
     rem  * @param BBjString template$ the html template to use for the grid initialization
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjChildWindow wnd!)
@@ -673,10 +673,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 switches$ = stbl("!CHROMIUM_SWITCHES",err=*next)
                 htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$,switches$)
             FI
+
             htmlview!.setOpaque(0)
             htmlview!.setNoEdge(1)
-            
-            
 
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
@@ -689,7 +688,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
             htmlview!.setText(html$)
-            
             #HTMLView!=htmlview!
         else
             #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
@@ -736,9 +734,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onInit(BBjEvent ev!)
-    
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
-
         isLicensed! = 0
 
         if (#getForceCommunityBuild() = 0) then
@@ -780,6 +776,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
             open (ch,err=*next)dateJsLocalePath$;isLocale=1
         fi
+
         if isLocale = 1 then
             read record (ch,siz=5512000)script$
             close (ch)
@@ -787,8 +784,28 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         else
             a=msgbox("Error loading library for locale "+locale$,0,"Error")
         fi
-        
-       
+
+        ch=unt
+
+        if #getDebug() = 1 then
+            if(bui) then
+                open (ch) distBase$ + "/bui/flatpickr.js"
+            else
+                open (ch) distBase$ + "/flatpickr.js"
+            fi
+        else
+            if(bui) then
+                open (ch) distBase$ + "/bui/flatpickr.min.js"
+            else
+                open (ch) distBase$ + "/flatpickr.min.js"
+            fi
+        FI
+
+        read record (ch,siz=5512000)script$
+        close (ch)
+        s$=s$+script$
+        #injectScript(s$)
+
         ch=unt
 
         if #getDebug() = 1 then
@@ -799,27 +816,19 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         read record (ch,siz=5512000)script$
         close (ch)
-        
         s$=s$+script$
         #injectScript(s$)
-        
-REM         rem could even directly call the onLoaded Method from here        
-REM         #onLoaded(null())
-
-
+        REM         rem could even directly call the onLoaded Method from here
+        REM         #onLoaded(null())
         BBjAPI().createTimer(str(#this!)+"onLoadFallback",.2,#this!,"onLoaded")
-        
     methodend
     rem /**
     rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
     rem  * callbacks
     rem  */
     method public void onLoaded(BBjEvent ev!)
-    
-    
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
         BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
-        
         #getLicenseManager().register(#this!)
         #IsReady! = BBjAPI.TRUE
         REM         if #RS! <> null() or #URL$>"" then
@@ -854,7 +863,6 @@ REM         #onLoaded(null())
             #newW! = null()
             #newH! = null()
         FI
-        
     methodend
     rem /**
     rem  * On NativeEvent

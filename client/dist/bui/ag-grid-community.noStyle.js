@@ -2723,7 +2723,7 @@ var Utils = /** @class */ (function () {
         }
     };
     Utils.getElementSize = function (el) {
-        var _a = window.getComputedStyle(el), height = _a.height, width = _a.width, paddingTop = _a.paddingTop, paddingRight = _a.paddingRight, paddingBottom = _a.paddingBottom, paddingLeft = _a.paddingLeft, marginTop = _a.marginTop, marginRight = _a.marginRight, marginBottom = _a.marginBottom, marginLeft = _a.marginLeft, boxSizing = _a.boxSizing;
+        var _a = $wnd.getComputedStyle(el), height = _a.height, width = _a.width, paddingTop = _a.paddingTop, paddingRight = _a.paddingRight, paddingBottom = _a.paddingBottom, paddingLeft = _a.paddingLeft, marginTop = _a.marginTop, marginRight = _a.marginRight, marginBottom = _a.marginBottom, marginLeft = _a.marginLeft, boxSizing = _a.boxSizing;
         return {
             height: parseFloat(height),
             width: parseFloat(width),
@@ -3747,7 +3747,7 @@ var Utils = /** @class */ (function () {
         var p;
         body.appendChild(div);
         div.setAttribute('style', prefixes.map(function (prefix) { return "-" + prefix + "-overflow-scrolling: touch"; }).concat('overflow-scrolling: touch').join(';'));
-        var computedStyle = window.getComputedStyle(div);
+        var computedStyle = $wnd.getComputedStyle(div);
         if (computedStyle.overflowScrolling === 'touch') {
             found = true;
         }
@@ -3817,7 +3817,7 @@ var Utils = /** @class */ (function () {
     };
     Utils.isBrowserEdge = function () {
         if (this.isEdge === undefined) {
-            this.isEdge = !this.isBrowserIE() && !!window.StyleMedia;
+            this.isEdge = !this.isBrowserIE() && !!$wnd.StyleMedia;
         }
         return this.isEdge;
     };
@@ -3952,8 +3952,8 @@ var Utils = /** @class */ (function () {
         if ($doc.body) {
             return $doc.body.clientWidth;
         }
-        if (window.innerHeight) {
-            return window.innerWidth;
+        if ($wnd.innerHeight) {
+            return $wnd.innerWidth;
         }
         if ($doc.documentElement && $doc.documentElement.clientWidth) {
             return $doc.documentElement.clientWidth;
@@ -3969,8 +3969,8 @@ var Utils = /** @class */ (function () {
         if ($doc.body) {
             return $doc.body.clientHeight;
         }
-        if (window.innerHeight) {
-            return window.innerHeight;
+        if ($wnd.innerHeight) {
+            return $wnd.innerHeight;
         }
         if ($doc.documentElement && $doc.documentElement.clientHeight) {
             return $doc.documentElement.clientHeight;
@@ -4257,9 +4257,9 @@ var Utils = /** @class */ (function () {
             //   function several times, but it will only execute once
             //   [before or after imposing a delay].
             //   Each time the returned function is called, the timer starts over.
-            window.clearTimeout(timeout);
+            $wnd.clearTimeout(timeout);
             // Set the new timeout
-            timeout = window.setTimeout(function () {
+            timeout = $wnd.setTimeout(function () {
                 // Inside the timeout function, clear the timeout variable
                 // which will let the next execution run when in 'immediate' mode
                 timeout = null;
@@ -4300,7 +4300,7 @@ var Utils = /** @class */ (function () {
     };
     Utils.executeAfter = function (funcs, millis) {
         if (funcs.length > 0) {
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 funcs.forEach(function (func) { return func(); });
             }, millis);
         }
@@ -5080,7 +5080,7 @@ var EventService = /** @class */ (function () {
         // set to 'true' so it will know it's already scheduled for subsequent calls.
         if (!this.scheduled) {
             // if not scheduled, schedule one
-            window.setTimeout(this.flushAsyncQueue.bind(this), 0);
+            $wnd.setTimeout(this.flushAsyncQueue.bind(this), 0);
             // mark that it is scheduled
             this.scheduled = true;
         }
@@ -6271,7 +6271,7 @@ var GridApi = /** @class */ (function () {
             var start = (new Date()).getTime();
             that.rowRenderer.redrawAfterModelUpdate();
             var endProcessing = (new Date()).getTime();
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 var endReflow = (new Date()).getTime();
                 var durationProcessing = endProcessing - start;
                 var durationReflow = endReflow - endProcessing;
@@ -6282,7 +6282,7 @@ var GridApi = /** @class */ (function () {
                 totalReflow += durationReflow;
                 if (iterationCount < count) {
                     // wait for 1s between tests
-                    window.setTimeout(doOneIteration, 1000);
+                    $wnd.setTimeout(doOneIteration, 1000);
                 }
                 else {
                     finish();
@@ -7370,7 +7370,7 @@ var BaseCreator = /** @class */ (function () {
     };
     BaseCreator.prototype.packageFile = function (data) {
         return new Blob(["\ufeff", data], {
-            type: window.navigator.msSaveOrOpenBlob ? this.getMimeType() : 'octet/stream'
+            type: $wnd.navigator.msSaveOrOpenBlob ? this.getMimeType() : 'octet/stream'
         });
     };
     return BaseCreator;
@@ -13024,7 +13024,7 @@ var RowRenderer = /** @class */ (function (_super) {
         // if we are doing angular compiling, then do digest the scope here
         if (this.gridOptionsWrapper.isAngularCompileRows()) {
             // we do it in a timeout, in case we are already in an apply
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 _this.$scope.$apply();
             }, 0);
         }
@@ -15266,10 +15266,10 @@ var CellComp = /** @class */ (function (_super) {
         utils_1._.addCssClass(element, fullName);
         utils_1._.removeCssClass(element, animationFullName);
         // then once that is applied, we remove the highlight with animation
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             utils_1._.removeCssClass(element, fullName);
             utils_1._.addCssClass(element, animationFullName);
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 // and then to leave things as we got them, we remove the animation
                 utils_1._.removeCssClass(element, animationFullName);
             }, 1000);
@@ -15709,7 +15709,7 @@ var CellComp = /** @class */ (function (_super) {
         this.beans.eventService.dispatchEvent(cellContextMenuEvent);
         if (colDef.onCellContextMenu) {
             // to make the callback async, do in a timeout
-            window.setTimeout(function () { return colDef.onCellContextMenu(cellContextMenuEvent); }, 0);
+            $wnd.setTimeout(function () { return colDef.onCellContextMenu(cellContextMenuEvent); }, 0);
         }
     };
     CellComp.prototype.createEvent = function (domEvent, eventType) {
@@ -15751,7 +15751,7 @@ var CellComp = /** @class */ (function (_super) {
         // check if colDef also wants to handle event
         if (typeof colDef.onCellDoubleClicked === 'function') {
             // to make the callback async, do in a timeout
-            window.setTimeout(function () { return colDef.onCellDoubleClicked(cellDoubleClickedEvent); }, 0);
+            $wnd.setTimeout(function () { return colDef.onCellDoubleClicked(cellDoubleClickedEvent); }, 0);
         }
         var editOnDoubleClick = !this.beans.gridOptionsWrapper.isSingleClickEdit()
             && !this.beans.gridOptionsWrapper.isSuppressClickEdit();
@@ -16189,7 +16189,7 @@ var CellComp = /** @class */ (function (_super) {
         var colDef = this.getComponentHolder();
         if (colDef.onCellClicked) {
             // to make callback async, do in a timeout
-            window.setTimeout(function () { return colDef.onCellClicked(cellClickedEvent); }, 0);
+            $wnd.setTimeout(function () { return colDef.onCellClicked(cellClickedEvent); }, 0);
         }
         var editOnSingleClick = (this.beans.gridOptionsWrapper.isSingleClickEdit() || colDef.singleClickEdit)
             && !this.beans.gridOptionsWrapper.isSuppressClickEdit();
@@ -17049,7 +17049,7 @@ var BeanStub = /** @class */ (function () {
     };
     BeanStub.prototype.dispatchEventAsync = function (event) {
         var _this = this;
-        window.setTimeout(function () { return _this.dispatchEvent(event); }, 0);
+        $wnd.setTimeout(function () { return _this.dispatchEvent(event); }, 0);
     };
     BeanStub.prototype.dispatchEvent = function (event) {
         if (this.localEventService) {
@@ -19354,8 +19354,8 @@ var DragAndDropService = /** @class */ (function () {
         // horizontally, place cursor just right of icon
         var left = event.pageX - 30;
         var usrDocument = this.gridOptionsWrapper.getDocument();
-        var windowScrollY = window.pageYOffset || usrDocument.documentElement.scrollTop;
-        var windowScrollX = window.pageXOffset || usrDocument.documentElement.scrollLeft;
+        var windowScrollY = $wnd.pageYOffset || usrDocument.documentElement.scrollTop;
+        var windowScrollX = $wnd.pageXOffset || usrDocument.documentElement.scrollLeft;
         // check ghost is not positioned outside of the browser
         if (browserWidth > 0) {
             if ((left + this.eGhost.clientWidth) > (browserWidth + windowScrollX)) {
@@ -21523,7 +21523,7 @@ var TemplateService = /** @class */ (function () {
         }
         if (this.$scope) {
             var that_1 = this;
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 that_1.$scope.$apply();
             }, 0);
         }
@@ -21638,8 +21638,8 @@ var ColumnAnimationService = /** @class */ (function () {
         if (nowFuncs.length === 0 && waitFuncs.length === 0) {
             return;
         }
-        window.setTimeout(function () { return nowFuncs.forEach(function (func) { return func(); }); }, 0);
-        window.setTimeout(function () { return waitFuncs.forEach(function (func) { return func(); }); }, 300);
+        $wnd.setTimeout(function () { return nowFuncs.forEach(function (func) { return func(); }); }, 0);
+        $wnd.setTimeout(function () { return waitFuncs.forEach(function (func) { return func(); }); }, 300);
     };
     __decorate([
         context_1.Autowired('gridOptionsWrapper'),
@@ -21809,13 +21809,13 @@ var AnimateSlideCellRenderer = /** @class */ (function (_super) {
         // having timeout of 0 allows use to skip to the next css turn,
         // so we know the previous css classes have been applied. so the
         // complex set of setTimeout below creates the animation
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             if (refreshCountCopy !== _this.refreshCount) {
                 return;
             }
             utils_1._.addCssClass(_this.ePrevious, 'ag-value-slide-out-end');
         }, 50);
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             if (refreshCountCopy !== _this.refreshCount) {
                 return;
             }
@@ -22334,7 +22334,7 @@ var FilterManager = /** @class */ (function () {
             if (filterWrapper.scope) {
                 var compiledElement = _this.$compile(eFilterGui)(filterWrapper.scope);
                 filterWrapper.compiledElement = compiledElement;
-                window.setTimeout(function () { return filterWrapper.scope.$apply(); }, 0);
+                $wnd.setTimeout(function () { return filterWrapper.scope.$apply(); }, 0);
             }
             filterWrapper.guiPromise.resolve(eFilterGui);
             _this.eventService.dispatchEvent({
@@ -22797,7 +22797,7 @@ var PopupService = /** @class */ (function () {
         };
         // if we add these listeners now, then the current mouse
         // click will be included, which we don't want
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             if (closeOnEsc) {
                 eDocument.addEventListener('keydown', hidePopupOnKeyboardEvent);
             }
@@ -25434,7 +25434,7 @@ var TouchListener = /** @class */ (function () {
         this.touching = true;
         this.moved = false;
         var touchStartCopy = this.touchStart;
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             var touchesMatch = _this.touchStart === touchStartCopy;
             if (_this.touching && touchesMatch && !_this.moved) {
                 _this.moved = true;
@@ -26440,7 +26440,7 @@ var AnimateShowChangeCellRenderer = /** @class */ (function (_super) {
         // is not the most recent and will not try to remove the delta value.
         this.refreshCount++;
         var refreshCountCopy = this.refreshCount;
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             if (refreshCountCopy === _this.refreshCount) {
                 _this.hideDeltaValue();
             }
@@ -28479,14 +28479,14 @@ var AnimationFrameService = /** @class */ (function () {
         // check for the existence of requestAnimationFrame, and if
         // it's missing, then we polyfill it with setTimeout()
         var callback = this.executeFrame.bind(this, 60);
-        if (window.requestAnimationFrame) {
-            window.requestAnimationFrame(callback);
+        if ($wnd.requestAnimationFrame) {
+            $wnd.requestAnimationFrame(callback);
         }
-        else if (window.webkitRequestAnimationFrame) {
-            window.webkitRequestAnimationFrame(callback);
+        else if ($wnd.webkitRequestAnimationFrame) {
+            $wnd.webkitRequestAnimationFrame(callback);
         }
         else {
-            window.setTimeout(callback, 0);
+            $wnd.setTimeout(callback, 0);
         }
     };
     AnimationFrameService.prototype.isQueueEmpty = function () {
@@ -28757,7 +28757,7 @@ var TooltipManager = /** @class */ (function () {
         }
         this.lastHoveredComponent = targetCmp;
         this.lastMouseEvent = e;
-        this.showTimeoutId = window.setTimeout(this.showTooltip.bind(this), delay, e);
+        this.showTimeoutId = $wnd.setTimeout(this.showTooltip.bind(this), delay, e);
     };
     TooltipManager.prototype.processMouseOut = function (e) {
         var activeComponent = this.activeComponent;
@@ -28787,7 +28787,7 @@ var TooltipManager = /** @class */ (function () {
         utils_1._.addCssClass(registeredComponent.tooltipComp.getGui(), 'ag-tooltip-hiding');
         this.lastHoveredComponent = undefined;
         this.clearTimers();
-        this.hideTimeoutId = window.setTimeout(this.hideTooltip.bind(this), this.MOUSEOUT_HIDE_TOOLTIP_TIMEOUT);
+        this.hideTimeoutId = $wnd.setTimeout(this.hideTooltip.bind(this), this.MOUSEOUT_HIDE_TOOLTIP_TIMEOUT);
     };
     TooltipManager.prototype.processMouseMove = function (e) {
         // there is a delay from the time we mouseOver a component and the time the
@@ -28838,7 +28838,7 @@ var TooltipManager = /** @class */ (function () {
                 nudgeY: 18
             });
             _this.activeComponent = _this.lastHoveredComponent;
-            _this.hideTimeoutId = window.setTimeout(_this.hideTooltip.bind(_this), _this.DEFAULT_HIDE_TOOLTIP_TIMEOUT);
+            _this.hideTimeoutId = $wnd.setTimeout(_this.hideTooltip.bind(_this), _this.DEFAULT_HIDE_TOOLTIP_TIMEOUT);
         });
     };
     TooltipManager.prototype.hideTooltip = function () {
@@ -28865,11 +28865,11 @@ var TooltipManager = /** @class */ (function () {
     TooltipManager.prototype.clearTimers = function (showOnly) {
         if (showOnly === void 0) { showOnly = false; }
         if (this.hideTimeoutId && !showOnly) {
-            window.clearTimeout(this.hideTimeoutId);
+            $wnd.clearTimeout(this.hideTimeoutId);
             this.hideTimeoutId = 0;
         }
         if (this.showTimeoutId) {
-            window.clearTimeout(this.showTimeoutId);
+            $wnd.clearTimeout(this.showTimeoutId);
             this.showTimeoutId = 0;
         }
     };
@@ -30660,13 +30660,13 @@ var Downloader = /** @class */ (function () {
     }
     Downloader.prototype.download = function (fileName, content) {
         // Internet Explorer
-        if (window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(content, fileName);
+        if ($wnd.navigator.msSaveOrOpenBlob) {
+            $wnd.navigator.msSaveOrOpenBlob(content, fileName);
         }
         else {
             // Other Browsers
             var element = $doc.createElement("a");
-            var url_1 = window.URL.createObjectURL(content);
+            var url_1 = $wnd.URL.createObjectURL(content);
             element.setAttribute("href", url_1);
             element.setAttribute("download", fileName);
             element.style.display = "none";
@@ -30677,8 +30677,8 @@ var Downloader = /** @class */ (function () {
                 view: window
             }));
             $doc.body.removeChild(element);
-            window.setTimeout(function () {
-                window.URL.revokeObjectURL(url_1);
+            $wnd.setTimeout(function () {
+                $wnd.URL.revokeObjectURL(url_1);
             }, 0);
         }
     };
@@ -33668,7 +33668,7 @@ var MoveColumnController = /** @class */ (function () {
         if (!this.movingIntervalId) {
             this.intervalCount = 0;
             this.failedMoveAttempts = 0;
-            this.movingIntervalId = window.setInterval(this.moveInterval.bind(this), 100);
+            this.movingIntervalId = $wnd.setInterval(this.moveInterval.bind(this), 100);
             if (this.needToMoveLeft) {
                 this.dragAndDropService.setGhostIcon(dragAndDropService_1.DragAndDropService.ICON_LEFT, true);
             }
@@ -33679,7 +33679,7 @@ var MoveColumnController = /** @class */ (function () {
     };
     MoveColumnController.prototype.ensureIntervalCleared = function () {
         if (this.moveInterval) {
-            window.clearInterval(this.movingIntervalId);
+            $wnd.clearInterval(this.movingIntervalId);
             this.movingIntervalId = null;
             this.dragAndDropService.setGhostIcon(dragAndDropService_1.DragAndDropService.ICON_MOVE);
         }
@@ -34085,7 +34085,7 @@ var GridPanel = /** @class */ (function (_super) {
                 return;
             }
             applyTriggered = true; // mark 'need apply' to true
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 applyTriggered = false;
                 _this.$scope.$apply();
             }, 0);
@@ -34610,17 +34610,17 @@ var GridPanel = /** @class */ (function (_super) {
             return;
         }
         if (nextTimeout === undefined) {
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 _this.sizeColumnsToFit(100);
             }, 0);
         }
         else if (nextTimeout === 100) {
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 _this.sizeColumnsToFit(500);
             }, 100);
         }
         else if (nextTimeout === 500) {
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 _this.sizeColumnsToFit(-1);
             }, 500);
         }
@@ -35752,12 +35752,12 @@ var RowDragFeature = /** @class */ (function () {
     RowDragFeature.prototype.ensureIntervalStarted = function () {
         if (!this.movingIntervalId) {
             this.intervalCount = 0;
-            this.movingIntervalId = window.setInterval(this.moveInterval.bind(this), 100);
+            this.movingIntervalId = $wnd.setInterval(this.moveInterval.bind(this), 100);
         }
     };
     RowDragFeature.prototype.ensureIntervalCleared = function () {
         if (this.moveInterval) {
-            window.clearInterval(this.movingIntervalId);
+            $wnd.clearInterval(this.movingIntervalId);
             this.movingIntervalId = null;
         }
     };
@@ -36026,7 +36026,7 @@ var ResizeObserverService = /** @class */ (function () {
         // so we add a debounce to the callback here to avoid the flashing effect.
         var debouncedCallback = utils_1._.debounce(callback, debounceDelay);
         var useBrowserResizeObserver = function () {
-            var resizeObserver = new window.ResizeObserver(debouncedCallback);
+            var resizeObserver = new $wnd.ResizeObserver(debouncedCallback);
             resizeObserver.observe(element);
             return function () { return resizeObserver.disconnect(); };
         };
@@ -36054,7 +36054,7 @@ var ResizeObserverService = /** @class */ (function () {
             return function () { return running = false; };
         };
         var suppressResize = this.gridOptionsWrapper.isSuppressBrowserResizeObserver();
-        var resizeObserverExists = !!window.ResizeObserver;
+        var resizeObserverExists = !!$wnd.ResizeObserver;
         if (resizeObserverExists && !suppressResize) {
             return useBrowserResizeObserver();
         }
@@ -38008,7 +38008,7 @@ var InfiniteBlock = /** @class */ (function (_super) {
             console.warn('ag-grid: From ag-grid 1.9.0, now the getRows takes one parameter. See the documentation for details.');
         }
         // put in timeout, to force result to be async
-        window.setTimeout(function () {
+        $wnd.setTimeout(function () {
             _this.cacheParams.datasource.getRows(params);
         }, 0);
     };
@@ -38924,7 +38924,7 @@ var ClientSideRowModel = /** @class */ (function () {
         };
         this.eventService.dispatchEvent(event);
         if (this.$scope) {
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 _this.$scope.$apply();
             }, 0);
         }
@@ -39255,7 +39255,7 @@ var ClientSideRowModel = /** @class */ (function () {
         if (!this.rowDataTransactionBatch) {
             this.rowDataTransactionBatch = [];
             var waitMillis = this.gridOptionsWrapper.getBatchUpdateWaitMillis();
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 _this.executeBatchUpdateRowData();
                 _this.rowDataTransactionBatch = null;
             }, waitMillis);
@@ -39279,7 +39279,7 @@ var ClientSideRowModel = /** @class */ (function () {
         this.commonUpdateRowData(rowNodeTrans);
         // do callbacks in next VM turn so it's async
         if (callbackFuncsBound.length > 0) {
-            window.setTimeout(function () {
+            $wnd.setTimeout(function () {
                 callbackFuncsBound.forEach(function (func) { return func(); });
             }, 0);
         }
@@ -39800,7 +39800,7 @@ var VanillaFrameworkOverrides = /** @class */ (function () {
     }
     // for Vanilla JS, we use simple timeout
     VanillaFrameworkOverrides.prototype.setTimeout = function (action, timeout) {
-        window.setTimeout(action, timeout);
+        $wnd.setTimeout(action, timeout);
     };
     // for Vanilla JS, we just add the event to the element
     VanillaFrameworkOverrides.prototype.addEventListenerOutsideAngular = function (element, type, listener, useCapture) {

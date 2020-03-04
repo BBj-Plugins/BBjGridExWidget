@@ -1,0 +1,72 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBooleanAGSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGRichSelect
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+use com.google.gson.JsonPrimitive
+
+class public BBjGridExWidgetCellEditorBasicBooleanAGSelectTest
+
+    field private BBjGridExWidgetCellEditorBasicBooleanAGSelect Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetCellEditorBasicBooleanAGSelect()
+    methodend
+
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , BBjGridExWidgetCellEditorAGSelect.getCellEditorName())
+    methodend
+        
+    rem @Test
+    method public void testValuesArrayContainsTrueFalseNoneValues()
+        Assert.Equals("Contains true value" , #Instance!.getValues().contains(new JsonPrimitive(#Instance!.getUsedTrueValue())) , BBjAPI.TRUE)
+        Assert.Equals("Contains false value" ,#Instance!.getValues().contains(new JsonPrimitive(#Instance!.getUsedFalseValue())) , BBjAPI.TRUE)
+        Assert.Equals("Contains none value" ,#Instance!.getValues().contains(new JsonPrimitive(#Instance!.getUsedNoneValue())) , BBjAPI.TRUE)
+    methodend    
+                
+    rem @Test
+    method public void testCanSetUsedTrueValue()
+        newTrue! = "my true"
+        #Instance!.setUsedTrueValue(newTrue!)
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive(#Instance!.getUsedTrueValue())) , BBjAPI.TRUE)
+        
+        #Instance!.setUsedTrueValue(null())
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive(newTrue!)) , BBjAPI.FALSE)
+    methodend
+    
+    rem @Test
+    method public void testCanSetUsedFalseValue()
+        newFalse! = "my false"
+        #Instance!.setUsedFalseValue(newFalse!)
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive(#Instance!.getUsedFalseValue())) , BBjAPI.TRUE)
+        
+        #Instance!.setUsedFalseValue(null())
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive(newFalse!)) , BBjAPI.FALSE)
+    methodend  
+    
+    rem @Test
+    method public void testCanSetUsedNoneValue()
+        newNone! = "my none"
+        #Instance!.setUsedNoneValue(newNone!)
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive(#Instance!.getUsedNoneValue())) , BBjAPI.TRUE)
+        
+        #Instance!.setUsedNoneValue(null())
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive(newNone!)) , BBjAPI.FALSE)
+    methodend   
+            
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+classend

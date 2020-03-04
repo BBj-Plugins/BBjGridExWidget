@@ -1,0 +1,69 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGLargeText
+use com.google.gson.JsonObject
+
+class public BBjGridExWidgetCellEditorAGLargeTextTest
+
+    field private BBjGridExWidgetCellEditorAGLargeText Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance!  = new BBjGridExWidgetCellEditorAGLargeText()
+    methodend
+
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , "agLargeTextCellEditor")
+    methodend
+        
+    rem @Test
+    method public void testCanSetMaxlenght()
+        declare auto JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("maxLength").getAsBigDecimal() > 0 , BBjAPI.TRUE)
+        
+        #Instance!.setMaxLength(500)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("maxLength").getAsInt()  , 500)
+    methodend
+
+    rem @Test
+    method public void testCanSetRows()
+        declare auto JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("rows").getAsInt() > 0 , BBjAPI.TRUE)
+        
+        #Instance!.setRows(500)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("rows").getAsInt()  , 500)
+    methodend
+    
+    rem @Test
+    method public void testCanSetCols()
+        declare auto JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("cols").getAsInt() > 0 , BBjAPI.TRUE)
+        
+        #Instance!.setcols(500)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("cols").getAsInt()  , 500)
+    methodend    
+        
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend
+
+
