@@ -1879,10 +1879,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         v! = new BBjVector()
         v!.addItem("balham")
         v!.addItem("balham-dark")
-        v!.addItem("dark")
-        v!.addItem("fresh")
-        v!.addItem("blue")
-        v!.addItem("bootstrap")
         v!.addItem("material")
         methodret v!
     methodend
