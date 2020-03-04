@@ -17,7 +17,7 @@ declare BBjGridExWidget grid!
 declare SqlQueryBC sbc!
 declare ResultSet rs!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Data Update Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,820,600,"Data Update Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -30,14 +30,17 @@ updateResultSet!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setNewRS")
 updateFirstRow! = wnd!.addButton(202,310,10,100,25,"Update 3rd Row")
 updateFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"updateThirdRow")
 
-removeFirstRow! = wnd!.addButton(203,410,10,100,25,"Remove 2nd Row")
-removeFirstRow!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeSecondRow")
+removeByIndex! = wnd!.addButton(203,410,10,150,25,"Remove 2nd Row By Index")
+removeByIndex!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeByIndex")
 
-clearRowsData! = wnd!.addButton(204,510,10,100,25,"Clear Rows")
+removeByKey! = wnd!.addButton(204,560,10,150,25,"Remove 2nd Row By Key")
+removeByKey!.setCallback(BBjAPI.ON_BUTTON_PUSH,"removeByKey")
+
+clearRowsData! = wnd!.addButton(205,710,10,100,25,"Clear Rows")
 clearRowsData!.setCallback(BBjAPI.ON_BUTTON_PUSH,"clearRowsData")
 
 REM init the grid
-grid! = new BBjGridExWidget(wnd!,100, 0,50,800,550)
+grid! = new BBjGridExWidget(wnd!,100, 0,50,820,550)
 grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onRowSelect")
 
 sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
@@ -50,7 +53,7 @@ rem  * Retrieve the data from the database and configure the grid
 rem  */
 fillGrid:
   rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
-  grid!.setData(rs!,"CDNUMBER")
+  grid!.setData(rs!)
 return
 
 rem /**
@@ -84,10 +87,18 @@ updateThirdRow:
 return
 
 rem /**
-rem  * Remove a specific row in the grid
+rem  * Remove a specific row in the grid by its index
 rem  */
-removeSecondRow:rem note 0-based
+removeByIndex:
     grid!.removeRow(1)
+return
+
+rem /**
+rem  * Remove a specific row in the grid by its key
+rem  */
+removeByKey:
+    key! = grid!.getRS().getItem(1).getRowKey()
+    grid!.removeRow(key!)
 return
 
 rem /**

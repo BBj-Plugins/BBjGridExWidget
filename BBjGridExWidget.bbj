@@ -1711,7 +1711,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Remove row from grid by index
+    rem  * Remove a row from grid by index
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -1729,6 +1729,19 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #executeScript("gw_removeRows('" + #GRIDID$ + "',['" + str(value!)  +"'])")
         FI
     methodend
+    rem /**
+    rem  * Remove a row from grid by key
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString key! The row key
+    rem  */
+    method public void removeRow(BBjString key!)
+        if #RS!.count() <> 0 then
+            #RS!.remove(key!)
+            #executeScript("gw_removeRows('" + #GRIDID$ + "',['" + key! +"'])")
+        FI
+    methodend    
     rem /**
     rem  * Clear row data (Empty the grid )
     rem  *
