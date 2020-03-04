@@ -893,6 +893,21 @@ class public BBjGridExWidgetOptions
     rem  */
     field public BBjNumber EnableCharts! = null()
     rem /**
+    rem  * Set to true so that the grid doesn't virtualise the columns. S
+    rem  * o if you have 100 columns, but only 10 visible due to scrolling, all 100 will always be rendered.
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  */
+    field public BBjNumber SuppressColumnVirtualisation! = null()
+    rem /**
+    rem  * Set this to true to skip the headerName when autoSize is called by default
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRerender</small></b>
+    rem  */
+    field public BBjNumber SkipHeaderOnAutoSize! = null()
+    rem /**
     rem  * Set the grid theme
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -1065,6 +1080,7 @@ class public BBjGridExWidgetOptions
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
         options!.addProperty("suppressSetColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
         options!.addProperty("deltaColumnMode",#getDeltaColumnMode().booleanValue(), err=*next)
+        options!.addProperty("skipHeaderOnAutoSize",#getSkipHeaderOnAutoSize().booleanValue(), err=*next)
         rem Sort & Filter options
         rem ===========================
         options!.addProperty("accentedSort",#getAccentedSort().booleanValue(), err=*next)
@@ -1121,6 +1137,7 @@ class public BBjGridExWidgetOptions
         options!.addProperty("alwaysShowVerticalScroll",#getAlwaysShowVerticalScroll().booleanValue(), err=*next)
         options!.addProperty("suppressScrollOnNewData",#getSuppressScrollOnNewData().booleanValue(), err=*next)
         options!.addProperty("suppressAnimationFrame",#getSuppressAnimationFrame().booleanValue(), err=*next)
+        options!.addProperty("suppressColumnVirtualisation",#getSuppressColumnVirtualisation().booleanValue(), err=*next)
         rem Rendering & Styling options
         rem ===========================
         options!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons(), null()), err=*next)

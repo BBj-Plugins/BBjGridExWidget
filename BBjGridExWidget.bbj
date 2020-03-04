@@ -1658,7 +1658,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
-    rem  * 
+    rem  *
     rem  * @deprected
     rem  */
     method public void setRowData(BBjNumber index!,DataRow row!)
@@ -1672,7 +1672,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Update row data
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param DataRow row! DataRow object which contains the update
     rem  */
     method public void setRowData(DataRow row!)
@@ -1681,7 +1681,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             parser! = new JsonParser()
             #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
         FI
-    methodend    
+    methodend
     rem /**
     rem  * Add new row
     rem  *
@@ -2115,12 +2115,142 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript(script$)
     methodend
     rem /**
-    rem  * set the grid to scroll horizontally or fit into the client area
+    rem  * Make the currently visible columns fit the screen.
+    rem  *
+    rem  * The columns will scale (growing or shrinking) to fit the available width.
+    rem  * If you don't want a particular column to be included in the auto resize,
+    rem  * then set the column setting SuppressSizeToFit=true.
+    rem  * This is helpful if, for example, you want the first column to remain fixed with, but all other columns
+    rem  * to fill the width of the table.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void setFitToGrid()
-        ret! = #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"')")
+        #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"')")
+    methodend
+    rem /**
+    rem  * Gets the grid to size the columns to the specified with
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @param BBjNumber width! the width to use to fit all columns in
+    rem  */
+    method public void setFitToGrid(BBjNumber width!)
+        #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"','" + str(width!) + "')")
+    methodend    
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param HashSet columns! A set of columns to auto size
+    rem  * @param BBjNumber skipeHeader! indicate that the header content (headerName) should not be considered when calculating
+    rem  *                               the width of the column.
+    rem  *                               You can also set this behavior to be the default by setting SkipHeaderOnAutoSize: true
+    rem  *                               in the grid options.
+    rem  */
+    method public void autoSizeColumns(HashSet columns!, BBjNumber skipHeader!)
+        columnsAsJson! = new Gson().toJson(columns!)
+        #executeScript("gw_autoSizeColumns('" + #GRIDID$ +"'," + str(skipHeader!.booleanValue()) +  "," + str(columnsAsJson!) + ")")
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param HashSet columns! A set of columns to auto size
+    rem  */    
+    method public void autoSizeColumns(HashSet columns!)
+        #autoSizeColumns(columns! , 0)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString columns! A commoa seperated list of columns to auto size
+    rem  * @param BBjNumber skipeHeader! indicate that the header content (headerName) should not be considered when calculating
+    rem  *                               the width of the column.
+    rem  *                               You can also set this behavior to be the default by setting SkipHeaderOnAutoSize: true
+    rem  *                               in the grid options.
+    rem  */
+    method public void autoSizeColumns(BBjString columns!, BBjNumber skipHeader!)
+        columnsSet! = new HashSet()
+        columnsSet!.addAll(Arrays.asList(columns!.replaceAll(" ","").split(",")))
+        #autoSizeColumns(columnsSet!,skipHeader!)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString columns! A commoa seperated list of columns to auto size
+    rem  */    
+    method public void autoSizeColumns(BBjString columns!)
+        #autoSizeColumns(columns! , 0)
+    methodend    
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber skipeHeader! indicate that the header content (headerName) should not be considered when calculating
+    rem  *                               the width of the column.
+    rem  *                               You can also set this behavior to be the default by setting SkipHeaderOnAutoSize: true
+    rem  *                               in the grid options.
+    rem  */
+    method public void autoSizeColumns(BBjNumber skipHeader!)
+        #autoSizeColumns(new HashSet(),skipHeader!)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void autoSizeColumns()
+        #autoSizeColumns(0)
     methodend
     rem /**
     rem  * setSize - set the size of the control
