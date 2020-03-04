@@ -53,7 +53,6 @@ export function gw_sizeColumnsToFit(id, width) {
   const options = gw_getGrid(id).options;
   const api = options.api;
   const columnsAPI = options.columnApi;
-  console.log(width)
   if (width) columnsAPI.sizeColumnsToFit(Number(width));
   else api.sizeColumnsToFit();
 }
@@ -67,7 +66,6 @@ export function gw_sizeColumnsToFit(id, width) {
  * @param {Array|null} [columns=null] an array of columns ids to auto size or null to auto size all columns
  */
 export function gw_autoSizeColumns(id, skipHeader = false, columns = null) {
-  console.log({ id, skipHeader, columns });
   const options = gw_getGrid(id).options;
   const columnsAPI = options.columnApi;
 
