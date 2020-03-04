@@ -1,10 +1,10 @@
 /*
-* This file is part of the BBjGridExWidget plugin.
-* (c) Basis Europe <eu@Basis.AgGridComponents.com>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the BBjGridExWidget plugin.
+ * (c) Basis Europe <eu@Basis.AgGridComponents.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 import { gw_getGrid } from "./utilities";
 import { gw_parseNode } from "events/utilities";
@@ -12,35 +12,22 @@ import { gw_parseNode } from "events/utilities";
 const { deepParseJson } = require("deep-parse-json");
 
 export function gw_setQuickFilter(id, filter) {
-  gw_getGrid(id)
-    .options
-    .api
-    .setQuickFilter(filter);
+  gw_getGrid(id).options.api.setQuickFilter(filter);
 }
 
 export function gw_expandAll(id) {
-  gw_getGrid(id)
-    .options
-    .api
-    .expandAll();
+  gw_getGrid(id).options.api.expandAll();
 }
 
 export function gw_collapseAll(id) {
-  gw_getGrid(id)
-    .options
-    .api
-    .collapseAll();
+  gw_getGrid(id).options.api.collapseAll();
 }
 
 export function gw_setVisibleRow(id, index, position) {
-  gw_getGrid(id)
-    .options
-    .api
-    .ensureIndexVisible(index, position);
+  gw_getGrid(id).options.api.ensureIndexVisible(index, position);
 }
 
 export function gw_navigateToNextRow(id, params) {
-
   const options = gw_getGrid(id).options;
   let previousCell = params.previousCellPosition;
   let suggestedNextCell = params.nextCellPosition;
@@ -53,7 +40,7 @@ export function gw_navigateToNextRow(id, params) {
   switch (params.key) {
     case KEY_DOWN:
       // set selected cell on current cell + 1
-      options.api.forEachNode((node) => {
+      options.api.forEachNode(node => {
         if (previousCell.rowIndex + 1 === node.rowIndex) {
           node.setSelected(true);
         }
@@ -61,7 +48,7 @@ export function gw_navigateToNextRow(id, params) {
       return suggestedNextCell;
     case KEY_UP:
       // set selected cell on current cell - 1
-      options.api.forEachNode((node) => {
+      options.api.forEachNode(node => {
         if (previousCell.rowIndex - 1 === node.rowIndex) {
           node.setSelected(true);
         }
@@ -75,25 +62,47 @@ export function gw_navigateToNextRow(id, params) {
   }
 }
 
+/**
+ * Returns a row based on `getRowNodeId` config defined in the grid context
+ *
+ * @param {String} id the grid's id
+ * @param {Object} data  the data row
+ */
 export function gw_getRowNodeId(id, data) {
   return data[gw_getGrid(id).options.context.getRowNodeId];
 }
 
+/**
+ * Update the grid's data set
+ *
+ * @param {String} id the grid's id
+ * @param {Object} json json object which contains the new dataset to update the grid
+ */
 export function gw_setRowsData(id, json) {
   const options = gw_getGrid(id).options;
 
   options.api.setRowData(json);
   options.rowData = json;
-  options.api.refreshClientSideRowModel('group');
 }
 
+/**
+ * Update a row on the grid
+ *
+ * @param {String} id the grid's id
+ * @param {Object} row  a row data
+ */
 export function gw_setRowData(id, row) {
   const options = gw_getGrid(id).options;
 
   options.api.updateRowData({ update: [row] });
-  options.api.refreshClientSideRowModel('group');
 }
 
+/**
+ * Remove one or more rows from the grid
+ *
+ * @param {String} id the grid's id
+ * @param {Array} indexes  an array of rows indexes or an array of rows keys
+ */
 export function gw_removeRows(id, indexes) {
   const options = gw_getGrid(id).options;
   let items = [];
@@ -103,19 +112,24 @@ export function gw_removeRows(id, indexes) {
   });
 
   options.api.updateRowData({ remove: items });
-  options.api.refreshClientSideRowModel('group');
 }
 
+/**
+ * Add a row to grid at the given index
+ *
+ * @param {String} id the grid's id
+ * @param {Number} index  The insertion position
+ * @param {Array} rows  An array of rows to add
+ */
 export function gw_addRows(id, index, rows) {
   const options = gw_getGrid(id).options;
 
   options.api.updateRowData({ add: rows, addIndex: index });
-  options.api.refreshClientSideRowModel('group');
 }
 
 /**
- * Set the height of all rows 
- * 
+ * Set the height of all rows
+ *
  * @param {String} id the grid id
  * @param {Number} height the row height
  */
@@ -129,9 +143,9 @@ export function gw_setRowsHeight(id, height) {
 }
 
 /**
- * Set the given row height 
- * 
- * @param {String} id the grid id 
+ * Set the given row height
+ *
+ * @param {String} id the grid id
  * @param {Number} index the row index
  * @param {Number} height the new height
  */
@@ -181,9 +195,9 @@ export function gw_deselectAll(id, filtered) {
 
 /**
  * Get the current selected rows
- * 
+ *
  * @param {Number} id grid's id
- * 
+ *
  * @returns {String}  selected rows as JSON
  */
 export function gw_getSelectedRows(id) {
@@ -200,9 +214,9 @@ export function gw_getSelectedRows(id) {
 
 /**
  * Get the last selected row
- * 
+ *
  * @param {Number} id grid's id
- * 
+ *
  * @returns {String} selected row as JSON
  */
 export function gw_getSelectedRow(id) {
@@ -212,5 +226,5 @@ export function gw_getSelectedRow(id) {
     return JSON.stringify(rows[rows.length - 1]);
   }
 
-  return '';
+  return "";
 }

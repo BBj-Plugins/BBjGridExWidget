@@ -805,7 +805,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         close (ch)
         s$=s$+script$
         #injectScript(s$)
-
         ch=unt
 
         if #getDebug() = 1 then
@@ -1630,7 +1629,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #setData(rs! , 1)
     methodend
     rem /**
-    rem  * Feed the grid with a new rows set
+    rem  * Feed the grid with a new ResultSet
     rem  *
     rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full rerender&#183;
     rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
@@ -1663,14 +1662,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void setRowData(BBjNumber index!,DataRow row!)
         if #RS!.count() <> 0 then
             #RS!.set(index!,row!)
-            REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
-            REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
-            if com.basiscomponents.VersionInfo.getBBjBuildID() >= "1555708604" then
-                #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,#getRowNodeId(),0) +")")
-            else
-                parser! = new JsonParser()
-                #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
-            FI
+            parser! = new JsonParser()
+            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
         FI
     methodend
     rem /**
@@ -1683,14 +1676,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void addRow(BBjNumber index!,DataRow row!)
         #RS!.add(index! , row!)
-        REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
-        REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
-        if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,#getRowNodeId(),0) +")")
-        else
-            parser! = new JsonParser()
-            #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
-        FI
+        parser! = new JsonParser()
+        #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
     rem  * Add new row
@@ -1741,7 +1728,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #RS!.remove(key!)
             #executeScript("gw_removeRows('" + #GRIDID$ + "',['" + key! +"'])")
         FI
-    methodend    
+    methodend
     rem /**
     rem  * Clear row data (Empty the grid )
     rem  *
