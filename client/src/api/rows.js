@@ -22,9 +22,18 @@ export function gw_expandAll(id) {
 export function gw_collapseAll(id) {
   gw_getGrid(id).options.api.collapseAll();
 }
-
-export function gw_setVisibleRow(id, index, position) {
-  gw_getGrid(id).options.api.ensureIndexVisible(index, position);
+/**
+ * Ensures the row index is visible by vertically scrolling the grid
+ *
+ * @param {String} id  the grid's id
+ * @param {String|Number} index the row index or key
+ * @param {String} position {'top', 'middle', 'bottom', undefined/null}
+ */
+export function gw_ensureIndexVisible(id, index, position) {
+  const api = gw_getGrid(id).options.api;
+  const rowId = api.getRowNode(index).rowIndex;
+  
+  api.ensureIndexVisible(rowId, position);
 }
 
 export function gw_navigateToNextRow(id, params) {

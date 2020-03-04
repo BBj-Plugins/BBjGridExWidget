@@ -2084,7 +2084,27 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript(script$)
     methodend
     rem /**
-    rem  * Set visible row
+    rem  * Ensures the row index is visible by vertically scrolling the grid
+    rem  *
+    rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
+    rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
+    rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString key!: the row key
+    rem  * @param BBjString position!: the scrolling position
+    rem  *
+    rem  * @see GRID_ROWPOS_TOP()
+    rem  * @see GRID_ROWPOS_MIDDLE()
+    rem  * @see GRID_ROWPOS_BOTTOM()
+    rem  */
+    method public void ensureIndexVisible(BBjString key! , BBjString position!)
+        script$="gw_ensureIndexVisible('" + #GRIDID$ + "','" + str(key!) + "','" + str(position!) +"');"
+        #executeScript(script$)
+    methodend  
+    rem /**
+    rem  * Ensures the row index is visible by vertically scrolling the grid
     rem  *
     rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
     rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
@@ -2099,10 +2119,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see GRID_ROWPOS_MIDDLE()
     rem  * @see GRID_ROWPOS_BOTTOM()
     rem  */
+    method public void ensureIndexVisible(BBjNumber index! , BBjString position!)
+        #ensureIndexVisible(str(index!),position!)
+    methodend      
+    rem /**
+    rem  * @deprecated use ensureIndexVisible instead
+    rem  */
     method public void setVisibleRow(BBjNumber index! , BBjString position!)
-        script$="gw_setVisibleRow('" + #GRIDID$ + "'," + str(index!) + ",'" + str(position!) +"');"
-        #executeScript(script$)
-    methodend
+        #ensureIndexVisible(index!,position!)
+    methodend    
     rem /**
     rem  * Set visible column&#183; Ensures the column is visible, scrolling the table if needed&#183;
     rem  *
