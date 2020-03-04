@@ -1658,6 +1658,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
+    rem  * 
+    rem  * @deprected
     rem  */
     method public void setRowData(BBjNumber index!,DataRow row!)
         if #RS!.count() <> 0 then
@@ -1666,6 +1668,20 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
         FI
     methodend
+    rem /**
+    rem  * Update row data
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @param DataRow row! DataRow object which contains the update
+    rem  */
+    method public void setRowData(DataRow row!)
+        if #RS!.count() <> 0 then
+            #getRS().set(#getRS().indexOf(row!),row!)
+            parser! = new JsonParser()
+            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
+        FI
+    methodend    
     rem /**
     rem  * Add new row
     rem  *

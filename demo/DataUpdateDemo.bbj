@@ -83,7 +83,7 @@ updateThirdRow:
   row!.setFieldValue("TITLE","My Updated Title")
   row!.setFieldValue("ARTIST","My Updated Artist")
 
-  grid!.setRowData(2 , row!)
+  grid!.setRowData(row!)
 return
 
 rem /**
