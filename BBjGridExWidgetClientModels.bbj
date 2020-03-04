@@ -78,7 +78,7 @@ class public BBjGridExWidgetClientRowModel
             rs! = rs!.filterBy(nodeId! + "=" +  #getIndex())
 
             if(rs!.count() <> 1) then
-                throw "Cannot query the selected row from the ReseultSet. [RowNodeId = " +  nodeId! + " , Index = " + #getIndex() + "]"
+                throw "Cannot query the selected row from the ResultSet. [RowNodeId = " + nodeId! + " , Index = " + #getIndex() + "]", 256
             fi
 
             methodret rs!.get(0)
