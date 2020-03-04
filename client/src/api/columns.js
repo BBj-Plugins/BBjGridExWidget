@@ -117,7 +117,7 @@ export function gw_moveColumn(id, columnId, toIndex) {
 export function gw_isShowSelectionCheckbox(param) {
   if (!param.context.showSelectionCheckbox) return false;
 
-  const columns = param.columnApi.getAllDisplayedVirtualColumns();
+  const columns = param.columnApi.getAllGridColumns();
 
   return columns[0].colDef.field === param.colDef.field;
 }
@@ -138,7 +138,7 @@ export function gw_isHeaderCheckboxSelection(param) {
 
   if (!context.showHeaderSelectionCheckbox) return false;
 
-  const columns = param.columnApi.getAllDisplayedVirtualColumns();
+  const columns = param.columnApi.getAllGridColumns();
 
   return columns[0].colDef.field === param.colDef.field;
 }
