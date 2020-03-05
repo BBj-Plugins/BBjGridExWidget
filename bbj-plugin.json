@@ -4,7 +4,7 @@
   "version": "0.100.4",
   "author": "BASIS Europe Distribution GmbH",
   "licence": "MIT",
-  "bbj_dependency": "18.10",
+  "bbj_dependency": "19.11",
   "screenshots": [
     "screenshots/main.png",
     "screenshots/other.jpg"
