@@ -1,10 +1,10 @@
 # A Grid Widget Plugin for BBj
 <p>
   <a href="http://www.basis.com/downloads">
-    <img src="https://img.shields.io/badge/BBj-v18.21-blue" alt="BBj v18.21" />
+    <img src="https://img.shields.io/badge/BBj-v18.21-blue" alt="BBj v18.11" />
   </a>
   <a href="http://www.basis.com/downloads">
-    <img src="https://img.shields.io/badge/BBj-SAM%20required-red" alt="BBj sam required" />
+    <img src="https://img.shields.io/badge/BBj-SAM%20required-orange" alt="BBj sam required" />
   </a>
   <a href="https://github.com/BBj-Plugins/BBjGridExWidget/blob/master/README.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjGridExWidget is released under the MIT license." />
