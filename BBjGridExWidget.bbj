@@ -1696,22 +1696,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
-    rem  * Add new row
+    rem  * Add new row at the beginning of the grid
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param DataRow row! The DataRow object which contains the update
     rem  */
     method public void addRow(DataRow row!)
-        #RS!.add(row!)
-        REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
-        REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
-        if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,#getRowNodeId(),0) +")")
-        else
-            parser! = new JsonParser()
-            #executeScript("gw_addRows('" + #GRIDID$ +"',null,[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
-        FI
+        #addRow(0,row!)
     methodend
     rem /**
     rem  * Remove a row from grid by index
