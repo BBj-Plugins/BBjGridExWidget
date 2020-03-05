@@ -144,7 +144,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Instance of the grid's license manager
     rem  */
     field protected static LicenseManager LicenseManager! = new LicenseManager()
-    field protected BBjHtmlView HTMLView!
+    rem /**
+    rem  * Instnace of the created HTMLView
+    rem  */
+    field public BBjHtmlView HTMLView!
     field protected Boolean IsReady! = BBjAPI.FALSE
     field protected BBjVector backlog! = new BBjVector()
     field protected BBjString URL$
@@ -718,25 +721,27 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Inject Js Script
+    rem  * Inject a js Script at the top window.
     rem  *
-    rem  * Inject a javascript file in the web view
+    rem  * If for some reason you want to inject a script in the iframe , then use the injectScript method
+    rem  * from the created internal HTML View.
+    rem  *
+    rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::injectScript</a>
     rem  *
     rem  * @param BBjString script$ the path for the javascript file
     rem  */
     method public void injectScript(BBjString script$)
-        bui = INFO(3,6)="5"
-
-        if bui then
-            #HTMLView!.injectScript(script$)
-        ELSE
-            #HTMLView!.injectScript(script$ , 1)
-        FI
+        #HTMLView!.injectScript(script$ , 1)
     methodend
     rem /**
-    rem  * Excute script
+    rem  * Excute a javascript code on the client.
     rem  *
-    rem  * Excute a javascript code on the client
+    rem  * Note that if the grid is not ready yet , then script will queued until the grid is ready then send
+    rem  * to the client.
+    rem  * If some reason you do not want this behavior , then use the executeScript method from the created internal
+    rem  * HTML View
+    rem  *
+    rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::executeScript</a>
     rem  *
     rem  * @param BBjString script$ The javascript code
     rem  *
@@ -752,102 +757,78 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret null()
     methodend
     rem /**
-    rem  * An Event listener excuted after the initial load. The method will inject all required file
-    rem  * on the client to make the grid functionable
+    rem  * An Event listener excuted after the initial load of the HTML View.
+    rem  *
+    rem  * At this phase the grid will inject all required js files in the client to make the grid functionable.
     rem  *
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onInit(BBjEvent ev!)
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
         isLicensed! = 0
-
-        if (#getForceCommunityBuild() = 0) then
-            isLicensed! = #isLicensed()
-        FI
-
-        bui = INFO(3,6)="5"
-        ch=unt
-        distBase$ = "BBjGridExWidget/client/dist"
-        rem include the grid
+        if (#getForceCommunityBuild() = 0) then isLicensed! = #isLicensed() FI
+        rem /**
+        rem  * work out the required js files
+        rem  */
+        basePath$ = "BBjGridExWidget/client/dist"
+        agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.min.noStyle.js") , (basePath$ +"/ag-grid-community.min.noStyle.js"))
+        gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
+        rem for debugging we inject the unminified files which contain source maps of the originl code
         if #getDebug() = 1 then
-            if bui then
-                gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.noStyle.js",distBase$ +"/bui/ag-grid-community.noStyle.js")
-            else
-                gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
-            FI
-        else
-            if bui then
-                gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.min.noStyle.js",distBase$ +"/bui/ag-grid-community.min.noStyle.js")
-            else
-                gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
-            FI
+            agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.noStyle.js") , (basePath$ +"/ag-grid-community.noStyle.js"))
+            gxPath$ = basePath$ + "/bbj-grid-widget.js"
         FI
-
-        open (ch)gridPath$
-        read record (ch,siz=5512000)script$
-        close (ch)
-        s$=script$
-        rem include locale files
-        locale! = #getLanguageManager().getLanguage()
-        locale$ = str(locale!.replaceAll("_","-").replaceAll("_","-"))
-        dateJsLocalePath$ = distBase$ + "/../vendor/Datejs/build/date-" + locale$ + ".js"
-        isLocale = 0
-        ch=unt
-        open (ch,err=*next)dateJsLocalePath$;isLocale=1
-
-        if isLocale = 0 then
+        rem /**
+        rem  * Bundle the content of all required scripts
+        rem  */
+        scriptsSet! = new HashSet()
+        scriptsSet!.add(agGridPath$)
+        scriptsSet!.add(gxPath$)
+        rem /**
+        rem  * This is the most important peice , without it the grid won't work in GUI
+        rem  *
+        rem  * Why?
+        rem  *
+        rem  * in BUI we use GWT ad GWT uses $wnd instead of window because compiled code is executed normally in an iframe,
+        rem  * and in this context, window will reference the iframe window while $wnd will reference the parent window.
+        rem  * The same occurs with $doc which is a reference in the iframe to the parent document.
+        rem  *
+        rem  * All JS calls we run from the grid are excuted in the $wnd context becuase all scripts
+        rem  * are inject in the top level window
+        rem  *
+        rem  * In GUI there is no iframe which means theres is no $wnd or $doc , because of this all
+        rem  * the JS code we execute from the grid will throw an error , we polyfill these two vars
+        rem  * for GUI to get around the problem
+        rem  */
+        bundle$ = "var $wnd = (typeof $wnd !== 'undefined' ? $wnd : window);"
+        bundle$ = bundle$ + "var $doc = (typeof $doc !== 'doc' ? $doc : document);"
+        rem loop over the require scripts and attach to the bundle
+        it! = scriptsSet!.iterator()
+        while(it!.hasNext())
+            path! = it!.next()
+            ch=unt
+            open (ch)path!
+            read record (ch,siz=5512000)content$
             close (ch)
-            dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
-            open (ch,err=*next)dateJsLocalePath$;isLocale=1
-        fi
-
-        if isLocale = 1 then
-            read record (ch,siz=5512000)script$
-            close (ch)
-            s$=s$+script$
-        else
-            a=msgbox("Error loading library for locale "+locale$,0,"Error")
-        fi
-
-        ch=unt
-
-        if #getDebug() = 1 then
-            if(bui) then
-                open (ch) distBase$ + "/bui/flatpickr.js"
-            else
-                open (ch) distBase$ + "/flatpickr.js"
-            fi
-        else
-            if(bui) then
-                open (ch) distBase$ + "/bui/flatpickr.min.js"
-            else
-                open (ch) distBase$ + "/flatpickr.min.js"
-            fi
-        FI
-
-        read record (ch,siz=5512000)script$
-        close (ch)
-        s$=s$+script$
-        #injectScript(s$)
-        ch=unt
-
-        if #getDebug() = 1 then
-            open (ch) distBase$ + "/bbj-grid-widget.js"
-        else
-            open (ch) distBase$ + "/bbj-grid-widget.min.js"
-        FI
-
-        read record (ch,siz=5512000)script$
-        close (ch)
-        s$=s$+script$
-        #injectScript(s$)
-        REM         rem could even directly call the onLoaded Method from here
-        REM         #onLoaded(null())
+            bundle$ = bundle$ + content$
+        wend
+        rem finally inject the built bundle
+        #injectScript(bundle$)
+        rem /**
+        rem  * Some customers reported that the second ON_PAGE_LOADED event is not fired
+        rem  * so we call the onLoaded method manually in case the event is not fired
+        rem  *
+        rem  * could even directly call the onLoaded Method from here
+        rem  * #onLoaded(null())
+        rem  */
         BBjAPI().createTimer(str(#this!)+"onLoadFallback",.2,#this!,"onLoaded")
     methodend
     rem /**
-    rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
-    rem  * callbacks
+    rem  * An Event listener excuted after the seond ON_PAGE_LOADED event
+    rem  *
+    rem  * At this phase the grid flush all enqueued scripts
+    rem  *
+    rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onLoaded(BBjEvent ev!)
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
@@ -864,14 +845,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         firstScripts$  = ""
         secondScripts$ = ""
         it! = #backlog!.iterator()
-        while it!.hasNext() = BBjAPI.TRUE
-            next!=str(it!.next())
+        while (it!.hasNext())
+            next! = str(it!.next())
 
-            if(next!.contains("gw_init"))
+            if(next!.contains("$wnd.gw_init"))
                 firstScripts$ = firstScripts$ + str(next!) + ";"
-            FI
-
-            secondScripts$ = secondScripts$ + str(next!) + ";"
+            else
+                secondScripts$ = secondScripts$ + str(next!) + ";"
+            fi
         wend
 
         #backlog! = null()
@@ -1097,7 +1078,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void setColumnWidth(BBjString field$, BBjNumber width!)
         if #hasColumn(field$) then
             #getColumn(field$).setWidth(width!)
-            #executeScript("gw_setColumnWidth('"+ #GRIDID$ + "','" + field$ + "'," + str(width!) + ");")
+            #executeScript("$wnd.gw_setColumnWidth('"+ #GRIDID$ + "','" + field$ + "'," + str(width!) + ");")
         FI
     methodend
     rem /**
@@ -1116,7 +1097,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         if #hasColumn(field$) then
             #getColumn(field$).setPinned(pin$)
-            #executeScript("gw_pinColumn('" + #GRIDID$ + "','" + field$ + "','" + pin$  + "');")
+            #executeScript("$wnd.gw_pinColumn('" + #GRIDID$ + "','" + field$ + "','" + pin$  + "');")
         FI
     methodend
     rem /**
@@ -1128,7 +1109,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber toIndex! The new column position/index
     rem  */
     method public void moveColumn(BBjString Field$, BBjNumber toIndex!)
-        script$="gw_moveColumn('" + #GRIDID$ + "','" + field$ + "'," + str(toIndex!) + ");"
+        script$="$wnd.gw_moveColumn('" + #GRIDID$ + "','" + field$ + "'," + str(toIndex!) + ");"
         #executeScript(script$)
     methodend
     rem /**
@@ -1203,7 +1184,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addRowGroupColumns(BBjString columns!)
-        #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "', 0 );")
+        #executeScript("$wnd.gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         count! = 0
@@ -1225,7 +1206,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void setRowGroupColumns(BBjString columns!)
-        #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "' , 1);")
+        #executeScript("$wnd.gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "' , 1);")
         list! = Arrays.asList(columns!.split(","))
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
@@ -1254,7 +1235,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void removeRowGroupColumns(BBjString columns!)
-        #executeScript("gw_removeRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
+        #executeScript("$wnd.gw_removeRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1274,7 +1255,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addPivotColumns(BBjString columns!)
-        #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
+        #executeScript("$wnd.gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         count! = 0
@@ -1295,7 +1276,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void setPivotColumns(BBjString columns!)
-        #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "' , 1);")
+        #executeScript("$wnd.gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "' , 1);")
         list! = Arrays.asList(columns!.split(","))
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
@@ -1322,7 +1303,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void removePivotColumns(BBjString columns!)
-        #executeScript("gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
+        #executeScript("$wnd.gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1341,7 +1322,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addValueColumns(BBjString columns!)
-        #executeScript("gw_addValueColumns('" + #GRIDID$ + "','" + columns! + "');")
+        #executeScript("$wnd.gw_addValueColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1539,7 +1520,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         gson! = new Gson()
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
-        #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
+        #executeScript("$wnd.gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
     methodend
     rem /**
     rem  * Rerender the column definitions on the client.
@@ -1551,7 +1532,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void updateColumns()
         definition! = #getAsJsonObject().get("columnDefs").getAsJsonArray()
-        #executeScript("gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
+        #executeScript("$wnd.gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
     methodend
     rem /**
     rem  * Build the column definitions from the passed resultset
@@ -1672,7 +1653,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if rs! <> NULL() AND rs!.size() > 0 then
             #RS!.createIndex(err=*next)
             data$=#RS!.toJson(BBjAPI.TRUE,#getRowNodeId())
-            #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
+            #executeScript("$wnd.gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
         FI
     methodend
     rem /**
@@ -1689,7 +1670,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if #RS!.count() <> 0 then
             #RS!.set(index!,row!)
             parser! = new JsonParser()
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
+            #executeScript("$wnd.gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
         FI
     methodend
     rem /**
@@ -1703,7 +1684,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if #RS!.count() <> 0 then
             #getRS().set(#getRS().indexOf(row!),row!)
             parser! = new JsonParser()
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
+            #executeScript("$wnd.gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
         FI
     methodend
     rem /**
@@ -1717,7 +1698,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void addRow(BBjNumber index!,DataRow row!)
         #RS!.add(index! , row!)
         parser! = new JsonParser()
-        #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
+        #executeScript("$wnd.gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
     methodend
     rem /**
     rem  * Add new row at the beginning of the grid
@@ -1745,7 +1726,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             FI
 
             #RS!.remove(index!)
-            #executeScript("gw_removeRows('" + #GRIDID$ + "',['" + str(value!)  +"'])")
+            #executeScript("$wnd.gw_removeRows('" + #GRIDID$ + "',['" + str(value!)  +"'])")
         FI
     methodend
     rem /**
@@ -1758,7 +1739,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void removeRow(BBjString key!)
         if #RS!.count() <> 0 then
             #RS!.remove(key!)
-            #executeScript("gw_removeRows('" + #GRIDID$ + "',['" + key! +"'])")
+            #executeScript("$wnd.gw_removeRows('" + #GRIDID$ + "',['" + key! +"'])")
         FI
     methodend
     rem /**
@@ -1769,7 +1750,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void clearRowsData()
         #RS! = new ResultSet()
         #RS!.createIndex(err=*next)
-        #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
+        #executeScript("$wnd.gw_setRowsData('" + #GRIDID$ + "', [])")
     methodend
     rem /**
     rem  * Apply the grid's columns , soring and filtering state
@@ -1779,13 +1760,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjGridExWidgetState state! : the state object
     rem  */
     method public void setState(BBjGridExWidgetState state!)
-        #executeScript("gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
+        #executeScript("$wnd.gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
     methodend
     rem /**
     rem  * @deprecated use #setState instead
     rem  */
     method public void setColumnState(BBjGridExWidgetState state!)
-        #executeScript("gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
+        #executeScript("$wnd.gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
     methodend
     rem /**
     rem  * Get the grid's columns , sorting and filtering state
@@ -1796,7 +1777,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public BBjGridExWidgetState getState()
         state! = new BBjGridExWidgetState()
-        json_string$ = str(#HTMLView!.executeScript("gw_getState('" + #GRIDID$ + "')"))
+        json_string$ = str(#HTMLView!.executeScript("$wnd.gw_getState('" + #GRIDID$ + "')"))
         state!.setString(json_string$)
         methodret state!
     methodend
@@ -1863,7 +1844,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param rules! : Css Rules object as json object
     rem  */
     method public void addStyle(BBjString selector$ , JsonObject rules! )
-        #executeScript("gw_setStyle('" + selector$ + "','" + rules!.toString() + "')")
+        #executeScript("$wnd.gw_setStyle('" + selector$ + "','" + rules!.toString() + "')")
     methodend
     rem /**
     rem  * Add Style block
@@ -1874,7 +1855,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param rules! : Css Rules object as string
     rem  */
     method public void addStyle(BBjString selector$ , BBjString rules! )
-        #executeScript("gw_setStyle('" + selector$ + "','" + rules! + "')")
+        #executeScript("$wnd.gw_setStyle('" + selector$ + "','" + rules! + "')")
     methodend
     rem /**
     rem  * Remove Style Block
@@ -1884,7 +1865,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param selector$ : Css Selector
     rem  */
     method public void removeStyle(BBjString selector$)
-        #executeScript("gw_removeStyle('" + selector$ + "')")
+        #executeScript("$wnd.gw_removeStyle('" + selector$ + "')")
     methodend
     rem /**
     rem  * Set the grid theme
@@ -1921,7 +1902,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @return BBjVector array of theme names
-    rem  * 
+    rem  *
     rem  * @see GRID_THEME_BALHAM()
     rem  * @see GRID_THEME_BALHAM_DARK()
     rem  * @see GRID_THEME_MATERIAL()
@@ -1949,7 +1930,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #ChartToolbarItems!.add(item!)
 
         if(#IsReady! and (#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1)) then
-            #executeScript("gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+            #executeScript("$wnd.gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
         FI
     methodend
     rem /**
@@ -1970,7 +1951,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
 
         if(#IsReady! and (#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1)) then
-            #executeScript("gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+            #executeScript("$wnd.gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
         FI
     methodend
     rem /**
@@ -1982,7 +1963,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void focus(BBjString row! , BBjString column!)
         #super!.focus()
-        script$="gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
+        script$="$wnd.gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
         #executeScript(script$)
     methodend
     rem /**
@@ -2030,7 +2011,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void selectAll()
-        script$="gw_selectAll('" + #GRIDID$ + "',0);"
+        script$="$wnd.gw_selectAll('" + #GRIDID$ + "',0);"
         #executeScript(script$)
     methodend
     rem /**
@@ -2042,7 +2023,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void selectAll(BBjNumber x!)
         #deselectAll()
-        script$="gw_selectAll('" + #GRIDID$ + "'," + str(x!) + ");"
+        script$="$wnd.gw_selectAll('" + #GRIDID$ + "'," + str(x!) + ");"
         #executeScript(script$)
     methodend
     rem /**
@@ -2051,7 +2032,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void deselectAll()
-        script$="gw_deselectAll('" + #GRIDID$ + "',0);"
+        script$="$wnd.gw_deselectAll('" + #GRIDID$ + "',0);"
         #executeScript(script$)
     methodend
     rem /**
@@ -2062,7 +2043,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBJNumber x!: 0 deselect all, 1 deselect all filtered
     rem  */
     method public void deselectAll(BBjNumber x!)
-        script$="gw_deselectAll('"+ #GRIDID$ + "'," + str(x!) + ");"
+        script$="$wnd.gw_deselectAll('"+ #GRIDID$ + "'," + str(x!) + ");"
         #executeScript(script$)
     methodend
     rem /**
@@ -2073,7 +2054,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBJNumber x!: the row index to select
     rem  */
     method public void setSelectedRow(BBjNumber x!)
-        script$="gw_setSelectedRows('" + #GRIDID$ + "',[" + str(x!) + "]);"
+        script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',[" + str(x!) + "]);"
         #executeScript(script$)
     methodend
     rem /**
@@ -2084,7 +2065,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBJNumber x!: vector of row indices to select
     rem  */
     method public void setSelectedRows(BBjVector x!)
-        script$="gw_setSelectedRows('" + #GRIDID$ + "',["
+        script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',["
         it! = x!.iterator()
         first=1
         while it!.hasNext()
@@ -2106,7 +2087,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void expandAll()
-        script$="gw_expandAll('" + #GRIDID$ +"');"
+        script$="$wnd.gw_expandAll('" + #GRIDID$ +"');"
         #executeScript(script$)
     methodend
     rem /**
@@ -2115,7 +2096,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void collapseAll()
-        script$="gw_collapseAll('" + #GRIDID$ +"');"
+        script$="$wnd.gw_collapseAll('" + #GRIDID$ +"');"
         #executeScript(script$)
     methodend
     rem /**
@@ -2135,7 +2116,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see GRID_ROWPOS_BOTTOM()
     rem  */
     method public void ensureIndexVisible(BBjString key! , BBjString position!)
-        script$="gw_ensureIndexVisible('" + #GRIDID$ + "','" + str(key!) + "','" + str(position!) +"');"
+        script$="$wnd.gw_ensureIndexVisible('" + #GRIDID$ + "','" + str(key!) + "','" + str(position!) +"');"
         #executeScript(script$)
     methodend
     rem /**
@@ -2171,7 +2152,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBJString columnid!: the column id
     rem  */
     method public void ensureColumnVisible(BBjString columnId!)
-        script$="gw_ensureColumnVisible('" + #GRIDID$ +  "','" + columnId! + "');"
+        script$="$wnd.gw_ensureColumnVisible('" + #GRIDID$ +  "','" + columnId! + "');"
         #executeScript(script$)
     methodend
     rem /**
@@ -2192,7 +2173,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void setFitToGrid()
-        #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"')")
+        #executeScript("$wnd.gw_sizeColumnsToFit('" + #GRIDID$ +"')")
     methodend
     rem /**
     rem  * Gets the grid to size the columns to the specified with
@@ -2202,7 +2183,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber width! the width to use to fit all columns in
     rem  */
     method public void setFitToGrid(BBjNumber width!)
-        #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"','" + str(width!) + "')")
+        #executeScript("$wnd.gw_sizeColumnsToFit('" + #GRIDID$ +"','" + str(width!) + "')")
     methodend
     rem /**
     rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
@@ -2224,7 +2205,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void autoSizeColumns(HashSet columns!, BBjNumber skipHeader!)
         columnsAsJson! = new Gson().toJson(columns!)
-        #executeScript("gw_autoSizeColumns('" + #GRIDID$ +"'," + str(skipHeader!.booleanValue()) +  "," + str(columnsAsJson!) + ")")
+        #executeScript("$wnd.gw_autoSizeColumns('" + #GRIDID$ +"'," + str(skipHeader!.booleanValue()) +  "," + str(columnsAsJson!) + ")")
     methodend
     rem /**
     rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
@@ -2347,7 +2328,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void setRowHeight(BBjNumber height!)
         #getOptions().setRowHeight(height!)
-        #executeScript("gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
+        #executeScript("$wnd.gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
     methodend
     rem /**
     rem  * Set the given row height
@@ -2358,7 +2339,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber height! - the new row height
     rem  */
     method public void setRowHeight(BBjNumber index!, BBjNumber height!)
-        #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
+        #executeScript("$wnd.gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
     methodend
     rem /**
     rem  * Enable / disable pivot mode
@@ -2372,7 +2353,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #getOptions().setPivotMode(mode!)
 
         if(#IsReady!) then
-            #executeScript("gw_setPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
+            #executeScript("$wnd.gw_setPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
         FI
     methodend
     rem /**
@@ -2385,7 +2366,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public BBjNumber getPivotMode()
         if(#IsReady!) then
-            mode! = #executeScript("gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
+            mode! = #executeScript("$wnd.gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
             #getOptions().setPivotMode(num(mode!))
         FI
 
@@ -2399,7 +2380,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber filter : filter as a string
     rem  */
     method public void setQuickFilter(BBjNumber filter)
-        #executeScript("gw_setQuickFilter('" + #GRIDID$ + "'," + str(filter) +")")
+        #executeScript("$wnd.gw_setQuickFilter('" + #GRIDID$ + "'," + str(filter) +")")
     methodend
     rem /**
     rem  * Perform throw columns search
@@ -2409,7 +2390,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber filter : filter as number
     rem  */
     method public void setQuickFilter(BBjString filter!)
-        #executeScript("gw_setQuickFilter('" + #GRIDID$ + "','" + filter! +"')")
+        #executeScript("$wnd.gw_setQuickFilter('" + #GRIDID$ + "','" + filter! +"')")
     methodend
     rem /**
     rem  * Start Next Cell Editing
@@ -2417,7 +2398,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToNextCell()
-        #executeScript("gw_editNextCell('"+ #GRIDID$ + "')")
+        #executeScript("$wnd.gw_editNextCell('"+ #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Move to previous cell
@@ -2425,7 +2406,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToPreviousCell()
-        #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Start Cell Editing
@@ -2436,7 +2417,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString colId!: The column ID
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "')")
+        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "')")
     methodend
     rem /**
     rem  * Start Cell Editing
@@ -2448,7 +2429,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber char$: key chars to press on editors when editors support it
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
-        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
     methodend
     rem /**
     rem  * Start Cell Editing
@@ -2460,7 +2441,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber key!: key codes to press on editors when editors support it
     rem  */
     method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
-        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
     methodend
     rem /**
     rem  * Start next Cell Editing
@@ -2468,7 +2449,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void startNextCellEditing()
-        #executeScript("gw_editNextCell('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_editNextCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Start previous Cell Editing
@@ -2476,7 +2457,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void startPreviousCellEditing()
-        #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Stop editing and accepts changes
@@ -2484,7 +2465,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void stopEditing()
-        #executeScript("gw_stopEditing('" + #GRIDID$ + "',0)")
+        #executeScript("$wnd.gw_stopEditing('" + #GRIDID$ + "',0)")
     methodend
     rem /**
     rem  * Stop Editing
@@ -2494,7 +2475,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber cancel!: 1 = discard changes, 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
-        #executeScript("gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
+        #executeScript("$wnd.gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
     methodend
     rem /**
     rem  * If true, then row group, pivot and value aggregation will be read only from the Ui&#183;
@@ -2508,7 +2489,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void setFunctionsReadOnly(BBjNumber readonly!)
         #getOptions().setFunctionsReadOnly(readonly!)
-        #executeScript("gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
+        #executeScript("$wnd.gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
     methodend
     rem /**
     rem  * Get the current selected row
@@ -2518,7 +2499,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @return BBjGridExWidgetClientRowModel The selected row if any, null() otherwise
     rem  */
     method public BBjGridExWidgetClientRowModel getSelectedRow()
-        returnedRow! = #executeScript("gw_getSelectedRow('" + #GRIDID$ + "')")
+        returnedRow! = #executeScript("$wnd.gw_getSelectedRow('" + #GRIDID$ + "')")
         if returnedRow!<>null() and len(returnedRow!) > 0 then
             methodret #getClientJsonFactory().getRow(returnedRow!)
         FI
@@ -2539,7 +2520,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             goto getSelectedRowsErr
         FI
 
-        returnedRows! = #executeScript("gw_getSelectedRows('" + #GRIDID$ + "')")
+        returnedRows! = #executeScript("$wnd.gw_getSelectedRows('" + #GRIDID$ + "')")
         if returnedRows! = null() then
             goto getSelectedRowsErr
         FI
@@ -2567,7 +2548,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rangeSelectionVector! = new BBjVector()
         rem get the range selections from the client
         rem the client will return an array of objects where each object is a range
-        rangeSelections! = #executeScript("gw_getRangeSelections('" + #GRIDID$ + "')")
+        rangeSelections! = #executeScript("$wnd.gw_getRangeSelections('" + #GRIDID$ + "')")
 
         if (rangeSelections! = "[]") then
             goto getSelectionRangeErr
@@ -2594,7 +2575,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
     rem  */
     method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjGridExWidgetClientAddRangeSelectionModel model!)
-        #executeScript("gw_addCellRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+        #executeScript("$wnd.gw_addCellRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
         methodret model!
     methodend
     rem /**
@@ -2647,7 +2628,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void clearRangeSelection()
-        #executeScript("gw_clearRangeSelection('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_clearRangeSelection('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Clear already created charts&#183;
@@ -2659,7 +2640,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @return BBjString A unique id for the created chart
     rem  */
     method public BBjString addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
-        uuid! = #executeScript("gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+        uuid! = #executeScript("$wnd.gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
         methodret str(uuid!)
     methodend
     rem /**
@@ -2671,7 +2652,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString id! the chart's id to destroy
     rem  */
     method public void clearChart(BBjString id!)
-        #executeScript("gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')")
+        #executeScript("$wnd.gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Clear already created charts&#183;
@@ -2680,7 +2661,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void clearChart()
-        #executeScript("gw_destroyChart('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_destroyChart('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Show loading overlay
@@ -2688,7 +2669,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showLoadingOverlay()
-        #executeScript("gw_showLoadingOverlay('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_showLoadingOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Show 'no rows' overlay
@@ -2696,7 +2677,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showNoRowsOverlay()
-        #executeScript("gw_showNoRowsOverlay('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_showNoRowsOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Clear all overlays
@@ -2704,7 +2685,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void hideOverlay()
-        #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
+        #executeScript("$wnd.gw_hideOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Destroy the grid
@@ -2731,7 +2712,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Send the current interests to the client
     rem  */
     method protected void updateClientWithInterests()
-        #executeScript("gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
+        #executeScript("$wnd.gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
     methodend
     rem /**
     rem  * The method will add the default chart toolbar items

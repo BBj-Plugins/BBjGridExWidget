@@ -7,10 +7,10 @@
  */
 
 import { gw_extendColumnDefinitions } from "./columns";
-import { gw_navigateToNextRow }       from "./rows";
-import { gw_getContextMenu }          from "./menus";
-import { gw_getChartToolbarItems }    from "./charts";
-import { gw_getDocument, gw_getWindow , gw_addGrid}  from "./utilities";
+import { gw_navigateToNextRow, gw_getRowNodeId } from "./rows";
+import { gw_getContextMenu } from "./menus";
+import { gw_getChartToolbarItems } from "./charts";
+import { gw_getDocument, gw_getWindow, gw_addGrid } from "./utilities";
 import {
   gw_onRowDoubleClicked,
   gw_onSelectionChanged,
@@ -27,7 +27,6 @@ const { deepParseJson } = require("deep-parse-json");
 
 export function gw_init(options, license , data) {
   
-  // set the license key for enterprise version
   if (agGrid.LicenseManager && license)
     agGrid.LicenseManager.setLicenseKey(license);
 

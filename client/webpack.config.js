@@ -79,77 +79,18 @@ module.exports = {
         to: distPath
       },
       {
-        from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.noStyle.js',
-        to: distPath + "/bui"
-      },
-      {
         from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js',
         to: distPath
-      },
-      {
-        from: __dirname + '/node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js',
-        to: distPath + "/bui"
       },
       {
         from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.noStyle.js',
         to: distPath
       },
       {
-        from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.noStyle.js',
-        to: distPath + "/bui"
-      },
-      {
         from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
         to: distPath
       },
-      {
-        from: __dirname + '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
-        to: distPath + "/bui"
-      },
-      {
-        from: __dirname + '/node_modules/flatpickr/dist/flatpickr.js',
-        to: distPath 
-      },
-      {
-        from: __dirname + '/node_modules/flatpickr/dist/flatpickr.min.js',
-        to: distPath
-      },
-      {
-        from: __dirname + '/node_modules/flatpickr/dist/flatpickr.js',
-        to: distPath + "/bui"
-      },
-      {
-        from: __dirname + '/node_modules/flatpickr/dist/flatpickr.min.js',
-        to: distPath + "/bui"
-      }
     ]),
-    new ReplaceInFileWebpackPlugin(
-      [{
-        dir: distPath + "/bui",
-        files: [
-          'ag-grid-community.noStyle.js',
-          'ag-grid-community.min.noStyle.js',
-          'ag-grid-enterprise.noStyle.js',
-          'ag-grid-enterprise.min.noStyle.js',
-          "flatpickr.js",
-          "flatpickr.min.js"
-        ],
-        rules: [
-          {
-            search: /window\.document\./g,
-            replace: '$doc.'
-          },          
-          {
-            search: /document\./g,
-            replace: '$doc.'
-          },
-          {
-            search: /window\./g,
-            replace: '$wnd.'
-          }                   
-        ]
-      }]
-    ),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false

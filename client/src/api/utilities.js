@@ -25,7 +25,7 @@ export function gw_getDocument() {
  * @return {Object} Window instance
  */
 export function gw_getWindow() {
-  return typeof $win !== 'undefined' ? $win : window;
+  return typeof $wnd !== 'undefined' ? $wnd : window;
 }
 
 /**

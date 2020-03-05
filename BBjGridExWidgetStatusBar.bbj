@@ -289,7 +289,7 @@ class public BBjGridExWidgetStatusBar
     rem  * @param BBjNumber visiblity! 0 to hide component, 1 to show component
     rem  */
     method public void setComponentVisibility(BBjGridExWidgetStatusBarComponentInterface component! , BBjNumber visiblity!)
-        #Widget!.executeScript("gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + component!.NAME() + "'," + str(visiblity!) + ")")
+        #Widget!.executeScript("$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + component!.NAME() + "'," + str(visiblity!) + ")")
     methodend
     rem /**
     rem  * Hide/show statusbar component
@@ -298,7 +298,7 @@ class public BBjGridExWidgetStatusBar
     rem  * @param BBjNumber visiblity! 0 to hide component, 1 to show component
     rem  */
     method public void setComponentVisibility(BBjString name! , BBjNumber visiblity!)
-        #Widget!.executeScript("gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + name! + "'," + str(visiblity!) + ")")
+        #Widget!.executeScript("$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + name! + "'," + str(visiblity!) + ")")
     methodend
     rem /**
     rem  * Convert the statusbar into a parsable json string

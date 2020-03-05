@@ -127,6 +127,14 @@
         "TwoGridsDemo.bbj": {
             "name": "TwoGridsDemo",
             "style": ""
+        },
+        "ColumnsSizingDemo.bbj": {
+            "name": "ColumnsSizingDemo",
+            "style": ""
+        },
+        "ColumnStateDemo.bbj": {
+            "name": "ColumnStateDemo",
+            "style": ""
         }
     },
     "cSpell.words": [
