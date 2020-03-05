@@ -1748,27 +1748,39 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
     methodend
     rem /**
-    rem  * Apply columns state
+    rem  * Apply the grid's columns , soring and filtering state
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjGridExWidgetState state! : the state object
     rem  */
-    method public void setColumnState(BBjGridExWidgetState state!)
+    method public void setState(BBjGridExWidgetState state!)
         #executeScript("gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
     methodend
     rem /**
-    rem  * Get Column state
+    rem  * @deprecated use #setState instead
+    rem  */
+    method public void setColumnState(BBjGridExWidgetState state!)
+        #executeScript("gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
+    methodend    
+    rem /**
+    rem  * Get the grid's columns , sorting and filtering state
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @returns BBjGridExWidgetState
     rem  */
-    method public BBjGridExWidgetState getColumnState()
+    method public BBjGridExWidgetState getState()
         state! = new BBjGridExWidgetState()
         json_string$ = str(#HTMLView!.executeScript("gw_getState('" + #GRIDID$ + "')"))
         state!.setString(json_string$)
         methodret state!
+    methodend
+    rem /**
+    rem  * @deprecated Use #getState() instead
+    rem  */
+    method public BBjGridExWidgetState getColumnState()
+        methodret #getState()
     methodend
     rem /**
     rem  * Get the grid sidebar instance

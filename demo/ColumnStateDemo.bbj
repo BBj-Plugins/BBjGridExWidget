@@ -70,14 +70,14 @@ resize:
 return
 
 getState:
-  state! = grid!.getColumnState()
+  state! = grid!.getState()
   clipfromstr 1,state!.toString()
 return
 
 setState:
   tb_get!.setEnabled(0)
   if state!<>null() then
-      grid!.setColumnState(state!)
+      grid!.setState(state!)
   FI
 return
 
