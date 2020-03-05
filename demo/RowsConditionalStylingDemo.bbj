@@ -47,7 +47,7 @@ main:
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
 
   grid!.setData(rs!)
-  grid!.addStyle("cost-normal" , "{""background"": ""lightgreen !important""}")
+  grid!.addStyle(".cost-normal" , "{""background"": ""lightgreen !important""}")
 return
 
 rem /**

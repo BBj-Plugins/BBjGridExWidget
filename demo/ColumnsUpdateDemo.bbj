@@ -78,7 +78,7 @@ onCDNumberUpdate:
 
     grid!.updateColumns()
     grid!.setFitToGrid()
-    grid!.addStyle("my-special-color", "{""background-color"": ""black"" , ""color"": ""#d8d8d8""}")
+    grid!.addStyle(".my-special-color", "{""background-color"": ""black"" , ""color"": ""#d8d8d8""}")
 return
 
 rem /**

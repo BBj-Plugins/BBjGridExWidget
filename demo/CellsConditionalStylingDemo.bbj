@@ -65,16 +65,16 @@ main:
   generRules! = new JsonObject()
   generRules!.addProperty("gener-rock","x == 'Rock' || x == 'Classic Rock' || x == 'Hard Rock'")
   grid!.getColumn("MUSICTYPE").setCellClassRules(generRules!)
-  grid!.addStyle("gener-rock" , "{""background"": ""#aaaaff""}")
+  grid!.addStyle(".gener-rock" , "{""background"": ""#aaaaff""}")
 
   timesRules! = new JsonObject()
   timesRules!.addProperty("time-normal","x >= 10 && x <= 50")
   timesRules!.addProperty("time-long","x >= 50 && x <= 70")
   timesRules!.addProperty("time-tooLong","x > 70")
   grid!.getColumn("PLAYINGTIME").setCellClassRules(timesRules!)
-  grid!.addStyle("time-normal" , "{""background"": ""lightgreen""}")
-  grid!.addStyle("time-long" , "{""background"": ""lightsalmon""}")
-  grid!.addStyle("time-tooLong" , "{""background"": ""lightcoral""}")
+  grid!.addStyle(".time-normal" , "{""background"": ""lightgreen""}")
+  grid!.addStyle(".time-long" , "{""background"": ""lightsalmon""}")
+  grid!.addStyle(".time-tooLong" , "{""background"": ""lightcoral""}")
 
   rem The second parameter tells the grid to index the rows using the CDNUMBER column
   grid!.setData(rs!,"CDNUMBER")

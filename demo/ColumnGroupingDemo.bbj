@@ -50,7 +50,7 @@ main:
   groupStyle!.addProperty("color","white")
   groupStyle!.addProperty("font-weight","bolder")
   groupStyle!.addProperty("border-bottom","3px solid black")
-  grid!.addStyle("my-group-class" , groupStyle!)
+  grid!.addStyle(".my-group-class" , groupStyle!)
 
   group! = new BBjVector()
   group!.addItem("CDNUMBER")

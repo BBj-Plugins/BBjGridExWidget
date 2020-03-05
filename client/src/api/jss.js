@@ -10,18 +10,6 @@ import 'expose-loader?jss!jss/jss.js';
 import {gw_getDocument} from "./utilities";
 
 /**
- * Formate the css selector 
- * 
- * Check if the css selector starts with dot , if not add one and return the 
- * formatted name 
- * 
- * @param {*} selector 
- */
-function formatSelector(selector){
-  return selector.startsWith(".") ? selector : `.${selector}`;
-}
-
-/**
  * Add new style 
  * 
  * Add new style to the document 
@@ -30,7 +18,7 @@ function formatSelector(selector){
  * @param {String} rules Json string for an array of rules
  */
 export function gw_setStyle(selector, rules) {
-  jss.forDocument(gw_getDocument()).set(formatSelector(selector), JSON.parse(rules));
+  jss.forDocument(gw_getDocument()).set(selector, JSON.parse(rules));
 }
 
 /**
@@ -41,5 +29,5 @@ export function gw_setStyle(selector, rules) {
  * @param {String} selector css selector
  */
 export function gw_removeStyle(selector) {
-  jss.forDocument(gw_getDocument()).remove(formatSelector(selector));
+  jss.forDocument(gw_getDocument()).remove(selector);
 }
