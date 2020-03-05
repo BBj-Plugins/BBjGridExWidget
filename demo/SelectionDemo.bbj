@@ -184,7 +184,7 @@ onSelectionInputButton:
     grid!.setSelectedRow(sel)
 
     rem now make sure this row is visible in the middle of the grid
-    grid!.setVisibleRow(sel,grid!.GRID_ROWPOS_MIDDLE())
+    grid!.ensureIndexVisible(sel,grid!.GRID_ROWPOS_MIDDLE())
 return
 
 onMultiSelectionInput:
@@ -205,7 +205,7 @@ onMultiSelectionInput:
 
     if (s!.size() > 0) then
         rem now make sure the first selected row is visible at the top of the grid
-        grid!.setVisibleRow(s!.getItem(0),grid!.GRID_ROWPOS_TOP())
+        grid!.ensureIndexVisible(s!.getItem(0),grid!.GRID_ROWPOS_TOP())
     fi
 return
 
