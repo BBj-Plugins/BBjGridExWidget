@@ -62,7 +62,7 @@ autoGroupDef!.setWidth(500)
 autoGroupDef!.getCellRenderer().setInnerRenderer(new BBjGridExWidgetRendererCustomHTML(template!))
 
 grid!.getSidebar().setHiddenByDefault(1)
-grid!.setTheme("balham-dark")
+grid!.setTheme(grid!.GRID_THEME_BALHAM_DARK())
 
 grid!.setCallback(grid!.ON_GRID_CELL_DOUBLE_CLICK(),"onSelectionEvent")
 

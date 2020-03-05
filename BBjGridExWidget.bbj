@@ -429,6 +429,30 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret "chartDownload"
     methodend
     rem /**
+    rem  * Constant value which defines that balham theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_BALHAM()
+        methodret "balham"
+    methodend
+    rem /**
+    rem  * Constant value which defines that balham dark theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_BALHAM_DARK()
+        methodret "balham-dark"
+    methodend
+    rem /**
+    rem  * Constant value which defines tha tmaterial theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_MATERIAL()
+        methodret "material"
+    methodend
+    rem /**
     rem  * Make Hex Color
     rem  *
     rem  * Convert the given BBjColor to a hex color string
@@ -1762,7 +1786,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void setColumnState(BBjGridExWidgetState state!)
         #executeScript("gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
-    methodend    
+    methodend
     rem /**
     rem  * Get the grid's columns , sorting and filtering state
     rem  *
@@ -1871,6 +1895,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString theme$
     rem  *
     rem  * @see getThemes()
+    rem  * @see GRID_THEME_BALHAM()
+    rem  * @see GRID_THEME_BALHAM_DARK()
+    rem  * @see GRID_THEME_MATERIAL()
     rem  */
     method public void setTheme(BBjString theme$)
         #getOptions().setTheme(theme$)
@@ -1894,12 +1921,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @return BBjVector array of theme names
+    rem  * 
+    rem  * @see GRID_THEME_BALHAM()
+    rem  * @see GRID_THEME_BALHAM_DARK()
+    rem  * @see GRID_THEME_MATERIAL()
     rem  */
     method public BBjVector getThemes()
         v! = new BBjVector()
-        v!.addItem("balham")
-        v!.addItem("balham-dark")
-        v!.addItem("material")
+        v!.addItem(#GRID_THEME_BALHAM())
+        v!.addItem(#GRID_THEME_BALHAM_DARK())
+        v!.addItem(#GRID_THEME_MATERIAL())
         methodret v!
     methodend
     rem /**
