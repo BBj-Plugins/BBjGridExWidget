@@ -31,9 +31,9 @@ export function gw_collapseAll(id) {
  */
 export function gw_ensureIndexVisible(id, index, position) {
   const api = gw_getGrid(id).options.api;
-  const rowId = api.getRowNode(index).rowIndex;
+  const node = api.getRowNode(index);
   
-  api.ensureIndexVisible(rowId, position);
+  api.ensureIndexVisible(node ? node.rowIndex : Number(index), position);
 }
 
 export function gw_navigateToNextRow(id, params) {
