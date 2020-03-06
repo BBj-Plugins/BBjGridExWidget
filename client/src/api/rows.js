@@ -145,29 +145,32 @@ export function gw_addRows(id, index, rows) {
  */
 export function gw_setRowsHeight(id, height) {
   const options = gw_getGrid(id).options;
+  const api =  options.api;
 
-  options.api.forEachNode(row => {
+  api.forEachNode(row => {
     row.setRowHeight(height);
   });
-  options.api.onRowHeightChanged();
+  
+  api.onRowHeightChanged();
 }
 
 /**
  * Set the given row height
  *
  * @param {String} id the grid id
- * @param {Number} index the row index
+ * @param {Number|String} index the row index or key
  * @param {Number} height the new height
  */
 export function gw_setRowHeight(id, index, height) {
   const options = gw_getGrid(id).options;
-  const row = options.api.getDisplayedRowAtIndex(index);
+  const api = options.api;
+  const row = api.getRowNode(index) || api.getDisplayedRowAtIndex(index);
 
   if (row) {
     row.setRowHeight(height);
     options.api.onRowHeightChanged();
   } else {
-    console.warn(`Failed to set height for row ${index}. Row can not be found`);
+    console.warn(`Failed to set height for row ${index}. Row cannot be found`);
   }
 }
 

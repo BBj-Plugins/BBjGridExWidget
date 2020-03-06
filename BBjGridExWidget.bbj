@@ -2056,7 +2056,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void setSelectedRow(BBjString key!)
         script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',['" + str(key!) + "']);"
         #executeScript(script$)
-    methodend    
+    methodend
     rem /**
     rem  * Select a row by its index
     rem  *
@@ -2065,8 +2065,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber x!: the row index to select
     rem  */
     method public void setSelectedRow(BBjNumber index!)
-       #setSelectedRow(str(index!))
-    methodend    
+        #setSelectedRow(str(index!))
+    methodend
     rem /**
     rem  * Select verctor of rows.
     rem  * The vector can contain a mix of row indices and row keys
@@ -2346,11 +2346,22 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
+    rem  * @param BBjString key! - the row key
+    rem  * @param BBjNumber height! - the new row height
+    rem  */
+    method public void setRowHeight(BBjString key!, BBjNumber height!)
+        #executeScript("$wnd.gw_setRowHeight('" + #GRIDID$ + "','" + str(key!) + "'," + str(height!) + ")")
+    methodend
+    rem /**
+    rem  * Set the given row height
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
     rem  * @param BBjNumber index! - the row index
     rem  * @param BBjNumber height! - the new row height
     rem  */
     method public void setRowHeight(BBjNumber index!, BBjNumber height!)
-        #executeScript("$wnd.gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
+        #setRowHeight(str(index!) , height!)
     methodend
     rem /**
     rem  * Enable / disable pivot mode
