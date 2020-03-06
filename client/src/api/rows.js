@@ -32,7 +32,7 @@ export function gw_collapseAll(id) {
 export function gw_ensureIndexVisible(id, index, position) {
   const api = gw_getGrid(id).options.api;
   const node = api.getRowNode(index);
-  
+
   api.ensureIndexVisible(node ? node.rowIndex : Number(index), position);
 }
 
@@ -170,16 +170,28 @@ export function gw_setRowHeight(id, index, height) {
   }
 }
 
+/**
+ * Select row or more based on the row id or index
+ *
+ * @param {String} id the grid's id
+ * @param {Array} rows an array of row keys and indexes to select
+ */
 export function gw_setSelectedRows(id, rows) {
+  console.log(id, rows);
   const options = gw_getGrid(id).options;
+  const api = options.api;
 
-  options.api.forEachNodeAfterFilterAndSort(node => {
-    if (rows.indexOf(node.rowIndex) > -1) {
+  api.forEachNodeAfterFilterAndSort(node => {
+    if (
+      rows.indexOf(String(node.rowIndex)) > -1 ||
+      rows.indexOf(String(node.id)) > -1
+    ) {
       node.setSelected(true);
       node.expanded = true;
     }
   });
-  options.api.onGroupExpandedOrCollapsed();
+
+  api.onGroupExpandedOrCollapsed();
 }
 
 export function gw_selectAll(id, filtered) {

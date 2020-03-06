@@ -2047,22 +2047,33 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript(script$)
     methodend
     rem /**
-    rem  * Select a row
+    rem  * Select a row by its key
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBJNumber x!: the row index to select
+    rem  * @param BBjString x!: the row key to select
     rem  */
-    method public void setSelectedRow(BBjNumber x!)
-        script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',[" + str(x!) + "]);"
+    method public void setSelectedRow(BBjString key!)
+        script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',['" + str(key!) + "']);"
         #executeScript(script$)
-    methodend
+    methodend    
     rem /**
-    rem  * Select verctor of rows
+    rem  * Select a row by its index
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBJNumber x!: vector of row indices to select
+    rem  * @param BBjNumber x!: the row index to select
+    rem  */
+    method public void setSelectedRow(BBjNumber index!)
+       #setSelectedRow(str(index!))
+    methodend    
+    rem /**
+    rem  * Select verctor of rows.
+    rem  * The vector can contain a mix of row indices and row keys
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBJNumber x!: vector of row indices and row keys to select
     rem  */
     method public void setSelectedRows(BBjVector x!)
         script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',["
@@ -2075,7 +2086,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                 script$=script$+","
             FI
 
-            script$=script$+str(it!.next())
+            script$ = script$ + "'" + str(it!.next()) + "'"
         wend
 
         script$=script$+"]);"
