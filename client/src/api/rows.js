@@ -178,7 +178,6 @@ export function gw_setRowHeight(id, index, height) {
  * @param {Array} rows an array of row keys and indexes to select
  */
 export function gw_setSelectedRows(id, rows) {
-  console.log(id, rows);
   const options = gw_getGrid(id).options;
   const api = options.api;
 
