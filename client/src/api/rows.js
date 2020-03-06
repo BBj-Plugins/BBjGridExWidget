@@ -33,7 +33,8 @@ export function gw_ensureIndexVisible(id, index, position) {
   const api = gw_getGrid(id).options.api;
   const node = api.getRowNode(index);
 
-  api.ensureIndexVisible(node ? node.rowIndex : Number(index), position);
+  if (node) api.ensureNodeVisible(node, position);
+  else api.ensureIndexVisible(Number(index), position);
 }
 
 export function gw_navigateToNextRow(id, params) {
