@@ -2431,39 +2431,74 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("$wnd.gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Start Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjNumber key!: The row key
     rem  * @param BBjString colId!: The column ID
     rem  */
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "')")
+    method public void setStartCellEditing(BBjString key! , BBjString colId$)
+        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "','"+ STR(key!)+ "','" + colId$ + "')")
     methodend
     rem /**
-    rem  * Start Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber row!: The row number
-    rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber char$: key chars to press on editors when editors support it
+    rem  * @param BBjNumber index!: The row index
+    rem  * @param BBjString colId!: The column ID
     rem  */
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
-        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+    method public void setStartCellEditing(BBjNumber index! , BBjString colId$)
+        #setStartCellEditing(str(index!), colId$)
     methodend
     rem /**
-    rem  * Start Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjNumber key!: The row key
     rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber key!: key codes to press on editors when editors support it
+    rem  * @param BBjNumber char$: key chars to press on editor when editor supports it
     rem  */
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
-        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+    method public void setStartCellEditing(BBjString key!, BBjString colId$, BBjString char$)
+        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "','"+ STR(key!)+ "','" + colId$ + "','','" + char$ +"')")
+    methodend
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index!: The row index
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber char$: key chars to press on editor when editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjNumber index!, BBjString colId$, BBjString char$)
+        #setStartCellEditing(str(index!),colId$,char$)
+    methodend
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber key!: The row key
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber keyPress!: key codes to press on the editor when the editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjString key!, BBjString colId$, BBjNumber keyPress!)
+        #executeScript("$wnd.gw_startEditingCell('" + #GRIDID$ + "','"+ STR(key!)+ "','" + colId$ + "','" + STR(keyPress!)+ "')")
+    methodend
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index!: The row index
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber keyPress!: key codes to press on the editor when the editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjNumber index!, BBjString colId$, BBjNumber keyPress!)
+        #setStartCellEditing(str(index!),colId$,keyPress!)
     methodend
     rem /**
     rem  * Start next Cell Editing

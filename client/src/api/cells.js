@@ -15,17 +15,19 @@ const { deepParseJson } = require("deep-parse-json");
  * Start cell editing
  * 
  * @param {String} id The grid's id 
- * @param {String|number} row The row index
+ * @param {String|number} row The row index or key
  * @param {String} colKey The column's key
  * @param {String|Number} key  Key press
  * @param {String} char 
  */
 export function gw_startEditingCell(id, row, colKey, key, char) {
   const options = gw_getGrid(id).options;
+  const api = options.api;
+  const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row);
 
-  options.api.setFocusedCell(Number(row), colKey);
+  options.api.setFocusedCell(node.rowIndex, colKey);
   options.api.startEditingCell({
-    rowIndex: Number(row),
+    rowIndex: node.rowIndex,
     colKey: colKey,
     keyPress: Number(key),
     charPress: char
