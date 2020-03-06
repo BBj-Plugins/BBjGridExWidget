@@ -26,7 +26,7 @@ class public BBjGridExWidgetClientRowModel
     rem /**
     rem  * The row index
     rem  */
-    field public BBjString Index!
+    field public BBjNumber Index!
     rem /**
     rem  * The row child index
     rem  */
@@ -73,18 +73,19 @@ class public BBjGridExWidgetClientRowModel
         nodeId! = #getWidget().getRowNodeId()
         rs! = #getWidget().getRS()
 
+        rem in case the RowNodeId is a column in the resultset
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
-            rs! = rs!.filterBy(nodeId! + "=" +  #getIndex())
+            rs! = rs!.filterBy(nodeId! + "=" +  str(#getId()))
 
             if(rs!.count() <> 1) then
-                throw "Cannot query the selected row from the ResultSet. [RowNodeId = " + nodeId! + " , Index = " + #getIndex() + "]", 256
+                throw "Cannot query the selected row from the ResultSet. [RowNodeId = " + nodeId! + " , Index = " + str(#getIndex()) + "]", 256
             fi
 
             methodret rs!.get(0)
         fi
 
-        methodret rs!.get(#getIndex())
+        methodret rs!.get(#getId())
     methodend
     rem /**
     rem  * Get the row data as JsonObject

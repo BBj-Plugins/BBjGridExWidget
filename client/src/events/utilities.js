@@ -69,12 +69,12 @@ export function gw_parseNode(node, context) {
 
   if (true === node.group) return false; // we do not manage groups
 
-  const rowNodeId = context.hasOwnProperty('getRowNodeId') && node.data[context.getRowNodeId] ?
-    node.data[context.getRowNodeId] : '';
+  // const rowNodeId = context.hasOwnProperty('getRowNodeId') && node.data[context.getRowNodeId] ?
+  //   node.data[context.getRowNodeId] : '';
 
   return {
-    i: rowNodeId ? rowNodeId : node.id, // id
-    x: rowNodeId, // index
+    i: node.id, // id
+    x: node.rowIndex, // index
     p: node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key') ?
       node.parent.key : '', // parent key
     c: node.childIndex, //childIndex

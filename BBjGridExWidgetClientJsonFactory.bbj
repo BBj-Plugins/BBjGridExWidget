@@ -57,7 +57,7 @@ class public BBjGridExWidgetClientJsonFactory
 
         row! = new BBjGridExWidgetClientRowModel(#getWidget())
         row!.setId(json!.get("i").getAsString(),err=*next)
-        row!.setIndex(json!.get("x").getAsString(),err=*next)
+        row!.setIndex(json!.get("x").getAsInt(),err=*next)
         row!.setChildIndex(json!.get("c").getAsInt(),err=*next)
         row!.setParentKey(json!.get("p").getAsString(),err=*next)
         row!.setIsSelected(iff(json!.get("s").getAsString() = "true" ,  1 , 0) , err=*next)
