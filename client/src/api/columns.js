@@ -83,7 +83,7 @@ export function gw_autoSizeColumns(id, skipHeader = false, columns = null) {
 }
 /**
  * Ensures the column is visible, scrolling the table if needed.
- * 
+ *
  * @param {String} id  the grid's id
  * @param {String} columnId  the column id
  */
@@ -254,4 +254,25 @@ export function gw_removeValueColumns(id, columns) {
   gw_getGrid(id).options.columnApi.removeValueColumns(
     columns.split(",").map(i => i.trim())
   );
+}
+
+/**
+ * Set the column sorting model
+ *
+ * @param {String} id the grid id
+ * @param {String} model model as json array
+ */
+export function gw_setSortModel(id, model) {
+  const asArray = JSON.parse(model)
+  const parsedModel = []
+  asArray.forEach(i => {
+    for (const key in i) {
+      parsedModel.push({
+        colId: key ,
+        sort: i[key]
+      })
+    }
+  })
+
+  gw_getGrid(id).options.api.setSortModel(parsedModel);
 }

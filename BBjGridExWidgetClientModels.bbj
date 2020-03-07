@@ -10,6 +10,7 @@ use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
+use com.google.gson.JsonArray
 use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
@@ -72,7 +73,6 @@ class public BBjGridExWidgetClientRowModel
     method public DataRow asDataRow()
         nodeId! = #getWidget().getRowNodeId()
         rs! = #getWidget().getRS()
-
         rem in case the RowNodeId is a column in the resultset
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
@@ -457,5 +457,69 @@ class public BBjGridExWidgetClientKeypressModel
     rem  * A Boolean that is true if the Ctrl key was active when the key event was generated.
     rem  */
     field public BBjNumber IsCtrlDown! = null()
+
+classend
+rem /**
+rem  * The sorting model descript how the columns will be sorted on the client
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientSortModel
+    rem /**
+    rem  * The array which contain column => sorting mapping
+    rem  */
+    field protected JsonObject Model! = new JsonObject()
+    rem /**
+    rem  * Add new column soritng to the model
+    rem  *
+    rem  * @param BBjString column! The column id
+    rem  * @param BBjString direction! the sort direction
+    rem  *
+    rem  * @see BBJGridExWidgetColumns.SORT_DESC()
+    rem  * @see BBJGridExWidgetColumns.SORT_ASC()
+    rem  */
+    method public void add(BBjString column! , BBjString sorting!)
+        #getModel().addProperty(column!,sorting!)
+    methodend
+    rem /**
+    rem  * Get sorting for the given column
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  *
+    rem  * @return BBjString the column's sorting
+    rem  */
+    method public BBjString get(BBjString column!)
+        result! = null()
+
+        if(#getModel().has(column!))
+            result! =  #getModel().get(column!).getAsString()
+        fi
+
+        methodret result!
+    methodend
+    rem /**
+    rem  * Remove a column from the model
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  */
+    method public void remove(BBjString column!)
+        #getModel().remove(column! ,err=*next )
+    methodend
+    rem /**
+    rem  * Convert the model to JSON arrat
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonArray getAsJsonArray()
+        declare JsonArray json!
+
+        json! = new JsonArray()
+
+        if(#getModel().size() > 0)
+            json!.add(#getModel())
+        fi
+
+        methodret json!
+    methodend
 
 classend

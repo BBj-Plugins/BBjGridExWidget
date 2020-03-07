@@ -1,0 +1,13 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/BBjGridExWidgetClientModels/BBjGridExWidgetClientSortModelTest.bbjt::BBjGridExWidgetClientSortModelTest
+
+rem @SuiteClasses("BBjGridExWidgetClientSortModelTest")
+class public BBjGridExWidgetClientModelsSuite
+classend

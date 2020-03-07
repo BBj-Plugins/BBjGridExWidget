@@ -1,0 +1,64 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientSortModel
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public BBjGridExWidgetClientSortModelTestTest
+
+    field private BBjGridExWidgetClientSortModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetClientSortModel()
+    methodend
+
+    rem @Test
+    method public void testCanAddColumnSorting()
+        declare JsonArray json!
+        
+        json! = #Instance!.getAsJsonArray()
+        Assert.Equals(json!.equals(new JsonArray()) , BBjAPI.TRUE)
+        
+        #Instance!.add("foo","asc")
+        json! = #Instance!.getAsJsonArray()
+        
+        Assert.Equals(json!.get(0).getAsJsonObject().has("foo"), BBjAPI.TRUE)
+        Assert.Equals(json!.get(0).getAsJsonObject().get("foo").getAsString(), "asc")
+    methodend
+    
+    rem @Test
+    method public void testCanGetColumnSorting()
+        declare JsonArray json!
+        
+        json! = #Instance!.getAsJsonArray()
+        Assert.Equals(json!.equals(new JsonArray()) , BBjAPI.TRUE)
+        
+        #Instance!.add("foo","asc")
+       
+        Assert.Equals(#Instance!.get("foo"), "asc")
+        
+        Assert.IsNull(#Instance!.get("notfound"))
+    methodend 
+    
+    rem @Test
+    method public void testCanRemoveColumnSorting()        
+        #Instance!.add("foo","asc")
+        Assert.Equals(#Instance!.get("foo"), "asc")
+        
+        #Instance!.remove("foo")
+        Assert.IsNull(#Instance!.get("foo"))
+    methodend       
+     
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

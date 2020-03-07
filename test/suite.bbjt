@@ -10,7 +10,8 @@ use ::BBjGridExWidget/test/BBjGridExWidgetCellEditors/BBjGridExWidgetCellEditors
 use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFiltersSuite.bbjt::BBjGridExWidgetFiltersSuite
 use ::BBjGridExWidget/test/BBjGridExWidgetOptions/BBjGridExWidgetOptionsSuite.bbjt::BBjGridExWidgetOptionsSuite
 use ::BBjGridExWidget/test/BBjGridExWidgetColumns/BBjGridExWidgetColumnsSuite.bbjt::BBjGridExWidgetColumnsSuite
+use ::BBjGridExWidget/test/BBjGridExWidgetClientModels/BBjGridExWidgetClientModelsSuite.bbjt::BBjGridExWidgetClientModelsSuite
 
-rem @SuiteClasses("BBjGridExWidgetRenderersSuite","BBjGridExWidgetCellEditorsSuite","BBjGridExWidgetFiltersSuite","BBjGridExWidgetOptionsSuite","BBjGridExWidgetColumnsSuite")
+rem @SuiteClasses("BBjGridExWidgetRenderersSuite","BBjGridExWidgetCellEditorsSuite","BBjGridExWidgetFiltersSuite","BBjGridExWidgetOptionsSuite","BBjGridExWidgetColumnsSuite","BBjGridExWidgetClientModelsSuite")
 class public BBjGridExWidgeSuites
 classend

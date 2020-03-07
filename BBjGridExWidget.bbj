@@ -42,6 +42,7 @@ use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClien
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientSortModel
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
@@ -2362,6 +2363,31 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void setRowHeight(BBjNumber index!, BBjNumber height!)
         #setRowHeight(str(index!) , height!)
+    methodend
+    rem /**
+    rem  * Set a sorting for one or more columns 
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @param BBjGridExWidgetClientSortModel model! the sorting model
+    rem  */
+    method public void setSortModel(BBjGridExWidgetClientSortModel model!)
+        #executeScript("$wnd.gw_setSortModel('" + #GRIDID$ + "','" + str(model!.getAsJsonArray()) + "')")
+    methodend
+    rem /**
+    rem  * Sort the given column with the given direction 
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * @param BBjString column! The column id
+    rem  * @param BBjString direction! The sort direction
+    rem  * 
+    rem  * @see setSortModel
+    rem  */
+    method public void sortColumn(BBjString column! , BBjString direction!)
+        model! = new BBjGridExWidgetClientSortModel()
+        model!.add(column! , direction!)
+        #setSortModel(model!)
     methodend
     rem /**
     rem  * Enable / disable pivot mode
