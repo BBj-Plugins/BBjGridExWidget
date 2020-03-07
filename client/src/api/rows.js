@@ -96,6 +96,15 @@ export function gw_setRowsData(id, json) {
 }
 
 /**
+ * Reset the row height
+ *
+ * @param {String} id  the grid id
+ */
+export function gw_resetRowHeights(id) {
+  gw_getGrid(id).options.api.resetRowHeights();
+}
+
+/**
  * Update a row on the grid
  *
  * @param {String} id the grid's id
@@ -145,12 +154,12 @@ export function gw_addRows(id, index, rows) {
  */
 export function gw_setRowsHeight(id, height) {
   const options = gw_getGrid(id).options;
-  const api =  options.api;
+  const api = options.api;
 
   api.forEachNode(row => {
     row.setRowHeight(height);
   });
-  
+
   api.onRowHeightChanged();
 }
 

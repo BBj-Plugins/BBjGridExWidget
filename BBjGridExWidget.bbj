@@ -2365,6 +2365,18 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #setRowHeight(str(index!) , height!)
     methodend
     rem /**
+    rem  * Reset The row heights.
+    rem  * 
+    rem  * <br><b><small>#API</small></b>
+    rem  * 
+    rem  * The rows height is calculated once when the data is first given to the grid. 
+    rem  * If the data changes, or the width of a column changes, then you may require the grid to calculate 
+    rem  * the height again by calling this method
+    rem  */
+    method public void resetRowHeights()
+        #executeScript("$wnd.gw_resetRowHeights('" + #GRIDID$ + "')")
+    methodend
+    rem /**
     rem  * Set a sorting for one or more columns 
     rem  * 
     rem  * <br><b><small>#API</small></b>
