@@ -242,3 +242,12 @@ export function gw_getSelectedRow(id) {
 
   return "";
 }
+
+/**
+ * Gets the grid to remove a row from the DOM and recreate it again from scratch.
+ *
+ * @param {String} id grid's id
+ */
+export function gw_redrawRows(id) {
+  gw_getGrid(id).options.api.redrawRows();
+}

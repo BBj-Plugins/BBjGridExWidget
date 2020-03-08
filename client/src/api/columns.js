@@ -263,16 +263,26 @@ export function gw_removeValueColumns(id, columns) {
  * @param {String} model model as json array
  */
 export function gw_setSortModel(id, model) {
-  const asArray = JSON.parse(model)
-  const parsedModel = []
+  const asArray = JSON.parse(model);
+  const parsedModel = [];
   asArray.forEach(i => {
     for (const key in i) {
       parsedModel.push({
-        colId: key ,
+        colId: key,
         sort: i[key]
-      })
+      });
     }
-  })
+  });
 
   gw_getGrid(id).options.api.setSortModel(parsedModel);
+}
+
+/**
+ * Redraws the header. Useful if a column name changes,
+ * or something else that changes how the column header is displayed.
+ *
+ * @param {String} id grid's id
+ */
+export function gw_refreshHeader(id) {
+  gw_getGrid(id).options.api.redrawRows();
 }

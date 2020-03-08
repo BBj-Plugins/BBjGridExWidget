@@ -13,6 +13,7 @@ use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
+use com.google.gson.JsonPrimitive
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
@@ -133,11 +134,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * The vector holds the registered events
     rem  */
-    field protected HashSet Interests! = new HashSet()
+    field protected JsonArray Interests! = new JsonArray()
     rem /**
     rem  * An array which contains the supported toolbar items
     rem  */
-    field protected HashSet ChartToolbarItems! = new HashSet()
+    field protected JsonArray ChartToolbarItems! = new JsonArray()
     rem /**
     rem  * The client's HTML template to use in order to build the grid&#183;
     rem  */
@@ -670,9 +671,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void clearCallback(int type!)
         #super!.clearCallback(type!)
         interests! = #getInterests()
+        el! = new JsonPrimitive(type!)
 
-        if(interests!.contains(type!)) then
-            interests!.remove(type!)
+        if(interests!.contains(el!)) then
+            interests!.remove(el!)
             #updateClientWithInterests()
         FI
     methodend
@@ -1497,11 +1499,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         rem ===========================
         context! = options!.get("context").getAsJsonObject()
         context!.addProperty("id",#GRIDID$)
-        context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), listIsEmpty!) ,err=*next)
+        context!.        add("interests",iff(#getInterests().size() <> 0 ,#getInterests(), listIsEmpty!) ,err=*next)
         context!.addProperty("getRowNodeId",#RowNodeId$, err=*next)
 
         if(#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1) then
-            context!.addProperty("chartToolbarItems",new Gson().toJson(#getChartToolbarItems()), err=*next)
+            context!.add("chartToolbarItems",#getChartToolbarItems(), err=*next)
         FI
 
         methodret options!
@@ -2020,7 +2022,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #ChartToolbarItems!.add(item!)
 
         if(#IsReady! and (#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1)) then
-            #executeScript("$wnd.gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+            #getClientContext().add("chartToolbarItems",#getChartToolbarItems())
+            #updateContext()
         FI
     methodend
     rem /**
@@ -2036,12 +2039,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see CHART_TOOLBAR_DOWNLOAD()
     rem  */
     method public void removeChartToolbarItem(BBjString item!)
-        if #ChartToolbarItems!.contains(item!) then
-            #ChartToolbarItems!.remove(item!)
+        el! = new JsonPrimitive(item!)
+
+        if #ChartToolbarItems!.contains(el!) then
+            #ChartToolbarItems!.remove(el!)
         FI
 
         if(#IsReady! and (#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1)) then
-            #executeScript("$wnd.gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+            #getClientContext().add("chartToolbarItems",#getChartToolbarItems())
+            #updateContext()
         FI
     methodend
     rem /**
@@ -2399,6 +2405,20 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void autoSizeColumns()
         #autoSizeColumns(0)
+    methodend
+    rem /**
+    rem  *Gets the grid to remove a row from the DOM and recreate it again from scratch.
+    rem  */
+    method public void redrawRows()
+        #executeScript("$wnd.gw_redrawRows('" + #GRIDID$ +"')")
+    methodend
+    rem /**
+    rem  * Force the context object update
+    rem  */
+    method public void updateContext()
+        if(#IsReady!)
+            #executeScript("$wnd.gw_updateContext('" + #GRIDID$ +"'," + #getClientContext().toString() + ")")
+        fi
     methodend
     rem /**
     rem  * setSize - set the size of the control
@@ -2888,7 +2908,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @Override
     rem  */
     method protected void fireEvent(int type!, Object payload!)
-        if(#getInterests().contains(type!)) then
+        el! = new JsonPrimitive(type!)
+
+        if(#getInterests().contains(el!)) then
             #super!.fireEvent(type!,payload!)
         FI
     methodend
@@ -2896,7 +2918,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Send the current interests to the client
     rem  */
     method protected void updateClientWithInterests()
-        #executeScript("$wnd.gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
+        #getClientContext().add("interests",#getInterests())
+        #updateContext()
     methodend
     rem /**
     rem  * The method will add the default chart toolbar items
