@@ -1687,7 +1687,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjGridExWidgetClientTransactionModel transaction!
     rem  * @param BBjNumber batchUpdate! when true then execute the update, along with any other updates you subsequently provide
     rem  */
-    method public void excuteUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!,BBjNumber batchUpdate!)
+    method public void executeUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!,BBjNumber batchUpdate!)
         transaction!.setWidget(#this!)
         json! = transaction!.execute()
         #executeScript("$wnd.gw_updateRowData('" + #GRIDID$ + "'," + json!.toString() + "," + str(batchUpdate!.booleanValue()) + ")")
@@ -1713,8 +1713,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjGridExWidgetClientTransactionModel transaction!
     rem  */
-    method public void excuteUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!)
-        #excuteUpdateTransaction(transaction! , 0)
+    method public void executeUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!)
+        #executeUpdateTransaction(transaction! , 0)
     methodend
     rem /**
     rem  * Update row data
@@ -1728,7 +1728,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public BBjGridExWidgetClientTransactionModel updateRow(DataRow row!)
         transaction! = new BBjGridExWidgetClientTransactionModel()
         transaction!.update(row!)
-        #excuteUpdateTransaction(transaction!)
+        #executeUpdateTransaction(transaction!)
         methodret transaction!
     methodend
     rem /**
@@ -1772,7 +1772,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         transaction! = new BBjGridExWidgetClientTransactionModel()
         transaction!.add(row!)
         transaction!.setAddIndex(index!)
-        #excuteUpdateTransaction(transaction!)
+        #executeUpdateTransaction(transaction!)
         methodret transaction!
     methodend
     rem /**
@@ -1799,7 +1799,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public BBjGridExWidgetClientTransactionModel removeRow(DataRow row!)
         transaction! = new BBjGridExWidgetClientTransactionModel()
         transaction!.remove(row!)
-        #excuteUpdateTransaction(transaction!)
+        #executeUpdateTransaction(transaction!)
         methodret transaction!
     methodend
     rem /**
