@@ -43,6 +43,7 @@ use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowM
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientSortModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientTransactionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
@@ -501,7 +502,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * disabled default constructor
     rem  */
-    method private BBjGridExWidget()
+    method public BBjGridExWidget()
     methodend
     rem /**
     rem  * The constructor that creates the widget on wnd!
@@ -1641,6 +1642,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
     rem  *
     rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
+    rem  * Please note that All row and range selection will be lost.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -1648,14 +1650,86 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @see setData()
     rem  */
-    method public void setRowsData(ResultSet rs!)
+    method public void updateData(ResultSet rs!)
         #RS! = rs!
 
         if rs! <> NULL() AND rs!.size() > 0 then
             #RS!.createIndex(err=*next)
             data$=#RS!.toJson(BBjAPI.TRUE,#getRowNodeId())
-            #executeScript("$wnd.gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
+            #executeScript("$wnd.gw_setRowData('" + #GRIDID$ + "'," + data$+ ")")
         FI
+    methodend
+    rem /**
+    rem  * @deprecated Use updateData(ResultSet rs!) instead
+    rem  */
+    method public void setRowsData(ResultSet rs!)
+        #updateData(rs!)
+    methodend
+    rem /**
+    rem  * Execute a bulk update on the grid
+    rem  *
+    rem  * The transaction method is to pass a transaction object to the grid containing
+    rem  * rows to add, remove and update.
+    rem  *
+    rem  * The grid keeps all active sorting, grouping and filtering, including updating to reflect
+    rem  * the changes in the data should the sorting, grouping or filtering be impacted.
+    rem  *
+    rem  * Updating using transactions is the best way to do large updates to the grid, as the grid treats them
+    rem  * as delta changes, so the grid only refreshes what is needed giving a performance boost.
+    rem  *
+    rem  * All row and range selection will be kept.
+    rem  *
+    rem  * Note that all update done on the grid will reflected also on the ResultSet instane which is the grid
+    rem  * is using.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjGridExWidgetClientTransactionModel transaction!
+    rem  * @param BBjNumber batchUpdate! when true then execute the update, along with any other updates you subsequently provide
+    rem  */
+    method public void excuteUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!,BBjNumber batchUpdate!)
+        transaction!.setWidget(#this!)
+        json! = transaction!.execute()
+        #executeScript("$wnd.gw_updateRowData('" + #GRIDID$ + "'," + json!.toString() + "," + str(batchUpdate!.booleanValue()) + ")")
+    methodend
+    rem /**
+    rem  * Execute a bulk update on the grid
+    rem  *
+    rem  * The transaction method is to pass a transaction object to the grid containing
+    rem  * rows to add, remove and update.
+    rem  *
+    rem  * The grid keeps all active sorting, grouping and filtering, including updating to reflect
+    rem  * the changes in the data should the sorting, grouping or filtering be impacted.
+    rem  *
+    rem  * Updating using transactions is the best way to do large updates to the grid, as the grid treats them
+    rem  * as delta changes, so the grid only refreshes what is needed giving a performance boost.
+    rem  *
+    rem  * All row and range selection will be kept.
+    rem  *
+    rem  * Note that all update done on the grid will reflected also on the ResultSet instane which is the grid
+    rem  * is using.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjGridExWidgetClientTransactionModel transaction!
+    rem  */
+    method public void excuteUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!)
+        #excuteUpdateTransaction(transaction! , 0)
+    methodend
+    rem /**
+    rem  * Update row data
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
+    rem  */
+    method public BBjGridExWidgetClientTransactionModel updateRow(DataRow row!)
+        transaction! = new BBjGridExWidgetClientTransactionModel()
+        transaction!.update(row!)
+        #excuteUpdateTransaction(transaction!)
+        methodret transaction!
     methodend
     rem /**
     rem  * Update row data
@@ -1665,28 +1739,24 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  *
-    rem  * @deprected
+    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
     rem  */
-    method public void setRowData(BBjNumber index!,DataRow row!)
-        if #RS!.count() <> 0 then
-            #RS!.set(index!,row!)
-            parser! = new JsonParser()
-            #executeScript("$wnd.gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
-        FI
+    method public BBjGridExWidgetClientTransactionModel updateRow(BBjNumber index!,DataRow row!)
+        methodret #updateRow(row!)
     methodend
     rem /**
-    rem  * Update row data
-    rem  *
-    rem  * <br><b><small>#API</small></b>
-    rem  *
-    rem  * @param DataRow row! DataRow object which contains the update
+    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
     rem  */
-    method public void setRowData(DataRow row!)
-        if #RS!.count() <> 0 then
-            #getRS().set(#getRS().indexOf(row!),row!)
-            parser! = new JsonParser()
-            #executeScript("$wnd.gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
-        FI
+    method public BBjGridExWidgetClientTransactionModel setRowData(BBjNumber index!,DataRow row!)
+        methodret #updateRow(index!,row!)
+    methodend
+    rem /**
+    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  */
+    method public BBjGridExWidgetClientTransactionModel setRowData(DataRow row!)
+        methodret #updateRow(row!)
     methodend
     rem /**
     rem  * Add new row
@@ -1695,11 +1765,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjNumber index! The insert index
     rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
     rem  */
-    method public void addRow(BBjNumber index!,DataRow row!)
-        #RS!.add(index! , row!)
-        parser! = new JsonParser()
-        #executeScript("$wnd.gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
+    method public BBjGridExWidgetClientTransactionModel addRow(BBjNumber index!,DataRow row!)
+        transaction! = new BBjGridExWidgetClientTransactionModel()
+        transaction!.add(row!)
+        transaction!.setAddIndex(index!)
+        #excuteUpdateTransaction(transaction!)
+        methodret transaction!
     methodend
     rem /**
     rem  * Add new row at the beginning of the grid
@@ -1707,9 +1781,26 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param DataRow row! The DataRow object which contains the update
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
     rem  */
-    method public void addRow(DataRow row!)
-        #addRow(0,row!)
+    method public BBjGridExWidgetClientTransactionModel addRow(DataRow row!)
+        methodret #addRow(0,row!)
+    methodend
+    rem /**
+    rem  * Remove a row from grid by the row refernce
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param DataRow row! The data row object to remove
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
+    rem  */
+    method public BBjGridExWidgetClientTransactionModel removeRow(DataRow row!)
+        transaction! = new BBjGridExWidgetClientTransactionModel()
+        transaction!.remove(row!)
+        #excuteUpdateTransaction(transaction!)
+        methodret transaction!
     methodend
     rem /**
     rem  * Remove a row from grid by index
@@ -1717,18 +1808,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjNumber index! The row index
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
     rem  */
-    method public void removeRow(BBjNumber index!)
-        if #RS!.count() <> 0 then
-            if #RowNodeId$ <> "__ROW_INDEX" then
-                value! = #RS!.getItem(index!).getFieldAsString(#getRowNodeId())
-            else
-                value! = #RS!.getItem(index!).getRowKey()
-            FI
-
-            #RS!.remove(index!)
-            #executeScript("$wnd.gw_removeRows('" + #GRIDID$ + "',['" + str(value!)  +"'])")
-        FI
+    method public BBjGridExWidgetClientTransactionModel removeRow(BBjNumber index!)
+        methodret #removeRow(#getRS().get(index!))
     methodend
     rem /**
     rem  * Remove a row from grid by key
@@ -1736,22 +1820,27 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjString key! The row key
+    rem  *
+    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achive the update
     rem  */
-    method public void removeRow(BBjString key!)
-        if #RS!.count() <> 0 then
-            #RS!.remove(key!)
-            #executeScript("$wnd.gw_removeRows('" + #GRIDID$ + "',['" + key! +"'])")
-        FI
+    method public BBjGridExWidgetClientTransactionModel removeRow(BBjString key!)
+        methodret #removeRow(#getRS().get(key!))
     methodend
     rem /**
     rem  * Clear row data (Empty the grid )
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
-    method public void clearRowsData()
+    method public void clearData()
         #RS! = new ResultSet()
         #RS!.createIndex(err=*next)
-        #executeScript("$wnd.gw_setRowsData('" + #GRIDID$ + "', [])")
+        #executeScript("$wnd.gw_setRowData('" + #GRIDID$ + "', [])")
+    methodend
+    rem /**
+    rem  * @deprecated use clearData() instead
+    rem  */
+    method public void clearRowsData()
+        #clearData()
     methodend
     rem /**
     rem  * Apply the grid's columns , soring and filtering state
@@ -2366,34 +2455,34 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     methodend
     rem /**
     rem  * Reset The row heights.
-    rem  * 
+    rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
-    rem  * The rows height is calculated once when the data is first given to the grid. 
-    rem  * If the data changes, or the width of a column changes, then you may require the grid to calculate 
+    rem  *
+    rem  * The rows height is calculated once when the data is first given to the grid.
+    rem  * If the data changes, or the width of a column changes, then you may require the grid to calculate
     rem  * the height again by calling this method
     rem  */
     method public void resetRowHeights()
         #executeScript("$wnd.gw_resetRowHeights('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Set a sorting for one or more columns 
-    rem  * 
+    rem  * Set a sorting for one or more columns
+    rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjGridExWidgetClientSortModel model! the sorting model
     rem  */
     method public void setSortModel(BBjGridExWidgetClientSortModel model!)
         #executeScript("$wnd.gw_setSortModel('" + #GRIDID$ + "','" + str(model!.getAsJsonArray()) + "')")
     methodend
     rem /**
-    rem  * Sort the given column with the given direction 
+    rem  * Sort the given column with the given direction
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  * 
+    rem  *
     rem  * @param BBjString column! The column id
     rem  * @param BBjString direction! The sort direction
-    rem  * 
+    rem  *
     rem  * @see setSortModel
     rem  */
     method public void sortColumn(BBjString column! , BBjString direction!)

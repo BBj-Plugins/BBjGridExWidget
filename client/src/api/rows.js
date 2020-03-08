@@ -88,7 +88,7 @@ export function gw_getRowNodeId(id, data) {
  * @param {String} id the grid's id
  * @param {Object} json json object which contains the new dataset to update the grid
  */
-export function gw_setRowsData(id, json) {
+export function gw_setRowData(id, json) {
   const options = gw_getGrid(id).options;
 
   options.api.setRowData(json);
@@ -96,54 +96,26 @@ export function gw_setRowsData(id, json) {
 }
 
 /**
- * Reset the row height
+ * Update the grid with a transaction object
  *
  * @param {String} id  the grid id
+ * @param {Object} transaction
  */
-export function gw_resetRowHeights(id) {
-  gw_getGrid(id).options.api.resetRowHeights();
-}
-
-/**
- * Update a row on the grid
- *
- * @param {String} id the grid's id
- * @param {Object} row  a row data
- */
-export function gw_setRowData(id, row) {
+export function gw_updateRowData(id, transaction, batchUpdate) {
   const options = gw_getGrid(id).options;
 
-  options.api.updateRowData({ update: [row] });
-}
+  if (transaction.remove.length) {
+    let items = [];
 
-/**
- * Remove one or more rows from the grid
- *
- * @param {String} id the grid's id
- * @param {Array} indexes  an array of rows indexes or an array of rows keys
- */
-export function gw_removeRows(id, indexes) {
-  const options = gw_getGrid(id).options;
-  let items = [];
+    transaction.remove.forEach(index => {
+      items.push(options.api.getRowNode(index).data);
+    });
 
-  indexes.forEach(index => {
-    items.push(options.api.getRowNode(index).data);
-  });
+    transaction.remove = items;
+  }
 
-  options.api.updateRowData({ remove: items });
-}
-
-/**
- * Add a row to grid at the given index
- *
- * @param {String} id the grid's id
- * @param {Number} index  The insertion position
- * @param {Array} rows  An array of rows to add
- */
-export function gw_addRows(id, index, rows) {
-  const options = gw_getGrid(id).options;
-
-  options.api.updateRowData({ add: rows, addIndex: index });
+  if (!batchUpdate) options.api.updateRowData(transaction);
+  else options.api.batchUpdateRowData(transaction);
 }
 
 /**
@@ -181,6 +153,15 @@ export function gw_setRowHeight(id, index, height) {
   } else {
     console.warn(`Failed to set height for row ${index}. Row cannot be found`);
   }
+}
+
+/**
+ * Reset the row height
+ *
+ * @param {String} id  the grid id
+ */
+export function gw_resetRowHeights(id) {
+  gw_getGrid(id).options.api.resetRowHeights();
 }
 
 /**

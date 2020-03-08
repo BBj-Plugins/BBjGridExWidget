@@ -1,0 +1,16 @@
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+
+class public GridMock extends BBjGridExWidget
+    
+    method public GridMock()
+        json$ = ""
+        ch=unt
+        open (ch)"BBjGridExWidget/test/Fixtures/CDStore.json"
+        read record (ch,siz=5512000)json$
+        close (ch)
+        
+        #setRS(ResultSet.fromJson(json$))
+        #getRS().createIndex()
+    methodend
+classend

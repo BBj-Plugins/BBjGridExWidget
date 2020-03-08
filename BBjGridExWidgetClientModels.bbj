@@ -14,6 +14,7 @@ use com.google.gson.JsonArray
 use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
+use java.util.HashSet
 REM /**
 REM  * A client model for rows
 REM  *
@@ -518,6 +519,121 @@ class public BBjGridExWidgetClientSortModel
         if(#getModel().size() > 0)
             json!.add(#getModel())
         fi
+
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The model descripts an transaction operation that can be passed to the grid
+rem  * to add / remove & update that data at once.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientTransactionModel
+    rem /**
+    rem  * An array of rows to add
+    rem  */
+    field public HashSet Add! = new HashSet()
+    rem /**
+    rem  * An array of row to remove
+    rem  */
+    field public HashSet Remove! = new HashSet()
+    rem /**
+    rem  * An array of rows to update
+    rem  */
+    field public HashSet Update! = new HashSet()
+    rem /**
+    rem  * Index for rows to add
+    rem  */
+    field public BBjNumber AddIndex! = null()
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field public BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new transaction model
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instance
+    rem  */
+    method public BBjGridExWidgetClientTransactionModel(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend    
+    rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param DataRow row! A new data row to add
+    rem  */
+    method public void add(DataRow row!)
+        #getAdd().add(row!)
+    methodend
+    rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param DataRow row! An already existing row to remove
+    rem  */
+    method public void remove(DataRow row!)
+        #getRemove().add(row!)
+    methodend    
+    rem /**
+    rem  * Update a row
+    rem  *
+    rem  * @param DataRow row! An already existing row to update
+    rem  */
+    method public void update(DataRow row!)
+        #getUpdate().add(row!)
+    methodend
+    rem /**
+    rem  * Execute the transaction on the widget model (ResultSet)
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject execute()
+        declare JsonObject json!
+        declare JsonArray add!
+        declare JsonArray update!
+        declare JsonArray remove!
+
+        json! = new JsonObject()
+        json!.addProperty("addIndex" , #getAddIndex().longValue(), err=*next)
+        
+        add! = new JsonArray()
+        addIt! = #getAdd().iterator()
+        while(addIt!.hasNext())
+            row! = addIt!.next()
+            #getWidget().getRS().add(#getAddIndex() , row!)
+            parser! = new JsonParser()
+            add!.add(parser!.parse(row!.toJson(#getWidget().getRowNodeId())).getAsJsonArray().get(0).getAsJsonObject())
+        wend
+        json!.add("add" ,add!)
+        
+        update! = new JsonArray()
+        updateIt! = #getUpdate().iterator()
+        while(updateIt!.hasNext())
+            row! = updateIt!.next()
+            rowIndex! = #getWidget().getRS().indexOf(row!)
+            #getWidget().getRS().remove(rowIndex!)
+            #getWidget().getRS().add(rowIndex! , row!)
+            parser! = new JsonParser()
+            update!.add(parser!.parse(row!.toJson(#getWidget().getRowNodeId())).getAsJsonArray().get(0).getAsJsonObject())
+        wend        
+        json!.add("update" , update!)
+        
+        remove! = new JsonArray()
+        removeIt! = #getRemove().iterator()
+        while(removeIt!.hasNext())
+            row! = removeIt!.next()
+            parser! = new JsonParser()
+            rowIndex! = #getWidget().getRS().indexOf(row!)
+            if #getWidget().getRowNodeId() <> "__ROW_INDEX" then
+                value! = #getWidget().getRS().getItem(rowIndex!).getFieldAsString(#getWidget().getRowNodeId())
+            else
+                value! = #getWidget().getRS().getItem(rowIndex!).getRowKey()
+            FI            
+            #getWidget().getRS().remove(rowIndex!)
+            remove!.add(value!)
+        wend        
+        json!.add("remove",remove!)        
 
         methodret json!
     methodend

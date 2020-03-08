@@ -53,7 +53,7 @@ rem  * Retrieve the data from the database and configure the grid
 rem  */
 fillGrid:
   rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
-  grid!.setData(rs!)
+  grid!.setData(rs!,"CDNUMBER")
 return
 
 rem /**
@@ -61,18 +61,18 @@ rem  * Restore the older ResultSet
 rem  */
 restoreOrginialRS:
   rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
-  grid!.setRowsData(rs!)
+  grid!.updateData(rs!)
 return
 
 rem /**
 rem  * Create new ResultSet and update the grid
 rem  *
-rem  * Note that unlike grid!.setData(ResultSet), the method grid!.setRowsData(Set) will not update the column definitions
+rem  * Note that unlike grid!.setData(ResultSet), the method grid!.updateData(Set) will not update the column definitions
 rem  * from the passed ResultSet
 rem  */
 setNewRS:
   rs! = sbc!.retrieve("SELECT TOP 5 * FROM CDINVENTORY ")
-  grid!.setRowsData(rs!)
+  grid!.updateData(rs!)
 return
 
 rem /**
@@ -83,7 +83,7 @@ updateThirdRow:
   row!.setFieldValue("TITLE","My Updated Title")
   row!.setFieldValue("ARTIST","My Updated Artist")
 
-  grid!.setRowData(row!)
+  grid!.updateRow(row!)
 return
 
 rem /**
@@ -105,7 +105,7 @@ rem /**
 rem  * Clear data but keep the column definition
 rem  */
 clearRowsData:
-    grid!.clearRowsData()
+    grid!.clearData()
 return
 
 rem /**
@@ -115,7 +115,7 @@ rem  * @see BBjGridExWidget.ON_GRID_ROW_CLICK()()
 rem  */
 onRowSelect:
   selection! =  grid!.getSelectedRows()
-  a! = msgbox("Row is indexed by CDNUMBER : " + str(selection!.get(0).getIndex()), 0, "Selected Row")
+  a! = msgbox("Row is indexed by CDNUMBER : " + str(selection!.get(0).getId()), 0, "Selected Row")
 return
 
 rem /**
