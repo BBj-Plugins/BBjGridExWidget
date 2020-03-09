@@ -546,7 +546,7 @@ class public BBjGridExWidgetClientTransactionModel
     rem /**
     rem  * Index for rows to add
     rem  */
-    field public BBjNumber AddIndex! = null()
+    field public BBjNumber AddIndex! = 0
     rem /**
     rem  * BBjGridExWidget instance
     rem  */
@@ -593,9 +593,9 @@ class public BBjGridExWidgetClientTransactionModel
         declare JsonArray add!
         declare JsonArray update!
         declare JsonArray remove!
-
+        
         json! = new JsonObject()
-        json!.addProperty("addIndex" , #getAddIndex().longValue(), err=*next)
+        json!.addProperty("addIndex" , #getAddIndex().longValue(err=*next),err=*next)
         
         add! = new JsonArray()
         addIt! = #getAdd().iterator()

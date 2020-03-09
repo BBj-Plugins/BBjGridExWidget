@@ -19,7 +19,6 @@ class public BBjGridExWidgetClientTransactionModelTest
     rem @Before
     method public void setUp()
         #Instance! = new BBjGridExWidgetClientTransactionModel()
-        #Instance!.setAddIndex(0)
     methodend
     
     rem @Test
