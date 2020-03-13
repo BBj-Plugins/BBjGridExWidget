@@ -11,7 +11,9 @@ use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFiltersSuite.bb
 use ::BBjGridExWidget/test/BBjGridExWidgetOptions/BBjGridExWidgetOptionsSuite.bbjt::BBjGridExWidgetOptionsSuite
 use ::BBjGridExWidget/test/BBjGridExWidgetColumns/BBjGridExWidgetColumnsSuite.bbjt::BBjGridExWidgetColumnsSuite
 use ::BBjGridExWidget/test/BBjGridExWidgetClientModels/BBjGridExWidgetClientModelsSuite.bbjt::BBjGridExWidgetClientModelsSuite
+use ::BBjGridExWidget/test/BBjGridExWidgetClientJsonFactory/BBjGridExWidgetClientJsonFactorySuite.bbjt::BBjGridExWidgetClientJsonFactorySuite
+use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetSuite.bbjt::BBjGridExWidgetSuite
 
-rem @SuiteClasses("BBjGridExWidgetRenderersSuite","BBjGridExWidgetCellEditorsSuite","BBjGridExWidgetFiltersSuite","BBjGridExWidgetOptionsSuite","BBjGridExWidgetColumnsSuite","BBjGridExWidgetClientModelsSuite")
+rem @SuiteClasses("BBjGridExWidgetSuite","BBjGridExWidgetRenderersSuite","BBjGridExWidgetCellEditorsSuite","BBjGridExWidgetFiltersSuite","BBjGridExWidgetOptionsSuite","BBjGridExWidgetColumnsSuite","BBjGridExWidgetClientModelsSuite","BBjGridExWidgetClientJsonFactorySuite")
 class public BBjGridExWidgeSuites
 classend

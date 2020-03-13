@@ -10,7 +10,7 @@ use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use com.google.gson.JsonNull
 
-class public BBjGridExWidgetClientSortModelTestTest
+class public BBjGridExWidgetClientSortModelTest
 
     field private BBjGridExWidgetClientSortModel Instance!
     

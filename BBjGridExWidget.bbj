@@ -9,28 +9,54 @@ rem  */
 use java.util.Arrays
 use java.util.ArrayList
 use java.util.HashSet
+use java.util.LinkedHashMap
+use java.lang.StringBuilder
+use java.sql.Types
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use com.google.gson.JsonPrimitive
+rem Basis Compoentns
+rem ==========================
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
+rem BBjWidget
+rem ==========================
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
+rem BBjGridExWidget Package
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptions
-use ::BBjGridExWidget/BBjGridExWidgetSelectRowEvent.bbj::BBjGridExWidgetSelectRowEvent
+use ::BBjGridExWidget/util/LicenseManager.bbj::LicenseManager
 use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
+use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
+rem Client Events
+rem ==========================
+use ::BBjGridExWidget/BBjGridExWidgetSelectRowEvent.bbj::BBjGridExWidgetSelectRowEvent
 use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
 use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
-use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRangeSelection
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsKeypress
+rem Sidebars
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetDefaultSidebar
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetFiltersToolpanel
 use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBar
+rem Context Menu
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridDefaultContextMenu
+rem Expressions
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+rem Columns
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnDefinition
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetAutoGroupColumn
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
@@ -38,20 +64,33 @@ use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnGr
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnGroup
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManagerInterface
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManager
+rem Renderers
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImageRenderer
-use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
+rem Client Models
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientSortModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientTransactionModel
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRangeSelection
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsKeypress
-use ::BBjGridExWidget/util/LicenseManager.bbj::LicenseManager
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterDateTimeModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterBooleanModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterCombinedModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilteSetFilterModel
+rem Factory
+rem ==========================
+use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
+rem Filter Components
+rem ==========================
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicBoolean
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTimestamp
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGSetFilter
 rem /**
 rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
@@ -151,7 +190,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Instnace of the created HTMLView
     rem  */
     field public BBjHtmlView HTMLView!
-    field protected Boolean IsReady! = BBjAPI.FALSE
+    rem /**
+    rem  * A flag which defines when the grid is ready and the process events started
+    rem  */
+    field public Boolean IsReady! = BBjAPI.FALSE
     field protected BBjVector backlog! = new BBjVector()
     field protected BBjString URL$
     field protected BBjNumber newW!
@@ -2419,6 +2461,156 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         if(#IsReady!)
             #executeScript("$wnd.gw_updateContext('" + #GRIDID$ +"'," + #getClientContext().toString() + ")")
         fi
+    methodend
+    rem /**
+    rem  * Set and apply filter model for the given column
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  * @param BBjGridExWidgetClientFilterModel model! the model filter to use
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @return BBjGridExWidgetClientFilterModel the passed model
+    rem  */
+    method public BBjGridExWidgetClientFilterModel setFilterModel(BBjString column!, BBjGridExWidgetClientFilterModel model!)
+        model!.setWidget(#this!)
+        model!.setColumn(column!)
+        model!.update()
+        methodret model!
+    methodend
+    rem /**
+    rem  * Set and apply a filter transaction
+    rem  *
+    rem  * The tansaction is a `LinkedHashMap` of columns and their models.
+    rem  * This the fastest way to apply several filters on several columns.
+    rem  * When using this method The grid will delay executing the filters on the data
+    rem  * until all modesl are set and ready.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @param  LinkedHashMap transaction! a map of columns and their model
+    rem  */
+    method public void executeFilterTransaction(LinkedHashMap transaction!)
+        applyCode! = new HashSet()
+        executeCode! = new HashSet()
+        it! = transaction!.entrySet().iterator()
+        while(it!.hasNext())
+            next! = it!.next()
+            column! = next!.getKey()
+            model! = next!.getValue()
+            model!.setWidget(#this!)
+            model!.setColumn(column!)
+            applyCode!.add(model!.apply(0))
+            executeCode!.add(model!.execute(0))
+        wend
+
+        #executeScript(String.join("",applyCode!) + String.join("",executeCode!))
+    methodend
+    rem /**
+    rem  * Get The filter model for the given column
+    rem  *
+    rem  * This method will return a `BBjGridExWidgetClientFilterModel` for the given column
+    rem  * If column has already some filter values set through the UI , then the model will contain
+    rem  * these changes too.
+    rem  *
+    rem  * In case the grid is not ready (not renderer yet) then the method will just return
+    rem  * any empty filter model for the column.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @param BBjString column! the column id to use for the constructed model
+    rem  *
+    rem  * @throws 256 in case the column has no filter component attached
+    rem  */
+    method public BBjGridExWidgetClientFilterModel getFilterModel(BBjString column!)
+        jsonModel! = null()
+        rem we try to get the model from the UI first
+        if(#getIsReady() = BBjAPI.TRUE)
+            code! = String.format("JSON.stringify($wnd.gw_getGrid('%s').options.api.getFilterInstance('%s').getModel());" , #getGRIDID(), column!)
+            jsonModel! = #executeScript(code!)
+        fi
+
+        if(jsonModel! <> null() AND jsonModel! <> "null")
+            methodret #getClientJsonFactory().getFilter(jsonModel!,column!)
+        else
+            model! = null()
+            rem we try to detect the filter type and create its model
+            if (#getColumn(column!).getFilter() <> null())
+                filterName! = #getColumn(column!).getFilter().getFilterName()
+                SWITCH (filterName!)
+                    CASE BBjGridExWidgetFilterAGNumber.getFilterName()
+                        model! = new BBjGridExWidgetClientFilterNumberModel()
+                        break
+                    CASE BBjGridExWidgetFilterBasicTimestamp.getFilterName()
+                        model! = new BBjGridExWidgetClientFilterDateTimeModel()
+                        break
+                    CASE BBjGridExWidgetFilterBasicBoolean.getFilterName()
+                        model! = new BBjGridExWidgetClientFilterBooleanModel()
+                        break
+                    CASE BBjGridExWidgetFilterAGText.getFilterName()
+                        model! = new BBjGridExWidgetClientFilterTextModel()
+                        break
+                    CASE BBjGridExWidgetFilterAGSetFilter.getFilterName()
+                        model! = new BBjGridExWidgetClientFilteSetFilterModel()
+                        break
+                SWEND
+            fi
+
+            if(model! = null())
+                throw "Failed to create column filter's model. The column has no filter component attached" , 256
+            fi
+
+            model!.setWidget(#this!)
+            model!.setColumn(column!)
+            methodret model!
+        fi
+    methodend
+    rem /**
+    rem  * Get The combined filter model for the given column
+    rem  *
+    rem  * This method will return a `BBjGridExWidgetClientFilterCombinedModel` for the given column
+    rem  * If the column has already some filter values set through the UI , then the model will contain
+    rem  * these changes too.
+    rem  *
+    rem  * In case the grid is not ready (not renderer yet) then the method will just return
+    rem  * any empty combined filter model for the column.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @param BBjString column! the column id to use for the constructed model
+    rem  *
+    rem  * @throws 256 in case the column filter does not support the combined model
+    rem  */
+    method public BBjGridExWidgetClientFilterCombinedModel getFilterAsCombinedModel(BBjString column!)
+        model! = #getFilterModel(column!)
+        rem first check if the model is alreay a combined model
+        isAlreadyCombined! = 0
+        model! = cast(BBjGridExWidgetClientFilterCombinedModel,model!,err=*next); isAlreadyCombined! = 1
+
+        if(isAlreadyCombined! = 0 AND model!.supportsCombinedModel() = 0)
+            throw "The column's filter component does not support combined models" , 256
+        fi
+
+        combinedModel! = iff(isAlreadyCombined!,model! ,new BBjGridExWidgetClientFilterCombinedModel() )
+        combinedModel!.setWidget(#this!)
+        combinedModel!.setColumn(column!)
+        if(!isAlreadyCombined!) combinedModel!.setFirstCondition(model!)
+        methodret combinedModel!
+    methodend
+    rem /**
+    rem  * Clear all active filters on columns
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void clearFilters()
+        code! = String.format(";var api = $wnd.gw_getGrid('%s').options.api;" , #getGRIDID())
+        code! = code! + "api.setFilterModel(null);api.onFilterChanged(null);"
+        wrap! = ";(function(){" + code! + "})();"
+        #executeScript(wrap!)
     methodend
     rem /**
     rem  * setSize - set the size of the control

@@ -1,0 +1,105 @@
+
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterNumberFilterOptions
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public BBjGridExWidgetClientFilterNumberModelTest
+
+    field private BBjGridExWidgetClientFilterNumberModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetClientFilterNumberModel()
+    methodend
+
+    rem @Test
+    method public void testConstructors()
+        declare BBjGridExWidgetClientFilterNumberModel obj!
+        
+        filter! = 100
+        filterTo! = 1000
+        
+        rem 3 params
+        obj! = new BBjGridExWidgetClientFilterNumberModel(filter!,filterTo! , BBjGridExWidgetColumnFilterNumberFilterOptions.GREATER_THAN())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getFilterTo() , filterTo!)
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterNumberFilterOptions.GREATER_THAN())
+        
+        rem 2 params (filter , filterTo)
+        obj! = new BBjGridExWidgetClientFilterNumberModel(filter!,filterTo!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getFilterTo() , filterTo!)
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())        
+        
+        rem 2 params (filter , type)
+        obj! = new BBjGridExWidgetClientFilterNumberModel(filter!,BBjGridExWidgetColumnFilterNumberFilterOptions.IN_RANGE())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterNumberFilterOptions.IN_RANGE())                
+        
+        rem 1 params (filter)
+        obj! = new BBjGridExWidgetClientFilterNumberModel(filter!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())    
+        
+        rem no params
+        obj! = new BBjGridExWidgetClientFilterNumberModel()
+        Assert.IsNull(obj!.getFilter())
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())                 
+    methodend
+    
+    rem @Test
+    method public void testCanSetFilter()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filter").getAsString(), "")
+        
+        #Instance!.setFilter(123)
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filter").getAsInt(), 123)
+    methodend  
+    
+    rem @Test
+    method public void testCanSetFilterTo()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filterTo").getAsString(), "")
+        
+        #Instance!.setFilterTo(1000)
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filterTo").getAsInt(), 1000)
+    methodend     
+    
+    rem @Test
+    method public void testClearFilter()
+        #Instance!.setFilter(1)
+        #Instance!.setFilterTo(10)
+        #Instance!.setType(BBjGridExWidgetColumnFilterNumberFilterOptions.GREATER_THAN())
+        
+        #Instance!.clearFilter()
+        Assert.IsNull(#Instance!.getFilter())
+        Assert.IsNull(#Instance!.getFilterTo())
+        Assert.Equals(#Instance!.getType(),BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())
+    methodend     
+     
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

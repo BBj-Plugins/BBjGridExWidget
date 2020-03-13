@@ -9,5 +9,5 @@ use ::BBjGridExWidget/test/BBjGridExWidgetOptions/BBjGridExWidgetOptionsDateTime
 use ::BBjGridExWidget/test/BBjGridExWidgetOptions/BBjGridExWidgetOptionsBooleanTest.bbjt::BBjGridExWidgetOptionsBooleanTest
 
 rem @SuiteClasses("BBjGridExWidgetOptionsDateTimeTest","BBjGridExWidgetOptionsBooleanTest")
-class public BBjGridExWidgeSuites
+class public BBjGridExWidgeOptionsSuites
 classend

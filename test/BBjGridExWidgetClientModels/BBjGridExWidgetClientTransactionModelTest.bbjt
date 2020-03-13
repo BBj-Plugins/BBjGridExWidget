@@ -6,7 +6,7 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientTransactionModel
-use ::BBjGridExWidget/test/BBjGridExWidgetClientModels/Mocks/BBjGridExWidgetClientTransactionModelMocks.bbj::GridMock
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
 use com.basiscomponents.db.DataRow
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
@@ -23,8 +23,8 @@ class public BBjGridExWidgetClientTransactionModelTest
     
     rem @Test
     method public void testExecuteAdd()
-        declare GridMock mock!
-        mock! = new GridMock()
+        declare BBjGridExWidgetMock mock!
+        mock! = new BBjGridExWidgetMock(1)
         #Instance!.setWidget(mock!)
         
         row! = mock!.getRS().getItem(0).clone()
@@ -42,8 +42,8 @@ class public BBjGridExWidgetClientTransactionModelTest
 
     rem @Test
     method public void testExecuteUpdate()
-        declare GridMock mock!
-        mock! = new GridMock()
+        declare BBjGridExWidgetMock mock!
+        mock! = new BBjGridExWidgetMock(1)
         #Instance!.setWidget(mock!)
         
         row! = mock!.getRS().getItem(0)
@@ -61,8 +61,8 @@ class public BBjGridExWidgetClientTransactionModelTest
     
     rem @Test
     method public void testExecuteRemove()
-        declare GridMock mock!
-        mock! = new GridMock()
+        declare BBjGridExWidgetMock mock!
+        mock! = new BBjGridExWidgetMock(1)
 
         #Instance!.setWidget(mock!)
         
@@ -78,8 +78,8 @@ class public BBjGridExWidgetClientTransactionModelTest
 
     rem @Test
     method public void testExecuteRemoveWithCustomRowNodeId()
-        declare GridMock mock!
-        mock! = new GridMock()
+        declare BBjGridExWidgetMock mock!
+        mock! = new BBjGridExWidgetMock(1)
         mock!.setRowNodeId("CDNUMBER")
 
         #Instance!.setWidget(mock!)

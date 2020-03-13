@@ -1,0 +1,43 @@
+{
+	"number-single": {
+		"filterType": "number",
+		"type": "equals",
+		"filter": 1,
+		"filterTo": 10
+	},
+	"number-combined": {
+		"filterType": "number",
+		"operator": "OR",
+		"condition1": {
+			"filterType": "number",
+			"type": "equals",
+			"filter": 1,
+			"filterTo": 10
+		},
+		"condition2": {
+			"filterType": "number",
+			"type": "equals",
+			"filter": 1,
+			"filterTo": 10
+		}
+	},
+	"datetime-single": {
+		"filterType": "datetime",
+		"type": "equals",
+		"filter": "2020-01-01",
+		"filterTo": "2020-01-01"
+	},
+	"text-single": {
+		"filterType": "text",
+		"type": "equals",
+		"filter": "sometext"
+	},
+	"boolean-single": {
+		"filterType": "boolean",
+		"value": "true"
+	},
+	"set": {
+		"filterType": "set",
+		"values": [1,2,3]
+	}
+}

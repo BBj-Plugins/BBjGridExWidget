@@ -12,6 +12,13 @@ use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColu
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRangeSelectionModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientKeypressModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterCombinedModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterDateTimeModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterBooleanModel
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilteSetFilterModel
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 REM /**
@@ -148,7 +155,7 @@ class public BBjGridExWidgetClientJsonFactory
     rem  * @param JsonObject json! Json object
     rem  *
     rem  * @return BBjGridExWidgetClientKeypressModel
-    rem  */    
+    rem  */
     method public BBjGridExWidgetClientKeypressModel getKeypress(JsonObject json!)
         keyPress! = new BBjGridExWidgetClientKeypressModel()
         keyPress!.setCode(json!.get("c").getAsString())
@@ -158,4 +165,88 @@ class public BBjGridExWidgetClientJsonFactory
         keyPress!.setIsCtrlDown(iff(json!.get("ck").getAsString() = "true" ,  1 , 0) , err=*next)
         methodret keyPress!
     methodend
+    rem /**
+    rem  * Pasre a filter condition and return a filter model
+    rem  *
+    rem  * @param JsonObject json! the model as json object
+    rem  * @param BBjString the column id
+    rem  *
+    rem  * @return BBjGridExWidgetClientFilterModel the correct model according to the filter type
+    rem  */
+    method public BBjGridExWidgetClientFilterModel getFilterCondition(JsonObject json! , BBjString column!)
+        filterType! = json!.get("filterType").getAsString(err=*next)
+        if(filterType! = null()) throw "Filter type is missing. The filter client model cannot be parsed" , 256
+        model! = null()
+        SWITCH (filterType!)
+            CASE "number"
+                type! = json!.get("type").getAsString(err=*next)
+                filter! = json!.get("filter").getAsDouble(err=*next)
+                filterTo! = json!.get("filterTo").getAsDouble(err=*next)
+                model! = new BBjGridExWidgetClientFilterNumberModel(filter!,filterTo!,type!)
+                break
+            CASE "text"
+                type! = json!.get("type").getAsString(err=*next)
+                filter! = json!.get("filter").getAsString(err=*next)
+                model! = new BBjGridExWidgetClientFilterTextModel(filter!,type!)
+                break
+            CASE "boolean"
+                filter! = json!.get("value").getAsString(err=*next)
+                model! = new BBjGridExWidgetClientFilterBooleanModel(iff(filter! = "true" , 1 , 0))
+                break
+            CASE "datetime"
+                type! = json!.get("type").getAsString(err=*next)
+                filter! = json!.get("filter").getAsString(err=*next)
+                filterTo! = json!.get("filterTo").getAsString(err=*next)
+                model! = new BBjGridExWidgetClientFilterDateTimeModel(filter!,filterTo!,type!)
+                break
+            CASE "set"
+                values! = json!.get("values").getAsJsonArray(err=*next)
+                model! = new BBjGridExWidgetClientFilteSetFilterModel(values!)
+                break
+            CASE DEFAULT
+                break
+        SWEND
+
+        if(model! <> null())
+            model!.setColumn(column!)
+            model!.setWidget(#getWidget())
+        fi
+
+        methodret model!
+    methodend
+    rem /**
+    rem  * Parse a filter conditions (single or combined) and reutrn a filter model
+    rem  *
+    rem  * @param JsonObject json! the model as json object
+    rem  *
+    rem  * @return BBjGridExWidgetClientFilterModel the correct model according to the filter type
+    rem  */
+    method public BBjGridExWidgetClientFilterModel getFilter(JsonObject json! , BBjString column!)
+        isCombined! = json!.has("condition1") OR json!.has("condition2")
+
+        if(isCombined!)
+            firstCondition! = #getFilterCondition(json!.get("condition1").getAsJsonObject(),column!,err=*next)
+            secondCondition! = #getFilterCondition(json!.get("condition2").getAsJsonObject(),column!,err=*next)
+            operator! = json!.get("operator").getAsString(err=*next)
+            model! = new BBjGridExWidgetClientFilterCombinedModel(firstCondition!,secondCondition!,operator!)
+            model!.setWidget(#getWidget())
+            model!.setColumn(column!)
+            methodret model!
+        else
+            methodret #getFilterCondition(json!,column!)
+        fi
+    methodend
+    rem /**
+    rem  * Parse a filter conditions (single or combined) and reutrn a filter model
+    rem  *
+    rem  * @param BBjString json! the model as json string
+    rem  *
+    rem  * @return BBjGridExWidgetClientFilterModel the correct model according to the filter type
+    rem  */
+    method public BBjGridExWidgetClientFilterModel getFilter(BBjString json! ,BBjString column!)
+        parser! = new JsonParser()
+        parsedJsonModel!  = parser!.parse(json!).getAsJsonObject()
+        methodret #getFilter(parsedJsonModel!,column!)
+    methodend
+
 classend

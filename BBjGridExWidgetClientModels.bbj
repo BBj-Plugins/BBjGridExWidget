@@ -7,6 +7,9 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterTextFilterOptions
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterDateTimeFilterOptions
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterNumberFilterOptions
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
@@ -15,6 +18,7 @@ use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
 use java.util.HashSet
+use java.lang.StringBuilder
 REM /**
 REM  * A client model for rows
 REM  *
@@ -558,7 +562,7 @@ class public BBjGridExWidgetClientTransactionModel
     rem  */
     method public BBjGridExWidgetClientTransactionModel(BBjGridExWidget widget!)
         #Widget! = widget!
-    methodend    
+    methodend
     rem /**
     rem  * Add new row
     rem  *
@@ -574,7 +578,7 @@ class public BBjGridExWidgetClientTransactionModel
     rem  */
     method public void remove(DataRow row!)
         #getRemove().add(row!)
-    methodend    
+    methodend
     rem /**
     rem  * Update a row
     rem  *
@@ -593,10 +597,9 @@ class public BBjGridExWidgetClientTransactionModel
         declare JsonArray add!
         declare JsonArray update!
         declare JsonArray remove!
-        
+
         json! = new JsonObject()
         json!.addProperty("addIndex" , #getAddIndex().longValue(err=*next),err=*next)
-        
         add! = new JsonArray()
         addIt! = #getAdd().iterator()
         while(addIt!.hasNext())
@@ -605,8 +608,8 @@ class public BBjGridExWidgetClientTransactionModel
             parser! = new JsonParser()
             add!.add(parser!.parse(row!.toJson(#getWidget().getRowNodeId())).getAsJsonArray().get(0).getAsJsonObject())
         wend
+
         json!.add("add" ,add!)
-        
         update! = new JsonArray()
         updateIt! = #getUpdate().iterator()
         while(updateIt!.hasNext())
@@ -616,25 +619,931 @@ class public BBjGridExWidgetClientTransactionModel
             #getWidget().getRS().add(rowIndex! , row!)
             parser! = new JsonParser()
             update!.add(parser!.parse(row!.toJson(#getWidget().getRowNodeId())).getAsJsonArray().get(0).getAsJsonObject())
-        wend        
+        wend
+
         json!.add("update" , update!)
-        
         remove! = new JsonArray()
         removeIt! = #getRemove().iterator()
         while(removeIt!.hasNext())
             row! = removeIt!.next()
             parser! = new JsonParser()
             rowIndex! = #getWidget().getRS().indexOf(row!)
+
             if #getWidget().getRowNodeId() <> "__ROW_INDEX" then
                 value! = #getWidget().getRS().getItem(rowIndex!).getFieldAsString(#getWidget().getRowNodeId())
             else
                 value! = #getWidget().getRS().getItem(rowIndex!).getRowKey()
-            FI            
+            FI
+
             #getWidget().getRS().remove(rowIndex!)
             remove!.add(value!)
-        wend        
-        json!.add("remove",remove!)        
+        wend
 
+        json!.add("remove",remove!)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * When saving or restoring state on a filter the filter model is used.
+rem  * The filter model represents the state of the filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+interface public BBjGridExWidgetClientFilterModel
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+    rem /**
+    rem  * Check if the filter supported the combined model
+    rem  *
+    rem  * @return BBjNumber true when the filter support combined model , false otherwise
+    rem  */
+
+    method public BBjNumber supportsCombinedModel()
+    rem /**
+    rem  * Set the widget instance
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+
+    method public void setWidget(BBjGridExWidget widget!)
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+
+    method public BBjGridExWidget getWidget()
+    rem /**
+    rem  * Set the working column
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  */
+
+    method public void setColumn(BBjString column!)
+    rem /**
+    rem  * Get the working column
+    rem  *
+    rem  * @return BBjString
+    rem  */
+
+    method public BBjString getColumn()
+    rem /**
+    rem  * Apply the filter
+    rem  *
+    rem  * This method will only compose the model and send it to the client in case `send!` is true.
+    rem  * On the client the new model will be displayed on the filter panel but it will not be applied on the data.
+    rem  * To execute the model on the client you need to call `execute(1)`
+    rem  *
+    rem  * @see BBjGridExWidgetClientFilterModel.execute()
+    rem  *
+    rem  * @param BBjBynber send! when true the model will be send to the client , false otherwise
+    rem  *
+    rem  * @return BBjString The generated js code used to apply the model
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString apply(BBjNumber send!)
+    rem /**
+    rem  * Apply the filter
+    rem  *
+    rem  * This method only compose the model and send it to the client
+    rem  * On the client the new model will be displayed on the filter panel but it will not be applied on the data.
+    rem  * To execute the model on the client you need to call `execute(1)`
+    rem  *
+    rem  * @see BBjGridExWidgetClientFilterModel.execute()
+    rem  *
+    rem  * @return BBjString The generated js code used to apply the model
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString apply()
+    rem /**
+    rem  * Tell the grid to refresh rows based on the filter. the filter does not do this automatically in case multiple
+    rem  * filters are going to get set.
+    rem  *
+    rem  * @param BBjBynber send! when true the execution code will executed on the client , false otherwise
+    rem  * @return BBjString The generated js code used to execute the model on the client
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString execute(BBjNumber send!)
+    rem /**
+    rem  * Tell the grid to refresh rows based on the filter. the filter does not do this automatically in case multiple
+    rem  * filters are going to get set.
+    rem  *
+    rem  * @param BBjBynber send! when true the execution code will executed on the client , false otherwise
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString execute()
+    rem /**
+    rem  * Update the filter on the client and execute it.
+    rem  *
+    rem  * @return BBjString the js code used
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString update()
+    rem /**
+    rem  * Check if the filter is action or not
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @return BBjNumber true when action , false otherwise
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjNumber isFilterActive()
+    rem /**
+    rem  * Clear the filter
+    rem  *
+    rem  * @return BBjString the js code used to clear the filter
+    rem  */
+
+    method public void clearFilter()
+
+interfaceend
+rem /**
+rem  * A generic abstract implemetaion for the BBjGridExWidgetClientFilterModel interface
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterAbstractModel implements BBjGridExWidgetClientFilterModel
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field public BBjGridExWidget Widget!
+    rem /**
+    rem  * The working column
+    rem  */
+    field public BBjString Column!
+    rem /**
+    rem  * Disable constructor
+    rem  */
+    method protected BBjGridExWidgetClientFilterAbstractModel()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString apply(BBjNumber send!)
+        code! = String.format(";%s.setModel(%s);" ,#getFilterInstnace(), #getAsJsonObject())
+        if(send!.booleanValue()) #getWidget().executeScript(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString apply()
+        methodret #apply(1)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString execute(BBjNumber send!)
+        #assertWidget()
+        widget! = #getWidget()
+        code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getGRIDID())
+        if(send!.booleanValue()) widget!.executeScript(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString execute()
+        methodret #execute(1)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString update()
+        code! = #apply(0) + #execute(0)
+        
+        ? code!
+        #getWidget().executeScript(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber isFilterActive()
+        #assertWidget()
+        widget! = #getWidget()
+        if(widget!.getIsReady() = BBjAPI.FALSE) methodret 0
+        code! = String.format(";%s.isFilterActive();" , #getFilterInstnace())
+        isActive! = widget!.executeScript(code!)
+        methodret isActive!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+    methodend
+    rem /**
+    rem  * Assert the column exists
+    rem  *
+    rem  * @throws 256 when the column is null
+    rem  */
+    method protected void assertColumn()
+        if (#getColumn() = null()) throw "Cannot execute filter action on null() column" , 256
+    methodend
+    rem /**
+    rem  * Assert the widget exists
+    rem  *
+    rem  * @throws 256 when the widget is null
+    rem  */
+    method protected void assertWidget()
+        if (#getWidget() = null()) throw "The filter model is not attached to a grid instnace" , 256
+    methodend
+    rem /**
+    rem  * Return the js code required to obtain an instance of the client filter object
+    rem  *
+    rem  * @return BBjString the js code
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method protected BBjString getFilterInstnace()
+        #assertColumn()
+        #assertWidget()
+        code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getGRIDID(), #getColumn())
+        methodret code!
+    methodend
+
+classend
+rem /**
+rem  * A filter a which wraps two filter models and combine them with an `OR` or `AND` operator
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterCombinedModel extends BBjGridExWidgetClientFilterAbstractModel
+    rem /**
+    rem  * The combine operator
+    rem  *
+    rem  * @see BBjGridExWidgetClientFilterCombinedModel.OPERATOR_OR()
+    rem  * @see BBjGridExWidgetClientFilterCombinedModel.OPERATOR_AND()
+    rem  */
+    field public BBjString Operator! = BBjGridExWidgetClientFilterCombinedModel.OPERATOR_AND()
+    rem /**
+    rem  * The first filter condition
+    rem  */
+    field public BBjGridExWidgetClientFilterModel FirstCondition! = null()
+    rem /**
+    rem  * The second filter condition
+    rem  */
+    field public BBjGridExWidgetClientFilterModel SecondCondition! = null()
+    rem /**
+    rem  * Constant value which defines the `OR` operator
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString OPERATOR_OR()
+        methodret "OR"
+    methodend
+    rem /**
+    rem  * Constant value which defines the `AND` operator
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString OPERATOR_AND()
+        methodret "AND"
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterCombinedModel
+    rem  *
+    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instnace of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition2! the second condition (instnace of a filter model)
+    rem  * @param BBjString Operator! the combine operator
+    rem  */
+    method public BBjGridExWidgetClientFilterCombinedModel(BBjGridExWidgetClientFilterModel condition1! , BBjGridExWidgetClientFilterModel condition2! , BBjString operator!)
+        #setOperator(operator!)
+        #setFirstCondition(condition1!)
+        #setSecondCondition(condition2!)
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterCombinedModel
+    rem  *
+    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instnace of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition2! the second condition (instnace of a filter model)
+    rem  */
+    method public BBjGridExWidgetClientFilterCombinedModel(BBjGridExWidgetClientFilterModel condition1! , BBjGridExWidgetClientFilterModel condition2!)
+        #this!(condition1! , condition2! , #OPERATOR_AND())
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterCombinedModel
+    rem  *
+    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instnace of a filter model)
+    rem  */
+    method public BBjGridExWidgetClientFilterCombinedModel(BBjGridExWidgetClientFilterModel condition1!)
+        #this!(condition1! , null())
+    methodend
+    rem /**
+    rem  * Set the first condition
+    rem  *
+    rem  * @param BBjGridExWidgetClientFilterModel condition! a filter model
+    rem  *
+    rem  * @throws 256 when the passed condition does not support combined models
+    rem  */
+    method public void setFirstCondition(BBjGridExWidgetClientFilterModel condition!)
+        condition!.setWidget(#getWidget(),err=*next)
+        condition!.setColumn(#getColumn(),err=*next)
+
+        if(condition! <> null() AND !condition!.supportsCombinedModel())
+            throw "The passed filter model does not support combined models", 256
+        fi
+
+        #FirstCondition! = condition!
+    methodend
+    rem /**
+    rem  * Set the first condition
+    rem  *
+    rem  * @param BBjGridExWidgetClientFilterModel condition! a filter model
+    rem  *
+    rem  * @throws 256 when the passed condition does not support combined models
+    rem  */
+    method public void setSecondCondition(BBjGridExWidgetClientFilterModel condition!)
+        condition!.setWidget(#getWidget(),err=*next)
+        condition!.setColumn(#getColumn(),err=*next)
+
+        if(condition! <> null() AND !condition!.supportsCombinedModel())
+            throw "The passed filter model does not support combined models", 256
+        fi
+
+        #SecondCondition! = condition!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #getFirstCondition().clearFilter(err=*next)
+        #getSecondCondition().clearFilter(err=*next)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        rem in case the widget instance is not set yet , we try to set it again
+        if(#getFirstCondition() <> null())
+            #getFirstCondition().setWidget(#getWidget())
+            #getFirstCondition().setColumn(#getColumn(),err=*next)
+        fi
+
+        declare JsonObject json!
+
+        json! = null
+
+        if(#getSecondCondition() <> null())
+            json! = new JsonObject()
+            #getSecondCondition().setWidget(#getWidget())
+            #getSecondCondition().setColumn(#getColumn(),err=*next)
+            json! = new JsonObject()
+            json!.addProperty("operator",#getOperator(), err=*next)
+            json!.add("condition1",#getFirstCondition().getAsJsonObject(), err=*next)
+            json!.add("condition2",#getSecondCondition().getAsJsonObject(), err=*next)
+        else
+            json! = #getFirstCondition().getAsJsonObject()
+        fi
+        
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * An abstract filter model which defined the common properties of the provided simple filters
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterSimpleModel extends BBjGridExWidgetClientFilterAbstractModel
+    rem /**
+    rem  * One of the filter options
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterTextFilterOptions
+    rem  * @see BBjGridExWidgetColumnFilterDateTimeFilterOptions
+    rem  * @see BBjGridExWidgetColumnFilterNumberFilterOptions
+    rem  */
+    field public BBjString Type! = null()
+    rem /**
+    rem  * Disable the constructor
+    rem  */
+    method protected BBjGridExWidgetClientFilterSimpleModel()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setType(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("type",#getType(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the text filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterTextModel extends BBjGridExWidgetClientFilterSimpleModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjString Filter! = null()
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterTextModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterTextFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterTextModel(BBjString filter! , BBjString type!)
+        #setFilter(filter!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterTextModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterTextFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterTextModel(BBjString filter!)
+        #this!(filter!,BBjGridExWidgetColumnFilterTextFilterOptions.CONTAINS())
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterTextModel
+    rem  */
+    method public BBjGridExWidgetClientFilterTextModel()
+        #this!(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 1
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+        #setType(BBjGridExWidgetColumnFilterTextFilterOptions.CONTAINS())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("filterType","text")
+        json!.addProperty("filter",#getFilter(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the number filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterNumberModel extends BBjGridExWidgetClientFilterSimpleModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjNumber Filter! = null()
+    rem /**
+    rem  * In case you are using range filter , then this is the second input value
+    rem  */
+    field public BBjNumber FilterTo! = null()
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  * @param BBjNumber filterTo! In case you are using range filter , then this is the second input value
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterNumberFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterNumberModel(BBjNumber filter! , BBjNumber filterTo! ,BBjString type!)
+        #setFilter(filter!)
+        #setFilterTo(filterTo!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  * @param BBjNumber filterTo! In case you are using range filter , then this is the second input value
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterNumberFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterNumberModel(BBjNumber filter! , BBjNumber filterTo!)
+        #this!(filter!, filterTo!, BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterNumberFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterNumberModel(BBjNumber filter! ,BBjString type!)
+        #this!(filter!,null(),type!)
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterNumberFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterNumberModel(BBjNumber filter!)
+        #this!(filter!,null(),BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterNumberModel
+    rem  */
+    method public BBjGridExWidgetClientFilterNumberModel()
+        #this!(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 1
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+        #setFilterTo(null())
+        #setType(BBjGridExWidgetColumnFilterNumberFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("filterType","number")
+        filterCasted! = 0 
+        filter! = #getFilter().longValue( err=*next); filterCasted! = 1
+        
+        filterToCasted! = 0 
+        filterTo! = #getFilterTo().longValue( err=*next); filterToCasted! = 1
+                
+        json!.addProperty("filter",iff(filterCasted!, filter!, ""), err=*next)
+        json!.addProperty("filterTo",iff(filterToCasted!, filterTo!,""), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the datetime filter.
+rem  * Please not this model will work for date , times and timestamps
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterDateTimeModel extends BBjGridExWidgetClientFilterSimpleModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjString Filter! = null()
+    rem /**
+    rem  * In case you are using range filter , then this is the second input value
+    rem  */
+    field public BBjString FilterTo! = null()
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterDateTimeModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  * @param BBjString filterTo! In case you are using range filter , then this is the second input value
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterDateTimeFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterDateTimeModel(BBjString filter! , BBjString filterTo! ,BBjString type!)
+        #setFilter(filter!)
+        #setFilterTo(filterTo!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterDateTimeModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  * @param BBjString filterTo! In case you are using range filter , then this is the second input value
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterDateTimeFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterDateTimeModel(BBjString filter! , BBjString filterTo!)
+        #this!(filter!, filterTo!, BBjGridExWidgetColumnFilterDateTimeFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterDateTimeModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  *
+    rem  * @see BBjGridExWidgetColumnFilterDateTimeFilterOptions
+    rem  */
+    method public BBjGridExWidgetClientFilterDateTimeModel(BBjString filter!)
+        #this!(filter!,null())
+    methodend
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterDateTimeModel
+    rem  */
+    method public BBjGridExWidgetClientFilterDateTimeModel()
+        #this!(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 1
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+        #setFilterTo(null())
+        #setType(BBjGridExWidgetColumnFilterDateTimeFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("filterType","datetime")
+        json!.addProperty("filter",#getFilter(), err=*next)
+        json!.addProperty("filterTo",#getFilterTo(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the boolean filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilterBooleanModel extends BBjGridExWidgetClientFilterAbstractModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjNumber Filter! = null()
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilterBooleanModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  */
+    method public BBjGridExWidgetClientFilterBooleanModel(BBjNumber filter!)
+        #setFilter(filter!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("filterType","boolean")
+        json!.addProperty("value",String.valueOf(#getFilter().booleanValue()), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the enhanced filter type "setfilter"
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetClientFilterAbstractModel
+    rem /**
+    rem  * The values to display in the filter. If this is not set, then the filter will takes its
+    rem  * values from what is loaded in the table.
+    rem  * Setting it allows you to set values where  the value may not be present in the list
+    rem  * for example, if you want to show all states in America so that the user is not
+    rem  * confused by missing states, even though states are missing from the data set in the grid
+    rem  */
+    field public JsonArray Values! = new JsonArray()
+    rem /**
+    rem  * Construct new BBjGridExWidgetClientFilteSetFilterModel
+    rem  *
+    rem  * @param JsonArray values! The values to display in the filter
+    rem  */
+    method public BBjGridExWidgetClientFilteSetFilterModel(JsonArray values!)
+        #setValues(values!)
+    methodend
+    rem /**
+    rem  * Sets the filter at the top of the filter (the 'quick search' in the popup)
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString miniFilter
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void setMiniFilter(BBjString miniFilter!)
+        code! = String.format(";%s.setMiniFilter('%s');", #getFilterInstnace(), miniFilter!)
+        #getWidget().executeScript(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Sets the filter at the top of the filter (the 'quick search' in the popup)
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber miniFilter
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void setMiniFilter(BBjNumber miniFilter!)
+        #setMiniFilter(str(miniFilter!))
+    methodend
+    rem /**
+    rem  * Get the minifilter value.
+    rem  *
+    rem  * Note that if the grid is not ready , then this method will always return an empty string
+    rem  * even if you have called `setMiniFilter` before.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @return BBjString
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public BBjString getMiniFilter()
+        #assertWidget()
+        widget! = #getWidget()
+        if(widget!.getIsReady() = BBjAPI.FALSE) methodret ""
+        code! = String.format(";%s.getMiniFilter();" , #getFilterInstnace())
+        value! = #getWidget().executeScript(code!)
+        methodret iff(value! <> null() , value! , "")
+    methodend
+    rem /**
+    rem  * Select all values generated by the UI
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectEverything()
+        code! = String.format(";%s.selectEverything();" , #getFilterInstnace())
+        #getWidget().executeScript(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Clears the selection
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectNothing()
+        code! = String.format(";%s.selectNothing();", #getFilterInstnace())
+        #getWidget().executeScript(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Change on the fly the available options
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param JsonArray values! array of values
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void setFilterValues(JsonArray values!)
+        code! = String.format(";%s.setFilterValues(%s);", #getFilterInstnace() ,values!.toString())
+        #getWidget().executeScript(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Selects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString value! the value to select
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectValue(BBjString value!)
+        code! = String.format(";%s.selectValue('%s');" , #getFilterInstnace(), value!)
+        #getWidget().executeScript(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Selects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber value! the value to select
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectValue(BBjNumber value!)
+        #selectValue(str(value!))
+    methodend
+    rem /**
+    rem  * Unselects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString value! the value to unselect
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void unselectValue(BBjString value!)
+        code! = String.format("%s.unselectValue('%s');", #getFilterInstnace(), value!)
+        #getWidget().executeScript(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Unselects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber value! the value to unselect
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void unselectValue(BBjNumber value!)
+        #unselectValue(str(value!))
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setValues(new JsonArray())
+        #selectEverything()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString execute(BBjNumber send!)
+        code! = #super!.execute(0)
+        widget! = #getWidget()
+        code! = String.format(";try{%s.applyModel()}catch(e){};", #getFilterInstnace()) + code!
+        if(send!.booleanValue()) #getWidget().executeScript(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("filterType","set")
+        json!.add("values",#getValues(), err=*next)
         methodret json!
     methodend
 

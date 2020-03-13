@@ -1,0 +1,62 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterAbstractModel
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.JsonObject
+use com.basiscomponents.db.ResultSet
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjGridExWidgetMock extends BBjGridExWidget
+    rem /**
+    rem  * The last executed js script.
+    rem  */
+    field public BBjString LastExecutedScript! = ""
+    field public Object ExecuteResult! = null()
+    
+    rem /**
+    rem  * Construct new grid mock
+    rem  */
+    method public BBjGridExWidgetMock(BBjNumber initRS!)
+        if(initRS! = 1)
+            #fillData()
+        fi
+    methodend
+    rem /**
+    rem  * Fill the grid with CDStore data
+    rem  */
+    method public void fillData()
+        json$ = ""
+        ch=unt
+        open (ch)"BBjGridExWidget/test/Fixtures/CDStore.json"
+        read record (ch,siz=5512000)json$
+        close (ch)
+        #setRS(ResultSet.fromJson(json$))
+        #getRS().createIndex()
+    methodend
+    rem /**
+    rem  * @override
+    rem  */
+    method public Object executeScript(BBjString script$)
+        if #getIsReady() then
+            #LastExecutedScript! = script$
+            if(#ExecuteResult!<> null()) methodret #ExecuteResult!
+        else
+            #getBacklog().addItem(script$)
+        FI
+
+        methodret null()
+    methodend
+    rem /**
+    rem  * Get instnace of the scripts backlog
+    rem  */
+    method public BBjVector getBacklog()
+        methodret #getbacklog()
+    methodend
+
+classend

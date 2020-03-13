@@ -1,0 +1,73 @@
+
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterTextFilterOptions
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public BBjGridExWidgetClientFilterTextModelTest
+
+    field private BBjGridExWidgetClientFilterTextModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetClientFilterTextModel()
+    methodend
+    
+    rem @Test
+    method public void testConstructors()
+        declare BBjGridExWidgetClientFilterTextModel obj!
+        
+        filter! = "myFilter"
+        rem two params
+        obj! = new BBjGridExWidgetClientFilterTextModel(filter!,BBjGridExWidgetColumnFilterTextFilterOptions.EQUALS())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterTextFilterOptions.EQUALS())
+        
+        rem one param
+        obj! = new BBjGridExWidgetClientFilterTextModel(filter!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterTextFilterOptions.CONTAINS())       
+        
+        rem no params
+        obj! = new BBjGridExWidgetClientFilterTextModel()
+        Assert.IsNull(obj!.getFilter())
+        Assert.Equals(obj!.getType() , BBjGridExWidgetColumnFilterTextFilterOptions.CONTAINS())   
+    methodend
+    
+    rem @Test
+    method public void testCanSetFilter()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filter").equals(new JsonNull()), BBjAPI.TRUE)
+        
+        #Instance!.setFilter("myCustomFilter")
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filter").getAsString(), "myCustomFilter")
+    methodend  
+     
+    rem @Test
+    method public void testClearFilter()
+        #Instance!.setFilter("string")
+        #Instance!.setType(BBjGridExWidgetColumnFilterTextFilterOptions.NOT_CONTAINS())
+        
+        #Instance!.clearFilter()
+        Assert.IsNull(#Instance!.getFilter())
+        Assert.Equals(#Instance!.getType() , BBjGridExWidgetColumnFilterTextFilterOptions.CONTAINS())
+    methodend
+         
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend
