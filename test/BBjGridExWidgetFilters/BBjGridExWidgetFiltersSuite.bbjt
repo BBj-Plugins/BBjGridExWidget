@@ -7,14 +7,14 @@ rem  * file that was distributed with this source code.
 rem  */
 
 use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetColumnFilterAGTest.bbjt::BBjGridExWidgetColumnFilterAGTest
-use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterAGTextTest.bbjt::BBjGridExWidgetFilterAGTextTest
-use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterAGNumberTest.bbjt::BBjGridExWidgetFilterAGNumberTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterTextTest.bbjt::BBjGridExWidgetFilterTextTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterNumberTest.bbjt::BBjGridExWidgetFilterNumberTest
 use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicBooleanTest.bbjt::BBjGridExWidgetFilterBasicBooleanTest
 use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicDateTimeTest.bbjt::BBjGridExWidgetFilterBasicDateTimeTest
 use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicDateTimeTest.bbjt::BBjGridExWidgetFilterBasicDateTest
 use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterBasicTimeTest.bbjt::BBjGridExWidgetFilterBasicTimeTest
-use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterAGSetFilterTest.bbjt::BBjGridExWidgetFilterAGSetFilterTest
+use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFilterSetFilterTest.bbjt::BBjGridExWidgetFilterSetFilterTest
 
-rem @SuiteClasses("BBjGridExWidgetColumnFilterAGTest","BBjGridExWidgetFilterAGTextTest","BBjGridExWidgetFilterAGNumberTest","BBjGridExWidgetFilterBasicBooleanTest","BBjGridExWidgetFilterBasicDateTimeTest","BBjGridExWidgetFilterBasicDateTest","BBjGridExWidgetFilterBasicTimeTest","BBjGridExWidgetFilterAGSetFilterTest")
+rem @SuiteClasses("BBjGridExWidgetColumnFilterAGTest","BBjGridExWidgetFilterTextTest","BBjGridExWidgetFilterNumberTest","BBjGridExWidgetFilterBasicBooleanTest","BBjGridExWidgetFilterBasicDateTimeTest","BBjGridExWidgetFilterBasicDateTest","BBjGridExWidgetFilterBasicTimeTest","BBjGridExWidgetFilterSetFilterTest")
 class public BBjGridExWidgetBBjGridExWidgetFiltersSuite
 classend

@@ -6,19 +6,19 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGRichSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorRichSelect
 use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererCustomHTML
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorSelect
 use com.google.gson.JsonObject
 use com.google.gson.JsonNull
 
-class public BBjGridExWidgetCellEditorAGRichSelectTest
+class public BBjGridExWidgetCellEditorRichSelectTest
 
-    field private BBjGridExWidgetCellEditorAGRichSelect Instance!
+    field private BBjGridExWidgetCellEditorRichSelect Instance!
     
     rem @Before
     method public void setUp()
-        #Instance! = new BBjGridExWidgetCellEditorAGRichSelect()
+        #Instance! = new BBjGridExWidgetCellEditorRichSelect()
     methodend
 
     rem @Test
@@ -43,9 +43,9 @@ class public BBjGridExWidgetCellEditorAGRichSelectTest
     methodend
             
     rem @Test
-    method public void testFallbackToBBjGridExWidgetCellEditorAGSelect()
-        proxy! = new BBjGridExWidgetCellEditorAGRichSelectProxy()
-        Assert.Equals(proxy!.getCellEditorName() , BBjGridExWidgetCellEditorAGSelect.getCellEditorName())
+    method public void testFallbackToBBjGridExWidgetCellEditorSelect()
+        proxy! = new BBjGridExWidgetCellEditorRichSelectProxy()
+        Assert.Equals(proxy!.getCellEditorName() , BBjGridExWidgetCellEditorSelect.getCellEditorName())
     methodend   
                 
     rem @After
@@ -55,7 +55,7 @@ class public BBjGridExWidgetCellEditorAGRichSelectTest
 
 classend
 
-class public BBjGridExWidgetCellEditorAGRichSelectProxy extends BBjGridExWidgetCellEditorAGRichSelect
+class public BBjGridExWidgetCellEditorRichSelectProxy extends BBjGridExWidgetCellEditorRichSelect
     rem /**
     rem  * @override
     rem  */

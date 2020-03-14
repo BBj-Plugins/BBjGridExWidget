@@ -254,7 +254,7 @@ rem  * The class represents the default ag-grid text filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetFilterAGText extends BBjGridExWidgetColumnFilterAG
+class public BBjGridExWidgetFilterText extends BBjGridExWidgetColumnFilterAG
     rem /**
     rem  * Set to true to make text filtering case sensitive, otherwise the filtering will be case insensitive
     rem  */
@@ -284,7 +284,7 @@ rem  * The class represents the default ag-grid number filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetFilterAGNumber extends BBjGridExWidgetColumnFilterAG
+class public BBjGridExWidgetFilterNumber extends BBjGridExWidgetColumnFilterAG
     rem /**
     rem  * If true then doing 'inRange' filter option will include values equal to the start and end of the range.
     rem  */
@@ -331,7 +331,7 @@ rem  * @author Hyyan Abo Fakher
 rem  *
 rem  * @deprecated Use BBjGridExWidgetFilterBasicDate
 rem  */
-class public BBjGridExWidgetFilterAGDate extends BBjGridExWidgetFilterAGNumber
+class public BBjGridExWidgetFilterDate extends BBjGridExWidgetFilterNumber
     rem /**
     rem  * @override
     rem  *
@@ -343,13 +343,13 @@ class public BBjGridExWidgetFilterAGDate extends BBjGridExWidgetFilterAGNumber
 
 classend
 rem /**
-rem  * BBjGridExWidgetFilterAGSetFilter allow you to filter on set data, influenced by how filters work in Microsoft Excel
+rem  * BBjGridExWidgetFilterSetFilter allow you to filter on set data, influenced by how filters work in Microsoft Excel
 rem  *
 rem  * <br><b><small>#Enterprise</small></b>
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetFilterAGSetFilter extends BBjGridExWidgetColumnFilterAG
+class public BBjGridExWidgetFilterSetFilter extends BBjGridExWidgetColumnFilterAG
     rem /**
     rem  * Provide a cell renderer for each value
     rem  */

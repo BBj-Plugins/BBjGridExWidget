@@ -22,8 +22,8 @@ use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 rem BBjGridExWidgetFilters
 rem =========================
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterInterface
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterText
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterNumber
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicBoolean
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicDate
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTime
@@ -44,7 +44,7 @@ rem BBjGridExWidgetCellEditors
 rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorInterface
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicText
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGLargeText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorLargeText
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBoolean
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicNumber
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicDate
@@ -203,7 +203,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRerender</small></b>
     rem  */
-    field public BBjGridExWidgetFilterInterface Filter! = new BBjGridExWidgetFilterAGText()
+    field public BBjGridExWidgetFilterInterface Filter! = new BBjGridExWidgetFilterText()
     rem /**
     rem  * When true the filter is enabled, disabled otherwise
     rem  *
@@ -924,7 +924,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
             CASE Types.FLOAT
             CASE Types.REAL
             CASE Types.NUMERIC
-                #setFilter(new BBjGridExWidgetFilterAGNumber())
+                #setFilter(new BBjGridExWidgetFilterNumber())
                 #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(#getDefaultNumbersMask()))
                 #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber(#getDefaultNumbersMask()))
                 BREAK
@@ -958,11 +958,11 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
             CASE Types.LONGVARCHAR
             CASE Types.LONGNVARCHAR
             CASE default
-                #setFilter(new BBjGridExWidgetFilterAGText())
+                #setFilter(new BBjGridExWidgetFilterText())
                 #setValueFormatterExpression(new BBjGridExWidgetExpressionStringsFormatter(#getDefaultStringsMask()))
 
                 if(type! = Types.LONGVARCHAR OR type! = Types.LONGNVARCHAR )
-                    #setCellEditor(new BBjGridExWidgetCellEditorAGLargeText())
+                    #setCellEditor(new BBjGridExWidgetCellEditorLargeText())
                 else
                     #setCellEditor(new BBjGridExWidgetCellEditorBasicText(#getDefaultStringsMask()))
                 FI

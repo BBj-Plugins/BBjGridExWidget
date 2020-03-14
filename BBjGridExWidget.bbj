@@ -86,11 +86,11 @@ rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
 rem Filter Components
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterText
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterNumber
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicBoolean
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTimestamp
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGSetFilter
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterSetFilter
 rem /**
 rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
@@ -2541,7 +2541,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             if (#getColumn(column!).getFilter() <> null())
                 filterName! = #getColumn(column!).getFilter().getFilterName()
                 SWITCH (filterName!)
-                    CASE BBjGridExWidgetFilterAGNumber.getFilterName()
+                    CASE BBjGridExWidgetFilterNumber.getFilterName()
                         model! = new BBjGridExWidgetClientFilterNumberModel()
                         break
                     CASE BBjGridExWidgetFilterBasicTimestamp.getFilterName()
@@ -2550,10 +2550,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                     CASE BBjGridExWidgetFilterBasicBoolean.getFilterName()
                         model! = new BBjGridExWidgetClientFilterBooleanModel()
                         break
-                    CASE BBjGridExWidgetFilterAGText.getFilterName()
+                    CASE BBjGridExWidgetFilterText.getFilterName()
                         model! = new BBjGridExWidgetClientFilterTextModel()
                         break
-                    CASE BBjGridExWidgetFilterAGSetFilter.getFilterName()
+                    CASE BBjGridExWidgetFilterSetFilter.getFilterName()
                         model! = new BBjGridExWidgetClientFilteSetFilterModel()
                         break
                 SWEND

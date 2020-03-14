@@ -17,7 +17,7 @@ use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilt
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterTextFilterOptions
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterDateTimeFilterOptions
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterNumberFilterOptions
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGSetFilter
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterSetFilter
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -72,9 +72,9 @@ main:
 
   grid!.setData(rs! , 1 , 0)
   
-  rem IMPORTANT: BBjGridExWidgetFilterAGSetFilter is part of the enhacned grid
+  rem IMPORTANT: BBjGridExWidgetFilterSetFilter is part of the enhacned grid
   country! = grid!.getColumn("COUNTRY")
-  country!.setFilter(new BBjGridExWidgetFilterAGSetFilter())
+  country!.setFilter(new BBjGridExWidgetFilterSetFilter())
   
   grid!.getColumn("IS_OVER_120").setType(16)
   

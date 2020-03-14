@@ -5,16 +5,16 @@ rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterNumber
 use com.google.gson.JsonObject
 
-class public BBjGridExWidgetFilterAGNumberTest
+class public BBjGridExWidgetFilterNumberTest
 
-    field private BBjGridExWidgetFilterAGNumber Instance!
+    field private BBjGridExWidgetFilterNumber Instance!
     
     rem @Before
     method public void setUp()
-        #Instance! = new BBjGridExWidgetFilterAGNumber()
+        #Instance! = new BBjGridExWidgetFilterNumber()
     methodend
 
     rem @Test

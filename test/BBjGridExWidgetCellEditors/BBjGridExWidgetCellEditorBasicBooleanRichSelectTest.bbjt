@@ -6,26 +6,26 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBooleanAGRichSelect
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGSelect
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGRichSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBooleanRichSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorRichSelect
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use com.google.gson.JsonNull
 use com.google.gson.JsonPrimitive
 
-class public BBjGridExWidgetCellEditorBasicBooleanAGRichSelectTest
+class public BBjGridExWidgetCellEditorBasicBooleanRichSelectTest
 
-    field private BBjGridExWidgetCellEditorBasicBooleanAGRichSelect Instance!
+    field private BBjGridExWidgetCellEditorBasicBooleanRichSelect Instance!
     
     rem @Before
     method public void setUp()
-        #Instance! = new BBjGridExWidgetCellEditorBasicBooleanAGRichSelect()
+        #Instance! = new BBjGridExWidgetCellEditorBasicBooleanRichSelect()
     methodend
 
     rem @Test
     method public void testCellEditorNameIsSet()
-        Assert.Equals(#Instance!.getCellEditorName() , BBjGridExWidgetCellEditorAGRichSelect.getCellEditorName())
+        Assert.Equals(#Instance!.getCellEditorName() , BBjGridExWidgetCellEditorRichSelect.getCellEditorName())
     methodend
         
     rem @Test

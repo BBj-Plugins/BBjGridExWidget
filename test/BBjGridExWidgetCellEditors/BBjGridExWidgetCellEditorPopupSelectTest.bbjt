@@ -6,19 +6,19 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGPopupSelect
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorPopupSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorSelect
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use com.google.gson.JsonNull
 
-class public BBjGridExWidgetCellEditorAGPopupSelectTest
+class public BBjGridExWidgetCellEditorPopupSelectTest
 
-    field private BBjGridExWidgetCellEditorAGPopupSelect Instance!
+    field private BBjGridExWidgetCellEditorPopupSelect Instance!
     
     rem @Before
     method public void setUp()
-        #Instance! = new BBjGridExWidgetCellEditorAGPopupSelect()
+        #Instance! = new BBjGridExWidgetCellEditorPopupSelect()
     methodend
 
     rem @Test
@@ -27,9 +27,9 @@ class public BBjGridExWidgetCellEditorAGPopupSelectTest
     methodend
     
     rem @Test
-    method public void testFallbackToBBjGridExWidgetCellEditorAGSelect()
-        proxy! = new BBjGridExWidgetCellEditorAGPopupSelectProxy()
-        Assert.Equals(proxy!.getCellEditorName() , BBjGridExWidgetCellEditorAGSelect.getCellEditorName())
+    method public void testFallbackToBBjGridExWidgetCellEditorSelect()
+        proxy! = new BBjGridExWidgetCellEditorPopupSelectProxy()
+        Assert.Equals(proxy!.getCellEditorName() , BBjGridExWidgetCellEditorSelect.getCellEditorName())
     methodend    
             
     rem @After
@@ -39,7 +39,7 @@ class public BBjGridExWidgetCellEditorAGPopupSelectTest
 
 classend
 
-class public BBjGridExWidgetCellEditorAGPopupSelectProxy extends BBjGridExWidgetCellEditorAGPopupSelect
+class public BBjGridExWidgetCellEditorPopupSelectProxy extends BBjGridExWidgetCellEditorPopupSelect
     rem /**
     rem  * @override
     rem  */

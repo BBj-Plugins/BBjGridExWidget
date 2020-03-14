@@ -6,15 +6,15 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGPopupText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorPopupText
 
-class public BBjGridExWidgetCellEditorAGPopupTextTest
+class public BBjGridExWidgetCellEditorPopupTextTest
 
-    field private BBjGridExWidgetCellEditorAGPopupText Instance!
+    field private BBjGridExWidgetCellEditorPopupText Instance!
     
     rem @Before
     method public void setUp()
-        #Instance!  = new BBjGridExWidgetCellEditorAGPopupText()
+        #Instance!  = new BBjGridExWidgetCellEditorPopupText()
     methodend
 
     rem @Test

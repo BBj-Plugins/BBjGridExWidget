@@ -6,16 +6,16 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGLargeText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorLargeText
 use com.google.gson.JsonObject
 
-class public BBjGridExWidgetCellEditorAGLargeTextTest
+class public BBjGridExWidgetCellEditorLargeTextTest
 
-    field private BBjGridExWidgetCellEditorAGLargeText Instance!
+    field private BBjGridExWidgetCellEditorLargeText Instance!
     
     rem @Before
     method public void setUp()
-        #Instance!  = new BBjGridExWidgetCellEditorAGLargeText()
+        #Instance!  = new BBjGridExWidgetCellEditorLargeText()
     methodend
 
     rem @Test

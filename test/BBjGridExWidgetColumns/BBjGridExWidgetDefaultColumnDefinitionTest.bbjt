@@ -10,16 +10,16 @@ use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnDe
 
 rem Numbers Components
 rem =======================
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGNumber
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterNumber
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionNumbersFormatter
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicNumber
 
 rem Text Components
 rem =======================
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGText
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterText
 use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionStringsFormatter
 use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicText
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGLargeText
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorLargeText
 
 rem Date Components
 rem =======================
@@ -126,7 +126,7 @@ class public BBjGridExWidgetDefaultColumnDefinitionTest
           def!.setDefaultNumbersMask("#")
           def!.setType(num(next!.getValue()))
           
-          Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetFilterAGNumber" , def!.getFilter().equals(new BBjGridExWidgetFilterAGNumber()) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetFilterNumber" , def!.getFilter().equals(new BBjGridExWidgetFilterNumber()) , BBjAPI.TRUE)           
           Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetExpressionNumbersFormatter" , def!.getValueFormatterExpression().equals(new BBjGridExWidgetExpressionNumbersFormatter(def!.getDefaultNumbersMask())) , BBjAPI.TRUE)
           Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorBasicNumber" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorBasicNumber(def!.getDefaultNumbersMask())) , BBjAPI.TRUE )
         wend
@@ -145,11 +145,11 @@ class public BBjGridExWidgetDefaultColumnDefinitionTest
           def!.setDefaultStringsMask("AA-00")
           def!.setType(value!)
           
-          Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetFilterAGText" , def!.getFilter().equals(new BBjGridExWidgetFilterAGText()) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetFilterText" , def!.getFilter().equals(new BBjGridExWidgetFilterText()) , BBjAPI.TRUE)           
           Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetExpressionStringsFormatter" , def!.getValueFormatterExpression().equals(new BBjGridExWidgetExpressionStringsFormatter(def!.getDefaultStringsMask())) , BBjAPI.TRUE)
           
           if((value! = Types.LONGVARCHAR) OR (value! = Types.LONGNVARCHAR))
-            Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorAGLargeText" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorAGLargeText()) , BBjAPI.TRUE )
+            Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorLargeText" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorLargeText()) , BBjAPI.TRUE )
           else
             Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorBasicText" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorBasicText(def!.getDefaultStringsMask())) , BBjAPI.TRUE )
           fi

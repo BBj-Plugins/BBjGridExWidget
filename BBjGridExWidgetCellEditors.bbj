@@ -86,7 +86,7 @@ rem  * Simple text editors that use the standard HTML 'input' tag
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorAGText extends BBjGridExWidgetCellEditorAbstract
+class public BBjGridExWidgetCellEditorText extends BBjGridExWidgetCellEditorAbstract
     rem /**
     rem  * If set to true then the grid will use the provided cell formatter if one is provided.
     rem  */
@@ -114,11 +114,11 @@ class public BBjGridExWidgetCellEditorAGText extends BBjGridExWidgetCellEditorAb
 
 classend
 rem /**
-rem  * Same as BBjGridExWidgetCellEditorAgText but as popup.
+rem  * Same as BBjGridExWidgetCellEditorText but as popup.
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorAGPopupText extends BBjGridExWidgetCellEditorAGText
+class public BBjGridExWidgetCellEditorPopupText extends BBjGridExWidgetCellEditorText
     rem /**
     rem  * @override
     rem  *
@@ -134,7 +134,7 @@ rem  * Simple editor that uses the standard HTML 'textarea' tag.
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorAGLargeText extends BBjGridExWidgetCellEditorAGText
+class public BBjGridExWidgetCellEditorLargeText extends BBjGridExWidgetCellEditorText
     rem /**
     rem  * Max number of characters to allow. Default is 200.
     rem  */
@@ -177,14 +177,14 @@ rem  *
 rem  * The standard HTML select to behave oddly in the grid. This is because the browser doesn't have a great API for
 rem  * opening and closing the select's popup.
 rem  *
-rem  * We advise that you don't use it unless you have to - that is we advise against BBjGridExWidgetCellEditorAGSelect
+rem  * We advise that you don't use it unless you have to - that is we advise against BBjGridExWidgetCellEditorSelect
 rem  * as they give poor user experience, especially if using keyboard navigation.
 rem  *
-rem  * If using Enhanced grid , you should use the provided BBjGridExWidgetCellEditorAGRichSelect.
+rem  * If using Enhanced grid , you should use the provided BBjGridExWidgetCellEditorRichSelect.
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorAGSelect extends BBjGridExWidgetCellEditorAbstract
+class public BBjGridExWidgetCellEditorSelect extends BBjGridExWidgetCellEditorAbstract
     rem /**
     rem  * An array of values to allow the user to select from
     rem  */
@@ -210,22 +210,22 @@ classend
 rem /**
 rem  * Simple editors that use the standard HTML select tag.
 rem  *
-rem  * It is same as BBjGridExWidgetCellEditorAGSelect but as popup.
+rem  * It is same as BBjGridExWidgetCellEditorSelect but as popup.
 rem  *
 rem  * The standard HTML select to behave oddly in the grid. This is because the browser doesn't have a great API for
 rem  * opening and closing the select's popup.
 rem  *
-rem  * We advise that you don't use it unless you have to - that is we advise against BBjGridExWidgetCellEditorAGPopupSelect
+rem  * We advise that you don't use it unless you have to - that is we advise against BBjGridExWidgetCellEditorPopupSelect
 rem  * as they give poor user experience, especially if using keyboard navigation.
 rem  *
-rem  * If using Enhanced grid, you should use the provided BBjGridExWidgetCellEditorAGRichSelect.
+rem  * If using Enhanced grid, you should use the provided BBjGridExWidgetCellEditorRichSelect.
 rem  *
 rem  * <br><b><small>#OnlyGUI</small></b>
 rem  * <br><b><small>#Enterprise</small></b>
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorAGPopupSelect extends BBjGridExWidgetCellEditorAGSelect
+class public BBjGridExWidgetCellEditorPopupSelect extends BBjGridExWidgetCellEditorSelect
     rem /**
     rem  * Check if it is bui env
     rem  *
@@ -241,7 +241,7 @@ class public BBjGridExWidgetCellEditorAGPopupSelect extends BBjGridExWidgetCellE
         name! = "agPopupSelectCellEditor"
 
         if(#isBUI())
-            name! = BBjGridExWidgetCellEditorAGSelect.getCellEditorName()
+            name! = BBjGridExWidgetCellEditorSelect.getCellEditorName()
         FI
 
         methodret name!
@@ -256,7 +256,7 @@ rem  * <br><b><small>#Enterprise</small></b>
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorAGRichSelect extends BBjGridExWidgetCellEditorAGSelect
+class public BBjGridExWidgetCellEditorRichSelect extends BBjGridExWidgetCellEditorSelect
     rem /**
     rem  * Provide a cell renderer for each value
     rem  */
@@ -276,7 +276,7 @@ class public BBjGridExWidgetCellEditorAGRichSelect extends BBjGridExWidgetCellEd
         name! = "agRichSelectCellEditor"
 
         if(#isBUI())
-            name! = BBjGridExWidgetCellEditorAGSelect.getCellEditorName()
+            name! = BBjGridExWidgetCellEditorSelect.getCellEditorName()
         FI
 
         methodret name!
@@ -341,13 +341,13 @@ class public BBjGridExWidgetCellEditorBasicBoolean extends BBjGridExWidgetOption
 
 classend
 rem /**
-rem  * A simple boolean editor based on the BBjGridExWidgetCellEditorAGSelect.
+rem  * A simple boolean editor based on the BBjGridExWidgetCellEditorSelect.
 rem  *
 rem  * The editor provides a select box where the user can selected one of the three values (true , false , none)
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorBasicBooleanAGSelect extends BBjGridExWidgetCellEditorAGSelect
+class public BBjGridExWidgetCellEditorBasicBooleanSelect extends BBjGridExWidgetCellEditorSelect
     rem /**
     rem  * The value to use when when the component needs to return a true value.
     rem  */
@@ -369,7 +369,7 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGSelect extends BBjGridExWidg
     rem  * @param BBjString noneValue! The value to use when when the component needs to return a none/empty/null value.
     rem  *                             in case it is null() , then the none option will be hidden from the rendered list
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGSelect(BBjString trueValue!,BBjString falseValue!,BBjString noneValue!)
+    method public BBjGridExWidgetCellEditorBasicBooleanSelect(BBjString trueValue!,BBjString falseValue!,BBjString noneValue!)
         #super!()
         #setUsedTrueValue(trueValue!)
         #setUsedFalseValue(falseValue!)
@@ -381,7 +381,7 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGSelect extends BBjGridExWidg
     rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
     rem  * @param BBjString falseValue! The value to use when when the component needs to return a false value.
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGSelect(BBjString trueValue!,BBjString falseValue!)
+    method public BBjGridExWidgetCellEditorBasicBooleanSelect(BBjString trueValue!,BBjString falseValue!)
         #this!(trueValue!,falseValue!,"")
     methodend
     rem /**
@@ -389,13 +389,13 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGSelect extends BBjGridExWidg
     rem  *
     rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGSelect(BBjString trueValue!)
+    method public BBjGridExWidgetCellEditorBasicBooleanSelect(BBjString trueValue!)
         #this!(trueValue!,"false")
     methodend
     rem /**
     rem  * Construct new BBjGridExWidgetCellEditorBasicBooleanSelect
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGSelect()
+    method public BBjGridExWidgetCellEditorBasicBooleanSelect()
         #this!("true")
     methodend
     rem /**
@@ -444,7 +444,7 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGSelect extends BBjGridExWidg
 
 classend
 rem /**
-rem  * A simple boolean editor based on the BBjGridExWidgetCellEditorAGRichSelect.
+rem  * A simple boolean editor based on the BBjGridExWidgetCellEditorRichSelect.
 rem  *
 rem  * The editor provides a select box where the user can selected one of the three values (true , false , none)
 rem  *
@@ -452,7 +452,7 @@ rem  * <br><b><small>#OnlyGUI</small></b>
 rem  * <br><b><small>#Enterprise</small></b>
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect extends BBjGridExWidgetCellEditorAGRichSelect
+class public BBjGridExWidgetCellEditorBasicBooleanRichSelect extends BBjGridExWidgetCellEditorRichSelect
     rem /**
     rem  * The value to use when when the component needs to return a true value.
     rem  */
@@ -474,7 +474,7 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect extends BBjGridEx
     rem  * @param BBjString noneValue! The value to use when when the component needs to return a none/empty/null value.
     rem  *                             in case it is null() , then the none option will be hidden from the rendered list
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect(BBjString trueValue!,BBjString falseValue!,BBjString noneValue!)
+    method public BBjGridExWidgetCellEditorBasicBooleanRichSelect(BBjString trueValue!,BBjString falseValue!,BBjString noneValue!)
         #super!()
         #setUsedTrueValue(trueValue!)
         #setUsedFalseValue(falseValue!)
@@ -500,7 +500,7 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect extends BBjGridEx
     rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
     rem  * @param BBjString falseValue! The value to use when when the component needs to return a false value.
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect(BBjString trueValue!,BBjString falseValue!)
+    method public BBjGridExWidgetCellEditorBasicBooleanRichSelect(BBjString trueValue!,BBjString falseValue!)
         #this!(trueValue!,falseValue!,"")
     methodend
     rem /**
@@ -508,13 +508,13 @@ class public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect extends BBjGridEx
     rem  *
     rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect(BBjString trueValue!)
+    method public BBjGridExWidgetCellEditorBasicBooleanRichSelect(BBjString trueValue!)
         #this!(trueValue!,"false")
     methodend
     rem /**
     rem  * Construct new BBjGridExWidgetCellEditorBasicBooleanSelect
     rem  */
-    method public BBjGridExWidgetCellEditorBasicBooleanAGRichSelect()
+    method public BBjGridExWidgetCellEditorBasicBooleanRichSelect()
         #this!("true")
     methodend
     rem /**

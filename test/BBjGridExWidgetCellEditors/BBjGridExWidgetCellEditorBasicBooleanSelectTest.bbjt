@@ -6,26 +6,26 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBooleanAGSelect
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGSelect
-use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorAGRichSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorBasicBooleanSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorSelect
+use ::BBjGridExWidget/BBjGridExWidgetCellEditors.bbj::BBjGridExWidgetCellEditorRichSelect
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use com.google.gson.JsonNull
 use com.google.gson.JsonPrimitive
 
-class public BBjGridExWidgetCellEditorBasicBooleanAGSelectTest
+class public BBjGridExWidgetCellEditorBasicBooleanSelectTest
 
-    field private BBjGridExWidgetCellEditorBasicBooleanAGSelect Instance!
+    field private BBjGridExWidgetCellEditorBasicBooleanSelect Instance!
     
     rem @Before
     method public void setUp()
-        #Instance! = new BBjGridExWidgetCellEditorBasicBooleanAGSelect()
+        #Instance! = new BBjGridExWidgetCellEditorBasicBooleanSelect()
     methodend
 
     rem @Test
     method public void testCellEditorNameIsSet()
-        Assert.Equals(#Instance!.getCellEditorName() , BBjGridExWidgetCellEditorAGSelect.getCellEditorName())
+        Assert.Equals(#Instance!.getCellEditorName() , BBjGridExWidgetCellEditorSelect.getCellEditorName())
     methodend
         
     rem @Test

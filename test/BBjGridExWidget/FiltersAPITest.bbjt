@@ -10,7 +10,7 @@ use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterAGSetFilter
+use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterSetFilter
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 use java.util.LinkedHashMap
@@ -95,7 +95,7 @@ class public FiltersAPITest
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
-        column!.setFilter(new BBjGridExWidgetFilterAGSetFilter())
+        column!.setFilter(new BBjGridExWidgetFilterSetFilter())
         model! = #Instance!.getFilterModel("test")
         Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilteSetFilterModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
