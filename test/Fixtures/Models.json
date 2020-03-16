@@ -1,11 +1,11 @@
 {
-	"number-single": {
+	"filter-number-single": {
 		"filterType": "number",
 		"type": "equals",
 		"filter": 1,
 		"filterTo": 10
 	},
-	"number-combined": {
+	"filter-number-combined": {
 		"filterType": "number",
 		"operator": "OR",
 		"condition1": {
@@ -21,23 +21,38 @@
 			"filterTo": 10
 		}
 	},
-	"datetime-single": {
+	"filter-datetime-single": {
 		"filterType": "datetime",
 		"type": "equals",
 		"filter": "2020-01-01",
 		"filterTo": "2020-01-01"
 	},
-	"text-single": {
+	"filter-text-single": {
 		"filterType": "text",
 		"type": "equals",
 		"filter": "sometext"
 	},
-	"boolean-single": {
+	"filter-boolean-single": {
 		"filterType": "boolean",
 		"value": "true"
 	},
-	"set": {
+	"filter-set": {
 		"filterType": "set",
-		"values": [1,2,3]
+		"values": [
+			1,
+			2,
+			3
+		]
+	},
+	"event-cell": {
+		"c": "test",
+		"r": {
+			"i": "4131adda-c690-36ef-85c9-76ecf1612bdb",
+			"x": 3,
+			"p": "",
+			"c": 3,
+			"s": true
+		},
+		"v": "newValue"
 	}
 }

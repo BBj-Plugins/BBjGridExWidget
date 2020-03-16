@@ -103,9 +103,9 @@ class public BBjGridExWidgetClientJsonFactory
     rem  */
     method public BBjGridExWidgetClientCellModel getCell(JsonObject json!)
         cell! = new BBjGridExWidgetClientCellModel()
-        cell!.setColumn(#getColumn(json!.get("c").getAsString()))
-        cell!.setRow(#getRow(json!.get("r").getAsJsonObject()))
-        cell!.setValue(json!.get("v").getAsString())
+        cell!.setColumn(#getColumn(json!.get("c").getAsString()),err=*next)
+        cell!.setRow(#getRow(json!.get("r").getAsJsonObject()),err=*next)
+        cell!.setValue(json!.get("v").getAsString(),err=*next)
         methodret cell!
     methodend
     rem /**

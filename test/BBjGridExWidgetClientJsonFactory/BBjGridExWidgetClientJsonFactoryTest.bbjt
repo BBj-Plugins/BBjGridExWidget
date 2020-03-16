@@ -17,18 +17,18 @@ use com.google.gson.JsonParser
 class public BBjGridExWidgetClientJsonFactoryTest
 
     field private BBjGridExWidgetClientJsonFactory Instance!
-    field private BBjString FilterFixturesString$
+    field private BBjString ModelsFixturesString$
     
-    method private JsonObject getFilterModelsFixture()
+    method private JsonObject getModelsFixture()
       parser! = new JsonParser()
-      methodret parser!.parse(#FilterFixturesString$).getAsJsonObject()
+      methodret parser!.parse(#ModelsFixturesString$).getAsJsonObject()
     methodend
         
     rem @BeforeClass
     method public void beforeClass()
       ch=unt
-      open (ch) BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/Fixtures/FilterModels.json")
-      read record (ch,siz=5512000)#FilterFixturesString$
+      open (ch) BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/Fixtures/Models.json")
+      read record (ch,siz=5512000)#ModelsFixturesString$
       close (ch)
           
     methodend
@@ -46,7 +46,7 @@ class public BBjGridExWidgetClientJsonFactoryTest
     rem @Test
     method public void testGetFilterConditionCanCreateFilterNumberModel()
         declare auto JsonObject fixture!
-        fixture! = #getFilterModelsFixture().get("number-single")
+        fixture! = #getModelsFixture().get("filter-number-single")
         column! = "foo"
         
         rem complete
@@ -76,7 +76,7 @@ class public BBjGridExWidgetClientJsonFactoryTest
     rem @Test
     method public void testGetFilterConditionCanCreateFilterDateTimeModel()
         declare auto JsonObject fixture!
-        fixture! = #getFilterModelsFixture().get("datetime-single")
+        fixture! = #getModelsFixture().get("filter-datetime-single")
         column! = "foo"
         
         rem complete
@@ -106,7 +106,7 @@ class public BBjGridExWidgetClientJsonFactoryTest
     rem @Test
     method public void testGetFilterConditionCanCreateFilterTextModel()
         declare auto JsonObject fixture!
-        fixture! = #getFilterModelsFixture().get("text-single")
+        fixture! = #getModelsFixture().get("filter-text-single")
         column! = "foo"
         
         rem complete
@@ -128,7 +128,7 @@ class public BBjGridExWidgetClientJsonFactoryTest
     rem @Test
     method public void testGetFilterConditionCanCreateFilterBooleanModel()
         declare auto JsonObject fixture!
-        fixture! = #getFilterModelsFixture().get("boolean-single")
+        fixture! = #getModelsFixture().get("filter-boolean-single")
         column! = "foo"
         
         rem complete
@@ -142,7 +142,7 @@ class public BBjGridExWidgetClientJsonFactoryTest
     rem @Test
     method public void testGetFilterConditionCanCreateFilterSetFilterModel()
         declare auto JsonObject fixture!
-        fixture! = #getFilterModelsFixture().get("set")
+        fixture! = #getModelsFixture().get("filter-set")
         column! = "foo"
         
         rem complete
@@ -156,7 +156,7 @@ class public BBjGridExWidgetClientJsonFactoryTest
     rem @Test
     method public void testGetFilterCanCreateCombinedFilteModel()
         declare auto JsonObject fixture!
-        fixture! = #getFilterModelsFixture().get("number-combined")
+        fixture! = #getModelsFixture().get("filter-number-combined")
         column! = "foo"
         
         fixtureClone! = fixture!.deepCopy()
@@ -200,7 +200,46 @@ class public BBjGridExWidgetClientJsonFactoryTest
         model! = cast(BBjGridExWidgetClientFilterNumberModel,model!,err=*next); isNumberModel! = 1
         Assert.Equals(isNumberModel!,1)
     methodend
-             
+    
+    rem @Test         
+    method public void testGetCell()
+       declare auto JsonObject fixture!
+       fixture! = #getModelsFixture().get("event-cell")
+       
+       fixtureClone! = fixture!.deepCopy()
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       
+       Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
+       Assert.Equals(model!.getColumn().getName(),"test")
+       Assert.Equals(model!.getValue(),"newValue")
+       
+       fixtureClone! = fixture!.deepCopy()
+       fixtureClone!.remove("r"); rem remove row
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       
+       Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientCellModel"), BBjAPI.TRUE)
+       Assert.IsNull(model!.getRow())
+       Assert.Equals(model!.getColumn().getName(),"test")
+       Assert.Equals(model!.getValue(),"newValue")     
+       
+       fixtureClone! = fixture!.deepCopy()
+       fixtureClone!.remove("c"); rem remove column
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
+       Assert.IsNull(model!.getColumn())
+       Assert.Equals(model!.getValue(),"newValue")  
+       
+       fixtureClone! = fixture!.deepCopy()
+       fixtureClone!.remove("v"); rem remove value
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
+       Assert.Equals(model!.getColumn().getName(),"test")
+       Assert.IsNull(model!.getValue())                     
+    methodend
+    
     rem @After
     method public void tearDown()
         #Instance! = null()
