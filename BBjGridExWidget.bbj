@@ -2172,6 +2172,22 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #focus(-1)
     methodend
     rem /**
+    rem  * Navigates the grid focus to the next cell, as if tabbing.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void tabToNextCell()
+        #executeScript("$wnd.gw_tabToNextCell('" + #GRIDID$ + "')")
+    methodend
+    rem /**
+    rem  * Navigates the grid focus to the previous cell, as if shift-tabbing.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void tabToPreviousCell()
+        #executeScript("$wnd.gw_tabToPreviousCell('" + #GRIDID$ + "')")
+    methodend
+    rem /**
     rem  * select all rows
     rem  *
     rem  * <br><b><small>#API</small></b>
@@ -2868,20 +2884,16 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #setStartCellEditing(str(index!),colId$,keyPress!)
     methodend
     rem /**
-    rem  * Start next Cell Editing
-    rem  *
-    rem  * <br><b><small>#API</small></b>
+    rem  * @deprected Use tabToNextCell() instead
     rem  */
     method public void startNextCellEditing()
-        #executeScript("$wnd.gw_editNextCell('" + #GRIDID$ + "')")
+        #tabToNextCell()
     methodend
     rem /**
-    rem  * Start previous Cell Editing
-    rem  *
-    rem  * <br><b><small>#API</small></b>
+    rem  * @deprected Use tabToPreviousCell() instead
     rem  */
     method public void startPreviousCellEditing()
-        #executeScript("$wnd.gw_editPreviousCell('" + #GRIDID$ + "')")
+        #tabToPreviousCell()
     methodend
     rem /**
     rem  * Stop editing and accepts changes

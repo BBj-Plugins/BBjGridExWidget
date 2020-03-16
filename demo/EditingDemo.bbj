@@ -12,7 +12,7 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1200,800,"Editing Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1000,800,"Editing Demo")
 
 startEditingZero! = wnd!.addButton(300,10,10,200,25,"Start Editing (1 , DOUBLE)")
 startEditingZero!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingZeroFunc")
@@ -29,16 +29,10 @@ stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopEditingFunc")
 stopEditing! = wnd!.addButton(304,750,10,130,25,"Stop And Cancel Editing")
 stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopAndCancelEditingFunc")
 
-nextEdit! = wnd!.addButton(305,10,40,130,25,"Next Cell Edit")
-nextEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editNext")
-
-previousEdit! = wnd!.addButton(306,150,40,130,25,"Previous Cell Edit")
-previousEdit!.setCallback(BBjAPI.ON_BUTTON_PUSH,"editPrevious")
-
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-grid! = new BBjGridExWidget(wnd!,100,0,70,1200,800)
+grid! = new BBjGridExWidget(wnd!,100,0,50,1200,800)
 grid!.getOptions().setEnableFilter(1)
 grid!.getOptions().setEnableFloatingFilter(1)
 
@@ -54,11 +48,7 @@ grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped")
 grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
 
 gosub fillGrid
-
-a=msgbox("Editing functions are work in progress and not ready for production!",0,"Caution!")
-
 process_events
-
 
 startEditingZeroFunc:
     grid!.stopEditing(1)
@@ -82,14 +72,6 @@ return
 
 stopAndCancelEditingFunc:
     grid!.stopEditing(1)
-return
-
-editNext:
-    grid!.startNextCellEditing()
-return
-
-editPrevious:
-    grid!.startPreviousCellEditing()
 return
 
 fillGrid:

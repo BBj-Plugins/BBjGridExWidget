@@ -47,14 +47,24 @@ export function gw_stopEditing(id, cancel) {
     .stopEditing(cancel);
 }
 
-export function gw_editNextCell(id) {
+/**
+ * Navigates the grid focus to the next cell, as if tabbing.
+ * 
+ * @param {String} id  the grid id
+ */
+export function gw_tabToNextCell(id) {
   gw_getGrid(id)
     .options
     .api
     .tabToNextCell();
 };
 
-export function gw_editPreviousCell(id) {
+/**
+ * Navigates the grid focus to the previous cell, as if shift-tabbing.
+ * 
+ * @param {String} id  the grid id
+ */
+export function gw_tabToPreviousCell(id) {
   gw_getGrid(id)
     .options
     .api
