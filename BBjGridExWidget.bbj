@@ -30,11 +30,9 @@ use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptions
 use ::BBjGridExWidget/util/LicenseManager.bbj::LicenseManager
 use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
 use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
+use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
 rem Client Events
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetSelectRowEvent.bbj::BBjGridExWidgetSelectRowEvent
-use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
-use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
 use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
@@ -46,6 +44,8 @@ rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetDefaultSidebar
 use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetFiltersToolpanel
+rem Statusbar
+rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBar
 rem Context Menu
 rem ==========================
@@ -81,9 +81,6 @@ use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilt
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterBooleanModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterCombinedModel
 use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilteSetFilterModel
-rem Factory
-rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
 rem Filter Components
 rem ==========================
 use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterText
