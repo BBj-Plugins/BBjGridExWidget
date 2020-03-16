@@ -196,22 +196,28 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     field protected BBjNumber newW!
     field protected BBjNumber newH!
     rem /**
-    rem  * Constant value to define row selection event
+    rem  * Constant value to define row click events
     rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_CLICK()
-        methodret BBjAPI.ON_GRID_SELECT_ROW
+        methodret 5011
     methodend
     rem /**
-    rem  * Alias to <i>ON_GRID_ROW_CLICK()</i>
-    rem  *
-    rem  * @see ON_GRID_ROW_CLICK()
+    rem  * A Constant value to define row selection (selected/deselected) change events
     rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_SELECT_ROW()
-        methodret #ON_GRID_ROW_CLICK()
+        methodret BBjAPI.ON_GRID_SELECT_ROW
+    methodend
+    rem /**
+    rem  * Alias for ON_GRID_SELECT_ROW
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public static BBjNumber ON_GRID_ROW_SELECT()
+        methodret #ON_GRID_SELECT_ROW()
     methodend
     rem /**
     rem  * Constant value to define row double-click event
@@ -940,7 +946,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         detail$ = str(map!.get("detail"))
         switch type$
             case "gw.rowSelect"
-                #onSelectRowChange(detail$, "single")
+                #onSelectRowChange(detail$, "select")
+                break
+            case "gw.rowClick"
+                #onSelectRowChange(detail$,"single")
                 break
             case "gw.rowDoubleClick"
                 #onSelectRowChange(detail$,"double")
@@ -3188,14 +3197,19 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         event! = new BBjGridExWidgetClientEventsRowSelection()
         event!.setSelectedRows(#getSelectedRows())
-
-        if type$ = "single" then
-            #fireEvent(#ON_GRID_SELECT_ROW(),event!)
-            methodret
-        FI
-
-        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
-    FI
+        SWITCH (type$)
+            CASE "single"
+                #fireEvent(#ON_GRID_ROW_CLICK(),event!)
+                break
+            CASE "double"
+                #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+                break
+            case "select"
+                #fireEvent(#ON_GRID_SELECT_ROW(),event!)
+                break
+            case default
+                break
+        SWEND
     methodend
     rem /**
     rem  * On context menu event

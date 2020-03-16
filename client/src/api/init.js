@@ -12,6 +12,7 @@ import { gw_getContextMenu } from "./menus";
 import { gw_getChartToolbarItems } from "./charts";
 import { gw_getDocument, gw_getWindow, gw_addGrid } from "./utilities";
 import {
+  gw_onRowClicked,
   gw_onRowDoubleClicked,
   gw_onSelectionChanged,
   gw_onRangeSelectionChanged,
@@ -89,6 +90,7 @@ function gw_parseOptions(options) {
       "getChartToolbarItems":             gw_getChartToolbarItems                                      ,
       "popupParent":                      gw_getDocument().body                                        ,
       "onRowDoubleClicked":               gw_debounce(gw_onRowDoubleClicked, debounceDuration)         ,
+      "onRowClicked":                     gw_debounce(gw_onRowClicked, debounceDuration)               ,
       "onSelectionChanged":               gw_debounce(gw_onSelectionChanged, debounceDuration)         ,
       "onRangeSelectionChanged":          gw_debounce(gw_onRangeSelectionChanged , debounceDuration)   ,
       "components": {

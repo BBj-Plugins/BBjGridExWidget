@@ -7,6 +7,7 @@
 */
 
 import {
+	gw_onRowClicked,
 	gw_onRowDoubleClicked,
 	gw_onSelectionChanged,
 	gw_onCellClickEvent,
@@ -27,6 +28,7 @@ import {
 } from "./utilities";
 
 export {
+	gw_onRowClicked,
 	gw_onRowDoubleClicked,
 	gw_onSelectionChanged,
 	gw_onRangeSelectionChanged,

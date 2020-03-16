@@ -11,6 +11,7 @@ import { gw_escape, gw_getGrid } from "api/utilities";
 import {
   GW_EVENT_ROW_CLICK,
   GW_EVENT_ROW_DOUBLE_CLICK,
+  GW_EVENT_ROW_SELECT,
   GW_EVENT_CELL_CLICK,
   GW_EVENT_CELL_DOUBLE_CLICK,
   GW_EVENT_RANGE_SELECTION_CHANGED
@@ -38,6 +39,21 @@ export function gw_onRowDoubleClicked(e) {
     'detail': ''
   }, GW_EVENT_ROW_DOUBLE_CLICK);
 }
+/**
+ * A handler for the grid `rowClicked` event
+ * 
+ * @param {Object} e  The event payload
+ * 
+ * @listens agGrid.rowClicked
+ * @fires gw.rowClick
+ */
+export function gw_onRowClicked(e) {
+  const context = e.api.gridOptionsWrapper.gridOptions.context;
+  gw_sendEvent(context, {
+    'type': 'gw.rowClick',
+    'detail': ''
+  }, GW_EVENT_ROW_CLICK);
+}
 
 /**
  * A handler for the grid `selectionChanged` event
@@ -52,7 +68,7 @@ export function gw_onSelectionChanged(e) {
   gw_sendEvent(context, {
     'type': 'gw.rowSelect',
     'detail': ''
-  }, GW_EVENT_ROW_CLICK);
+  }, GW_EVENT_ROW_SELECT);
 }
 
 /**

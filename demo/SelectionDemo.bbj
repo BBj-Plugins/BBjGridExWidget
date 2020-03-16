@@ -125,7 +125,7 @@ rem enable checkbox selection when grouping
 grid!.getOptions().setShowGroupSelectionCheckbox(1)
 grid!.getOptions().setGroupSelectsChildren(1)
 
-grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onSelectionEvent")
+grid!.setCallback(grid!.ON_GRID_ROW_SELECT(),"onSelectionEvent")
 
 
 

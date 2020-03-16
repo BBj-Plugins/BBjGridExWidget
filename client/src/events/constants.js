@@ -7,7 +7,8 @@
 */
 
 // selection constants
-export const GW_EVENT_ROW_CLICK = 69;
+export const GW_EVENT_ROW_SELECT = 69;
+export const GW_EVENT_ROW_CLICK = 5011;
 export const GW_EVENT_ROW_DOUBLE_CLICK = 52;
 export const GW_EVENT_CELL_CLICK = 5001;
 export const GW_EVENT_CELL_DOUBLE_CLICK = 5002;
