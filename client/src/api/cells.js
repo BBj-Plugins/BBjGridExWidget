@@ -70,8 +70,23 @@ export function gw_editPreviousCell(id) {
  */
 export function gw_setFocusedCell(id, row, column) {
   const options = gw_getGrid(id).options;
-  const r = !row ? 0 : (Number.isInteger(+row) ? +row : options.api.getRowNode(row).rowIndex);
-  const c = column ? column : options.columnApi.getAllGridColumns()[0].colId;
+  let r , c;
+  if(row  == -1) {
+    // try to retain the focus
+    const lastFocusedCell = options.api.getFocusedCell();
+
+    if(lastFocusedCell) {
+      r = lastFocusedCell.rowIndex
+      c = lastFocusedCell.column.colId
+    } else {
+      r = 0;
+      c = options.columnApi.getAllGridColumns()[0].colId
+    }
+  } else {
+    r = !row ? 0 : (Number.isInteger(+row) ? +row : options.api.getRowNode(row).rowIndex);
+    c = column ? column : options.columnApi.getAllGridColumns()[0].colId;
+  }
+
   gw_getGrid(id)
     .options
     .api

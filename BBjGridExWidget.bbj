@@ -749,6 +749,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
             htmlview!.setOpaque(0)
             htmlview!.setNoEdge(1)
+            htmlview!.setTabTraversable(1)
+            htmlview!.setFocusable(1)
 
             if (info(3,6)<>"5" and #Debug>0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
@@ -760,6 +762,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
+            htmlview!.setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
             htmlview!.setText(html$)
             #HTMLView!=htmlview!
         else
@@ -913,6 +916,18 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             #newW! = null()
             #newH! = null()
         FI
+    methodend
+    rem /**
+    rem  * Focus the grid by selecting the cell in the first cell and first column.
+    rem  *
+    rem  * Note: If the grid has already a differnt selected cell , then
+    rem  * the event handler will retain the selection
+    rem  *
+    rem  * @param BBjGainedFocusEvent ev! The focus event
+    rem  */
+    method public void onGainedFocus(BBjGainedFocusEvent ev!)
+        if(ev!.isTemporary()) methodret
+        #focus()
     methodend
     rem /**
     rem  * On NativeEvent
@@ -2100,7 +2115,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjStrinf column! The column id
     rem  */
     method public void focus(BBjString row! , BBjString column!)
-        #super!.focus()
+        rem DO NOT focus the canvas or the we will have an infinite focus calls
+        rem #super!.focus()
+        if #HTMLView!.getParentWindow().getFocusedControlID() <>  #HTMLView!.getID() then
+            #HTMLView!.focus()
+        fi
+
         script$="$wnd.gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
         #executeScript(script$)
     methodend
@@ -2136,12 +2156,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #focus(str(row!))
     methodend
     rem /**
-    rem  * Will set the focus on the first cell of the first row
+    rem  * Will set the focus on the first cell of the first row.
+    rem  * In case the grid has alread a differnt selectd cell , the the
+    rem  * method will retain this information.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void focus()
-        #focus(0)
+        #focus(-1)
     methodend
     rem /**
     rem  * select all rows
