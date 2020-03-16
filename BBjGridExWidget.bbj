@@ -940,10 +940,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         detail$ = str(map!.get("detail"))
         switch type$
             case "gw.rowSelect"
-                #onSelecteRowChange(detail$, "single")
+                #onSelectRowChange(detail$, "single")
                 break
             case "gw.rowDoubleClick"
-                #onSelecteRowChange(detail$,"double")
+                #onSelectRowChange(detail$,"double")
                 break
             case "gw.cellClicked"
                 #onCellEvent(detail$,#ON_GRID_CELL_CLICK())
@@ -3183,7 +3183,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @see BBjGridExWidgetSelectRowEvent
     rem  */
-    method protected void onSelecteRowChange(BBjString detail$, BBjString type$)
+    method protected void onSelectRowChange(BBjString detail$, BBjString type$)
         declare BBjGridExWidgetClientEventsRowSelection event!
 
         event! = new BBjGridExWidgetClientEventsRowSelection()
