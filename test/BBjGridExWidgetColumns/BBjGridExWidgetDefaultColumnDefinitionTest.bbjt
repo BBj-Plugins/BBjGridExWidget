@@ -128,7 +128,8 @@ class public BBjGridExWidgetDefaultColumnDefinitionTest
           
           Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetFilterNumber" , def!.getFilter().equals(new BBjGridExWidgetFilterNumber()) , BBjAPI.TRUE)           
           Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetExpressionNumbersFormatter" , def!.getValueFormatterExpression().equals(new BBjGridExWidgetExpressionNumbersFormatter(def!.getDefaultNumbersMask())) , BBjAPI.TRUE)
-          Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorBasicNumber" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorBasicNumber(def!.getDefaultNumbersMask())) , BBjAPI.TRUE )
+REM           Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorBasicNumber" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorBasicNumber(def!.getDefaultNumbersMask())) , BBjAPI.TRUE )
+Assert.Equals("setType(" + next!.getKey() + ") configures BBjGridExWidgetCellEditorBasicNumber" , def!.getCellEditor().equals(new BBjGridExWidgetCellEditorBasicNumber()) , BBjAPI.TRUE )
         wend
     methodend   
     
@@ -240,7 +241,7 @@ class public BBjGridExWidgetDefaultColumnDefinitionTest
           editor! = def!.getCellEditor()
           valueFormatter! = def!.getValueFormatterExpression()
 
-          Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)           
+REM           Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)           
           Assert.Equals("setColumnMask updates valueFormatter mask - column[" + next!.getKey() + "]" , valueFormatter!.getMask() , newMask!)
         wend
     methodend 

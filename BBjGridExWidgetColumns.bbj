@@ -926,7 +926,8 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
             CASE Types.NUMERIC
                 #setFilter(new BBjGridExWidgetFilterNumber())
                 #setValueFormatterExpression(new BBjGridExWidgetExpressionNumbersFormatter(#getDefaultNumbersMask()))
-                #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber(#getDefaultNumbersMask()))
+                rem #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber(#getDefaultNumbersMask()))
+                #setCellEditor(new BBjGridExWidgetCellEditorBasicNumber())
                 BREAK
             CASE Types.DATE
                 #setFilter(new BBjGridExWidgetFilterBasicDate(#getDefaultDatesMask()))

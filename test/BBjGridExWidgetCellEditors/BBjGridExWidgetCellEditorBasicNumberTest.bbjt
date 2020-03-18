@@ -63,7 +63,7 @@ class public BBjGridExWidgetCellEditorBasicNumberTest
       Assert.Equals(json!.get("numberStepValue").getAsDouble() , 0.01)
    methodend
          
-   rem @Test
+   rem @Ignore
    method public void testCanSetMaskValue()
       declare auto JsonObject json!
       json! = #Instance!.getAsJsonObject()

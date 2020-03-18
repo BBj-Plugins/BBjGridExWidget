@@ -584,7 +584,7 @@ class public BBjGridExWidgetCellEditorBasicNumber extends BBjGridExWidgetCellEdi
     rem  * A bbj number mask.
     rem  * When it is set we use it to validate the number
     rem  */
-    field public BBjString Mask! = null()
+    rem field public BBjString Mask! = null()
     rem /**
     rem  * The number's group separator to use. by default the bbj group separator will be used
     rem  */
@@ -604,10 +604,10 @@ class public BBjGridExWidgetCellEditorBasicNumber extends BBjGridExWidgetCellEdi
     rem  *
     rem  * @param mask! A bbj number mask to validate the number
     rem  */
-    method public BBjGridExWidgetCellEditorBasicNumber(BBjString mask!)
-        #super!()
-        #Mask! = mask!
-    methodend
+    rem method public BBjGridExWidgetCellEditorBasicNumber(BBjString mask!)
+    rem     #super!()
+    rem     #Mask! = mask!
+    rem methodend
     rem /**
     rem  * @override
     rem  *
@@ -628,7 +628,7 @@ class public BBjGridExWidgetCellEditorBasicNumber extends BBjGridExWidgetCellEdi
         json!.addProperty("numberMinValue" , #getMin().doubleValue() , err=*next)
         json!.addProperty("numberMaxValue" , #getMax().doubleValue() , err=*next)
         json!.addProperty("numberStepValue" , #getStep().doubleValue() , err=*next)
-        json!.addProperty("numberMask" , #getMask() , err=*next)
+        rem json!.addProperty("numberMask" , #getMask() , err=*next)
         json!.addProperty("numberGroupingSeparator" , #getGroupSeparator() , err=*next)
         json!.addProperty("numberDecimalSeparator" , #getDecimalSeparator() , err=*next)
         json!.addProperty("numberForceTrailingZeros" , #getForceTrailingZeros().booleanValue() , err=*next)
