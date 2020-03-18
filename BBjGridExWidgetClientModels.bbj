@@ -46,6 +46,10 @@ class public BBjGridExWidgetClientRowModel
     rem  */
     field public BBjNumber IsSelected!
     rem /**
+    rem  * The client row data as JsonObject.
+    rem  */
+    field public JsonObject ClientRow!
+    rem /**
     rem  * BBjGridExWidget instance
     rem  */
     field protected BBjGridExWidget Widget!
@@ -71,6 +75,26 @@ class public BBjGridExWidgetClientRowModel
         methodret #Widget!
     methodend
     rem /**
+    rem  * The method will merge the row data coming from the client with
+    rem  * the current DataRow.
+    rem  *
+    rem  * @see BBjGridExWidget.includeClientRowDataInRowModels()
+    rem  */
+    method public DataRow updateFromClientRow()
+        clientRow! = #this!.getClientRow()
+
+        if(clientRow! = null())
+            throw "The client row is not included in this model.To include it in the model configure the grid to included by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
+        fi
+        
+        clientRow! = clientRow!.deepCopy()
+        dataRow! = #this!.asDataRow()
+        clientRow!.remove("__ROW_INDEX")
+        clientRow!.remove("meta")
+        dataRow!.mergeRecord(DataRow.fromJson(clientRow!.toString()),BBjAPI.TRUE)
+        methodret dataRow!
+    methodend
+    rem /**
     rem  * Convert the client row to a DataRow
     rem  *
     rem  * @return DataRow
@@ -81,13 +105,13 @@ class public BBjGridExWidgetClientRowModel
         rem in case the RowNodeId is a column in the resultset
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
-            rs! = rs!.filterBy(nodeId! + "=" +  str(#getId()))
+            filteredRS! = rs!.filterBy(nodeId! + "=" +  str(#getId()))
 
-            if(rs!.count() <> 1) then
+            if(filteredRS!.count() <> 1) then
                 throw "Cannot query the selected row from the ResultSet. [RowNodeId = " + nodeId! + " , Index = " + str(#getIndex()) + "]", 256
             fi
 
-            methodret rs!.get(0)
+            methodret filteredRS!.get(0)
         fi
 
         methodret rs!.get(#getId())
@@ -829,7 +853,6 @@ class public BBjGridExWidgetClientFilterAbstractModel implements BBjGridExWidget
     rem  */
     method public BBjString update()
         code! = #apply(0) + #execute(0)
-        
         ? code!
         #getWidget().executeScript(code!)
         methodret code!
@@ -1021,7 +1044,7 @@ class public BBjGridExWidgetClientFilterCombinedModel extends BBjGridExWidgetCli
         else
             json! = #getFirstCondition().getAsJsonObject()
         fi
-        
+
         methodret json!
     methodend
 
@@ -1218,12 +1241,10 @@ class public BBjGridExWidgetClientFilterNumberModel extends BBjGridExWidgetClien
 
         json! = #super!.getAsJsonObject()
         json!.addProperty("filterType","number")
-        filterCasted! = 0 
+        filterCasted! = 0
         filter! = #getFilter().longValue( err=*next); filterCasted! = 1
-        
-        filterToCasted! = 0 
+        filterToCasted! = 0
         filterTo! = #getFilterTo().longValue( err=*next); filterToCasted! = 1
-                
         json!.addProperty("filter",iff(filterCasted!, filter!, ""), err=*next)
         json!.addProperty("filterTo",iff(filterToCasted!, filterTo!,""), err=*next)
         methodret json!

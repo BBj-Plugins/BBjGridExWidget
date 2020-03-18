@@ -1,0 +1,43 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use com.google.gson.JsonObject
+use com.google.gson.JsonParser
+
+class public BBjGridExWidgetTest
+
+    field private BBjGridExWidgetMock Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetMock()
+    methodend
+
+    rem @Test
+    method public void testIncludeClientRowDataInRowModels()
+        Assert.Equals(#Instance!.getClientContext().has("includeClientRowData"),BBjAPI.FALSE)
+        
+        #Instance!.includeClientRowDataInRowModels(1)
+        Assert.Equals(#Instance!.getClientContext().has("includeClientRowData"),BBjAPI.TRUE)
+        Assert.Equals(#Instance!.getLastExecutedScript() , "")
+        
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.includeClientRowDataInRowModels(0)
+        Assert.Equals(#Instance!.getClientContext().get("includeClientRowData").getAsBoolean(),BBjAPI.FALSE)
+        Assert.Equals(#Instance!.getLastExecutedScript() <> "", BBjAPI.TRUE)
+    methodend
+        
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend
+
+

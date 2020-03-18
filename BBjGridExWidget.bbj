@@ -2928,6 +2928,23 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("$wnd.gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
     methodend
     rem /**
+    rem  * Sync the cient row data every time a new BBjGridExWidgetClientRowModel
+    rem  * is composed by the grid.
+    rem  * 
+    rem  * Use this method if the row's data in the client is differnt that the row's data in 
+    rem  * the ResultSet 
+    rem  * 
+    rem  * @param BBjNumber include! when true the ClientRow field will always be filled in BBjGridExWidgetClientRowModel
+    rem  *                           otherwise it will always be null().
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void includeClientRowDataInRowModels(BBjNumber include!)
+        #getClientContext().addProperty("includeClientRowData",include!.booleanValue())
+        #updateContext()
+    methodend    
+    rem /**
     rem  * Get the current selected row
     rem  *
     rem  * <br><b><small>#API</small></b>
@@ -3247,8 +3264,6 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see ON_GRID_CELL_VALUE_CHANGED()
     rem  * @see ON_GRID_CELL_DOUBLE_CLICK()
     rem  * @see ON_GRID_CELL_CLICK()
-    rem  * @see ON_GRID_ROW_EDITING_STOPPED()
-    rem  * @see ON_GRID_ROW_EDITING_STARTED()
     rem  */
     method protected void onCellEvent(BBjString detail$ , BBjNumber type!)
         declare JsonParser parser!

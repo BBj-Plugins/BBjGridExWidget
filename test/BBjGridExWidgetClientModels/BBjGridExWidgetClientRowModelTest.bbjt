@@ -1,0 +1,73 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+use com.google.gson.JsonParser
+
+class public BBjGridExWidgetClientRowModelTest
+
+    field private BBjGridExWidgetClientRowModel Instance!
+    field private BBjString ModelsFixturesString$
+    
+    method private JsonObject getModelsFixture()
+      parser! = new JsonParser()
+      methodret parser!.parse(#ModelsFixturesString$).getAsJsonObject()
+    methodend
+        
+    rem @BeforeClass
+    method public void beforeClass()
+      ch=unt
+      open (ch) BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/Fixtures/Models.json")
+      read record (ch,siz=5512000)#ModelsFixturesString$
+      close (ch)
+          
+    methodend
+            
+    rem @Before
+    method public void setUp()
+        grid! = new BBjGridExWidgetMock(1)
+        modelAsJson! = #getModelsFixture().get("row-model").getAsJsonObject()
+        factory! = grid!.getClientJsonFactory()
+        #Instance! = cast(BBjGridExWidgetClientRowModel , factory!.getRow(modelAsJson!))
+    methodend
+
+    rem @Test
+    method public void testUpdateFromClientRowWithDefaultRowIndex()
+        #Instance!.updateFromClientRow()
+        
+        clientRowAsJson! = #getModelsFixture().get("row-model").getAsJsonObject().get("cr").getAsJsonObject()
+        row! = #Instance!.asDataRow()
+        Assert.Equals(row!.getFieldValue("TITLE") ,clientRowAsJson!.get("TITLE").getAsString())
+    methodend
+    
+    rem @Test
+    method public void testUpdateFromClientRowWithDefaultCustomRowIndex()
+        clientRowAsJson! = #getModelsFixture().get("row-model").getAsJsonObject().get("cr").getAsJsonObject()
+        #Instance!.getWidget().setRowNodeId("CDNUMBER")
+        #Instance!.setId(clientRowAsJson!.get("CDNUMBER").getAsString())
+        #Instance!.updateFromClientRow()
+        
+        row! = #Instance!.asDataRow()
+        Assert.Equals(row!.getFieldValue("TITLE") ,clientRowAsJson!.get("TITLE").getAsString())
+    methodend
+    
+    rem @Test
+    method public void testUpdateFromClientRowThrowErrorWhenClientRowIsEmpty()
+        #Instance!.setClientRow(null())
+        Assert.Expect(#Instance!.updateFromClientRow() , 256)
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

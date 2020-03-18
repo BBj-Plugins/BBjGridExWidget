@@ -54,5 +54,28 @@
 			"s": true
 		},
 		"v": "newValue"
+	},
+	"row-model": {
+		"i": "5f1ef4d1-98d6-3d45-af98-42f368eeed93",
+		"x": 0,
+		"p": "",
+		"c": 0,
+		"s": true,
+		"cr": {
+			"__ROW_INDEX": "5f1ef4d1-98d6-3d45-af98-42f368eeed93",
+			"CDNUMBER": "000001",
+			"TITLE": "New Value",
+			"meta": {
+				"__ROW_INDEX": {
+					"ColumnType": "12"
+				},
+				"CDNUMBER": {
+					"ColumnType": "12"
+				},
+				"TITLE": {
+					"ColumnType": "12"
+				}
+			}
+		}
 	}
 }
