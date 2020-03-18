@@ -64,6 +64,7 @@ class public BBjGridExWidgetCellEditorBasicNumberTest
    methodend
          
    rem @Ignore
+   rem @Test
    method public void testCanSetMaskValue()
       declare auto JsonObject json!
       json! = #Instance!.getAsJsonObject()
