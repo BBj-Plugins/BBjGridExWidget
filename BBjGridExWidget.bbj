@@ -286,6 +286,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret 5006
     methodend
     rem /**
+    rem  * Constant value to define A row has changed. 
+    rem  * This event corresponds to Full Row Editing only.
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public static BBjNumber ON_GRID_ROW_VALUE_CHANGED()
+        methodret 5012
+    methodend    
+    rem /**
     rem  * Constant value to define row editing stop event
     rem  *
     rem  * @return BBjNumber
@@ -978,6 +987,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             case "gw.rowEditingStopped"
                 #onRowEditing(detail$,#ON_GRID_ROW_EDITING_STOPPED())
                 break
+            case "gw.rowValueChanged"
+                #onRowEditing(detail$,#ON_GRID_ROW_VALUE_CHANGED())
+                break                
             case "gw.stateChanged"
                 #handleStateChangedEvent(detail$,#ON_GRID_STATE_CHANGE())
                 break

@@ -13,7 +13,8 @@ import {
   GW_EVENT_CELL_EDITING_STOPPED,
   GW_EVENT_CELL_VALUE_CHANGED,
   GW_EVENT_ROW_EDITING_STARTED,
-  GW_EVENT_ROW_EDITING_STOPPED
+  GW_EVENT_ROW_EDITING_STOPPED,
+  GW_EVENT_ROW_VALUE_CHANGED
 } from "./constants";
 
 const CELL_EDITING_EVENTS_MAP = {
@@ -25,6 +26,7 @@ const CELL_EDITING_EVENTS_MAP = {
 const ROW_EDITING_EVENTS_MAP = {
   'rowEditingStarted'  : GW_EVENT_ROW_EDITING_STARTED,
   'rowEditingStopped'  : GW_EVENT_ROW_EDITING_STOPPED,
+  'rowValueChanged': GW_EVENT_ROW_VALUE_CHANGED
 };
 
 /**
@@ -71,16 +73,18 @@ export function gw_onCellEditingEvent(id, e) {
 }
 
 /**
- * An handler for the grid `rowEditingStarted` , `rowEditingStopped` events
+ * An handler for the grid `rowEditingStarted` , `rowEditingStopped` and `rowValueChanged` events
  * 
  * @param {String} id The grid's id
  * @param {Object} e  The event payload
  * 
  * @listens agGrid.rowEditingStarted
  * @listens agGrid.rowEditingStopped
+ * @listens agGrid.rowValueChanged
  * 
  * @fires gw.rowEditingStarted
  * @fires gw.rowEditingStopped
+ * @fires gw.rowValueChanged
  */
 export function gw_onRowEditingEvent(id, e) {
   const parsed = gw_parseNodeFromEvent(e);
@@ -91,7 +95,7 @@ export function gw_onRowEditingEvent(id, e) {
       gw_getGrid(id).options.context,
       {
         'type': `gw.${e.type}`,
-        'detail': JSON.stringify(parsed)
+        'detail': JSON.stringify({...parsed , ...{cr: e.data} }) // row (we always include the client row data)
       },
       ROW_EDITING_EVENTS_MAP[type]
     );

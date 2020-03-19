@@ -19,6 +19,7 @@ export const GW_EVENT_CELL_EDITING_STOPPED = 5004;
 export const GW_EVENT_CELL_VALUE_CHANGED = 5005;
 export const GW_EVENT_ROW_EDITING_STARTED  = 5006;
 export const GW_EVENT_ROW_EDITING_STOPPED = 5007;
+export const GW_EVENT_ROW_VALUE_CHANGED = 5012;
 
 // state constants
 export const GW_EVENT_GRID_STATE_CHANGE = 5008;

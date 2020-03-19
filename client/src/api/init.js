@@ -80,6 +80,7 @@ function gw_parseOptions(options) {
       onCellEditingStopped:   e      => { gw_onCellEditingEvent(id, e) }                               ,
       onCellValueChanged:     e      => { gw_onCellEditingEvent(id, e) }                               ,
       onRowEditingStarted:    e      => { gw_onRowEditingEvent(id, e)  }                               ,
+      onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  }                               ,
       onRowEditingStopped:    e      => { gw_onRowEditingEvent(id, e)  }                               ,
       onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  }                               ,
       onCellClicked:          e      => { gw_onCellClickEvent(id, e)   }                               ,
