@@ -4,136 +4,136 @@
             "name": "CD-Store",
             "style": ""
         },
-        "CustomGridDemo.bbj": {
-            "name": "CustomGridDemo",
+        "CustomGrid": {
+            "name": "CustomGrid",
             "style": ""
         },
         "Playground.delete.bbj": {
             "name": "Playground.delete",
             "style": ""
         },
-        "DatatypesDemo.bbj": {
-            "name": "DatatypesDemo",
+        "Datatypes": {
+            "name": "Datatypes",
             "style": ""
         },
-        "AggregationDemo.bbj": {
-            "name": "AggregationDemo",
+        "Aggregation": {
+            "name": "Aggregation",
             "style": ""
         },
-        "ChartingDemo.bbj": {
-            "name": "ChartingDemo",
+        "Charting": {
+            "name": "Charting",
             "style": ""
         },
-        "ContextMenuDemo.bbj": {
-            "name": "ContextMenuDemo",
+        "ContextMenu": {
+            "name": "ContextMenu",
             "style": ""
         },
-        "PivotDemo.bbj": {
-            "name": "PivotDemo",
+        "Pivot": {
+            "name": "Pivot",
             "style": ""
         },
-        "RangeSelectionDemo.bbj": {
-            "name": "RangeSelectionDemo",
+        "RangeSelection": {
+            "name": "RangeSelection",
             "style": ""
         },
-        "RowGroupingDemo.bbj": {
-            "name": "RowGroupingDemo",
+        "RowGrouping": {
+            "name": "RowGrouping",
             "style": ""
         },
-        "SidebarDemo.bbj": {
-            "name": "SidebarDemo",
+        "Sidebar": {
+            "name": "Sidebar",
             "style": ""
         },
-        "StatusbarDemo.bbj": {
-            "name": "StatusbarDemo",
+        "Statusbar": {
+            "name": "Statusbar",
             "style": ""
         },
-        "TreeDataDemo.bbj": {
-            "name": "TreeDataDemo",
+        "TreeData": {
+            "name": "TreeData",
             "style": ""
         },
-        "CellsConditionalStylingDemo.bbj": {
-            "name": "CellsConditionalStylingDemo",
+        "CellsConditionalStyling": {
+            "name": "CellsConditionalStyling",
             "style": ""
         },
-        "ChunkRenderingDemo.bbj": {
-            "name": "ChunkRenderingDemo",
+        "ChunkRendering": {
+            "name": "ChunkRendering",
             "style": ""
         },
-        "ColumnGroupingDemo.bbj": {
-            "name": "ColumnGroupingDemo",
+        "ColumnGrouping": {
+            "name": "ColumnGrouping",
             "style": ""
         },
-        "ColumnGroupingNestedDemo.bbj": {
-            "name": "ColumnGroupingNestedDemo",
+        "ColumnGroupingNested": {
+            "name": "ColumnGroupingNested",
             "style": ""
         },
-        "ColumnSetupDemo.bbj": {
-            "name": "ColumnSetupDemo",
+        "ColumnSetup": {
+            "name": "ColumnSetup",
             "style": ""
         },
-        "ColumnsUpdateDemo.bbj": {
-            "name": "ColumnsUpdateDemo",
+        "ColumnsUpdate": {
+            "name": "ColumnsUpdate",
             "style": ""
         },
-        "DataUpdateDemo.bbj": {
-            "name": "DataUpdateDemo",
+        "DataUpdate": {
+            "name": "DataUpdate",
             "style": ""
         },
         "Demo.bbj": {
             "name": "Demo",
             "style": ""
         },
-        "EditingDemo.bbj": {
-            "name": "EditingDemo",
+        "Editing": {
+            "name": "Editing",
             "style": ""
         },
-        "ExpressionDemo.bbj": {
-            "name": "ExpressionDemo",
+        "Expression": {
+            "name": "Expression",
             "style": ""
         },
-        "IconsDemo.bbj": {
-            "name": "IconsDemo",
+        "Icons": {
+            "name": "Icons",
             "style": ""
         },
-        "JLibDemo.bbj": {
-            "name": "JLibDemo",
+        "JLib": {
+            "name": "JLib",
             "style": ""
         },
-        "KeypressDemo.bbj": {
-            "name": "KeypressDemo",
+        "Keypress": {
+            "name": "Keypress",
             "style": ""
         },
-        "LanguageDemo.bbj": {
-            "name": "LanguageDemo",
+        "Language": {
+            "name": "Language",
             "style": ""
         },
-        "OverlayDemo.bbj": {
-            "name": "OverlayDemo",
+        "Overlay": {
+            "name": "Overlay",
             "style": ""
         },
-        "RowsConditionalStylingDemo.bbj": {
-            "name": "RowsConditionalStylingDemo",
+        "RowsConditionalStyling": {
+            "name": "RowsConditionalStyling",
             "style": ""
         },
-        "SearchDemo.bbj": {
-            "name": "SearchDemo",
+        "Search": {
+            "name": "Search",
             "style": ""
         },
-        "SelectionDemo.bbj": {
-            "name": "SelectionDemo",
+        "Selection": {
+            "name": "Selection",
             "style": ""
         },
-        "TwoGridsDemo.bbj": {
-            "name": "TwoGridsDemo",
+        "TwoGrids": {
+            "name": "TwoGrids",
             "style": ""
         },
-        "ColumnsSizingDemo.bbj": {
-            "name": "ColumnsSizingDemo",
+        "ColumnsSizing": {
+            "name": "ColumnsSizing",
             "style": ""
         },
-        "ColumnStateDemo.bbj": {
-            "name": "ColumnStateDemo",
+        "ColumnState": {
+            "name": "ColumnState",
             "style": ""
         },
         "ColumnHeaderHeightAndTextOrientation.bbj": {
