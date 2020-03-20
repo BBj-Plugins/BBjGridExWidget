@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-import { gw_getGrid } from "./utilities";
+import { gw_getGrid } from './utilities'
 
 /**
  * Update context
@@ -28,5 +28,5 @@ import { gw_getGrid } from "./utilities";
  * @param {Object} context The new context object
  */
 export function gw_updateContext(id, context) {
-  gw_getGrid(id).options.context = context;
+  gw_getGrid(id).options.context = context
 }

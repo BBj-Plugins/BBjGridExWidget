@@ -8,27 +8,27 @@
 
 .gw-alignment-cell-right,
 .gw-alignment-cell-right .ag-cell-value {
-    text-align: right;
-    justify-content: flex-end;
-    flex: 1;
+  text-align: right;
+  justify-content: flex-end;
+  flex: 1;
 }
 
 .gw-alignment-cell-center,
 .gw-alignment-cell-center .ag-cell-value {
-    text-align: center;
-    justify-content: center;
-    flex: 1;
+  text-align: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .gw-alignment-header-right .ag-header-cell-label {
-    flex-direction: row-reverse;    
+  flex-direction: row-reverse;
 }
 
 .gw-alignment-header-center .ag-header-cell-label {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .gw-alignment-header-right .ag-cell-label-container,
 .gw-alignment-header-center .ag-cell-label-container {
-    flex-direction: row;
+  flex-direction: row;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /*
  * This file is part of the BBjGridExWidget plugin.
  * (c) Basis Europe <eu@basis.com>
@@ -6,23 +7,27 @@
  * file that was distributed with this source code.
  */
 
-import { gw_getDocument } from "api/utilities";
+import { gw_getDocument } from 'api/utilities'
 
 /** https://davidwalsh.name/javascript-debounce-function */
 export function gw_debounce(func, wait, immediate) {
-  var timeout;
+  var timeout
   return function() {
     var context = this,
-      args = arguments;
+      args = arguments
     var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
+      timeout = null
+      if (!immediate) {
+        func.apply(context, args)
+      }
+    }
+    var callNow = immediate && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if (callNow) {
+      func.apply(context, args)
+    }
+  }
 }
 
 /**
@@ -36,14 +41,14 @@ export function gw_debounce(func, wait, immediate) {
  * @param {String} eventId the event's id
  */
 export function gw_sendEvent(context, payload = {}, eventId = []) {
-  const registeredInterests = context.interests || [];
+  const registeredInterests = context.interests || []
 
   if (registeredInterests.includes(eventId)) {
-    const div = gw_getDocument().getElementById(`event-bridge-${context.id}`);
-    const event = new CustomEvent("click");
+    const div = gw_getDocument().getElementById(`event-bridge-${context.id}`)
+    const event = new CustomEvent('click')
 
-    event.payload = payload;
-    div.dispatchEvent(event);
+    event.payload = payload
+    div.dispatchEvent(event)
   }
 }
 
@@ -67,7 +72,9 @@ export function gw_sendEvent(context, payload = {}, eventId = []) {
  *                                       false if the node is for group node
  */
 export function gw_parseNode(node, context) {
-  if (true === node.group) return false; // we do not manage groups
+  if (true === node.group) {
+    return false
+  } // we do not manage groups
 
   // const rowNodeId = context.hasOwnProperty('getRowNodeId') && node.data[context.getRowNodeId] ?
   //   node.data[context.getRowNodeId] : '';
@@ -76,17 +83,17 @@ export function gw_parseNode(node, context) {
     i: node.id, // id
     x: node.rowIndex, // index
     p:
-      node.hasOwnProperty("parent") && node.parent.hasOwnProperty("key")
+      node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key')
         ? node.parent.key
-        : "", // parent key
+        : '', // parent key
     c: node.childIndex, //childIndex
     s: Boolean(node.selected), // selected
     cr:
-      context.hasOwnProperty("includeClientRowData") &&
-      context["includeClientRowData"] === true
+      context.hasOwnProperty('includeClientRowData') &&
+      context['includeClientRowData'] === true
         ? node.data
-        : null
-  };
+        : null,
+  }
 }
 
 /**
@@ -99,5 +106,5 @@ export function gw_parseNode(node, context) {
  * @returns {BBjGridExWidgetRow}
  */
 export function gw_parseNodeFromEvent(e) {
-  return gw_parseNode(e.node, e.context);
+  return gw_parseNode(e.node, e.context)
 }

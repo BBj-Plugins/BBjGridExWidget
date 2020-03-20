@@ -6,11 +6,11 @@
  * file that was distributed with this source code.
  */
 
-import { gw_extendColumnDefinitions } from "./columns";
-import { gw_navigateToNextRow, gw_getRowNodeId } from "./rows";
-import { gw_getContextMenu } from "./menus";
-import { gw_getChartToolbarItems } from "./charts";
-import { gw_getDocument, gw_getWindow, gw_addGrid } from "./utilities";
+import { gw_extendColumnDefinitions } from './columns'
+import { gw_navigateToNextRow, gw_getRowNodeId } from './rows'
+import { gw_getContextMenu } from './menus'
+import { gw_getChartToolbarItems } from './charts'
+import { gw_getDocument, gw_getWindow, gw_addGrid } from './utilities'
 import {
   gw_onRowClicked,
   gw_onRowDoubleClicked,
@@ -20,115 +20,139 @@ import {
   gw_onCellEditingEvent,
   gw_onRowEditingEvent,
   gw_onReadyEvent,
-  gw_debounce
-} from "events";
+  gw_debounce,
+} from 'events'
 import template from 'lodash-es/template'
 
-const { deepParseJson } = require("deep-parse-json");
+const { deepParseJson } = require('deep-parse-json')
 
-export function gw_init(options, license , data) {
-  
-  if (agGrid.LicenseManager && license)
-    agGrid.LicenseManager.setLicenseKey(license);
+export function gw_init(options, license, data) {
+  if (agGrid.LicenseManager && license) {
+    agGrid.LicenseManager.setLicenseKey(license)
+  }
 
-  const id              = options.context.id;
-  const container       = gw_getDocument().getElementById(id);
-  // we make the grid options available as soon as possible 
-  const grid            = gw_addGrid(id, {
+  const id = options.context.id
+  const container = gw_getDocument().getElementById(id)
+  // we make the grid options available as soon as possible
+  const grid = gw_addGrid(id, {
     container,
-    options
-  });
+    options,
+  })
 
   // TODO: use ag grid destroy
-  container.innerHTML   = '';
+  container.innerHTML = ''
 
-  const parsedOptions   = gw_parseOptions(options);
-  parsedOptions.rowData = data;
+  const parsedOptions = gw_parseOptions(options)
+  parsedOptions.rowData = data
 
-  const instance        = new agGrid.Grid(container, parsedOptions);
-  grid.instance = instance;
-  grid.options  = parsedOptions;
+  const instance = new agGrid.Grid(container, parsedOptions)
+  grid.instance = instance
+  grid.options = parsedOptions
 
   console.log(
-    `%c Grid [${id}] settings : `
-    , 'background: #222; color: #bada55'
-    , parsedOptions
-  );
+    `%c Grid [${id}] settings : `,
+    'background: #222; color: #bada55',
+    parsedOptions
+  )
 }
 
 /**
  * Parse Options
- * 
- * Parse the grid options and return 
+ *
+ * Parse the grid options and return
  * an object which can be passed to the grid
- * 
+ *
  * @param {Object} options Grid options as Json Object
- * 
+ *
  * @return {Object} options object
  */
 function gw_parseOptions(options) {
-  const deepParsedOptions     = deepParseJson(JSON.stringify(options));
-  const id                    = deepParsedOptions.context.id;
-  const getDataPathTemplate   = deepParsedOptions.context.getDataPath || "";
+  const deepParsedOptions = deepParseJson(JSON.stringify(options))
+  const id = deepParsedOptions.context.id
+  const getDataPathTemplate = deepParsedOptions.context.getDataPath || ''
   // TODO: do we need to control this setting from BBj ?
-  const debounceDuration      = 250;
+  const debounceDuration = 250
   const finalOptions = {
-    ...deepParsedOptions ,
+    ...deepParsedOptions,
     ...{
-      getDocument:            ()     =>   gw_getDocument(),
-      onCellEditingStarted:   e      => { gw_onCellEditingEvent(id, e) }                               ,                                 
-      onCellEditingStopped:   e      => { gw_onCellEditingEvent(id, e) }                               ,
-      onCellValueChanged:     e      => { gw_onCellEditingEvent(id, e) }                               ,
-      onRowEditingStarted:    e      => { gw_onRowEditingEvent(id, e)  }                               ,
-      onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  }                               ,
-      onRowEditingStopped:    e      => { gw_onRowEditingEvent(id, e)  }                               ,
-      onRowValueChanged:      e      => { gw_onRowEditingEvent(id, e)  }                               ,
-      onCellClicked:          e      => { gw_onCellClickEvent(id, e)   }                               ,
-      onCellDoubleClicked:    e      => { gw_onCellClickEvent(id, e)   }                               ,
-      onGridReady:            e      => { gw_onReadyEvent(id, e)       }                               ,
-      getRowNodeId:           data   =>   gw_getRowNodeId(id, data)                                    ,
-      getContextMenuItems:    params =>   gw_getContextMenu(id, params)                                ,
-      "getChartToolbarItems":             gw_getChartToolbarItems                                      ,
-      "popupParent":                      gw_getDocument().body                                        ,
-      "onRowDoubleClicked":               gw_debounce(gw_onRowDoubleClicked, debounceDuration)         ,
-      "onRowClicked":                     gw_debounce(gw_onRowClicked, debounceDuration)               ,
-      "onSelectionChanged":               gw_debounce(gw_onSelectionChanged, debounceDuration)         ,
-      "onRangeSelectionChanged":          gw_debounce(gw_onRangeSelectionChanged , debounceDuration)   ,
-      "components": {
-        "BooleanFilter"               : Basis.AgGridComponents.BooleanFilter        ,
-        "BooleanRenderer"             : Basis.AgGridComponents.BooleanRenderer      ,
-        "BooleanEditor"               : Basis.AgGridComponents.BooleanEditor        ,
-        "NumberEditor"                : Basis.AgGridComponents.NumberEditor         ,
-        "TextEditor"                  : Basis.AgGridComponents.TextEditor           ,
-        "DateTimeEditor"              : Basis.AgGridComponents.DateTimeEditor       ,
-        "DateTimeFilter"              : Basis.AgGridComponents.DateTimeFilter       ,
-        "ImageRenderer"               : Basis.AgGridComponents.ImageRenderer        ,
-        "TemplateRenderer"            : Basis.AgGridComponents.TemplateRenderer     ,
+      getDocument: () => gw_getDocument(),
+      onCellEditingStarted: e => {
+        gw_onCellEditingEvent(id, e)
       },
-      "context": {
+      onCellEditingStopped: e => {
+        gw_onCellEditingEvent(id, e)
+      },
+      onCellValueChanged: e => {
+        gw_onCellEditingEvent(id, e)
+      },
+      onRowEditingStarted: e => {
+        gw_onRowEditingEvent(id, e)
+      },
+      onRowValueChanged: e => {
+        gw_onRowEditingEvent(id, e)
+      },
+      onRowEditingStopped: e => {
+        gw_onRowEditingEvent(id, e)
+      },
+      onCellClicked: e => {
+        gw_onCellClickEvent(id, e)
+      },
+      onCellDoubleClicked: e => {
+        gw_onCellClickEvent(id, e)
+      },
+      onGridReady: e => {
+        gw_onReadyEvent(id, e)
+      },
+      getRowNodeId: data => gw_getRowNodeId(id, data),
+      getContextMenuItems: params => gw_getContextMenu(id, params),
+      getChartToolbarItems: gw_getChartToolbarItems,
+      popupParent: gw_getDocument().body,
+      onRowDoubleClicked: gw_debounce(gw_onRowDoubleClicked, debounceDuration),
+      onRowClicked: gw_debounce(gw_onRowClicked, debounceDuration),
+      onSelectionChanged: gw_debounce(gw_onSelectionChanged, debounceDuration),
+      onRangeSelectionChanged: gw_debounce(
+        gw_onRangeSelectionChanged,
+        debounceDuration
+      ),
+      components: {
+        BooleanFilter: Basis.AgGridComponents.BooleanFilter,
+        BooleanRenderer: Basis.AgGridComponents.BooleanRenderer,
+        BooleanEditor: Basis.AgGridComponents.BooleanEditor,
+        NumberEditor: Basis.AgGridComponents.NumberEditor,
+        TextEditor: Basis.AgGridComponents.TextEditor,
+        DateTimeEditor: Basis.AgGridComponents.DateTimeEditor,
+        DateTimeFilter: Basis.AgGridComponents.DateTimeFilter,
+        ImageRenderer: Basis.AgGridComponents.ImageRenderer,
+        TemplateRenderer: Basis.AgGridComponents.TemplateRenderer,
+      },
+      context: {
         ...deepParsedOptions.context,
         ...{
-          "document": gw_getDocument(),
-          "window"  : gw_getWindow()
-        }
-      }
-    }
-  };
+          document: gw_getDocument(),
+          window: gw_getWindow(),
+        },
+      },
+    },
+  }
 
   if (
-    finalOptions.context.hasOwnProperty("navigateToNextCell") &&
+    // eslint-disable-next-line no-prototype-builtins
+    finalOptions.context.hasOwnProperty('navigateToNextCell') &&
     finalOptions.context.navigateToNextCell
   ) {
-    finalOptions.navigateToNextCell = params => { return gw_navigateToNextRow(id, params) };
+    finalOptions.navigateToNextCell = params => {
+      return gw_navigateToNextRow(id, params)
+    }
   }
 
   if (getDataPathTemplate && finalOptions.treeData) {
-    const getDataPathTemplateComplied = template(getDataPathTemplate);
-    finalOptions.getDataPath = data => getDataPathTemplateComplied({ data: data });
+    const getDataPathTemplateComplied = template(getDataPathTemplate)
+    finalOptions.getDataPath = data =>
+      getDataPathTemplateComplied({ data: data })
   }
 
   // extend the column definitions
-  gw_extendColumnDefinitions(finalOptions.columnDefs);
+  gw_extendColumnDefinitions(finalOptions.columnDefs)
 
-  return finalOptions;
+  return finalOptions
 }

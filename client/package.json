@@ -7,8 +7,11 @@
   "private": true,
   "scripts": {
     "watch": "./node_modules/.bin/webpack --watch --progress",
-    "build": "./node_modules/.bin/webpack --mode=production",
-    "build:dev": "./node_modules/.bin/webpack"
+    "build": "yarn run lint && yarn run format && ./node_modules/.bin/webpack --mode=production ",
+    "build:dev": "yarn run lint:fix && yarn run format && ./node_modules/.bin/webpack",
+    "lint": "./node_modules/.bin/eslint  -c ./.eslintrc.json --ext .js ./",
+    "lint:fix": "./node_modules/.bin/eslint  --fix -c ./.eslintrc.json --ext .js ./",
+    "format": "./node_modules/.bin/prettier --write \"{src,demo,test}/**/*.{js,html,css}\""
   },
   "browserslist": [
     "last 2 version",
@@ -20,6 +23,7 @@
     "@babel/preset-env": "^7.0.0-beta.40",
     "babel-loader": "8.0.0-beta.0",
     "babel-polyfill": "^6.26.0",
+    "babel-eslint": "^10.0.3",
     "copy-webpack-plugin": "^4.4.1",
     "css-loader": "^0.28.9",
     "exports-loader": "^0.7.0",
@@ -32,15 +36,36 @@
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^4.12.2",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-command": "^0.3.1"
+    "webpack-command": "^0.3.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.19.1",
+    "husky": ">=1",
+    "lint-staged": ">=8",
+    "prettier": "1.19.1"    
   },
   "dependencies": {
     "ag-grid-community": "21.1.0",
     "ag-grid-enterprise": "21.1.0",
+    "basis-aggrid-components": "BasisHub/basis-aggrid-components",
     "deep-parse-json": "^1.0.1",
     "flatpickr": "^4.6.3",
     "jss": "https://github.com/dvtng/jss",
     "lodash": "^4.17.14",
     "lodash-es": "^4.17.15"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,html,css}": [
+      "yarn run format",
+      "git add"
+    ],
+    "*.js": [
+      "yarn run lint:fix",
+      "git add"
+    ]
   }
 }

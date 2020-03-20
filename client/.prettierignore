@@ -1,0 +1,18 @@
+# But exclude node_modules folders anywhere
+node_modules/
+dist/
+package.json
+package-lock.json
+yarn.lock
+
+*.*
+!*.css
+!*.js
+!*.json
+!*.jsx
+!*.less
+!*.md
+!*.mdx
+!*.ts
+!*.tsx
+!*.yml
