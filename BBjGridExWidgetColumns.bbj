@@ -65,19 +65,19 @@ rem  *          <td>The property/method is used only with the enterprise version
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>Configuration</strong></td>
-rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to rerender the whole grid <br />or rerender the column definition once again&#183;</td>
+rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again&#183;</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>API</strong></td>
 rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh&#183;</td>
 rem  *      </tr>
 rem  *      <tr>
-rem  *          <td><strong>&nbsp;ColumnsRerender</strong></td>
-rem  *          <td>Changing this property or calling this method after the first render require columns rerender using <i>updateColumns()</i> method</td>
+rem  *          <td><strong>&nbsp;ColumnsRenderer</strong></td>
+rem  *          <td>Changing this property or calling this method after the first render require columns re-render using <i>updateColumns()</i> method</td>
 rem  *      </tr>
 rem  *      <tr>
-rem  *          <td><strong>&nbsp;GridRerender</strong></td>
-rem  *          <td>Changing this property or calling this method after the first render require full rerender using <i>render()</i> method</td>
+rem  *          <td><strong>&nbsp;GridRenderer</strong></td>
+rem  *          <td>Changing this property or calling this method after the first render require full re-render using <i>render()</i> method</td>
 rem  *      </tr>
 rem  *  </tbody>
 rem  * </table>
@@ -88,14 +88,14 @@ class public BBjGridExWidgetColumnDefinition
     rem /**
     rem  * The name to render in the column header.
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjString Label! = null()
     rem /**
     rem  * Whether to show the column when the group is open / closed&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @see COLUMN_GROUP_CLOSED()
     rem  * @see COLUMN_GROUP_OPENED()
@@ -105,21 +105,21 @@ class public BBjGridExWidgetColumnDefinition
     rem  * CSS class(es) to use for the header cell&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public ArrayList HeaderClass! = new ArrayList()
     rem /**
     rem  * CSS class(es) to use for the tool panel cell&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public ArrayList ToolPanelClass! = new ArrayList()
     rem /**
     rem  * Set to true if you do not want this column or group to appear in the tool panel&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressToolPanel! = null()
     rem /**
@@ -164,7 +164,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * The Field Type&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * <b>Note :</b> Not all sql types are supported, for example it does not make sense to declare a colum type as STRUCT&#183;
     rem  *
@@ -175,7 +175,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * Initial width in pixels
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  * <br><br>
     rem  * <b>Note:</b> setting the width to zero will not hide the column, use <b>setHidden()</b> instead&#183; And if the width is null()
     rem  * this means the grid will auto set the width for this column
@@ -187,35 +187,35 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * Initial min width in pixels
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber MinWidth! = null()
     rem /**
     rem  * Initial max width in pixels
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber MaxWidth! = null()
     rem /**
     rem  * The filter component to use for this column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjGridExWidgetFilterInterface Filter! = new BBjGridExWidgetFilterText()
     rem /**
     rem  * When true the filter is enabled, disabled otherwise
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber EnableFilter! = 1
     rem /**
     rem  * Set to true to make a column hidden by default&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Hidden! = 0
     rem /**
@@ -223,7 +223,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  *
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @see PINNED_LEFT()
     rem  * @see PINNED_RIGHT()
@@ -233,35 +233,35 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * Set to true to always have column displayed first&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber LockPosition! = null()
     rem /**
     rem  * Set to true block making column visible / hidden via the UI (API will still work)&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber LockVisible! = null()
     rem /**
     rem  * Set to true block pinning column via the UI (API will still work)&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber LockPinned! = null()
     rem /**
     rem  * Set to true to allow sorting on this column&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Sortable! = 1
     rem /**
     rem  * Set to 'asc' or 'desc' to sort by this column by default&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @see SORT_DESC()
     rem  * @see SORT_ASC()
@@ -271,98 +271,98 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * Set to true to allow column to be resized&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Resizable! = 1
     rem /**
     rem  * Tooltip for the column header
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjString HeaderTooltip! = null()
     rem /**
     rem  * Set to true to render a selection checkbox in the column&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber CheckboxSelection! = null()
     rem /**
     rem  * Set to true to render a selection checkbox in the column's header&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber HeaderCheckboxSelection! = null()
     rem /**
     rem  * CSS class(es) to use for the cell&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public ArrayList CellClass! = new ArrayList()
     rem /**
     rem  * A map of css values&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public JsonObject CellStyle! = new JsonObject()
     rem /**
     rem  * Set to true if the column is editable, otherwise false&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Editable! = 0
     rem /**
     rem  * A cellRenderer to use for this column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjGridExWidgetRendererInterface CellRenderer! = null()
     rem /**
     rem  * CellEditor to use for this column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjGridExWidgetCellEditorInterface CellEditor! = new BBjGridExWidgetCellEditorBasicText()
     rem /**
     rem  * Name of function to use for aggregation&#183; One of [sum,min,max,first,last]&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjString AggFunc! = null()
     rem /**
     rem  * Aggregation functions allowed on this column eg ['sum','avg']&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public HashSet AllowedAggFuncs! = new HashSet()
     rem /**
     rem  * Set this in columns you want to group by&#183; If only grouping by one column, set this to any number (eg 0)&#183; If grouping by multiple columns, set this to where you want this column to be in the group (eg 0 for first, 1 for second, and so on)&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber RowGroupIndex! = null()
     rem /**
     rem  * Set this in columns you want to pivot by&#183; If only pivoting by one column, set this to any number (eg 0)&#183; If pivoting by multiple columns, set this to where you want this column to be in the order of pivots (eg 0 for first, 1 for second, and so on)&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber PivotIndex! = null()
     rem /**
     rem  * Set to true if you want the unsorted icon to be shown when no sort is applied to this column&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber UnSortIcon! = 0
     rem /**
@@ -370,7 +370,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber EnableRowGroup! = 1
     rem /**
@@ -378,7 +378,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @see BBjGridExWidget&#183;Columns&#183;EnableRowGroup!
     rem  */
@@ -388,7 +388,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber EnablePivot! = 1
     rem /**
@@ -396,42 +396,42 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber EnableValue! = 1
     rem /**
     rem  * Set to true if no menu should be shown for this column header&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMenu! = 0
     rem /**
     rem  * Set to true if you want this columns width to be fixed during 'size to fit' operation&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressSizeToFit! = 0
     rem /**
     rem  * Set to true if you do not want this column to be movable via dragging&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMovable! = 0
     rem /**
     rem  * Set to true if this col is not navigable (ie cannot be tabbed into), otherwise false&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressNavigable! = 0
     rem /**
     rem  * Set to true to have the grid calculate height of row based on contents of this column&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber AutoHeight! = 0
     rem /**
@@ -440,7 +440,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * An expression is evaluated by the grid by executing the string as if it were a Javascript expression&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  * <br><br>
     rem  * The expression has the following attributes available to it&#183; <br><br>
     rem  * <table border="1" cellpadding="10">
@@ -469,7 +469,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * An Ag Grid expression which can be executed before getting the value from your data for display
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
     rem  * @see BBjGridExWidget&#183;Expression&#183;BBjGridExWidgetExpression
     rem  */
@@ -478,7 +478,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * An Ag Grid expression which can be executed to format the value for display&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
     rem  * @see BBjGridExWidget&#183;Expression&#183;BBjGridExWidgetExpression
     rem  */
@@ -487,7 +487,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * An Ag Grid expression which can be executed to get the value for filtering purposes&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
     rem  * @see BBjGridExWidget&#183;Expression&#183;BBjGridExWidgetExpression
     rem  */
@@ -496,7 +496,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * An Ag Grid expression which can be executed before setting the value into your data for saving&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
     rem  * @see BBjGridExWidget&#183;Expression&#183;BBjGridExWidgetExpression
     rem  */
@@ -505,7 +505,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * An Ag Grid expression which can be executed to parse the value for saving&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
     rem  * @see BBjGridExWidget&#183;Expression&#183;BBjGridExWidgetExpression
     rem  */
@@ -540,7 +540,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * and just the simple arrow for other columns&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
     rem  * The icons are set as follows:
     rem  * <pre>
@@ -601,7 +601,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  * charting columns&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>.
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  */
     field public BBjString ChartType! = null()
     rem /**
@@ -908,7 +908,7 @@ class public BBjGridExWidgetDefaultColumnDefinition extends BBjGridExWidgetColum
     rem  *
     rem  * <b>Note :</b>
     rem  * Not all sql types are supported, for example it does not make sense to declare a colum type as STRUCT.
-    rem  * Setting the type will change the column common properites automatically like the filter, cell editor, ....
+    rem  * Setting the type will change the column common properties automatically like the filter, cell editor, ....
     rem  *
     rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
     rem  */
@@ -1074,7 +1074,7 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
     method public BBjGridExWidgetColumn(BBjString field!)
         #Field! = field!
         #setLabel(field!)
-        rem we reset the following properties so they can be inheirted from the default column definition
+        rem we reset the following properties so they can be inherited from the default column definition
         #setHidden(null())
         #setEnableFilter(null())
         #setSortable(null())
@@ -1110,7 +1110,7 @@ class public BBjGridExWidgetColumn extends BBjGridExWidgetDefaultColumnDefinitio
         #setType(type!)
     methodend
     rem /**
-    rem  * Throw an error when called becuase the field becomes immutable after
+    rem  * Throw an error when called because the field becomes immutable after
     rem  * the column's definition creation
     rem  */
     method public void setField(BBjString field!)
@@ -1318,7 +1318,7 @@ class public BBjGridExWidgetAutoGroupColumn extends BBjGridExWidgetDefaultColumn
 
 classend
 rem /**
-rem  * The inteface defines the common methods for columns and column groups managment
+rem  * The interface defines the common methods for columns and column groups management
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
@@ -1327,7 +1327,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add column group
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjGridExWidgetColumnGroup definition! The column group definition
     rem  */
@@ -1337,7 +1337,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add column group
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString id! The group id
     rem  */
@@ -1347,7 +1347,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add column group
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString id! The group id
     rem  * @param BBjString label! The group label
@@ -1358,7 +1358,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Get the column group definition instance
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString id! The column group definition id
     rem  *
@@ -1370,7 +1370,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Check if the column group definition exists
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString id! The column group definition id
     rem  *
@@ -1382,7 +1382,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Remove a column group definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString id! The column group definition id
     rem  *
@@ -1394,7 +1394,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add new column definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjGridExWidgetColumn definition! The column definition object
     rem  *
@@ -1406,7 +1406,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add new column definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  * @param BBjNumber type! The Field Type (java.sql.Types).
@@ -1419,7 +1419,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add new column definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  * @param BBjString label! The column's label.
@@ -1432,7 +1432,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add new column definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  * @param BBjString label! The column's label.
@@ -1446,7 +1446,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Add new column definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  *
@@ -1458,7 +1458,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Get the column definition instance
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  *
@@ -1470,7 +1470,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Check if the column definition exists
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  *
@@ -1482,7 +1482,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Remove a column definition
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's definition field
     rem  *
@@ -1494,7 +1494,7 @@ interface public BBjGridExWidgetColumnsManagerInterface
     rem  * Clear all columns and column groups
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
 
     method public void resetAllColumns()
@@ -1728,7 +1728,7 @@ class public BBjGridExWidgetColumnGroup extends BBjGridExWidgetDefaultColumnGrou
         #setLabel(label!)
     methodend
     rem /**
-    rem  * Throw an error when called becuase the group id becomes immutable after
+    rem  * Throw an error when called because the group id becomes immutable after
     rem  * the column group's definition creation
     rem  */
     method public void setGroupId()

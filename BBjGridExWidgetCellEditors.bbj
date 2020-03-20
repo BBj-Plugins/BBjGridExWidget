@@ -29,14 +29,14 @@ interface public BBjGridExWidgetCellEditorInterface
     rem /**
     rem  * Convert the filter definition to Json Object
     rem  *
-    rem  * @return JsonOobject The filter as JsonObject
+    rem  * @return JsonObject The filter as JsonObject
     rem  */
 
     method public JsonObject getAsJsonObject()
     rem /**
     rem  * Compare two filters
     rem  *
-    rem  * @param cellEditor! - Another cell editor instnace to compare with
+    rem  * @param cellEditor! - Another cell editor instance to compare with
     rem  *
     rem  * @return bool - true when they are equal , false otherwise
     rem  */
@@ -54,7 +54,7 @@ class public BBjGridExWidgetCellEditorComparator
     rem  * Compare two cell editors
     rem  *
     rem  * @param one! - First cell editor instance
-    rem  * @param two! - Second cell editor instnace
+    rem  * @param two! - Second cell editor instance
     rem  *
     rem  * @return boolean true when they are equal , false otherwise
     rem  */
@@ -90,7 +90,7 @@ class public BBjGridExWidgetCellEditorText extends BBjGridExWidgetCellEditorAbst
     rem /**
     rem  * If set to true then the grid will use the provided cell formatter if one is provided.
     rem  */
-    field public BBjNumber UserFormmatter! = 0
+    field public BBjNumber UserFormatter! = 0
     rem /**
     rem  * @override
     rem  *
@@ -108,7 +108,7 @@ class public BBjGridExWidgetCellEditorText extends BBjGridExWidgetCellEditorAbst
         declare JsonObject json!
 
         json! = new JsonObject()
-        json!.addProperty("useFormatter",#getUserFormmatter().booleanValue() , err=*next)
+        json!.addProperty("useFormatter",#getUserFormatter().booleanValue() , err=*next)
         methodret json!
     methodend
 
@@ -146,7 +146,7 @@ class public BBjGridExWidgetCellEditorLargeText extends BBjGridExWidgetCellEdito
     rem /**
     rem  * Number of character columns to display. Default is 60.
     rem  */
-    field public BBjNumber cols! = 60
+    field public BBjNumber Cols! = 60
     rem /**
     rem  * @override
     rem  *
@@ -166,7 +166,7 @@ class public BBjGridExWidgetCellEditorLargeText extends BBjGridExWidgetCellEdito
         json! = #super!.getAsJsonObject()
         json!.addProperty("maxLength",#getMaxLength().longValue() , err=*next)
         json!.addProperty("rows",#getRows().longValue() , err=*next)
-        json!.addProperty("cols",#getcols().longValue() , err=*next)
+        json!.addProperty("cols",#getCols().longValue() , err=*next)
         methodret json!
     methodend
 
@@ -175,7 +175,7 @@ rem /**
 rem  * Simple editors that use the standard HTML select tag.
 rem  *
 rem  * The standard HTML select to behave oddly in the grid. This is because the browser doesn't have a great API for
-rem  * opening and closing the select's popup.
+rem  * opening and closing the selected popup.
 rem  *
 rem  * We advise that you don't use it unless you have to - that is we advise against BBjGridExWidgetCellEditorSelect
 rem  * as they give poor user experience, especially if using keyboard navigation.
@@ -213,7 +213,7 @@ rem  *
 rem  * It is same as BBjGridExWidgetCellEditorSelect but as popup.
 rem  *
 rem  * The standard HTML select to behave oddly in the grid. This is because the browser doesn't have a great API for
-rem  * opening and closing the select's popup.
+rem  * opening and closing the selected popup.
 rem  *
 rem  * We advise that you don't use it unless you have to - that is we advise against BBjGridExWidgetCellEditorPopupSelect
 rem  * as they give poor user experience, especially if using keyboard navigation.
@@ -249,7 +249,7 @@ class public BBjGridExWidgetCellEditorPopupSelect extends BBjGridExWidgetCellEdi
 
 classend
 rem /**
-rem  * Available in Enhacned Grid only. An alternative to using the browser's select popup for dropdowns inside the grid.
+rem  * Available in Enhanced Grid only. An alternative to using the browser's select popup for dropdown inside the grid.
 rem  *
 rem  * <br><b><small>#OnlyGUI</small></b>
 rem  * <br><b><small>#Enterprise</small></b>
@@ -656,7 +656,7 @@ class public BBjGridExWidgetCellEditorBasicText extends BBjGridExWidgetCellEdito
     rem  */
     field public BBjString Title! = null()
     rem /**
-    rem  * When true , then the input cannnot be emepty and a value is required to consider
+    rem  * When true , then the input cannot be empty and a value is required to consider
     rem  * the input valid
     rem  */
     field public BBjNumber Required! = 1
@@ -724,7 +724,7 @@ class public BBjGridExWidgetCellEditorBasicDateTime extends BBjGridExWidgetOptio
 
 classend
 rem /**
-rem  * Alaise for BBjGridExWidgetCellEditorBasicDateTime
+rem  * Alias for BBjGridExWidgetCellEditorBasicDateTime
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */

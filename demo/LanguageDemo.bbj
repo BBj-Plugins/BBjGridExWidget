@@ -45,7 +45,7 @@ rem  * Retrieve the data from the database and configure the grid
 rem  *
 rem  * By default, the grid will use STBL("!LOCALE") to get the default language.
 rem  * Changing this global will force the grid to use the defined language, unless the
-rem  * default grid language is set directly using grid!.getLanguageManager().setLangauge("lang_code").
+rem  * default grid language is set directly using grid!.getLanguageManager().setLanguage("lang_code").
 rem  */
 main:
   declare SqlQueryBC sbc!

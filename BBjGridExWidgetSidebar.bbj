@@ -224,7 +224,7 @@ class public BBjGridExWidgetSidebar
     rem /**
     rem  * The id of the default panel
     rem  */
-    field public BBjString DefaulToolpanel$
+    field public BBjString DefaultToolpanel$
     rem /**
     rem  * When true, the sidebar will be hidden on the first draw, visible otherwise. default is false
     rem  */
@@ -296,7 +296,7 @@ class public BBjGridExWidgetSidebar
 
         json! = new JsonObject()
         json!.addProperty("toolPanels",toolpanelsJson!.toString())
-        json!.addProperty("defaultToolPanel",#DefaulToolpanel$)
+        json!.addProperty("defaultToolPanel",#DefaultToolpanel$)
         json!.addProperty("hiddenByDefault",#getHiddenByDefault(),err=*next)
         methodret json!
     methodend

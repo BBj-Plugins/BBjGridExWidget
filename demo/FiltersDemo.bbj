@@ -72,7 +72,7 @@ main:
 
   grid!.setData(rs! , 1 , 0)
   
-  rem IMPORTANT: BBjGridExWidgetFilterSetFilter is part of the enhacned grid
+  rem IMPORTANT: BBjGridExWidgetFilterSetFilter is part of the Enhanced grid
   country! = grid!.getColumn("COUNTRY")
   country!.setFilter(new BBjGridExWidgetFilterSetFilter())
   

@@ -28,12 +28,12 @@ process_events
 rem /**
 rem  * Retrieve the data from the database and configure the grid.
 rem  *
-rem  * The demo uses the helper method grid!.addColumnGroup(..) to configure the columm groups. This method allows creating
+rem  * The demo uses the helper method grid!.addColumnGroup(..) to configure the column groups. This method allows creating
 rem  * only one level of column groups. to learn how to configure nested column groups @see ColumnGroupingNestedDemo.bbj
 rem  *
 rem  * The demo demonstrates too how to attach style objects to the client using grid!.addStyle(Selector , StyleObject).
-rem  * Every style object is bound to a selecter (my-group-class).
-rem  * You can then use this seletor as a css class alomst on all grid components
+rem  * Every style object is bound to a selector (my-group-class).
+rem  * You can then use this selector as a css class almost on all grid components
 rem  */
 main:
   declare SqlQueryBC sbc!

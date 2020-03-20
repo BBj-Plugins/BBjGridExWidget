@@ -25,14 +25,14 @@ interface public BBjGridExWidgetFilterInterface
     rem /**
     rem  * Convert the filter definition to Json Object
     rem  *
-    rem  * @return JsonOobject The filter as JsonObject
+    rem  * @return JsonObject The filter as JsonObject
     rem  */
 
     method public JsonObject getAsJsonObject()
     rem /**
     rem  * Compare two filters
     rem  *
-    rem  * @param filter! - Another filter instnace to compare with
+    rem  * @param filter! - Another filter instance to compare with
     rem  *
     rem  * @return bool - true when they are equal , false otherwise
     rem  */
@@ -50,7 +50,7 @@ class public BBjGridExWidgetFilterComparator
     rem  * Compare two filters
     rem  *
     rem  * @param one! - First filter instance
-    rem  * @param two! - Second filter instnace
+    rem  * @param two! - Second filter instance
     rem  *
     rem  * @return boolean true when they are equal , false otherwise
     rem  */
@@ -108,7 +108,7 @@ class public BBjGridExWidgetColumnFilterTextFilterOptions
 
 classend
 rem /**
-rem  * Filter options constansts for date/time filter
+rem  * Filter options constants for date/time filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -146,7 +146,7 @@ class public BBjGridExWidgetColumnFilterDateTimeFilterOptions
 
 classend
 rem /**
-rem  * Filter options constansts for numbers filter
+rem  * Filter options constants for numbers filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -484,7 +484,7 @@ class public BBjGridExWidgetFilterBasicBoolean extends BBjGridExWidgetOptionsBoo
     methodend
 classend
 rem /**
-rem  * The class represents the date tiem filter
+rem  * The class represents the date time filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -559,7 +559,7 @@ class public BBjGridExWidgetFilterBasicDateTime extends BBjGridExWidgetOptionsDa
     methodend
 classend
 rem /**
-rem  * Aliase for BBjGridExWidgetFilterBasicDateTime
+rem  * Alias for BBjGridExWidgetFilterBasicDateTime
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */

@@ -29,7 +29,7 @@ icon! =SysGui!.getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/
 
 REM ------------------Start Left Panel -------------------------
 
-leftPanelTitle! = wnd!.addStaticText(202,10,10,200,25,"Selection Behaviours" , $0000$ )
+leftPanelTitle! = wnd!.addStaticText(202,10,10,200,25,"Selection Behaviors" , $0000$ )
 leftPanelTitle!.setFont(boldFont!)
 
 REM --- Start Mutli Selection Controls

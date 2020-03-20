@@ -21,9 +21,9 @@ class public BBjGridContextMenu
     rem /**
     rem  * Add new context menu item
     rem  *
-    rem  * @param BBjGridContextMenuItemInteface item! the item object
+    rem  * @param BBjGridContextMenuItemInterface item! the item object
     rem  */
-    method public void addItem(BBjGridContextMenuItemInteface item!)
+    method public void addItem(BBjGridContextMenuItemInterface item!)
         #Items!.put(item!.getId() , item!)
     methodend
     rem /**
@@ -75,7 +75,7 @@ rem  * An interface which defines a menu item
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-interface public BBjGridContextMenuItemInteface
+interface public BBjGridContextMenuItemInterface
     rem /**
     rem  * Get the menu item ID
     rem  *
@@ -97,7 +97,7 @@ rem  * A class which represents a grid context menu item
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridContextMenuItem implements BBjGridContextMenuItemInteface
+class public BBjGridContextMenuItem implements BBjGridContextMenuItemInterface
     rem /**
     rem  * The item's label
     rem  */

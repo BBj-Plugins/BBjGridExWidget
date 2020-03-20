@@ -21,8 +21,8 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,820,600,"Data Update Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-restoreOrginial! = wnd!.addButton(200,10,10,150,25,"Restore Original ResultSet")
-restoreOrginial!.setCallback(BBjAPI.ON_BUTTON_PUSH,"restoreOrginialRS")
+restoreOriginal! = wnd!.addButton(200,10,10,150,25,"Restore Original ResultSet")
+restoreOriginal!.setCallback(BBjAPI.ON_BUTTON_PUSH,"restoreOriginalRS")
 
 updateResultSet! = wnd!.addButton(201,160,10,150,25,"Set New ResultSet")
 updateResultSet!.setCallback(BBjAPI.ON_BUTTON_PUSH,"setNewRS")
@@ -59,7 +59,7 @@ return
 rem /**
 rem  * Restore the older ResultSet
 rem  */
-restoreOrginialRS:
+restoreOriginalRS:
   rs! = sbc!.retrieve("SELECT TOP 15 * FROM CDINVENTORY")
   grid!.updateData(rs!)
 return

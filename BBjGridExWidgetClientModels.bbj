@@ -102,7 +102,7 @@ class public BBjGridExWidgetClientRowModel
     method public DataRow asDataRow()
         nodeId! = #getWidget().getRowNodeId()
         rs! = #getWidget().getRS()
-        rem in case the RowNodeId is a column in the resultset
+        rem in case the RowNodeId is a column in the ResultSet
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
             filteredRS! = rs!.filterBy(nodeId! + "=" +  str(#getId()))
@@ -141,7 +141,7 @@ class public BBjGridExWidgetClientRowModel
     rem /**
     rem  * Convert row to string
     rem  *
-    rem  * @return BBjstring  The row id
+    rem  * @return BBjString  The row id
     rem  */
     method public BBjString toString()
         methodret #Id!
@@ -226,7 +226,7 @@ class public BBjGridExWidgetClientColumnModel
     rem /**
     rem  * Convert column to string
     rem  *
-    rem  * @return BBjstring  The column
+    rem  * @return BBjString  The column
     rem  */
     method public BBjString toString()
         methodret #getName()
@@ -489,7 +489,7 @@ class public BBjGridExWidgetClientKeypressModel
 
 classend
 rem /**
-rem  * The sorting model descript how the columns will be sorted on the client
+rem  * The sorting model describes how the columns will be sorted on the client
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -499,7 +499,7 @@ class public BBjGridExWidgetClientSortModel
     rem  */
     field protected JsonObject Model! = new JsonObject()
     rem /**
-    rem  * Add new column soritng to the model
+    rem  * Add new column sorting to the model
     rem  *
     rem  * @param BBjString column! The column id
     rem  * @param BBjString direction! the sort direction
@@ -535,7 +535,7 @@ class public BBjGridExWidgetClientSortModel
         #getModel().remove(column! ,err=*next )
     methodend
     rem /**
-    rem  * Convert the model to JSON arrat
+    rem  * Convert the model to JSON array
     rem  *
     rem  * @return JsonObject
     rem  */
@@ -553,7 +553,7 @@ class public BBjGridExWidgetClientSortModel
 
 classend
 rem /**
-rem  * The model descripts an transaction operation that can be passed to the grid
+rem  * The model describes an transaction operation that can be passed to the grid
 rem  * to add / remove & update that data at once.
 rem  *
 rem  * @author Hyyan Abo Fakher
@@ -726,7 +726,7 @@ interface public BBjGridExWidgetClientFilterModel
     rem  *
     rem  * @see BBjGridExWidgetClientFilterModel.execute()
     rem  *
-    rem  * @param BBjBynber send! when true the model will be send to the client , false otherwise
+    rem  * @param BBjNumber send! when true the model will be send to the client , false otherwise
     rem  *
     rem  * @return BBjString The generated js code used to apply the model
     rem  *
@@ -753,7 +753,7 @@ interface public BBjGridExWidgetClientFilterModel
     rem  * Tell the grid to refresh rows based on the filter. the filter does not do this automatically in case multiple
     rem  * filters are going to get set.
     rem  *
-    rem  * @param BBjBynber send! when true the execution code will executed on the client , false otherwise
+    rem  * @param BBjNumber send! when true the execution code will executed on the client , false otherwise
     rem  * @return BBjString The generated js code used to execute the model on the client
     rem  *
     rem  * @throws 256 when the column or the widget are not defined
@@ -764,7 +764,7 @@ interface public BBjGridExWidgetClientFilterModel
     rem  * Tell the grid to refresh rows based on the filter. the filter does not do this automatically in case multiple
     rem  * filters are going to get set.
     rem  *
-    rem  * @param BBjBynber send! when true the execution code will executed on the client , false otherwise
+    rem  * @param BBjNumber send! when true the execution code will executed on the client , false otherwise
     rem  *
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
@@ -800,7 +800,7 @@ interface public BBjGridExWidgetClientFilterModel
 
 interfaceend
 rem /**
-rem  * A generic abstract implemetaion for the BBjGridExWidgetClientFilterModel interface
+rem  * A generic abstract implementation for the BBjGridExWidgetClientFilterModel interface
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -822,7 +822,7 @@ class public BBjGridExWidgetClientFilterAbstractModel implements BBjGridExWidget
     rem  * {@inheritDoc}
     rem  */
     method public BBjString apply(BBjNumber send!)
-        code! = String.format(";%s.setModel(%s);" ,#getFilterInstnace(), #getAsJsonObject())
+        code! = String.format(";%s.setModel(%s);" ,#getFilterInstance(), #getAsJsonObject())
         if(send!.booleanValue()) #getWidget().executeScript(code!)
         methodret code!
     methodend
@@ -864,7 +864,7 @@ class public BBjGridExWidgetClientFilterAbstractModel implements BBjGridExWidget
         #assertWidget()
         widget! = #getWidget()
         if(widget!.getIsReady() = BBjAPI.FALSE) methodret 0
-        code! = String.format(";%s.isFilterActive();" , #getFilterInstnace())
+        code! = String.format(";%s.isFilterActive();" , #getFilterInstance())
         isActive! = widget!.executeScript(code!)
         methodret isActive!
     methodend
@@ -887,7 +887,7 @@ class public BBjGridExWidgetClientFilterAbstractModel implements BBjGridExWidget
     rem  * @throws 256 when the widget is null
     rem  */
     method protected void assertWidget()
-        if (#getWidget() = null()) throw "The filter model is not attached to a grid instnace" , 256
+        if (#getWidget() = null()) throw "The filter model is not attached to a grid instance" , 256
     methodend
     rem /**
     rem  * Return the js code required to obtain an instance of the client filter object
@@ -896,7 +896,7 @@ class public BBjGridExWidgetClientFilterAbstractModel implements BBjGridExWidget
     rem  *
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
-    method protected BBjString getFilterInstnace()
+    method protected BBjString getFilterInstance()
         #assertColumn()
         #assertWidget()
         code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getGRIDID(), #getColumn())
@@ -944,8 +944,8 @@ class public BBjGridExWidgetClientFilterCombinedModel extends BBjGridExWidgetCli
     rem /**
     rem  * Construct new BBjGridExWidgetClientFilterCombinedModel
     rem  *
-    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instnace of a filter model)
-    rem  * @param BBjGridExWidgetClientFilterModel condition2! the second condition (instnace of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instance of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition2! the second condition (instance of a filter model)
     rem  * @param BBjString Operator! the combine operator
     rem  */
     method public BBjGridExWidgetClientFilterCombinedModel(BBjGridExWidgetClientFilterModel condition1! , BBjGridExWidgetClientFilterModel condition2! , BBjString operator!)
@@ -956,8 +956,8 @@ class public BBjGridExWidgetClientFilterCombinedModel extends BBjGridExWidgetCli
     rem /**
     rem  * Construct new BBjGridExWidgetClientFilterCombinedModel
     rem  *
-    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instnace of a filter model)
-    rem  * @param BBjGridExWidgetClientFilterModel condition2! the second condition (instnace of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instance of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition2! the second condition (instance of a filter model)
     rem  */
     method public BBjGridExWidgetClientFilterCombinedModel(BBjGridExWidgetClientFilterModel condition1! , BBjGridExWidgetClientFilterModel condition2!)
         #this!(condition1! , condition2! , #OPERATOR_AND())
@@ -965,7 +965,7 @@ class public BBjGridExWidgetClientFilterCombinedModel extends BBjGridExWidgetCli
     rem /**
     rem  * Construct new BBjGridExWidgetClientFilterCombinedModel
     rem  *
-    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instnace of a filter model)
+    rem  * @param BBjGridExWidgetClientFilterModel condition1! the first condition (instance of a filter model)
     rem  */
     method public BBjGridExWidgetClientFilterCombinedModel(BBjGridExWidgetClientFilterModel condition1!)
         #this!(condition1! , null())
@@ -1412,7 +1412,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
     method public void setMiniFilter(BBjString miniFilter!)
-        code! = String.format(";%s.setMiniFilter('%s');", #getFilterInstnace(), miniFilter!)
+        code! = String.format(";%s.setMiniFilter('%s');", #getFilterInstance(), miniFilter!)
         #getWidget().executeScript(code! + #execute(0))
     methodend
     rem /**
@@ -1443,7 +1443,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
         #assertWidget()
         widget! = #getWidget()
         if(widget!.getIsReady() = BBjAPI.FALSE) methodret ""
-        code! = String.format(";%s.getMiniFilter();" , #getFilterInstnace())
+        code! = String.format(";%s.getMiniFilter();" , #getFilterInstance())
         value! = #getWidget().executeScript(code!)
         methodret iff(value! <> null() , value! , "")
     methodend
@@ -1455,7 +1455,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
     method public void selectEverything()
-        code! = String.format(";%s.selectEverything();" , #getFilterInstnace())
+        code! = String.format(";%s.selectEverything();" , #getFilterInstance())
         #getWidget().executeScript(code! + #execute(0))
     methodend
     rem /**
@@ -1466,7 +1466,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
     method public void selectNothing()
-        code! = String.format(";%s.selectNothing();", #getFilterInstnace())
+        code! = String.format(";%s.selectNothing();", #getFilterInstance())
         #getWidget().executeScript(code! + #execute(0))
     methodend
     rem /**
@@ -1479,7 +1479,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
     method public void setFilterValues(JsonArray values!)
-        code! = String.format(";%s.setFilterValues(%s);", #getFilterInstnace() ,values!.toString())
+        code! = String.format(";%s.setFilterValues(%s);", #getFilterInstance() ,values!.toString())
         #getWidget().executeScript(code! + #execute(0))
     methodend
     rem /**
@@ -1492,7 +1492,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
     method public void selectValue(BBjString value!)
-        code! = String.format(";%s.selectValue('%s');" , #getFilterInstnace(), value!)
+        code! = String.format(";%s.selectValue('%s');" , #getFilterInstance(), value!)
         #getWidget().executeScript(code! + #execute(0))
     methodend
     rem /**
@@ -1517,7 +1517,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     rem  * @throws 256 when the column or the widget are not defined
     rem  */
     method public void unselectValue(BBjString value!)
-        code! = String.format("%s.unselectValue('%s');", #getFilterInstnace(), value!)
+        code! = String.format("%s.unselectValue('%s');", #getFilterInstance(), value!)
         #getWidget().executeScript(code! + #execute(0))
     methodend
     rem /**
@@ -1552,7 +1552,7 @@ class public BBjGridExWidgetClientFilteSetFilterModel extends BBjGridExWidgetCli
     method public BBjString execute(BBjNumber send!)
         code! = #super!.execute(0)
         widget! = #getWidget()
-        code! = String.format(";try{%s.applyModel()}catch(e){};", #getFilterInstnace()) + code!
+        code! = String.format(";try{%s.applyModel()}catch(e){};", #getFilterInstance()) + code!
         if(send!.booleanValue()) #getWidget().executeScript(code!)
         methodret code!
     methodend

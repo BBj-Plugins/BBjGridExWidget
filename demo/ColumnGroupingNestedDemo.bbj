@@ -34,7 +34,7 @@ rem  * The demo explains how to create a nested set of column groups. There is r
 rem  * you want.
 rem  *
 rem  * In the following demo we declare our columns and give them labels , after that we set up the data but we
-rem  * do not render and we ignore any extra columns defined in the resultset(Note the SQL query).
+rem  * do not render and we ignore any extra columns defined in the ResultSet(Note the SQL query).
 rem  *
 rem  * It is important to set the data before we start creating the groups , otherwise the grid will ignore the fetched column types
 rem  * from the ResultSet. if you do not care about the types or if you are setting the types manually then you can
@@ -69,7 +69,7 @@ main:
 
   declare BBjGridExWidgetColumnGroup InventoryDetailsGroup!
 
-  InventoryDetailsGroup! = new BBjGridExWidgetColumnGroup("Detials")
+  InventoryDetailsGroup! = new BBjGridExWidgetColumnGroup("Details")
   InventoryDetailsGroup!.setColumnGroupShow(BBjGridExWidgetColumnGroup.COLUMN_GROUP_CLOSED())
   InventoryDetailsGroup!.getHeaderClass().add("sub-group")
   InventoryDetailsGroup!.addColumn(grid!.removeColumn("ONHAND"))

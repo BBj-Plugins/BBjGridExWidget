@@ -24,7 +24,7 @@ interface public BBjGridExWidgetExpressionInterface
     rem /**
     rem  * Compare two expressions
     rem  *
-    rem  * @param expression! - Another expression instnace to compare with
+    rem  * @param expression! - Another expression instance to compare with
     rem  *
     rem  * @return bool - true when they are equal , false otherwise
     rem  */
@@ -43,7 +43,7 @@ class public BBjGridExWidgetExpressionAbstract implements BBjGridExWidgetExpress
     methodend
 classend 
 rem /**
-rem  * Expressions are Javasript functions which are written as strings. When you provide an expression to the grid, 
+rem  * Expressions are Javascript functions which are written as strings. When you provide an expression to the grid, 
 rem  * the grid converts the expression into a function for you and then executes the function on the client.
 rem  *  
 rem  * Expressions can be used with the columns <i>ValueGetterExpression</i>, <i>ValueFormatterExpression</i>, 

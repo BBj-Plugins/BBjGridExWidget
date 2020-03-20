@@ -27,14 +27,14 @@ interface public BBjGridExWidgetRendererInterface
     rem /**
     rem  * Convert the renderer definition to Json Object
     rem  *
-    rem  * @return JsonOobject The renderer as JsonObject
+    rem  * @return JsonObject The renderer as JsonObject
     rem  */
 
     method public JsonObject getAsJsonObject()
     rem /**
     rem  * Compare two cell renderers
     rem  *
-    rem  * @param cellRenderer! - Another cell renderer instnace to compare with
+    rem  * @param cellRenderer! - Another cell renderer instance to compare with
     rem  *
     rem  * @return bool - true when they are equal , false otherwise
     rem  */
@@ -52,7 +52,7 @@ class public BBjGridExWidgetCellRendererComparator
     rem  * Compare two cell renderers
     rem  *
     rem  * @param one! - First cell renderer instance
-    rem  * @param two! - Second cell renderer instnace
+    rem  * @param two! - Second cell renderer instance
     rem  *
     rem  * @return boolean true when they are equal , false otherwise
     rem  */
@@ -132,7 +132,7 @@ rem  * which contains value, valueFormatted, ...
 rem  *
 rem  * Use This render if you want to render the data with a custom html.
 rem  *
-rem  * @see <a href="https://lodash.com/docs/4.17.15#template">Lodash Tempaltes</a>
+rem  * @see <a href="https://lodash.com/docs/4.17.15#template">Lodash Templates</a>
 rem  *
 REM  * @author Hyyan Abo Fakher
 rem  */
