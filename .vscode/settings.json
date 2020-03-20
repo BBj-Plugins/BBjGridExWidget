@@ -143,6 +143,10 @@
         "ColumnSuppressMovableAndLockPosition.bbj": {
             "name": "ColumnSuppressMovableAndLockPosition",
             "style": ""
+        },
+        "ColumnPinning.bbj": {
+            "name": "ColumnPinning",
+            "style": ""
         }
     },
     "cSpell.words": [
