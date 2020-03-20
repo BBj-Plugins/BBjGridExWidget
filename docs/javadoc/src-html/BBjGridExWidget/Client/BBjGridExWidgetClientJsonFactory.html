@@ -98,7 +98,32 @@
 <span class="sourceLineNo">090</span> * @return BBjGridExWidgetClientKeypressModel<a name="line.90"></a>
 <span class="sourceLineNo">091</span>*/<a name="line.91"></a>
 <span class="sourceLineNo">092</span>public BBjGridExWidgetClientKeypressModel getKeypress(JsonObject json!) { }<a name="line.92"></a>
-<span class="sourceLineNo">093</span>}<a name="line.93"></a>
+<span class="sourceLineNo">093</span>/**<a name="line.93"></a>
+<span class="sourceLineNo">094</span> * Parse a filter condition and return a filter model<a name="line.94"></a>
+<span class="sourceLineNo">095</span> *<a name="line.95"></a>
+<span class="sourceLineNo">096</span> * @param JsonObject json! the model as json object<a name="line.96"></a>
+<span class="sourceLineNo">097</span> * @param BBjString the column id<a name="line.97"></a>
+<span class="sourceLineNo">098</span> *<a name="line.98"></a>
+<span class="sourceLineNo">099</span> * @return BBjGridExWidgetClientFilterModel the correct model according to the filter type<a name="line.99"></a>
+<span class="sourceLineNo">100</span>*/<a name="line.100"></a>
+<span class="sourceLineNo">101</span>public BBjGridExWidgetClientFilterModel getFilterCondition(JsonObject json! , BBjString column!) { }<a name="line.101"></a>
+<span class="sourceLineNo">102</span>/**<a name="line.102"></a>
+<span class="sourceLineNo">103</span> * Parse a filter conditions (single or combined) and return a filter model<a name="line.103"></a>
+<span class="sourceLineNo">104</span> *<a name="line.104"></a>
+<span class="sourceLineNo">105</span> * @param JsonObject json! the model as json object<a name="line.105"></a>
+<span class="sourceLineNo">106</span> *<a name="line.106"></a>
+<span class="sourceLineNo">107</span> * @return BBjGridExWidgetClientFilterModel the correct model according to the filter type<a name="line.107"></a>
+<span class="sourceLineNo">108</span>*/<a name="line.108"></a>
+<span class="sourceLineNo">109</span>public BBjGridExWidgetClientFilterModel getFilter(JsonObject json! , BBjString column!) { }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>/**<a name="line.110"></a>
+<span class="sourceLineNo">111</span> * Parse a filter conditions (single or combined) and reutrn a filter model<a name="line.111"></a>
+<span class="sourceLineNo">112</span> *<a name="line.112"></a>
+<span class="sourceLineNo">113</span> * @param BBjString json! the model as json string<a name="line.113"></a>
+<span class="sourceLineNo">114</span> *<a name="line.114"></a>
+<span class="sourceLineNo">115</span> * @return BBjGridExWidgetClientFilterModel the correct model according to the filter type<a name="line.115"></a>
+<span class="sourceLineNo">116</span>*/<a name="line.116"></a>
+<span class="sourceLineNo">117</span>public BBjGridExWidgetClientFilterModel getFilter(BBjString json! , BBjString column!) { }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>}<a name="line.118"></a>
 
 
 
