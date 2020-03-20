@@ -139,6 +139,10 @@
         "ColumnHeaderHeightAndTextOrientation.bbj": {
             "name": "ColumnHeaderHeightAndTextOrientation",
             "style": ""
+        },
+        "ColumnSuppressMovableAndLockPosition.bbj": {
+            "name": "ColumnSuppressMovableAndLockPosition",
+            "style": ""
         }
     },
     "cSpell.words": [
@@ -214,6 +218,7 @@
         "nano",
         "readonly",
         "recfield",
+        "scrollable",
         "scrollbar",
         "shortcode",
         "sqlclose",
