@@ -54,7 +54,7 @@ class public BBjGridExWidgetCellEditorLargeTextTest
         json! = #Instance!.getAsJsonObject()
         Assert.Equals(json!.get("cols").getAsInt() > 0 , BBjAPI.TRUE)
         
-        #Instance!.setcols(500)
+        #Instance!.setCols(500)
         json! = #Instance!.getAsJsonObject()
         Assert.Equals(json!.get("cols").getAsInt()  , 500)
     methodend    

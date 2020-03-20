@@ -29,7 +29,7 @@ class public BBjGridExWidgetCellEditorTextTest
         json! = #Instance!.getAsJsonObject()
         Assert.Equals(json!.get("useFormatter").getAsBoolean() , BBjAPI.FALSE)
         
-        #Instance!.setUserFormmatter(1)
+        #Instance!.setUserFormatter(1)
         json! = #Instance!.getAsJsonObject()
         Assert.Equals(json!.get("useFormatter").getAsBoolean() , BBjAPI.TRUE)
     methodend
