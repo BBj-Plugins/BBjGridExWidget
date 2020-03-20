@@ -159,6 +159,10 @@
         "ClientContext.bbj": {
             "name": "ClientContext",
             "style": ""
+        },
+        "ValuesParserDemo.bbj": {
+            "name": "ValuesParserDemo",
+            "style": ""
         }
     },
     "cSpell.words": [
