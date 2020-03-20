@@ -147,6 +147,10 @@
         "ColumnPinning.bbj": {
             "name": "ColumnPinning",
             "style": ""
+        },
+        "SortingAPI.bbj": {
+            "name": "SortingAPI",
+            "style": ""
         }
     },
     "cSpell.words": [
