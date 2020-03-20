@@ -15,7 +15,7 @@ use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
 declare auto BBjTopLevelWindow wnd!
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Columns Header Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Sorting API Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 

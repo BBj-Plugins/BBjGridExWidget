@@ -14,7 +14,7 @@ use com.basiscomponents.bc.SqlQueryBC
 use com.google.gson.JsonObject
 
 declare auto BBjTopLevelWindow wnd!
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1000,600,"Columns Header Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1000,600,"ColumnHeader Height And Text Orientation")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 

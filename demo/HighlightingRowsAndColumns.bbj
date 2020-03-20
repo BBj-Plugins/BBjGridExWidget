@@ -15,7 +15,7 @@ use com.google.gson.JsonObject
 
 declare auto BBjTopLevelWindow wnd!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Grouping Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Highlighting Rows And Columns Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 

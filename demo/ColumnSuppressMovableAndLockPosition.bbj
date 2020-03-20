@@ -15,7 +15,7 @@ use com.basiscomponents.bc.SqlQueryBC
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Suppress Movable And LockPosition Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
