@@ -1,0 +1,82 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+declare auto BBjTopLevelWindow wnd!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Grouping Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * The css class ag-row-hover and ag-column-hover are added to cells as 
+rem  * the mouse is dragged over the cells row or column.
+rem  * 
+rem  * The example below demonstrates the following:
+rem  *  1. CSS class ag-row-hover has background color added to it, 
+rem  *      so when you hover over a cell, the row will be highlighted.
+rem  *  2. CSS class ag-column-hover has background color added to it, 
+rem  *      so when you hover over a cell or a header, the column will be highlighted. 
+rem  *      If you hover over a header group, all columns in the group will be highlighted.
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
+  
+  REM init the grid
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.setData(rs!)
+
+  group! = new BBjVector()
+  group!.addItem("CDNUMBER")
+  grid!.addColumnGroup("group1" , "Inventory", group! )
+
+  group! = new BBjVector()
+  group!.addItem("ARTIST")
+  group!.addItem("TITLE")
+  grid!.addColumnGroup("group2" , "CD Information", group!)
+
+  group! = new BBjVector()
+  group!.addItem("LABEL")
+  group!.addItem("PLAYINGTIME")
+  grid!.addColumnGroup("group3" , "Misc" , group!)
+    
+  rem putting in !important so it overrides the theme's styling as it hovers the row also 
+  grid!.addStyle(".ag-row-hover","{""background"": ""#dfdfff !important;""}")
+  grid!.addStyle(".ag-column-hover","{""background"": ""#dfffdf""}")
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

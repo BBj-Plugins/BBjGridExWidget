@@ -151,6 +151,10 @@
         "SortingAPI.bbj": {
             "name": "SortingAPI",
             "style": ""
+        },
+        "HighlightingRowsAndColumns.bbj": {
+            "name": "HighlightingRowsAndColumns",
+            "style": ""
         }
     },
     "cSpell.words": [
