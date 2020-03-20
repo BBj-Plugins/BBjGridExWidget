@@ -135,6 +135,10 @@
         "ColumnStateDemo.bbj": {
             "name": "ColumnStateDemo",
             "style": ""
+        },
+        "ColumnHeaderHeightAndTextOrientation.bbj": {
+            "name": "ColumnHeaderHeightAndTextOrientation",
+            "style": ""
         }
     },
     "cSpell.words": [
