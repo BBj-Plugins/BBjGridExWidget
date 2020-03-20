@@ -1,0 +1,111 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
+use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
+use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use com.basiscomponents.db.DataRow
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+declare auto BBjTopLevelWindow wnd!
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Value Setter Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * After editing a cell, the grid normally inserts the new value into your data. 
+rem  * If it's not possible then you can provide a Value Setter instead.
+rem  * A Value Setter is the inverse of a Value Getter. Where the value 
+rem  * getter allows getting values from your data using an expression 
+rem  * rather than a field, the value setter allows you to set values 
+rem  * into your data using an expression rather than specifying a field.
+rem  * 
+rem  * The parameters provided to a value setter are as follows:
+rem  * 
+rem  * Parameter	 | Description
+rem  * ==========	 | ===================
+rem  * oldValue	   | Mapped from the cell's old value, this is mapped in editing
+rem  * newValue	   | Mapped from the cell's new value, this is mapped in editing
+rem  * data	Mapped | from the DataRow
+rem  * column	     | Current column
+rem  * getValue	   | The value after it is processed by the ValueGetterExpression
+rem  * ctx	       | The grid client context
+rem  * 
+rem  * A value setter should return true if the value was updated successfully and false if the value was not updated. 
+rem  * When you return true, the grid knows it must refresh the cell.
+rem  * 
+rem  * Below shows an example using value setters. The following can be noted:
+rem  *  1. All Columns are editable
+rem  *  2. Updating FIRST_NAME or LAST_NAME column will auto update the FULL_NAME because of the value getter expression
+rem  *  3. Updating the FULL_NAME column will auto update the FIRST_NAME or LAST_NAME columns using the value setter
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
+  rs! = sbc!.retrieve("SELECT FIRST_NAME , LAST_NAME FROM CUSTOMER")
+
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.getOptions().setEditable(1)
+  grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
+  grid!.setData(rs!)
+
+  declare auto BBjGridExWidgetColumn fullNameColumn!
+  fullNameColumn! = grid!.addColumn("FULL_NAME","Full Name")
+  fullNameColumn!.setEditable(1)
+  fullNameColumn!.setValueGetterExpression("data.FIRST_NAME + ' ' + data.LAST_NAME")
+  fullNameColumn!.setValueSetterExpression("var value = newValue.split(' ');"  +
+:                                          "data.FIRST_NAME = value[0] || '';" +
+:                                          "data.LAST_NAME  = value[1] || '';" +
+:                                          "return true;")
+return
+
+cellEditingChanged:
+  declare auto BBjGridExWidgetClientEventsCell cellEvent!
+  declare auto BBjGridExWidgetClientCellModel cellModel!
+  declare auto DataRow row!
+  
+  lastEvent! = BBjAPI().getLastEvent() 
+  cellEvent! = lastEvent!.getObject()
+  cellModel!  = cellEvent!.getCell()
+  
+  rem sync the new client row values with the ResultSet
+  row! = cellModel!.getRow().updateFromClientRow()
+
+  firstName! = row!.getField("FIRST_NAME").getString(err=*next)
+  lastName!  = row!.getField("LAST_NAME" ).getString(err=*next)
+  
+  a! = msgbox(String.format("First Name : (%s) - Last Name : (%s)",firstName!,lastName!))
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

@@ -163,6 +163,10 @@
         "ValuesParserDemo.bbj": {
             "name": "ValuesParserDemo",
             "style": ""
+        },
+        "ValueSetter.bbj": {
+            "name": "ValueSetter",
+            "style": ""
         }
     },
     "cSpell.words": [
