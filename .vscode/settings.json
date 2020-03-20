@@ -155,6 +155,10 @@
         "HighlightingRowsAndColumns.bbj": {
             "name": "HighlightingRowsAndColumns",
             "style": ""
+        },
+        "ClientContext.bbj": {
+            "name": "ClientContext",
+            "style": ""
         }
     },
     "cSpell.words": [
