@@ -223,38 +223,22 @@ rem  * as they give poor user experience, especially if using keyboard navigatio
 rem  *
 rem  * If using Enhanced grid, you should use the provided GxCellEditorRichSelect.
 rem  *
-rem  * <br><b><small>#OnlyGUI</small></b>
 rem  * <br><b><small>#Enterprise</small></b>
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxCellEditorPopupSelect extends GxCellEditorSelect
     rem /**
-    rem  * Check if it is bui env
-    rem  *
-    rem  * @return BBjNumber
-    rem  */
-    method protected static BBjNumber isBUI()
-        methodret info(3,6) = "5"
-    methodend
-    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString getCellEditorName()
-        name! = "agPopupSelectCellEditor"
-
-        if(#isBUI())
-            name! = GxCellEditorSelect.getCellEditorName()
-        FI
-
-        methodret name!
+        methodret "agPopupSelectCellEditor"
     methodend
 
 classend
 rem /**
 rem  * Available in Enhanced Grid only. An alternative to using the browser's select popup for dropdown inside the grid.
 rem  *
-rem  * <br><b><small>#OnlyGUI</small></b>
 rem  * <br><b><small>#Enterprise</small></b>
 rem  *
 rem  * @author Hyyan Abo Fakher
@@ -265,24 +249,10 @@ class public GxCellEditorRichSelect extends GxCellEditorSelect
     rem  */
     field public GxRendererInterface CellRenderer! = null()
     rem /**
-    rem  * Check if it is bui env
-    rem  *
-    rem  * @return BBjNumber
-    rem  */
-    method protected static BBjNumber isBUI()
-        methodret info(3,6) = "5"
-    methodend
-    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString getCellEditorName()
-        name! = "agRichSelectCellEditor"
-
-        if(#isBUI())
-            name! = GxCellEditorSelect.getCellEditorName()
-        FI
-
-        methodret name!
+        methodret "agRichSelectCellEditor"
     methodend
     rem /**
     rem  * {@inheritDoc}

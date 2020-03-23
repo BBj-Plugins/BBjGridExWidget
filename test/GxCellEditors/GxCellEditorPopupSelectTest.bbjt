@@ -25,25 +25,10 @@ class public GxCellEditorPopupSelectTest
     method public void testCellEditorNameIsSet()
         Assert.Equals(#Instance!.getCellEditorName() , "agPopupSelectCellEditor")
     methodend
-    
-    rem @Test
-    method public void testFallbackToGxCellEditorSelect()
-        proxy! = new GxCellEditorPopupSelectProxy()
-        Assert.Equals(proxy!.getCellEditorName() , GxCellEditorSelect.getCellEditorName())
-    methodend    
             
     rem @After
     method public void tearDown()
         #Instance! = null()
     methodend
 
-classend
-
-class public GxCellEditorPopupSelectProxy extends GxCellEditorPopupSelect
-    rem /**
-    rem  * @override
-    rem  */
-    method protected static BBjNumber isBUI()
-        methodret 1
-    methodend
 classend

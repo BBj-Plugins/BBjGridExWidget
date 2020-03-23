@@ -41,25 +41,10 @@ class public GxCellEditorRichSelectTest
         Assert.Equals(json!.get("cellRendererParams").getAsJsonObject().equals(renderer!.getAsJsonObject()), BBjAPI.TRUE)
         
     methodend
-            
-    rem @Test
-    method public void testFallbackToGxCellEditorSelect()
-        proxy! = new GxCellEditorRichSelectProxy()
-        Assert.Equals(proxy!.getCellEditorName() , GxCellEditorSelect.getCellEditorName())
-    methodend   
-                
+     
     rem @After
     method public void tearDown()
         #Instance! = null()
     methodend
 
-classend
-
-class public GxCellEditorRichSelectProxy extends GxCellEditorRichSelect
-    rem /**
-    rem  * @override
-    rem  */
-    method protected static BBjNumber isBUI()
-        methodret 1
-    methodend
 classend
