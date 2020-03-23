@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.StatusBar
+rem /**
+rem  *  The module contains a collection of classes to manipulate the grid's statusbar
+rem  */
+rem package GxStatusBar
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>
@@ -227,8 +230,8 @@ rem  * GxStatusBar
 rem  *
 rem  * Gx status bar manager.
 rem  * The class can add, remove & hide status bar components
-rem  *
-rem  * @Enterprise
+rem  * 
+rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxStatusBar
     rem /**

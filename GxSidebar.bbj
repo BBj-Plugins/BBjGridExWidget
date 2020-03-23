@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.Sidebar
+rem /**
+rem  *  The package contains a collection of classes to manipulate the grid's sidebar
+rem  */
+rem package GxSidebar
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>
@@ -15,6 +18,8 @@ use com.google.gson.Gson
 use java.util.LinkedHashMap
 rem /**
 rem  * A interface which defines a grid toolpanel
+rem  * 
+rem  * @author Hyyan Abo Fakher
 rem  */
 interface public GxToolpanelInterface
     rem /**

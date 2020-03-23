@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.Columns
+rem /**
+rem  * The package exports all the required classes to create new columns and column groups
+rem  */
+rem package GxColumns
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>

@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.Expression
+rem /**
+rem  * The package exports a collection of predefined expression which can be used directly in columns.
+rem  */
+rem package GxExpressions
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>
@@ -33,6 +36,8 @@ interface public GxExpressionInterface
 interfaceend
 rem /**
 rem  * Abstract implementation for GxExpressionInterface
+rem  * 
+rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxExpressionAbstract implements GxExpressionInterface
     rem /**

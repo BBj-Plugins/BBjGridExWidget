@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.Renderers
+rem /**
+rem  *  The package contains the classes of all supported CellRenderer components
+rem  */
+rem package GxRenderers
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>
@@ -67,6 +70,8 @@ class public GxCellRendererComparator
 classend
 rem /**
 rem  * Abstract implementation for GxRendererInterface
+rem  * 
+rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxRendererAbstract implements GxRendererInterface
     rem /**

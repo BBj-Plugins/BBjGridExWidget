@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.Filters
+rem /**
+rem  *  The package contains the classes for all the supported Filter components
+rem  */
+rem package GxFilters
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>

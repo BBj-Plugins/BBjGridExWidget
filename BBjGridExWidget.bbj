@@ -1,3 +1,6 @@
+rem /**
+rem  *  The package exports a few helper classes along with the BBjGridExWidget class which is the entry point of the plugin. Most of the time you only need to use the BBjGridExWidget class from it
+rem  */
 rem package BBjGridExWidget
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.

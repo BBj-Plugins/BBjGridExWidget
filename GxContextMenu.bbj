@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.ContextMenu
+rem /**
+rem  *  The package exports a collection of classes to manipulate the grid's context menu
+rem  */
+rem package GxContextMenu
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>

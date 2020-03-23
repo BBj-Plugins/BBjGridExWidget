@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.CellEditors
+rem /**
+rem  *  The package contains the classes of all supported CellEditor components
+rem  */
+rem package GxCellEditors
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>

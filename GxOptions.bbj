@@ -1,4 +1,7 @@
-rem package BBjGridExWidget
+rem /**
+rem  * The package exports a collection of option interfaces which are used to configure the grid and the columns
+rem  */
+rem package GxOptions
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>

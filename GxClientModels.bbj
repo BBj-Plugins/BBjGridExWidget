@@ -1,4 +1,7 @@
-rem package BBjGridExWidget.Client
+rem /**
+rem  * The package exports a collection of classes which describe the client models in BBj.
+rem  */
+rem package GxClientModels
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
 rem  * (c) Basis Europe <eu@basis.com>

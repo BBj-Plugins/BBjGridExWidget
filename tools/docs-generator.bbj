@@ -11,7 +11,7 @@ rem  */
 use java.io.File
 use ::BBjToJavadoc/BBjToJavadoc.bbj::BBjToJavadoc
 
-root! = BBjAPI().getFileSystem().resolvePath("Gx")
+root! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget")
 folder! = new File(root!)
 list! = folder!.list()
 length! = list!.length - 1
@@ -24,6 +24,6 @@ FOR i = 0 TO length!
     FI
 NEXT i
 
-dest! = BBjAPI().getFileSystem().resolvePath("Gx/docs/javadoc/")
+dest! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/docs/javadoc/")
 new BBjToJavadoc(files!, dest!, 0, 1, "")
 release 0 

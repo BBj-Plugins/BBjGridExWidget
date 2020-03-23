@@ -12,6 +12,11 @@ use com.google.gson.JsonArray
 use com.google.gson.JsonObject
 use com.google.gson.JsonElement
 
+rem /**
+rem  * The Grid state object 
+rem  * 
+rem  * @author Hyyan Abo Fakher , Stephan Wald
+rem  */
 class public GxState
 
     field private BBjString String$
