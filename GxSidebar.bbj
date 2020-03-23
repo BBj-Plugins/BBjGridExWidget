@@ -1,0 +1,323 @@
+rem package BBjGridExWidget.Sidebar
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.JsonParser
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+use com.google.gson.JsonElement
+use com.google.gson.Gson
+use java.util.LinkedHashMap
+rem /**
+rem  * A interface which defines a grid toolpanel
+rem  */
+interface public GxToolpanelInterface
+    rem /**
+    rem  * Get the toolbar unique name
+    rem  *
+    rem  * @return BBjString The toolbar name
+    rem  */
+
+    method public static BBjString ID()
+    rem /**
+    rem  * Get a json representation for the toolpanel
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+
+interfaceend
+rem /**
+rem  * An abstract class which represents a toolpanel which can be attached to a sidebar
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxToolpanel implements GxToolpanelInterface
+    rem /**
+    rem  * The default label of the toolpanel
+    rem  */
+    field public BBjString Label! = null()
+    rem /**
+    rem  * The key of the icon to be used as a graphical aid beside the label in the sidebar.
+    rem  *
+    rem  *  @see https://www.ag-grid.com/javascript-grid-icons/
+    rem  */
+    field protected BBjString Icon! = null()
+    rem /**
+    rem  * Construct new toolpanel
+    rem  *
+    rem  * @param BBjString label! the toolpanel label
+    rem  */
+    method public GxToolpanel(BBjString label!)
+        #Label! = label!
+    methodend
+    rem /**
+    rem  * Construct new toolpanel
+    rem  *
+    rem  * @param BBjString label! the toolpanel label
+    rem  * @param BBjString icon! the toolpanel icon
+    rem  */
+    method public GxToolpanel(BBjString label! , BBjString icon!)
+        #this!(label!)
+        #Icon!  = icon!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("id",#this!.ID(), err=*next)
+        json!.addProperty("labelKey",#getLabel() , err=*next)
+        json!.addProperty("labelDefault",#getLabel() , err=*next)
+        json!.addProperty("iconKey",#getIcon() , err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * Columns Toolpanel
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxColumnsToolpanel extends GxToolpanel
+    rem /**
+    rem  * suppress Expand / Collapse all widget.
+    rem  */
+    field public BBjNumber SuppressColumnExpandAll! = null()
+    rem /**
+    rem  * suppress Select / Un-select all widget.
+    rem  */
+    field public BBjNumber SuppressColumnSelectAll! = null()
+    rem /**
+    rem  * suppress Column Filter section.
+    rem  */
+    field public BBjNumber SuppressColumnFilter! = null()
+    rem /**
+    rem  * suppress Pivot Mode section.
+    rem  */
+    field public BBjNumber SuppressPivotMode! = null()
+    rem /**
+    rem  * suppress Column Labels (Pivot) section.
+    rem  */
+    field public BBjNumber SuppressPivots! = null()
+    rem /**
+    rem  * suppress Values section
+    rem  */
+    field public BBjNumber SuppressValues! = null()
+    rem /**
+    rem  * Suppress Row Groups section.
+    rem  */
+    field public BBjNumber SuppressRowGroups! = null()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString ID()
+        methodret "agColumnsToolPanel"
+    methodend
+    rem /**
+    rem  * Construct new columns toolpanel
+    rem  */
+    method public GxColumnsToolpanel()
+        #super!("columns","columns")
+    methodend
+    rem /**
+    rem  * Construct new toolpanel
+    rem  *
+    rem  * @param BBjString label! the toolpanel label
+    rem  */
+    method public GxColumnsToolpanel(BBjString label!)
+        #super!(label!)
+    methodend
+    rem /**
+    rem  * Construct new toolpanel
+    rem  *
+    rem  * @param BBjString label! the toolpanel label
+    rem  * @param BBjString icon! the toolpanel icon
+    rem  */
+    method public GxColumnsToolpanel(BBjString label! , BBjString icon!)
+        #super!(label! , icon!)
+    methodend    
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+        declare JsonObject params!
+
+        json! = #super!.getAsJsonObject()
+        params! = new JsonObject()
+        params!.addProperty("suppressRowGroups",#SuppressRowGroups!.booleanValue(), err=*next)
+        params!.addProperty("suppressValues",#SuppressValues!.booleanValue(), err=*next)
+        params!.addProperty("suppressPivots",#SuppressPivots!.booleanValue(), err=*next)
+        params!.addProperty("suppressPivotMode",#SuppressPivotMode!.booleanValue(), err=*next)
+        params!.addProperty("suppressColumnFilter",#SuppressColumnFilter!.booleanValue(), err=*next)
+        params!.addProperty("suppressColumnSelectAll",#SuppressColumnSelectAll!.booleanValue(), err=*next)
+        params!.addProperty("suppressColumnExpandAll",#SuppressColumnExpandAll!.booleanValue(), err=*next)
+        json!.addProperty("toolPanel",#this!.ID(), err=*next)
+        json!.add("toolPanelParams",params!)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * A class which represents the filters toolpanel
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFiltersToolpanel extends GxToolpanel
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString ID()
+        methodret "agFiltersToolPanel"
+    methodend
+    rem /**
+    rem  * Construct new filters toolpanel
+    rem  */
+    method public GxFiltersToolpanel()
+        #super!("filters","filters")
+        #setIcon("filter")
+    methodend
+    rem /**
+    rem  * Construct new filters toolpanel
+    rem  *
+    rem  * @param BBjString label! the toolpanel label
+    rem  */
+    method public GxFiltersToolpanel(BBjString label!)
+        #super!(label!)
+    methodend
+    rem /**
+    rem  * Construct new filters toolpanel
+    rem  *
+    rem  * @param BBjString label! the toolpanel label
+    rem  * @param BBjString icon! the toolpanel icon
+    rem  */
+    method public GxFiltersToolpanel(BBjString label! , BBjString icon!)
+        #super!(label! , icon!)
+    methodend     
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("toolPanel",#this!.ID())
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class manages the grid sidebar and its toolpanels
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxSidebar
+    rem /**
+    rem  * The id of the default panel
+    rem  */
+    field public BBjString DefaultToolpanel$
+    rem /**
+    rem  * When true, the sidebar will be hidden on the first draw, visible otherwise. default is false
+    rem  */
+    field public BBjNumber HiddenByDefault! = 0
+    rem /**
+    rem  * A map for the registered toolpanels
+    rem  */
+    field public LinkedHashMap Toolpanels! = new LinkedHashMap()
+    rem /**
+    rem  * The BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private GxSidebar()
+    methodend
+    rem /**
+    rem  * Construct new sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public GxSidebar(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Set Visible
+    rem  *
+    rem  * Enable / Disable the grid sidebar
+    rem  */
+    method public void setVisible(BBjNumber visible!)
+        #Widget!.executeScript("$wnd.gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
+    methodend
+    rem /**
+    rem  * Open toolpanel
+    rem  *
+    rem  * Open the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void openToolpanel(BBjString id!)
+        #Widget!.executeScript("$wnd.gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Close toolpanel
+    rem  *
+    rem  * Close the given toolpanel
+    rem  *
+    rem  * @param BBjString id$ the toolpanel id
+    rem  */
+    method public void closeToolpanel(BBjString id!)
+        #Widget!.executeScript("$wnd.gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+    methodend
+    rem /**
+    rem  * Convert the sidebar into json object
+    rem  * 
+    rem  * @returns JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonArray toolpanelsJson!
+        declare JsonObject json!
+
+        toolpanelsJson! = new JsonArray()
+        it! = #Toolpanels!.entrySet().iterator()
+        while it!.hasNext()
+            o! = it!.next().getValue()
+            toolpanelsJson!.add(o!.getAsJsonObject())
+        wend
+
+        json! = new JsonObject()
+        json!.addProperty("toolPanels",toolpanelsJson!.toString())
+        json!.addProperty("defaultToolPanel",#DefaultToolpanel$)
+        json!.addProperty("hiddenByDefault",#getHiddenByDefault(),err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * A class to define the default implementation of the grid sidebar
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxDefaultSidebar extends GxSidebar
+    rem /**
+    rem  * Construct the default grid sidebar
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+    method public GxDefaultSidebar(BBjGridExWidget widget!)
+        #super!(widget!)
+        #getToolpanels().put(GxColumnsToolpanel.ID() , new GxColumnsToolpanel())
+        #getToolpanels().put(GxFiltersToolpanel.ID() , new GxFiltersToolpanel())
+        rem #setDefaulToolpanel(GxColumnsToolpanel.getId())
+    methodend
+
+classend

@@ -8,16 +8,16 @@ REM  */
 ? 'HIDE'
 
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterCombinedModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterBooleanModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterDateTimeModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilteSetFilterModel
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterTextFilterOptions
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterDateTimeFilterOptions
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetColumnFilterNumberFilterOptions
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterSetFilter
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterBooleanModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterDateTimeModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterSetFilterModel
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterTextFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterDateTimeFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterNumberFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -72,9 +72,9 @@ main:
 
   grid!.setData(rs! , 1 , 0)
   
-  rem IMPORTANT: BBjGridExWidgetFilterSetFilter is part of the Enhanced grid
+  rem IMPORTANT: GxFilterSetFilter is part of the Enhanced grid
   country! = grid!.getColumn("COUNTRY")
-  country!.setFilter(new BBjGridExWidgetFilterSetFilter())
+  country!.setFilter(new GxFilterSetFilter())
   
   grid!.getColumn("IS_OVER_120").setType(16)
   
@@ -86,11 +86,11 @@ onNameFilterToggle:
   control! = event!.getControl()
   isSelected! = control!.isSelected()
   
-  declare auto BBjGridExWidgetClientFilterTextModel textModel!
+  declare auto GxClientFilterTextModel textModel!
   textModel! = grid!.getFilterModel("FIRST_NAME")
   if(isSelected!)
     textModel!.setFilter("john")
-    textModel!.setType(BBjGridExWidgetColumnFilterTextFilterOptions.CONTAINS())  
+    textModel!.setType(GxColumnFilterTextFilterOptions.CONTAINS())  
   else 
     textModel!.clearFilter()
   fi
@@ -104,18 +104,18 @@ onSalesFilterToggle:
   control! = event!.getControl()
   isSelected! = control!.isSelected()
   
-  declare auto BBjGridExWidgetClientFilterCombinedModel numberCombinedModel!
-  declare auto BBjGridExWidgetClientFilterNumberModel firstCondition!
-  declare auto BBjGridExWidgetClientFilterNumberModel secondCondition!
+  declare auto GxClientFilterCombinedModel numberCombinedModel!
+  declare auto GxClientFilterNumberModel firstCondition!
+  declare auto GxClientFilterNumberModel secondCondition!
   
   numberCombinedModel! = grid!.getFilterAsCombinedModel("SALES_YTD")
   if(isSelected!)
     firstCondition! = numberCombinedModel!.getFirstCondition()
     firstCondition!.setFilter(50)
-    firstCondition!.setType(BBjGridExWidgetColumnFilterNumberFilterOptions.GREATER_THAN())
+    firstCondition!.setType(GxColumnFilterNumberFilterOptions.GREATER_THAN())
     
-    secondCondition! = new BBjGridExWidgetClientFilterNumberModel(100)
-    secondCondition!.setType(BBjGridExWidgetColumnFilterNumberFilterOptions.LESS_THAN())
+    secondCondition! = new GxClientFilterNumberModel(100)
+    secondCondition!.setType(GxColumnFilterNumberFilterOptions.LESS_THAN())
     numberCombinedModel!.setSecondCondition(secondCondition!)
     
     numberCombinedModel!.setOperator(numberCombinedModel!.OPERATOR_AND())
@@ -132,11 +132,11 @@ onPayDateFilterToggle:
   control! = event!.getControl()
   isSelected! = control!.isSelected()
   
-  declare auto BBjGridExWidgetClientFilterDateTimeModel dateModel!
+  declare auto GxClientFilterDateTimeModel dateModel!
   dateModel! = grid!.getFilterModel("LAST_PAY_DATE")
   if(isSelected!)
     dateModel!.setFilter("1993-01-01Z")
-    dateModel!.setType(BBjGridExWidgetColumnFilterDateTimeFilterOptions.GREATER_THAN())  
+    dateModel!.setType(GxColumnFilterDateTimeFilterOptions.GREATER_THAN())  
   else 
     dateModel!.clearFilter()
   fi
@@ -150,7 +150,7 @@ onCountryFilterToggle:
   control! = event!.getControl()
   isSelected! = control!.isSelected()
   
-  declare auto BBjGridExWidgetClientFilteSetFilterModel countryModel!
+  declare auto GxClientFilterSetFilterModel countryModel!
   countryModel! = grid!.getFilterModel("COUNTRY")
   if(isSelected!)
     countryModel!.getValues().add("Italy")
@@ -168,7 +168,7 @@ onIsOver120FilterToggle:
   control! = event!.getControl()
   isSelected! = control!.isSelected()
   
-  declare auto BBjGridExWidgetClientFilterBooleanModel booleanModel!
+  declare auto GxClientFilterBooleanModel booleanModel!
   booleanModel! = grid!.getFilterModel("IS_OVER_120")
   if(isSelected!)
     booleanModel!.setFilter(0)

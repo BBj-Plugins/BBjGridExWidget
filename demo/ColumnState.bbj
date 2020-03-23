@@ -1,5 +1,5 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
+use ::BBjGridExWidget/GxState.bbj::GxState
 use com.basiscomponents.bc.SqlQueryBC
 use com.basiscomponents.db.ResultSet
 use com.google.gson.JsonObject

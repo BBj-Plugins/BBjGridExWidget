@@ -6,9 +6,9 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetColumnsToolpanel.bbj::BBjGridExWidgetColumnsToolpanel
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxColumnsToolpanel.bbj::GxColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 use com.google.gson.JsonObject
@@ -16,7 +16,7 @@ use java.sql.Types
 
 ? 'HIDE'
 
-BBjGridExWidgetDemoUtilities.nagAboutLicense()
+GxDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
@@ -42,7 +42,7 @@ grid!.getOptions().setGroupSelectsChildren(1)
 REM grid!.setGroupUseEntireRow(1)
 REM grid!.setGroupMultiAutoColumn(1)
 
-REM cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
+REM cast(GxColumnsToolpanel,grid!.getSidebar().getToolpanels().get("columns")).setSuppressValues(0)
 
 gosub setupGrid
 process_events
@@ -60,14 +60,14 @@ setupGrid:
   grid!.setData(rs!, 1 , 1 , "CDNUMBER")
 
   rem First we group by music type
-  declare BBjGridExWidgetColumn musicTypeColumn!
+  declare GxColumn musicTypeColumn!
   musicTypeColumn! = grid!.getColumn("MUSICTYPE")
   musicTypeColumn!.setEnableRowGroup(1)
   musicTypeColumn!.setRowGroupIndex(0)
 
   rem Second we group by artist
   rem @see https://www.ag-grid.com/javascript-grid-cell-expressions/
-  declare BBjGridExWidgetColumn artistColumn!
+  declare GxColumn artistColumn!
   artistColumn! = grid!.getColumn("ARTIST")
   artistColumn!.setEnableRowGroup(1)
   artistColumn!.setRowGroupIndex(1)
@@ -75,7 +75,7 @@ setupGrid:
 
   rem Finally we aggreagate by playingtime
   rem @see https://www.ag-grid.com/javascript-grid-cell-expressions/
-  declare BBjGridExWidgetColumn playingTimeColumn!
+  declare GxColumn playingTimeColumn!
   playingTimeColumn! = grid!.getColumn("PLAYINGTIME")
   playingTimeColumn!.setEnableValue(1)
   playingTimeColumn!.setAggFunc("sum")

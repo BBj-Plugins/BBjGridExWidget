@@ -1,0 +1,626 @@
+rem package BBjGridExWidget.Filters
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxOptions.bbj::GxOptionsBoolean
+use ::BBjGridExWidget/GxOptions.bbj::GxOptionsDateTime
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererInterface
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+rem /**
+rem  * Column Filter Public Interface
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+interface public GxFilterInterface
+    rem /**
+    rem  * A constant which holds the client filter real name
+    rem  */
+
+    method public static BBjString getFilterName()
+    rem /**
+    rem  * Convert the filter definition to Json Object
+    rem  *
+    rem  * @return JsonObject The filter as JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+    rem /**
+    rem  * Compare two filters
+    rem  *
+    rem  * @param filter! - Another filter instance to compare with
+    rem  *
+    rem  * @return bool - true when they are equal , false otherwise
+    rem  */
+
+    method public boolean equals(GxFilterInterface filter!)
+
+interfaceend
+rem /**
+rem  * Compare two filter components
+rem  * 
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterComparator
+    rem /**
+    rem  * Compare two filters
+    rem  *
+    rem  * @param one! - First filter instance
+    rem  * @param two! - Second filter instance
+    rem  *
+    rem  * @return boolean true when they are equal , false otherwise
+    rem  */
+    method public static boolean compare(GxFilterInterface one! , GxFilterInterface two!)
+        if(one!.getFilterName() <> two!.getFilterName())
+            methodret BBjAPI.FALSE
+        FI
+
+        methodret one!.getAsJsonObject().equals(two!.getAsJsonObject())
+    methodend
+
+classend
+rem /**
+rem  * Filter options constansts for texts filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxColumnFilterTextFilterOptions
+    rem /**
+    rem  * @return BBjString <b>Equals</b>
+    rem  */
+    method public static BBjString EQUALS()
+        methodret "equals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>notEquals</b>
+    rem  */
+    method public static BBjString NOT_EQUALS()
+        methodret "notEquals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>contains</b>
+    rem  */
+    method public static BBjString CONTAINS()
+        methodret "contains"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>notContains</b>
+    rem  */
+    method public static BBjString NOT_CONTAINS()
+        methodret "notContains"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>startsWith</b>
+    rem  */
+    method public static BBjString STARTS_WITH()
+        methodret "startsWith"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>endsWith</b>
+    rem  */
+    method public static BBjString ENDS_WITH()
+        methodret "endsWith"
+    methodend
+
+classend
+rem /**
+rem  * Filter options constants for date/time filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxColumnFilterDateTimeFilterOptions
+    rem /**
+    rem  * @return BBjString <b>Equals</b>
+    rem  */
+    method public static BBjString EQUALS()
+        methodret "equals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>notEquals</b>
+    rem  */
+    method public static BBjString NOT_EQUALS()
+        methodret "notEquals"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>greaterThan</b>
+    rem  */
+    method public static BBjString GREATER_THAN()
+        methodret "greaterThan"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>lessThan</b>
+    rem  */
+    method public static BBjString LESS_THAN()
+        methodret "lessThan"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>IN_RANGE</b>
+    rem  */
+    method public static BBjString IN_RANGE()
+        methodret "inRange"
+    methodend
+
+classend
+rem /**
+rem  * Filter options constants for numbers filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxColumnFilterNumberFilterOptions extends GxColumnFilterDateTimeFilterOptions
+    rem /**
+    rem  * @return BBjString <b>greaterThanOrEqual</b>
+    rem  */
+    method public static BBjString GREATER_THAN_OR_EQUALS()
+        methodret "greaterThanOrEqual"
+    methodend
+    rem /**
+    rem  * @return BBjString <b>lessThanOrEqual</b>
+    rem  */
+    method public static BBjString LESS_THAN_OR_EQUALS()
+        methodret "lessThanOrEqual"
+    methodend
+
+classend
+rem /**
+rem  * The class holds the shared ag filter options between all filter types. This is the base class for all ag filter types
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxColumnFilterAG implements GxFilterInterface
+    rem /**
+    rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
+    rem  */
+    field public BBjNumber ApplyButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
+    rem  */
+    field public BBjNumber ClearButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
+    rem  */
+    field public BBjNumber RestButton! = 0
+    rem /**
+    rem  * The number of milliseconds to debounce by before applying the filter
+    rem  */
+    field public BBjNumber DebounceMs! = 500
+    rem /**
+    rem  *  If set to 'clear', then setting data into the grid will clear (reset) the filter If set to 'keep' then the grid will keep it's currently set filter. The default is 'clear'
+    rem  */
+    field public BBjString NewRowsAction! = GxColumnFilterAG.NEW_ROWS_ACTION_CLEAR()
+    rem /**
+    rem  * If true, the filter will only offer Condition 1.
+    rem  */
+    field public BBjNumber SuppressAndOrCondition! = 0
+    rem /**
+    rem  * What Filter Options to present to the user.
+    rem  * By default all supported options are presented
+    rem  *
+    rem  * @see GxColumnFilterTextFilterOptions
+    rem  * @see GxColumnFilterNumberFilterOptions
+    rem  */
+    field public JsonArray FilterOptions! = new JsonArray()
+    rem /**
+    rem  * The default Filter Options to be selected.
+    rem  * By default it is Equals
+    rem  */
+    field public BBjString DefaultOption! = null()
+    rem /**
+    rem  * A constant which describes the NewRowsAction behavior
+    rem  *
+    rem  * @return BBjString <b>clear</b>
+    rem  */
+    method public static BBjString NEW_ROWS_ACTION_CLEAR()
+        methodret "clear"
+    methodend
+    rem /**
+    rem  * A constant which describes the NewRowsAction behavior
+    rem  *
+    rem  * @return BBjString <b>keep</b>
+    rem  */
+    method public static BBjString NEW_ROWS_ACTION_KEEP()
+        methodret "keep"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("applyButton" , #getApplyButton().booleanValue(),err=*next)
+        json!.addProperty("clearButton" , #getClearButton().booleanValue(),err=*next)
+        json!.addProperty("resetButton" , #getRestButton().booleanValue(),err=*next)
+        json!.addProperty("debounceMs" , iff(#getApplyButton().booleanValue() , #getDebounceMs().longValue() , empty!),err=*next)
+        json!.addProperty("newRowsAction" , #getNewRowsAction(),err=*next)
+        json!.addProperty("suppressAndOrCondition" , #getSuppressAndOrCondition().booleanValue(),err=*next)
+        json!.addProperty("defaultOption" , #getDefaultOption(),err=*next)
+        json!.        add("filterOptions" , iff(#getFilterOptions().size() > 0 , #getFilterOptions() , empty!),err=*next)
+        methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(GxFilterInterface filter!)
+        methodret GxFilterComparator.compare(#this!, filter!)
+    methodend
+
+classend
+rem /**
+rem  * The class represents the default ag-grid text filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterText extends GxColumnFilterAG
+    rem /**
+    rem  * Set to true to make text filtering case sensitive, otherwise the filtering will be case insensitive
+    rem  */
+    field public BBjNumber CaseSensitive! = 0
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "agTextColumnFilter"
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("caseSensitive" , #getCaseSensitive().booleanValue(),err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class represents the default ag-grid number filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterNumber extends GxColumnFilterAG
+    rem /**
+    rem  * If true then doing 'inRange' filter option will include values equal to the start and end of the range.
+    rem  */
+    field public BBjNumber InRangeInclusive! = 1
+    rem /**
+    rem  * If true then blank (null or undefined) values will pass the 'equals' filter option.
+    rem  */
+    field public BBjNumber IncludeBlanksInEquals! = 0
+    rem /**
+    rem  * If true then blank (null or undefined) values will pass the 'lessThan' and 'lessThanOrEqual' filter options.
+    rem  */
+    field public BBjNumber IncludeBlanksInLessThan! = 0
+    rem /**
+    rem  * If true then blank (null or undefined) values will pass the 'greaterThan' and 'greaterThanOrEqual' filter options.
+    rem  */
+    field public BBjNumber IncludeBlanksInGreaterThan! = 0
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "agNumberColumnFilter"
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("inRangeInclusive" , #getInRangeInclusive().booleanValue(),err=*next)
+        json!.addProperty("includeBlanksInEquals" , #getIncludeBlanksInEquals().booleanValue(),err=*next)
+        json!.addProperty("includeBlanksInLessThan" , #getIncludeBlanksInLessThan().booleanValue(),err=*next)
+        json!.addProperty("includeBlanksInGreaterThan" , #getIncludeBlanksInGreaterThan().booleanValue(),err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class represents the default ag-grid date filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  *
+rem  * @deprecated Use GxFilterBasicDate
+rem  */
+class public GxFilterDate extends GxFilterNumber
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "agDateColumnFilter"
+    methodend
+
+classend
+rem /**
+rem  * GxFilterSetFilter allow you to filter on set data, influenced by how filters work in Microsoft Excel
+rem  *
+rem  * <br><b><small>#Enterprise</small></b>
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterSetFilter extends GxColumnFilterAG
+    rem /**
+    rem  * Provide a cell renderer for each value
+    rem  */
+    field public GxRendererInterface CellRenderer! = null()
+    rem /**
+    rem  * The values to display in the filter. If this is not set, then the filter will takes its values
+    rem  * from what is loaded in the table.
+    rem  * Setting it allows you to set values where the value may not be present in the list
+    rem  * (for example, if you want to show all states in America so that the user is not confused by missing states, even though states are missing from the data set in the grid)
+    rem  */
+    field public JsonArray Values! = new JsonArray()
+    rem /**
+    rem  * Set to true to have the values inside the set filter NOT refresh after values are changed inside the grid.
+    rem  */
+    field public BBjNumber SuppressSyncValuesAfterDataChange! = 0
+    rem /**
+    rem  * Set to true to stop the filter from removing values that are no longer available (like what Excel does).
+    rem  */
+    field public BBjNumber SuppressRemoveEntries! = 0
+    rem /**
+    rem  * If true, sorting will not be done on the set filter values. Use this if providing your own values and don't want them sorted as you are providing in the order you want.
+    rem  */
+    field public BBjNumber SuppressSorting! = 0
+    rem /**
+    rem  * Set to true to hide the mini filter.
+    rem  */
+    field public BBjNumber SuppressMiniFilter! = 0
+    rem /**
+    rem  * Set to true to remove the "select all" checkbox.
+    rem  */
+    field public BBjNumber SuppressSelectAll! = 0
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "agSetColumnFilter"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("suppressSyncValuesAfterDataChange" , #getSuppressSyncValuesAfterDataChange().booleanValue() , err=*next)
+        json!.addProperty("suppressRemoveEntries" , #getSuppressRemoveEntries().booleanValue() , err=*next)
+        json!.addProperty("suppressSorting" , #getSuppressSorting().booleanValue() , err=*next)
+        json!.addProperty("suppressMiniFilter" , #getSuppressMiniFilter().booleanValue() , err=*next)
+        json!.addProperty("suppressSelectAll" , #getSuppressSelectAll().booleanValue() , err=*next)
+        json!.add("values", iff(#getValues().size() > 0 , #getValues() , empty!), err=*next)
+        renderer! = #getCellRenderer()
+
+        if(renderer! <> null()) then
+            json!.addProperty("cellRenderer" , renderer!.getCellRendererName(),err=*next)
+            json!.        add("cellRendererParams" , renderer!.getAsJsonObject(),err=*next)
+        FI
+
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The class represents the boolean filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterBasicBoolean extends GxOptionsBoolean implements GxFilterInterface
+    rem /**
+    rem  * The value to use when when the component needs to render true values.
+    rem  * in case it is null() then we use the first item in PossibleTrueValues!
+    rem  */
+    field public BBjString UsedTrueValue! = null()
+    rem /**
+    rem  * The value to use when when the component needs to render false values.
+    rem  * in case it is null() then we use the first item in PossibleFalseValues!
+    rem  */
+    field public BBjString UsedFalseValue! = null()
+    rem /**
+    rem  * True value translation
+    rem  */
+    field public BBjString TrueValue! = "&#x2714; True"
+    rem /**
+    rem  * False value translation
+    rem  */
+    field public BBjString FalseValue! = "&#x2718; False"
+    rem /**
+    rem  * None value Translation
+    rem  */
+    field public BBjString NoneValue! = "&#8709; None"
+    rem /**
+    rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
+    rem  */
+    field public BBjNumber ApplyButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
+    rem  */
+    field public BBjNumber ClearButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
+    rem  */
+    field public BBjNumber RestButton! = 0
+    rem /**
+    rem  * @override
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "BooleanFilter"
+    methodend
+    rem /**
+    rem  * @override
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("booleanUsedTrueValue",#getUsedTrueValue(), err=*next)
+        json!.addProperty("booleanUsedFalseValue",#getUsedFalseValue(), err=*next)
+        json!.addProperty("applyButton" , #getApplyButton().booleanValue(),err=*next)
+        json!.addProperty("clearButton" , #getClearButton().booleanValue(),err=*next)
+        json!.addProperty("resetButton" , #getRestButton().booleanValue(),err=*next)
+        translation! = new JsonObject()
+        translation!.addProperty("true" , #getTrueValue(),err=*next)
+        translation!.addProperty("false" , #getFalseValue(),err=*next)
+        translation!.addProperty("reset" , #getNoneValue(),err=*next)
+        json!.        add("booleanFilterTranslation" , translation!)
+        methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(GxFilterInterface filter!)
+        methodret GxFilterComparator.compare(#this!, filter!)
+    methodend
+classend
+rem /**
+rem  * The class represents the date time filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterBasicDateTime extends GxOptionsDateTime implements GxFilterInterface
+    rem /**
+    rem  *Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
+    rem  */
+    field public BBjNumber ApplyButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Clear button. The Clear button will clear the details of the filter thus resetting it.
+    rem  */
+    field public BBjNumber ClearButton! = 0
+    rem /**
+    rem  * Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
+    rem  */
+    field public BBjNumber RestButton! = 0
+    rem /**
+    rem  * What Filter Options to present to the user.
+    rem  * By default all supported options are presented
+    rem  *
+    rem  * @see GxColumnFilterDateTimeFilterOptions
+    rem  */
+    field public JsonArray FilterOptions! = new JsonArray()
+    rem /**
+    rem  * The default Filter Options to be selected.
+    rem  * By default it is Equals
+    rem  */
+    field public BBjString DefaultOption! = null()
+    rem /**
+    rem  * If true, the filter will only offer Condition 1.
+    rem  */
+    field public BBjNumber SuppressAndOrCondition! = 0
+    rem /**
+    rem  * If true then doing 'inRange' filter option will include values equal to the start and end of the range.
+    rem  */
+    field public BBjNumber InRangeInclusive! = 1
+    rem /**
+    rem  * Construct new GxFilterBasicDateTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxFilterBasicDateTime(BBjString mask!)
+        #setMask(mask!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getFilterName()
+        methodret "DateTimeFilter"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("applyButton" , #getApplyButton().booleanValue(),err=*next)
+        json!.addProperty("clearButton" , #getClearButton().booleanValue(),err=*next)
+        json!.addProperty("resetButton" , #getRestButton().booleanValue(),err=*next)
+        json!.addProperty("suppressAndOrCondition" , #getSuppressAndOrCondition().booleanValue(),err=*next)
+        json!.addProperty("inRangeInclusive" , #getInRangeInclusive().booleanValue(),err=*next)
+        json!.addProperty("defaultOption" , #getDefaultOption(),err=*next)
+        json!.        add("filterOptions" , iff(#getFilterOptions().size() > 0 , #getFilterOptions() , empty!),err=*next)
+        methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(GxFilterInterface filter!)
+        methodret GxFilterComparator.compare(#this!, filter!)
+    methodend
+classend
+rem /**
+rem  * Alias for GxFilterBasicDateTime
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterBasicTimestamp extends GxFilterBasicDateTime
+    rem /**
+    rem  * Construct new GxFilterBasicTimestamp
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxFilterBasicTimestamp(BBjString mask!)
+        #super!(mask!)
+    methodend
+
+classend
+rem /**
+rem  * The class represents the date filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterBasicDate extends GxFilterBasicDateTime
+    rem /**
+    rem  * Construct a new GxFilterBasicDateTime
+    rem  */
+    method public GxFilterBasicDate()
+        #setEnableTime(0)
+        #setMask("%Y/%Mz/%Dz")
+    methodend
+    rem /**
+    rem  * Construct new GxFilterBasicDate
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxFilterBasicDate(BBjString mask!)
+        #super!(mask!)
+        #setEnableTime(0)
+    methodend
+
+classend
+rem /**
+rem  * The class represents the time filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxFilterBasicTime extends GxFilterBasicDateTime
+    rem /**
+    rem  * Construct a new GxFilterBasicTime
+    rem  */
+    method public GxFilterBasicTime()
+        #setEnableTime(1)
+        #setEnableCalendar(0)
+        #setMask("%Hz:%mz:%sz")
+    methodend
+    rem /**
+    rem  * Construct new GxFilterBasicTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxFilterBasicTime(BBjString mask!)
+        #super!(mask!)
+        #setEnableTime(1)
+        #setEnableCalendar(0)
+    methodend
+
+classend

@@ -6,8 +6,8 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnGroup
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnGroup
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 use com.google.gson.JsonObject
@@ -67,16 +67,16 @@ main:
   rem it is important to set the data before creating the groups , otherwise the column types will ignored
   grid!.setData(rs! , 0 , 0)
 
-  declare BBjGridExWidgetColumnGroup InventoryDetailsGroup!
+  declare GxColumnGroup InventoryDetailsGroup!
 
-  InventoryDetailsGroup! = new BBjGridExWidgetColumnGroup("Details")
-  InventoryDetailsGroup!.setColumnGroupShow(BBjGridExWidgetColumnGroup.COLUMN_GROUP_CLOSED())
+  InventoryDetailsGroup! = new GxColumnGroup("Details")
+  InventoryDetailsGroup!.setColumnGroupShow(GxColumnGroup.COLUMN_GROUP_CLOSED())
   InventoryDetailsGroup!.getHeaderClass().add("sub-group")
   InventoryDetailsGroup!.addColumn(grid!.removeColumn("ONHAND"))
   InventoryDetailsGroup!.addColumn(grid!.removeColumn("RETAIL"))
   InventoryDetailsGroup!.addColumn(grid!.removeColumn("COST"))
 
-  declare BBjGridExWidgetColumnGroup InventoryGroup!
+  declare GxColumnGroup InventoryGroup!
 
   InventoryGroup! = grid!.getColumnGroup("Inventory")
   InventoryGroup!.getHeaderClass().add("main-group")

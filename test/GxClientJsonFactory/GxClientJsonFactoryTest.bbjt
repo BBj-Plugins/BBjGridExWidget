@@ -1,0 +1,248 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxClientJsonFactory.bbj::GxClientJsonFactory
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+use com.google.gson.JsonParser
+
+class public GxClientJsonFactoryTest
+
+    field private GxClientJsonFactory Instance!
+    field private BBjString ModelsFixturesString$
+    
+    method private JsonObject getModelsFixture()
+      parser! = new JsonParser()
+      methodret parser!.parse(#ModelsFixturesString$).getAsJsonObject()
+    methodend
+        
+    rem @BeforeClass
+    method public void beforeClass()
+      ch=unt
+      open (ch) BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/Fixtures/Models.json")
+      read record (ch,siz=5512000)#ModelsFixturesString$
+      close (ch)
+          
+    methodend
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxClientJsonFactory(new BBjGridExWidgetMock())
+    methodend
+    
+    rem @Test
+    method public void testGetFilterConditionThrowErrorWhenFilterTypeIsMissing()
+        Assert.Expect(#Instance!.getFilterCondition(new JsonObject(),"foo"),256)
+    methodend
+    
+    rem @Test
+    method public void testGetFilterConditionCanCreateFilterNumberModel()
+        declare auto JsonObject fixture!
+        fixture! = #getModelsFixture().get("filter-number-single")
+        column! = "foo"
+        
+        rem complete
+        fixtureClone! = fixture!.deepCopy()
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+        
+        rem without filter
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.addProperty("filter","")
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+        
+        rem without filterTo        
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.addProperty("filterTo","")
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)        
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+    methodend
+    
+    rem @Test
+    method public void testGetFilterConditionCanCreateFilterDateTimeModel()
+        declare auto JsonObject fixture!
+        fixture! = #getModelsFixture().get("filter-datetime-single")
+        column! = "foo"
+        
+        rem complete
+        fixtureClone! = fixture!.deepCopy()
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+        
+        rem without filter
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.add("filter",JsonNull.INSTANCE)
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+        
+        rem without filterTo        
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.add("filterTo",JsonNull.INSTANCE)
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)        
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+    methodend        
+    
+    rem @Test
+    method public void testGetFilterConditionCanCreateFilterTextModel()
+        declare auto JsonObject fixture!
+        fixture! = #getModelsFixture().get("filter-text-single")
+        column! = "foo"
+        
+        rem complete
+        fixtureClone! = fixture!.deepCopy()
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+        
+        rem without filter
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.add("filter",JsonNull.INSTANCE)
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+    methodend
+    
+    rem @Test
+    method public void testGetFilterConditionCanCreateFilterBooleanModel()
+        declare auto JsonObject fixture!
+        fixture! = #getModelsFixture().get("filter-boolean-single")
+        column! = "foo"
+        
+        rem complete
+        fixtureClone! = fixture!.deepCopy()
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+    methodend
+    
+    rem @Test
+    method public void testGetFilterConditionCanCreateFilterSetFilterModel()
+        declare auto JsonObject fixture!
+        fixture! = #getModelsFixture().get("filter-set")
+        column! = "foo"
+        
+        rem complete
+        fixtureClone! = fixture!.deepCopy()
+        model! = #Instance!.getFilterCondition(fixtureClone!,column!)
+        Assert.Equals(model!.getAsJsonObject().equals(fixtureClone!),BBjAPI.TRUE)
+        Assert.Equals(model!.getColumn(),column!)
+        Assert.Equals(model!.getWidget(),#Instance!.getWidget())
+    methodend    
+            
+    rem @Test
+    method public void testGetFilterCanCreateCombinedFilteModel()
+        declare auto JsonObject fixture!
+        fixture! = #getModelsFixture().get("filter-number-combined")
+        column! = "foo"
+        
+        fixtureClone! = fixture!.deepCopy()
+        model! = #Instance!.getFilter(fixtureClone!,column!)
+        isCombinedModel! = 0
+        model! = cast(GxClientFilterCombinedModel,model!,err=*next); isCombinedModel! = 1
+        Assert.Equals(isCombinedModel!,1)
+        Assert.Equals(model!.getFirstCondition().getAsJsonObject().equals(fixtureClone!.get("condition1").getAsJsonObject()) , BBjAPI.TRUE)
+        Assert.Equals(model!.getSecondCondition().getAsJsonObject().equals(fixtureClone!.get("condition2").getAsJsonObject()) , BBjAPI.TRUE)
+        Assert.Equals(model!.getOperator() , fixtureClone!.get("operator").getAsString())
+        
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.remove("condition1")
+        model! = #Instance!.getFilter(fixtureClone!,column!)      
+        isCombinedModel! = 0
+        model! = cast(GxClientFilterCombinedModel,model!,err=*next); isCombinedModel! = 1
+        Assert.Equals(isCombinedModel!,1)          
+        Assert.IsNull(model!.getFirstCondition())
+        Assert.Equals(model!.getSecondCondition().getAsJsonObject().equals(fixtureClone!.get("condition2").getAsJsonObject()) , BBjAPI.TRUE)
+        Assert.Equals(model!.getOperator() , fixtureClone!.get("operator").getAsString())
+        
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.remove("condition2")
+        model! = #Instance!.getFilter(fixtureClone!,column!)
+        isCombinedModel! = 0
+        model! = cast(GxClientFilterCombinedModel,model!,err=*next); isCombinedModel! = 1
+        Assert.Equals(isCombinedModel!,1)                
+        Assert.Equals(model!.getFirstCondition().getAsJsonObject().equals(fixtureClone!.get("condition1").getAsJsonObject()) , BBjAPI.TRUE)
+        Assert.IsNull(model!.getSecondCondition())
+        Assert.Equals(model!.getOperator() , fixtureClone!.get("operator").getAsString())        
+        
+        rem a fallback to nomral model
+        fixtureClone! = fixture!.deepCopy()
+        fixtureClone!.remove("condition1")
+        fixtureClone!.remove("condition2")
+        model! = #Instance!.getFilter(fixtureClone!,column!)
+        isCombinedModel! = 0
+        model! = cast(GxClientFilterCombinedModel,model!,err=*next); isCombinedModel! = 1
+        Assert.Equals(isCombinedModel!,0)
+        isNumberModel!= 0           
+        model! = cast(GxClientFilterNumberModel,model!,err=*next); isNumberModel! = 1
+        Assert.Equals(isNumberModel!,1)
+    methodend
+    
+    rem @Test         
+    method public void testGetCell()
+       declare auto JsonObject fixture!
+       fixture! = #getModelsFixture().get("event-cell")
+       
+       fixtureClone! = fixture!.deepCopy()
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       
+       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
+       Assert.Equals(model!.getColumn().getName(),"test")
+       Assert.Equals(model!.getValue(),"newValue")
+       
+       fixtureClone! = fixture!.deepCopy()
+       fixtureClone!.remove("r"); rem remove row
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       
+       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.IsNull(model!.getRow())
+       Assert.Equals(model!.getColumn().getName(),"test")
+       Assert.Equals(model!.getValue(),"newValue")     
+       
+       fixtureClone! = fixture!.deepCopy()
+       fixtureClone!.remove("c"); rem remove column
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
+       Assert.IsNull(model!.getColumn())
+       Assert.Equals(model!.getValue(),"newValue")  
+       
+       fixtureClone! = fixture!.deepCopy()
+       fixtureClone!.remove("v"); rem remove value
+       model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
+       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
+       Assert.Equals(model!.getColumn().getName(),"test")
+       Assert.IsNull(model!.getValue())                     
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

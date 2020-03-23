@@ -26,68 +26,68 @@ rem ==========================
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
 rem BBjGridExWidget Package
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptions
+use ::BBjGridExWidget/GxOptions.bbj::GxOptions
 use ::BBjGridExWidget/util/LicenseManager.bbj::LicenseManager
-use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
-use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
-use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
+use ::BBjGridExWidget/GxState.bbj::GxState
+use ::BBjGridExWidget/GxLanguageManager.bbj::GxLanguageManager
+use ::BBjGridExWidget/GxClientJsonFactory.bbj::GxClientJsonFactory
 rem Client Events
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRangeSelection
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsKeypress
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsContextMenu
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsCell
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowEditing
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRangeSelection
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsKeypress
 rem Sidebars
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetDefaultSidebar
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetFiltersToolpanel
+use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
+use ::BBjGridExWidget/GxSidebar.bbj::GxDefaultSidebar
+use ::BBjGridExWidget/GxSidebar.bbj::GxFiltersToolpanel
 rem Statusbar
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBar
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
 rem Context Menu
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenu
-use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridDefaultContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridDefaultContextMenu
 rem Expressions
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionInterface
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
 rem Columns
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnDefinition
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetAutoGroupColumn
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnGroup
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnGroup
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManagerInterface
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManager
+use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnDefinition
+use ::BBjGridExWidget/GxColumns.bbj::GxAutoGroupColumn
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnGroup
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnGroup
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnsManagerInterface
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnsManager
 rem Renderers
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImageRenderer
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererImageRenderer
 rem Client Models
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientSortModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientTransactionModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterDateTimeModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterBooleanModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterCombinedModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilteSetFilterModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeSelectionModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeChartModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientSortModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientTransactionModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterDateTimeModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterBooleanModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterSetFilterModel
 rem Filter Components
 rem ==========================
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterText
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterNumber
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicBoolean
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterBasicTimestamp
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterSetFilter
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterText
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterNumber
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicBoolean
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicTimestamp
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
 rem /**
 rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
@@ -124,7 +124,7 @@ rem  *
 rem  * @author Stephan Wald
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumnsManagerInterface
+class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterface
     rem /**
     rem  * The Grid enterprise key
     rem  */
@@ -158,15 +158,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Columns Manager instance
     rem  */
-    field public BBjGridExWidgetColumnsManager ColumnsManager! = new BBjGridExWidgetColumnsManager()
+    field public GxColumnsManager ColumnsManager! = new GxColumnsManager()
     rem /**
     rem  * Instance of the grid options class
     rem  */
-    field public BBjGridExWidgetOptions Options! = new BBjGridExWidgetOptions(#this!)
+    field public GxOptions Options! = new GxOptions(#this!)
     rem /**
-    rem  * Instance of BBjGridExWidgetClientJsonFactory to convert client JSON strings to Client Models
+    rem  * Instance of GxClientJsonFactory to convert client JSON strings to Client Models
     rem  */
-    field protected BBjGridExWidgetClientJsonFactory ClientJsonFactory! = new BBjGridExWidgetClientJsonFactory(#this!)
+    field protected GxClientJsonFactory ClientJsonFactory! = new GxClientJsonFactory(#this!)
     rem /**
     rem  * The vector holds the registered events
     rem  */
@@ -1004,37 +1004,37 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjGridExWidgetColumn definition!)
+    method public GxColumn addColumn(GxColumn definition!)
         methodret #getColumnsManager().addColumn(definition!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjNumber type!)
+    method public GxColumn addColumn(BBjString field!,BBjNumber type!)
         methodret #getColumnsManager().addColumn(field! , type!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjString label!)
+    method public GxColumn addColumn(BBjString field!,BBjString label!)
         methodret #getColumnsManager().addColumn(field! , label!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
+    method public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
         methodret #getColumnsManager().addColumn(field! , label! ,type!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!)
+    method public GxColumn addColumn(BBjString field!)
         methodret #addColumn(field!,field!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn getColumn(BBjString field!)
+    method public GxColumn getColumn(BBjString field!)
         methodret #getColumnsManager().getColumn(field!)
     methodend
     rem /**
@@ -1046,7 +1046,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn removeColumn(BBjString field!)
+    method public GxColumn removeColumn(BBjString field!)
         methodret #getColumnsManager().removeColumn(field!)
     methodend
     rem /**
@@ -1168,8 +1168,8 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString field$ The field name of the column
     rem  * @param BBjString pin$  The pin direction ("right" or "left")
     rem  *
-    rem  * @see BBjGridExWidgetColumn.PINNED_LEFT()
-    rem  * @see BBjGridExWidgetColumn.PINNED_RIGHT()
+    rem  * @see GxColumn.PINNED_LEFT()
+    rem  * @see GxColumn.PINNED_RIGHT()
     rem  */
     method public void pinColumn(BBjString field$, BBjString pin$)
         pin$=cvs(pin$,8)
@@ -1210,7 +1210,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         FI
     methodend
     rem /**
-    rem  * Set an image list for a given column using BBjGridExWidgetRendererImageRenderer&#183;
+    rem  * Set an image list for a given column using GxRendererImageRenderer&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -1224,7 +1224,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public void setColumnImageList(BBjString field!, BBjImage imagelist!)
         if #hasColumn(field!) then
-            renderer! = new BBjGridExWidgetRendererImageRenderer()
+            renderer! = new GxRendererImageRenderer()
             enc! = java.util.Base64.getEncoder()
             for i=1 to int(imageList!.getWidth() / imageList!.getHeight())
                 imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
@@ -1290,7 +1290,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
         WHILE (it!.hasNext())
-            next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+            next! = cast(GxColumn , it!.next().getValue())
 
             if(list!.contains(next!.getField())) then
                 next!.setRowGroup(1)
@@ -1360,7 +1360,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
         WHILE (it!.hasNext())
-            next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+            next! = cast(GxColumn , it!.next().getValue())
 
             if(list!.contains(next!.getField())) then
                 next!.setEnablePivot(1)
@@ -1430,19 +1430,19 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjGridExWidgetColumnGroup definition!)
+    method public GxColumnGroup addColumnGroup(GxColumnGroup definition!)
         methodret #getColumnsManager().addColumnGroup(definition!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!)
+    method public GxColumnGroup addColumnGroup(BBjString id!)
         methodret #getColumnsManager().addColumnGroup(id!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!)
+    method public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!)
         methodret #getColumnsManager().addColumnGroup(id!,label!)
     methodend
     rem /**
@@ -1458,12 +1458,12 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem *                                 Moving the columns outside of the group (and hence breaking the group) is not allowed.
     rem * @param BBjString headerClass!  A CSS class to apply
     rem *
-    rem * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem * @return GxColumnGroup The GxColumnGroup instance
     rem */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label! ,  BBjVector columns! , BBjNumber marryChildren! ,BBjString headerClass! )
-        declare BBjGridExWidgetColumnGroup definition!
+    method public GxColumnGroup addColumnGroup(BBjString id! , BBjString label! ,  BBjVector columns! , BBjNumber marryChildren! ,BBjString headerClass! )
+        declare GxColumnGroup definition!
 
-        definition! = new BBjGridExWidgetColumnGroup(id! , label!)
+        definition! = new GxColumnGroup(id! , label!)
         definition!.setMarryChildren(marryChildren!)
         definition!.getHeaderClass().add(headerClass!)
         columnsLength! = columns!.size() - 1
@@ -1495,9 +1495,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber marryChildren! Set to 'true' to keep columns in this group beside each other in the grid.
     rem *                                 Moving the columns outside of the group (and hence breaking the group) is not allowed.
     rem  *
-    rem  * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem  * @return GxColumnGroup The GxColumnGroup instance
     rem */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!, BBjString label! , BBjVector columns! , BBjNumber marryChildren!)
+    method public GxColumnGroup addColumnGroup(BBjString id!, BBjString label! , BBjVector columns! , BBjNumber marryChildren!)
         methodret #addColumnGroup(id!,label!,columns! , marryChildren! ,  "" )
     methodend
     rem /**
@@ -1510,15 +1510,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjString name! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
     rem  *
-    rem  * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem  * @return GxColumnGroup The GxColumnGroup instance
     rem */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!, BBjVector columns!)
+    method public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!, BBjVector columns!)
         methodret #addColumnGroup(id!,label! , columns! , 1  , "" )
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup getColumnGroup(BBjString id!)
+    method public GxColumnGroup getColumnGroup(BBjString id!)
         methodret #getColumnsManager().getColumnGroup(id!)
     methodend
     rem /**
@@ -1530,7 +1530,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup removeColumnGroup(BBjString id!)
+    method public GxColumnGroup removeColumnGroup(BBjString id!)
         methodret #getColumnsManager().removeColumnGroup(id!)
     methodend
     rem /**
@@ -1632,7 +1632,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
                     #getColumn(field$).update(meta! , #getOptions().getDefaultColumnDefinition())
                 else
                     if(addAll! = 1) then
-                        definition! = new BBjGridExWidgetColumn(field$)
+                        definition! = new GxColumn(field$)
                         definition!.update(meta!, #getOptions().getDefaultColumnDefinition())
                         #addColumn(definition!)
                     FI
@@ -1761,10 +1761,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientTransactionModel transaction!
+    rem  * @param GxClientTransactionModel transaction!
     rem  * @param BBjNumber batchUpdate! when true then execute the update, along with any other updates you subsequently provide
     rem  */
-    method public void executeUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!,BBjNumber batchUpdate!)
+    method public void executeUpdateTransaction(GxClientTransactionModel transaction!,BBjNumber batchUpdate!)
         transaction!.setWidget(#this!)
         json! = transaction!.execute()
         #executeScript("$wnd.gw_updateRowData('" + #GRIDID$ + "'," + json!.toString() + "," + str(batchUpdate!.booleanValue()) + ")")
@@ -1788,9 +1788,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientTransactionModel transaction!
+    rem  * @param GxClientTransactionModel transaction!
     rem  */
-    method public void executeUpdateTransaction(BBjGridExWidgetClientTransactionModel transaction!)
+    method public void executeUpdateTransaction(GxClientTransactionModel transaction!)
         #executeUpdateTransaction(transaction! , 0)
     methodend
     rem /**
@@ -1800,10 +1800,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param DataRow row! DataRow object which contains the update
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel updateRow(DataRow row!)
-        transaction! = new BBjGridExWidgetClientTransactionModel()
+    method public GxClientTransactionModel updateRow(DataRow row!)
+        transaction! = new GxClientTransactionModel()
         transaction!.update(row!)
         #executeUpdateTransaction(transaction!)
         methodret transaction!
@@ -1818,21 +1818,21 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel updateRow(BBjNumber index!,DataRow row!)
+    method public GxClientTransactionModel updateRow(BBjNumber index!,DataRow row!)
         methodret #updateRow(row!)
     methodend
     rem /**
     rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
     rem  */
-    method public BBjGridExWidgetClientTransactionModel setRowData(BBjNumber index!,DataRow row!)
+    method public GxClientTransactionModel setRowData(BBjNumber index!,DataRow row!)
         methodret #updateRow(index!,row!)
     methodend
     rem /**
     rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
     rem  */
-    method public BBjGridExWidgetClientTransactionModel setRowData(DataRow row!)
+    method public GxClientTransactionModel setRowData(DataRow row!)
         methodret #updateRow(row!)
     methodend
     rem /**
@@ -1843,10 +1843,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber index! The insert index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel addRow(BBjNumber index!,DataRow row!)
-        transaction! = new BBjGridExWidgetClientTransactionModel()
+    method public GxClientTransactionModel addRow(BBjNumber index!,DataRow row!)
+        transaction! = new GxClientTransactionModel()
         transaction!.add(row!)
         transaction!.setAddIndex(index!)
         #executeUpdateTransaction(transaction!)
@@ -1859,9 +1859,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param DataRow row! The DataRow object which contains the update
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel addRow(DataRow row!)
+    method public GxClientTransactionModel addRow(DataRow row!)
         methodret #addRow(0,row!)
     methodend
     rem /**
@@ -1871,10 +1871,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param DataRow row! The data row object to remove
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel removeRow(DataRow row!)
-        transaction! = new BBjGridExWidgetClientTransactionModel()
+    method public GxClientTransactionModel removeRow(DataRow row!)
+        transaction! = new GxClientTransactionModel()
         transaction!.remove(row!)
         #executeUpdateTransaction(transaction!)
         methodret transaction!
@@ -1886,9 +1886,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjNumber index! The row index
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel removeRow(BBjNumber index!)
+    method public GxClientTransactionModel removeRow(BBjNumber index!)
         methodret #removeRow(#getRS().get(index!))
     methodend
     rem /**
@@ -1898,9 +1898,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjString key! The row key
     rem  *
-    rem  * @return BBjGridExWidgetClientTransactionModel the transaction object which used to achieve the update
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public BBjGridExWidgetClientTransactionModel removeRow(BBjString key!)
+    method public GxClientTransactionModel removeRow(BBjString key!)
         methodret #removeRow(#getRS().get(key!))
     methodend
     rem /**
@@ -1924,15 +1924,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetState state! : the state object
+    rem  * @param GxState state! : the state object
     rem  */
-    method public void setState(BBjGridExWidgetState state!)
+    method public void setState(GxState state!)
         #executeScript("$wnd.gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
     methodend
     rem /**
     rem  * @deprecated use #setState instead
     rem  */
-    method public void setColumnState(BBjGridExWidgetState state!)
+    method public void setColumnState(GxState state!)
         #executeScript("$wnd.gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
     methodend
     rem /**
@@ -1940,10 +1940,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @returns BBjGridExWidgetState
+    rem  * @returns GxState
     rem  */
-    method public BBjGridExWidgetState getState()
-        state! = new BBjGridExWidgetState()
+    method public GxState getState()
+        state! = new GxState()
         json_string$ = str(#HTMLView!.executeScript("$wnd.gw_getState('" + #GRIDID$ + "')"))
         state!.setString(json_string$)
         methodret state!
@@ -1951,31 +1951,31 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * @deprecated Use #getState() instead
     rem  */
-    method public BBjGridExWidgetState getColumnState()
+    method public GxState getColumnState()
         methodret #getState()
     methodend
     rem /**
     rem  * Get the grid sidebar instance
     rem  *
-    rem  * @return BBjGridExWidgetSidebar
+    rem  * @return GxSidebar
     rem  */
-    method public BBjGridExWidgetSidebar getSidebar()
+    method public GxSidebar getSidebar()
         methodret #getOptions().getSidebar()
     methodend
     rem /**
     rem  * Get the language manager instance
     rem  *
-    rem  * @returns BBjGridExWidgetLanguageManager
+    rem  * @returns GxLanguageManager
     rem  */
-    method public BBjGridExWidgetLanguageManager getLanguageManager()
+    method public GxLanguageManager getLanguageManager()
         methodret #getOptions().getLanguageManager()
     methodend
     rem /**
     rem  * Get the grid statusbar instance
     rem  *
-    rem  * @return BBjGridExWidgetStatusBar
+    rem  * @return GxStatusBar
     rem  */
-    method public BBjGridExWidgetStatusBar getStatusbar()
+    method public GxStatusBar getStatusbar()
         methodret #getOptions().getStatusbar()
     methodend
     rem /**
@@ -1995,11 +1995,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret #getOptions().getClientContext()
     methodend
     rem /**
-    rem  * Get instance of BBjGridExWidgetClientJsonFactory
+    rem  * Get instance of GxClientJsonFactory
     rem  *
-    rem  * @return BBjGridExWidgetClientJsonFactory
+    rem  * @return GxClientJsonFactory
     rem  */
-    method public BBjGridExWidgetClientJsonFactory getClientJsonFactory()
+    method public GxClientJsonFactory getClientJsonFactory()
         methodret #ClientJsonFactory!
     methodend
     rem /**
@@ -2522,14 +2522,14 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Set and apply filter model for the given column
     rem  *
     rem  * @param BBjString column! the column id
-    rem  * @param BBjGridExWidgetClientFilterModel model! the model filter to use
+    rem  * @param GxClientFilterModel model! the model filter to use
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  * <br><b><small>#Configuration</small></b>
     rem  *
-    rem  * @return BBjGridExWidgetClientFilterModel the passed model
+    rem  * @return GxClientFilterModel the passed model
     rem  */
-    method public BBjGridExWidgetClientFilterModel setFilterModel(BBjString column!, BBjGridExWidgetClientFilterModel model!)
+    method public GxClientFilterModel setFilterModel(BBjString column!, GxClientFilterModel model!)
         model!.setWidget(#this!)
         model!.setColumn(column!)
         model!.update()
@@ -2567,7 +2567,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Get The filter model for the given column
     rem  *
-    rem  * This method will return a `BBjGridExWidgetClientFilterModel` for the given column
+    rem  * This method will return a `GxClientFilterModel` for the given column
     rem  * If column has already some filter values set through the UI , then the model will contain
     rem  * these changes too.
     rem  *
@@ -2581,7 +2581,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @throws 256 in case the column has no filter component attached
     rem  */
-    method public BBjGridExWidgetClientFilterModel getFilterModel(BBjString column!)
+    method public GxClientFilterModel getFilterModel(BBjString column!)
         jsonModel! = null()
         rem we try to get the model from the UI first
         if(#getIsReady() = BBjAPI.TRUE)
@@ -2597,20 +2597,20 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
             if (#getColumn(column!).getFilter() <> null())
                 filterName! = #getColumn(column!).getFilter().getFilterName()
                 SWITCH (filterName!)
-                    CASE BBjGridExWidgetFilterNumber.getFilterName()
-                        model! = new BBjGridExWidgetClientFilterNumberModel()
+                    CASE GxFilterNumber.getFilterName()
+                        model! = new GxClientFilterNumberModel()
                         break
-                    CASE BBjGridExWidgetFilterBasicTimestamp.getFilterName()
-                        model! = new BBjGridExWidgetClientFilterDateTimeModel()
+                    CASE GxFilterBasicTimestamp.getFilterName()
+                        model! = new GxClientFilterDateTimeModel()
                         break
-                    CASE BBjGridExWidgetFilterBasicBoolean.getFilterName()
-                        model! = new BBjGridExWidgetClientFilterBooleanModel()
+                    CASE GxFilterBasicBoolean.getFilterName()
+                        model! = new GxClientFilterBooleanModel()
                         break
-                    CASE BBjGridExWidgetFilterText.getFilterName()
-                        model! = new BBjGridExWidgetClientFilterTextModel()
+                    CASE GxFilterText.getFilterName()
+                        model! = new GxClientFilterTextModel()
                         break
-                    CASE BBjGridExWidgetFilterSetFilter.getFilterName()
-                        model! = new BBjGridExWidgetClientFilteSetFilterModel()
+                    CASE GxFilterSetFilter.getFilterName()
+                        model! = new GxClientFilterSetFilterModel()
                         break
                 SWEND
             fi
@@ -2627,7 +2627,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Get The combined filter model for the given column
     rem  *
-    rem  * This method will return a `BBjGridExWidgetClientFilterCombinedModel` for the given column
+    rem  * This method will return a `GxClientFilterCombinedModel` for the given column
     rem  * If the column has already some filter values set through the UI , then the model will contain
     rem  * these changes too.
     rem  *
@@ -2641,17 +2641,17 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @throws 256 in case the column filter does not support the combined model
     rem  */
-    method public BBjGridExWidgetClientFilterCombinedModel getFilterAsCombinedModel(BBjString column!)
+    method public GxClientFilterCombinedModel getFilterAsCombinedModel(BBjString column!)
         model! = #getFilterModel(column!)
         rem first check if the model is already a combined model
         isAlreadyCombined! = 0
-        model! = cast(BBjGridExWidgetClientFilterCombinedModel,model!,err=*next); isAlreadyCombined! = 1
+        model! = cast(GxClientFilterCombinedModel,model!,err=*next); isAlreadyCombined! = 1
 
         if(isAlreadyCombined! = 0 AND model!.supportsCombinedModel() = 0)
             throw "The column's filter component does not support combined models" , 256
         fi
 
-        combinedModel! = iff(isAlreadyCombined!,model! ,new BBjGridExWidgetClientFilterCombinedModel() )
+        combinedModel! = iff(isAlreadyCombined!,model! ,new GxClientFilterCombinedModel() )
         combinedModel!.setWidget(#this!)
         combinedModel!.setColumn(column!)
         if(!isAlreadyCombined!) combinedModel!.setFirstCondition(model!)
@@ -2738,9 +2738,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientSortModel model! the sorting model
+    rem  * @param GxClientSortModel model! the sorting model
     rem  */
-    method public void setSortModel(BBjGridExWidgetClientSortModel model!)
+    method public void setSortModel(GxClientSortModel model!)
         #executeScript("$wnd.gw_setSortModel('" + #GRIDID$ + "','" + str(model!.getAsJsonArray()) + "')")
     methodend
     rem /**
@@ -2754,7 +2754,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see setSortModel
     rem  */
     method public void sortColumn(BBjString column! , BBjString direction!)
-        model! = new BBjGridExWidgetClientSortModel()
+        model! = new GxClientSortModel()
         model!.add(column! , direction!)
         #setSortModel(model!)
     methodend
@@ -2940,13 +2940,13 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         #executeScript("$wnd.gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
     methodend
     rem /**
-    rem  * Sync the client row data every time a new BBjGridExWidgetClientRowModel
+    rem  * Sync the client row data every time a new GxClientRowModel
     rem  * is composed by the grid.
     rem  * 
     rem  * Use this method if the row's data in the client is different that the row's data in 
     rem  * the ResultSet 
     rem  * 
-    rem  * @param BBjNumber include! when true the ClientRow field will always be filled in BBjGridExWidgetClientRowModel
+    rem  * @param BBjNumber include! when true the ClientRow field will always be filled in GxClientRowModel
     rem  *                           otherwise it will always be null().
     rem  * 
     rem  * <br><b><small>#Configuration</small></b>
@@ -2961,9 +2961,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @return BBjGridExWidgetClientRowModel The selected row if any, null() otherwise
+    rem  * @return GxClientRowModel The selected row if any, null() otherwise
     rem  */
-    method public BBjGridExWidgetClientRowModel getSelectedRow()
+    method public GxClientRowModel getSelectedRow()
         returnedRow! = #executeScript("$wnd.gw_getSelectedRow('" + #GRIDID$ + "')")
         if returnedRow!<>null() and len(returnedRow!) > 0 then
             methodret #getClientJsonFactory().getRow(returnedRow!)
@@ -3035,11 +3035,11 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientAddRangeSelectionModel model! the add selection model
+    rem  * @param GxClientAddRangeSelectionModel model! the add selection model
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjGridExWidgetClientAddRangeSelectionModel model!)
+    method public GxClientAddRangeSelectionModel addRangeSelection(GxClientAddRangeSelectionModel model!)
         #executeScript("$wnd.gw_addCellRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
         methodret model!
     methodend
@@ -3052,10 +3052,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjString start! start row id or index
     rem  * @param BBjString end! end row id or index
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjString start! , BBjString end!)
-        model! = new BBjGridExWidgetClientAddRangeSelectionModel()
+    method public GxClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjString start! , BBjString end!)
+        model! = new GxClientAddRangeSelectionModel()
         model!.setColumns(columns!)
         model!.setStart(start!)
         model!.setEnd(end!)
@@ -3070,9 +3070,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @param BBjNumber start! start row id or index
     rem  * @param BBjNumber end! end row id or index
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjNumber start! , BBjNumber end!)
+    method public GxClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjNumber start! , BBjNumber end!)
         methodret #addRangeSelection(columns! , str(start!),str(end!))
     methodend
     rem /**
@@ -3082,9 +3082,9 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjString columns!)
+    method public GxClientAddRangeSelectionModel addRangeSelection(BBjString columns!)
         methodret #addRangeSelection(columns!,null() , null())
     methodend
     rem /**
@@ -3101,10 +3101,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientAddRangeChartModel model! the add range model
+    rem  * @param GxClientAddRangeChartModel model! the add range model
     rem  * @return BBjString A unique id for the created chart
     rem  */
-    method public BBjString addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
+    method public BBjString addRangeChart(GxClientAddRangeChartModel model!)
         uuid! = #executeScript("$wnd.gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
         methodret str(uuid!)
     methodend
@@ -3220,23 +3220,23 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * Handle Range Selections Event
     rem  *
-    rem  * @see BBjGridExWidgetClientEventsRangeSelection
+    rem  * @see GxClientEventsRangeSelection
     rem  */
     method private void onRangeSelectionChange(BBjString detail$)
-        event! = new BBjGridExWidgetClientEventsRangeSelection()
+        event! = new GxClientEventsRangeSelection()
         #fireEvent(#ON_GRID_RANGE_SELECTION_CHANGED(),event!)
     methodend
     rem /**
     rem  * On rows selections event
     rem  *
-    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetSelectRowEvent
+    rem  * Parse the json details coming from the client and fires new GxSelectRowEvent
     rem  *
-    rem  * @see BBjGridExWidgetSelectRowEvent
+    rem  * @see GxSelectRowEvent
     rem  */
     method protected void onSelectRowChange(BBjString detail$, BBjString type$)
-        declare BBjGridExWidgetClientEventsRowSelection event!
+        declare GxClientEventsRowSelection event!
 
-        event! = new BBjGridExWidgetClientEventsRowSelection()
+        event! = new GxClientEventsRowSelection()
         event!.setSelectedRows(#getSelectedRows())
         SWITCH (type$)
             CASE "single"
@@ -3263,7 +3263,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         parser! = new JsonParser()
         parsedCell!  = parser!.parse(detail$).getAsJsonObject()
         cell! = #getClientJsonFactory().getCell(parsedCell!)
-        event! = new BBjGridExWidgetClientEventsContextMenu()
+        event! = new GxClientEventsContextMenu()
         event!.setCell(cell!)
         #fireEvent(parsedCell!.get("i").getAsInt(),event!)
     methodend
@@ -3283,7 +3283,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         parser! = new JsonParser()
         parsedCell!  = parser!.parse(detail$).getAsJsonObject()
         cell! = #getClientJsonFactory().getCell(parsedCell!)
-        event! = new BBjGridExWidgetClientEventsCell()
+        event! = new GxClientEventsCell()
         event!.setCell(cell!)
         event!.setOldValue(parsedCell!.get("o").getAsString())
         #fireEvent(type!, event!)
@@ -3298,7 +3298,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * @see ON_GRID_ROW_EDITING_STOPPED()
     rem  */
     method protected void onRowEditing(BBjString detail$ , BBjNumber type!)
-        event! = new BBjGridExWidgetClientEventsRowEditing()
+        event! = new GxClientEventsRowEditing()
         event!.setRow(#getClientJsonFactory().getRow(detail$))
         #fireEvent(type!, event!)
     methodend
@@ -3315,7 +3315,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         parser! = new JsonParser()
         parsedKeypress!  = parser!.parse(detail$).getAsJsonObject()
         keypress! = #getClientJsonFactory().getKeypress(parsedKeypress!)
-        event! = new BBjGridExWidgetClientEventsKeypress()
+        event! = new GxClientEventsKeypress()
         event!.setKey(keypress!)
         #fireEvent(#ON_GRID_KEYPRESS(), event!)
     methodend

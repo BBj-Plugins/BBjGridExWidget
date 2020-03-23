@@ -6,8 +6,8 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererBoolean
-use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImageRenderer
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererBoolean
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererImageRenderer
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
 use com.google.gson.JsonObject
@@ -48,11 +48,11 @@ rem /**
 rem  * Retrieve the data from the database and configure the grid.
 rem  *
 rem  * The demo shows how grid!.setData() sets up the column components according to it type.
-rem  * For example, the DOUBLE column's type is double, this will enable the BBjGridExWidgetExpressionNumbersFormatter
+rem  * For example, the DOUBLE column's type is double, this will enable the GxExpressionNumbersFormatter
 rem  * by default. Using the formatter you can configure the mask to use or define the group and the decimal
 rem  * separators for numbers.
 rem  * The same applies for other types, for example, the boolean columns will be configured automatically to have the
-rem  * BBjGridExWidgetRendererBoolean, where you can configure how true/false will be rendered
+rem  * GxRendererBoolean, where you can configure how true/false will be rendered
 rem  * inside the cell (switch, numbers, custom html strings, ...).
 rem  *
 rem  * If for some reason the default configured components don't meet your app needs, then you can configure them manually
@@ -123,13 +123,13 @@ main:
 
   double!.getValueFormatterExpression().setMask("##,##0.00-")
 
-  boolean2!.getCellRenderer().setTrueValue(BBjGridExWidgetRendererBoolean.SWITCH_RENDERER())
-  boolean2!.getCellRenderer().setFalseValue(BBjGridExWidgetRendererBoolean.SWITCH_RENDERER())
+  boolean2!.getCellRenderer().setTrueValue(GxRendererBoolean.SWITCH_RENDERER())
+  boolean2!.getCellRenderer().setFalseValue(GxRendererBoolean.SWITCH_RENDERER())
 
   boolean3!.getCellRenderer().setTrueValue(String.format("<img src='%s' height='40px' />" , iconImage!))
   boolean3!.getCellRenderer().setFalseValue("NOPE!")
 
-  icon!.setCellRenderer(new BBjGridExWidgetRendererImageRenderer(jsonIcons!))
+  icon!.setCellRenderer(new GxRendererImageRenderer(jsonIcons!))
   grid!.setColumnImageList(imageList!.getField(),spriteImage!)
 
   grid!.setRowHeight(2 , 50)

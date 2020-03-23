@@ -9,8 +9,8 @@ rem  */
 ? 'HIDE'
 
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientSortModel
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientSortModel
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -25,7 +25,7 @@ process_events
 rem /**
 rem  * Sorting can be controlled via the Sorting API via the following methods:
 rem  *  
-rem  *  * grid!.setSortModel(BBjGridExWidgetClientSortModel model!) : set the sorting for one or more columns at once
+rem  *  * grid!.setSortModel(GxClientSortModel model!) : set the sorting for one or more columns at once
 rem  *  * grid!.sortColumn(BBjString column! , BBjString direction!) : set the sorting model for one column
 rem  * 
 rem  * The following example apply sorting for the CDNUMBER and the TITLE at once.
@@ -40,9 +40,9 @@ main:
   grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
   grid!.setData(rs!)
 
-  model! = new BBjGridExWidgetClientSortModel()
-  model!.add("CDNUMBER",BBjGridExWidgetColumn.SORT_DESC())
-  model!.add("TITLE",BBjGridExWidgetColumn.SORT_ASC())
+  model! = new GxClientSortModel()
+  model!.add("CDNUMBER",GxColumn.SORT_DESC())
+  model!.add("TITLE",GxColumn.SORT_ASC())
 
   grid!.setSortModel(model!)
 return

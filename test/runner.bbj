@@ -11,7 +11,7 @@ use ::BBjUnitTest/BBjUnitTest.bbj::GridUnitTest
 suite! = ARGV(1 , err=*next)
 if(suite! <> null())
     suite! = CVS(suite! , 1 + 2)
-    suite! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/" + suite! + "/" + "BBjGridExWidget" +  suite! + "Suite.bbjt")
+    suite! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/" + suite! + "/" + "Gx" +  suite! + "Suite.bbjt")
 else
     suite! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/suite.bbjt") 
 fi 

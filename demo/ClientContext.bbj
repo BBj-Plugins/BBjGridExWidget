@@ -1,8 +1,8 @@
 ? 'HIDE'
 
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -48,11 +48,11 @@ main:
   defaultCurrency$ = str(currencies!.getItemAt(currencies!.getSelectedIndex()))
   grid!.getClientContext().addProperty("currency",defaultCurrency$)
   
-  declare BBjGridExWidgetColumn costColumn!
+  declare GxColumn costColumn!
   costColumn! = grid!.getColumn("COST")
   
-  declare BBjGridExWidgetExpression exp!
-  exp! = new BBjGridExWidgetExpression(" x + ' ' + ctx.currency")
+  declare GxExpression exp!
+  exp! = new GxExpression(" x + ' ' + ctx.currency")
   costColumn!.setValueFormatterExpression(exp!)
 return
 

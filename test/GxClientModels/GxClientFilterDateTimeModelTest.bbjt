@@ -1,0 +1,98 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterDateTimeModel
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterDateTimeFilterOptions
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxClientFilterDateTimeModelTest
+
+    field private GxClientFilterDateTimeModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxClientFilterDateTimeModel()
+    methodend
+
+    rem @Test
+    method public void testConstructors()
+        declare GxClientFilterDateTimeModel obj!
+        
+        filter! = "2020-01-01T12:00:00.000Z"
+        filterTo! = "2020-02-01T12:00:00.000Z"
+        
+        rem 3 params
+        obj! = new GxClientFilterDateTimeModel(filter!,filterTo! , GxColumnFilterDateTimeFilterOptions.GREATER_THAN())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getFilterTo() , filterTo!)
+        Assert.Equals(obj!.getType() , GxColumnFilterDateTimeFilterOptions.GREATER_THAN())
+        
+        rem 2 params (filter , filterTo)
+        obj! = new GxClientFilterDateTimeModel(filter!,filterTo!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getFilterTo() , filterTo!)
+        Assert.Equals(obj!.getType() , GxColumnFilterDateTimeFilterOptions.EQUALS())        
+                
+        rem 1 params (filter)
+        obj! = new GxClientFilterDateTimeModel(filter!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , GxColumnFilterDateTimeFilterOptions.EQUALS())    
+        
+        rem no params
+        obj! = new GxClientFilterDateTimeModel()
+        Assert.IsNull(obj!.getFilter())
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , GxColumnFilterDateTimeFilterOptions.EQUALS())                 
+    methodend
+    
+    rem @Test
+    method public void testCanSetFilter()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filter").equals(new JsonNull()), BBjAPI.TRUE)
+        
+        #Instance!.setFilter("2020-01-01T12:00:00.000Z")
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filter").getAsString(), "2020-01-01T12:00:00.000Z")
+    methodend  
+    
+    rem @Test
+    method public void testCanSetFilterTo()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filterTo").equals(new JsonNull()), BBjAPI.TRUE)
+        
+        #Instance!.setFilterTo("2020-02-01T12:00:00.000Z")
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filterTo").getAsString(), "2020-02-01T12:00:00.000Z")
+    methodend      
+     
+    rem @Test
+    method public void testClearFilter()
+        #Instance!.setFilter("2020-01-01T12:00:00.000Z")
+        #Instance!.setFilterTo("2020-02-01T12:00:00.000Z")
+        #Instance!.setType(GxColumnFilterDateTimeFilterOptions.GREATER_THAN())
+        
+        #Instance!.clearFilter()
+        Assert.IsNull(#Instance!.getFilter())
+        Assert.IsNull(#Instance!.getFilterTo())
+        Assert.Equals(#Instance!.getType(),GxColumnFilterDateTimeFilterOptions.EQUALS())
+    methodend   
+         
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

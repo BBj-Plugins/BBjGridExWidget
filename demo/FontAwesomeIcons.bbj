@@ -6,7 +6,7 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -19,8 +19,8 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"FontAwesome Icons Demo
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-template! = BBjGridExWidgetDemoUtilities.readAssetsAsString("templates/grid-template-with-font-awesome.html")
-icons! = BBjGridExWidgetDemoUtilities.readAssetsAsString("templates/icons.json")
+template! = GxDemoUtilities.readAssetsAsString("templates/grid-template-with-font-awesome.html")
+icons! = GxDemoUtilities.readAssetsAsString("templates/icons.json")
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600 ,template!)

@@ -6,14 +6,14 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererCustomHTML
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionBytesFormatter
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionBytesFormatter
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 
 ? 'HIDE'
 
-BBjGridExWidgetDemoUtilities.nagAboutLicense()
+GxDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
@@ -33,7 +33,7 @@ REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,40,wnd!.getWidth(),wnd!.getHeight() - 40)
 wnd!.setBackColor(new BBjColor(45,52,54))
 grid!.getOptions().setGroupDefaultExpanded(0)
-grid!.getOptions().setGroupColumnLabel("BBjGridExWidget Demo")
+grid!.getOptions().setGroupColumnLabel("Gx Demo")
 grid!.getOptions().setShowGroupChildCount(0)
 
 rem /**
@@ -50,16 +50,16 @@ rem  * The grid provides be default sensible configuration , but
 rem  * you can hook on and change these settings using the AutoGroupColumnDefinition
 rem  * load a lodash template and replace the icons in the template with base64 strings of the selected images
 rem  * on the disk. then we create a custom html renderer. the renderer will be used inside the default group renderer
-rem  * (BBjGridExWidgetRendererGroupCellRenderer).
+rem  * (GxRendererGroupCellRenderer).
 rem  */
-template! = BBjGridExWidgetDemoUtilities.readAssetsAsString("templates/tree-icons-custom-template.tpl")
+template! = GxDemoUtilities.readAssetsAsString("templates/tree-icons-custom-template.tpl")
 template! = template!.replaceAll("__FILE_ICON", BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/file.png"))
 template! = template!.replaceAll("__FOLDER_ICON",BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/folder.png"))
 
 autoGroupDef! = grid!.getOptions().getAutoGroupColumnDefinition()
 autoGroupDef!.setPinned("left")
 autoGroupDef!.setWidth(500)
-autoGroupDef!.getCellRenderer().setInnerRenderer(new BBjGridExWidgetRendererCustomHTML(template!))
+autoGroupDef!.getCellRenderer().setInnerRenderer(new GxRendererCustomHTML(template!))
 
 grid!.getSidebar().setHiddenByDefault(1)
 grid!.setTheme(grid!.GRID_THEME_BALHAM_DARK())
@@ -75,7 +75,7 @@ rem  */
 main:
   declare ResultSet rs!
 
-  grid!.setData(BBjGridExWidgetDemoUtilities.buildResultSetFromDir("BBjGridExWidget/Demo"))
+  grid!.setData(GxDemoUtilities.buildResultSetFromDir("BBjGridExWidget/Demo"))
 
   filePath! = grid!.getColumn("filepath")
   filePath!.setHidden(1)
@@ -83,7 +83,7 @@ main:
   size! = grid!.getColumn("size")
   size!.setAggFunc("sum")
   size!.setAlignment(BBjGridExWidget.GRID_ALIGN_RIGHT() , 1)
-  size!.setValueFormatterExpression(new BBjGridExWidgetExpressionBytesFormatter("### ##0.00"))
+  size!.setValueFormatterExpression(new GxExpressionBytesFormatter("### ##0.00"))
 
   grid!.setFitToGrid()
 return

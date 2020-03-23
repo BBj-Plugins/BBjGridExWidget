@@ -6,11 +6,11 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBarAggregationComponent
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRangeSelectionModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientColumnModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarAggregationComponent
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRangeSelectionModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientColumnModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeSelectionModel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
@@ -20,7 +20,7 @@ use java.util.Random
 
 ? 'HIDE'
 
-BBjGridExWidgetDemoUtilities.nagAboutLicense()
+GxDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 
@@ -73,7 +73,7 @@ main:
 
   REM  Attach the aggregation component to the grid's built-in statusbar.
   REM  The component provides aggregations on the selected range.
-  grid!.getStatusbar().addComponent(new BBjGridExWidgetStatusBarAggregationComponent("right"))
+  grid!.getStatusbar().addComponent(new GxStatusBarAggregationComponent("right"))
 
   REM  Here we add a range selection to the grid by defining the columns which are included
   REM  in the range and the start and end row's index/id
@@ -97,13 +97,13 @@ rem /**
 rem  * The following code, will handle range selection changes and do the same calculation the grid does on the client
 rem  * but in BBj and then it displays the result in the BBj statusbar down the page.
 rem  *
-rem  * But note that It is always recommended to use the statusbar components BBjGridExWidgetStatusBarAggregationComponent
+rem  * But note that It is always recommended to use the statusbar components GxStatusBarAggregationComponent
 rem  * which is shipped with the grid. This component will be much faster because it is handling the heavy logic on the client
 rem  * and it does not need to communicate with BBj to achieve its job.
 rem  */
 onRangeSelectionChange:
-  declare auto BBjGridExWidgetClientRangeSelectionModel currentRange!
-  declare auto BBjGridExWidgetClientColumnModel column!
+  declare auto GxClientRangeSelectionModel currentRange!
+  declare auto GxClientColumnModel column!
 
   REM vector of ranges
   ranges! = grid!.getRangeSelections()
@@ -178,7 +178,7 @@ rem /**
 rem  * Add a random add range model
 rem  */
 onRandomRange:
-    declare BBjGridExWidgetClientAddRangeSelectionModel addModel!
+    declare GxClientAddRangeSelectionModel addModel!
 
     REM  list of columns which can be included in the range
     columns! = new ArrayList()
@@ -198,7 +198,7 @@ onRandomRange:
      columns!.remove(randomIndex!)
     NEXT index
 
-    addModel! =  new BBjGridExWidgetClientAddRangeSelectionModel()
+    addModel! =  new GxClientAddRangeSelectionModel()
     addModel!.setColumns(rangeColumns!)
     addModel!.setStart(str(rnd(10)))
     addModel!.setEnd(str(rnd(10)))

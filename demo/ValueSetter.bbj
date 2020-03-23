@@ -9,9 +9,9 @@ rem  */
 ? 'HIDE'
 
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientCellModel
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsCell
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientCellModel
 use com.basiscomponents.db.DataRow
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -65,7 +65,7 @@ main:
   grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
   grid!.setData(rs!)
 
-  declare auto BBjGridExWidgetColumn fullNameColumn!
+  declare auto GxColumn fullNameColumn!
   fullNameColumn! = grid!.addColumn("FULL_NAME","Full Name")
   fullNameColumn!.setEditable(1)
   fullNameColumn!.setValueGetterExpression("data.FIRST_NAME + ' ' + data.LAST_NAME")
@@ -76,8 +76,8 @@ main:
 return
 
 cellEditingChanged:
-  declare auto BBjGridExWidgetClientEventsCell cellEvent!
-  declare auto BBjGridExWidgetClientCellModel cellModel!
+  declare auto GxClientEventsCell cellEvent!
+  declare auto GxClientCellModel cellModel!
   declare auto DataRow row!
   
   lastEvent! = BBjAPI().getLastEvent() 

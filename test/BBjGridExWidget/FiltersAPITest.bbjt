@@ -7,10 +7,10 @@ rem  * file that was distributed with this source code.
 rem  */
 
 use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterTextModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientFilterNumberModel
-use ::BBjGridExWidget/BBjGridExWidgetFilters.bbj::BBjGridExWidgetFilterSetFilter
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 use java.util.LinkedHashMap
@@ -26,7 +26,7 @@ class public FiltersAPITest
 
     rem @Test
     method public void testSetFilterAutoSetColumnAndWidget()
-        model! = new BBjGridExWidgetClientFilterTextModel()
+        model! = new GxClientFilterTextModel()
         returnedModel! = #Instance!.setFilterModel("foo",model!)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("foo", model!.getColumn())
@@ -35,8 +35,8 @@ class public FiltersAPITest
         
     rem @Test
     method public void testExecuteFilterTransactionCombineApplyAndExecuteCode()
-        stringModel! = new BBjGridExWidgetClientFilterTextModel("someFilter")
-        numberModel! = new BBjGridExWidgetClientFilterNumberModel(10,100)
+        stringModel! = new GxClientFilterTextModel("someFilter")
+        numberModel! = new GxClientFilterNumberModel(10,100)
         
         transaction! = new LinkedHashMap()
         transaction!.put("string",stringModel!)
@@ -54,7 +54,7 @@ class public FiltersAPITest
     
     rem @Test
     method public void testGetFilterModelParseClientModel()
-        column! = new BBjGridExWidgetColumn("test","test",java.sql.Types.NUMERIC)
+        column! = new GxColumn("test","test",java.sql.Types.NUMERIC)
         
         #Instance!.addColumn(column!)
         #Instance!.setIsReady(1)
@@ -69,35 +69,35 @@ class public FiltersAPITest
     
     rem @Test
     method public void testGetFilterCanGuessTheFilterModel()
-        column! = new BBjGridExWidgetColumn("test")
+        column! = new GxColumn("test")
         #Instance!.addColumn(column!)
         
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterTextModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterTextModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())
         
         column!.setType(java.sql.Types.NUMERIC)
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterNumberModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterNumberModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
         column!.setType(java.sql.Types.DATE)
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterDateTimeModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())          
         
         column!.setType(java.sql.Types.BOOLEAN)
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterBooleanModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterBooleanModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
-        column!.setFilter(new BBjGridExWidgetFilterSetFilter())
+        column!.setFilter(new GxFilterSetFilter())
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilteSetFilterModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterSetFilterModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
@@ -107,26 +107,26 @@ class public FiltersAPITest
     
     rem @Test
     method public void testGetFilterAsCombinedModel()
-        column! = new BBjGridExWidgetColumn("test")
+        column! = new GxColumn("test")
         #Instance!.addColumn(column!)   
         
         model! = #Instance!.getFilterAsCombinedModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterCombinedModel"), BBjAPI.TRUE)
-        Assert.Equals(model!.getFirstCondition().toString().endsWith("BBjGridExWidgetClientFilterTextModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterTextModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())
         
         column!.setType(java.sql.Types.NUMERIC)
         model! = #Instance!.getFilterAsCombinedModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterCombinedModel"), BBjAPI.TRUE)
-        Assert.Equals(model!.getFirstCondition().toString().endsWith("BBjGridExWidgetClientFilterNumberModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterNumberModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
         column!.setType(java.sql.Types.DATE)        
         model! = #Instance!.getFilterAsCombinedModel("test")
-        Assert.Equals(model!.toString().endsWith("BBjGridExWidgetClientFilterCombinedModel"), BBjAPI.TRUE)
-        Assert.Equals(model!.getFirstCondition().toString().endsWith("BBjGridExWidgetClientFilterDateTimeModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         

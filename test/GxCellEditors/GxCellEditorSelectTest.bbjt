@@ -1,0 +1,47 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSelect
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxCellEditorSelectTest
+
+    field private GxCellEditorSelect Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxCellEditorSelect()
+    methodend
+
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , "agSelectCellEditor")
+    methodend
+        
+    rem @Test
+    method public void testCanSetValues()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("values").equals(new JsonNull()) , BBjAPI.TRUE)
+        
+        #Instance!.getValues().add("foo")
+        #Instance!.getValues().add("bar")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("values").getAsJsonArray().equals(#Instance!.getValues()),BBjAPI.TRUE)
+    methodend
+            
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+
+classend

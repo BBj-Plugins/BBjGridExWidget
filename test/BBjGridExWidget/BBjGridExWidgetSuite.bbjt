@@ -10,5 +10,5 @@ use ::BBjGridExWidget/test/BBjGridExWidget/FiltersAPITest.bbjt::FiltersAPITest
 use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetTest.bbjt::BBjGridExWidgetTest
 
 rem @SuiteClasses("BBjGridExWidgetTest","FiltersAPITest")
-class public BBjGridExWidgetSuite
+class public GxSuite
 classend

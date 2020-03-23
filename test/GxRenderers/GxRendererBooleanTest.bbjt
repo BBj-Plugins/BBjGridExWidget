@@ -1,0 +1,47 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererBoolean
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxRendererBooleanTest
+
+    field private GxRendererBoolean Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxRendererBoolean()
+    methodend
+
+    rem @Test
+    method public void testRenderNameIsSet()
+        Assert.Equals(#Instance!.getCellRendererName() , "BooleanRenderer")
+    methodend    
+
+    rem @Test
+    method public void testCansetTrueValue()
+        #Instance!.setTrueValue("t")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanTrueRenderValue").getAsString(),"t")
+    methodend
+    
+    rem @Test
+    method public void testCansetFalseValue()
+        #Instance!.setFalseValue("f")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanFalseRenderValue").getAsString(),"f")
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

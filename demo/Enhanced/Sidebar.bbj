@@ -6,15 +6,15 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetColumnsToolpanel
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use ::BBjGridExWidget/GxSidebar.bbj::GxColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use com.google.gson.JsonObject
 
 ? 'HIDE'
 
-BBjGridExWidgetDemoUtilities.nagAboutLicense()
+GxDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
@@ -55,7 +55,7 @@ fillGrid:
 
     grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
 
-    columnsToolpanel! = cast(BBjGridExWidgetColumnsToolpanel,grid!.getSidebar().getToolpanels().get(BBjGridExWidgetColumnsToolpanel.ID()))
+    columnsToolpanel! = cast(GxColumnsToolpanel,grid!.getSidebar().getToolpanels().get(GxColumnsToolpanel.ID()))
     columnsToolpanel!.setSuppressValues(1)
 
     grid!.setData(rs!,"CDNUMBER")
@@ -72,9 +72,9 @@ toolpanelToggle:
     sidebar! = grid!.getSidebar()
 
     if toolpanelState! = 0 then
-        sidebar!.openToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
+        sidebar!.openToolpanel(GxColumnsToolpanel.ID())
     else
-        sidebar!.closeToolpanel(BBjGridExWidgetColumnsToolpanel.ID())
+        sidebar!.closeToolpanel(GxColumnsToolpanel.ID())
     fi
 
     toolpanelState! = !toolpanelState!

@@ -5,15 +5,15 @@ rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
-use ::BBjGridExWidget/test/BBjGridExWidgetRenderers/BBjGridExWidgetRenderersSuite.bbjt::BBjGridExWidgetRenderersSuite
-use ::BBjGridExWidget/test/BBjGridExWidgetCellEditors/BBjGridExWidgetCellEditorsSuite.bbjt::BBjGridExWidgetCellEditorsSuite
-use ::BBjGridExWidget/test/BBjGridExWidgetFilters/BBjGridExWidgetFiltersSuite.bbjt::BBjGridExWidgetFiltersSuite
-use ::BBjGridExWidget/test/BBjGridExWidgetOptions/BBjGridExWidgetOptionsSuite.bbjt::BBjGridExWidgetOptionsSuite
-use ::BBjGridExWidget/test/BBjGridExWidgetColumns/BBjGridExWidgetColumnsSuite.bbjt::BBjGridExWidgetColumnsSuite
-use ::BBjGridExWidget/test/BBjGridExWidgetClientModels/BBjGridExWidgetClientModelsSuite.bbjt::BBjGridExWidgetClientModelsSuite
-use ::BBjGridExWidget/test/BBjGridExWidgetClientJsonFactory/BBjGridExWidgetClientJsonFactorySuite.bbjt::BBjGridExWidgetClientJsonFactorySuite
+use ::BBjGridExWidget/test/GxRenderers/GxRenderersSuite.bbjt::GxRenderersSuite
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorsSuite.bbjt::GxCellEditorsSuite
+use ::BBjGridExWidget/test/GxFilters/GxFiltersSuite.bbjt::GxFiltersSuite
+use ::BBjGridExWidget/test/GxOptions/GxOptionsSuite.bbjt::GxOptionsSuite
+use ::BBjGridExWidget/test/GxColumns/GxColumnsSuite.bbjt::GxColumnsSuite
+use ::BBjGridExWidget/test/GxClientModels/GxClientModelsSuite.bbjt::GxClientModelsSuite
+use ::BBjGridExWidget/test/GxClientJsonFactory/GxClientJsonFactorySuite.bbjt::GxClientJsonFactorySuite
 use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetSuite.bbjt::BBjGridExWidgetSuite
 
-rem @SuiteClasses("BBjGridExWidgetSuite","BBjGridExWidgetRenderersSuite","BBjGridExWidgetCellEditorsSuite","BBjGridExWidgetFiltersSuite","BBjGridExWidgetOptionsSuite","BBjGridExWidgetColumnsSuite","BBjGridExWidgetClientModelsSuite","BBjGridExWidgetClientJsonFactorySuite")
+rem @SuiteClasses("BBjGridExWidgetSuite","GxRenderersSuite","GxCellEditorsSuite","GxFiltersSuite","GxOptionsSuite","GxColumnsSuite","GxClientModelsSuite","GxClientJsonFactorySuite")
 class public BBjGridExWidgeSuites
 classend

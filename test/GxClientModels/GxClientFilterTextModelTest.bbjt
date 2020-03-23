@@ -1,0 +1,73 @@
+
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterTextFilterOptions
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxClientFilterTextModelTest
+
+    field private GxClientFilterTextModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxClientFilterTextModel()
+    methodend
+    
+    rem @Test
+    method public void testConstructors()
+        declare GxClientFilterTextModel obj!
+        
+        filter! = "myFilter"
+        rem two params
+        obj! = new GxClientFilterTextModel(filter!,GxColumnFilterTextFilterOptions.EQUALS())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getType() , GxColumnFilterTextFilterOptions.EQUALS())
+        
+        rem one param
+        obj! = new GxClientFilterTextModel(filter!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getType() , GxColumnFilterTextFilterOptions.CONTAINS())       
+        
+        rem no params
+        obj! = new GxClientFilterTextModel()
+        Assert.IsNull(obj!.getFilter())
+        Assert.Equals(obj!.getType() , GxColumnFilterTextFilterOptions.CONTAINS())   
+    methodend
+    
+    rem @Test
+    method public void testCanSetFilter()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filter").equals(new JsonNull()), BBjAPI.TRUE)
+        
+        #Instance!.setFilter("myCustomFilter")
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filter").getAsString(), "myCustomFilter")
+    methodend  
+     
+    rem @Test
+    method public void testClearFilter()
+        #Instance!.setFilter("string")
+        #Instance!.setType(GxColumnFilterTextFilterOptions.NOT_CONTAINS())
+        
+        #Instance!.clearFilter()
+        Assert.IsNull(#Instance!.getFilter())
+        Assert.Equals(#Instance!.getType() , GxColumnFilterTextFilterOptions.CONTAINS())
+    methodend
+         
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

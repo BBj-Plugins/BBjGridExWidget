@@ -1,15 +1,15 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBarTotalRowCountComponent
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBarFilteredRowCountComponent
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBarSelectedRowCountComponent
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::BBjGridExWidgetDemoUtilities
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarTotalRowCountComponent
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarFilteredRowCountComponent
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarTotalAndFilteredRowCountComponent
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarSelectedRowCountComponent
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 
 ? 'HIDE'
 
-BBjGridExWidgetDemoUtilities.nagAboutLicense()
+GxDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
@@ -24,25 +24,25 @@ rem btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onToggle")
 static! = wnd!.addStaticText(202,10,10,200,25,"Toggle Statusbar Components" , $0000$ )
 totalRow! = wnd!.addCheckBox(203,10,30,200,22,"Total Row")
 totalRow!.setSelected(1)
-totalRow!.setName(BBjGridExWidgetStatusBarTotalRowCountComponent.NAME())
+totalRow!.setName(GxStatusBarTotalRowCountComponent.NAME())
 totalRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 totalRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 filteredRow! = wnd!.addCheckBox(204,10,50,200,22,"Filtered Row")
 filteredRow!.setSelected(1)
-filteredRow!.setName(BBjGridExWidgetStatusBarFilteredRowCountComponent.NAME())
+filteredRow!.setName(GxStatusBarFilteredRowCountComponent.NAME())
 filteredRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 filteredRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 totalAndFilteredRow! = wnd!.addCheckBox(205,10,70,200,22,"Total And Filtered Row")
 totalAndFilteredRow!.setSelected(1)
-totalAndFilteredRow!.setName(BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent.NAME())
+totalAndFilteredRow!.setName(GxStatusBarTotalAndFilteredRowCountComponent.NAME())
 totalAndFilteredRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 totalAndFilteredRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 selectedRow! = wnd!.addCheckBox(206,10,90,200,22,"Selected Row")
 selectedRow!.setSelected(1)
-selectedRow!.setName(BBjGridExWidgetStatusBarSelectedRowCountComponent.NAME())
+selectedRow!.setName(GxStatusBarSelectedRowCountComponent.NAME())
 selectedRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 selectedRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
@@ -50,10 +50,10 @@ grid! = new BBjGridExWidget(wnd!,100,200,0,600,600)
 grid!.getOptions().setMultipleSelection(1)
 
 statusbar! = grid!.getStatusbar()
-statusbar!.addComponent(new BBjGridExWidgetStatusBarTotalRowCountComponent())
-statusbar!.addComponent(new BBjGridExWidgetStatusBarFilteredRowCountComponent())
-statusbar!.addComponent(new BBjGridExWidgetStatusBarTotalAndFilteredRowCountComponent("right"))
-statusbar!.addComponent(new BBjGridExWidgetStatusBarSelectedRowCountComponent("center"))
+statusbar!.addComponent(new GxStatusBarTotalRowCountComponent())
+statusbar!.addComponent(new GxStatusBarFilteredRowCountComponent())
+statusbar!.addComponent(new GxStatusBarTotalAndFilteredRowCountComponent("right"))
+statusbar!.addComponent(new GxStatusBarSelectedRowCountComponent("center"))
 
 gosub fillGrid
 

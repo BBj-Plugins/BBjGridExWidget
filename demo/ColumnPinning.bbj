@@ -9,7 +9,7 @@ rem  */
 ? 'HIDE'
 
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
@@ -40,8 +40,8 @@ main:
   grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
   grid!.setData(rs!)
 
-  grid!.getColumn("CDNUMBER").setPinned(BBjGridExWidgetColumn.PINNED_LEFT())
-  grid!.getColumn("COST").setPinned(BBjGridExWidgetColumn.PINNED_RIGHT())
+  grid!.getColumn("CDNUMBER").setPinned(GxColumn.PINNED_LEFT())
+  grid!.getColumn("COST").setPinned(GxColumn.PINNED_RIGHT())
 return
 
 rem /**

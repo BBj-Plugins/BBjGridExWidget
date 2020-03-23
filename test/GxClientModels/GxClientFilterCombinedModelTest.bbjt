@@ -1,0 +1,105 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/test/GxClientModels/Mocks/GxClientFilterCombinedModelMocks.bbj::FilterWhichDoesNotSupportCombinedModelsMock
+use ::BBjGridExWidget/test/GxClientModels/Mocks/GxClientFilterCombinedModelMocks.bbj::FilterWhichSupportsCombinedModelsMock
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxClientFilterCombinedModelTest
+
+    field private GxClientFilterCombinedModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxClientFilterCombinedModel()
+        #Instance!.setWidget(new BBjGridExWidgetMock())
+    methodend
+
+    rem @Test
+    method public void testConstructors()
+        declare GxClientFilterCombinedModel obj!
+        
+        firstCondition! = new FilterWhichSupportsCombinedModelsMock()
+        secondCondition! =  new FilterWhichSupportsCombinedModelsMock()
+        
+        rem 3 params 
+        obj! = new GxClientFilterCombinedModel(firstCondition!,secondCondition!, GxClientFilterCombinedModel.OPERATOR_OR())
+        Assert.Equals(obj!.getFirstCondition().getAsJsonObject().equals(firstCondition!.getAsJsonObject()),BBjAPI.TRUE)
+        Assert.Equals(obj!.getSecondCondition().getAsJsonObject().equals(secondCondition!.getAsJsonObject()),BBjAPI.TRUE)
+        Assert.Equals(obj!.getOperator(), GxClientFilterCombinedModel.OPERATOR_OR())
+        
+        rem 2 params 
+        obj! = new GxClientFilterCombinedModel(firstCondition!,secondCondition!)
+        Assert.Equals(obj!.getFirstCondition().getAsJsonObject().equals(firstCondition!.getAsJsonObject()),BBjAPI.TRUE)
+        Assert.Equals(obj!.getSecondCondition().getAsJsonObject().equals(secondCondition!.getAsJsonObject()),BBjAPI.TRUE)
+        Assert.Equals(obj!.getOperator(), GxClientFilterCombinedModel.OPERATOR_AND())
+            
+        rem 1 params 
+        obj! = new GxClientFilterCombinedModel(firstCondition!)
+        Assert.Equals(obj!.getFirstCondition().getAsJsonObject().equals(firstCondition!.getAsJsonObject()),BBjAPI.TRUE)
+        Assert.IsNull(obj!.getSecondCondition())
+        Assert.Equals(obj!.getOperator(), GxClientFilterCombinedModel.OPERATOR_AND())
+                  
+        rem no paprams 
+        obj! = new GxClientFilterCombinedModel()
+        Assert.IsNull(obj!.getFirstCondition())
+        Assert.IsNull(obj!.getSecondCondition())
+        Assert.Equals(obj!.getOperator(), GxClientFilterCombinedModel.OPERATOR_AND())      
+    methodend
+    
+    rem @Test
+    method public void testSetFirstConditionThrow256Error()
+        condition! = new FilterWhichDoesNotSupportCombinedModelsMock()
+        Assert.Expect(#Instance!.setFirstCondition(condition!),256)
+    methodend
+    
+    rem @Test
+    method public void testCanSetFirstCondition()
+        condition! = new FilterWhichSupportsCombinedModelsMock()
+        #Instance!.setFirstCondition(condition!)
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.getAsJsonObject().equals(condition!.getAsJsonObject()) , BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testSetSecondConditionThrow256Error()
+        condition! = new FilterWhichDoesNotSupportCombinedModelsMock()
+        Assert.Expect(#Instance!.setSecondCondition(condition!),256)
+    methodend
+    
+    rem @Test
+    method public void testCanSetBothConditions()
+        condition! = new FilterWhichSupportsCombinedModelsMock()
+        #Instance!.setFirstCondition(condition!)
+        #Instance!.setSecondCondition(condition!)
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("condition1").getAsJsonObject().equals(condition!.getAsJsonObject()) , BBjAPI.TRUE)
+        Assert.Equals(json!.get("condition2").getAsJsonObject().equals(condition!.getAsJsonObject()) , BBjAPI.TRUE)
+        Assert.Equals(json!.get("operator").getAsString(), #Instance!.getOperator())
+    methodend
+        
+    rem @Test
+    method public void testCanSetSecondCondition()
+        condition! = new FilterWhichSupportsCombinedModelsMock()
+        #Instance!.setSecondCondition(condition!)
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("condition2").getAsJsonObject().equals(condition!.getAsJsonObject()) , BBjAPI.TRUE)
+    methodend  
+              
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

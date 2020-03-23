@@ -1,0 +1,121 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicBoolean
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxFilterBasicBooleanTest
+
+    field private GxFilterBasicBoolean Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxFilterBasicBoolean()
+    methodend
+
+    rem @Test
+    method public void testFilterNameIsSet()
+        Assert.Equals(#Instance!.getFilterName(), "BooleanFilter")
+    methodend
+
+   rem @Test
+    method public void testCanSetApplyButton()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("applyButton").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setApplyButton(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("applyButton").getAsBoolean() , BBjAPI.TRUE)
+    methodend
+
+    rem @Test
+    method public void testCanSetClearButton()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("clearButton").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setClearButton(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("clearButton").getAsBoolean() , BBjAPI.TRUE)
+    methodend  
+    
+    rem @Test
+    method public void testCanSetResetButton()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("resetButton").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setRestButton(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("resetButton").getAsBoolean() , BBjAPI.TRUE)
+    methodend  
+    
+    rem @Test
+    method public void testCansetUsedTrueValue()
+        #Instance!.setUsedTrueValue("t")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanUsedTrueValue").getAsString(),"t")
+    methodend
+    
+    rem @Test
+    method public void testCansetUsedFalseValue()
+        #Instance!.setUsedFalseValue("f")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanUsedFalseValue").getAsString(),"f")
+    methodend
+
+    rem @Test
+    method public void testCanSetTrueValue()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(len(json!.get("booleanFilterTranslation").getAsJsonObject().get("true").	getAsString()) > 0, BBjAPI.TRUE)
+        
+        #Instance!.setTrueValue("t")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanFilterTranslation").getAsJsonObject().get("true").	getAsString(), "t")
+
+    methodend
+    
+    rem @Test
+    method public void testCanSetFalseValue()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(len(json!.get("booleanFilterTranslation").getAsJsonObject().get("false").	getAsString()) > 0, BBjAPI.TRUE)
+        
+        #Instance!.setFalseValue("f")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("booleanFilterTranslation").getAsJsonObject().get("false").	getAsString(), "f")
+
+    methodend 
+    
+    rem @Test
+    method public void testCanSetNoneValue()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        rem Assert.Equals(len(json!.get("booleanFilterTranslation").getAsJsonObject().get("none").getAsString()) > 0, BBjAPI.TRUE)
+        
+        #Instance!.setFalseValue("n")
+        json! = #Instance!.getAsJsonObject()
+        rem Assert.Equals(json!.get("booleanFilterTranslation").getAsJsonObject().get("none").getAsString(), "n")
+
+    methodend        
+        
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

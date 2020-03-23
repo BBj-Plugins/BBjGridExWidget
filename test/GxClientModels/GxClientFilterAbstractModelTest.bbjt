@@ -1,0 +1,133 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use ::BBjGridExWidget/test/GxClientModels/Mocks/GxClientFilterAbstractModelMocks.bbj::FilterAbastractModelMock
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxClientFilterAbstractModelTest
+
+    field private FilterAbastractModelMock Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new FilterAbastractModelMock()
+        #Instance!.setWidget(new BBjGridExWidgetMock())
+    methodend
+
+    rem @Test
+    method public void testApplyThrowErrorWihoutColumn()
+        Assert.Expect(#Instance!.apply(1) , 256)
+        Assert.Expect(#Instance!.apply(0) , 256)        
+    methodend
+    
+    rem @Test
+    method public void testApplyThrowErrorWihoutWidget()
+        #Instance!.setColumn("foo")
+        #Instance!.setWidget(null())
+        Assert.Expect(#Instance!.apply(0) , 256)   
+        Assert.Expect(#Instance!.apply(1) , 256)        
+    methodend        
+    
+    rem @Test
+    method public void testApplyWithSendEnabled()
+        widget! = #Instance!.getWidget()
+        #Instance!.setColumn("foo")
+        code! = #Instance!.apply(1)
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.TRUE)                
+    methodend
+    
+    rem @Test
+    method public void testApplyWithSendDisabled()
+        widget! = #Instance!.getWidget()
+        #Instance!.setColumn("foo")
+        code! = #Instance!.apply(0)
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.FALSE)
+        Assert.Equals(len(code!) > 0,BBjAPI.TRUE)                    
+    methodend    
+    
+    rem @Test
+    method public void testApplyWithNoParams()
+        widget! = #Instance!.getWidget()
+        #Instance!.setColumn("foo")
+        code! = #Instance!.apply()
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.TRUE)                
+    methodend
+    
+    rem @Test
+    method public void testExecuteThrowErrorWihoutWidget()
+        #Instance!.setWidget(null())
+        Assert.Expect(#Instance!.execute(0) , 256)   
+        Assert.Expect(#Instance!.execute(1) , 256)        
+    methodend    
+        
+    rem @Test
+    method public void testExecuteWithSendEnabled()
+        widget! = #Instance!.getWidget()
+        code! = #Instance!.execute(1)
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.TRUE)                
+    methodend      
+    
+    rem @Test
+    method public void testExecuteWithSendDisabled()
+        widget! = #Instance!.getWidget()
+        code! = #Instance!.execute(0)
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.FALSE)
+        Assert.Equals(len(code!) > 0,BBjAPI.TRUE)                   
+    methodend
+    
+    rem @Test
+    method public void testExecuteWithNoParams()
+        widget! = #Instance!.getWidget()
+        code! = #Instance!.execute()
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testUpdate()
+        widget! = #Instance!.getWidget()
+        #Instance!.setColumn("foo")
+        applyCode! = #Instance!.apply(0)
+        executeCode! = #Instance!.execute(0)
+        code! = #Instance!.update()
+        Assert.Equals(code!,applyCode! + executeCode!)
+        Assert.Equals(widget!.getBacklog().contains(code!),BBjAPI.TRUE)
+    methodend                  
+    
+    rem @Test        
+    method public void testIsFilterActiveThrowErrorWihoutColumn()
+        #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
+        #Instance!.setColumn(null())
+        Assert.Expect(#Instance!.isFilterActive() , 256)
+    methodend
+                
+    rem @Test                
+    method public void testIsFilterActiveThrowErrorWihoutWidget()
+        #Instance!.setColumn("foo")
+        #Instance!.setWidget(null())
+        Assert.Expect(#Instance!.isFilterActive() , 256)
+    methodend
+    
+    rem @Test                
+    method public void testIsFilterActive()
+      widget! = #Instance!.getWidget()
+      Assert.Equals(widget!.getIsReady() , BBjAPI.FALSE)
+      #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
+      
+      #Instance!.setColumn("foo")
+      #Instance!.isFilterActive()
+      Assert.Equals(len(widget!.getLastExecutedScript()) > 0,BBjAPI.TRUE)
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

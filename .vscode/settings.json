@@ -167,6 +167,138 @@
         "ValueSetter.bbj": {
             "name": "ValueSetter",
             "style": ""
+        },
+        "CellsConditionalStyling.bbj": {
+            "name": "CellsConditionalStyling",
+            "style": ""
+        },
+        "ChunkRendering.bbj": {
+            "name": "ChunkRendering",
+            "style": ""
+        },
+        "ColumnGrouping.bbj": {
+            "name": "ColumnGrouping",
+            "style": ""
+        },
+        "ColumnGroupingNested.bbj": {
+            "name": "ColumnGroupingNested",
+            "style": ""
+        },
+        "ColumnSetup.bbj": {
+            "name": "ColumnSetup",
+            "style": ""
+        },
+        "ColumnsSizing.bbj": {
+            "name": "ColumnsSizing",
+            "style": ""
+        },
+        "ColumnState.bbj": {
+            "name": "ColumnState",
+            "style": ""
+        },
+        "ColumnsUpdate.bbj": {
+            "name": "ColumnsUpdate",
+            "style": ""
+        },
+        "CustomGrid.bbj": {
+            "name": "CustomGrid",
+            "style": ""
+        },
+        "DataUpdate.bbj": {
+            "name": "DataUpdate",
+            "style": ""
+        },
+        "Datatypes.bbj": {
+            "name": "Datatypes",
+            "style": ""
+        },
+        "Editing.bbj": {
+            "name": "Editing",
+            "style": ""
+        },
+        "Expression.bbj": {
+            "name": "Expression",
+            "style": ""
+        },
+        "FiltersAPI.bbj": {
+            "name": "FiltersAPI",
+            "style": ""
+        },
+        "FontAwesomeIcons.bbj": {
+            "name": "FontAwesomeIcons",
+            "style": ""
+        },
+        "JLib.bbj": {
+            "name": "JLib",
+            "style": ""
+        },
+        "Keypress.bbj": {
+            "name": "Keypress",
+            "style": ""
+        },
+        "RowsConditionalStyling.bbj": {
+            "name": "RowsConditionalStyling",
+            "style": ""
+        },
+        "Language.bbj": {
+            "name": "Language",
+            "style": ""
+        },
+        "Overlay.bbj": {
+            "name": "Overlay",
+            "style": ""
+        },
+        "Search.bbj": {
+            "name": "Search",
+            "style": ""
+        },
+        "Selection.bbj": {
+            "name": "Selection",
+            "style": ""
+        },
+        "TwoGrids.bbj": {
+            "name": "TwoGrids",
+            "style": ""
+        },
+        "ValuesParser.bbj": {
+            "name": "ValuesParser",
+            "style": ""
+        },
+        "Aggregation.bbj": {
+            "name": "Aggregation",
+            "style": ""
+        },
+        "Charting.bbj": {
+            "name": "Charting",
+            "style": ""
+        },
+        "ContextMenu.bbj": {
+            "name": "ContextMenu",
+            "style": ""
+        },
+        "Pivot.bbj": {
+            "name": "Pivot",
+            "style": ""
+        },
+        "RangeSelection.bbj": {
+            "name": "RangeSelection",
+            "style": ""
+        },
+        "RowGrouping.bbj": {
+            "name": "RowGrouping",
+            "style": ""
+        },
+        "Sidebar.bbj": {
+            "name": "Sidebar",
+            "style": ""
+        },
+        "Statusbar.bbj": {
+            "name": "Statusbar",
+            "style": ""
+        },
+        "TreeData.bbj": {
+            "name": "TreeData",
+            "style": ""
         }
     },
     "cSpell.words": [

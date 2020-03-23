@@ -1,0 +1,20 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/GxFilters/GxColumnFilterAGTest.bbjt::GxColumnFilterAGTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterTextTest.bbjt::GxFilterTextTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterNumberTest.bbjt::GxFilterNumberTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterBasicBooleanTest.bbjt::GxFilterBasicBooleanTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterBasicDateTimeTest.bbjt::GxFilterBasicDateTimeTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterBasicDateTimeTest.bbjt::GxFilterBasicDateTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterBasicTimeTest.bbjt::GxFilterBasicTimeTest
+use ::BBjGridExWidget/test/GxFilters/GxFilterSetFilterTest.bbjt::GxFilterSetFilterTest
+
+rem @SuiteClasses("GxColumnFilterAGTest","GxFilterTextTest","GxFilterNumberTest","GxFilterBasicBooleanTest","GxFilterBasicDateTimeTest","GxFilterBasicDateTest","GxFilterBasicTimeTest","GxFilterSetFilterTest")
+class public GxGxFiltersSuite
+classend
