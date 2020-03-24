@@ -609,6 +609,13 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjString ChartType! = null()
     rem /**
+    rem  * The field of the tooltip to apply to the cell.
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */
+    field public BBjString TooltipField! = null()      
+    rem /**
     rem  * Get pinned left constant
     rem  *
     rem  * @return BBjString <b>left</b>
@@ -1022,6 +1029,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
         column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)
         column!.addProperty("chartDataType",#getChartType(),err=*next)
+        column!.addProperty("tooltipField",#getTooltipField(),err=*next)
         filterEnabled! = #getEnableFilter()
         filter! = #getFilter()
 
