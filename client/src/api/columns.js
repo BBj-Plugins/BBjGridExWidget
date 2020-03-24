@@ -11,21 +11,23 @@ import { gw_executeExpression } from '../expression'
 const { deepParseJson } = require('deep-parse-json')
 
 /**
- * Setup the tooltip value getter for the passed column definition , if the column definition is a group
- * then the function will loop over all its children and setup the expression too.
+ * Setup the tooltip value getter and tooltip component for the passed column definition , if the column definition is a group
+ * then the function will loop over all its children and setup the expression and the component too.
  *
  * @param {Object} def column definition object
  */
-function _setupTooltipValueGetterExpression(def) {
+function _configureTooltips(def) {
   const tooltipValueGetterExpression = def.tooltipValueGetter
   if (tooltipValueGetterExpression) {
     def.tooltipValueGetter = params =>
       gw_executeExpression(tooltipValueGetterExpression, params)
   }
 
+  def.tooltipComponent = 'HTMLTooltip'
+
   // eslint-disable-next-line no-prototype-builtins
   if (def.hasOwnProperty('children')) {
-    def.children.forEach(child => _setupTooltipValueGetterExpression(child))
+    def.children.forEach(child => _configureTooltips(child))
   }
 }
 /**
@@ -44,7 +46,7 @@ export function gw_extendColumnDefinitions(definitions) {
     def.headerCheckboxSelection =
       def.headerCheckboxSelection || gw_isHeaderCheckboxSelection
 
-    _setupTooltipValueGetterExpression(def)
+    _configureTooltips(def)
   }
 }
 

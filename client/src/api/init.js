@@ -23,6 +23,7 @@ import {
   gw_debounce,
 } from 'events'
 import template from 'lodash-es/template'
+import HTMLTooltip from '../components/HTMLTooltip.js'
 
 const { deepParseJson } = require('deep-parse-json')
 
@@ -124,6 +125,7 @@ function gw_parseOptions(options) {
         DateTimeFilter: Basis.AgGridComponents.DateTimeFilter,
         ImageRenderer: Basis.AgGridComponents.ImageRenderer,
         TemplateRenderer: Basis.AgGridComponents.TemplateRenderer,
+        HTMLTooltip: HTMLTooltip,
       },
       context: {
         ...deepParsedOptions.context,
