@@ -616,6 +616,16 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjString TooltipField! = null()      
     rem /**
+    rem  * A Grid expression which can be executed to return the tooltip value 
+    rem  * to display for each cell.
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
+    rem  *
+    rem  * @see GxExpressions.GxExpression
+    rem  */
+    field public GxExpressionInterface TooltipValueGetterExpression! = null() 
+    rem /**
     rem  * Get pinned left constant
     rem  *
     rem  * @return BBjString <b>left</b>
@@ -1030,6 +1040,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)
         column!.addProperty("chartDataType",#getChartType(),err=*next)
         column!.addProperty("tooltipField",#getTooltipField(),err=*next)
+        column!.addProperty("tooltipValueGetter",#getTooltipValueGetterExpression().toString(),err=*next)
         filterEnabled! = #getEnableFilter()
         filter! = #getFilter()
 

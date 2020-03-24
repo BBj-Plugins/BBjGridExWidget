@@ -7,8 +7,27 @@
  */
 
 import { gw_getGrid } from './utilities'
+import { gw_executeExpression } from '../expression'
 const { deepParseJson } = require('deep-parse-json')
 
+/**
+ * Setup the tooltip value getter for the passed column definition , if the column definition is a group
+ * then the function will loop over all its children and setup the expression too.
+ *
+ * @param {Object} def column definition object
+ */
+function _setupTooltipValueGetterExpression(def) {
+  const tooltipValueGetterExpression = def.tooltipValueGetter
+  if (tooltipValueGetterExpression) {
+    def.tooltipValueGetter = params =>
+      gw_executeExpression(tooltipValueGetterExpression, params)
+  }
+
+  // eslint-disable-next-line no-prototype-builtins
+  if (def.hasOwnProperty('children')) {
+    def.children.forEach(child => _setupTooltipValueGetterExpression(child))
+  }
+}
 /**
  * Extend the column definitions
  *
@@ -24,6 +43,8 @@ export function gw_extendColumnDefinitions(definitions) {
     def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox
     def.headerCheckboxSelection =
       def.headerCheckboxSelection || gw_isHeaderCheckboxSelection
+
+    _setupTooltipValueGetterExpression(def)
   }
 }
 
