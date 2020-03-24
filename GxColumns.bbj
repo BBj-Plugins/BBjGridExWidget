@@ -730,6 +730,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         #ValueParserExpression! = new GxExpression(expression!)
     methodend
     rem /**
+    rem  * Create a GxExpression from string and set it as tooltip value getter
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setTooltipValueGetterExpression(BBjString expression!)
+        #TooltipValueGetterExpression! = new GxExpression(expression!)
+    methodend    
+    rem /**
     rem  * Set the allowd aggregation functions allowed on this column
     rem  *
     rem  * @param BBjString funcs! comma separated functinos
