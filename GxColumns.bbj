@@ -1714,7 +1714,9 @@ class public GxDefaultColumnGroup extends GxColumnDefinition
         group! = #super!.getAsJsonObject()
         group!.addProperty("marryChildren",#getMarryChildren().booleanValue(),err=*next)
         group!.addProperty("openByDefault",#getOpenByDefault().booleanValue(),err=*next)
-        group!.addProperty("headerTooltip",#getHeaderGroupTooltip(),err=*next)
+        if(#getHeaderGroupTooltip() <> null() AND len(#getHeaderGroupTooltip()) > 0)
+          group!.addProperty("headerTooltip",#getHeaderGroupTooltip(),err=*next) 
+        fi
         methodret group!
     methodend
 
