@@ -751,6 +751,14 @@ class public GxOptions
     rem  */
     field public BBjNumber EnableBrowserTooltips! = null()
     rem /**
+    rem  * The delay in milliseconds that it takes for tooltips to show up once an element is hovered.
+    rem  *
+    rem  * <b>Note:</b> This property does not work if enableBrowserTooltips is true.
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */
+    field public BBjNumber TooltipShowDelay! = null()
+    rem /**
     rem  * If true, when you drag a column out of the grid (eg to the group zone) the column is not hidden&#183;
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
@@ -898,14 +906,14 @@ class public GxOptions
     rem /**
     rem  * Set to true so that the grid doesn't virtualize the columns. S
     rem  * o if you have 100 columns, but only 10 visible due to scrolling, all 100 will always be rendered.
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressColumnVirtualisation! = null()
     rem /**
     rem  * Set this to true to skip the headerName when autoSize is called by default
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -1170,6 +1178,7 @@ class public GxOptions
         options!.addProperty("suppressMiddleClickScrolls",#getSuppressMiddleClickScrolls().booleanValue() , err=*next)
         options!.addProperty("enableBrowserTooltips",#getEnableBrowserTooltips().booleanValue() , err=*next)
         options!.addProperty("suppressDragLeaveHidesColumns",#getSuppressDragLeaveHidesColumns().booleanValue() , err=*next)
+        options!.addProperty("tooltipShowDelay",#getTooltipShowDelay().doubleValue() , err=*next)
         options!.addProperty("enableRtl",#getEnableRtl().booleanValue() , err=*next)
         options!.addProperty("suppressContextMenu",#getSuppressContextMenu().booleanValue() , err=*next)
         options!.addProperty("allowContextMenuWithControlKey", iff(INFO(3,6)="5" , 0 , 1))
