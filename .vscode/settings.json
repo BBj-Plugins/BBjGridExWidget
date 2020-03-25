@@ -299,6 +299,10 @@
         "TreeData.bbj": {
             "name": "TreeData",
             "style": ""
+        },
+        "TooltipValueGetter.bbj": {
+            "name": "TooltipValueGetter",
+            "style": ""
         }
     },
     "cSpell.words": [

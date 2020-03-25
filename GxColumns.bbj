@@ -119,6 +119,13 @@ class public GxColumnDefinition
     rem  */
     field public ArrayList ToolPanelClass! = new ArrayList()
     rem /**
+    rem  * Tooltip for the column header
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */
+    field public BBjString HeaderTooltip! = null()    
+    rem /**
     rem  * Set to true if you do not want this column or group to appear in the tool panel&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -153,6 +160,7 @@ class public GxColumnDefinition
         json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), listIsEmpty!) ,err=*next)
         json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) ,listIsEmpty!) ,err=*next)
         json!.addProperty("suppressToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
+        json!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
         methodret json!
     methodend
 
@@ -277,13 +285,6 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Resizable! = 1
-    rem /**
-    rem  * Tooltip for the column header
-    rem  *
-    rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRenderer</small></b>
-    rem  */
-    field public BBjString HeaderTooltip! = null()
     rem /**
     rem  * Set to true to render a selection checkbox in the column&#183;
     rem  *
@@ -608,6 +609,23 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjString ChartType! = null()
     rem /**
+    rem  * The field of the tooltip to apply to the cell.
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */
+    field public BBjString TooltipField! = null()      
+    rem /**
+    rem  * A Grid expression which can be executed to return the tooltip value 
+    rem  * to display for each cell.
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
+    rem  *
+    rem  * @see GxExpressions.GxExpression
+    rem  */
+    field public GxExpressionInterface TooltipValueGetterExpression! = null() 
+    rem /**
     rem  * Get pinned left constant
     rem  *
     rem  * @return BBjString <b>left</b>
@@ -711,6 +729,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     method public void setValueParserExpression(BBjString expression!)
         #ValueParserExpression! = new GxExpression(expression!)
     methodend
+    rem /**
+    rem  * Create a GxExpression from string and set it as tooltip value getter
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setTooltipValueGetterExpression(BBjString expression!)
+        #TooltipValueGetterExpression! = new GxExpression(expression!)
+    methodend    
     rem /**
     rem  * Set the allowd aggregation functions allowed on this column
     rem  *
@@ -994,7 +1020,6 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("sortable",#getSortable().booleanValue(),err=*next)
         column!.addProperty("sort",#getSort(),err=*next)
         column!.addProperty("resizable",#getResizable().booleanValue(),err=*next)
-        column!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
         column!.addProperty("checkboxSelection",#getCheckboxSelection().booleanValue(),err=*next)
         column!.addProperty("headerCheckboxSelection",#getHeaderCheckboxSelection().booleanValue(),err=*next)
         column!.addProperty("cellClass" , iff(#getCellClass().size() <> 0 ,new Gson().toJson(#getCellClass()), listIsEmpty!) ,err=*next)
@@ -1022,6 +1047,8 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
         column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)
         column!.addProperty("chartDataType",#getChartType(),err=*next)
+        column!.addProperty("tooltipField",#getTooltipField(),err=*next)
+        column!.addProperty("tooltipValueGetter",#getTooltipValueGetterExpression().toString(),err=*next)
         filterEnabled! = #getEnableFilter()
         filter! = #getFilter()
 
@@ -1673,6 +1700,7 @@ class public GxDefaultColumnGroup extends GxColumnDefinition
     field public BBjNumber OpenByDefault! = 1
     rem /**
     rem  * Tooltip for the column group header
+    rem  * @deprecated use HeaderToolTip instead
     rem  */
     field public BBjString HeaderGroupTooltip! = null()
     rem /**
@@ -1686,7 +1714,9 @@ class public GxDefaultColumnGroup extends GxColumnDefinition
         group! = #super!.getAsJsonObject()
         group!.addProperty("marryChildren",#getMarryChildren().booleanValue(),err=*next)
         group!.addProperty("openByDefault",#getOpenByDefault().booleanValue(),err=*next)
-        group!.addProperty("headerGroupTooltip",#getHeaderGroupTooltip(),err=*next)
+        if(#getHeaderGroupTooltip() <> null() AND len(#getHeaderGroupTooltip()) > 0)
+          group!.addProperty("headerTooltip",#getHeaderGroupTooltip(),err=*next) 
+        fi
         methodret group!
     methodend
 
