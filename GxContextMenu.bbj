@@ -18,15 +18,15 @@ rem  * A class which represents grid context menu
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridContextMenu
+class public GxContextMenu
 
     field protected LinkedHashMap Items! = new LinkedHashMap()
     rem /**
     rem  * Add new context menu item
     rem  *
-    rem  * @param BBjGridContextMenuItemInterface item! the item object
+    rem  * @param GxContextMenuItemInterface item! the item object
     rem  */
-    method public void addItem(BBjGridContextMenuItemInterface item!)
+    method public void addItem(GxContextMenuItemInterface item!)
         #Items!.put(item!.getId() , item!)
     methodend
     rem /**
@@ -62,14 +62,14 @@ rem  * A class which represents the default grid context menu
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridDefaultContextMenu extends BBjGridContextMenu
+class public GxDefaultContextMenu extends GxContextMenu
     rem /**
     rem  * Construct the default grid context menu
     rem  */
-    method public BBjGridDefaultContextMenu()
-        #addItem(BBjGridContextMenuItem.COPY())
-        #addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
-        #addItem(BBjGridContextMenuItem.EXPORT())
+    method public GxDefaultContextMenu()
+        #addItem(GxContextMenuItem.COPY())
+        #addItem(GxContextMenuItem.COPY_WITH_HEADERS())
+        #addItem(GxContextMenuItem.EXPORT())
     methodend
 
 classend
@@ -78,7 +78,7 @@ rem  * An interface which defines a menu item
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-interface public BBjGridContextMenuItemInterface
+interface public GxContextMenuItemInterface
     rem /**
     rem  * Get the menu item ID
     rem  *
@@ -100,7 +100,7 @@ rem  * A class which represents a grid context menu item
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridContextMenuItem implements BBjGridContextMenuItemInterface
+class public GxContextMenuItem implements GxContextMenuItemInterface
     rem /**
     rem  * The item's label
     rem  */
@@ -120,7 +120,7 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInterface
     rem /**
     rem  * if this menu is a submenu, contains a list of submenu item definitions
     rem  */
-    field public BBjGridContextMenu SubMenu! = null()
+    field public GxContextMenu SubMenu! = null()
     rem /**
     rem  * The item's ID
     rem  */
@@ -200,14 +200,14 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInterface
     rem /**
     rem  * Disable default constructor
     rem  */
-    method private BBjGridContextMenuItem()
+    method private GxContextMenuItem()
     methodend
     rem /**
     rem  * Construct new Menu item
     rem  *
     rem  * @param BBjString id!  The item's ID
     rem  */
-    method public BBjGridContextMenuItem(BBjString id!)
+    method public GxContextMenuItem(BBjString id!)
         #Id! = id!
     methodend
     rem /**
@@ -216,7 +216,7 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInterface
     rem  * @param BBjString id!  The item's ID
     rem  * @param BBjString label! The item's name
     rem  */
-    method public BBjGridContextMenuItem(BBjString id! ,BBjString label!)
+    method public GxContextMenuItem(BBjString id! ,BBjString label!)
         #this!(id!)
         #Label! = label!
     methodend
@@ -226,7 +226,7 @@ class public BBjGridContextMenuItem implements BBjGridContextMenuItemInterface
     rem  * @param BBjNumber id!  The item's ID
     rem  * @param BBjString label! The item's name
     rem  */
-    method public BBjGridContextMenuItem(BBjNumber id! ,BBjString label!)
+    method public GxContextMenuItem(BBjNumber id! ,BBjString label!)
         #this!(str(id!) , label!)
     methodend
     rem /**

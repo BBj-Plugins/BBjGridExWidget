@@ -6,8 +6,8 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridContextMenu
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenuItem
 use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -39,16 +39,16 @@ main:
   rem /**
   rem  * Create a new context menu to attach to the grid
   rem  */
-  menu! = new BBjGridContextMenu()
+  menu! = new GxContextMenu()
 
   rem /**
   rem  * Add some predefined items with their actions to the menu
-  rem  * @see <a href="https://bbj-plugins.github.io/Gx/javadoc/Gx/ContextMenu/BBjGridContextMenuItem.html">BBjGridContextMenuItem</a>
+  rem  * @see <a href="https://bbj-plugins.github.io/Gx/javadoc/Gx/ContextMenu/GxContextMenuItem.html">GxContextMenuItem</a>
   rem  */
-  menu!.addItem(BBjGridContextMenuItem.AUTO_SIZE_ALL())
-  menu!.addItem(BBjGridContextMenuItem.RESET_COLUMNS())
-  menu!.addItem(BBjGridContextMenuItem.EXPORT())
-  menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
+  menu!.addItem(GxContextMenuItem.AUTO_SIZE_ALL())
+  menu!.addItem(GxContextMenuItem.RESET_COLUMNS())
+  menu!.addItem(GxContextMenuItem.EXPORT())
+  menu!.addItem(GxContextMenuItem.SEPARATOR())
 
   rem /**
   rem  * Create custom menu items
@@ -58,22 +58,22 @@ main:
   rem  * using the chosen id so you can use the grid's setCallback method to handle the event
   rem  */
 
-  direction! = new BBjGridContextMenuItem(6000,"Show Direction")
+  direction! = new GxContextMenuItem(6000,"Show Direction")
   direction!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/maps-icon.png" , 20 , 20)
   direction!.setTooltip("Open the location in Google Maps")
   menu!.addItem(direction!)
 
-  namepedia! = new BBjGridContextMenuItem(6001,"Search Firstname in Namepedia")
+  namepedia! = new GxContextMenuItem(6001,"Search Firstname in Namepedia")
   namepedia!.setIcon("http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/godot-icon.png" , 20 , 20)
   namepedia!.setTooltip("Search First Name in Namepedia")
   menu!.addItem(namepedia!)
 
-  menu!.addItem(BBjGridContextMenuItem.SEPARATOR())
+  menu!.addItem(GxContextMenuItem.SEPARATOR())
 
-  copy! = new BBjGridContextMenuItem(6002,"Copy Functions")
-    submenu! = new BBjGridContextMenu()
-    submenu!.addItem(BBjGridContextMenuItem.COPY())
-    submenu!.addItem(BBjGridContextMenuItem.COPY_WITH_HEADERS())
+  copy! = new GxContextMenuItem(6002,"Copy Functions")
+    submenu! = new GxContextMenu()
+    submenu!.addItem(GxContextMenuItem.COPY())
+    submenu!.addItem(GxContextMenuItem.COPY_WITH_HEADERS())
   copy!.setSubMenu(submenu!)
   menu!.addItem(copy!)
 

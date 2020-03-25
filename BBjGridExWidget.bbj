@@ -52,8 +52,8 @@ rem ==========================
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
 rem Context Menu
 rem ==========================
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridContextMenu
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridDefaultContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::GxDefaultContextMenu
 rem Expressions
 rem ==========================
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionInterface
@@ -1984,9 +1984,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem /**
     rem  * Get the grid default context menu
     rem  *
-    rem  * @return BBjGridContextMenu
+    rem  * @return GxContextMenu
     rem  */
-    method public BBjGridContextMenu getContextMenu()
+    method public GxContextMenu getContextMenu()
         methodret #getOptions().getContextMenu()
     methodend
     rem /**

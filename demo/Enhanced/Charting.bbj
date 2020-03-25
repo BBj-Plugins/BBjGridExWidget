@@ -8,7 +8,7 @@ rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeChartModel
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeSelectionModel
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridContextMenuItem
+use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenuItem
 use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -58,7 +58,7 @@ main:
   grid!.getOptions().setSuppressRowClickSelection(1)
 
   REM  Enable User Charts (allow uses to create charts by selecting a range)
-  grid!.getContextMenu().addItem(BBjGridContextMenuItem.CHART_RANGE())
+  grid!.getContextMenu().addItem(GxContextMenuItem.CHART_RANGE())
 
   REM  Here we add a range selection to the grid by defining the columns which are included
   REM  in the range and the start and end row's index/id

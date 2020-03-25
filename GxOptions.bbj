@@ -20,8 +20,8 @@ use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
 use ::BBjGridExWidget/GxSidebar.bbj::GxDefaultSidebar
 use ::BBjGridExWidget/GxSidebar.bbj::GxFiltersToolpanel
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridContextMenu
-use ::BBjGridExWidget/GxContextMenu.bbj::BBjGridDefaultContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::GxDefaultContextMenu
 use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnDefinition
 use ::BBjGridExWidget/GxColumns.bbj::GxAutoGroupColumn
 use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnGroup
@@ -821,7 +821,7 @@ class public GxOptions
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
-    field public BBjGridContextMenu ContextMenu! = new BBjGridDefaultContextMenu()
+    field public GxContextMenu ContextMenu! = new GxDefaultContextMenu()
     rem /**
     rem  * By default when new columns are loaded into the grid, the following properties
     rem  * (Order, Aggregation Function, Width, Pivot, Row Group, Pinned ) are not used
