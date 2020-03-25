@@ -45,8 +45,13 @@ export function gw_extendColumnDefinitions(definitions) {
     def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox
     def.headerCheckboxSelection =
       def.headerCheckboxSelection || gw_isHeaderCheckboxSelection
-
     _configureTooltips(def)
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (def.hasOwnProperty('editable') && typeof def.editable === 'string') {
+      const editable = def.editable
+      def.editable = params => gw_executeExpression(editable, params)
+    }
   }
 }
 

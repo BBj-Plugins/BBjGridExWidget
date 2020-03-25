@@ -124,7 +124,7 @@ class public GxColumnDefinition
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
-    field public BBjString HeaderTooltip! = null()    
+    field public BBjString HeaderTooltip! = null()
     rem /**
     rem  * Set to true if you do not want this column or group to appear in the tool panel&#183;
     rem  *
@@ -320,6 +320,12 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Editable! = 0
+    rem /**
+    rem  * An expression which determines whether the column is editable
+    rem  * or not. when this config is diffenrt than null , then the column
+    rem  * configuration `Editable` will be ignored
+    rem  */
+    field public GxExpressionInterface EditableExpression! = null()
     rem /**
     rem  * A cellRenderer to use for this column
     rem  *
@@ -614,9 +620,9 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
-    field public BBjString TooltipField! = null()      
+    field public BBjString TooltipField! = null()
     rem /**
-    rem  * A Grid expression which can be executed to return the tooltip value 
+    rem  * A Grid expression which can be executed to return the tooltip value
     rem  * to display for each cell.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -624,7 +630,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  *
     rem  * @see GxExpressions.GxExpression
     rem  */
-    field public GxExpressionInterface TooltipValueGetterExpression! = null() 
+    field public GxExpressionInterface TooltipValueGetterExpression! = null()
     rem /**
     rem  * Get pinned left constant
     rem  *
@@ -736,7 +742,15 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     method public void setTooltipValueGetterExpression(BBjString expression!)
         #TooltipValueGetterExpression! = new GxExpression(expression!)
-    methodend    
+    methodend
+    rem /**
+    rem  * Create a GxExpression from string and set it as editable expression
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setEditableExpression(BBjString expression!)
+        #EditableExpression! = new GxExpression(expression!)
+    methodend
     rem /**
     rem  * Set the allowd aggregation functions allowed on this column
     rem  *
@@ -1024,7 +1038,6 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("headerCheckboxSelection",#getHeaderCheckboxSelection().booleanValue(),err=*next)
         column!.addProperty("cellClass" , iff(#getCellClass().size() <> 0 ,new Gson().toJson(#getCellClass()), listIsEmpty!) ,err=*next)
         column!.        add("cellStyle", iff(#getCellStyle().entrySet().size() <> 0 , #getCellStyle() , listIsEmpty!),err=*next)
-        column!.addProperty("editable",#getEditable().booleanValue(),err=*next)
         column!.addProperty("aggFunc",#getAggFunc())
         column!.addProperty("allowedAggFuncs" , iff(#getAllowedAggFuncs().size() <> 0 ,new Gson().toJson(#getAllowedAggFuncs()), null()) ,err=*next)
         column!.addProperty("rowGroupIndex",#getRowGroupIndex().longValue(),err=*next)
@@ -1049,6 +1062,13 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("chartDataType",#getChartType(),err=*next)
         column!.addProperty("tooltipField",#getTooltipField(),err=*next)
         column!.addProperty("tooltipValueGetter",#getTooltipValueGetterExpression().toString(),err=*next)
+        column!.addProperty("editable",#getEditable().booleanValue(),err=*next)
+        editableExpression! = #getEditableExpression()
+
+        if(editableExpression! <> null()) then
+            column!.addProperty("editable",editableExpression!.toString(),err=*next)
+        fi
+
         filterEnabled! = #getEnableFilter()
         filter! = #getFilter()
 
@@ -1170,7 +1190,7 @@ class public GxColumn extends GxDefaultColumnDefinition
         rem This would avoid the need to create a lower-case version of each key
         metaMap! = new TreeMap(String.CASE_INSENSITIVE_ORDER)
         metaMap!.putAll(meta!)
-        
+
         if(!metaMap!.containsKey("columntype"))
             methodret
         FI
@@ -1714,9 +1734,11 @@ class public GxDefaultColumnGroup extends GxColumnDefinition
         group! = #super!.getAsJsonObject()
         group!.addProperty("marryChildren",#getMarryChildren().booleanValue(),err=*next)
         group!.addProperty("openByDefault",#getOpenByDefault().booleanValue(),err=*next)
+
         if(#getHeaderGroupTooltip() <> null() AND len(#getHeaderGroupTooltip()) > 0)
-          group!.addProperty("headerTooltip",#getHeaderGroupTooltip(),err=*next) 
+            group!.addProperty("headerTooltip",#getHeaderGroupTooltip(),err=*next)
         fi
+
         methodret group!
     methodend
 
