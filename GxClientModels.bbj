@@ -87,7 +87,7 @@ class public GxClientRowModel
         clientRow! = #this!.getClientRow()
 
         if(clientRow! = null())
-            throw "The client row is not included in this model.To include it in the model configure the grid to included by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
+            throw "The client row is not included in this model.To include it in the model configure the grid to include it by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
         fi
         
         clientRow! = clientRow!.deepCopy()
