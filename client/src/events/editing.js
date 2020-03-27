@@ -55,7 +55,9 @@ export function gw_onCellEditingEvent(id, e) {
     ? gw_escape(e.newValue)
     : gw_escape(e.value)
 
-  //if (value === oldValue) return;
+  if (value == oldValue && e.type === 'cellValueChanged') {
+    return
+  }
 
   const parsed = gw_parseNodeFromEvent(e)
   const type = e.type
