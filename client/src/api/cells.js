@@ -25,7 +25,7 @@ export function gw_startEditingCell(id, row, colKey, key, char) {
   const api = options.api
   const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
 
-  options.api.setFocusedCell(node.rowIndex, colKey)
+  gw_setFocusedCell(id, row, colKey)
   options.api.startEditingCell({
     rowIndex: node.rowIndex,
     colKey: colKey,
