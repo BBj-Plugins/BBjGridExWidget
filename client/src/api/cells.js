@@ -21,17 +21,19 @@ const { deepParseJson } = require('deep-parse-json')
  * @param {String} char
  */
 export function gw_startEditingCell(id, row, colKey, key, char) {
-  const options = gw_getGrid(id).options
-  const api = options.api
-  const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
+  setTimeout(() => {
+    const options = gw_getGrid(id).options
+    const api = options.api
+    const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
 
-  gw_setFocusedCell(id, row, colKey)
-  options.api.startEditingCell({
-    rowIndex: node.rowIndex,
-    colKey: colKey,
-    keyPress: Number(key),
-    charPress: char,
-  })
+    gw_setFocusedCell(id, row, colKey)
+    options.api.startEditingCell({
+      rowIndex: node.rowIndex,
+      colKey: colKey,
+      keyPress: Number(key),
+      charPress: char,
+    })
+  }, 250)
 }
 
 /**
