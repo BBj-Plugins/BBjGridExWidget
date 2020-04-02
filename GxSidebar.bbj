@@ -18,7 +18,7 @@ use com.google.gson.Gson
 use java.util.LinkedHashMap
 rem /**
 rem  * A interface which defines a grid toolpanel
-rem  * 
+rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 interface public GxToolpanelInterface
@@ -149,7 +149,7 @@ class public GxColumnsToolpanel extends GxToolpanel
     rem  */
     method public GxColumnsToolpanel(BBjString label! , BBjString icon!)
         #super!(label! , icon!)
-    methodend    
+    methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
@@ -207,7 +207,7 @@ class public GxFiltersToolpanel extends GxToolpanel
     rem  */
     method public GxFiltersToolpanel(BBjString label! , BBjString icon!)
         #super!(label! , icon!)
-    methodend     
+    methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
@@ -261,7 +261,8 @@ class public GxSidebar
     rem  * Enable / Disable the grid sidebar
     rem  */
     method public void setVisible(BBjNumber visible!)
-        #Widget!.executeScript("$wnd.gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
+        scriptKey! = "$wnd.gw_setSideBarVisible"
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
     methodend
     rem /**
     rem  * Open toolpanel
@@ -271,7 +272,8 @@ class public GxSidebar
     rem  * @param BBjString id$ the toolpanel id
     rem  */
     method public void openToolpanel(BBjString id!)
-        #Widget!.executeScript("$wnd.gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+        scriptKey! = "$wnd.gw_openToolpanel"
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Close toolpanel
@@ -281,11 +283,12 @@ class public GxSidebar
     rem  * @param BBjString id$ the toolpanel id
     rem  */
     method public void closeToolpanel(BBjString id!)
-        #Widget!.executeScript("$wnd.gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+        scriptKey! = "$wnd.gw_closeToolpanel"
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Convert the sidebar into json object
-    rem  * 
+    rem  *
     rem  * @returns JsonObject
     rem  */
     method public JsonObject getAsJsonObject()

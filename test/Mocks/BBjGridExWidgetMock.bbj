@@ -5,8 +5,8 @@ rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
-use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterAbstractModel
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/test/Mocks/GxExecutorMock.bbj::GxExecutorMock
 use com.google.gson.JsonObject
 use com.basiscomponents.db.ResultSet
 rem /**
@@ -14,15 +14,20 @@ rem  * @author Hyyan Abo Fakher
 rem  */
 class public BBjGridExWidgetMock extends BBjGridExWidget
     rem /**
-    rem  * The last executed js script.
+    rem  * Construct new BBjGridExWidgetMock and initialize
+    rem  * the components mocks
     rem  */
-    field public BBjString LastExecutedScript! = ""
-    field public Object ExecuteResult! = null()
-    
+    method public BBjGridExWidgetMock()
+        executor! = new GxExecutorMock()
+        executor!.setWidget(#this!)
+        #setExecutor(executor!)
+    methodend
     rem /**
     rem  * Construct new grid mock
     rem  */
     method public BBjGridExWidgetMock(BBjNumber initRS!)
+        #this!()
+
         if(initRS! = 1)
             #fillData()
         fi
@@ -40,23 +45,69 @@ class public BBjGridExWidgetMock extends BBjGridExWidget
         #getRS().createIndex()
     methodend
     rem /**
-    rem  * @override
+    rem  * Set the last executed script on the executor
+    rem  *
+    rem  * @param BBjString script!
     rem  */
-    method public Object executeScript(BBjString script$)
-        if #getIsReady() then
-            #LastExecutedScript! = script$
-            if(#ExecuteResult!<> null()) methodret #ExecuteResult!
-        else
-            #getBacklog().addItem(script$)
-        FI
+    method public void setLastExecutedScript(BBjString script!)
+        declare auto GxExecutorMock executor!
 
-        methodret null()
+        executor! = #getExecutor()
+        executor!.setLastExecutedScript(script!)
     methodend
     rem /**
-    rem  * Get instnace of the scripts backlog
+    rem  * Get the last executed script from the executor
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public BBjString getLastExecutedScript()
+        declare auto GxExecutorMock executor!
+
+        executor! = #getExecutor()
+        methodret executor!.getLastExecutedScript()
+    methodend
+    rem /**
+    rem  * Set the expected execute result on the executor
+    rem  *
+    rem  * @param Object result! the expected result
+    rem  */
+    method public void setExecuteResult(Object result!)
+        declare auto GxExecutorMock executor!
+
+        executor! = #getExecutor()
+        executor!.setExecuteResult(result!)
+    methodend
+    rem /**
+    rem  * Get the last expected result from the executor
+    rem  *
+    rem  * @param Object result
+    rem  */
+    method public Object getExecuteResult()
+        declare auto GxExecutorMock executor!
+
+        executor! = #getExecutor()
+        methodret executor!.getExecuteResult()
+    methodend
+    rem /**
+    rem  * Get instance of the scripts backlog
+    rem  *
+    rem  * Note, this method is for legacy code which expects scripts to be
+    rem  * enqueued in a BBjVector. it is recommended to get the scripts
+    rem  * from the executor queue directly
+    rem  *
+    rem  * @return BBjVector
     rem  */
     method public BBjVector getBacklog()
-        methodret #getbacklog()
+        declare BBjVector backlog!
+
+        backlog! = new BBjVector()
+        queue! = #getExecutor().getQueue()
+        it! = queue!.entrySet().iterator()
+        while (it!.hasNext())
+            backlog!.addItem(str(it!.next().getValue()))
+        wend
+
+        methodret backlog!
     methodend
 
 classend

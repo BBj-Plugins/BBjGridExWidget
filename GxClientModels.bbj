@@ -89,7 +89,7 @@ class public GxClientRowModel
         if(clientRow! = null())
             throw "The client row is not included in this model.To include it in the model configure the grid to include it by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
         fi
-        
+
         clientRow! = clientRow!.deepCopy()
         dataRow! = #this!.asDataRow()
         clientRow!.remove("__ROW_INDEX")
@@ -826,7 +826,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
     rem  */
     method public BBjString apply(BBjNumber send!)
         code! = String.format(";%s.setModel(%s);" ,#getFilterInstance(), #getAsJsonObject())
-        if(send!.booleanValue()) #getWidget().executeScript(code!)
+        if(send!.booleanValue()) #getWidget().getExecutor().execute(code!)
         methodret code!
     methodend
     rem /**
@@ -842,7 +842,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
         #assertWidget()
         widget! = #getWidget()
         code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getGRIDID())
-        if(send!.booleanValue()) widget!.executeScript(code!)
+        if(send!.booleanValue()) widget!.getExecutor().execute(code!)
         methodret code!
     methodend
     rem /**
@@ -857,7 +857,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
     method public BBjString update()
         code! = #apply(0) + #execute(0)
         ? code!
-        #getWidget().executeScript(code!)
+        #getWidget().getExecutor().execute(code!)
         methodret code!
     methodend
     rem /**
@@ -868,7 +868,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
         widget! = #getWidget()
         if(widget!.getIsReady() = BBjAPI.FALSE) methodret 0
         code! = String.format(";%s.isFilterActive();" , #getFilterInstance())
-        isActive! = widget!.executeScript(code!)
+        isActive! = widget!.getExecutor().execute(code! , 0)
         methodret isActive!
     methodend
     rem /**
@@ -1416,7 +1416,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
     rem  */
     method public void setMiniFilter(BBjString miniFilter!)
         code! = String.format(";%s.setMiniFilter('%s');", #getFilterInstance(), miniFilter!)
-        #getWidget().executeScript(code! + #execute(0))
+        #getWidget().getExecutor().execute(code! + #execute(0))
     methodend
     rem /**
     rem  * Sets the filter at the top of the filter (the 'quick search' in the popup)
@@ -1447,7 +1447,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
         widget! = #getWidget()
         if(widget!.getIsReady() = BBjAPI.FALSE) methodret ""
         code! = String.format(";%s.getMiniFilter();" , #getFilterInstance())
-        value! = #getWidget().executeScript(code!)
+        value! = #getWidget().getExecutor().execute(code!)
         methodret iff(value! <> null() , value! , "")
     methodend
     rem /**
@@ -1459,7 +1459,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
     rem  */
     method public void selectEverything()
         code! = String.format(";%s.selectEverything();" , #getFilterInstance())
-        #getWidget().executeScript(code! + #execute(0))
+        #getWidget().getExecutor().execute(code! + #execute(0))
     methodend
     rem /**
     rem  * Clears the selection
@@ -1470,7 +1470,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
     rem  */
     method public void selectNothing()
         code! = String.format(";%s.selectNothing();", #getFilterInstance())
-        #getWidget().executeScript(code! + #execute(0))
+        #getWidget().getExecutor().execute(code! + #execute(0))
     methodend
     rem /**
     rem  * Change on the fly the available options
@@ -1483,7 +1483,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
     rem  */
     method public void setFilterValues(JsonArray values!)
         code! = String.format(";%s.setFilterValues(%s);", #getFilterInstance() ,values!.toString())
-        #getWidget().executeScript(code! + #execute(0))
+        #getWidget().getExecutor().execute(code! + #execute(0))
     methodend
     rem /**
     rem  * Selects a value
@@ -1496,7 +1496,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
     rem  */
     method public void selectValue(BBjString value!)
         code! = String.format(";%s.selectValue('%s');" , #getFilterInstance(), value!)
-        #getWidget().executeScript(code! + #execute(0))
+        #getWidget().getExecutor().execute(code! + #execute(0))
     methodend
     rem /**
     rem  * Selects a value
@@ -1521,7 +1521,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
     rem  */
     method public void unselectValue(BBjString value!)
         code! = String.format("%s.unselectValue('%s');", #getFilterInstance(), value!)
-        #getWidget().executeScript(code! + #execute(0))
+        #getWidget().getExecutor().execute(code! + #execute(0))
     methodend
     rem /**
     rem  * Unselects a value
@@ -1556,7 +1556,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
         code! = #super!.execute(0)
         widget! = #getWidget()
         code! = String.format(";try{%s.applyModel()}catch(e){};", #getFilterInstance()) + code!
-        if(send!.booleanValue()) #getWidget().executeScript(code!)
+        if(send!.booleanValue()) #getWidget().getExecutor().execute(code!)
         methodret code!
     methodend
     rem /**

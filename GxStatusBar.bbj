@@ -230,7 +230,7 @@ rem  * GxStatusBar
 rem  *
 rem  * Gx status bar manager.
 rem  * The class can add, remove & hide status bar components
-rem  * 
+rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxStatusBar
@@ -288,20 +288,21 @@ class public GxStatusBar
     rem /**
     rem  * Hide/show statusbar component
     rem  *
-    rem  * @param GxStatusBarComponentInterface component! a statusbar component
-    rem  * @param BBjNumber visiblity! 0 to hide component, 1 to show component
+    rem  * @param BBjString name! the component name
+    rem  * @param BBjNumber visibility! 0 to hide component, 1 to show component
     rem  */
-    method public void setComponentVisibility(GxStatusBarComponentInterface component! , BBjNumber visiblity!)
-        #Widget!.executeScript("$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + component!.NAME() + "'," + str(visiblity!) + ")")
+    method public void setComponentVisibility(BBjString name! , BBjNumber visibility!)
+        scriptKey! = "$wnd.gw_setStatusbarComponentVisibility" + name!
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + name! + "'," + str(visibility!) + ")")
     methodend
     rem /**
     rem  * Hide/show statusbar component
     rem  *
-    rem  * @param BBjString name! the component name
-    rem  * @param BBjNumber visiblity! 0 to hide component, 1 to show component
+    rem  * @param GxStatusBarComponentInterface component! a statusbar component
+    rem  * @param BBjNumber visibility! 0 to hide component, 1 to show component
     rem  */
-    method public void setComponentVisibility(BBjString name! , BBjNumber visiblity!)
-        #Widget!.executeScript("$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + name! + "'," + str(visiblity!) + ")")
+    method public void setComponentVisibility(GxStatusBarComponentInterface component! , BBjNumber visibility!)
+        #setComponentVisibility(component!.NAME() , visibility!)
     methodend
     rem /**
     rem  * Convert the statusbar into a parsable json string

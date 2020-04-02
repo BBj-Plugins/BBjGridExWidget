@@ -834,15 +834,6 @@ class public GxOptions
     rem  */
     field public BBjNumber DeltaColumnMode! = 0
     rem /**
-    rem  * When true the grid will render automatically when event processing starts, when false then the <i>render()</i> method
-    rem  * or <i>setData(ResultSet, 1)</i> must be called&#183;
-    rem  *
-    rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#GridRenderer</small></b>
-    rem  * <br><b><small>#Experimental</small></b>
-    rem  */
-    field public BBjNumber BlockRenderToReady! = 1
-    rem /**
     rem  * Disables the 'loading' overlay&#183;
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>

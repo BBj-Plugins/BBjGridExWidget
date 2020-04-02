@@ -32,6 +32,48 @@ class public BBjGridExWidgetTest
         Assert.Equals(#Instance!.getClientContext().get("includeClientRowData").getAsBoolean(),BBjAPI.FALSE)
         Assert.Equals(#Instance!.getLastExecutedScript() <> "", BBjAPI.TRUE)
     methodend
+    
+    rem @Test
+    method public void testExecuteScript()
+        code! = "foo"
+        #Instance!.executeScript(code!)
+        Assert.Equals(#Instance!.getExecutor().getQueue().containsKey(code!) , BBjAPI.TRUE)
+        
+        code! = "bar"
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.executeScript(code!)
+        Assert.Equals(#Instance!.getExecutor().getQueue().containsKey(code!),BBjAPI.FALSE)
+        Assert.Equals(#Instance!.getLastExecutedScript() , code!)
+    methodend
+    
+    rem @Test
+    method public void testSuppressBuiDebouncing()
+        #Instance!.suppressBuiDebouncing(1)
+        Assert.Equals(#Instance!.getExecutor().getSuppressBuiDebouncing() , 1)
+        
+        #Instance!.suppressBuiDebouncing(0)
+        Assert.Equals(#Instance!.getExecutor().getSuppressBuiDebouncing() , 0)
+    methodend
+    
+    rem @Test
+    method public void testSuppressGuiDebouncing()
+        #Instance!.suppressGuiDebouncing(1)
+        Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 1)
+        
+        #Instance!.suppressGuiDebouncing(0)
+        Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 0)
+    methodend 
+    
+    rem @Test
+    method public void testSuppressDebouncing()
+        #Instance!.suppressDebouncing(1)
+        Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 1)
+        Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 1)
+        
+        #Instance!.suppressDebouncing(0)
+        Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 0)
+        Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 0)
+    methodend        
         
     rem @After
     method public void tearDown()
