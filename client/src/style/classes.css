@@ -8,27 +8,48 @@
 
 .gw-alignment-cell-right,
 .gw-alignment-cell-right .ag-cell-value {
-    text-align: right;
-    justify-content: flex-end;
-    flex: 1;
+  text-align: right;
+  justify-content: flex-end;
+  flex: 1;
 }
 
 .gw-alignment-cell-center,
 .gw-alignment-cell-center .ag-cell-value {
-    text-align: center;
-    justify-content: center;
-    flex: 1;
+  text-align: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .gw-alignment-header-right .ag-header-cell-label {
-    flex-direction: row-reverse;    
+  flex-direction: row-reverse;
 }
 
 .gw-alignment-header-center .ag-header-cell-label {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .gw-alignment-header-right .ag-cell-label-container,
 .gw-alignment-header-center .ag-cell-label-container {
-    flex-direction: row;
+  flex-direction: row;
+}
+
+.gw-tooltip {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 1s;
+  border-radius: 3.1px;
+  padding: 10px;
+  transition: opacity 260ms;
+}
+
+.gw-tooltip-light {
+  background-color: white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+}
+
+.gw-tooltip-dark {
+  background-color: #1c1f20;
+  box-shadow: 0 0 6px #5c5c5c;
+  color: white;
 }

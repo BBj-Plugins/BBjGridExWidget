@@ -1,0 +1,104 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxFilterSetFilterTest
+
+    field private GxFilterSetFilter Instance!
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxFilterSetFilter()
+    methodend
+
+    rem @Test
+    method public void testFilterNameIsSet()
+        Assert.Equals(#Instance!.getFilterName(), "agSetColumnFilter")
+    methodend
+
+    rem @Test
+    method public void testCanSetValues()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("values").equals(new JsonNull()) , BBjAPI.TRUE)
+        
+        #Instance!.getValues().add("foo")
+        #Instance!.getValues().add("bar")
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("values").getAsJsonArray().equals(#Instance!.getValues()),BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testCanSetSuppressSyncValuesAfterDataChange()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressSyncValuesAfterDataChange").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setSuppressSyncValuesAfterDataChange(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressSyncValuesAfterDataChange").getAsBoolean() , BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testCanSetSuppressRemoveEntries()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressRemoveEntries").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setSuppressRemoveEntries(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressRemoveEntries").getAsBoolean() , BBjAPI.TRUE)
+    methodend    
+    
+    rem @Test
+    method public void testCanSetSuppressSorting()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressSorting").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setSuppressSorting(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressSorting").getAsBoolean() , BBjAPI.TRUE)
+    methodend 
+    
+    rem @Test
+    method public void testCanSetSuppressMiniFilter()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressMiniFilter").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setSuppressMiniFilter(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressMiniFilter").getAsBoolean() , BBjAPI.TRUE)
+    methodend    
+    
+    rem @Test
+    method public void testCanSetSuppressSelectAll()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressSelectAll").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setSuppressSelectAll(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressSelectAll").getAsBoolean() , BBjAPI.TRUE)
+    methodend      
+        
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

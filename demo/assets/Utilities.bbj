@@ -9,7 +9,7 @@ REM  * Several Utilities Used in Demos
 REM  *
 REM  * @author Hyyan Abo Fakher
 REM  */
-class public BBjGridExWidgetDemoUtilities
+class public GxDemoUtilities
 
     method public static void nagAboutLicense()
         if(!BBjGridExWidget.isLicensed())
@@ -56,7 +56,7 @@ class public BBjGridExWidgetDemoUtilities
                 row!.addProperty("size", current!.length())
                 data!.add(row!)
             else
-                data!.addAll(BBjGridExWidgetDemoUtilities.buildArrayListFromDir(root$ , current!.getAbsolutePath()))
+                data!.addAll(GxDemoUtilities.buildArrayListFromDir(root$ , current!.getAbsolutePath()))
             FI
         WEND
 
@@ -64,7 +64,7 @@ class public BBjGridExWidgetDemoUtilities
     methodend
 
     method public static ResultSet buildResultSetFromDir(BBjString path$)
-        json! = new Gson().toJson(BBjGridExWidgetDemoUtilities.buildArrayListFromDir(path$,""))
+        json! = new Gson().toJson(GxDemoUtilities.buildArrayListFromDir(path$,""))
         methodret ResultSet.fromJson(json!)
     methodend
 

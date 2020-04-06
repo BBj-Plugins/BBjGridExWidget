@@ -1,0 +1,85 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Grouping Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+gosub main
+process_events
+
+rem /**
+rem  * Retrieve the data from the database and configure the grid.
+rem  *
+rem  * The demo uses the helper method grid!.addColumnGroup(..) to configure the column groups. This method allows creating
+rem  * only one level of column groups. to learn how to configure nested column groups @see ColumnGroupingNestedDemo.bbj
+rem  *
+rem  * The demo demonstrates too how to attach style objects to the client using grid!.addStyle(Selector , StyleObject).
+rem  * Every style object is bound to a selector (my-group-class).
+rem  * You can then use this selector as a css class almost on all grid components
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME FROM CDINVENTORY")
+
+  grid!.setData(rs!)
+
+  rem setup columns group style
+  groupStyle! = new JsonObject()
+  groupStyle!.addProperty("background","#03a9f4")
+  groupStyle!.addProperty("color","white")
+  groupStyle!.addProperty("font-weight","bolder")
+  groupStyle!.addProperty("border-bottom","3px solid black")
+  grid!.addStyle(".my-group-class" , groupStyle!)
+
+  group! = new BBjVector()
+  group!.addItem("CDNUMBER")
+  grid!.addColumnGroup("group1" , "Inventory", group! , 0 , "my-group-class")
+
+  group! = new BBjVector()
+  group!.addItem("ARTIST")
+  group!.addItem("TITLE")
+  grid!.addColumnGroup("group2" , "CD Information", group! , 0 , "my-group-class")
+
+  group! = new BBjVector()
+  group!.addItem("LABEL")
+  group!.addItem("PLAYINGTIME")
+  grid!.addColumnGroup("group3" , "Misc" , group! , 0 , "my-group-class")
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

@@ -1,0 +1,85 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Value Parser Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * After editing cells in the grid you have the opportunity to parse 
+rem  * the value before inserting it into your data.This is done using Value Parsers.
+rem  * A Value Parser is the inverse of a Value Formatter and it is a Javascript 
+rem  * expression which will be executed in the client (browser window).
+rem  * The parameters passed to the value parser expression are as follows:
+rem  * 
+rem  * Parameter	 | Description
+rem  * ==========	 | ===================
+rem  * oldValue	   | Mapped from the cell's old value, this is mapped in editing
+rem  * newValue	   | Mapped from the cell's new value, this is mapped in editing
+rem  * data	Mapped | from the DataRow
+rem  * column	     | Current column
+rem  * getValue	   | The value after it is processed by the ValueGetterExpression
+rem  * ctx	       | The grid client context
+rem  * 
+rem  * Below shows an example using value parsers. The following can be noted:
+rem  *  1. All columns are editable. After any edit, the a message box shows what has been changed.
+rem  *  2. Column CDNUMBER is a string column. No parser is needed.
+rem  *  3. Column TITLE has a parser which removes any dashes from the new value
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER , TITLE FROM CDINVENTORY")
+  
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"onCellEditingChanged")
+  grid!.getOptions().setEditable(1)
+  grid!.getOptions().setSingleClickEdit(1)
+  grid!.setData(rs!)
+  
+  titleColumn! = grid!.getColumn("TITLE")
+  rem The expression will cast the "newValue" to string and replace dashes with empty string
+  titleColumn!.setValueParserExpression("String(newValue).replace(/-/g, '')")
+return
+
+onCellEditingChanged:
+  ev! = BBjAPI().getLastEvent()
+  ev! = ev!.getObject()
+  
+  a! = msgbox(String.format("Value changed from (%s) to (%s)",ev!.getOldValue(),ev!.getValue()))
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

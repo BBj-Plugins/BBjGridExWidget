@@ -1,0 +1,254 @@
+rem package BBjGridExWidget
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientColumnModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientCellModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRangeSelectionModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientKeypressModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterDateTimeModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterBooleanModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterSetFilterModel
+use com.google.gson.JsonObject
+use com.google.gson.JsonParser
+REM /**
+REM  * The class will create client models from JSON
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientJsonFactory
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private GxClientJsonFactory()
+    methodend
+    rem /**
+    rem  * Construct new GxClientJsonFactory
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instance
+    rem  */
+    method public GxClientJsonFactory(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget getWidget()
+        methodret #Widget!
+    methodend
+    rem /**
+    rem  * Map a JSON object to GxClientRowModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return GxClientRowModel
+    rem  */
+    method public GxClientRowModel getRow(JsonObject json!)
+        declare GxClientRowModel row!
+
+        row! = new GxClientRowModel(#getWidget())
+        row!.setClientRow(json!.get("cr").getAsJsonObject(),err=*next)
+        row!.setId(json!.get("i").getAsString(),err=*next)
+        row!.setIndex(json!.get("x").getAsInt(),err=*next)
+        row!.setChildIndex(json!.get("c").getAsInt(),err=*next)
+        row!.setParentKey(json!.get("p").getAsString(),err=*next)
+        row!.setIsSelected(iff(json!.get("s").getAsString() = "true" ,  1 , 0) , err=*next)
+
+        methodret row!
+    methodend
+    rem /**
+    rem  * Map a JSON string to GxClientRowModel
+    rem  *
+    rem  * @param BBjString json! json string
+    rem  *
+    rem  * @return GxClientRowModel
+    rem  */
+    method public GxClientRowModel getRow(BBjString json!)
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        parsedRow! = parser!.parse(json!).getAsJsonObject()
+        methodret #getRow(parsedRow!)
+    methodend
+    rem /**
+    rem  * Map column name to GxClientColumnModel
+    rem  *
+    rem  * @param BBjString column! The column name
+    rem  *
+    rem  * @return GxClientColumnModel
+    rem  */
+    method public GxClientColumnModel getColumn(BBjString column!)
+        methodret new GxClientColumnModel(#getWidget() , column!)
+    methodend
+    rem /**
+    rem  * Map a JSON object to GxClientCellModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return GxClientCellModel
+    rem  */
+    method public GxClientCellModel getCell(JsonObject json!)
+        cell! = new GxClientCellModel()
+        cell!.setColumn(#getColumn(json!.get("c").getAsString()),err=*next)
+        cell!.setRow(#getRow(json!.get("r").getAsJsonObject()),err=*next)
+        cell!.setValue(json!.get("v").getAsString(),err=*next)
+        methodret cell!
+    methodend
+    rem /**
+    rem  * Map a JSON string to GxClientCellModel
+    rem  *
+    rem  * @param BBjString json! Json string
+    rem  *
+    rem  * @return GxClientCellModel
+    rem  */
+    method public GxClientCellModel getCell(BBjString json!)
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        parsedCell!  = parser!.parse(json!).getAsJsonObject()
+        methodret #getCell(parsedCell!)
+    methodend
+    rem /**
+    rem  * Map a JSON object to GxClientRangeSelectionModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return GxClientRangeSelectionModel
+    rem  */
+    method public GxClientRangeSelectionModel getRangeSelection(JsonObject json!)
+        rem a model which describes the range object
+        rangeModel! = new GxClientRangeSelectionModel()
+        rem loop over the range columns and create a column model for each one
+        columns! = json!.get("c").getAsJsonArray()
+        columnsIterator! = columns!.iterator()
+        while(columnsIterator!.hasNext())
+            rem create a column model and add it to the range
+            rangeModel!.getColumns().add(#getColumn(columnsIterator!.next().getAsString()))
+        wend
+        rem loop over the range rows and create a row model for each one
+        rows! = json!.get("r").getAsJsonArray()
+        rowsIterator! = rows!.iterator()
+        while(rowsIterator!.hasNext())
+            rem create a row model and add it to the range
+            rangeModel!.getRows().add(#getRow(rowsIterator!.next().getAsJsonObject()))
+        wend
+
+        methodret rangeModel!
+    methodend
+    rem /**
+    rem  * Map a JSON object to GxClientKeypressModel
+    rem  *
+    rem  * @param JsonObject json! Json object
+    rem  *
+    rem  * @return GxClientKeypressModel
+    rem  */
+    method public GxClientKeypressModel getKeypress(JsonObject json!)
+        keyPress! = new GxClientKeypressModel()
+        keyPress!.setCode(json!.get("c").getAsString())
+        keyPress!.setKeyCode(json!.get("kc").getAsInt())
+        keyPress!.setIsAltDown(iff(json!.get("ak").getAsString() = "true" ,  1 , 0) , err=*next)
+        keyPress!.setIsShiftDown(iff(json!.get("sk").getAsString() = "true" ,  1 , 0) , err=*next)
+        keyPress!.setIsCtrlDown(iff(json!.get("ck").getAsString() = "true" ,  1 , 0) , err=*next)
+        methodret keyPress!
+    methodend
+    rem /**
+    rem  * Parse a filter condition and return a filter model
+    rem  *
+    rem  * @param JsonObject json! the model as json object
+    rem  * @param BBjString the column id
+    rem  *
+    rem  * @return GxClientFilterModel the correct model according to the filter type
+    rem  */
+    method public GxClientFilterModel getFilterCondition(JsonObject json! , BBjString column!)
+        filterType! = json!.get("filterType").getAsString(err=*next)
+        if(filterType! = null()) throw "Filter type is missing. The filter client model cannot be parsed" , 256
+        model! = null()
+        SWITCH (filterType!)
+            CASE "number"
+                type! = json!.get("type").getAsString(err=*next)
+                filter! = json!.get("filter").getAsDouble(err=*next)
+                filterTo! = json!.get("filterTo").getAsDouble(err=*next)
+                model! = new GxClientFilterNumberModel(filter!,filterTo!,type!)
+                break
+            CASE "text"
+                type! = json!.get("type").getAsString(err=*next)
+                filter! = json!.get("filter").getAsString(err=*next)
+                model! = new GxClientFilterTextModel(filter!,type!)
+                break
+            CASE "boolean"
+                filter! = json!.get("value").getAsString(err=*next)
+                model! = new GxClientFilterBooleanModel(iff(filter! = "true" , 1 , 0))
+                break
+            CASE "datetime"
+                type! = json!.get("type").getAsString(err=*next)
+                filter! = json!.get("filter").getAsString(err=*next)
+                filterTo! = json!.get("filterTo").getAsString(err=*next)
+                model! = new GxClientFilterDateTimeModel(filter!,filterTo!,type!)
+                break
+            CASE "set"
+                values! = json!.get("values").getAsJsonArray(err=*next)
+                model! = new GxClientFilterSetFilterModel(values!)
+                break
+            CASE DEFAULT
+                break
+        SWEND
+
+        if(model! <> null())
+            model!.setColumn(column!)
+            model!.setWidget(#getWidget())
+        fi
+
+        methodret model!
+    methodend
+    rem /**
+    rem  * Parse a filter conditions (single or combined) and return a filter model
+    rem  *
+    rem  * @param JsonObject json! the model as json object
+    rem  *
+    rem  * @return GxClientFilterModel the correct model according to the filter type
+    rem  */
+    method public GxClientFilterModel getFilter(JsonObject json! , BBjString column!)
+        isCombined! = json!.has("condition1") OR json!.has("condition2")
+
+        if(isCombined!)
+            firstCondition! = #getFilterCondition(json!.get("condition1").getAsJsonObject(),column!,err=*next)
+            secondCondition! = #getFilterCondition(json!.get("condition2").getAsJsonObject(),column!,err=*next)
+            operator! = json!.get("operator").getAsString(err=*next)
+            model! = new GxClientFilterCombinedModel(firstCondition!,secondCondition!,operator!)
+            model!.setWidget(#getWidget())
+            model!.setColumn(column!)
+            methodret model!
+        else
+            methodret #getFilterCondition(json!,column!)
+        fi
+    methodend
+    rem /**
+    rem  * Parse a filter conditions (single or combined) and reutrn a filter model
+    rem  *
+    rem  * @param BBjString json! the model as json string
+    rem  *
+    rem  * @return GxClientFilterModel the correct model according to the filter type
+    rem  */
+    method public GxClientFilterModel getFilter(BBjString json! ,BBjString column!)
+        parser! = new JsonParser()
+        parsedJsonModel!  = parser!.parse(json!).getAsJsonObject()
+        methodret #getFilter(parsedJsonModel!,column!)
+    methodend
+
+classend

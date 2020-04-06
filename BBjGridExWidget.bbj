@@ -1,3 +1,6 @@
+rem /**
+rem  *  The package exports a few helper classes along with the BBjGridExWidget class which is the entry point of the plugin. Most of the time you only need to use the BBjGridExWidget class from it
+rem  */
 rem package BBjGridExWidget
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
@@ -9,46 +12,86 @@ rem  */
 use java.util.Arrays
 use java.util.ArrayList
 use java.util.HashSet
+use java.util.LinkedHashMap
+use java.lang.StringBuilder
+use java.sql.Types
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
+use com.google.gson.JsonPrimitive
+rem Basis Components
+rem ==========================
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
+rem BBjWidget
+rem ==========================
 use ::BBjWidget/BBjWidget.bbj::BBjWidget
-use ::BBjGridExWidget/BBjGridExWidgetOptions.bbj::BBjGridExWidgetOptions
-use ::BBjGridExWidget/BBjGridExWidgetSelectRowEvent.bbj::BBjGridExWidgetSelectRowEvent
-use ::BBjGridExWidget/BBjGridExWidgetState.bbj::BBjGridExWidgetState
-use ::BBjGridExWidget/BBjGridWidgetCellEditingEvent.bbj::BBjGridWidgetCellEditingEvent
-use ::BBjGridExWidget/BBjGridWidgetRowEditingEvent.bbj::BBjGridWidgetRowEditingEvent
-use ::BBjGridExWidget/BBjGridExWidgetLanguageManager.bbj::BBjGridExWidgetLanguageManager
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetSidebar
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetDefaultSidebar
-use ::BBjGridExWidget/BBjGridExWidgetSidebar.bbj::BBjGridExWidgetFiltersToolpanel
-use ::BBjGridExWidget/BBjGridExWidgetStatusBar.bbj::BBjGridExWidgetStatusBar
-use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridContextMenu
-use ::BBjGridExWidget/BBjGridExWidgetContextMenu.bbj::BBjGridDefaultContextMenu
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpressionInterface
-use ::BBjGridExWidget/BBjGridExWidgetExpressions.bbj::BBjGridExWidgetExpression
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnDefinition
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetAutoGroupColumn
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetDefaultColumnGroup
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnGroup
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManagerInterface
-use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumnsManager
-use ::BBjGridExWidget/BBjGridExWidgetRenderers.bbj::BBjGridExWidgetRendererImageRenderer
-use ::BBjGridExWidget/BBjGridExWidgetClientJsonFactory.bbj::BBjGridExWidgetClientJsonFactory
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientRowModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeSelectionModel
-use ::BBjGridExWidget/BBjGridExWidgetClientModels.bbj::BBjGridExWidgetClientAddRangeChartModel
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowSelection
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsContextMenu
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsCell
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRowEditing
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsRangeSelection
-use ::BBjGridExWidget/BBjGridExWidgetClientEvents.bbj::BBjGridExWidgetClientEventsKeypress
+rem BBjGridExWidget Package
+rem ==========================
+use ::BBjGridExWidget/GxOptions.bbj::GxOptions
 use ::BBjGridExWidget/util/LicenseManager.bbj::LicenseManager
+use ::BBjGridExWidget/GxExecutor.bbj::GxExecutor
+use ::BBjGridExWidget/GxState.bbj::GxState
+use ::BBjGridExWidget/GxLanguageManager.bbj::GxLanguageManager
+use ::BBjGridExWidget/GxClientJsonFactory.bbj::GxClientJsonFactory
+rem Client Events
+rem ==========================
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsContextMenu
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsCell
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowEditing
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRangeSelection
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsKeypress
+rem Sidebars
+rem ==========================
+use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
+use ::BBjGridExWidget/GxSidebar.bbj::GxDefaultSidebar
+use ::BBjGridExWidget/GxSidebar.bbj::GxFiltersToolpanel
+rem Statusbar
+rem ==========================
+use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
+rem Context Menu
+rem ==========================
+use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenu
+use ::BBjGridExWidget/GxContextMenu.bbj::GxDefaultContextMenu
+rem Expressions
+rem ==========================
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionInterface
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
+rem Columns
+rem ==========================
+use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnDefinition
+use ::BBjGridExWidget/GxColumns.bbj::GxAutoGroupColumn
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnGroup
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnGroup
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnsManagerInterface
+use ::BBjGridExWidget/GxColumns.bbj::GxColumnsManager
+rem Renderers
+rem ==========================
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererImageRenderer
+rem Client Models
+rem ==========================
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeSelectionModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeChartModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientSortModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientTransactionModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterDateTimeModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterBooleanModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterSetFilterModel
+rem Filter Components
+rem ==========================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterText
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterNumber
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicBoolean
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicTimestamp
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
 rem /**
 rem  * The Grid Core Class.This class works as a columns manager and api provider.
 rem  * It contains a big number of methods and properties to configure the column from A..Z.
@@ -65,19 +108,19 @@ rem  *          <td>The property/method is used only with the enterprise version
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>Configuration</strong></td>
-rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to rerender the whole grid <br />or rerender the column definition once again&#183;</td>
+rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again&#183;</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>API</strong></td>
 rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh&#183;</td>
 rem  *      </tr>
 rem  *      <tr>
-rem  *          <td><strong>&nbsp;ColumnsRerender</strong></td>
-rem  *          <td>Changing this property or calling this method after the first render require columns rerender using <i>updateColumns()</i> method</td>
+rem  *          <td><strong>&nbsp;ColumnsRenderer</strong></td>
+rem  *          <td>Changing this property or calling this method after the first render require columns re-render using <i>updateColumns()</i> method</td>
 rem  *      </tr>
 rem  *      <tr>
-rem  *          <td><strong>&nbsp;GridRerender</strong></td>
-rem  *          <td>Changing this property or calling this method after the first render require full rerender using <i>render()</i> method</td>
+rem  *          <td><strong>&nbsp;GridRenderer</strong></td>
+rem  *          <td>Changing this property or calling this method after the first render require full re-render using <i>render()</i> method</td>
 rem  *      </tr>
 rem  *  </tbody>
 rem  * </table>
@@ -85,7 +128,7 @@ rem  *
 rem  * @author Stephan Wald
 rem  * @author Hyyan Abo Fakher
 rem  */
-class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumnsManagerInterface
+class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterface
     rem /**
     rem  * The Grid enterprise key
     rem  */
@@ -96,14 +139,10 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public static BBjNumber ForceCommunityBuild! = 0
     rem /**
-    rem  * When true the grid will use the unminifed version of the Javascript code then open the debugger
-    rem  * in the browser when the CHROMIUM_HTMLVIEW is in use&#183;<br>
-    rem  * <b>Note :</b> in BBj 19.10 and higher the grid will open the debugger only when the debugging port is set
-    rem  * <pre><code>
-    rem  *      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=9222")
-    rem  * </code></pre>
+    rem  * When true the grid will use the unmingled version of the Javascript code then open the debugger
+    rem  * in a new window.
     rem  */
-    field public static BBjNumber Debug = 0
+    field public static BBjNumber Debug! = 0
     rem /**
     rem  * Unique auto generate id for the grid instance&#183; This id is used in the client to distinguish instances
     rem  */
@@ -113,29 +152,33 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     field public BBjString RowNodeId$ = "__ROW_INDEX"
     rem /**
-    rem  * The resultset instance
+    rem  * The ResultSet instance
     rem  */
     field public ResultSet RS! = new ResultSet()
     rem /**
     rem  * Columns Manager instance
     rem  */
-    field public BBjGridExWidgetColumnsManager ColumnsManager! = new BBjGridExWidgetColumnsManager()
+    field public GxColumnsManager ColumnsManager! = new GxColumnsManager()
     rem /**
     rem  * Instance of the grid options class
     rem  */
-    field public BBjGridExWidgetOptions Options! = new BBjGridExWidgetOptions(#this!)
+    field public GxOptions Options! = new GxOptions(#this!)
     rem /**
-    rem  * Instance of BBjGridExWidgetClientJsonFactory to convert client JSON strings to Client Models
+    rem  * Instnace of he scripts executor
     rem  */
-    field protected BBjGridExWidgetClientJsonFactory ClientJsonFactory! = new BBjGridExWidgetClientJsonFactory(#this!)
+    field public GxExecutor Executor! = new GxExecutor(#this!, 250)
+    rem /**
+    rem  * Instance of GxClientJsonFactory to convert client JSON strings to Client Models
+    rem  */
+    field protected GxClientJsonFactory ClientJsonFactory! = new GxClientJsonFactory(#this!)
     rem /**
     rem  * The vector holds the registered events
     rem  */
-    field protected HashSet Interests! = new HashSet()
+    field protected JsonArray Interests! = new JsonArray()
     rem /**
     rem  * An array which contains the supported toolbar items
     rem  */
-    field protected HashSet ChartToolbarItems! = new HashSet()
+    field protected JsonArray ChartToolbarItems! = new JsonArray()
     rem /**
     rem  * The client's HTML template to use in order to build the grid&#183;
     rem  */
@@ -144,29 +187,43 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  * Instance of the grid's license manager
     rem  */
     field protected static LicenseManager LicenseManager! = new LicenseManager()
-    field protected BBjHtmlView HTMLView!
-    field protected Boolean IsReady! = BBjAPI.FALSE
-    field protected BBjVector backlog! = new BBjVector()
-    field protected BBjString URL$
+    rem /**
+    rem  * Instance of the created HTMLView
+    rem  */
+    field public BBjHtmlView HTMLView!
+    rem /**
+    rem  * A flag which defines when the grid is ready and the process events started
+    rem  */
+    field public Boolean IsReady! = BBjAPI.FALSE
+    rem /**
+    rem  * A boolean which indicates whether the grid has its first renderer
+    rem  */
+    field protected Boolean IsFirstRender! = BBjAPI.TRUE
     field protected BBjNumber newW!
     field protected BBjNumber newH!
     rem /**
-    rem  * Constant value to define row selection event
+    rem  * Constant value to define row click events
     rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_ROW_CLICK()
-        methodret BBjAPI.ON_GRID_SELECT_ROW
+        methodret 5011
     methodend
     rem /**
-    rem  * Alias to <i>ON_GRID_ROW_CLICK()</i>
-    rem  *
-    rem  * @see ON_GRID_ROW_CLICK()
+    rem  * A Constant value to define row selection (selected/deselected) change events
     rem  *
     rem  * @return BBjNumber
     rem  */
     method public static BBjNumber ON_GRID_SELECT_ROW()
-        methodret #ON_GRID_ROW_CLICK()
+        methodret BBjAPI.ON_GRID_SELECT_ROW
+    methodend
+    rem /**
+    rem  * Alias for ON_GRID_SELECT_ROW
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public static BBjNumber ON_GRID_ROW_SELECT()
+        methodret #ON_GRID_SELECT_ROW()
     methodend
     rem /**
     rem  * Constant value to define row double-click event
@@ -233,6 +290,15 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  */
     method public static BBjNumber ON_GRID_ROW_EDITING_STARTED()
         methodret 5006
+    methodend
+    rem /**
+    rem  * Constant value to define A row has changed.
+    rem  * This event corresponds to Full Row Editing only.
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public static BBjNumber ON_GRID_ROW_VALUE_CHANGED()
+        methodret 5012
     methodend
     rem /**
     rem  * Constant value to define row editing stop event
@@ -429,6 +495,30 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
         methodret "chartDownload"
     methodend
     rem /**
+    rem  * Constant value which defines that balham theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_BALHAM()
+        methodret "balham"
+    methodend
+    rem /**
+    rem  * Constant value which defines that balham dark theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_BALHAM_DARK()
+        methodret "balham-dark"
+    methodend
+    rem /**
+    rem  * Constant value which defines the material theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_MATERIAL()
+        methodret "material"
+    methodend
+    rem /**
     rem  * Make Hex Color
     rem  *
     rem  * Convert the given BBjColor to a hex color string
@@ -473,7 +563,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem /**
     rem  * disabled default constructor
     rem  */
-    method private BBjGridExWidget()
+    method public BBjGridExWidget()
     methodend
     rem /**
     rem  * The constructor that creates the widget on wnd!
@@ -535,7 +625,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
     rem  *                           By default you will never need  to change the default Template.
     rem  *                           Unless you want to do something really unusual
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!, BBjString template$)
@@ -558,7 +648,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjNumber y! y-location
     rem * @param BBjNumber w! width
     rem * @param BBjNumber h! height
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
@@ -571,7 +661,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
     rem  *                           By default you will never need  to change the default Template.
     rem  *                           Unless you want to do something really unusual
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjChildWindow wnd!,BBjString template$)
@@ -590,7 +680,7 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     rem  *
     rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
     rem  * @param BBjString template$ the html template to use for the grid initialization
-    rem  * 
+    rem  *
     rem  * @Override
     rem  */
     method protected void create(BBjChildWindow wnd!)
@@ -641,11 +731,37 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
     method public void clearCallback(int type!)
         #super!.clearCallback(type!)
         interests! = #getInterests()
+        el! = new JsonPrimitive(type!)
 
-        if(interests!.contains(type!)) then
-            interests!.remove(type!)
+        if(interests!.contains(el!)) then
+            interests!.remove(el!)
             #updateClientWithInterests()
         FI
+    methodend
+    rem /**
+    rem  * Enable remote debugging on the given port
+    rem  *
+    rem  * @param BBjNumber debug! true to enable debug , false otherwise
+    rem  * @param BBjNumber port! the debugging port
+    rem  *
+    rem  * @return void
+    rem  */
+    method public static void setDebug(BBjNumber debug! , BBjNumber port!)
+        if(debug!.booleanValue())
+            chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=" + str(port!))
+        fi
+
+        #Debug! = debug!
+    methodend
+    rem /**
+    rem  * Enable remote debugging on the 9222 port
+    rem  *
+    rem  * @param BBjNumber debug! true to enable debug , false otherwise
+    rem  *
+    rem  * @return void
+    rem  */
+    method public static void setDebug(BBjNumber debug!)
+        #setDebug(Debug! , 9222)
     methodend
     rem /**
     rem  * @Override
@@ -660,201 +776,200 @@ class public BBjGridExWidget extends BBjWidget implements BBjGridExWidgetColumns
 
         if (f_init!) then
             html$ = #getTemplate()
-
-            if (info(3,6)<>"5" and #Debug>0) then
-                if (REV < "REV 19.10")
-                    call "BBjGridExWidget/util/EnableDebugger.bbj"
-                FI
-            FI
-
-            if (REV < "REV 19.10")
-                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
-            else
-                switches$ = stbl("!CHROMIUM_SWITCHES",err=*next)
-                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$,switches$)
-            FI
+            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
             htmlview!.setOpaque(0)
             htmlview!.setNoEdge(1)
-            
-            
+            htmlview!.setTabTraversable(1)
+            htmlview!.setFocusable(1)
 
-            if (info(3,6)<>"5" and #Debug>0) then
+            if (info(3,6)<>"5" and #getDebug() > 0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
                 if url$>"" then
-                    BBjAPI().getThinClient().browse(url$)
+                    a = scall("bbj BBjGridExWidget/util/DebugWindow.bbj - "+url$+" &")
                 FI
             FI
 
             htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
             htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
+            htmlview!.setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
             htmlview!.setText(html$)
-            
             #HTMLView!=htmlview!
         else
             #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
         FI
     methodend
     rem /**
-    rem  * Inject Js Script
+    rem  * Inject a js Script at the top window.
     rem  *
-    rem  * Inject a javascript file in the web view
+    rem  * If for some reason you want to inject a script in the iframe , then use the injectScript method
+    rem  * from the created internal HTML View.
+    rem  *
+    rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::injectScript</a>
     rem  *
     rem  * @param BBjString script$ the path for the javascript file
     rem  */
     method public void injectScript(BBjString script$)
-        bui = INFO(3,6)="5"
-
-        if bui then
-            #HTMLView!.injectScript(script$)
-        ELSE
-            #HTMLView!.injectScript(script$ , 1)
-        FI
+        #HTMLView!.injectScript(script$ , 1)
     methodend
     rem /**
-    rem  * Excute script
+    rem  * Execute a javascript code on the client.
     rem  *
-    rem  * Excute a javascript code on the client
+    rem  * Note that if the grid is not ready yet , then script will queued until the grid is ready then send
+    rem  * to the client.
+    rem  * If some reason you do not want this behavior , then use the executeScript method from the created internal
+    rem  * HTML View
+    rem  *
+    rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::executeScript</a>
     rem  *
     rem  * @param BBjString script$ The javascript code
     rem  *
     rem  * @return Object returned value, if any
     rem  */
     method public Object executeScript(BBjString script$)
-        if #IsReady! then
-            methodret #HTMLView!.executeScript(script$)
-        else
-            #backlog!.addItem(script$)
-        FI
-
-        methodret null()
+        methodret #getExecutor().execute(script$)
     methodend
     rem /**
-    rem  * An Event listener excuted after the initial load. The method will inject all required file
-    rem  * on the client to make the grid functionable
+    rem  * When true then the executor will limit the rate at
+    rem  * which executeScript gets invoked on the HTMLView.
+    rem  *
+    rem  * Setting this to "0" will help to boost up the communication
+    rem  * performance between BBj and the grid which lives inside
+    rem  * the HTMLView in BUI context
+    rem  *
+    rem  * By default this options is set to "0"
+    rem  *
+    rem  * @param BBjNumber suppress! true to suppress , false to enable
+    rem  */
+    method public void suppressBuiDebouncing(BBjNumber suppress!)
+        #getExecutor().setSuppressBuiDebouncing(suppress!)
+    methodend
+    rem /**
+    rem  * When true then the executor will limit the rate at
+    rem  * which executeScript gets invoked on the HTMLView.
+    rem  *
+    rem  * Setting this to "0" will help to boost up the communication
+    rem  * performance between BBj and the grid which lives inside
+    rem  * the HTMLView in GUI context
+    rem  *
+    rem  * By default this options is set to "1"
+    rem  *
+    rem  * @param BBjNumber suppress! true to suppress , false to enable
+    rem  */
+    method public void suppressGuiDebouncing(BBjNumber suppress!)
+        #getExecutor().setSuppressGuiDebouncing(suppress!)
+    methodend
+    rem /**
+    rem  * Supress scripta debouncing for GUI and BUI
+    rem  *
+    rem  * @see #suppressBuiDebouncing()
+    rem  * @see #suppressGuiDebouncing()
+    rem  *
+    rem  * @param BBjNumber suppress! true to suppress , false to enable
+    rem  */
+    method public void suppressDebouncing(BBjNumber suppress!)
+        #suppressBuiDebouncing(suppress!)
+        #suppressGuiDebouncing(suppress!)
+    methodend
+    rem /**
+    rem  * An Event listener executed after the initial load of the HTML View.
+    rem  *
+    rem  * At this phase the grid will inject all required js files in the client to make the grid functional.
     rem  *
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onInit(BBjEvent ev!)
-    
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
-
         isLicensed! = 0
-
-        if (#getForceCommunityBuild() = 0) then
-            isLicensed! = #isLicensed()
-        FI
-
-        bui = INFO(3,6)="5"
-        ch=unt
-        distBase$ = "BBjGridExWidget/client/dist"
-        rem include the grid
+        if (#getForceCommunityBuild() = 0) then isLicensed! = #isLicensed() FI
+        rem /**
+        rem  * work out the required js files
+        rem  */
+        basePath$ = "BBjGridExWidget/client/dist"
+        agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.min.noStyle.js") , (basePath$ +"/ag-grid-community.min.noStyle.js"))
+        gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
+        rem for debugging we inject the unminified files which contain source maps of the original code
         if #getDebug() = 1 then
-            if bui then
-                gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.noStyle.js",distBase$ +"/bui/ag-grid-community.noStyle.js")
-            else
-                gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.noStyle.js",distBase$ +"/ag-grid-community.noStyle.js")
-            FI
-        else
-            if bui then
-                gridPath$ = iff(isLicensed!,distBase$ + "/bui/ag-grid-enterprise.min.noStyle.js",distBase$ +"/bui/ag-grid-community.min.noStyle.js")
-            else
-                gridPath$ = iff(isLicensed!,distBase$ + "/ag-grid-enterprise.min.noStyle.js",distBase$ +"/ag-grid-community.min.noStyle.js")
-            FI
+            agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.noStyle.js") , (basePath$ +"/ag-grid-community.noStyle.js"))
+            gxPath$ = basePath$ + "/bbj-grid-widget.js"
         FI
-
-        open (ch)gridPath$
-        read record (ch,siz=5512000)script$
-        close (ch)
-        s$=script$
-        rem include locale files
-        locale! = #getLanguageManager().getLanguage()
-        locale$ = str(locale!.replaceAll("_","-").replaceAll("_","-"))
-        dateJsLocalePath$ = distBase$ + "/../vendor/Datejs/build/date-" + locale$ + ".js"
-        isLocale = 0
-        ch=unt
-        open (ch,err=*next)dateJsLocalePath$;isLocale=1
-
-        if isLocale = 0 then
+        rem /**
+        rem  * Bundle the content of all required scripts
+        rem  */
+        scriptsSet! = new HashSet()
+        scriptsSet!.add(agGridPath$)
+        scriptsSet!.add(gxPath$)
+        rem /**
+        rem  * This is the most important piece , without it the grid won't work in GUI
+        rem  *
+        rem  * Why?
+        rem  *
+        rem  * in BUI we use GWT ad GWT uses $wnd instead of window because compiled code is executed normally in an iframe,
+        rem  * and in this context, window will reference the iframe window while $wnd will reference the parent window.
+        rem  * The same occurs with $doc which is a reference in the iframe to the parent document.
+        rem  *
+        rem  * All JS calls we run from the grid are executed in the $wnd context because all scripts
+        rem  * are inject in the top level window
+        rem  *
+        rem  * In GUI there is no iframe which means theres is no $wnd or $doc , because of this all
+        rem  * the JS code we execute from the grid will throw an error , we polyfill these two vars
+        rem  * for GUI to get around the problem
+        rem  */
+        bundle$ = "var $wnd = (typeof $wnd !== 'undefined' ? $wnd : window);"
+        bundle$ = bundle$ + "var $doc = (typeof $doc !== 'doc' ? $doc : document);"
+        rem loop over the require scripts and attach to the bundle
+        it! = scriptsSet!.iterator()
+        while(it!.hasNext())
+            path! = it!.next()
+            ch=unt
+            open (ch)path!
+            read record (ch,siz=5512000)content$
             close (ch)
-            dateJsLocalePath$ = distBase$ + "/i18n/Datejs/" + locale$ + ".js"
-            open (ch,err=*next)dateJsLocalePath$;isLocale=1
-        fi
-        if isLocale = 1 then
-            read record (ch,siz=5512000)script$
-            close (ch)
-            s$=s$+script$
-        else
-            a=msgbox("Error loading library for locale "+locale$,0,"Error")
-        fi
-        
-       
-        ch=unt
-
-        if #getDebug() = 1 then
-            open (ch) distBase$ + "/bbj-grid-widget.js"
-        else
-            open (ch) distBase$ + "/bbj-grid-widget.min.js"
-        FI
-
-        read record (ch,siz=5512000)script$
-        close (ch)
-        
-        s$=s$+script$
-        #injectScript(s$)
-        
-REM         rem could even directly call the onLoaded Method from here        
-REM         #onLoaded(null())
-
-
+            bundle$ = bundle$ + content$
+        wend
+        rem finally inject the built bundle
+        #injectScript(bundle$)
+        rem /**
+        rem  * Some customers reported that the second ON_PAGE_LOADED event is not fired
+        rem  * so we call the onLoaded method manually in case the event is not fired
+        rem  *
+        rem  * could even directly call the onLoaded Method from here
+        rem  * #onLoaded(null())
+        rem  */
         BBjAPI().createTimer(str(#this!)+"onLoadFallback",.2,#this!,"onLoaded")
-        
     methodend
     rem /**
-    rem  * On Loaded event listener will flush the callbacks queue and clear all ON_PAGE_LOADED
-    rem  * callbacks
+    rem  * An Event listener executed after the second ON_PAGE_LOADED event
+    rem  *
+    rem  * At this phase the grid flush all enqueued scripts
+    rem  *
+    rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onLoaded(BBjEvent ev!)
-    
-    
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
         BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
-        
         #getLicenseManager().register(#this!)
         #IsReady! = BBjAPI.TRUE
-        REM         if #RS! <> null() or #URL$>"" then
-        REM             #render()
-        REM         FI
-        if(#getOptions().getBlockRenderToReady() = 1) then
-            #render()
-        FI
-
-        firstScripts$  = ""
-        secondScripts$ = ""
-        it! = #backlog!.iterator()
-        while it!.hasNext() = BBjAPI.TRUE
-            next!=str(it!.next())
-
-            if(next!.contains("gw_init"))
-                firstScripts$ = firstScripts$ + str(next!) + ";"
-            FI
-
-            secondScripts$ = secondScripts$ + str(next!) + ";"
-        wend
-
-        #backlog! = null()
-        scripts$ =  firstScripts$ + secondScripts$
-
-        if(scripts$ > "") then
-            #HTMLView!.executeScript(scripts$)
-        FI
+        #render()
+        #getExecutor().flush()
 
         if (#newW! <> null() and #newH!<> null()) then
             #super!.setSize(#newW!,#newH!)
             #newW! = null()
             #newH! = null()
         FI
-        
+    methodend
+    rem /**
+    rem  * Focus the grid by selecting the cell in the first cell and first column.
+    rem  *
+    rem  * Note: If the grid has already a different selected cell , then
+    rem  * the event handler will retain the selection
+    rem  *
+    rem  * @param BBjGainedFocusEvent ev! The focus event
+    rem  */
+    method public void onGainedFocus(BBjGainedFocusEvent ev!)
+        if(ev!.isTemporary()) methodret
+        #focus()
     methodend
     rem /**
     rem  * On NativeEvent
@@ -870,10 +985,13 @@ REM         #onLoaded(null())
         detail$ = str(map!.get("detail"))
         switch type$
             case "gw.rowSelect"
-                #onSelecteRowChange(detail$, "single")
+                #onSelectRowChange(detail$, "select")
+                break
+            case "gw.rowClick"
+                #onSelectRowChange(detail$,"single")
                 break
             case "gw.rowDoubleClick"
-                #onSelecteRowChange(detail$,"double")
+                #onSelectRowChange(detail$,"double")
                 break
             case "gw.cellClicked"
                 #onCellEvent(detail$,#ON_GRID_CELL_CLICK())
@@ -899,6 +1017,9 @@ REM         #onLoaded(null())
             case "gw.rowEditingStopped"
                 #onRowEditing(detail$,#ON_GRID_ROW_EDITING_STOPPED())
                 break
+            case "gw.rowValueChanged"
+                #onRowEditing(detail$,#ON_GRID_ROW_VALUE_CHANGED())
+                break
             case "gw.stateChanged"
                 #handleStateChangedEvent(detail$,#ON_GRID_STATE_CHANGE())
                 break
@@ -913,37 +1034,37 @@ REM         #onLoaded(null())
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjGridExWidgetColumn definition!)
+    method public GxColumn addColumn(GxColumn definition!)
         methodret #getColumnsManager().addColumn(definition!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjNumber type!)
+    method public GxColumn addColumn(BBjString field!,BBjNumber type!)
         methodret #getColumnsManager().addColumn(field! , type!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!,BBjString label!)
+    method public GxColumn addColumn(BBjString field!,BBjString label!)
         methodret #getColumnsManager().addColumn(field! , label!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
+    method public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!)
         methodret #getColumnsManager().addColumn(field! , label! ,type!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn addColumn(BBjString field!)
+    method public GxColumn addColumn(BBjString field!)
         methodret #addColumn(field!,field!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn getColumn(BBjString field!)
+    method public GxColumn getColumn(BBjString field!)
         methodret #getColumnsManager().getColumn(field!)
     methodend
     rem /**
@@ -955,14 +1076,14 @@ REM         #onLoaded(null())
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumn removeColumn(BBjString field!)
+    method public GxColumn removeColumn(BBjString field!)
         methodret #getColumnsManager().removeColumn(field!)
     methodend
     rem /**
     rem  * Sets the foreground color for a column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color!  the color for the column
@@ -974,7 +1095,7 @@ REM         #onLoaded(null())
     rem  * Sets the foreground color for a column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjString color$ Valid CSS color
@@ -988,7 +1109,7 @@ REM         #onLoaded(null())
     rem  * Sets the background color of a column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color!  The color for the column
@@ -1000,7 +1121,7 @@ REM         #onLoaded(null())
     rem  * Sets the background color of a column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjColor color$  Valid CSS color
@@ -1014,7 +1135,7 @@ REM         #onLoaded(null())
     rem  * Sets the default alignment for a column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The field name of the column definition
     rem  * @param BBjNumber align! The column alignment
@@ -1034,7 +1155,7 @@ REM         #onLoaded(null())
     rem  * Sets the default alignment for a column's header
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The field name of the column definition
     rem  * @param BBjNumber align! The column's header alignment
@@ -1057,8 +1178,8 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * <br>
-    rem  * <b>Note:</b> Unline setting the width in the column definition, this method will update a column width without
-    rem  * a full rerender.
+    rem  * <b>Note:</b> Unlike setting the width in the column definition, this method will update a column width without
+    rem  * a full re-render.
     rem  *
     rem  * @param BBjString field$ The field name of the column definition
     rem  * @param BBjNumber width! The column width
@@ -1066,7 +1187,8 @@ REM         #onLoaded(null())
     method public void setColumnWidth(BBjString field$, BBjNumber width!)
         if #hasColumn(field$) then
             #getColumn(field$).setWidth(width!)
-            #executeScript("gw_setColumnWidth('"+ #GRIDID$ + "','" + field$ + "'," + str(width!) + ");")
+            scriptKey! = "$wnd.gw_setColumnWidth_" + field$
+            #getExecutor().execute(scriptKey! , "$wnd.gw_setColumnWidth('"+ #GRIDID$ + "','" + field$ + "'," + str(width!) + ");")
         FI
     methodend
     rem /**
@@ -1077,15 +1199,16 @@ REM         #onLoaded(null())
     rem  * @param BBjString field$ The field name of the column
     rem  * @param BBjString pin$  The pin direction ("right" or "left")
     rem  *
-    rem  * @see BBjGridExWidgetColumn.PINNED_LEFT()
-    rem  * @see BBjGridExWidgetColumn.PINNED_RIGHT()
+    rem  * @see GxColumn.PINNED_LEFT()
+    rem  * @see GxColumn.PINNED_RIGHT()
     rem  */
     method public void pinColumn(BBjString field$, BBjString pin$)
         pin$=cvs(pin$,8)
 
         if #hasColumn(field$) then
             #getColumn(field$).setPinned(pin$)
-            #executeScript("gw_pinColumn('" + #GRIDID$ + "','" + field$ + "','" + pin$  + "');")
+            scriptKey! = "$wnd.gw_pinColumn" + field$
+            #getExecutor().execute(scriptKey!,"$wnd.gw_pinColumn('" + #GRIDID$ + "','" + field$ + "','" + pin$  + "');")
         FI
     methodend
     rem /**
@@ -1097,14 +1220,15 @@ REM         #onLoaded(null())
     rem  * @param BBjNumber toIndex! The new column position/index
     rem  */
     method public void moveColumn(BBjString Field$, BBjNumber toIndex!)
-        script$="gw_moveColumn('" + #GRIDID$ + "','" + field$ + "'," + str(toIndex!) + ");"
-        #executeScript(script$)
+        scriptKey! = "$wnd.gw_moveColumn" + field$
+        script$="$wnd.gw_moveColumn('" + #GRIDID$ + "','" + field$ + "'," + str(toIndex!) + ");"
+        #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
     rem  * Set the mask of a column using value formatter expression&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  * <br>
     rem  *
     rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
@@ -1119,10 +1243,10 @@ REM         #onLoaded(null())
         FI
     methodend
     rem /**
-    rem  * Set an image list for a given column using BBjGridExWidgetRendererImageRenderer&#183;
+    rem  * Set an image list for a given column using GxRendererImageRenderer&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  * <br>
     rem  *
     rem  * <b>Note:</b> This method will override the CellRenderer of the column&#183;
@@ -1133,7 +1257,7 @@ REM         #onLoaded(null())
     rem  */
     method public void setColumnImageList(BBjString field!, BBjImage imagelist!)
         if #hasColumn(field!) then
-            renderer! = new BBjGridExWidgetRendererImageRenderer()
+            renderer! = new GxRendererImageRenderer()
             enc! = java.util.Base64.getEncoder()
             for i=1 to int(imageList!.getWidth() / imageList!.getHeight())
                 imageSlice!=imageList!.getImageSlice(i-1,imageList!.getHeight())
@@ -1141,7 +1265,7 @@ REM         #onLoaded(null())
                 b64$ = enc!.encode(bytes$)
                 renderer!.getList().addProperty(str(i-1),"data:image/png;base64, "+b64$)
             next
-            rem adding a clear pixel to reflext the -1 for backwards compatibility to legacy BBj grid
+            rem adding a clear pixel to reflect the -1 for backwards compatibility to legacy BBj grid
             clearpixel$=enc!.encode($89504E470D0A1A0A0000000D4948445200000001000000010804000000B51C0C020000000B49444154789C63FACF0000020701029A1C31710000000049454E44AE426082$)
             renderer!.getList().addProperty("-1","data:image/png;base64, "+clearpixel$)
             #getColumn(field!).setCellRenderer(renderer!)
@@ -1152,7 +1276,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @param BBjString field! The column's field
     rem  * @param BBjString AggFunc! Name of function to use for aggregation. One of [sum,min,max,first,last].
@@ -1172,7 +1296,7 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addRowGroupColumns(BBjString columns!)
-        #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "', 0 );")
+        #getExecutor().execute("$wnd.gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         count! = 0
@@ -1194,12 +1318,12 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void setRowGroupColumns(BBjString columns!)
-        #executeScript("gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "' , 1);")
+        #getExecutor().execute("$wnd.gw_addRowGroupColumn('" + #GRIDID$ + "','" + columns! + "' , 1);")
         list! = Arrays.asList(columns!.split(","))
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
         WHILE (it!.hasNext())
-            next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+            next! = cast(GxColumn , it!.next().getValue())
 
             if(list!.contains(next!.getField())) then
                 next!.setRowGroup(1)
@@ -1223,7 +1347,7 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void removeRowGroupColumns(BBjString columns!)
-        #executeScript("gw_removeRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
+        #getExecutor().execute("$wnd.gw_removeRowGroupColumn('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1243,7 +1367,7 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addPivotColumns(BBjString columns!)
-        #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
+        #getExecutor().execute("$wnd.gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "', 0 );")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         count! = 0
@@ -1264,12 +1388,12 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void setPivotColumns(BBjString columns!)
-        #executeScript("gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "' , 1);")
+        #getExecutor().execute("$wnd.gw_addPivotColumns('" + #GRIDID$ + "','" + columns! + "' , 1);")
         list! = Arrays.asList(columns!.split(","))
         it! = #getColumnsManager().getColumns().entrySet().iterator()
         count! = 0
         WHILE (it!.hasNext())
-            next! = cast(BBjGridExWidgetColumn , it!.next().getValue())
+            next! = cast(GxColumn , it!.next().getValue())
 
             if(list!.contains(next!.getField())) then
                 next!.setEnablePivot(1)
@@ -1291,7 +1415,7 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void removePivotColumns(BBjString columns!)
-        #executeScript("gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
+        #getExecutor().execute("$wnd.gw_removePivotColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1310,7 +1434,7 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void addValueColumns(BBjString columns!)
-        #executeScript("gw_addValueColumns('" + #GRIDID$ + "','" + columns! + "');")
+        #getExecutor().execute("$wnd.gw_addValueColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1328,7 +1452,7 @@ REM         #onLoaded(null())
     rem  * @param BBjString columns! A comma separated string of column fields
     rem  */
     method public void removeValueColumns(BBjString columns!)
-        #executeScript("removeValueColumns('" + #GRIDID$ + "','" + columns! + "');")
+        #getExecutor().execute("removeValueColumns('" + #GRIDID$ + "','" + columns! + "');")
         list! = Arrays.asList(columns!.split(","))
         it! = list!.iterator()
         WHILE (it!.hasNext())
@@ -1339,26 +1463,26 @@ REM         #onLoaded(null())
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjGridExWidgetColumnGroup definition!)
+    method public GxColumnGroup addColumnGroup(GxColumnGroup definition!)
         methodret #getColumnsManager().addColumnGroup(definition!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!)
+    method public GxColumnGroup addColumnGroup(BBjString id!)
         methodret #getColumnsManager().addColumnGroup(id!)
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!)
+    method public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!)
         methodret #getColumnsManager().addColumnGroup(id!,label!)
     methodend
     rem /**
     rem  * Add column group
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem * @param BBjString id! The group id
     rem * @param BBjString label! The group label/name
@@ -1367,12 +1491,12 @@ REM         #onLoaded(null())
     rem *                                 Moving the columns outside of the group (and hence breaking the group) is not allowed.
     rem * @param BBjString headerClass!  A CSS class to apply
     rem *
-    rem * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem * @return GxColumnGroup The GxColumnGroup instance
     rem */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label! ,  BBjVector columns! , BBjNumber marryChildren! ,BBjString headerClass! )
-        declare BBjGridExWidgetColumnGroup definition!
+    method public GxColumnGroup addColumnGroup(BBjString id! , BBjString label! ,  BBjVector columns! , BBjNumber marryChildren! ,BBjString headerClass! )
+        declare GxColumnGroup definition!
 
-        definition! = new BBjGridExWidgetColumnGroup(id! , label!)
+        definition! = new GxColumnGroup(id! , label!)
         definition!.setMarryChildren(marryChildren!)
         definition!.getHeaderClass().add(headerClass!)
         columnsLength! = columns!.size() - 1
@@ -1396,7 +1520,7 @@ REM         #onLoaded(null())
     rem  * Group Vector of Columns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem * @param BBjString id! The group id
     rem * @param BBjString label! The group label/name
@@ -1404,30 +1528,30 @@ REM         #onLoaded(null())
     rem * @param BBjNumber marryChildren! Set to 'true' to keep columns in this group beside each other in the grid.
     rem *                                 Moving the columns outside of the group (and hence breaking the group) is not allowed.
     rem  *
-    rem  * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem  * @return GxColumnGroup The GxColumnGroup instance
     rem */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id!, BBjString label! , BBjVector columns! , BBjNumber marryChildren!)
+    method public GxColumnGroup addColumnGroup(BBjString id!, BBjString label! , BBjVector columns! , BBjNumber marryChildren!)
         methodret #addColumnGroup(id!,label!,columns! , marryChildren! ,  "" )
     methodend
     rem /**
     rem  * Group Vector of Columns
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem * @param BBjString id! The group id
     rem * @param BBjString name! The group label/name
     rem * @param BBjVector columns! Vector of columns ids/fields to use
     rem  *
-    rem  * @return BBjGridExWidgetColumnGroup The BBjGridExWidgetColumnGroup instance
+    rem  * @return GxColumnGroup The GxColumnGroup instance
     rem */
-    method public BBjGridExWidgetColumnGroup addColumnGroup(BBjString id! , BBjString label!, BBjVector columns!)
+    method public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!, BBjVector columns!)
         methodret #addColumnGroup(id!,label! , columns! , 1  , "" )
     methodend
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup getColumnGroup(BBjString id!)
+    method public GxColumnGroup getColumnGroup(BBjString id!)
         methodret #getColumnsManager().getColumnGroup(id!)
     methodend
     rem /**
@@ -1439,7 +1563,7 @@ REM         #onLoaded(null())
     rem /**
     rem  * {@inheritDoc}
     rem  */
-    method public BBjGridExWidgetColumnGroup removeColumnGroup(BBjString id!)
+    method public GxColumnGroup removeColumnGroup(BBjString id!)
         methodret #getColumnsManager().removeColumnGroup(id!)
     methodend
     rem /**
@@ -1449,10 +1573,10 @@ REM         #onLoaded(null())
         #getColumnsManager().resetAllColumns()
     methodend
     rem /**
-    rem  * Alais for <i>resetAllColumns()</i>
+    rem  * Alias for <i>resetAllColumns()</i>
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
-    rem  * <br><b><small>#ColumnsRerender</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
     rem  * @see resetAllColumns()
     rem  */
@@ -1483,11 +1607,11 @@ REM         #onLoaded(null())
         rem ===========================
         context! = options!.get("context").getAsJsonObject()
         context!.addProperty("id",#GRIDID$)
-        context!.addProperty("interests",iff(#getInterests().size() <> 0 ,new Gson().toJson(#getInterests()), listIsEmpty!) ,err=*next)
+        context!.        add("interests",iff(#getInterests().size() <> 0 ,#getInterests(), listIsEmpty!) ,err=*next)
         context!.addProperty("getRowNodeId",#RowNodeId$, err=*next)
 
         if(#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1) then
-            context!.addProperty("chartToolbarItems",new Gson().toJson(#getChartToolbarItems()), err=*next)
+            context!.add("chartToolbarItems",#getChartToolbarItems(), err=*next)
         FI
 
         methodret options!
@@ -1495,23 +1619,40 @@ REM         #onLoaded(null())
     rem /**
     rem  * Render the grid
     rem  *
-    rem  * The method will compose the grid config and send it to the client for a full rerender.
+    rem  * The method will compose the grid config and send it to the client for a full re-render.
     rem  * You can use this method to force the client render after you update a setup configuration (ex: column definitions)
     rem  */
     method public void render()
-        if(#getOptions().getBlockRenderToReady() = 1) then
-            if(!#IsReady!) then
-                methodret
-            FI
-        FI
-
+        isWidgetReady! = #getIsReady()
+        rem /**
+        rem  * Make sure to delay rendering until the widget is declared ready
+        rem  *
+        rem  * The widget is declared ready when the HTMLView fires the ON_PAGE_LOADED
+        rem  * event and the scripts are injected succesfully
+        rem  */
+        if(!isWidgetReady!) methodret
+        isFirstRender! = #getIsFirstRender()
         gson! = new Gson()
         options! = #getAsJsonObject()
         data$ = #getRS().toJson(1 , #getRowNodeId())
-        #executeScript("gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")")
+        rem /**
+        rem  * The script priority is defined based on isFirstRender
+        rem  *
+        rem  * When the grid is rendering for the first time , we make sure
+        rem  * that the init script is the first one in the queue before any
+        rem  * other script. if is not the first render , then the init
+        rem  * is queued in the normal order.
+        rem  */
+        priority! = 0
+        if(!isFirstRender!) priority! = null()
+        #getExecutor().execute("$wnd.gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")" , 1 , priority!)
+        rem /**
+        rem  * Update the IsFirstRender flag once and only once
+        rem  */
+        if(!isFirstRender!) #setIsFirstRender(BBjAPI.FALSE)
     methodend
     rem /**
-    rem  * Rerender the column definitions on the client.
+    rem  * Re-render the column definitions on the client.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -1520,14 +1661,15 @@ REM         #onLoaded(null())
     rem  */
     method public void updateColumns()
         definition! = #getAsJsonObject().get("columnDefs").getAsJsonArray()
-        #executeScript("gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
+        scriptKey! = "$wnd.gw_setColumnDefinitions"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_setColumnDefinitions('" + #GRIDID$ + "'," + new Gson().toJson(definition!) + ")")
     methodend
     rem /**
-    rem  * Build the column definitions from the passed resultset
+    rem  * Build the column definitions from the passed ResultSet
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
     rem  *
-    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the resultset, otherwise update the existing ones only
+    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the ResultSet, otherwise update the existing ones only
     rem  */
     method public void buildColumnsFromResultSet(ResultSet rs! , BBjNumber addAll!)
         if rs! <> NULL() then
@@ -1541,7 +1683,7 @@ REM         #onLoaded(null())
                     #getColumn(field$).update(meta! , #getOptions().getDefaultColumnDefinition())
                 else
                     if(addAll! = 1) then
-                        definition! = new BBjGridExWidgetColumn(field$)
+                        definition! = new GxColumn(field$)
                         definition!.update(meta!, #getOptions().getDefaultColumnDefinition())
                         #addColumn(definition!)
                     FI
@@ -1554,7 +1696,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
     rem  * @param BBjNumber render! When true the grid will render directly on the client, otherwise you need to call <b>render()</b> directly
-    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the resultset, otherwise update the existing ones only
+    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the ResultSet, otherwise update the existing ones only
     rem  * @param BBjString indexdBy$ The field used for creating the unique row index
     rem  *
     rem  * @see render()
@@ -1568,9 +1710,7 @@ REM         #onLoaded(null())
             #RS!.createIndex()
         FI
 
-        if(render! = 1) then
-            #render()
-        FI
+        #render()
     methodend
     rem /**
     rem  * Feed the grid with data
@@ -1580,7 +1720,7 @@ REM         #onLoaded(null())
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
     rem  * @param BBjNumber render! When true the grid will render directly on the client, otherwise you need to call <b>render()</b> directly
-    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the resultset, otherwise update the existing ones only
+    rem  * @param BBjNumber addAll! When true, We will create a column definition for every column in the ResultSet, otherwise update the existing ones only
     rem  *
     rem  * @see render()
     rem  */
@@ -1622,12 +1762,13 @@ REM         #onLoaded(null())
         #setData(rs! , 1)
     methodend
     rem /**
-    rem  * Feed the grid with a new rows set
+    rem  * Feed the grid with a new ResultSet
     rem  *
-    rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full rerender&#183;
+    rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full re-render&#183;
     rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
     rem  *
     rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
+    rem  * Please note that All row and range selection will be lost.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -1635,14 +1776,87 @@ REM         #onLoaded(null())
     rem  *
     rem  * @see setData()
     rem  */
-    method public void setRowsData(ResultSet rs!)
+    method public void updateData(ResultSet rs!)
         #RS! = rs!
 
         if rs! <> NULL() AND rs!.size() > 0 then
             #RS!.createIndex(err=*next)
             data$=#RS!.toJson(BBjAPI.TRUE,#getRowNodeId())
-            #executeScript("gw_setRowsData('" + #GRIDID$ + "'," + data$+ ")")
+            scriptKey! = "$wnd.gw_setRowData"
+            #getExecutor().execute(scriptKey!,"$wnd.gw_setRowData('" + #GRIDID$ + "'," + data$+ ")")
         FI
+    methodend
+    rem /**
+    rem  * @deprecated Use updateData(ResultSet rs!) instead
+    rem  */
+    method public void setRowsData(ResultSet rs!)
+        #updateData(rs!)
+    methodend
+    rem /**
+    rem  * Execute a bulk update on the grid
+    rem  *
+    rem  * The transaction method is to pass a transaction object to the grid containing
+    rem  * rows to add, remove and update.
+    rem  *
+    rem  * The grid keeps all active sorting, grouping and filtering, including updating to reflect
+    rem  * the changes in the data should the sorting, grouping or filtering be impacted.
+    rem  *
+    rem  * Updating using transactions is the best way to do large updates to the grid, as the grid treats them
+    rem  * as delta changes, so the grid only refreshes what is needed giving a performance boost.
+    rem  *
+    rem  * All row and range selection will be kept.
+    rem  *
+    rem  * Note that all update done on the grid will reflected also on the ResultSet instance which is the grid
+    rem  * is using.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param GxClientTransactionModel transaction!
+    rem  * @param BBjNumber batchUpdate! when true then execute the update, along with any other updates you subsequently provide
+    rem  */
+    method public void executeUpdateTransaction(GxClientTransactionModel transaction!,BBjNumber batchUpdate!)
+        transaction!.setWidget(#this!)
+        json! = transaction!.execute()
+        #getExecutor().execute("$wnd.gw_updateRowData('" + #GRIDID$ + "'," + json!.toString() + "," + str(batchUpdate!.booleanValue()) + ")")
+    methodend
+    rem /**
+    rem  * Execute a bulk update on the grid
+    rem  *
+    rem  * The transaction method is to pass a transaction object to the grid containing
+    rem  * rows to add, remove and update.
+    rem  *
+    rem  * The grid keeps all active sorting, grouping and filtering, including updating to reflect
+    rem  * the changes in the data should the sorting, grouping or filtering be impacted.
+    rem  *
+    rem  * Updating using transactions is the best way to do large updates to the grid, as the grid treats them
+    rem  * as delta changes, so the grid only refreshes what is needed giving a performance boost.
+    rem  *
+    rem  * All row and range selection will be kept.
+    rem  *
+    rem  * Note that all update done on the grid will reflected also on the ResultSet instance which is the grid
+    rem  * is using.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param GxClientTransactionModel transaction!
+    rem  */
+    method public void executeUpdateTransaction(GxClientTransactionModel transaction!)
+        #executeUpdateTransaction(transaction! , 0)
+    methodend
+    rem /**
+    rem  * Update row data
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
+    rem  */
+    method public GxClientTransactionModel updateRow(DataRow row!)
+        transaction! = new GxClientTransactionModel()
+        transaction!.update(row!)
+        #executeUpdateTransaction(transaction!)
+        methodret transaction!
     methodend
     rem /**
     rem  * Update row data
@@ -1651,19 +1865,25 @@ REM         #onLoaded(null())
     rem  *
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public void setRowData(BBjNumber index!,DataRow row!)
-        if #RS!.count() <> 0 then
-            #RS!.set(index!,row!)
-            REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
-            REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
-            if com.basiscomponents.VersionInfo.getBBjBuildID() >= "1555708604" then
-                #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,#getRowNodeId(),0) +")")
-            else
-                parser! = new JsonParser()
-                #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString()  +")")
-            FI
-        FI
+    method public GxClientTransactionModel updateRow(BBjNumber index!,DataRow row!)
+        methodret #updateRow(row!)
+    methodend
+    rem /**
+    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  */
+    method public GxClientTransactionModel setRowData(BBjNumber index!,DataRow row!)
+        methodret #updateRow(index!,row!)
+    methodend
+    rem /**
+    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  */
+    method public GxClientTransactionModel setRowData(DataRow row!)
+        methodret #updateRow(row!)
     methodend
     rem /**
     rem  * Add new row
@@ -1672,118 +1892,149 @@ REM         #onLoaded(null())
     rem  *
     rem  * @param BBjNumber index! The insert index
     rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public void addRow(BBjNumber index!,DataRow row!)
-        #RS!.add(index! , row!)
-        REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
-        REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
-        if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,#getRowNodeId(),0) +")")
-        else
-            parser! = new JsonParser()
-            #executeScript("gw_addRows('" + #GRIDID$ + "'," + str(index!) +",[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
-        FI
+    method public GxClientTransactionModel addRow(BBjNumber index!,DataRow row!)
+        transaction! = new GxClientTransactionModel()
+        transaction!.add(row!)
+        transaction!.setAddIndex(index!)
+        #executeUpdateTransaction(transaction!)
+        methodret transaction!
     methodend
     rem /**
-    rem  * Add new row
+    rem  * Add new row at the beginning of the grid
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param DataRow row! The DataRow object which contains the update
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public void addRow(DataRow row!)
-        #RS!.add(row!)
-        REM toJsonObject is available in basiscomponents.jar >= BBj 19.00
-        REM FIXME as soon as we release a version that has >=19.00 as a dependency, clean this up
-        if com.basiscomponents.VersionInfo.getBBjBuildID()>="1555708604" then
-            #executeScript("gw_setRowData('"+ #GRIDID$ + "'," + row!.toJsonObject(1,#getRowNodeId(),0) +")")
-        else
-            parser! = new JsonParser()
-            #executeScript("gw_addRows('" + #GRIDID$ +"',null,[" + parser!.parse(row!.toJson(#getRowNodeId())).getAsJsonArray().get(0).toString() +"])")
-        FI
+    method public GxClientTransactionModel addRow(DataRow row!)
+        methodret #addRow(0,row!)
     methodend
     rem /**
-    rem  * Remove row from grid by index
+    rem  * Remove a row from grid by the row refernce
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param DataRow row! The data row object to remove
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
+    rem  */
+    method public GxClientTransactionModel removeRow(DataRow row!)
+        transaction! = new GxClientTransactionModel()
+        transaction!.remove(row!)
+        #executeUpdateTransaction(transaction!)
+        methodret transaction!
+    methodend
+    rem /**
+    rem  * Remove a row from grid by index
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjNumber index! The row index
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
     rem  */
-    method public void removeRow(BBjNumber index!)
-        if #RS!.count() <> 0 then
-            if #RowNodeId$ <> "__ROW_INDEX" then
-                value! = #RS!.getItem(index!).getFieldAsString(#getRowNodeId())
-            else
-                value! = #RS!.getItem(index!).getRowKey()
-            FI
-
-            #RS!.remove(index!)
-            #executeScript("gw_removeRows('" + #GRIDID$ + "',['" + str(value!)  +"'])")
-        FI
+    method public GxClientTransactionModel removeRow(BBjNumber index!)
+        methodret #removeRow(#getRS().get(index!))
+    methodend
+    rem /**
+    rem  * Remove a row from grid by key
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString key! The row key
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
+    rem  */
+    method public GxClientTransactionModel removeRow(BBjString key!)
+        methodret #removeRow(#getRS().get(key!))
     methodend
     rem /**
     rem  * Clear row data (Empty the grid )
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
-    method public void clearRowsData()
+    method public void clearData()
         #RS! = new ResultSet()
         #RS!.createIndex(err=*next)
-        #executeScript("gw_setRowsData('" + #GRIDID$ + "', [])")
+        #getExecutor().execute("$wnd.gw_setRowData('" + #GRIDID$ + "', [])",0)
     methodend
     rem /**
-    rem  * Apply columns state
+    rem  * @deprecated use clearData() instead
+    rem  */
+    method public void clearRowsData()
+        #clearData()
+    methodend
+    rem /**
+    rem  * Apply the grid's columns , soring and filtering state
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetState state! : the state object
+    rem  * @param GxState state! : the state object
     rem  */
-    method public void setColumnState(BBjGridExWidgetState state!)
-        #executeScript("gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
+    method public void setState(GxState state!)
+        scriptKey! = "$wnd.gw_setState"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_setState('" + #GRIDID$ + "'," + state!.toString() +")")
     methodend
     rem /**
-    rem  * Get Column state
+    rem  * @deprecated use #setState instead
+    rem  */
+    method public void setColumnState(GxState state!)
+        #setState(state!)
+    methodend
+    rem /**
+    rem  * Get the grid's columns , sorting and filtering state
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @returns BBjGridExWidgetState
+    rem  * @returns GxState
     rem  */
-    method public BBjGridExWidgetState getColumnState()
-        state! = new BBjGridExWidgetState()
-        json_string$ = str(#HTMLView!.executeScript("gw_getState('" + #GRIDID$ + "')"))
+    method public GxState getState()
+        state! = new GxState()
+        json_string$ = str(#getExecutor().execute("$wnd.gw_getState('" + #GRIDID$ + "')",0))
         state!.setString(json_string$)
         methodret state!
     methodend
     rem /**
+    rem  * @deprecated Use #getState() instead
+    rem  */
+    method public GxState getColumnState()
+        methodret #getState()
+    methodend
+    rem /**
     rem  * Get the grid sidebar instance
     rem  *
-    rem  * @return BBjGridExWidgetSidebar
+    rem  * @return GxSidebar
     rem  */
-    method public BBjGridExWidgetSidebar getSidebar()
+    method public GxSidebar getSidebar()
         methodret #getOptions().getSidebar()
     methodend
     rem /**
     rem  * Get the language manager instance
     rem  *
-    rem  * @returns BBjGridExWidgetLanguageManager
+    rem  * @returns GxLanguageManager
     rem  */
-    method public BBjGridExWidgetLanguageManager getLanguageManager()
+    method public GxLanguageManager getLanguageManager()
         methodret #getOptions().getLanguageManager()
     methodend
     rem /**
     rem  * Get the grid statusbar instance
     rem  *
-    rem  * @return BBjGridExWidgetStatusBar
+    rem  * @return GxStatusBar
     rem  */
-    method public BBjGridExWidgetStatusBar getStatusbar()
+    method public GxStatusBar getStatusbar()
         methodret #getOptions().getStatusbar()
     methodend
     rem /**
     rem  * Get the grid default context menu
     rem  *
-    rem  * @return BBjGridContextMenu
+    rem  * @return GxContextMenu
     rem  */
-    method public BBjGridContextMenu getContextMenu()
+    method public GxContextMenu getContextMenu()
         methodret #getOptions().getContextMenu()
     methodend
     rem /**
@@ -1795,11 +2046,11 @@ REM         #onLoaded(null())
         methodret #getOptions().getClientContext()
     methodend
     rem /**
-    rem  * Get instance of BBjGridExWidgetClientJsonFactory
+    rem  * Get instance of GxClientJsonFactory
     rem  *
-    rem  * @return BBjGridExWidgetClientJsonFactory
+    rem  * @return GxClientJsonFactory
     rem  */
-    method public BBjGridExWidgetClientJsonFactory getClientJsonFactory()
+    method public GxClientJsonFactory getClientJsonFactory()
         methodret #ClientJsonFactory!
     methodend
     rem /**
@@ -1811,7 +2062,7 @@ REM         #onLoaded(null())
     rem  * @param rules! : Css Rules object as json object
     rem  */
     method public void addStyle(BBjString selector$ , JsonObject rules! )
-        #executeScript("gw_setStyle('" + selector$ + "','" + rules!.toString() + "')")
+        #getExecutor().execute("$wnd.gw_setStyle('" + selector$ + "','" + rules!.toString() + "')")
     methodend
     rem /**
     rem  * Add Style block
@@ -1822,7 +2073,7 @@ REM         #onLoaded(null())
     rem  * @param rules! : Css Rules object as string
     rem  */
     method public void addStyle(BBjString selector$ , BBjString rules! )
-        #executeScript("gw_setStyle('" + selector$ + "','" + rules! + "')")
+        #getExecutor().execute("$wnd.gw_setStyle('" + selector$ + "','" + rules! + "')")
     methodend
     rem /**
     rem  * Remove Style Block
@@ -1832,7 +2083,7 @@ REM         #onLoaded(null())
     rem  * @param selector$ : Css Selector
     rem  */
     method public void removeStyle(BBjString selector$)
-        #executeScript("gw_removeStyle('" + selector$ + "')")
+        #getExecutor().execute("$wnd.gw_removeStyle('" + selector$ + "')")
     methodend
     rem /**
     rem  * Set the grid theme
@@ -1843,6 +2094,9 @@ REM         #onLoaded(null())
     rem  * @param BBjString theme$
     rem  *
     rem  * @see getThemes()
+    rem  * @see GRID_THEME_BALHAM()
+    rem  * @see GRID_THEME_BALHAM_DARK()
+    rem  * @see GRID_THEME_MATERIAL()
     rem  */
     method public void setTheme(BBjString theme$)
         #getOptions().setTheme(theme$)
@@ -1854,7 +2108,7 @@ REM         #onLoaded(null())
                 s$="document.getElementById('" + str(#GRIDID$) + "').className='ag-theme-"+theme$+"';"
             FI
 
-            #executeScript(s$)
+            #getExecutor().execute(s$)
         else
             template! = #getTemplate()
             #HTMLView!.setText(template!)
@@ -1866,16 +2120,16 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @return BBjVector array of theme names
+    rem  *
+    rem  * @see GRID_THEME_BALHAM()
+    rem  * @see GRID_THEME_BALHAM_DARK()
+    rem  * @see GRID_THEME_MATERIAL()
     rem  */
     method public BBjVector getThemes()
         v! = new BBjVector()
-        v!.addItem("balham")
-        v!.addItem("balham-dark")
-        v!.addItem("dark")
-        v!.addItem("fresh")
-        v!.addItem("blue")
-        v!.addItem("bootstrap")
-        v!.addItem("material")
+        v!.addItem(#GRID_THEME_BALHAM())
+        v!.addItem(#GRID_THEME_BALHAM_DARK())
+        v!.addItem(#GRID_THEME_MATERIAL())
         methodret v!
     methodend
     rem /**
@@ -1894,7 +2148,8 @@ REM         #onLoaded(null())
         #ChartToolbarItems!.add(item!)
 
         if(#IsReady! and (#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1)) then
-            #executeScript("gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+            #getClientContext().add("chartToolbarItems",#getChartToolbarItems())
+            #updateContext()
         FI
     methodend
     rem /**
@@ -1910,12 +2165,15 @@ REM         #onLoaded(null())
     rem  * @see CHART_TOOLBAR_DOWNLOAD()
     rem  */
     method public void removeChartToolbarItem(BBjString item!)
-        if #ChartToolbarItems!.contains(item!) then
-            #ChartToolbarItems!.remove(item!)
+        el! = new JsonPrimitive(item!)
+
+        if #ChartToolbarItems!.contains(el!) then
+            #ChartToolbarItems!.remove(el!)
         FI
 
         if(#IsReady! and (#getOptions().getEnableCharts() <> null() and #getOptions().getEnableCharts() = 1)) then
-            #executeScript("gw_updateContext('" + #GRIDID$ + "', 'chartToolbarItems','" + new Gson().toJson(#getChartToolbarItems()) + "')")
+            #getClientContext().add("chartToolbarItems",#getChartToolbarItems())
+            #updateContext()
         FI
     methodend
     rem /**
@@ -1923,12 +2181,22 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  * @param BBjString row! The row id
-    rem  * @param BBjStrinf column! The column id
+    rem  * @param BBjString column! The column id
     rem  */
     method public void focus(BBjString row! , BBjString column!)
-        #super!.focus()
-        script$="gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
-        #executeScript(script$)
+        rem DO NOT focus the canvas or the we will have an infinite focus calls
+        rem #super!.focus()
+        if #getCanvas().getParentWindow().getFocusedControlID() <>  #getCanvas().getID() then
+            #getHTMLView().clearCallback(BBjAPI.ON_GAINED_FOCUS)
+            #HTMLView!.focus()
+            #getHTMLView().setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
+        fi
+        rem /**
+        rem  * We never debounce the focus calls , this causes a heck of problems
+        rem  * when there are several grids rendered
+        rem  */
+        script$="$wnd.gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
+        #getExecutor().execute(script$,0)
     methodend
     rem /**
     rem  * Set the focus on the given row id and the given column
@@ -1936,7 +2204,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBjNumber row! The row id
-    rem  * @param BBjStrinf column! The column id
+    rem  * @param BBjString column! The column id
     rem  */
     method public void focus(BBjNumber row! , BBjString column!)
         #focus(str(row!) , column!)
@@ -1962,12 +2230,30 @@ REM         #onLoaded(null())
         #focus(str(row!))
     methodend
     rem /**
-    rem  * Will set the focus on the first cell of the first row
+    rem  * Will set the focus on the first cell of the first row.
+    rem  * In case the grid has already a different selected cell , the the
+    rem  * method will retain this information.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void focus()
-        #focus(0)
+        #focus(-1)
+    methodend
+    rem /**
+    rem  * Navigates the grid focus to the next cell, as if tabbing.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void tabToNextCell()
+        #getExecutor().execute("$wnd.gw_tabToNextCell('" + #GRIDID$ + "')")
+    methodend
+    rem /**
+    rem  * Navigates the grid focus to the previous cell, as if shift-tabbing.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void tabToPreviousCell()
+        #getExecutor().execute("$wnd.gw_tabToPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * select all rows
@@ -1975,8 +2261,9 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void selectAll()
-        script$="gw_selectAll('" + #GRIDID$ + "',0);"
-        #executeScript(script$)
+        scriptKey! = "$wnd.gw_selectAll"
+        script$="$wnd.gw_selectAll('" + #GRIDID$ + "',0);"
+        #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
     rem  * select all rows
@@ -1987,8 +2274,9 @@ REM         #onLoaded(null())
     rem  */
     method public void selectAll(BBjNumber x!)
         #deselectAll()
-        script$="gw_selectAll('" + #GRIDID$ + "'," + str(x!) + ");"
-        #executeScript(script$)
+        scriptKey! = "$wnd.gw_selectAll"
+        script$="$wnd.gw_selectAll('" + #GRIDID$ + "'," + str(x!) + ");"
+        #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
     rem  * deselect all rows
@@ -1996,8 +2284,9 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void deselectAll()
-        script$="gw_deselectAll('" + #GRIDID$ + "',0);"
-        #executeScript(script$)
+        scriptKey! = "$wnd.gw_deselectAll"
+        script$="$wnd.gw_deselectAll('" + #GRIDID$ + "',0);"
+        #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
     rem  * deselect all rows
@@ -2007,29 +2296,41 @@ REM         #onLoaded(null())
     rem  * @param BBJNumber x!: 0 deselect all, 1 deselect all filtered
     rem  */
     method public void deselectAll(BBjNumber x!)
-        script$="gw_deselectAll('"+ #GRIDID$ + "'," + str(x!) + ");"
-        #executeScript(script$)
+        scriptKey! = "$wnd.gw_deselectAll"
+        script$="$wnd.gw_deselectAll('"+ #GRIDID$ + "'," + str(x!) + ");"
+        #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
-    rem  * Select a row
+    rem  * Select a row by its key
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBJNumber x!: the row index to select
+    rem  * @param BBjString x!: the row key to select
     rem  */
-    method public void setSelectedRow(BBjNumber x!)
-        script$="gw_setSelectedRows('" + #GRIDID$ + "',[" + str(x!) + "]);"
-        #executeScript(script$)
+    method public void setSelectedRow(BBjString key!)
+        script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',['" + str(key!) + "']);"
+        #getExecutor().execute(script$)
     methodend
     rem /**
-    rem  * Select verctor of rows
+    rem  * Select a row by its index
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBJNumber x!: vector of row indices to select
+    rem  * @param BBjNumber x!: the row index to select
+    rem  */
+    method public void setSelectedRow(BBjNumber index!)
+        #setSelectedRow(str(index!))
+    methodend
+    rem /**
+    rem  * Select a vector of rows.
+    rem  * The vector can contain a mix of row indices and row keys
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBJNumber x!: vector of row indices and row keys to select
     rem  */
     method public void setSelectedRows(BBjVector x!)
-        script$="gw_setSelectedRows('" + #GRIDID$ + "',["
+        script$="$wnd.gw_setSelectedRows('" + #GRIDID$ + "',["
         it! = x!.iterator()
         first=1
         while it!.hasNext()
@@ -2039,11 +2340,11 @@ REM         #onLoaded(null())
                 script$=script$+","
             FI
 
-            script$=script$+str(it!.next())
+            script$ = script$ + "'" + str(it!.next()) + "'"
         wend
 
         script$=script$+"]);"
-        #executeScript(script$)
+        #getExecutor().execute(script$)
     methodend
     rem /**
     rem  * Expand all groups
@@ -2051,8 +2352,8 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void expandAll()
-        script$="gw_expandAll('" + #GRIDID$ +"');"
-        #executeScript(script$)
+        script$="$wnd.gw_expandAll('" + #GRIDID$ +"');"
+        #getExecutor().execute(script$)
     methodend
     rem /**
     rem  * collapse all groups
@@ -2060,11 +2361,32 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void collapseAll()
-        script$="gw_collapseAll('" + #GRIDID$ +"');"
-        #executeScript(script$)
+        script$="$wnd.gw_collapseAll('" + #GRIDID$ +"');"
+        #getExecutor().execute(script$)
     methodend
     rem /**
-    rem  * Set visible row
+    rem  * Ensures the row key is visible by vertically scrolling the grid
+    rem  *
+    rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
+    rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
+    rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString key!: the row key
+    rem  * @param BBjString position!: the scrolling position
+    rem  *
+    rem  * @see GRID_ROWPOS_TOP()
+    rem  * @see GRID_ROWPOS_MIDDLE()
+    rem  * @see GRID_ROWPOS_BOTTOM()
+    rem  */
+    method public void ensureIndexVisible(BBjString key! , BBjString position!)
+        scriptKey! = "$wnd.gw_ensureIndexVisible"
+        script$="$wnd.gw_ensureIndexVisible('" + #GRIDID$ + "','" + str(key!) + "','" + str(position!) +"');"
+        #getExecutor().execute(scriptKey!,script$)
+    methodend
+    rem /**
+    rem  * Ensures the row index is visible by vertically scrolling the grid
     rem  *
     rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
     rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
@@ -2079,28 +2401,336 @@ REM         #onLoaded(null())
     rem  * @see GRID_ROWPOS_MIDDLE()
     rem  * @see GRID_ROWPOS_BOTTOM()
     rem  */
-    method public void setVisibleRow(BBjNumber index! , BBjString position!)
-        script$="gw_setVisibleRow('" + #GRIDID$ + "'," + str(index!) + ",'" + str(position!) +"');"
-        #executeScript(script$)
+    method public void ensureIndexVisible(BBjNumber index! , BBjString position!)
+        #ensureIndexVisible(str(index!),position!)
     methodend
     rem /**
-    rem  * Set visible column&#183; Ensures the column is visible, scrolling the table if needed&#183;
+    rem  * @deprecated use ensureIndexVisible instead
+    rem  */
+    method public void setVisibleRow(BBjNumber index! , BBjString position!)
+        #ensureIndexVisible(index!,position!)
+    methodend
+    rem /**
+    rem  * Ensures the column is visible, scrolling the table if needed.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
     rem  * @param BBJString columnid!: the column id
     rem  */
-    method public void setVisibleColumn(BBjString columnId!)
-        script$="gw_setVisibleColumn('" + #GRIDID$ +  "','" + columnId! + "');"
-        #executeScript(script$)
+    method public void ensureColumnVisible(BBjString columnId!)
+        scriptKey! = "$wnd.gw_ensureColumnVisible"
+        script$="$wnd.gw_ensureColumnVisible('" + #GRIDID$ +  "','" + columnId! + "');"
+        #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
-    rem  * set the grid to scroll horizontally or fit into the client area
+    rem  * @deprecated use ensureColumnVisible instead
+    rem  */
+    method public void setVisibleColumn(BBjString columnId!)
+        #ensureColumnVisible(columnId!)
+    methodend
+    rem /**
+    rem  * Make the currently visible columns fit the screen.
+    rem  *
+    rem  * The columns will scale (growing or shrinking) to fit the available width.
+    rem  * If you don't want a particular column to be included in the auto resize,
+    rem  * then set the column setting SuppressSizeToFit=true.
+    rem  * This is helpful if, for example, you want the first column to remain fixed with, but all other columns
+    rem  * to fill the width of the table.
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void setFitToGrid()
-        ret! = #executeScript("gw_sizeColumnsToFit('" + #GRIDID$ +"')")
+        scriptKey! = "$wnd.gw_sizeColumnsToFit"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_sizeColumnsToFit('" + #GRIDID$ +"')")
+    methodend
+    rem /**
+    rem  * Gets the grid to size the columns to the specified with
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber width! the width to use to fit all columns in
+    rem  */
+    method public void setFitToGrid(BBjNumber width!)
+        scriptKey! = "$wnd.gw_sizeColumnsToFit"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_sizeColumnsToFit('" + #GRIDID$ +"','" + str(width!) + "')")
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param HashSet columns! A set of columns to auto size
+    rem  * @param BBjNumber skipHeader! indicate that the header content (headerName) should not be considered when calculating
+    rem  *                               the width of the column.
+    rem  *                               You can also set this behavior to be the default by setting SkipHeaderOnAutoSize: true
+    rem  *                               in the grid options.
+    rem  */
+    method public void autoSizeColumns(HashSet columns!, BBjNumber skipHeader!)
+        columnsAsJson! = new Gson().toJson(columns!)
+        #getExecutor().execute("$wnd.gw_autoSizeColumns('" + #GRIDID$ +"'," + str(skipHeader!.booleanValue()) +  "," + str(columnsAsJson!) + ")")
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param HashSet columns! A set of columns to auto size
+    rem  */
+    method public void autoSizeColumns(HashSet columns!)
+        #autoSizeColumns(columns! , 0)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString columns! A common separated list of columns to auto size
+    rem  * @param BBjNumber skipHeader! indicate that the header content (headerName) should not be considered when calculating
+    rem  *                               the width of the column.
+    rem  *                               You can also set this behavior to be the default by setting SkipHeaderOnAutoSize: true
+    rem  *                               in the grid options.
+    rem  */
+    method public void autoSizeColumns(BBjString columns!, BBjNumber skipHeader!)
+        columnsSet! = new HashSet()
+        columnsSet!.addAll(Arrays.asList(columns!.replaceAll(" ","").split(",")))
+        #autoSizeColumns(columnsSet!,skipHeader!)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString columns! A comma separated list of columns to auto size
+    rem  */
+    method public void autoSizeColumns(BBjString columns!)
+        #autoSizeColumns(columns! , 0)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber skipHeader! indicate that the header content (headerName) should not be considered when calculating
+    rem  *                               the width of the column.
+    rem  *                               You can also set this behavior to be the default by setting SkipHeaderOnAutoSize: true
+    rem  *                               in the grid options.
+    rem  */
+    method public void autoSizeColumns(BBjNumber skipHeader!)
+        #autoSizeColumns(new HashSet(),skipHeader!)
+    methodend
+    rem /**
+    rem  * looks at the rendered cells on the screen, and works out the width based on what it sees.
+    rem  * It cannot see the columns that are not rendered due to column virtualisation.
+    rem  * Thus it is not possible to autosize a column that is not visible on the screen.
+    rem  *
+    rem  * Column Virtualisation is the technique the grid uses to render large amounts of columns with
+    rem  * degrading performance by only rendering columns that are visible due to the horizontal scroll positions.
+    rem  * Eg the grid can have 1000 columns with only 10 rendered if the horizontal scroll is only showing 10 columns.
+    rem  * To get around this, you can turn off column virtualisation by setting grid options SuppressColumnVirtualisation=true.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void autoSizeColumns()
+        #autoSizeColumns(0)
+    methodend
+    rem /**
+    rem  *Gets the grid to remove a row from the DOM and recreate it again from scratch.
+    rem  */
+    method public void redrawRows()
+        #getExecutor().execute("$wnd.gw_redrawRows('" + #GRIDID$ +"')")
+    methodend
+    rem /**
+    rem  * Force the context object update
+    rem  */
+    method public void updateContext()
+        if(#IsReady!)
+            #getExecutor().execute("$wnd.gw_updateContext('" + #GRIDID$ +"'," + #getClientContext().toString() + ")")
+        fi
+    methodend
+    rem /**
+    rem  * Set and apply filter model for the given column
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  * @param GxClientFilterModel model! the model filter to use
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @return GxClientFilterModel the passed model
+    rem  */
+    method public GxClientFilterModel setFilterModel(BBjString column!, GxClientFilterModel model!)
+        model!.setWidget(#this!)
+        model!.setColumn(column!)
+        model!.update()
+        methodret model!
+    methodend
+    rem /**
+    rem  * Set and apply a filter transaction
+    rem  *
+    rem  * The transaction is a `LinkedHashMap` of columns and their models.
+    rem  * This the fastest way to apply several filters on several columns.
+    rem  * When using this method The grid will delay executing the filters on the data
+    rem  * until all models are set and ready.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @param  LinkedHashMap transaction! a map of columns and their model
+    rem  */
+    method public void executeFilterTransaction(LinkedHashMap transaction!)
+        applyCode! = new HashSet()
+        executeCode! = new HashSet()
+        it! = transaction!.entrySet().iterator()
+        while(it!.hasNext())
+            next! = it!.next()
+            column! = next!.getKey()
+            model! = next!.getValue()
+            model!.setWidget(#this!)
+            model!.setColumn(column!)
+            applyCode!.add(model!.apply(0))
+            executeCode!.add(model!.execute(0))
+        wend
+
+        #getExecutor().execute(String.join("",applyCode!) + String.join("",executeCode!))
+    methodend
+    rem /**
+    rem  * Get The filter model for the given column
+    rem  *
+    rem  * This method will return a `GxClientFilterModel` for the given column
+    rem  * If column has already some filter values set through the UI , then the model will contain
+    rem  * these changes too.
+    rem  *
+    rem  * In case the grid is not ready (not renderer yet) then the method will just return
+    rem  * any empty filter model for the column.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @param BBjString column! the column id to use for the constructed model
+    rem  *
+    rem  * @throws 256 in case the column has no filter component attached
+    rem  */
+    method public GxClientFilterModel getFilterModel(BBjString column!)
+        jsonModel! = null()
+        rem we try to get the model from the UI first
+        if(#getIsReady() = BBjAPI.TRUE)
+            code! = String.format("JSON.stringify($wnd.gw_getGrid('%s').options.api.getFilterInstance('%s').getModel());" , #getGRIDID(), column!)
+            jsonModel! = #getExecutor().execute(code! , 0)
+        fi
+
+        if(jsonModel! <> null() AND jsonModel! <> "null")
+            methodret #getClientJsonFactory().getFilter(jsonModel!,column!)
+        else
+            model! = null()
+            rem we try to detect the filter type and create its model
+            if (#getColumn(column!).getFilter() <> null())
+                filterName! = #getColumn(column!).getFilter().getFilterName()
+                SWITCH (filterName!)
+                    CASE GxFilterNumber.getFilterName()
+                        model! = new GxClientFilterNumberModel()
+                        break
+                    CASE GxFilterBasicTimestamp.getFilterName()
+                        model! = new GxClientFilterDateTimeModel()
+                        break
+                    CASE GxFilterBasicBoolean.getFilterName()
+                        model! = new GxClientFilterBooleanModel()
+                        break
+                    CASE GxFilterText.getFilterName()
+                        model! = new GxClientFilterTextModel()
+                        break
+                    CASE GxFilterSetFilter.getFilterName()
+                        model! = new GxClientFilterSetFilterModel()
+                        break
+                SWEND
+            fi
+
+            if(model! = null())
+                throw "Failed to create column filter's model. The column has no filter component attached" , 256
+            fi
+
+            model!.setWidget(#this!)
+            model!.setColumn(column!)
+            methodret model!
+        fi
+    methodend
+    rem /**
+    rem  * Get The combined filter model for the given column
+    rem  *
+    rem  * This method will return a `GxClientFilterCombinedModel` for the given column
+    rem  * If the column has already some filter values set through the UI , then the model will contain
+    rem  * these changes too.
+    rem  *
+    rem  * In case the grid is not ready (not renderer yet) then the method will just return
+    rem  * any empty combined filter model for the column.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  *
+    rem  * @param BBjString column! the column id to use for the constructed model
+    rem  *
+    rem  * @throws 256 in case the column filter does not support the combined model
+    rem  */
+    method public GxClientFilterCombinedModel getFilterAsCombinedModel(BBjString column!)
+        model! = #getFilterModel(column!)
+        rem first check if the model is already a combined model
+        isAlreadyCombined! = 0
+        model! = cast(GxClientFilterCombinedModel,model!,err=*next); isAlreadyCombined! = 1
+
+        if(isAlreadyCombined! = 0 AND model!.supportsCombinedModel() = 0)
+            throw "The column's filter component does not support combined models" , 256
+        fi
+
+        combinedModel! = iff(isAlreadyCombined!,model! ,new GxClientFilterCombinedModel() )
+        combinedModel!.setWidget(#this!)
+        combinedModel!.setColumn(column!)
+        if(!isAlreadyCombined!) combinedModel!.setFirstCondition(model!)
+        methodret combinedModel!
+    methodend
+    rem /**
+    rem  * Clear all active filters on columns
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void clearFilters()
+        code! = String.format(";var api = $wnd.gw_getGrid('%s').options.api;" , #getGRIDID())
+        code! = code! + "api.setFilterModel(null);api.onFilterChanged(null);"
+        wrap! = ";(function(){" + code! + "})();"
+        #getExecutor().execute(wrap! , 0)
     methodend
     rem /**
     rem  * setSize - set the size of the control
@@ -2131,7 +2761,20 @@ REM         #onLoaded(null())
     rem  */
     method public void setRowHeight(BBjNumber height!)
         #getOptions().setRowHeight(height!)
-        #executeScript("gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
+        scriptKey! = "$wnd.gw_setRowsHeight"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_setRowsHeight('" + #GRIDID$ + "'," + str(height!) + ")")
+    methodend
+    rem /**
+    rem  * Set the given row height
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString key! - the row key
+    rem  * @param BBjNumber height! - the new row height
+    rem  */
+    method public void setRowHeight(BBjString key!, BBjNumber height!)
+        scriptKey! = "$wnd.gw_setRowsHeight" + key!
+        #getExecutor().execute(scriptKey!,"$wnd.gw_setRowHeight('" + #GRIDID$ + "','" + str(key!) + "'," + str(height!) + ")")
     methodend
     rem /**
     rem  * Set the given row height
@@ -2142,7 +2785,44 @@ REM         #onLoaded(null())
     rem  * @param BBjNumber height! - the new row height
     rem  */
     method public void setRowHeight(BBjNumber index!, BBjNumber height!)
-        #executeScript("gw_setRowHeight('" + #GRIDID$ + "'," + str(index!) + "," + str(height!) + ")")
+        #setRowHeight(str(index!) , height!)
+    methodend
+    rem /**
+    rem  * Reset The row heights.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * The rows height is calculated once when the data is first given to the grid.
+    rem  * If the data changes, or the width of a column changes, then you may require the grid to calculate
+    rem  * the height again by calling this method
+    rem  */
+    method public void resetRowHeights()
+        #getExecutor().execute("$wnd.gw_resetRowHeights('" + #GRIDID$ + "')",0)
+    methodend
+    rem /**
+    rem  * Set a sorting for one or more columns
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param GxClientSortModel model! the sorting model
+    rem  */
+    method public void setSortModel(GxClientSortModel model!)
+        #getExecutor().execute("$wnd.gw_setSortModel('" + #GRIDID$ + "','" + str(model!.getAsJsonArray()) + "')")
+    methodend
+    rem /**
+    rem  * Sort the given column with the given direction
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString column! The column id
+    rem  * @param BBjString direction! The sort direction
+    rem  *
+    rem  * @see setSortModel
+    rem  */
+    method public void sortColumn(BBjString column! , BBjString direction!)
+        model! = new GxClientSortModel()
+        model!.add(column! , direction!)
+        #setSortModel(model!)
     methodend
     rem /**
     rem  * Enable / disable pivot mode
@@ -2156,7 +2836,8 @@ REM         #onLoaded(null())
         #getOptions().setPivotMode(mode!)
 
         if(#IsReady!) then
-            #executeScript("gw_setPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
+            scriptKey! = "$wnd.gw_setPivotMode"
+            #getExecutor().execute(scriptKey!,"$wnd.gw_setPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
         FI
     methodend
     rem /**
@@ -2169,7 +2850,7 @@ REM         #onLoaded(null())
     rem  */
     method public BBjNumber getPivotMode()
         if(#IsReady!) then
-            mode! = #executeScript("gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")")
+            mode! = #getExecutor().execute("$wnd.gw_getPivotMode('" + #GRIDID$ + "'," + str(mode!) + ")" , 0)
             #getOptions().setPivotMode(num(mode!))
         FI
 
@@ -2180,20 +2861,21 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber filter : filter as a string
+    rem  * @param BBjNumber filter filter as number
     rem  */
-    method public void setQuickFilter(BBjNumber filter)
-        #executeScript("gw_setQuickFilter('" + #GRIDID$ + "'," + str(filter) +")")
+    method public void setQuickFilter(BBjString filter!)
+        scriptKey! = "$wnd.gw_setQuickFilter"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_setQuickFilter('" + #GRIDID$ + "','" + filter! +"')")
     methodend
     rem /**
     rem  * Perform throw columns search
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber filter : filter as number
+    rem  * @param BBjNumber filter! filter as a number
     rem  */
-    method public void setQuickFilter(BBjString filter!)
-        #executeScript("gw_setQuickFilter('" + #GRIDID$ + "','" + filter! +"')")
+    method public void setQuickFilter(BBjNumber filter!)
+        #setQuickFilter(str(filter!))
     methodend
     rem /**
     rem  * Start Next Cell Editing
@@ -2201,7 +2883,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToNextCell()
-        #executeScript("gw_editNextCell('"+ #GRIDID$ + "')")
+        #getExecutor().execute("$wnd.gw_editNextCell('"+ #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Move to previous cell
@@ -2209,58 +2891,89 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void moveToPreviousCell()
-        #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
+        #getExecutor().execute("$wnd.gw_editPreviousCell('" + #GRIDID$ + "')")
     methodend
     rem /**
-    rem  * Start Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjNumber key!: The row key
     rem  * @param BBjString colId!: The column ID
     rem  */
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$)
-        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "')")
+    method public void setStartCellEditing(BBjString key! , BBjString colId$)
+        #getExecutor().execute("$wnd.gw_startEditingCell('" + #GRIDID$ + "','"+ STR(key!)+ "','" + colId$ + "')")
     methodend
     rem /**
-    rem  * Start Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber row!: The row number
-    rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber char$: key chars to press on editors when editors support it
+    rem  * @param BBjNumber index!: The row index
+    rem  * @param BBjString colId!: The column ID
     rem  */
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$, BBjString char$)
-        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','','" + char$ +"')")
+    method public void setStartCellEditing(BBjNumber index! , BBjString colId$)
+        #setStartCellEditing(str(index!), colId$)
     methodend
     rem /**
-    rem  * Start Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber row!: The row number
+    rem  * @param BBjNumber key!: The row key
     rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber key!: key codes to press on editors when editors support it
+    rem  * @param BBjNumber char$: key chars to press on editor when editor supports it
     rem  */
-    method public void setStartCellEditing(BBjNumber row! , BBjString colId$,BBjNumber key!)
-        #executeScript("gw_startEditingCell('" + #GRIDID$ + "',"+ STR(row!)+ ",'" + colId$ + "','" + STR(key!)+ "')")
+    method public void setStartCellEditing(BBjString key!, BBjString colId$, BBjString char$)
+        #getExecutor().execute("$wnd.gw_startEditingCell('" + #GRIDID$ + "','"+ STR(key!)+ "','" + colId$ + "','','" + char$ +"')")
     methodend
     rem /**
-    rem  * Start next Cell Editing
+    rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index!: The row index
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber char$: key chars to press on editor when editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjNumber index!, BBjString colId$, BBjString char$)
+        #setStartCellEditing(str(index!),colId$,char$)
+    methodend
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber key!: The row key
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber keyPress!: key codes to press on the editor when the editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjString key!, BBjString colId$, BBjNumber keyPress!)
+        #getExecutor().execute("$wnd.gw_startEditingCell('" + #GRIDID$ + "','"+ STR(key!)+ "','" + colId$ + "','" + STR(keyPress!)+ "')")
+    methodend
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index!: The row index
+    rem  * @param BBjString colId$: The column ID
+    rem  * @param BBjNumber keyPress!: key codes to press on the editor when the editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjNumber index!, BBjString colId$, BBjNumber keyPress!)
+        #setStartCellEditing(str(index!),colId$,keyPress!)
+    methodend
+    rem /**
+    rem  * @deprecated Use tabToNextCell() instead
     rem  */
     method public void startNextCellEditing()
-        #executeScript("gw_editNextCell('" + #GRIDID$ + "')")
+        #tabToNextCell()
     methodend
     rem /**
-    rem  * Start previous Cell Editing
-    rem  *
-    rem  * <br><b><small>#API</small></b>
+    rem  * @deprecated Use tabToPreviousCell() instead
     rem  */
     method public void startPreviousCellEditing()
-        #executeScript("gw_editPreviousCell('" + #GRIDID$ + "')")
+        #tabToPreviousCell()
     methodend
     rem /**
     rem  * Stop editing and accepts changes
@@ -2268,7 +2981,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void stopEditing()
-        #executeScript("gw_stopEditing('" + #GRIDID$ + "',0)")
+        #getExecutor().execute("$wnd.gw_stopEditing('" + #GRIDID$ + "',0)")
     methodend
     rem /**
     rem  * Stop Editing
@@ -2278,7 +2991,7 @@ REM         #onLoaded(null())
     rem  * @param BBjNumber cancel!: 1 = discard changes, 0 = accept changes
     rem  */
     method public void stopEditing(BBjNumber cancel!)
-        #executeScript("gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
+        #getExecutor().execute("$wnd.gw_stopEditing('"+ #GRIDID$ + "'," + STR(cancel!)+ ")")
     methodend
     rem /**
     rem  * If true, then row group, pivot and value aggregation will be read only from the Ui&#183;
@@ -2292,17 +3005,35 @@ REM         #onLoaded(null())
     rem  */
     method public void setFunctionsReadOnly(BBjNumber readonly!)
         #getOptions().setFunctionsReadOnly(readonly!)
-        #executeScript("gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
+        scriptKey! = "$wnd.gw_setFunctionsReadOnly"
+        #getExecutor().execute(scriptKey!,"$wnd.gw_setFunctionsReadOnly('" + #GRIDID$ + "'," + str(readonly!) +")")
+    methodend
+    rem /**
+    rem  * Sync the client row data every time a new GxClientRowModel
+    rem  * is composed by the grid.
+    rem  *
+    rem  * Use this method if the row's data in the client is different that the row's data in
+    rem  * the ResultSet
+    rem  *
+    rem  * @param BBjNumber include! when true the ClientRow field will always be filled in GxClientRowModel
+    rem  *                           otherwise it will always be null().
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#API</small></b>
+    rem  */
+    method public void includeClientRowDataInRowModels(BBjNumber include!)
+        #getClientContext().addProperty("includeClientRowData",include!.booleanValue())
+        #updateContext()
     methodend
     rem /**
     rem  * Get the current selected row
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @return BBjGridExWidgetClientRowModel The selected row if any, null() otherwise
+    rem  * @return GxClientRowModel The selected row if any, null() otherwise
     rem  */
-    method public BBjGridExWidgetClientRowModel getSelectedRow()
-        returnedRow! = #executeScript("gw_getSelectedRow('" + #GRIDID$ + "')")
+    method public GxClientRowModel getSelectedRow()
+        returnedRow! = #getExecutor().execute("$wnd.gw_getSelectedRow('" + #GRIDID$ + "')",0)
         if returnedRow!<>null() and len(returnedRow!) > 0 then
             methodret #getClientJsonFactory().getRow(returnedRow!)
         FI
@@ -2323,7 +3054,7 @@ REM         #onLoaded(null())
             goto getSelectedRowsErr
         FI
 
-        returnedRows! = #executeScript("gw_getSelectedRows('" + #GRIDID$ + "')")
+        returnedRows! = #getExecutor().execute("$wnd.gw_getSelectedRows('" + #GRIDID$ + "')" , 0)
         if returnedRows! = null() then
             goto getSelectedRowsErr
         FI
@@ -2351,7 +3082,7 @@ REM         #onLoaded(null())
         rangeSelectionVector! = new BBjVector()
         rem get the range selections from the client
         rem the client will return an array of objects where each object is a range
-        rangeSelections! = #executeScript("gw_getRangeSelections('" + #GRIDID$ + "')")
+        rangeSelections! = #getExecutor().execute("$wnd.gw_getRangeSelections('" + #GRIDID$ + "')",0)
 
         if (rangeSelections! = "[]") then
             goto getSelectionRangeErr
@@ -2373,12 +3104,12 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientAddRangeSelectionModel model! the add selection model
+    rem  * @param GxClientAddRangeSelectionModel model! the add selection model
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjGridExWidgetClientAddRangeSelectionModel model!)
-        #executeScript("gw_addCellRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+    method public GxClientAddRangeSelectionModel addRangeSelection(GxClientAddRangeSelectionModel model!)
+        #getExecutor().execute("$wnd.gw_addCellRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
         methodret model!
     methodend
     rem /**
@@ -2390,10 +3121,10 @@ REM         #onLoaded(null())
     rem  * @param BBjString start! start row id or index
     rem  * @param BBjString end! end row id or index
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjString start! , BBjString end!)
-        model! = new BBjGridExWidgetClientAddRangeSelectionModel()
+    method public GxClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjString start! , BBjString end!)
+        model! = new GxClientAddRangeSelectionModel()
         model!.setColumns(columns!)
         model!.setStart(start!)
         model!.setEnd(end!)
@@ -2408,9 +3139,9 @@ REM         #onLoaded(null())
     rem  * @param BBjNumber start! start row id or index
     rem  * @param BBjNumber end! end row id or index
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjNumber start! , BBjNumber end!)
+    method public GxClientAddRangeSelectionModel addRangeSelection(BBjString columns! , BBjNumber start! , BBjNumber end!)
         methodret #addRangeSelection(columns! , str(start!),str(end!))
     methodend
     rem /**
@@ -2420,9 +3151,9 @@ REM         #onLoaded(null())
     rem  *
     rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
     rem  *
-    rem  * @return BBjGridExWidgetClientAddRangeSelectionModel
+    rem  * @return GxClientAddRangeSelectionModel
     rem  */
-    method public BBjGridExWidgetClientAddRangeSelectionModel addRangeSelection(BBjString columns!)
+    method public GxClientAddRangeSelectionModel addRangeSelection(BBjString columns!)
         methodret #addRangeSelection(columns!,null() , null())
     methodend
     rem /**
@@ -2431,7 +3162,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void clearRangeSelection()
-        #executeScript("gw_clearRangeSelection('" + #GRIDID$ + "')")
+        #getExecutor().execute("$wnd.gw_clearRangeSelection('" + #GRIDID$ + "')",0)
     methodend
     rem /**
     rem  * Clear already created charts&#183;
@@ -2439,11 +3170,11 @@ REM         #onLoaded(null())
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjGridExWidgetClientAddRangeChartModel model! the add range model
+    rem  * @param GxClientAddRangeChartModel model! the add range model
     rem  * @return BBjString A unique id for the created chart
     rem  */
-    method public BBjString addRangeChart(BBjGridExWidgetClientAddRangeChartModel model!)
-        uuid! = #executeScript("gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")")
+    method public BBjString addRangeChart(GxClientAddRangeChartModel model!)
+        uuid! = #getExecutor().execute("$wnd.gw_addChartRange('" + #GRIDID$ + "'," + model!.getAsJsonObject().toString() + ")" , 0)
         methodret str(uuid!)
     methodend
     rem /**
@@ -2455,7 +3186,13 @@ REM         #onLoaded(null())
     rem  * @param BBjString id! the chart's id to destroy
     rem  */
     method public void clearChart(BBjString id!)
-        #executeScript("gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')")
+        rem /**
+        rem  * Even Though the `gw_destroyChart` function does not return any value
+        rem  * we don't debounce the call because the developer might call
+        rem  * `addRangeChart` before calling this method. and `addRangeChart` is not debounced call
+        rem  * which will lead the chart to be created and then destroy directly
+        rem  */
+        #getExecutor().execute("$wnd.gw_destroyChart('" + #GRIDID$ + "','" + str(id!) + "')",0)
     methodend
     rem /**
     rem  * Clear already created charts&#183;
@@ -2464,7 +3201,13 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void clearChart()
-        #executeScript("gw_destroyChart('" + #GRIDID$ + "')")
+        rem /**
+        rem  * Even Though the `gw_destroyChart` function does not return any value
+        rem  * we don't debounce the call because the developer might call
+        rem  * `addRangeChart` before calling this method. and `addRangeChart` is not debounced call
+        rem  * which will lead the chart to be created and then destroy directly
+        rem  */
+        #getExecutor().execute("$wnd.gw_destroyChart('" + #GRIDID$ + "')",0)
     methodend
     rem /**
     rem  * Show loading overlay
@@ -2472,7 +3215,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showLoadingOverlay()
-        #executeScript("gw_showLoadingOverlay('" + #GRIDID$ + "')")
+        #getExecutor().execute("$wnd.gw_showLoadingOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Show 'no rows' overlay
@@ -2480,7 +3223,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void showNoRowsOverlay()
-        #executeScript("gw_showNoRowsOverlay('" + #GRIDID$ + "')")
+        #getExecutor().execute("$wnd.gw_showNoRowsOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Clear all overlays
@@ -2488,7 +3231,7 @@ REM         #onLoaded(null())
     rem  * <br><b><small>#API</small></b>
     rem  */
     method public void hideOverlay()
-        #executeScript("gw_hideOverlay('" + #GRIDID$ + "')")
+        #getExecutor().execute("$wnd.gw_hideOverlay('" + #GRIDID$ + "')")
     methodend
     rem /**
     rem  * Destroy the grid
@@ -2496,7 +3239,6 @@ REM         #onLoaded(null())
     method public void destroy()
         #super!.destroy()
         #IsReady! = BBjAPI.FALSE
-        #backlog! = new BBjVector()
     methodend
     rem /**
     rem  * Fires an event
@@ -2507,7 +3249,9 @@ REM         #onLoaded(null())
     rem  * @Override
     rem  */
     method protected void fireEvent(int type!, Object payload!)
-        if(#getInterests().contains(type!)) then
+        el! = new JsonPrimitive(type!)
+
+        if(#getInterests().contains(el!)) then
             #super!.fireEvent(type!,payload!)
         FI
     methodend
@@ -2515,7 +3259,8 @@ REM         #onLoaded(null())
     rem  * Send the current interests to the client
     rem  */
     method protected void updateClientWithInterests()
-        #executeScript("gw_updateContext('" + #GRIDID$ + "', 'interests','" + new Gson().toJson(#getInterests()) + "')")
+        #getClientContext().add("interests",#getInterests())
+        #updateContext()
     methodend
     rem /**
     rem  * The method will add the default chart toolbar items
@@ -2555,32 +3300,37 @@ REM         #onLoaded(null())
     rem /**
     rem  * Handle Range Selections Event
     rem  *
-    rem  * @see BBjGridExWidgetClientEventsRangeSelection
+    rem  * @see GxClientEventsRangeSelection
     rem  */
     method private void onRangeSelectionChange(BBjString detail$)
-        event! = new BBjGridExWidgetClientEventsRangeSelection()
+        event! = new GxClientEventsRangeSelection()
         #fireEvent(#ON_GRID_RANGE_SELECTION_CHANGED(),event!)
     methodend
     rem /**
     rem  * On rows selections event
     rem  *
-    rem  * Parse the json details coming from the client and fires new BBjGridExWidgetSelectRowEvent
+    rem  * Parse the json details coming from the client and fires new GxSelectRowEvent
     rem  *
-    rem  * @see BBjGridExWidgetSelectRowEvent
+    rem  * @see GxSelectRowEvent
     rem  */
-    method protected void onSelecteRowChange(BBjString detail$, BBjString type$)
-        declare BBjGridExWidgetClientEventsRowSelection event!
+    method protected void onSelectRowChange(BBjString detail$, BBjString type$)
+        declare GxClientEventsRowSelection event!
 
-        event! = new BBjGridExWidgetClientEventsRowSelection()
+        event! = new GxClientEventsRowSelection()
         event!.setSelectedRows(#getSelectedRows())
-
-        if type$ = "single" then
-            #fireEvent(#ON_GRID_SELECT_ROW(),event!)
-            methodret
-        FI
-
-        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
-    FI
+        SWITCH (type$)
+            CASE "single"
+                #fireEvent(#ON_GRID_ROW_CLICK(),event!)
+                break
+            CASE "double"
+                #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
+                break
+            case "select"
+                #fireEvent(#ON_GRID_SELECT_ROW(),event!)
+                break
+            case default
+                break
+        SWEND
     methodend
     rem /**
     rem  * On context menu event
@@ -2593,7 +3343,7 @@ REM         #onLoaded(null())
         parser! = new JsonParser()
         parsedCell!  = parser!.parse(detail$).getAsJsonObject()
         cell! = #getClientJsonFactory().getCell(parsedCell!)
-        event! = new BBjGridExWidgetClientEventsContextMenu()
+        event! = new GxClientEventsContextMenu()
         event!.setCell(cell!)
         #fireEvent(parsedCell!.get("i").getAsInt(),event!)
     methodend
@@ -2606,8 +3356,6 @@ REM         #onLoaded(null())
     rem  * @see ON_GRID_CELL_VALUE_CHANGED()
     rem  * @see ON_GRID_CELL_DOUBLE_CLICK()
     rem  * @see ON_GRID_CELL_CLICK()
-    rem  * @see ON_GRID_ROW_EDITING_STOPPED()
-    rem  * @see ON_GRID_ROW_EDITING_STARTED()
     rem  */
     method protected void onCellEvent(BBjString detail$ , BBjNumber type!)
         declare JsonParser parser!
@@ -2615,7 +3363,7 @@ REM         #onLoaded(null())
         parser! = new JsonParser()
         parsedCell!  = parser!.parse(detail$).getAsJsonObject()
         cell! = #getClientJsonFactory().getCell(parsedCell!)
-        event! = new BBjGridExWidgetClientEventsCell()
+        event! = new GxClientEventsCell()
         event!.setCell(cell!)
         event!.setOldValue(parsedCell!.get("o").getAsString())
         #fireEvent(type!, event!)
@@ -2630,7 +3378,7 @@ REM         #onLoaded(null())
     rem  * @see ON_GRID_ROW_EDITING_STOPPED()
     rem  */
     method protected void onRowEditing(BBjString detail$ , BBjNumber type!)
-        event! = new BBjGridExWidgetClientEventsRowEditing()
+        event! = new GxClientEventsRowEditing()
         event!.setRow(#getClientJsonFactory().getRow(detail$))
         #fireEvent(type!, event!)
     methodend
@@ -2647,7 +3395,7 @@ REM         #onLoaded(null())
         parser! = new JsonParser()
         parsedKeypress!  = parser!.parse(detail$).getAsJsonObject()
         keypress! = #getClientJsonFactory().getKeypress(parsedKeypress!)
-        event! = new BBjGridExWidgetClientEventsKeypress()
+        event! = new GxClientEventsKeypress()
         event!.setKey(keypress!)
         #fireEvent(#ON_GRID_KEYPRESS(), event!)
     methodend

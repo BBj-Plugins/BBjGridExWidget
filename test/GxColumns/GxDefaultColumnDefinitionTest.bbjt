@@ -1,0 +1,344 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnDefinition
+
+rem Numbers Components
+rem =======================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterNumber
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionNumbersFormatter
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicNumber
+
+rem Text Components
+rem =======================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterText
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionStringsFormatter
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicText
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorLargeText
+
+rem Date Components
+rem =======================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicDate
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionDateTimesFormatter
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicDate
+
+rem Time Components
+rem =======================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicTime
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicTime
+
+rem Timestamps Components
+rem =======================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicTimestamp
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicTimestamp
+
+rem Boolean Components
+rem =======================
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterBasicBoolean
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererBoolean
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicBoolean
+
+use com.google.gson.JsonObject
+use java.util.HashMap
+use java.sql.Types
+
+class public GxDefaultColumnDefinitionTest
+    
+    method private HashMap getSQLNumberTypes()
+       map! = new HashMap()
+       
+       map!.put("Types.BIGINT" , Types.BIGINT)
+       map!.put("Types.TINYINT" , Types.TINYINT)
+       map!.put("Types.SMALLINT",Types.SMALLINT)
+       map!.put("Types.INTEGER",Types.INTEGER)
+       map!.put("Types.DECIMAL",Types.DECIMAL)
+       map!.put("Types.DOUBLE",Types.DOUBLE)
+       map!.put("Types.FLOAT",Types.FLOAT)
+       map!.put("Types.REAL",Types.REAL)
+       map!.put("Types.NUMERIC",Types.NUMERIC)
+       
+       methodret map!
+    methodend 
+    
+    method private HashMap getSQLTextTypes()
+       map! = new HashMap()
+       
+       map!.put("Types.CHAR" , Types.CHAR)
+       map!.put("Types.VARCHAR" , Types.VARCHAR)
+       map!.put("Types.NVARCHAR",Types.NVARCHAR)
+       map!.put("Types.NCHAR",Types.NCHAR)
+       map!.put("Types.LONGVARCHAR",Types.LONGVARCHAR)
+       map!.put("Types.LONGNVARCHAR",Types.LONGNVARCHAR)
+       map!.put("UnknowType", 9999)
+       
+       methodret map!
+    methodend   
+    
+    method private HashMap getSQLDateTypes()
+       map! = new HashMap()
+       
+       map!.put("Types.DATE" , Types.DATE)
+       
+       methodret map!
+    methodend 
+    
+    method private HashMap getSQLTimeTypes()
+       map! = new HashMap()
+       
+       map!.put("Types.TIME" , Types.TIME)
+       map!.put("Types.TIME_WITH_TIMEZONE" , Types.TIME_WITH_TIMEZONE)
+       
+       methodret map!
+    methodend 
+    
+    method private HashMap getSQLTimestampsTypes()
+       map! = new HashMap()
+       
+       map!.put("Types.TIMESTAMP" , Types.TIMESTAMP)
+       map!.put("Types.TIMESTAMP_WITH_TIMEZONE" , Types.TIMESTAMP_WITH_TIMEZONE)
+       
+       methodret map!
+    methodend 
+        
+    method private HashMap getSQLBooleanTypes()
+       map! = new HashMap()
+       
+       map!.put("Types.BOOLEAN" , Types.BOOLEAN)
+       map!.put("Types.BIT" , Types.BIT)
+       
+       methodret map!
+    methodend        
+    
+    rem @Test
+    method public void testSetTypeSetNumberComponents()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlNumberTypeIt! = #getSQLNumberTypes().entrySet().iterator()
+        while(sqlNumberTypeIt!.hasNext())
+          next! = sqlNumberTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setDefaultNumbersMask("#")
+          def!.setType(num(next!.getValue()))
+          
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxFilterNumber" , def!.getFilter().equals(new GxFilterNumber()) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxExpressionNumbersFormatter" , def!.getValueFormatterExpression().equals(new GxExpressionNumbersFormatter(def!.getDefaultNumbersMask())) , BBjAPI.TRUE)
+REM           Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicNumber" , def!.getCellEditor().equals(new GxCellEditorBasicNumber(def!.getDefaultNumbersMask())) , BBjAPI.TRUE )
+Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicNumber" , def!.getCellEditor().equals(new GxCellEditorBasicNumber()) , BBjAPI.TRUE )
+        wend
+    methodend   
+    
+    rem @Test
+    method public void testSetTypeSetTextComponents()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlTextTypeIt! = #getSQLTextTypes().entrySet().iterator()
+        while(sqlTextTypeIt!.hasNext())
+          next! = sqlTextTypeIt!.next()
+          value! = num(next!.getValue())
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setDefaultStringsMask("AA-00")
+          def!.setType(value!)
+          
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxFilterText" , def!.getFilter().equals(new GxFilterText()) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxExpressionStringsFormatter" , def!.getValueFormatterExpression().equals(new GxExpressionStringsFormatter(def!.getDefaultStringsMask())) , BBjAPI.TRUE)
+          
+          if((value! = Types.LONGVARCHAR) OR (value! = Types.LONGNVARCHAR))
+            Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorLargeText" , def!.getCellEditor().equals(new GxCellEditorLargeText()) , BBjAPI.TRUE )
+          else
+            Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicText" , def!.getCellEditor().equals(new GxCellEditorBasicText(def!.getDefaultStringsMask())) , BBjAPI.TRUE )
+          fi
+        wend
+    methodend  
+
+    rem @Test
+    method public void testSetTypeSetDateComponents()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlDateTypeIt! = #getSQLDateTypes().entrySet().iterator()
+        while(sqlDateTypeIt!.hasNext())
+          next! = sqlDateTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxFilterBasicDate" , def!.getFilter().equals(new GxFilterBasicDate(def!.getDefaultDatesMask())) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxExpressionDateTimesFormatter" , def!.getValueFormatterExpression().equals(new GxExpressionDateTimesFormatter(def!.getDefaultDatesMask())) , BBjAPI.TRUE)
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicDate" , def!.getCellEditor().equals(new GxCellEditorBasicDate(def!.getDefaultDatesMask())) , BBjAPI.TRUE )
+        wend
+    methodend
+    
+    rem @Test
+    method public void testSetTypeSetTimeComponents()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlTimeTypeIt! = #getSQLTimeTypes().entrySet().iterator()
+        while(sqlTimeTypeIt!.hasNext())
+          next! = sqlTimeTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxFilterBasicTime" , def!.getFilter().equals(new GxFilterBasicTime(def!.getDefaultTimesMask())) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxExpressionDateTimesFormatter" , def!.getValueFormatterExpression().equals(new GxExpressionDateTimesFormatter(def!.getDefaultTimesMask())) , BBjAPI.TRUE)
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicTime" , def!.getCellEditor().equals(new GxCellEditorBasicTime(def!.getDefaultTimesMask())) , BBjAPI.TRUE )
+        wend
+    methodend
+    
+    rem @Test
+    method public void testSetTypeSetTimestampComponents()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlTimestampTypeIt! = #getSQLTimestampsTypes().entrySet().iterator()
+        while(sqlTimestampTypeIt!.hasNext())
+          next! = sqlTimestampTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxFilterBasicTimestamp" , def!.getFilter().equals(new GxFilterBasicTimestamp(def!.getDefaultTimestampsMask())) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxExpressionDateTimesFormatter" , def!.getValueFormatterExpression().equals(new GxExpressionDateTimesFormatter(def!.getDefaultTimestampsMask())) , BBjAPI.TRUE)
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicTimestamp" , def!.getCellEditor().equals(new GxCellEditorBasicTimestamp(def!.getDefaultTimestampsMask())) , BBjAPI.TRUE )
+        wend
+    methodend
+    
+    rem @Test
+    method public void testSetTypeSetBooleanComponents()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlBooleanTypeIt! = #getSQLBooleanTypes().entrySet().iterator()
+        while(sqlBooleanTypeIt!.hasNext())
+          next! = sqlBooleanTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxFilterBasicBoolean" , def!.getFilter().equals(new GxFilterBasicBoolean()) , BBjAPI.TRUE)           
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxRendererBoolean" , def!.getCellRenderer().equals(new GxRendererBoolean()) , BBjAPI.TRUE)
+          Assert.Equals("setType(" + next!.getKey() + ") configures GxCellEditorBasicBoolean" , def!.getCellEditor().equals(new GxCellEditorBasicBoolean()) , BBjAPI.TRUE)
+        wend
+    methodend  
+    
+    rem @Test
+    method public void testSetColumnMaskSetNumberMask()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlNumberTypeIt! = #getSQLNumberTypes().entrySet().iterator()
+        while(sqlNumberTypeIt!.hasNext())
+          next! = sqlNumberTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          newMask! = "##,###0"
+          def!.setColumnMask(newMask!)
+          editor! = def!.getCellEditor()
+          valueFormatter! = def!.getValueFormatterExpression()
+
+REM           Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)           
+          Assert.Equals("setColumnMask updates valueFormatter mask - column[" + next!.getKey() + "]" , valueFormatter!.getMask() , newMask!)
+        wend
+    methodend 
+    
+    rem @Test
+    method public void testSetColumnMaskSetStringMask()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlTextTypeIt! = #getSQLTextTypes().entrySet().iterator()
+        while(sqlTextTypeIt!.hasNext())
+          next! = sqlTextTypeIt!.next()
+          value! = num(next!.getValue())
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(value!)
+          
+          newMask! = "AA-00"
+          def!.setColumnMask(newMask!)
+          editor! = def!.getCellEditor()
+          valueFormatter! = def!.getValueFormatterExpression()
+          
+          if(!(value! = Types.LONGVARCHAR OR value! = Types.LONGNVARCHAR))
+            Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)
+          fi
+                     
+          Assert.Equals("setColumnMask updates valueFormatter mask - column[" + next!.getKey() + "]" , valueFormatter!.getMask() , newMask!)
+        wend
+    methodend      
+    
+    rem @Test
+    method public void testSetColumnMaskSetDateMask()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlDateTypeIt! = #getSQLDateTypes().entrySet().iterator()
+        while(sqlDateTypeIt!.hasNext())
+          next! = sqlDateTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          newMask! = "some mask" ; rem not valid mask
+          def!.setColumnMask(newMask!)
+          filter! = def!.getFilter()
+          editor! = def!.getCellEditor()
+          valueFormatter! = def!.getValueFormatterExpression()
+          
+          Assert.Equals("setColumnMask updates filter mask - column[" + next!.getKey() + "]" , filter!.getMask() , newMask!)
+          Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)           
+          Assert.Equals("setColumnMask updates valueFormatter mask - column[" + next!.getKey() + "]" , valueFormatter!.getMask() , newMask!)
+        wend
+    methodend 
+    
+    rem @Test
+    method public void testSetColumnMaskSetTimeMask()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlTimeTypeIt! = #getSQLTimeTypes().entrySet().iterator()
+        while(sqlTimeTypeIt!.hasNext())
+          next! = sqlTimeTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          newMask! = "some mask" ; rem not valid mask
+          def!.setColumnMask(newMask!)
+          filter! = def!.getFilter()
+          editor! = def!.getCellEditor()
+          valueFormatter! = def!.getValueFormatterExpression()
+          
+          Assert.Equals("setColumnMask updates filter mask - column[" + next!.getKey() + "]" , filter!.getMask() , newMask!)
+          Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)           
+          Assert.Equals("setColumnMask updates valueFormatter mask - column[" + next!.getKey() + "]" , valueFormatter!.getMask() , newMask!)
+        wend
+    methodend  
+    
+    rem @Test
+    method public void testSetColumnMaskSetTimestampMask()
+        declare GxDefaultColumnDefinition def!
+      
+        sqlTimestampTypeIt! = #getSQLTimestampsTypes().entrySet().iterator()
+        while(sqlTimestampTypeIt!.hasNext())
+          next! = sqlTimestampTypeIt!.next()
+          
+          def! = new GxDefaultColumnDefinition()
+          def!.setType(num(next!.getValue()))
+          
+          newMask! = "some mask" ; rem not valid mask
+          def!.setColumnMask(newMask!)
+          filter! = def!.getFilter()
+          editor! = def!.getCellEditor()
+          valueFormatter! = def!.getValueFormatterExpression()
+          
+          Assert.Equals("setColumnMask updates filter mask - column[" + next!.getKey() + "]" , filter!.getMask() , newMask!)
+          Assert.Equals("setColumnMask updates cellEditor mask - column[" + next!.getKey() + "]" , editor!.getMask() , newMask!)           
+          Assert.Equals("setColumnMask updates valueFormatter mask - column[" + next!.getKey() + "]" , valueFormatter!.getMask() , newMask!)
+        wend
+    methodend       
+classend
+
+

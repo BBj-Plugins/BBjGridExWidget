@@ -1,0 +1,34 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorPopupSelect
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSelect
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxCellEditorPopupSelectTest
+
+    field private GxCellEditorPopupSelect Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxCellEditorPopupSelect()
+    methodend
+
+    rem @Test
+    method public void testCellEditorNameIsSet()
+        Assert.Equals(#Instance!.getCellEditorName() , "agPopupSelectCellEditor")
+    methodend
+            
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

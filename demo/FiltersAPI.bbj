@@ -1,0 +1,201 @@
+REM /**
+REM  * FiltersDemo
+REM  * 
+REM  * The demo shows how to apply filters on the client using the api methods 
+REM  * 
+REM  * @author Hyyan Abo Fakher
+REM  */
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterBooleanModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterDateTimeModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterSetFilterModel
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterTextFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterDateTimeFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterNumberFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Filters API Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+SysGui! = BBjAPI().getSysGui()
+boldFont! = SysGui!.makeFont("arial",13,BBjFont.FONT_BOLD)
+
+leftPanelTitle! = wnd!.addStaticText(202,10,10,200,25,"Filters API Calls" , $0000$)
+leftPanelTitle!.setFont(boldFont!)
+
+nameFilter! = wnd!.addCheckBox(204,10,50,200,22,"Name Contains John")
+nameFilter!.setCallback(BBjAPI.ON_CHECK_OFF,"onNameFilterToggle")
+nameFilter!.setCallback(BBjAPI.ON_CHECK_ON,"onNameFilterToggle")
+
+salesFilter! = wnd!.addCheckBox(205,10,75,200,22,"Sales > 50 && Sales < 100")
+salesFilter!.setCallback(BBjAPI.ON_CHECK_OFF,"onSalesFilterToggle")
+salesFilter!.setCallback(BBjAPI.ON_CHECK_ON,"onSalesFilterToggle")
+
+payDataFilter! = wnd!.addCheckBox(206,10,100,200,22,"PayDate > 1993-01-01")
+payDataFilter!.setCallback(BBjAPI.ON_CHECK_OFF,"onPayDateFilterToggle")
+payDataFilter!.setCallback(BBjAPI.ON_CHECK_ON,"onPayDateFilterToggle")
+
+countryFilter! = wnd!.addCheckBox(207,10,125,200,22,"Country is Italy OR Mexico")
+countryFilter!.setCallback(BBjAPI.ON_CHECK_OFF,"onCountryFilterToggle")
+countryFilter!.setCallback(BBjAPI.ON_CHECK_ON,"onCountryFilterToggle")
+
+isOver120Filter! = wnd!.addCheckBox(208,10,150,200,22,"isOver120 = False")
+isOver120Filter!.setCallback(BBjAPI.ON_CHECK_OFF,"onIsOver120FilterToggle")
+isOver120Filter!.setCallback(BBjAPI.ON_CHECK_ON,"onIsOver120FilterToggle")
+
+clearFilters! = wnd!.addButton(209,10,180,100,22,"Clear All Filters")
+clearFilters!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onClearFilters")
+
+gosub main
+process_events
+
+main:
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
+  rs! = sbc!.retrieve("SELECT FIRST_NAME , COUNTRY , SALES_YTD , LAST_PAY_DATE, case when NUM(OVER_120) = 0 THEN TRUE ELSE FALSE END AS IS_OVER_120  FROM CUSTOMER")
+  grid! = new BBjGridExWidget(wnd!,100,200,0,600,600)
+  grid!.addColumn("FIRST_NAME"    ,"First Name" ,12)
+  grid!.addColumn("COUNTRY"       ,"Country "   ,12)
+  grid!.addColumn("SALES_YTD"     ,"Sales"      ,2 )
+  grid!.addColumn("LAST_PAY_DATE" ,"Pay Date"   ,91)
+  grid!.addColumn("IS_OVER_120" ,"Is Over 120"  ,-7)
+
+  grid!.setData(rs! , 1 , 0)
+  
+  rem IMPORTANT: GxFilterSetFilter is part of the Enhanced grid
+  country! = grid!.getColumn("COUNTRY")
+  country!.setFilter(new GxFilterSetFilter())
+  
+  grid!.getColumn("IS_OVER_120").setType(16)
+  
+  grid!.getOptions().setAnimateRows(1)
+return
+
+onNameFilterToggle:
+  event! = BBjAPI().getLastEvent()
+  control! = event!.getControl()
+  isSelected! = control!.isSelected()
+  
+  declare auto GxClientFilterTextModel textModel!
+  textModel! = grid!.getFilterModel("FIRST_NAME")
+  if(isSelected!)
+    textModel!.setFilter("john")
+    textModel!.setType(GxColumnFilterTextFilterOptions.CONTAINS())  
+  else 
+    textModel!.clearFilter()
+  fi
+  
+  textModel!.update()
+  grid!.ensureColumnVisible("FIRST_NAME")
+return
+
+onSalesFilterToggle:
+  event! = BBjAPI().getLastEvent()
+  control! = event!.getControl()
+  isSelected! = control!.isSelected()
+  
+  declare auto GxClientFilterCombinedModel numberCombinedModel!
+  declare auto GxClientFilterNumberModel firstCondition!
+  declare auto GxClientFilterNumberModel secondCondition!
+  
+  numberCombinedModel! = grid!.getFilterAsCombinedModel("SALES_YTD")
+  if(isSelected!)
+    firstCondition! = numberCombinedModel!.getFirstCondition()
+    firstCondition!.setFilter(50)
+    firstCondition!.setType(GxColumnFilterNumberFilterOptions.GREATER_THAN())
+    
+    secondCondition! = new GxClientFilterNumberModel(100)
+    secondCondition!.setType(GxColumnFilterNumberFilterOptions.LESS_THAN())
+    numberCombinedModel!.setSecondCondition(secondCondition!)
+    
+    numberCombinedModel!.setOperator(numberCombinedModel!.OPERATOR_AND())
+  else 
+    numberCombinedModel!.clearFilter()
+  fi
+  
+  numberCombinedModel!.update()
+  grid!.ensureColumnVisible("SALES_YTD")
+return
+
+onPayDateFilterToggle:
+  event! = BBjAPI().getLastEvent()
+  control! = event!.getControl()
+  isSelected! = control!.isSelected()
+  
+  declare auto GxClientFilterDateTimeModel dateModel!
+  dateModel! = grid!.getFilterModel("LAST_PAY_DATE")
+  if(isSelected!)
+    dateModel!.setFilter("1993-01-01Z")
+    dateModel!.setType(GxColumnFilterDateTimeFilterOptions.GREATER_THAN())  
+  else 
+    dateModel!.clearFilter()
+  fi
+  
+  dateModel!.update()
+  grid!.ensureColumnVisible("LAST_PAY_DATE")
+return
+
+onCountryFilterToggle:
+  event! = BBjAPI().getLastEvent()
+  control! = event!.getControl()
+  isSelected! = control!.isSelected()
+  
+  declare auto GxClientFilterSetFilterModel countryModel!
+  countryModel! = grid!.getFilterModel("COUNTRY")
+  if(isSelected!)
+    countryModel!.getValues().add("Italy")
+    countryModel!.getValues().add("Mexico")
+    countryModel!.update()  
+  else 
+    countryModel!.selectEverything()
+  fi
+  
+  grid!.ensureColumnVisible("COUNTRY")    
+return 
+
+onIsOver120FilterToggle:
+  event! = BBjAPI().getLastEvent()
+  control! = event!.getControl()
+  isSelected! = control!.isSelected()
+  
+  declare auto GxClientFilterBooleanModel booleanModel!
+  booleanModel! = grid!.getFilterModel("IS_OVER_120")
+  if(isSelected!)
+    booleanModel!.setFilter(0)
+  else 
+    booleanModel!.clearFilter()
+  fi
+  
+  booleanModel!.update()
+  grid!.ensureColumnVisible("IS_OVER_120")
+return 
+
+onClearFilters:
+    nameFilter!.setSelected(0)
+    salesFilter!.setSelected(0)
+    payDataFilter!.setSelected(0)
+    countryFilter!.setSelected(0)
+    isOver120Filter!.setSelected(0)
+    grid!.clearFilters()
+    grid!.ensureColumnVisible("FIRST_NAME")
+return 
+
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w - 200,h)
+return
+
+byebye:
+bye

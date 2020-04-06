@@ -1,0 +1,16 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/GxRenderers/GxRendererBooleanTest.bbjt::GxRendererBooleanTest
+use ::BBjGridExWidget/test/GxRenderers/GxRendererCustomHTMLTest.bbjt::GxRendererCustomHTMLTest
+use ::BBjGridExWidget/test/GxRenderers/GxRendererImageRendererTest.bbjt::GxRendererImageRendererTest
+use ::BBjGridExWidget/test/GxRenderers/GxRendererGroupCellRendererTest.bbjt::GxRendererGroupCellRendererTest
+
+rem @SuiteClasses("GxRendererBooleanTest","GxRendererCustomHTMLTest","GxRendererImageRendererTest","GxRendererGroupCellRendererTest")
+class public BBjGridExWidgeGxRenderersSuite
+classend

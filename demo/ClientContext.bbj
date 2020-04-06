@@ -1,0 +1,81 @@
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+declare auto BBjListButton currencies!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Client Context Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+currencies! = wnd!.addListButton(201,5,6,160,250,"")
+currencies!.insertItemAt(0,"EUR")
+currencies!.insertItemAt(1,"USD")
+currencies!.insertItemAt(2,"GBP")
+currencies!.selectIndex(0)
+currencies!.setCallback(BBjAPI.ON_LIST_SELECT,"onUpdate")
+
+REM init the grid
+grid! = new BBjGridExWidget(wnd!,100,0,35,800,566)
+
+gosub main
+process_events
+
+rem /**
+rem  * The client context object is a com.google.gson.JsonObject passed to most of the components used in the grid. 
+rem  * The purpose of the context object is to allow the client grid to pass details to the components such as the Cell 
+rem  * Renderers and Cell Editors.
+rem  * 
+rem  * The example below demonstrates how the context object can be used. Note the following:
+rem  *  1. Selecting the reporting currency from the drop down places it in the context object.
+rem  *  2. When the reporting currency is changed the cell expression uses the currency supplied 
+rem  *    in the context object to calculate the value using ctx.currency
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER , TITLE , COST FROM CDINVENTORY")
+  grid!.setData(rs!)
+  
+  defaultCurrency$ = str(currencies!.getItemAt(currencies!.getSelectedIndex()))
+  grid!.getClientContext().addProperty("currency",defaultCurrency$)
+  
+  declare GxColumn costColumn!
+  costColumn! = grid!.getColumn("COST")
+  
+  declare GxExpression exp!
+  exp! = new GxExpression(" x + ' ' + ctx.currency")
+  costColumn!.setValueFormatterExpression(exp!)
+return
+
+onUpdate:
+   currency$ = str(currencies!.getItemAt(currencies!.getSelectedIndex()))
+   grid!.getClientContext().addProperty("currency",currency$)
+   grid!.updateContext()
+   grid!.redrawRows()
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h - 44)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

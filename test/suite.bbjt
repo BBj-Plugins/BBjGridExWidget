@@ -1,0 +1,20 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/test/GxRenderers/GxRenderersSuite.bbjt::GxRenderersSuite
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorsSuite.bbjt::GxCellEditorsSuite
+use ::BBjGridExWidget/test/GxFilters/GxFiltersSuite.bbjt::GxFiltersSuite
+use ::BBjGridExWidget/test/GxOptions/GxOptionsSuite.bbjt::GxOptionsSuite
+use ::BBjGridExWidget/test/GxColumns/GxColumnsSuite.bbjt::GxColumnsSuite
+use ::BBjGridExWidget/test/GxClientModels/GxClientModelsSuite.bbjt::GxClientModelsSuite
+use ::BBjGridExWidget/test/GxClientJsonFactory/GxClientJsonFactorySuite.bbjt::GxClientJsonFactorySuite
+use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetSuite.bbjt::BBjGridExWidgetSuite
+use ::BBjGridExWidget/test/GxExecutorTest.bbjt::GxExecutorTest
+
+rem @SuiteClasses("BBjGridExWidgetSuite","GxRenderersSuite","GxCellEditorsSuite","GxFiltersSuite","GxOptionsSuite","GxColumnsSuite","GxClientModelsSuite","GxClientJsonFactorySuite","GxExecutorTest")
+class public BBjGridExWidgeSuites
+classend

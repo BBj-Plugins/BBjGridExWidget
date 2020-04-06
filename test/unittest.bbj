@@ -1,0 +1,129 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjUnitTest/BBjUnitTest.bbj::BBjUnitTest
+use com.basis.bbjutilities.bbjunittest.objects.BBjUnitTestMethod
+
+declare auto BBjUnitTest ut!
+ut! = new BBjUnitTest()
+
+ms! = ut!.getModuleService()
+
+if(ms!.haveErrorsOccurred()) then
+    print "FAILED TESTS: "
+    print "============="
+    print $0A$
+
+    failedMethodList! =  ms!.getFailedTestMethods()
+    it! = failedMethodList!.iterator()
+
+    groups! = new java.util.LinkedHashMap()
+
+    while(it!.hasNext())
+        method! = it!.next()
+        key! = method!.getUnitTestClass().getClassName() 
+        if(groups!.get(key!) = null())
+            groups!.put(key! , new java.util.HashSet())
+        fi
+
+        get! = groups!.get(key!)
+        get!.add(method!)
+    wend
+
+    it! = groups!.entrySet().iterator()
+    while(it!.hasNext()) 
+        next! = it!.next()
+        group! =  next!.getKey()
+        groupIterator! = cast(java.util.HashSet,next!.getValue()).iterator()
+        count! = 1
+        print " [" + group! + "] :"
+        print $0A$
+        while(groupIterator!.hasNext()) 
+            method! = cast(BBjUnitTestMethod , groupIterator!.next())
+            print "     " + str(count!) + ". " + method!.getMethodName() + " : " + str(method!.getExecutionTime() / 1000 ) + " sec"
+            print "         Line  : " + str(method!.getError().getLine())
+            print "         Cause : " + method!.getError().getDescription()
+            print $0A$
+            count! = count! + 1
+        wend
+    wend
+
+    print "EXCUTED : " + str(ms!.getExecutedTestCount()) +  " Skipped : " + str(ms!.getSkippedTestCount()) + " PASSED : " + str(ms!.getExecutedTestCount() - ms!.getAssertionErrorCount() - ms!.getExecutionErrorCount()) + " FAILED : " +  str(ms!.getAssertionErrorCount() + ms!.getExecutionErrorCount())
+
+    if(ms!.getResultFile() <> null()) then
+        print "RESULT : " + str(ms!.getResultFile().getAbsolutePath())
+    endif
+
+else 
+ print "PASSED SUCCESSFULLY :"
+ print "====================="
+ print "EXCUTED : " + str(ms!.getExecutedTestCount()) + " PASSED : " + str(ms!.getExecutedTestCount() - ms!.getAssertionErrorCount() - ms!.getExecutionErrorCount()) + " FAILED : " +  str(ms!.getAssertionErrorCount())
+ if(ms!.getResultFile() <> null()) then
+    print "RESULT : " + str(ms!.getResultFile().getAbsolutePath())
+ endif 
+ wait 1
+ release 0
+fi
+
+rem use ::BBjUnitTest/BBjUnitTest.bbj::BBjUnitTest
+rem use com.basis.bbjutilities.bbjunittest.objects.BBjUnitTestClass
+rem use com.basis.bbjutilities.bbjunittest.objects.BBjUnitTestMethod
+rem use com.basis.bbjutilities.bbjunittest.objects.BBjUnitTestSuite
+rem use java.util.ArrayList
+
+rem class public CustomUnitTest
+
+rem     field public BBjUnitTest Ut!
+
+rem     method public CustomUnitTest()
+rem         #Ut! = new BBjUnitTest()
+rem     methodend
+
+rem     method public void print()
+rem         ms! = #Ut!.getModuleService()
+rem         moduleList! = ms!.getModules()
+rem         #doPrint(moduleList!)
+rem     methodend
+
+rem     method protected void doPrint(ArrayList moduleList!)
+rem         for i=0 to moduleList!.size() -1
+rem             module! = moduleList!.get(i)
+            
+rem             ok = 0
+rem             class! = cast(BBjUnitTestClass, module! ,err=*next) ; ok = 1
+
+rem             if ok then
+rem                 methodList! = class!.getAllMethods()
+rem                 for j=0 to methodList!.size() -1
+rem                 declare auto BBjUnitTestMethod method!
+rem                     method! = methodList!.get(j)
+rem                     ? "className: " + module!.getClassName() + " " + str(method!.getMethodName())+ " " + str( method!.hasErrorOccurred())
+rem                         ? method!.getMethodType().getMethodType()
+rem REM                     ? method!.isIgnored()
+rem REM                     ? method!.isPartOfCategory()
+rem REM                     ? method!.getCategoryNames()
+rem REM                     ? "className: " + module!.getClassName() + " " + str( method!.hasErrorOccurred())
+rem REM                     ? method!.wasExecuted()
+rem REM                     ? method!.getError()
+rem REM                     ? method!.getExecutionTime()
+rem                 next j
+
+rem                 continue
+rem             FI
+rem             ok = 0
+rem             suite! = cast(BBjUnitTestSuite, module!,err=*next); ok = 1
+
+rem             if ok then
+rem                 #doPrint(suite!.getModules())
+rem             FI
+rem         next i
+rem     methodend
+
+rem classend
+
+rem cut! = new CustomUnitTest()
+rem cut!.print()

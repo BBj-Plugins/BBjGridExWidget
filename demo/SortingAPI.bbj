@@ -1,0 +1,65 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientSortModel
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Sorting API Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * Sorting can be controlled via the Sorting API via the following methods:
+rem  *  
+rem  *  * grid!.setSortModel(GxClientSortModel model!) : set the sorting for one or more columns at once
+rem  *  * grid!.sortColumn(BBjString column! , BBjString direction!) : set the sorting model for one column
+rem  * 
+rem  * The following example apply sorting for the CDNUMBER and the TITLE at once.
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.setData(rs!)
+
+  model! = new GxClientSortModel()
+  model!.add("CDNUMBER",GxColumn.SORT_DESC())
+  model!.add("TITLE",GxColumn.SORT_ASC())
+
+  grid!.setSortModel(model!)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

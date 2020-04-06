@@ -1,0 +1,25 @@
+?  'HIDE'
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjUnitTest/BBjUnitTest.bbj::GridUnitTest
+
+suite! = ARGV(1 , err=*next)
+if(suite! <> null())
+    suite! = CVS(suite! , 1 + 2)
+    suite! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/" + suite! + "/" + "Gx" +  suite! + "Suite.bbjt")
+else
+    suite! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/suite.bbjt") 
+fi 
+
+wd! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget")
+unittest! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/unittest.bbj")
+cmd! = "bbj -CPunittest -q -WD"+ wd! + " " + unittest! + " - "+ suite! + " --f"
+
+? "RUNNING CMD: " + cmd!
+a! = scall(cmd!)
+release a!

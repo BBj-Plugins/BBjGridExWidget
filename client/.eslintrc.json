@@ -1,0 +1,29 @@
+{
+  "extends": "eslint:recommended",
+  "parser": "babel-eslint",
+  "ignorePatterns": ["webpack.config.js", "node_modules/"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "amd": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": "off",
+    "strict": ["error", "global"],
+    "curly": "warn"
+  },
+  "globals": {
+    "BBj": true, 
+    "Basis": true,
+    "flatpickr": true,
+    "agGrid": true,
+    "jss": true,
+    "$doc": true,
+    "$wnd": true
+  }
+}

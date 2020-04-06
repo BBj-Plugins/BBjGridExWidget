@@ -1,0 +1,23 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/GxClientModels/GxClientSortModelTest.bbjt::GxClientSortModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientTransactionModelTest.bbjt::GxClientTransactionModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterSimpleModelTest.bbjt::GxClientFilterSimpleModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterTextModelTest.bbjt::GxClientFilterTextModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterNumberModelTest.bbjt::GxClientFilterNumberModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterCombinedModelTest.bbjt::GxClientFilterCombinedModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterAbstractModelTest.bbjt::GxClientFilterAbstractModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterDateTimeModelTest.bbjt::GxClientFilterDateTimeModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilterBooleanModelTest.bbjt::GxClientFilterBooleanModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientFilteSetFilterModelTest.bbjt::GxClientFilteSetFilterModelTest
+use ::BBjGridExWidget/test/GxClientModels/GxClientRowModelTest.bbjt::GxClientRowModelTest
+
+rem @SuiteClasses("GxClientSortModelTest","GxClientTransactionModelTest","GxClientFilterSimpleModelTest","GxClientFilterTextModelTest","GxClientFilterNumberModelTest","GxClientFilterCombinedModelTest","GxClientFilterAbstractModelTest","GxClientFilterDateTimeModelTest","GxClientFilteSetFilterModelTest","GxClientRowModelTest")
+class public GxClientModelsSuite
+classend

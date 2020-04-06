@@ -1,0 +1,67 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Suppress Movable And LockPosition Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * Note the following : 
+rem  * 
+rem  *  1. The column CDNUMBER is locked as first column in the 
+rem  *     scrollable area of the grid. It is not possible to move this column, 
+rem  *      or have other columns moved over it to impact it's position.
+rem  *      As a result the CDNUMBER column marks the begging of the scrollable area regardless it's position.
+rem  *  2. The column 'TITLE' has moving suppressed. 
+rem  *     It is not possible to move this column, however it is possible to move other columns around it.
+rem  *  3. The grid has SuppressDragLeaveHidesColumns=true so columns dragged outside 
+rem  *     of the grid are not hidden (normally dragging a column out of the grid will hide the column).
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  
+  REM init the grid
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.setData(rs!)
+  grid!.getOptions().setSuppressDragLeaveHidesColumns(1)
+  grid!.getColumn("CDNUMBER").setSuppressMovable(1)
+  grid!.getColumn("TITLE").setLockPosition(1)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

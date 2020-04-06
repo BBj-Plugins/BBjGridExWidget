@@ -4,9 +4,400 @@
             "name": "CD-Store",
             "style": ""
         },
-        "CustomGridDemo.bbj": {
-            "name": "CustomGridDemo",
+        "CustomGrid": {
+            "name": "CustomGrid",
+            "style": ""
+        },
+        "Playground.delete.bbj": {
+            "name": "Playground.delete",
+            "style": ""
+        },
+        "Datatypes": {
+            "name": "Datatypes",
+            "style": ""
+        },
+        "Aggregation": {
+            "name": "Aggregation",
+            "style": ""
+        },
+        "Charting": {
+            "name": "Charting",
+            "style": ""
+        },
+        "ContextMenu": {
+            "name": "ContextMenu",
+            "style": ""
+        },
+        "Pivot": {
+            "name": "Pivot",
+            "style": ""
+        },
+        "RangeSelection": {
+            "name": "RangeSelection",
+            "style": ""
+        },
+        "RowGrouping": {
+            "name": "RowGrouping",
+            "style": ""
+        },
+        "Sidebar": {
+            "name": "Sidebar",
+            "style": ""
+        },
+        "Statusbar": {
+            "name": "Statusbar",
+            "style": ""
+        },
+        "TreeData": {
+            "name": "TreeData",
+            "style": ""
+        },
+        "CellsConditionalStyling": {
+            "name": "CellsConditionalStyling",
+            "style": ""
+        },
+        "ChunkRendering": {
+            "name": "ChunkRendering",
+            "style": ""
+        },
+        "ColumnGrouping": {
+            "name": "ColumnGrouping",
+            "style": ""
+        },
+        "ColumnGroupingNested": {
+            "name": "ColumnGroupingNested",
+            "style": ""
+        },
+        "ColumnSetup": {
+            "name": "ColumnSetup",
+            "style": ""
+        },
+        "ColumnsUpdate": {
+            "name": "ColumnsUpdate",
+            "style": ""
+        },
+        "DataUpdate": {
+            "name": "DataUpdate",
+            "style": ""
+        },
+        "Demo.bbj": {
+            "name": "Demo",
+            "style": ""
+        },
+        "Editing": {
+            "name": "Editing",
+            "style": ""
+        },
+        "Expression": {
+            "name": "Expression",
+            "style": ""
+        },
+        "Icons": {
+            "name": "Icons",
+            "style": ""
+        },
+        "JLib": {
+            "name": "JLib",
+            "style": ""
+        },
+        "Keypress": {
+            "name": "Keypress",
+            "style": ""
+        },
+        "Language": {
+            "name": "Language",
+            "style": ""
+        },
+        "Overlay": {
+            "name": "Overlay",
+            "style": ""
+        },
+        "RowsConditionalStyling": {
+            "name": "RowsConditionalStyling",
+            "style": ""
+        },
+        "Search": {
+            "name": "Search",
+            "style": ""
+        },
+        "Selection": {
+            "name": "Selection",
+            "style": ""
+        },
+        "TwoGrids": {
+            "name": "TwoGrids",
+            "style": ""
+        },
+        "ColumnsSizing": {
+            "name": "ColumnsSizing",
+            "style": ""
+        },
+        "ColumnState": {
+            "name": "ColumnState",
+            "style": ""
+        },
+        "ColumnHeaderHeightAndTextOrientation.bbj": {
+            "name": "ColumnHeaderHeightAndTextOrientation",
+            "style": ""
+        },
+        "ColumnSuppressMovableAndLockPosition.bbj": {
+            "name": "ColumnSuppressMovableAndLockPosition",
+            "style": ""
+        },
+        "ColumnPinning.bbj": {
+            "name": "ColumnPinning",
+            "style": ""
+        },
+        "SortingAPI.bbj": {
+            "name": "SortingAPI",
+            "style": ""
+        },
+        "HighlightingRowsAndColumns.bbj": {
+            "name": "HighlightingRowsAndColumns",
+            "style": ""
+        },
+        "ClientContext.bbj": {
+            "name": "ClientContext",
+            "style": ""
+        },
+        "ValuesParserDemo.bbj": {
+            "name": "ValuesParserDemo",
+            "style": ""
+        },
+        "ValueSetter.bbj": {
+            "name": "ValueSetter",
+            "style": ""
+        },
+        "CellsConditionalStyling.bbj": {
+            "name": "CellsConditionalStyling",
+            "style": ""
+        },
+        "ChunkRendering.bbj": {
+            "name": "ChunkRendering",
+            "style": ""
+        },
+        "ColumnGrouping.bbj": {
+            "name": "ColumnGrouping",
+            "style": ""
+        },
+        "ColumnGroupingNested.bbj": {
+            "name": "ColumnGroupingNested",
+            "style": ""
+        },
+        "ColumnSetup.bbj": {
+            "name": "ColumnSetup",
+            "style": ""
+        },
+        "ColumnsSizing.bbj": {
+            "name": "ColumnsSizing",
+            "style": ""
+        },
+        "ColumnState.bbj": {
+            "name": "ColumnState",
+            "style": ""
+        },
+        "ColumnsUpdate.bbj": {
+            "name": "ColumnsUpdate",
+            "style": ""
+        },
+        "CustomGrid.bbj": {
+            "name": "CustomGrid",
+            "style": ""
+        },
+        "DataUpdate.bbj": {
+            "name": "DataUpdate",
+            "style": ""
+        },
+        "Datatypes.bbj": {
+            "name": "Datatypes",
+            "style": ""
+        },
+        "Editing.bbj": {
+            "name": "Editing",
+            "style": ""
+        },
+        "Expression.bbj": {
+            "name": "Expression",
+            "style": ""
+        },
+        "FiltersAPI.bbj": {
+            "name": "FiltersAPI",
+            "style": ""
+        },
+        "FontAwesomeIcons.bbj": {
+            "name": "FontAwesomeIcons",
+            "style": ""
+        },
+        "JLib.bbj": {
+            "name": "JLib",
+            "style": ""
+        },
+        "Keypress.bbj": {
+            "name": "Keypress",
+            "style": ""
+        },
+        "RowsConditionalStyling.bbj": {
+            "name": "RowsConditionalStyling",
+            "style": ""
+        },
+        "Language.bbj": {
+            "name": "Language",
+            "style": ""
+        },
+        "Overlay.bbj": {
+            "name": "Overlay",
+            "style": ""
+        },
+        "Search.bbj": {
+            "name": "Search",
+            "style": ""
+        },
+        "Selection.bbj": {
+            "name": "Selection",
+            "style": ""
+        },
+        "TwoGrids.bbj": {
+            "name": "TwoGrids",
+            "style": ""
+        },
+        "ValuesParser.bbj": {
+            "name": "ValuesParser",
+            "style": ""
+        },
+        "Aggregation.bbj": {
+            "name": "Aggregation",
+            "style": ""
+        },
+        "Charting.bbj": {
+            "name": "Charting",
+            "style": ""
+        },
+        "ContextMenu.bbj": {
+            "name": "ContextMenu",
+            "style": ""
+        },
+        "Pivot.bbj": {
+            "name": "Pivot",
+            "style": ""
+        },
+        "RangeSelection.bbj": {
+            "name": "RangeSelection",
+            "style": ""
+        },
+        "RowGrouping.bbj": {
+            "name": "RowGrouping",
+            "style": ""
+        },
+        "Sidebar.bbj": {
+            "name": "Sidebar",
+            "style": ""
+        },
+        "Statusbar.bbj": {
+            "name": "Statusbar",
+            "style": ""
+        },
+        "TreeData.bbj": {
+            "name": "TreeData",
+            "style": ""
+        },
+        "TooltipValueGetter.bbj": {
+            "name": "TooltipValueGetter",
+            "style": ""
+        },
+        "OrderEntry.bbj": {
+            "name": "OrderEntry",
             "style": ""
         }
-    }
+    },
+    "cSpell.words": [
+        "BIGINT",
+        "CDINVENTORY",
+        "CUST",
+        "Contextmenu",
+        "EDITTYPE",
+        "Fakher",
+        "Firstname",
+        "Focusable",
+        "Funcs",
+        "GROUPEDBAR",
+        "GROUPEDCOLUMN",
+        "GROUPPANEL",
+        "Gson",
+        "HTMLVIEW",
+        "Hyyan",
+        "JDBC",
+        "KNUM",
+        "LONGNVARCHAR",
+        "LONGVARCHAR",
+        "LTGRAY",
+        "MUSICTYPE",
+        "NCHAR",
+        "NORMALIZEDAREA",
+        "NORMALIZEDBAR",
+        "NORMALIZEDCOLUMN",
+        "NVARCHAR",
+        "Namepedia",
+        "ONGROUPING",
+        "ONHAND",
+        "PLAYINGTIME",
+        "RECORDINGTYPE",
+        "ROWPOS",
+        "SMALLINT",
+        "STACKEDAREA",
+        "STACKEDBAR",
+        "STACKEDCOLUMN",
+        "STRUCT",
+        "Saarlandish",
+        "TINYINT",
+        "Toggleable",
+        "UUID",
+        "VARCHAR",
+        "aggrid",
+        "arial",
+        "autosize",
+        "basiscomponents",
+        "browserslist",
+        "byebye",
+        "columnid",
+        "columntype",
+        "cond",
+        "contextmenu",
+        "dtlgrid",
+        "filepath",
+        "flatpickr",
+        "gener",
+        "gosub",
+        "hashset",
+        "iframe",
+        "imagelist",
+        "indexd",
+        "jarray",
+        "jelement",
+        "jobject",
+        "jsonstr",
+        "keypress",
+        "lightgreen",
+        "methodret",
+        "msgbox",
+        "nano",
+        "readonly",
+        "recfield",
+        "scrollable",
+        "scrollbar",
+        "shortcode",
+        "sqlclose",
+        "sqlexec",
+        "sqlfetch",
+        "sqllist",
+        "sqlopen",
+        "sqlprep",
+        "sqltables",
+        "sqltmpl",
+        "stbl",
+        "submenu",
+        "swend",
+        "toolpanels",
+        "unminified",
+        "virtualisation"
+    ]
 }

@@ -6,55 +6,120 @@
  * file that was distributed with this source code.
  */
 
-import { gw_getGrid } from "./utilities";
-const { deepParseJson } = require("deep-parse-json");
+import { gw_getGrid } from './utilities'
+import { gw_executeExpression } from '../expression'
+const { deepParseJson } = require('deep-parse-json')
 
 /**
+ * Setup the tooltip value getter and tooltip component for the passed column definition , if the column definition is a group
+ * then the function will loop over all its children and setup the expression and the component too.
+ *
+ * @param {Object} def column definition object
+ */
+function _configureTooltips(def) {
+  const tooltipValueGetterExpression = def.tooltipValueGetter
+  if (tooltipValueGetterExpression) {
+    def.tooltipValueGetter = params =>
+      gw_executeExpression(tooltipValueGetterExpression, params)
+  }
+
+  def.tooltipComponent = 'HTMLTooltip'
+
+  // eslint-disable-next-line no-prototype-builtins
+  if (def.hasOwnProperty('children')) {
+    def.children.forEach(child => _configureTooltips(child))
+  }
+}
+/**
  * Extend the column definitions
- * 
+ *
  * Extend the column definitions with options which can not be handled in BBj
  * (ex: attaching callbacks)
- * 
+ *
  * @param {Array} definitions array of column definitions
  */
 export function gw_extendColumnDefinitions(definitions) {
-
   for (let i in definitions) {
-    const def = definitions[i];
+    const def = definitions[i]
 
-    def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox;
-    def.headerCheckboxSelection = def.headerCheckboxSelection || gw_isHeaderCheckboxSelection;
+    def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox
+    def.headerCheckboxSelection =
+      def.headerCheckboxSelection || gw_isHeaderCheckboxSelection
+    _configureTooltips(def)
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (def.hasOwnProperty('editable') && typeof def.editable === 'string') {
+      const editable = def.editable
+      def.editable = params => gw_executeExpression(editable, params)
+    }
   }
 }
 
 /**
- * Update the column definitions 
- * 
+ * Update the column definitions
+ *
  * @param {String} id The grid id
  * @param {Array} definitions array of column definitions
  */
 export function gw_setColumnDefinitions(id, definitions) {
-  const grid = gw_getGrid(id);
-  const deepParsedDefinitions = deepParseJson(JSON.stringify(definitions));
+  const grid = gw_getGrid(id)
+  const deepParsedDefinitions = deepParseJson(JSON.stringify(definitions))
 
-  gw_extendColumnDefinitions(deepParsedDefinitions);
+  gw_extendColumnDefinitions(deepParsedDefinitions)
 
-  grid.options.api.setColumnDefs(deepParsedDefinitions);
-  grid.options.columnDefs = deepParsedDefinitions;
+  grid.options.api.setColumnDefs(deepParsedDefinitions)
+  grid.options.columnDefs = deepParsedDefinitions
 }
 
-export function gw_sizeColumnsToFit(id) {
-  gw_getGrid(id)
-    .options
-    .api
-    .sizeColumnsToFit();
+/**
+ * Make the currently visible columns fit the screen
+ *
+ * @param {String} id The grid's id
+ * @param {Number} the width to use to fit all columns in
+ */
+export function gw_sizeColumnsToFit(id, width) {
+  const options = gw_getGrid(id).options
+  const api = options.api
+  const columnsAPI = options.columnApi
+  if (width) {
+    columnsAPI.sizeColumnsToFit(Number(width))
+  } else {
+    api.sizeColumnsToFit()
+  }
 }
 
-export function gw_setVisibleColumn(id, columnId) {
-  gw_getGrid(id)
-    .options
-    .api
-    .ensureColumnVisible(columnId);
+/**
+ * Work out the best width to fit the contents of the cells in the column.
+ *
+ * @param {String} id The grid's id
+ * @param {Boolean} [skipHeader=false] when true indicate that the header content (headerName) should not be considered when
+ *                             calculating the width of the column
+ * @param {Array|null} [columns=null] an array of columns ids to auto size or null to auto size all columns
+ */
+export function gw_autoSizeColumns(id, skipHeader = false, columns = null) {
+  const options = gw_getGrid(id).options
+  const columnsAPI = options.columnApi
+
+  if (!(columns && columns.length)) {
+    const allColumnIds = []
+
+    columnsAPI.getAllColumns().forEach(column => {
+      allColumnIds.push(column.colId)
+    })
+
+    columnsAPI.autoSizeColumns(allColumnIds, Boolean(skipHeader))
+  } else {
+    columnsAPI.autoSizeColumns(columns, Boolean(skipHeader))
+  }
+}
+/**
+ * Ensures the column is visible, scrolling the table if needed.
+ *
+ * @param {String} id  the grid's id
+ * @param {String} columnId  the column id
+ */
+export function gw_ensureColumnVisible(id, columnId) {
+  gw_getGrid(id).options.api.ensureColumnVisible(columnId)
 }
 
 /**
@@ -65,10 +130,7 @@ export function gw_setVisibleColumn(id, columnId) {
  * @param {Number|String} width The new column width
  */
 export function gw_setColumnWidth(id, columnId, width) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .setColumnWidth(columnId, Number(width));
+  gw_getGrid(id).options.columnApi.setColumnWidth(columnId, Number(width))
 }
 
 /**
@@ -81,10 +143,7 @@ export function gw_setColumnWidth(id, columnId, width) {
  * @param {String} pin The pin direction
  */
 export function gw_pinColumn(id, columnId, pin) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .setColumnPinned(columnId, pin);
+  gw_getGrid(id).options.columnApi.setColumnPinned(columnId, pin)
 }
 
 /**
@@ -97,10 +156,7 @@ export function gw_pinColumn(id, columnId, pin) {
  * @param {Number|String} toIndex The new column index
  */
 export function gw_moveColumn(id, columnId, toIndex) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .moveColumn(columnId, toIndex);
+  gw_getGrid(id).options.columnApi.moveColumn(columnId, toIndex)
 }
 
 /**
@@ -115,11 +171,13 @@ export function gw_moveColumn(id, columnId, toIndex) {
  *                   grid's `Context.showSelectionCheckbox` is false
  */
 export function gw_isShowSelectionCheckbox(param) {
-  if (!param.context.showSelectionCheckbox) return false;
+  if (!param.context.showSelectionCheckbox) {
+    return false
+  }
 
-  const columns = param.columnApi.getAllDisplayedVirtualColumns();
+  const columns = param.columnApi.getAllGridColumns()
 
-  return columns[0].colDef.field === param.colDef.field;
+  return columns[0].colDef.field === param.colDef.field
 }
 
 /**
@@ -134,121 +192,132 @@ export function gw_isShowSelectionCheckbox(param) {
  *                   grid's `Context.showHeaderSelectionCheckbox` is false
  */
 export function gw_isHeaderCheckboxSelection(param) {
-  const context = param.api.gridOptionsWrapper.gridOptions.context;
+  const context = param.api.gridOptionsWrapper.gridOptions.context
 
-  if (!context.showHeaderSelectionCheckbox) return false;
+  if (!context.showHeaderSelectionCheckbox) {
+    return false
+  }
 
-  const columns = param.columnApi.getAllDisplayedVirtualColumns();
+  const columns = param.columnApi.getAllGridColumns()
 
-  return columns[0].colDef.field === param.colDef.field;
+  return columns[0].colDef.field === param.colDef.field
 }
 
 /**
  * Enable row grouping for columns
- * 
+ *
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
  * @param {Boolean} set  When true , `setRowGroupColumns` will be used , `addRowGroupColumns` otherwise
  */
 export function gw_addRowGroupColumn(id, columns, set) {
-  gw_getGrid(id)
-    .options
-    .columnApi[set ? "setRowGroupColumns" : "addRowGroupColumns"](
-      columns.split(",").map(i => i.trim())
-    );
+  gw_getGrid(id).options.columnApi[
+    set ? 'setRowGroupColumns' : 'addRowGroupColumns'
+  ](columns.split(',').map(i => i.trim()))
 }
 
 /**
  * Disable row grouping for columns
- * 
+ *
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_removeRowGroupColumn(id, columns) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .removeRowGroupColumns(
-      columns.split(",").map(i => i.trim())
-    );
+  gw_getGrid(id).options.columnApi.removeRowGroupColumns(
+    columns.split(',').map(i => i.trim())
+  )
 }
 
 export function gw_getPivotMode(id) {
-  return gw_getGrid(id)
-    .options
-    .columnApi
-    .isPivotMode();
+  return gw_getGrid(id).options.columnApi.isPivotMode()
 }
 
 /**
- * Enable / disbale pivot mode 
- * 
+ * Enable / disbale pivot mode
+ *
  * @param {String} id the grid id
- * @param {Boolean} mode when true 
+ * @param {Boolean} mode when true
  */
 export function gw_setPivotMode(id, mode) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .setPivotMode(!!Number(mode));
+  gw_getGrid(id).options.columnApi.setPivotMode(!!Number(mode))
 }
 
 /**
  * Enable pivot for columns
- * 
+ *
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
  * @param {Boolean} set  When true , `addPivotColumns` will be used , `setPivotColumns` otherwise
  */
 export function gw_addPivotColumns(id, columns, set) {
-  gw_getGrid(id)
-    .options
-    .columnApi[set ? "setPivotColumns" : "addPivotColumns"](
-      columns.split(",").map(i => i.trim())
-    );
+  gw_getGrid(id).options.columnApi[set ? 'setPivotColumns' : 'addPivotColumns'](
+    columns.split(',').map(i => i.trim())
+  )
 }
 
 /**
  * Disable pivot for columns
- * 
+ *
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_removePivotColumns(id, columns) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .removePivotColumns(
-      columns.split(",").map(i => i.trim())
-    );
+  gw_getGrid(id).options.columnApi.removePivotColumns(
+    columns.split(',').map(i => i.trim())
+  )
 }
 
 /**
  * Enable value for columns
- * 
+ *
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
  */
-export function gw_addValueColumns(id, columns, set) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .addValueColumns(
-      columns.split(",").map(i => i.trim())
-    );
+export function gw_addValueColumns(id, columns) {
+  gw_getGrid(id).options.columnApi.addValueColumns(
+    columns.split(',').map(i => i.trim())
+  )
 }
 
 /**
  * Disable value for columns
- * 
+ *
  * @param {String} id the grid id
  * @param {String} columns  a comma separated string of columns
  */
 export function gw_removeValueColumns(id, columns) {
-  gw_getGrid(id)
-    .options
-    .columnApi
-    .removeValueColumns(
-      columns.split(",").map(i => i.trim())
-    );
+  gw_getGrid(id).options.columnApi.removeValueColumns(
+    columns.split(',').map(i => i.trim())
+  )
+}
+
+/**
+ * Set the column sorting model
+ *
+ * @param {String} id the grid id
+ * @param {String} model model as json array
+ */
+export function gw_setSortModel(id, model) {
+  const asArray = JSON.parse(model)
+  const parsedModel = []
+  asArray.forEach(i => {
+    for (const key in i) {
+      parsedModel.push({
+        colId: key,
+        sort: i[key],
+      })
+    }
+  })
+
+  gw_getGrid(id).options.api.setSortModel(parsedModel)
+}
+
+/**
+ * Redraws the header. Useful if a column name changes,
+ * or something else that changes how the column header is displayed.
+ *
+ * @param {String} id grid's id
+ */
+export function gw_refreshHeader(id) {
+  gw_getGrid(id).options.api.redrawRows()
 }

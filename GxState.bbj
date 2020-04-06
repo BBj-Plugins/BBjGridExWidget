@@ -1,0 +1,77 @@
+rem package BBjGridExWidget
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.google.gson.JsonParser
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+use com.google.gson.JsonElement
+
+rem /**
+rem  * The Grid state object 
+rem  * 
+rem  * @author Hyyan Abo Fakher , Stephan Wald
+rem  */
+class public GxState
+
+    field private BBjString String$
+
+    method public GxState(BBjString String$)
+        #setString(String$)
+    methodend
+
+    method public BBjString getString()
+        methodret #String$
+    methodend
+
+    method public void setString(BBjString jsonstr$)
+        if len(jsonstr$)>2 and jsonstr$(1,1)="[" then
+            rem old format that had only columns
+            jsonstr$="{""columns"":"+jsonstr$
+            jsonstr$=jsonstr$+",""groups"":[],""sort"":[],""filters"":{}}"
+        FI
+
+        #String$ = jsonstr$
+    methodend
+
+    method public BBjString toString()
+        methodret #String$
+    methodend
+
+    method public BBjVector getVisibleColumns()
+        declare BBjVector v!
+        declare JsonArray jarray!
+        declare JsonObject jobject!
+        declare JsonElement jelement!
+
+        v! = new BBjVector()
+
+        if #String$<>null() and #String$>"" then
+            jelement! = new JsonParser().parse(#String$,err=fail)
+            jobject! = jelement!.getAsJsonObject(err=fail)
+            jarray! = jobject!.getAsJsonArray("columns",err=fail)
+            s=jarray!.size()
+
+            if s>0 then
+                for i=0 to s-1
+                    obj! = jarray!.get(i).getAsJsonObject()
+                    name$ = str(obj!.get("colId").getAsString())
+                    hide! = obj!.get("hide").getAsBoolean()
+
+                    if hide! <> BBjAPI.TRUE then
+                        v!.addItem(name$)
+                    FI
+                next
+            FI
+        FI
+
+        fail:
+            methodret v!
+    methodend
+
+classend

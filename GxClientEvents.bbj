@@ -1,0 +1,115 @@
+rem /**
+rem  *  The package exports a collection of classes which describe The client events as BBj models
+rem  */
+rem package GxClientEvents
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientColumnModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientCellModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientKeypressModel
+REM /**
+REM  * Row Selection Event (single & double)
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientEventsRowSelection
+    rem /**
+    rem  * An array of selected rows
+    rem  */
+    field public BBjVector SelectedRows! = new BBjVector()
+    rem /**
+    rem  * Get the number of affected rows by the last event
+    rem  *
+    rem  * @return BBjNumber
+    rem  */
+    method public BBjNumber getSelectedRowCount()
+        methodret #SelectedRows!.size()
+    methodend
+
+classend
+rem /**
+rem  * Context Menu Event
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientEventsContextMenu
+    rem /**
+    rem  * The current cell where the context menu is triggered
+    rem  */
+    field public GxClientCellModel Cell!
+    rem /**
+    rem  * Get the cell value
+    rem  *
+    rem  * @return BBjString The cell's value
+    rem  */
+    method public BBjString getValue()
+        methodret #getCell().getValue()
+    methodend
+    rem /**
+    rem  * Get the cell's row
+    rem  *
+    rem  * @return GxClientRowModel
+    rem  */
+    method public GxClientRowModel getRow()
+        methodret #getCell().getRow()
+    methodend
+    rem /**
+    rem  * Get the cell's column
+    rem  *
+    rem  * @return GxClientColumnModel
+    rem  */
+    method public GxClientColumnModel getColumn()
+        methodret #getCell().getColumn()
+    methodend
+
+classend
+rem /**
+rem  * Cell Editing / Clicking Event
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientEventsCell extends GxClientEventsContextMenu
+    rem /**
+    rem  * The old value of the cell
+    rem  */
+    field public BBjString OldValue!
+
+classend
+rem /**
+rem  * Cell Editing / Clicking Event
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientEventsRowEditing
+    rem /**
+    rem  * The Row being edited
+    rem  */
+    field public GxClientRowModel Row!
+
+classend
+REM /**
+REM  * Cells range selection event
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientEventsRangeSelection
+
+classend
+REM /**
+REM  * Keypress event
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientEventsKeypress
+    rem /**
+    rem  * A keypress model which is received from the client
+    rem  */
+    field public GxClientKeypressModel Key!
+
+classend

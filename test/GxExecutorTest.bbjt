@@ -1,0 +1,151 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use ::BBjGridExWidget/test/Mocks/GxExecutorMock.bbj::GxExecutorMock
+
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxExecutorTest
+
+    field private BBjGridExWidgetMock Widget!
+    field private GxExecutorMock Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Widget! = new BBjGridExWidgetMock()
+        #Instance! = cast(GxExecutorMock,#getWidget().getExecutor())
+    methodend
+    
+	rem @Test
+	method public void testNoneDebouncedCodeWhenWidgetIsReady()
+	    code! = "foo"
+	    #getWidget().setIsReady(BBjAPI.TRUE)
+	    #Instance!.setExecuteResult("foo_result")
+	    result! = #Instance!.execute(code!, 0)
+	    Assert.Equals(#Instance!.getQueue().size() , 0)
+	    Assert.Equals(code! , #Instance!.getLastExecutedScript())
+	    Assert.Equals(result! , #Instance!.getExecuteResult())
+	methodend
+	
+    rem @Test
+    method public void testNoneDebouncedCodeWhenWidgetIsNotReady()
+        code! = "foo"
+        #Instance!.execute(code!, 0)
+        Assert.Equals(#Instance!.getQueue().size() , 1)
+        Assert.Equals(#Instance!.getQueue().containsKey(code!) , BBjAPI.TRUE)
+        Assert.IsNull(#Instance!.getExecuteResult())
+    methodend	
+
+    rem @Test
+    method public void testDebouncedCodeWhenSupressIsEnabledAndWidgetIsReady()
+        code! = "foo"
+        
+        #getWidget().setIsReady(BBjAPI.TRUE)
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        #Instance!.execute(code!)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        Assert.Equals(#Instance!.getQueue().size() , 0)
+        Assert.Equals(code! , #Instance!.getLastExecutedScript())
+    methodend
+    
+    rem @Test
+    method public void testDebouncedCodeWhenSupressIsEnabledAndWidgetNotReady()
+        code! = "foo"
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        #Instance!.execute(code!)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        Assert.Equals(#Instance!.getQueue().size() , 1)
+        Assert.Equals(#Instance!.getQueue().firstKey() , code!)
+    methodend
+        
+        
+    rem @Test
+    method public void testDebouncedCodeWhenSupressIsDisabledAndWidgetNotReady()
+        firstCode! = "foo"
+        secondCode! = "bar"
+        #Instance!.setSuppressGuiDebouncing(0)
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        #Instance!.execute(firstCode!)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        #Instance!.execute(secondCode!)
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        
+        Assert.Equals(#Instance!.getQueue().size() , 2)
+        Assert.Equals(#Instance!.getQueue().firstKey() , firstCode!)
+        Assert.Equals(#Instance!.getQueue().lastKey(), secondCode!)
+    methodend
+    
+    rem @Test
+    method public void testDebouncedCodeWhenSupressIsDisabledAndWidgetIsReady()
+        firstCode! = "foo"
+        secondCode! = "bar"
+        #getWidget().setIsReady(BBjAPI.TRUE)
+        #Instance!.setSuppressGuiDebouncing(0)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        #Instance!.execute(firstCode!)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 1)
+        #Instance!.execute(secondCode!)
+        Assert.Equals(#Instance!.getIsTimerOn() , 1)
+        
+        Assert.Equals(#Instance!.getQueue().size() , 2)
+        Assert.Equals(#Instance!.getQueue().firstKey() , firstCode!)
+        Assert.Equals(#Instance!.getQueue().lastKey(), secondCode!)
+    methodend    
+        
+    rem @Test
+    method public void testFlush()
+        firstCode! = "foo"
+        secondCode! = "bar"
+        
+        #getWidget().setIsReady(BBjAPI.TRUE)
+        #Instance!.setSuppressGuiDebouncing(0)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 0)
+        #Instance!.execute(firstCode!)        
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 1)
+        #Instance!.execute(secondCode!)
+        
+        Assert.Equals(#Instance!.getIsTimerOn() , 1)
+        Assert.Equals(#Instance!.getQueue().size() , 2)
+        Assert.Equals(#Instance!.getQueue().firstKey() , firstCode!)
+        Assert.Equals(#Instance!.getQueue().lastKey(), secondCode!)
+        
+        #Instance!.flush()
+        
+        Assert.Equals(#Instance!.getQueue().size() , 0)        
+    methodend
+    
+    rem @Test
+    method public void testScriptsCanBePrioritized()
+        firstCode! = "foo"
+        secondCode! = "bar"
+        
+        #Instance!.execute(firstCode!)
+        #Instance!.execute(secondCode! , 1 , 0)
+        
+        Assert.Equals(#Instance!.getQueue().size() , 2)
+        Assert.Equals(#Instance!.getQueue().firstKey() , secondCode!)
+        Assert.Equals(#Instance!.getQueue().lastKey(), firstCode!)        
+    methodend
+    
+	rem @After
+	method public void tearDown()
+	    #Instance! = null()
+	    #Widget! = null()
+	methodend
+
+classend

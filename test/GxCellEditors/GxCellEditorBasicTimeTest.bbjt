@@ -1,0 +1,54 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicTime
+
+class public GxCellEditorBasicTimeTest
+
+    field private GxCellEditorBasicTime Instance!
+
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxCellEditorBasicTime()
+    methodend
+    
+    rem @Test
+    method public void testCanConstructWithMask()
+        mask! = "my mask"
+        obj! = new GxCellEditorBasicTime(mask!); rem this is not valid dateTime mask
+        Assert.Equals(obj!.getMask() , mask!)
+    methodend
+    
+    rem @Test
+    method public void testCalendarIsDisabled()
+        Assert.Equals(#Instance!.getEnableCalendar() = 0 , BBjAPI.TRUE)
+        
+        mask! = "my mask"
+        obj! = new GxCellEditorBasicTime(mask!); rem this is not valid dateTime mask
+        Assert.Equals(obj!.getEnableCalendar() = 0 , BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testTimeIsEnabled()
+        Assert.Equals(#Instance!.getEnableTime() = 1 , BBjAPI.TRUE)
+        
+        mask! = "my mask"
+        obj! = new GxCellEditorBasicTime(mask!); rem this is not valid dateTime mask
+        Assert.Equals(obj!.getEnableTime() = 1 , BBjAPI.TRUE)        
+    methodend
+
+    rem @Test
+    method public void testMaskIsForTime()
+        Assert.Equals(#Instance!.getMask() = "%Hz:%mz:%sz", BBjAPI.TRUE)
+    methodend
+
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

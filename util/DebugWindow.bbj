@@ -1,0 +1,26 @@
+? 'HIDE'
+
+if argc <> 2 then
+    a=msgbox("URL is missing")
+    release
+fi
+url$=argv(1)
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(30,30,800,600,"BBjGridExWidget Debug Window")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+view! = wnd!.addHtmlView(100,0,0,800,600,"") 
+view!.setUrl(url$)
+
+process_events
+
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  view!.setSize(w,h)
+return
+
+byebye:
+bye

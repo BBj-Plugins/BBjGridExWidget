@@ -1,0 +1,151 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
+use com.google.gson.JsonObject
+use com.google.gson.JsonParser
+use java.util.LinkedHashMap
+
+class public FiltersAPITest
+
+    field private BBjGridExWidgetMock Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetMock()
+    methodend
+
+    rem @Test
+    method public void testSetFilterAutoSetColumnAndWidget()
+        model! = new GxClientFilterTextModel()
+        returnedModel! = #Instance!.setFilterModel("foo",model!)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("foo", model!.getColumn())
+        Assert.Equals(returnedModel!, model!)
+    methodend
+        
+    rem @Test
+    method public void testExecuteFilterTransactionCombineApplyAndExecuteCode()
+        stringModel! = new GxClientFilterTextModel("someFilter")
+        numberModel! = new GxClientFilterNumberModel(10,100)
+        
+        transaction! = new LinkedHashMap()
+        transaction!.put("string",stringModel!)
+        transaction!.put("number",numberModel!)
+        
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.executeFilterTransaction(transaction!)
+        
+        lastScript! = #Instance!.getLastExecutedScript()
+        Assert.Equals(lastScript!.contains(stringModel!.apply(0)) , BBjAPI.TRUE)
+        Assert.Equals(lastScript!.contains(stringModel!.execute(0)) , BBjAPI.TRUE)
+        Assert.Equals(lastScript!.contains(numberModel!.apply(0)) , BBjAPI.TRUE)
+        Assert.Equals(lastScript!.contains(numberModel!.execute(0)) , BBjAPI.TRUE)
+    methodend 
+    
+    rem @Test
+    method public void testGetFilterModelParseClientModel()
+        column! = new GxColumn("test","test",java.sql.Types.NUMERIC)
+        
+        #Instance!.addColumn(column!)
+        #Instance!.setIsReady(1)
+        #Instance!.setExecuteResult("{""filterType"": ""number"",""type"": ""equals"",""filter"": 1,""filterTo"": 10}")
+        model! = #Instance!.getFilterModel("test")
+        
+        parser! = new JsonParser()
+        parsedJsonModel!  = parser!.parse(#Instance!.getExecuteResult()).getAsJsonObject()
+        
+        Assert.Equals(model!.getAsJsonObject().equals(parsedJsonModel!), BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testGetFilterCanGuessTheFilterModel()
+        column! = new GxColumn("test")
+        #Instance!.addColumn(column!)
+        
+        model! = #Instance!.getFilterModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterTextModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())
+        
+        column!.setType(java.sql.Types.NUMERIC)
+        model! = #Instance!.getFilterModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterNumberModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())        
+        
+        column!.setType(java.sql.Types.DATE)
+        model! = #Instance!.getFilterModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())          
+        
+        column!.setType(java.sql.Types.BOOLEAN)
+        model! = #Instance!.getFilterModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterBooleanModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())        
+        
+        column!.setFilter(new GxFilterSetFilter())
+        model! = #Instance!.getFilterModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterSetFilterModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())        
+        
+        column!.setFilter(null())
+        Assert.Expect(#Instance!.getFilterModel("test") , 256)                                      
+    methodend
+    
+    rem @Test
+    method public void testGetFilterAsCombinedModel()
+        column! = new GxColumn("test")
+        #Instance!.addColumn(column!)   
+        
+        model! = #Instance!.getFilterAsCombinedModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterTextModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())
+        
+        column!.setType(java.sql.Types.NUMERIC)
+        model! = #Instance!.getFilterAsCombinedModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterNumberModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())        
+        
+        column!.setType(java.sql.Types.DATE)        
+        model! = #Instance!.getFilterAsCombinedModel("test")
+        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
+        Assert.Equals(#Instance! , model!.getWidget())
+        Assert.Equals("test", model!.getColumn())        
+        
+        column!.setType(java.sql.Types.BOOLEAN)        
+        Assert.Expect(#Instance!.getFilterAsCombinedModel("test") , 256)                        
+    methodend
+    
+    rem @Test
+    method public void testClearFiltersExecuteCode()
+        #Instance!.setIsReady(1)
+        #Instance!.clearFilters()
+        Assert.Equals(len(#Instance!.getLastExecutedScript()) > 0 , BBjAPI.TRUE)
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend
+
+

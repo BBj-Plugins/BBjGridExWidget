@@ -1,0 +1,1574 @@
+rem /**
+rem  * The package exports a collection of classes which describe the client models in BBj.
+rem  */
+rem package GxClientModels
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterTextFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterDateTimeFilterOptions
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterNumberFilterOptions
+use com.google.gson.Gson
+use com.google.gson.JsonParser
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.basiscomponents.db.DataRow
+use java.util.ArrayList
+use java.util.Arrays
+use java.util.HashSet
+use java.lang.StringBuilder
+REM /**
+REM  * A client model for rows
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientRowModel
+    rem /**
+    rem  * The row id
+    rem  */
+    field public BBjString Id!
+    rem /**
+    rem  * The row index
+    rem  */
+    field public BBjNumber Index!
+    rem /**
+    rem  * The row child index
+    rem  */
+    field public BBjNumber ChildIndex!
+    rem /**
+    rem  * The row parent key, if any
+    rem  */
+    field public BBjString ParentKey!
+    rem /**
+    rem  * True when the row is selected, false otherwise
+    rem  */
+    field public BBjNumber IsSelected!
+    rem /**
+    rem  * The client row data as JsonObject.
+    rem  */
+    field public JsonObject ClientRow!
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private GxClientRowModel()
+    methodend
+    rem /**
+    rem  * Construct new client row
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instance
+    rem  */
+    method public GxClientRowModel(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget getWidget()
+        methodret #Widget!
+    methodend
+    rem /**
+    rem  * The method will merge the row data coming from the client with
+    rem  * the current DataRow.
+    rem  *
+    rem  * @see BBjGridExWidget.includeClientRowDataInRowModels()
+    rem  */
+    method public DataRow updateFromClientRow()
+        clientRow! = #this!.getClientRow()
+
+        if(clientRow! = null())
+            throw "The client row is not included in this model.To include it in the model configure the grid to include it by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
+        fi
+
+        clientRow! = clientRow!.deepCopy()
+        dataRow! = #this!.asDataRow()
+        clientRow!.remove("__ROW_INDEX")
+        clientRow!.remove("meta")
+        dataRow!.mergeRecord(DataRow.fromJson(clientRow!.toString()),BBjAPI.TRUE)
+        methodret dataRow!
+    methodend
+    rem /**
+    rem  * Convert the client row to a DataRow
+    rem  *
+    rem  * @return DataRow
+    rem  */
+    method public DataRow asDataRow()
+        nodeId! = #getWidget().getRowNodeId()
+        rs! = #getWidget().getRS()
+        rem in case the RowNodeId is a column in the ResultSet
+        if(rs!.getColumnIndex(nodeId!) <> -1 ) then
+            rem indexed by an existing column
+            filteredRS! = rs!.filterBy(nodeId! + "=" +  str(#getId()))
+
+            if(filteredRS!.count() <> 1) then
+                throw "Cannot query the selected row from the ResultSet. [RowNodeId = " + nodeId! + " , Index = " + str(#getIndex()) + "]", 256
+            fi
+
+            methodret filteredRS!.get(0)
+        fi
+
+        methodret rs!.get(#getId())
+    methodend
+    rem /**
+    rem  * Get the row data as JsonObject
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonParser parser!
+
+        parser! = new JsonParser()
+        rowAsJson! = str(#asDataRow().toJson(#getWidget().getRowNodeId()))
+        ar! = parser!.parse(rowAsJson!).getAsJsonArray()
+        obj! = ar!.get(0).getAsJsonObject()
+        methodret obj!
+    methodend
+    rem /**
+    rem  * Alias for <i>getAsJsonObject()</i>
+    rem  *
+    rem  * @see getAsJsonObject()
+    rem  */
+    method public JsonObject getData()
+        methodret #getAsJsonObject()
+    methodend
+    rem /**
+    rem  * Convert row to string
+    rem  *
+    rem  * @return BBjString  The row id
+    rem  */
+    method public BBjString toString()
+        methodret #Id!
+    methodend
+
+classend
+REM /**
+REM  * A model for the client column
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientColumnModel
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field protected BBjGridExWidget Widget!
+    rem /**
+    rem  * The column name
+    rem  */
+    field protected BBjString Name!
+    rem /**
+    rem  * Disable default constructor
+    rem  */
+    method private GxClientColumnModel()
+    methodend
+    rem /**
+    rem  * Construct new GxClientColumnModel
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instance
+    rem  * @param BBjString name! the column's name/id
+    rem  */
+    method public GxClientColumnModel(BBjGridExWidget widget! , BBjString name!)
+        #Name! = name!
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+    method public BBjGridExWidget getWidget()
+        methodret #Widget!
+    methodend
+    rem /**
+    rem  * Get the column index
+    rem  *
+    rem  * Returns the index of the column with the specified name.
+    rem  *
+    rem  * @return BBjNumber column's index
+    rem  */
+    method public BBjNumber getIndex()
+        methodret #getWidget().getRS().getColumnIndex(#getName())
+    methodend
+    rem /**
+    rem  * Get the column type
+    rem  *
+    rem  * Returns the value of the ColumnType property from the ResultSet's metadata.
+    rem  *
+    rem  * @return BBjNumber column's type
+    rem  */
+    method public BBjNumber getType()
+        methodret #getWidget().getRS().getColumnType(#getIndex())
+    methodend
+    rem /**
+    rem  * Get the column type
+    rem  *
+    rem  * Returns the metadata of the column.
+    rem  *
+    rem  * @return BBjNumber column's metadata
+    rem  */
+    method public HashMap getMetaData()
+        methodret #getWidget().getRS().getColumnMetaData(#getName())
+    methodend
+    rem /**
+    rem  * Get the column name
+    rem  *
+    rem  * @return BBjString column's name
+    rem  */
+    method public BBjString getName()
+        methodret #Name!
+    methodend
+    rem /**
+    rem  * Convert column to string
+    rem  *
+    rem  * @return BBjString  The column
+    rem  */
+    method public BBjString toString()
+        methodret #getName()
+    methodend
+
+classend
+REM /**
+REM  * A model for the client cell
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientCellModel
+    rem /**
+    rem  * The cell's row.
+    rem  */
+    field public GxClientRowModel Row!
+    rem /**
+    rem  * The cell's column
+    rem  */
+    field public GxClientColumnModel Column!
+    rem /**
+    rem  * The cell's value
+    rem  */
+    field public BBjString Value!
+
+classend
+REM /**
+REM  * This model is used when range selections are read from the client
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+class public GxClientRangeSelectionModel
+    rem /**
+    rem  * An array of column objects where every object is instance of GxClientColumnModel
+    rem  */
+    field public BBjVector Columns! = new BBjVector()
+    rem /**
+    rem  * An array of rows objects where every object is instance of GxClientRowModel
+    rem  */
+    field public BBjVector Rows! = new BBjVector()
+
+classend
+rem /**
+rem  * The model is used to compose a range selection model in order to be applied on the client.
+rem  *
+rem  * Ranges are normally bounded by a start and end row. However it is also possible to define a range unbounded
+rem  * by rows (ie to contain all rows). For an unbounded range, do not provided start or end row positions.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientAddRangeSelectionModel
+    rem /**
+    rem  * A list of column ids to use. Note that none existing columns will be ignored silently
+    rem  */
+    field public ArrayList Columns! = new ArrayList()
+    rem /**
+    rem  * Start row id or index
+    rem  */
+    field public BBjString Start! = null()
+    rem /**
+    rem  * End row id or index
+    rem  */
+    field public BBjString End! = null()
+    rem /**
+    rem  * Add columns as comma separated string
+    rem  *
+    rem  * @param BBjString columns! columns as comma separated string (ex: CDNUMBER, COST)
+    rem  */
+    method public void setColumns(BBjString columns!)
+        arrayList! = new ArrayList()
+        list! = Arrays.asList(columns!.split(","))
+        it! = list!.iterator()
+        WHILE (it!.hasNext())
+            arrayList!.add(cvs(it!.next(),128))
+        WEND
+
+        #setColumns(arrayList!)
+    methodend
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("columns" , iff(#getColumns().size() <> 0 ,new Gson().toJson(#getColumns()), listIsEmpty!) , err=*next)
+        json!.addProperty("start" , #getStart(), err=*next)
+        json!.addProperty("end" , #getEnd(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The model is used to compose a range chart model in order to be applied on the client.
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientAddRangeChartModel
+    rem /**
+    rem  * Defines the range of cells to be charted. A range is normally defined with start and end rows and a list of columns,
+    rem  * If the start and end rows are omitted, the range covers all rows (ie entire columns are selected).
+    rem  */
+    field public GxClientAddRangeSelectionModel RangeSelection! = null()
+    rem /**
+    rem  * The type of chart to create
+    rem  */
+    field public BBjString Type! = null()
+    rem /**
+    rem  * Normally when a chart is displayed using the grid, the grid will highlight the range the chart is charting
+    rem  * when the chart gets focus, to suppress this behaviour, set the field to false
+    rem  */
+    field public BBjNumber SuppressChartRanges! = null()
+    rem /**
+    rem  * When set to true, series values will be summed for each category before charting.
+    rem  */
+    field public BBjNumber Aggregate! = null()
+    rem /**
+    rem  * Constant value to define groupedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_GROUPEDBAR()
+        methodret "groupedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDBAR()
+        methodret "stackedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedBar chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDBAR()
+        methodret "normalizedBar"
+    methodend
+    rem /**
+    rem  * Constant value to define groupedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_GROUPEDCOLUMN()
+        methodret "groupedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDCOLUMN()
+        methodret "stackedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedColumn chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDCOLUMN()
+        methodret "normalizedColumn"
+    methodend
+    rem /**
+    rem  * Constant value to define line chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_LINE()
+        methodret "line"
+    methodend
+    rem /**
+    rem  * Constant value to define pie chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_PIE()
+        methodret "pie"
+    methodend
+    rem /**
+    rem  * Constant value to define doughnut chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_DOUGHNUT()
+        methodret "doughnut"
+    methodend
+    rem /**
+    rem  * Constant value to define area chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_AREA()
+        methodret "area"
+    methodend
+    rem /**
+    rem  * Constant value to define stackedArea chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_STACKEDAREA()
+        methodret "stackedArea"
+    methodend
+    rem /**
+    rem  * Constant value to define normalizedArea chart
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString TYPE_NORMALIZEDAREA()
+        methodret "normalizedArea"
+    methodend
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.        add("cellRange" , #getRangeSelection().getAsJsonObject() , err=*next)
+        json!.addProperty("chartType" , #getType(), err=*next)
+        json!.addProperty("suppressChartRanges" , #getSuppressChartRanges().booleanValue(), err=*next)
+        json!.addProperty("aggregate" , #getAggregate().booleanValue(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The model is used to represent a keypress on the client
+rem  *
+REM  * @author Hyyan Abo Fakher
+rem  */
+rem  */
+class public GxClientKeypressModel
+    rem /**
+    rem  * A DOMString with the code value of the physical key represented by the event.
+    rem  */
+    field public BBjString Code! = null()
+    rem /**
+    rem  * A Number representing the Unicode reference number of the key.
+    rem  * For keys whose char attribute contains multiple characters, this is the Unicode value of the first character in that attribute.
+    rem  */
+    field public BBjNumber KeyCode! = null()
+    rem /**
+    rem  * A Boolean that is true if the Alt key was active when the key event was generated.
+    rem  */
+    field public BBjNumber IsAltDown! = null()
+    rem /**
+    rem  * A Boolean that is true if the Shift key was active when the key event was generated.
+    rem  */
+    field public BBjNumber IsShiftDown! = null()
+    rem /**
+    rem  * A Boolean that is true if the Ctrl key was active when the key event was generated.
+    rem  */
+    field public BBjNumber IsCtrlDown! = null()
+
+classend
+rem /**
+rem  * The sorting model describes how the columns will be sorted on the client
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientSortModel
+    rem /**
+    rem  * The array which contain column => sorting mapping
+    rem  */
+    field protected JsonObject Model! = new JsonObject()
+    rem /**
+    rem  * Add new column sorting to the model
+    rem  *
+    rem  * @param BBjString column! The column id
+    rem  * @param BBjString direction! the sort direction
+    rem  *
+    rem  * @see BBJGridExWidgetColumns.SORT_DESC()
+    rem  * @see BBJGridExWidgetColumns.SORT_ASC()
+    rem  */
+    method public void add(BBjString column! , BBjString sorting!)
+        #getModel().addProperty(column!,sorting!)
+    methodend
+    rem /**
+    rem  * Get sorting for the given column
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  *
+    rem  * @return BBjString the column's sorting
+    rem  */
+    method public BBjString get(BBjString column!)
+        result! = null()
+
+        if(#getModel().has(column!))
+            result! =  #getModel().get(column!).getAsString()
+        fi
+
+        methodret result!
+    methodend
+    rem /**
+    rem  * Remove a column from the model
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  */
+    method public void remove(BBjString column!)
+        #getModel().remove(column! ,err=*next )
+    methodend
+    rem /**
+    rem  * Convert the model to JSON array
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonArray getAsJsonArray()
+        declare JsonArray json!
+
+        json! = new JsonArray()
+
+        if(#getModel().size() > 0)
+            json!.add(#getModel())
+        fi
+
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The model describes an transaction operation that can be passed to the grid
+rem  * to add / remove & update that data at once.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientTransactionModel
+    rem /**
+    rem  * An array of rows to add
+    rem  */
+    field public HashSet Add! = new HashSet()
+    rem /**
+    rem  * An array of row to remove
+    rem  */
+    field public HashSet Remove! = new HashSet()
+    rem /**
+    rem  * An array of rows to update
+    rem  */
+    field public HashSet Update! = new HashSet()
+    rem /**
+    rem  * Index for rows to add
+    rem  */
+    field public BBjNumber AddIndex! = 0
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field public BBjGridExWidget Widget!
+    rem /**
+    rem  * Construct new transaction model
+    rem  *
+    rem  * @param BBjGridExWidget widget! The widget instance
+    rem  */
+    method public GxClientTransactionModel(BBjGridExWidget widget!)
+        #Widget! = widget!
+    methodend
+    rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param DataRow row! A new data row to add
+    rem  */
+    method public void add(DataRow row!)
+        #getAdd().add(row!)
+    methodend
+    rem /**
+    rem  * Add new row
+    rem  *
+    rem  * @param DataRow row! An already existing row to remove
+    rem  */
+    method public void remove(DataRow row!)
+        #getRemove().add(row!)
+    methodend
+    rem /**
+    rem  * Update a row
+    rem  *
+    rem  * @param DataRow row! An already existing row to update
+    rem  */
+    method public void update(DataRow row!)
+        #getUpdate().add(row!)
+    methodend
+    rem /**
+    rem  * Execute the transaction on the widget model (ResultSet)
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+    method public JsonObject execute()
+        declare JsonObject json!
+        declare JsonArray add!
+        declare JsonArray update!
+        declare JsonArray remove!
+
+        json! = new JsonObject()
+        json!.addProperty("addIndex" , #getAddIndex().longValue(err=*next),err=*next)
+        add! = new JsonArray()
+        addIt! = #getAdd().iterator()
+        while(addIt!.hasNext())
+            row! = addIt!.next()
+            #getWidget().getRS().add(#getAddIndex() , row!)
+            parser! = new JsonParser()
+            add!.add(parser!.parse(row!.toJson(#getWidget().getRowNodeId())).getAsJsonArray().get(0).getAsJsonObject())
+        wend
+
+        json!.add("add" ,add!)
+        update! = new JsonArray()
+        updateIt! = #getUpdate().iterator()
+        while(updateIt!.hasNext())
+            row! = updateIt!.next()
+            rowIndex! = #getWidget().getRS().indexOf(row!)
+            #getWidget().getRS().remove(rowIndex!)
+            #getWidget().getRS().add(rowIndex! , row!)
+            parser! = new JsonParser()
+            update!.add(parser!.parse(row!.toJson(#getWidget().getRowNodeId())).getAsJsonArray().get(0).getAsJsonObject())
+        wend
+
+        json!.add("update" , update!)
+        remove! = new JsonArray()
+        removeIt! = #getRemove().iterator()
+        while(removeIt!.hasNext())
+            row! = removeIt!.next()
+            parser! = new JsonParser()
+            rowIndex! = #getWidget().getRS().indexOf(row!)
+
+            if #getWidget().getRowNodeId() <> "__ROW_INDEX" then
+                value! = #getWidget().getRS().getItem(rowIndex!).getFieldAsString(#getWidget().getRowNodeId())
+            else
+                value! = #getWidget().getRS().getItem(rowIndex!).getRowKey()
+            FI
+
+            #getWidget().getRS().remove(rowIndex!)
+            remove!.add(value!)
+        wend
+
+        json!.add("remove",remove!)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * When saving or restoring state on a filter the filter model is used.
+rem  * The filter model represents the state of the filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+interface public GxClientFilterModel
+    rem /**
+    rem  * Convert the model to JSON object
+    rem  *
+    rem  * @return JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+    rem /**
+    rem  * Check if the filter supported the combined model
+    rem  *
+    rem  * @return BBjNumber true when the filter support combined model , false otherwise
+    rem  */
+
+    method public BBjNumber supportsCombinedModel()
+    rem /**
+    rem  * Set the widget instance
+    rem  *
+    rem  * @param BBjGridExWidget widget!
+    rem  */
+
+    method public void setWidget(BBjGridExWidget widget!)
+    rem /**
+    rem  * Get the widget instance
+    rem  *
+    rem  * @return BBjGridExWidget
+    rem  */
+
+    method public BBjGridExWidget getWidget()
+    rem /**
+    rem  * Set the working column
+    rem  *
+    rem  * @param BBjString column! the column id
+    rem  */
+
+    method public void setColumn(BBjString column!)
+    rem /**
+    rem  * Get the working column
+    rem  *
+    rem  * @return BBjString
+    rem  */
+
+    method public BBjString getColumn()
+    rem /**
+    rem  * Apply the filter
+    rem  *
+    rem  * This method will only compose the model and send it to the client in case `send!` is true.
+    rem  * On the client the new model will be displayed on the filter panel but it will not be applied on the data.
+    rem  * To execute the model on the client you need to call `execute(1)`
+    rem  *
+    rem  * @see GxClientFilterModel.execute()
+    rem  *
+    rem  * @param BBjNumber send! when true the model will be send to the client , false otherwise
+    rem  *
+    rem  * @return BBjString The generated js code used to apply the model
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString apply(BBjNumber send!)
+    rem /**
+    rem  * Apply the filter
+    rem  *
+    rem  * This method only compose the model and send it to the client
+    rem  * On the client the new model will be displayed on the filter panel but it will not be applied on the data.
+    rem  * To execute the model on the client you need to call `execute(1)`
+    rem  *
+    rem  * @see GxClientFilterModel.execute()
+    rem  *
+    rem  * @return BBjString The generated js code used to apply the model
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString apply()
+    rem /**
+    rem  * Tell the grid to refresh rows based on the filter. the filter does not do this automatically in case multiple
+    rem  * filters are going to get set.
+    rem  *
+    rem  * @param BBjNumber send! when true the execution code will executed on the client , false otherwise
+    rem  * @return BBjString The generated js code used to execute the model on the client
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString execute(BBjNumber send!)
+    rem /**
+    rem  * Tell the grid to refresh rows based on the filter. the filter does not do this automatically in case multiple
+    rem  * filters are going to get set.
+    rem  *
+    rem  * @param BBjNumber send! when true the execution code will executed on the client , false otherwise
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString execute()
+    rem /**
+    rem  * Update the filter on the client and execute it.
+    rem  *
+    rem  * @return BBjString the js code used
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjString update()
+    rem /**
+    rem  * Check if the filter is action or not
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @return BBjNumber true when action , false otherwise
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+
+    method public BBjNumber isFilterActive()
+    rem /**
+    rem  * Clear the filter
+    rem  *
+    rem  * @return BBjString the js code used to clear the filter
+    rem  */
+
+    method public void clearFilter()
+
+interfaceend
+rem /**
+rem  * A generic abstract implementation for the GxClientFilterModel interface
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterAbstractModel implements GxClientFilterModel
+    rem /**
+    rem  * BBjGridExWidget instance
+    rem  */
+    field public BBjGridExWidget Widget!
+    rem /**
+    rem  * The working column
+    rem  */
+    field public BBjString Column!
+    rem /**
+    rem  * Disable constructor
+    rem  */
+    method protected GxClientFilterAbstractModel()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString apply(BBjNumber send!)
+        code! = String.format(";%s.setModel(%s);" ,#getFilterInstance(), #getAsJsonObject())
+        if(send!.booleanValue()) #getWidget().getExecutor().execute(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString apply()
+        methodret #apply(1)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString execute(BBjNumber send!)
+        #assertWidget()
+        widget! = #getWidget()
+        code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getGRIDID())
+        if(send!.booleanValue()) widget!.getExecutor().execute(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString execute()
+        methodret #execute(1)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString update()
+        code! = #apply(0) + #execute(0)
+        ? code!
+        #getWidget().getExecutor().execute(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber isFilterActive()
+        #assertWidget()
+        widget! = #getWidget()
+        if(widget!.getIsReady() = BBjAPI.FALSE) methodret 0
+        code! = String.format(";%s.isFilterActive();" , #getFilterInstance())
+        isActive! = widget!.getExecutor().execute(code! , 0)
+        methodret isActive!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+    methodend
+    rem /**
+    rem  * Assert the column exists
+    rem  *
+    rem  * @throws 256 when the column is null
+    rem  */
+    method protected void assertColumn()
+        if (#getColumn() = null()) throw "Cannot execute filter action on null() column" , 256
+    methodend
+    rem /**
+    rem  * Assert the widget exists
+    rem  *
+    rem  * @throws 256 when the widget is null
+    rem  */
+    method protected void assertWidget()
+        if (#getWidget() = null()) throw "The filter model is not attached to a grid instance" , 256
+    methodend
+    rem /**
+    rem  * Return the js code required to obtain an instance of the client filter object
+    rem  *
+    rem  * @return BBjString the js code
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method protected BBjString getFilterInstance()
+        #assertColumn()
+        #assertWidget()
+        code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getGRIDID(), #getColumn())
+        methodret code!
+    methodend
+
+classend
+rem /**
+rem  * A filter a which wraps two filter models and combine them with an `OR` or `AND` operator
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterCombinedModel extends GxClientFilterAbstractModel
+    rem /**
+    rem  * The combine operator
+    rem  *
+    rem  * @see GxClientFilterCombinedModel.OPERATOR_OR()
+    rem  * @see GxClientFilterCombinedModel.OPERATOR_AND()
+    rem  */
+    field public BBjString Operator! = GxClientFilterCombinedModel.OPERATOR_AND()
+    rem /**
+    rem  * The first filter condition
+    rem  */
+    field public GxClientFilterModel FirstCondition! = null()
+    rem /**
+    rem  * The second filter condition
+    rem  */
+    field public GxClientFilterModel SecondCondition! = null()
+    rem /**
+    rem  * Constant value which defines the `OR` operator
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString OPERATOR_OR()
+        methodret "OR"
+    methodend
+    rem /**
+    rem  * Constant value which defines the `AND` operator
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString OPERATOR_AND()
+        methodret "AND"
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterCombinedModel
+    rem  *
+    rem  * @param GxClientFilterModel condition1! the first condition (instance of a filter model)
+    rem  * @param GxClientFilterModel condition2! the second condition (instance of a filter model)
+    rem  * @param BBjString Operator! the combine operator
+    rem  */
+    method public GxClientFilterCombinedModel(GxClientFilterModel condition1! , GxClientFilterModel condition2! , BBjString operator!)
+        #setOperator(operator!)
+        #setFirstCondition(condition1!)
+        #setSecondCondition(condition2!)
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterCombinedModel
+    rem  *
+    rem  * @param GxClientFilterModel condition1! the first condition (instance of a filter model)
+    rem  * @param GxClientFilterModel condition2! the second condition (instance of a filter model)
+    rem  */
+    method public GxClientFilterCombinedModel(GxClientFilterModel condition1! , GxClientFilterModel condition2!)
+        #this!(condition1! , condition2! , #OPERATOR_AND())
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterCombinedModel
+    rem  *
+    rem  * @param GxClientFilterModel condition1! the first condition (instance of a filter model)
+    rem  */
+    method public GxClientFilterCombinedModel(GxClientFilterModel condition1!)
+        #this!(condition1! , null())
+    methodend
+    rem /**
+    rem  * Set the first condition
+    rem  *
+    rem  * @param GxClientFilterModel condition! a filter model
+    rem  *
+    rem  * @throws 256 when the passed condition does not support combined models
+    rem  */
+    method public void setFirstCondition(GxClientFilterModel condition!)
+        condition!.setWidget(#getWidget(),err=*next)
+        condition!.setColumn(#getColumn(),err=*next)
+
+        if(condition! <> null() AND !condition!.supportsCombinedModel())
+            throw "The passed filter model does not support combined models", 256
+        fi
+
+        #FirstCondition! = condition!
+    methodend
+    rem /**
+    rem  * Set the first condition
+    rem  *
+    rem  * @param GxClientFilterModel condition! a filter model
+    rem  *
+    rem  * @throws 256 when the passed condition does not support combined models
+    rem  */
+    method public void setSecondCondition(GxClientFilterModel condition!)
+        condition!.setWidget(#getWidget(),err=*next)
+        condition!.setColumn(#getColumn(),err=*next)
+
+        if(condition! <> null() AND !condition!.supportsCombinedModel())
+            throw "The passed filter model does not support combined models", 256
+        fi
+
+        #SecondCondition! = condition!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #getFirstCondition().clearFilter(err=*next)
+        #getSecondCondition().clearFilter(err=*next)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        rem in case the widget instance is not set yet , we try to set it again
+        if(#getFirstCondition() <> null())
+            #getFirstCondition().setWidget(#getWidget())
+            #getFirstCondition().setColumn(#getColumn(),err=*next)
+        fi
+
+        declare JsonObject json!
+
+        json! = null
+
+        if(#getSecondCondition() <> null())
+            json! = new JsonObject()
+            #getSecondCondition().setWidget(#getWidget())
+            #getSecondCondition().setColumn(#getColumn(),err=*next)
+            json! = new JsonObject()
+            json!.addProperty("operator",#getOperator(), err=*next)
+            json!.add("condition1",#getFirstCondition().getAsJsonObject(), err=*next)
+            json!.add("condition2",#getSecondCondition().getAsJsonObject(), err=*next)
+        else
+            json! = #getFirstCondition().getAsJsonObject()
+        fi
+
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * An abstract filter model which defined the common properties of the provided simple filters
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterSimpleModel extends GxClientFilterAbstractModel
+    rem /**
+    rem  * One of the filter options
+    rem  *
+    rem  * @see GxColumnFilterTextFilterOptions
+    rem  * @see GxColumnFilterDateTimeFilterOptions
+    rem  * @see GxColumnFilterNumberFilterOptions
+    rem  */
+    field public BBjString Type! = null()
+    rem /**
+    rem  * Disable the constructor
+    rem  */
+    method protected GxClientFilterSimpleModel()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setType(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("type",#getType(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the text filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterTextModel extends GxClientFilterSimpleModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjString Filter! = null()
+    rem /**
+    rem  * Construct new GxClientFilterTextModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see GxColumnFilterTextFilterOptions
+    rem  */
+    method public GxClientFilterTextModel(BBjString filter! , BBjString type!)
+        #setFilter(filter!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterTextModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  *
+    rem  * @see GxColumnFilterTextFilterOptions
+    rem  */
+    method public GxClientFilterTextModel(BBjString filter!)
+        #this!(filter!,GxColumnFilterTextFilterOptions.CONTAINS())
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterTextModel
+    rem  */
+    method public GxClientFilterTextModel()
+        #this!(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 1
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+        #setType(GxColumnFilterTextFilterOptions.CONTAINS())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("filterType","text")
+        json!.addProperty("filter",#getFilter(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the number filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterNumberModel extends GxClientFilterSimpleModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjNumber Filter! = null()
+    rem /**
+    rem  * In case you are using range filter , then this is the second input value
+    rem  */
+    field public BBjNumber FilterTo! = null()
+    rem /**
+    rem  * Construct new GxClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  * @param BBjNumber filterTo! In case you are using range filter , then this is the second input value
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see GxColumnFilterNumberFilterOptions
+    rem  */
+    method public GxClientFilterNumberModel(BBjNumber filter! , BBjNumber filterTo! ,BBjString type!)
+        #setFilter(filter!)
+        #setFilterTo(filterTo!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  * @param BBjNumber filterTo! In case you are using range filter , then this is the second input value
+    rem  *
+    rem  * @see GxColumnFilterNumberFilterOptions
+    rem  */
+    method public GxClientFilterNumberModel(BBjNumber filter! , BBjNumber filterTo!)
+        #this!(filter!, filterTo!, GxColumnFilterNumberFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see GxColumnFilterNumberFilterOptions
+    rem  */
+    method public GxClientFilterNumberModel(BBjNumber filter! ,BBjString type!)
+        #this!(filter!,null(),type!)
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterNumberModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  *
+    rem  * @see GxColumnFilterNumberFilterOptions
+    rem  */
+    method public GxClientFilterNumberModel(BBjNumber filter!)
+        #this!(filter!,null(),GxColumnFilterNumberFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterNumberModel
+    rem  */
+    method public GxClientFilterNumberModel()
+        #this!(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 1
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+        #setFilterTo(null())
+        #setType(GxColumnFilterNumberFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("filterType","number")
+        filterCasted! = 0
+        filter! = #getFilter().longValue( err=*next); filterCasted! = 1
+        filterToCasted! = 0
+        filterTo! = #getFilterTo().longValue( err=*next); filterToCasted! = 1
+        json!.addProperty("filter",iff(filterCasted!, filter!, ""), err=*next)
+        json!.addProperty("filterTo",iff(filterToCasted!, filterTo!,""), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the datetime filter.
+rem  * Please not this model will work for date , times and timestamps
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterDateTimeModel extends GxClientFilterSimpleModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjString Filter! = null()
+    rem /**
+    rem  * In case you are using range filter , then this is the second input value
+    rem  */
+    field public BBjString FilterTo! = null()
+    rem /**
+    rem  * Construct new GxClientFilterDateTimeModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  * @param BBjString filterTo! In case you are using range filter , then this is the second input value
+    rem  * @param BBJString type! the filter type
+    rem  *
+    rem  * @see GxColumnFilterDateTimeFilterOptions
+    rem  */
+    method public GxClientFilterDateTimeModel(BBjString filter! , BBjString filterTo! ,BBjString type!)
+        #setFilter(filter!)
+        #setFilterTo(filterTo!)
+        #setType(type!)
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterDateTimeModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  * @param BBjString filterTo! In case you are using range filter , then this is the second input value
+    rem  *
+    rem  * @see GxColumnFilterDateTimeFilterOptions
+    rem  */
+    method public GxClientFilterDateTimeModel(BBjString filter! , BBjString filterTo!)
+        #this!(filter!, filterTo!, GxColumnFilterDateTimeFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterDateTimeModel
+    rem  *
+    rem  * @param BBjString filter! the value to use as filter
+    rem  *
+    rem  * @see GxColumnFilterDateTimeFilterOptions
+    rem  */
+    method public GxClientFilterDateTimeModel(BBjString filter!)
+        #this!(filter!,null())
+    methodend
+    rem /**
+    rem  * Construct new GxClientFilterDateTimeModel
+    rem  */
+    method public GxClientFilterDateTimeModel()
+        #this!(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 1
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+        #setFilterTo(null())
+        #setType(GxColumnFilterDateTimeFilterOptions.EQUALS())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("filterType","datetime")
+        json!.addProperty("filter",#getFilter(), err=*next)
+        json!.addProperty("filterTo",#getFilterTo(), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the state of the boolean filter
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterBooleanModel extends GxClientFilterAbstractModel
+    rem /**
+    rem  * The value associated with the filter.
+    rem  */
+    field public BBjNumber Filter! = null()
+    rem /**
+    rem  * Construct new GxClientFilterBooleanModel
+    rem  *
+    rem  * @param BBjNumber filter! the value to use as filter
+    rem  */
+    method public GxClientFilterBooleanModel(BBjNumber filter!)
+        #setFilter(filter!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setFilter(null())
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("filterType","boolean")
+        json!.addProperty("value",String.valueOf(#getFilter().booleanValue()), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * The filter model represents the enhanced filter type "setfilter"
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
+    rem /**
+    rem  * The values to display in the filter. If this is not set, then the filter will takes its
+    rem  * values from what is loaded in the table.
+    rem  * Setting it allows you to set values where  the value may not be present in the list
+    rem  * for example, if you want to show all states in America so that the user is not
+    rem  * confused by missing states, even though states are missing from the data set in the grid
+    rem  */
+    field public JsonArray Values! = new JsonArray()
+    rem /**
+    rem  * Construct new GxClientFilterSetFilterModel
+    rem  *
+    rem  * @param JsonArray values! The values to display in the filter
+    rem  */
+    method public GxClientFilterSetFilterModel(JsonArray values!)
+        #setValues(values!)
+    methodend
+    rem /**
+    rem  * Sets the filter at the top of the filter (the 'quick search' in the popup)
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString miniFilter
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void setMiniFilter(BBjString miniFilter!)
+        code! = String.format(";%s.setMiniFilter('%s');", #getFilterInstance(), miniFilter!)
+        #getWidget().getExecutor().execute(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Sets the filter at the top of the filter (the 'quick search' in the popup)
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber miniFilter
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void setMiniFilter(BBjNumber miniFilter!)
+        #setMiniFilter(str(miniFilter!))
+    methodend
+    rem /**
+    rem  * Get the minifilter value.
+    rem  *
+    rem  * Note that if the grid is not ready , then this method will always return an empty string
+    rem  * even if you have called `setMiniFilter` before.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @return BBjString
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public BBjString getMiniFilter()
+        #assertWidget()
+        widget! = #getWidget()
+        if(widget!.getIsReady() = BBjAPI.FALSE) methodret ""
+        code! = String.format(";%s.getMiniFilter();" , #getFilterInstance())
+        value! = #getWidget().getExecutor().execute(code!)
+        methodret iff(value! <> null() , value! , "")
+    methodend
+    rem /**
+    rem  * Select all values generated by the UI
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectEverything()
+        code! = String.format(";%s.selectEverything();" , #getFilterInstance())
+        #getWidget().getExecutor().execute(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Clears the selection
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectNothing()
+        code! = String.format(";%s.selectNothing();", #getFilterInstance())
+        #getWidget().getExecutor().execute(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Change on the fly the available options
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param JsonArray values! array of values
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void setFilterValues(JsonArray values!)
+        code! = String.format(";%s.setFilterValues(%s);", #getFilterInstance() ,values!.toString())
+        #getWidget().getExecutor().execute(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Selects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString value! the value to select
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectValue(BBjString value!)
+        code! = String.format(";%s.selectValue('%s');" , #getFilterInstance(), value!)
+        #getWidget().getExecutor().execute(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Selects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber value! the value to select
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void selectValue(BBjNumber value!)
+        #selectValue(str(value!))
+    methodend
+    rem /**
+    rem  * Unselects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString value! the value to unselect
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void unselectValue(BBjString value!)
+        code! = String.format("%s.unselectValue('%s');", #getFilterInstance(), value!)
+        #getWidget().getExecutor().execute(code! + #execute(0))
+    methodend
+    rem /**
+    rem  * Unselects a value
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber value! the value to unselect
+    rem  *
+    rem  * @throws 256 when the column or the widget are not defined
+    rem  */
+    method public void unselectValue(BBjNumber value!)
+        #unselectValue(str(value!))
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjNumber supportsCombinedModel()
+        methodret 0
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void clearFilter()
+        #super!.clearFilter()
+        #setValues(new JsonArray())
+        #selectEverything()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public BBjString execute(BBjNumber send!)
+        code! = #super!.execute(0)
+        widget! = #getWidget()
+        code! = String.format(";try{%s.applyModel()}catch(e){};", #getFilterInstance()) + code!
+        if(send!.booleanValue()) #getWidget().getExecutor().execute(code!)
+        methodret code!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("filterType","set")
+        json!.add("values",#getValues(), err=*next)
+        methodret json!
+    methodend
+
+classend

@@ -1,0 +1,29 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use java.io.File
+use ::BBjToJavadoc/BBjToJavadoc.bbj::BBjToJavadoc
+
+root! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget")
+folder! = new File(root!)
+list! = folder!.list()
+length! = list!.length - 1
+files! = new BBjVector()
+FOR i = 0 TO length!
+    current! = new File(root! + "/" + list![i])
+
+    if(!current!.isDirectory() AND current!.getName().endsWith(".bbj")) then
+        files!.add(current!.getCanonicalPath())
+    FI
+NEXT i
+
+dest! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/docs/javadoc/")
+new BBjToJavadoc(files!, dest!, 0, 1, "")
+release 0 

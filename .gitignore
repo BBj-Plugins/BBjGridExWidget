@@ -5,3 +5,5 @@
 /.metadata/
 /client/node_modules/
 *.log
+Playground.*
+/demo/assets/data.json

@@ -1,0 +1,14 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/BBjGridExWidget/FiltersAPITest.bbjt::FiltersAPITest
+use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetTest.bbjt::BBjGridExWidgetTest
+
+rem @SuiteClasses("BBjGridExWidgetTest","FiltersAPITest")
+class public GxSuite
+classend

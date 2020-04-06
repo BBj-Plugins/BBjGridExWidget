@@ -1,0 +1,51 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxExecutor.bbj::GxExecutor
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxExecutorMock extends GxExecutor
+    rem /**
+    rem  * The last expected script
+    rem  */
+    field public BBjString LastExecutedScript! = ""
+    rem /**
+    rem  * The last expected result of the last executed script
+    rem  */
+    field public Object ExecuteResult! = null()
+    rem /**
+    rem  * A flag which defines whether the executor started
+    rem  * a timer for enqueuing the scripts or not
+    rem  */
+    field public BBjNumber IsTimerOn! = 0
+    rem /**
+    rem  * @override
+    rem  */
+    method protected Object executeInHTMLView(BBjString script!,BBjNumber isDebounced!)
+        if #getWidget().getIsReady() then
+            #LastExecutedScript! = script!
+
+            if(#ExecuteResult!<> null())
+                methodret #ExecuteResult!
+            fi
+        FI
+
+        methodret null()
+    methodend
+
+    method protected GxExecutor startTimer()
+        #IsTimerOn! = 1
+        methodret #this!
+    methodend
+
+    method protected GxExecutor endTimer()
+        #IsTimerOn! = 0
+        methodret #this!
+    methodend
+
+classend

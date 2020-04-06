@@ -1,0 +1,347 @@
+rem package BBjGridExWidget
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use org.apache.commons.collections4.map.ListOrderedMap
+rem /**
+rem  * The GxExecutor is responsible of Javascript code execution in the HTMLView.
+rem  * It will also  tries to debounce the scripts which are enqueued for execution and send
+rem  * them in patches at specific rate.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxExecutor
+    rem /**
+    rem  * The number of milliseconds before the executor
+    rem  * tries to flush the enqueued scripts on the client
+    rem  */
+    field Public BBjNumber Rate! = 200
+    rem /**
+    rem  * The widget instance
+    rem  */
+    field public BBjGridExWidget Widget!
+    rem /**
+    rem  * A map of scripts which must be executed
+    rem  */
+    field public ListOrderedMap Queue! = new ListOrderedMap()
+    rem /**
+    rem  * When true then the executor will limit the rate at
+    rem  * which executeScript gets invoked on the HTMLView.
+    rem  *
+    rem  * Setting this to "0" will help to boost up the communication
+    rem  * performance between BBj and the grid which lives inside
+    rem  * the HTMLView in BUI context
+    rem  *
+    rem  * By default this options is set to "0"
+    rem  */
+    field public BBjNumber SuppressBuiDebouncing! = 0
+    rem /**
+    rem  * When true then the executor will limit the rate at
+    rem  * which executeScript gets invoked on the HTMLView.
+    rem  *
+    rem  * Setting this to "0" will help to boost up the communication
+    rem  * performance between BBj and the grid which lives inside
+    rem  * the HTMLView in GUI context
+    rem  *
+    rem  * By default this options is set to "1"
+    rem  */
+    field public BBjNumber SuppressGuiDebouncing! = 1
+    rem /**
+    rem  * A flag which indicates whether the executor entered
+    rem  * the flushing mode or not.
+    rem  */
+    field protected BBjNumber IsFlushing! = BBjAPI.FALSE
+    rem /**
+    rem  * Construct new GxExecutor object
+    rem  *
+    rem  * @param BBjGridExWidget widget! the widget instance
+    rem  * @param BBjNumber rate! The number of milliseconds before the GxExecutor
+    rem  *                        tries to flush the called scripts on the client
+    rem  */
+    method public GxExecutor(BBjGridExWidget widget!, BBjNumber rate!)
+        #setWidget(widget!)
+        #setRate(rate!)
+    methodend
+    rem /**
+    rem  * Execute a Javascript code on the client
+    rem  *
+    rem  * @param BBjString key!      the script unique id
+    rem  * @param BBjString script!   The Javascript code
+    rem  * @param BBjNumber debounced! When true , then the script should be debounced , sent directly to the HTMLView otherwise
+    rem  * @param BBjNumber priority!  The script priority
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method public Object execute(BBjString key! , BBjString script! , BBjNumber debounced! , BBjNumber priority!)
+        declare auto BBjGridExWidget widget!
+
+        widget! = #getWidget()
+        isWidgetReady! = widget!.getIsReady()
+        rem /**
+        rem  * If the script should not be debounced , then this means that the execution might
+        rem  * return a value. in this case we check if the grid is ready
+        rem  * and if it is ready we execute the script directly on the HTMLView and
+        rem  * return the result , otherwise we just continue to the next step
+        rem  *
+        rem  * An example of calls which not be debounced would be something like:
+        rem  *  grid!.getSelectedRow() -> we expect a value
+        rem  *  grid!.clearData()      -> should be executed without delay
+        rem  *                            because other calls might depend on it.
+        rem  */
+        if(!debounced!.booleanValue())
+            if(isWidgetReady!)
+                methodret #executeInHTMLView(script!,0)
+            fi
+        fi
+        rem /**
+        rem  * This point is reached in two scenarios:
+        rem  *
+        rem  *  1. The script SHOULD be debounced
+        rem  *  2. The script SHOULD NOT be debounced but the grid is not ready yet
+        rem  *     so debouncing is enforced anyway
+        rem  *
+        rem  * We check if debouncing is enabled for the current platform (BUI , GUI) then
+        rem  *
+        rem  * in case it is ENABLED  :
+        rem  *    1. If the grid is READY we execute the script directly
+        rem  *    2. If the grid is NOT READY we add the script to the queue for later execution
+        rem  *
+        rem  * In case it is NOT ENABLED :
+        rem  *    1. add the script to the queue for later execution
+        rem  *    2. Iin case the grid is ready start a count down before executing the code
+        rem  *       in the HTMLView. the countdown will be restated if the developer tries
+        rem  *       to execute anything new before the counted down reaches 0.
+        rem  *
+        rem  */
+        shouldSuppress! = iff(#isBui() = 1 , #getSuppressBuiDebouncing() , #getSuppressGuiDebouncing())
+
+        if shouldSuppress!
+            if isWidgetReady!
+                #executeInHTMLView(script!,1)
+            else
+                #enqueue(key!,script!,priority!)
+            fi
+        else
+            #enqueue(key!,script!,priority!)
+
+            if isWidgetReady!
+                #endTimer().startTimer()
+            fi
+        fi
+
+        methodret null()
+    methodend
+    rem /**
+    rem  * Execute a Javascript code on the client and use the script itself as a key
+    rem  *
+    rem  * @param BBjString script!   The Javascript code
+    rem  * @param BBjNumber debounced! When true , then the script should be debounced , sent directly to the HTMLView otherwise
+    rem  * @param BBjNumber priority!  The script priority
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method public Object execute(BBjString script! , BBjNumber debounced! , BBjNumber priority!)
+        methodret #execute(script!,script!, debounced!,priority!)
+    methodend
+    rem /**
+    rem  * Execute a Javascript code on the client with an auto calculated priority
+    rem  *
+    rem  * @param BBjString script!   The Javascript code
+    rem  * @param BBjNumber debounced! When true , then the script should be debounced , sent directly to the HTMLView otherwise
+    rem  * @param BBjNumber priority!  The script priority
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method public Object execute(BBjString key! ,BBjString script! , BBjNumber debounced!)
+        methodret #execute(key!,script!, debounced! , null())
+    methodend
+    rem /**
+    rem  * Execute a Javascript code on the client , use the script itself as a key and auto calculate priority
+    rem  *
+    rem  * @param BBjString script!   The Javascript code
+    rem  * @param BBjNumber debounced! When true , then the script should be debounced , sent directly to the HTMLView otherwise
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method public Object execute(BBjString script! , BBjNumber debounced!)
+        methodret #execute(script!,script!, debounced!)
+    methodend
+    rem /**
+    rem  * Execute and debounce a Javascript code on the client and auto calculate priority
+    rem  *
+    rem  * @param BBjString key!      the script unique id
+    rem  * @param BBjString script!   The Javascript code
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method public Object execute(BBjString key! , BBjString script!)
+        methodret #execute(key!,script!, 1)
+    methodend
+    rem /**
+    rem  * Execute and debounce a Javascript code on the client , use the script itself as a key and auto calculate priority
+    rem  *
+    rem  * @param BBjString key!      the script unique id
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method public Object execute(BBjString script!)
+        methodret #execute(script!,script!)
+    methodend
+    rem /**
+    rem  * Iterate over the enqueued scripts and execute them on the HTML View.
+    rem  *
+    rem  * The gird should call this method once when it is ready to kick in the execution process.
+    rem  * Normally this done after the `ON_PAGE_LOADED` event is fired.
+    rem  *
+    rem  * The executor then will keep flushing itself whenever it is needed.
+    rem  *
+    rem  * @return GxExecutor the executor instance
+    rem  */
+    method public GxExecutor flush()
+        declare auto BBjGridExWidget widget!
+        declare auto ListOrderedMap queue!
+
+        queue! = #getQueue()
+        widget! = #getWidget()
+        isDebugging! = widget!.getDebug()
+        platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
+        id! = widget!.getGRIDID()
+
+        if(queue!.size() > 0)
+            if(isDebugging!)
+                System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s)" , platform! , id!))
+            fi
+
+            bundle! = iff(isDebugging! AND #isBui() , "console.group('BBjGridExWidget::GxExecutor.flush : (" + id! +  ")');console.time('patch time');" , "")
+            #setIsFlushing(1)
+            it! = queue!.entrySet().iterator()
+            while it!.hasNext()
+                next! = it!.next()
+                script! = cast(String, next!.getValue())
+
+                if(isDebugging!)
+                    System.out.println(String.format("%s    Script : %s" ,platform! ,script!))
+
+                    if(#isBui()) then
+                        script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getGRIDID() , script!)  + "`);"  + script!
+                    fi
+                fi
+
+                if !script!.matches(";$") then script! = script! + ";"
+                bundle! = bundle! + script!
+                it!.remove()
+            wend
+
+            if(isDebugging! AND #isBui()) bundle! = bundle! + "console.timeEnd('patch time');console.groupEnd();"
+            #executeInHTMLView(bundle!,1)
+            #setIsFlushing(0)
+        fi
+
+        methodret #this!
+    methodend
+    rem /**
+    rem  * A BBjTimerEvent listener which will be invoked when the
+    rem  * executor count down reaches 0 to flush the enqueued scripts
+    rem  *
+    rem  * @param BBjTimerEvent event!
+    rem  */
+    method public void onFlush(BBjTimerEvent event!)
+        #endTimer().flush()
+    methodend
+    rem /**
+    rem  * @return BBjNumber True when the platform is BUI , false if GUI
+    rem  */
+    method protected boolean isBui()
+        methodret iff(info(3,6) <> "5" , 0 , 1)
+    methodend
+    rem /**
+    rem  * Enqueue a script for later execution
+    rem  *
+    rem  * @param BBjString key!      the script unique id
+    rem  * @param BBjString script!   The Javascript code
+    rem  * @param BBjNumber priority!  The script priority
+    rem  *
+    rem  * @return GxExecutor the executor instance
+    rem  */
+    method protected GxExecutor enqueue(BBjString key! , BBjString script!, BBjNumber priority!)
+        declare auto ListOrderedMap queue!
+
+        queue! = #getQueue()
+        isPrioritized! = priority! <> null() AND priority! > -1
+
+        if(queue!.containsKey(key!))
+            queue!.remove(key!)
+        fi
+
+        if isPrioritized!
+            queue!.put(priority!,key!,script!)
+        else
+            queue!.put(key!,script!)
+        fi
+
+        methodret #this!
+    methodend
+    rem /**
+    rem  * Execute a script directly without enqueuing on the HTML View
+    rem  *
+    rem  * @param BBjString script!      The Javascript code
+    rem  * @param BBjString isDebounced! True A flag which defines if the script is coming from the queue or not
+    rem  *
+    rem  * @return Object the result of the Javascript code execution , if any
+    rem  */
+    method protected Object executeInHTMLView(BBjString script!,BBjNumber isDebounced!)
+        declare auto BBjGridExWidget widget!
+
+        widget! = #getWidget()
+        isDebugging! = widget!.getDebug()
+        shouldSuppress! = iff(#isBui() = 1 , #getSuppressBuiDebouncing() , #getSuppressGuiDebouncing())
+
+        if(isDebugging! AND (isDebounced! = 0 OR shouldSuppress!))
+            id! = widget!.getGRIDID()
+            platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
+
+            if shouldSuppress!
+                System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s) -> Script : %s" , platform! , id! , script!))
+            else
+                System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s)" , platform! , id!))
+                System.out.println("(GUI)    Script : " + script!)
+            fi
+
+            if(#isBui()) then
+                scriptPreview! = iff(script!.contains("`") , "Flushing Batch" , script!)
+                script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + scriptPreview! + "`);console.groupEnd();" + script!
+            fi
+        fi
+
+        methodret widget!.getHTMLView().executeScript(script!)
+    methodend
+    rem /**
+    rem  * Start count down timer
+    rem  *
+    rem  * When the timer reaches 0 then the queue will be flushed
+    rem  *
+    rem  * @return GxExecutor the executor instance
+    rem  */
+    method protected GxExecutor startTimer()
+        id! = str(#this!) + "onFlush"
+        BBjAPI().createTimer(id!, (#getRate() / 1000), #this!, "onFlush")
+        methodret #this!
+    methodend
+    rem /**
+    rem  * Stop last created timer if any , preventing the executor from
+    rem  * reaching the point where it needs to flush its content
+    rem  *
+    rem  * @return GxExecutor the executor instance
+    rem  */
+    method protected GxExecutor endTimer()
+        id! = str(#this!) + "onFlush"
+        BBjAPI().removeTimer(id! , err=*next)
+        methodret #this!
+    methodend
+
+classend

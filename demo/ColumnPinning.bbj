@@ -1,0 +1,62 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Columns Pinning Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * You can pin columns by setting the pinned attribute on the column definition to either 'left' or 'right'.
+rem  * Below shows an example with two pinned columns on the left and one pinned columns on the right. 
+rem  * The example also demonstrates changing the pinning via the API at runtime.
+rem  * The grid will reorder the columns so that 'left pinned' columns come first and 'right pinned' columns come last. In the example below the state of pinned columns impacts the order of the columns.
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+  REM init the grid
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.setData(rs!)
+
+  grid!.getColumn("CDNUMBER").setPinned(GxColumn.PINNED_LEFT())
+  grid!.getColumn("COST").setPinned(GxColumn.PINNED_RIGHT())
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

@@ -1,0 +1,26 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorTextTest.bbjt::GxCellEditorTextTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorPopupTextTest.bbjt::GxCellEditorPopupTextTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorLargeTextTest.bbjt::GxCellEditorLargeTextTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicBooleanTest.bbjt::GxCellEditorBasicBooleanTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicNumberTest.bbjt::GxCellEditorBasicNumberTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicTextTest.bbjt::GxCellEditorBasicTextTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicDateTimeTest.bbjt::GxCellEditorBasicDateTimeTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicDateTest.bbjt::GxCellEditorBasicDateTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicTimeTest.bbjt::GxCellEditorBasicTimeTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorSelectTest.bbjt::GxCellEditorSelectTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorPopupSelectTest.bbjt::GxCellEditorPopupSelectTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorRichSelectTest.bbjt::GxCellEditorRichSelectTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicBooleanSelectTest.bbjt::GxCellEditorBasicBooleanSelectTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicBooleanRichSelectTest.bbjt::GxCellEditorBasicBooleanRichSelectTest
+
+rem @SuiteClasses("GxCellEditorTextTest","GxCellEditorPopupTextTest","GxCellEditorLargeTextTest","GxCellEditorBasicBooleanTest","GxCellEditorBasicNumberTest","GxCellEditorBasicTextTest","GxCellEditorBasicDateTimeTest","GxCellEditorBasicDateTest","GxCellEditorBasicTimeTest","GxCellEditorSelectTest","GxCellEditorPopupSelectTest","GxCellEditorRichSelectTest","GxCellEditorBasicBooleanSelectTest","GxCellEditorBasicBooleanRichSelectTest")
+class public GxGxCellEditorsSuite
+classend

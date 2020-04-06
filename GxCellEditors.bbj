@@ -1,0 +1,764 @@
+rem /**
+rem  *  The package contains the classes of all supported CellEditor components
+rem  */
+rem package GxCellEditors
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxOptions.bbj::GxOptionsBoolean
+use ::BBjGridExWidget/GxOptions.bbj::GxOptionsDateTime
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererInterface
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonPrimitive
+use com.google.gson.Gson
+use java.util.HashSet
+rem /**
+rem  * Column Filter Public Interface
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+interface public GxCellEditorInterface
+    rem /**
+    rem  * A constant which holds the client cell editor real name
+    rem  */
+
+    method public static BBjString getCellEditorName()
+    rem /**
+    rem  * Convert the filter definition to Json Object
+    rem  *
+    rem  * @return JsonObject The filter as JsonObject
+    rem  */
+
+    method public JsonObject getAsJsonObject()
+    rem /**
+    rem  * Compare two filters
+    rem  *
+    rem  * @param cellEditor! - Another cell editor instance to compare with
+    rem  *
+    rem  * @return bool - true when they are equal , false otherwise
+    rem  */
+
+    method public boolean equals(GxCellEditorInterface cellEditor!)
+
+interfaceend
+rem /**
+rem  * Compare two cell editor components
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorComparator
+    rem /**
+    rem  * Compare two cell editors
+    rem  *
+    rem  * @param one! - First cell editor instance
+    rem  * @param two! - Second cell editor instance
+    rem  *
+    rem  * @return boolean true when they are equal , false otherwise
+    rem  */
+    method public static boolean compare(GxCellEditorInterface one! , GxCellEditorInterface two!)
+        if(one!.getCellEditorName() <> two!.getCellEditorName())
+            methodret BBjAPI.FALSE
+        FI
+
+        methodret one!.getAsJsonObject().equals(two!.getAsJsonObject())
+    methodend
+
+classend
+rem /**
+rem  * Abstract implementation for GxCellEditorInterface
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorAbstract implements GxCellEditorInterface
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(GxCellEditorInterface cellEditor!)
+        methodret GxCellEditorComparator.compare(#this!, cellEditor!)
+    methodend
+
+classend
+rem /**
+rem  * Simple text editors that use the standard HTML 'input' tag
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorText extends GxCellEditorAbstract
+    rem /**
+    rem  * If set to true then the grid will use the provided cell formatter if one is provided.
+    rem  */
+    field public BBjNumber UserFormatter! = 0
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "agTextCellEditor"
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("useFormatter",#getUserFormatter().booleanValue() , err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * Same as GxCellEditorText but as popup.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorPopupText extends GxCellEditorText
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "agPopupTextCellEditor"
+    methodend
+
+classend
+rem /**
+rem  * Simple editor that uses the standard HTML 'textarea' tag.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorLargeText extends GxCellEditorText
+    rem /**
+    rem  * Max number of characters to allow. Default is 200.
+    rem  */
+    field public BBjNumber MaxLength! = 200
+    rem /**
+    rem  * Number of character rows to display. Default is 10.
+    rem  */
+    field public BBjNumber Rows! = 10
+    rem /**
+    rem  * Number of character columns to display. Default is 60.
+    rem  */
+    field public BBjNumber Cols! = 60
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "agLargeTextCellEditor"
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("maxLength",#getMaxLength().longValue() , err=*next)
+        json!.addProperty("rows",#getRows().longValue() , err=*next)
+        json!.addProperty("cols",#getCols().longValue() , err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * Simple editors that use the standard HTML select tag.
+rem  *
+rem  * The standard HTML select to behave oddly in the grid. This is because the browser doesn't have a great API for
+rem  * opening and closing the selected popup.
+rem  *
+rem  * We advise that you don't use it unless you have to - that is we advise against GxCellEditorSelect
+rem  * as they give poor user experience, especially if using keyboard navigation.
+rem  *
+rem  * If using Enhanced grid , you should use the provided GxCellEditorRichSelect.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorSelect extends GxCellEditorAbstract
+    rem /**
+    rem  * An array of values to allow the user to select from
+    rem  */
+    field public JsonArray Values! = new JsonArray()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "agSelectCellEditor"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.add("values", iff(#getValues().size() > 0 , #getValues() , empty!), err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * Simple editors that use the standard HTML select tag.
+rem  *
+rem  * It is same as GxCellEditorSelect but as popup.
+rem  *
+rem  * The standard HTML select to behave oddly in the grid. This is because the browser doesn't have a great API for
+rem  * opening and closing the selected popup.
+rem  *
+rem  * We advise that you don't use it unless you have to - that is we advise against GxCellEditorPopupSelect
+rem  * as they give poor user experience, especially if using keyboard navigation.
+rem  *
+rem  * If using Enhanced grid, you should use the provided GxCellEditorRichSelect.
+rem  *
+rem  * <br><b><small>#Enterprise</small></b>
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorPopupSelect extends GxCellEditorSelect
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "agPopupSelectCellEditor"
+    methodend
+
+classend
+rem /**
+rem  * Available in Enhanced Grid only. An alternative to using the browser's select popup for dropdown inside the grid.
+rem  *
+rem  * <br><b><small>#Enterprise</small></b>
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorRichSelect extends GxCellEditorSelect
+    rem /**
+    rem  * Provide a cell renderer for each value
+    rem  */
+    field public GxRendererInterface CellRenderer! = null()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "agRichSelectCellEditor"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        renderer! = #getCellRenderer()
+
+        if(renderer! <> null()) then
+            json!.addProperty("cellRenderer" , renderer!.getCellRendererName(),err=*next)
+            json!.        add("cellRendererParams" , renderer!.getAsJsonObject(),err=*next)
+        FI
+
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * Simple switch button to switch boolean values
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicBoolean extends GxOptionsBoolean implements GxCellEditorInterface
+    rem /**
+    rem  * The value to use when when the component needs to return a true value.
+    rem  * in case it is null() then we use the first item in PossibleTrueValues!
+    rem  */
+    field public BBjString UsedTrueValue! = null()
+    rem /**
+    rem  * The value to use when when the component needs to return a false value.
+    rem  * in case it is null() then we use the first item in PossibleFalseValues!
+    rem  */
+    field public BBjString UsedFalseValue! = null()
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "BooleanEditor"
+    methodend
+    rem /**
+    rem  *  {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = #super!.getAsJsonObject()
+        json!.addProperty("booleanUsedTrueValue",#getUsedTrueValue(), err=*next)
+        json!.addProperty("booleanUsedFalseValue",#getUsedFalseValue(), err=*next)
+        methodret json!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(GxCellEditorInterface cellEditor!)
+        methodret GxCellEditorComparator.compare(#this!, cellEditor!)
+    methodend
+
+classend
+rem /**
+rem  * A simple boolean editor based on the GxCellEditorSelect.
+rem  *
+rem  * The editor provides a select box where the user can selected one of the three values (true , false , none)
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicBooleanSelect extends GxCellEditorSelect
+    rem /**
+    rem  * The value to use when when the component needs to return a true value.
+    rem  */
+    field public BBjString UsedTrueValue! = "true"
+    rem /**
+    rem  * The value to use when when the component needs to return a false value.
+    rem  */
+    field public BBjString UsedFalseValue! = "false"
+    rem /**
+    rem  * The value to use when when the component needs to return a none/empty/null value.
+    rem  * in case it is null() , then the none option will be hidden from the rendered list
+    rem  */
+    field public BBjString UsedNoneValue! = ""
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  *
+    rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
+    rem  * @param BBjString falseValue! The value to use when when the component needs to return a false value.
+    rem  * @param BBjString noneValue! The value to use when when the component needs to return a none/empty/null value.
+    rem  *                             in case it is null() , then the none option will be hidden from the rendered list
+    rem  */
+    method public GxCellEditorBasicBooleanSelect(BBjString trueValue!,BBjString falseValue!,BBjString noneValue!)
+        #super!()
+        #setUsedTrueValue(trueValue!)
+        #setUsedFalseValue(falseValue!)
+        #setUsedNoneValue(noneValue!)
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  *
+    rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
+    rem  * @param BBjString falseValue! The value to use when when the component needs to return a false value.
+    rem  */
+    method public GxCellEditorBasicBooleanSelect(BBjString trueValue!,BBjString falseValue!)
+        #this!(trueValue!,falseValue!,"")
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  *
+    rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
+    rem  */
+    method public GxCellEditorBasicBooleanSelect(BBjString trueValue!)
+        #this!(trueValue!,"false")
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  */
+    method public GxCellEditorBasicBooleanSelect()
+        #this!("true")
+    methodend
+    rem /**
+    rem  * Set The value to use when when the component needs to return a true value.
+    rem  *
+    rem  * @param BBjString trueValue!
+    rem  */
+    method public void setUsedTrueValue(BBjString trueValue!)
+        #getValues().remove(new JsonPrimitive(#UsedTrueValue!))
+
+        if(trueValue! <> null())
+            #getValues().add(trueValue!)
+        fi
+
+        #UsedTrueValue! = trueValue!
+    methodend
+    rem /**
+    rem  * Set The value to use when when the component needs to return a true value.
+    rem  *
+    rem  * @param BBjString trueValue!
+    rem  */
+    method public void setUsedFalseValue(BBjString falseValue!)
+        #getValues().remove(new JsonPrimitive(#UsedFalseValue!))
+
+        if(falseValue! <> null())
+            #getValues().add(falseValue!)
+        fi
+
+        #UsedFalseValue! = falseValue!
+    methodend
+    rem /**
+    rem  * Set The value to use when when the component needs to return a none/empty/null value.
+    rem  * in case it is null() , then the none option will be hidden from the rendered list
+    rem  *
+    rem  * @param BBjString trueValue!
+    rem  */
+    method public void setUsedNoneValue(BBjString noneValue!)
+        #getValues().remove(new JsonPrimitive(#UsedNoneValue!))
+
+        if(noneValue! <> null())
+            #getValues().add(noneValue!)
+        fi
+
+        #UsedNoneValue! = noneValue!
+    methodend
+
+classend
+rem /**
+rem  * A simple boolean editor based on the GxCellEditorRichSelect.
+rem  *
+rem  * The editor provides a select box where the user can selected one of the three values (true , false , none)
+rem  *
+rem  * <br><b><small>#OnlyGUI</small></b>
+rem  * <br><b><small>#Enterprise</small></b>
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicBooleanRichSelect extends GxCellEditorRichSelect
+    rem /**
+    rem  * The value to use when when the component needs to return a true value.
+    rem  */
+    field public BBjString UsedTrueValue! = "true"
+    rem /**
+    rem  * The value to use when when the component needs to return a false value.
+    rem  */
+    field public BBjString UsedFalseValue! = "false"
+    rem /**
+    rem  * The value to use when when the component needs to return a none/empty/null value.
+    rem  * in case it is null() , then the none option will be hidden from the rendered list
+    rem  */
+    field public BBjString UsedNoneValue! = ""
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  *
+    rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
+    rem  * @param BBjString falseValue! The value to use when when the component needs to return a false value.
+    rem  * @param BBjString noneValue! The value to use when when the component needs to return a none/empty/null value.
+    rem  *                             in case it is null() , then the none option will be hidden from the rendered list
+    rem  */
+    method public GxCellEditorBasicBooleanRichSelect(BBjString trueValue!,BBjString falseValue!,BBjString noneValue!)
+        #super!()
+        #setUsedTrueValue(trueValue!)
+        #setUsedFalseValue(falseValue!)
+        #setUsedNoneValue(noneValue!)
+        template$ = "<% "+
+:                   "var value = params.value.toString();"+
+:                   "switch(value){"+
+:                   "   case '" + #getUsedTrueValue() + "':"+
+:                   "       print('&#x2714; True');"+
+:                   "       break;" +
+:                   "   case '" + #getUsedFalseValue() + "':"+
+:                   "       print('&#x2718; False');"+
+:                   "       break;" +
+:                   "   case '" + #getUsedNoneValue() + "':"+
+:                   "       print('&#8709; None');"+
+:                   "       break;"+
+:                   "} %>"        
+        #setCellRenderer(new GxRendererCustomHTML(template$))
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  *
+    rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
+    rem  * @param BBjString falseValue! The value to use when when the component needs to return a false value.
+    rem  */
+    method public GxCellEditorBasicBooleanRichSelect(BBjString trueValue!,BBjString falseValue!)
+        #this!(trueValue!,falseValue!,"")
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  *
+    rem  * @param BBjString trueValue! The value to use when when the component needs to return a true value.
+    rem  */
+    method public GxCellEditorBasicBooleanRichSelect(BBjString trueValue!)
+        #this!(trueValue!,"false")
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicBooleanSelect
+    rem  */
+    method public GxCellEditorBasicBooleanRichSelect()
+        #this!("true")
+    methodend
+    rem /**
+    rem  * Set The value to use when when the component needs to return a true value.
+    rem  *
+    rem  * @param BBjString trueValue!
+    rem  */
+    method public void setUsedTrueValue(BBjString trueValue!)
+        #getValues().remove(new JsonPrimitive(#UsedTrueValue!))
+
+        if(trueValue! <> null())
+            #getValues().add(trueValue!)
+        fi
+
+        #UsedTrueValue! = trueValue!
+    methodend
+    rem /**
+    rem  * Set The value to use when when the component needs to return a true value.
+    rem  *
+    rem  * @param BBjString trueValue!
+    rem  */
+    method public void setUsedFalseValue(BBjString falseValue!)
+        #getValues().remove(new JsonPrimitive(#UsedFalseValue!))
+
+        if(falseValue! <> null())
+            #getValues().add(falseValue!)
+        fi
+
+        #UsedFalseValue! = falseValue!
+    methodend
+    rem /**
+    rem  * Set The value to use when when the component needs to return a none/empty/null value.
+    rem  * in case it is null() , then the none option will be hidden from the rendered list
+    rem  *
+    rem  * @param BBjString trueValue!
+    rem  */
+    method public void setUsedNoneValue(BBjString noneValue!)
+        #getValues().remove(new JsonPrimitive(#UsedNoneValue!))
+
+        if(noneValue! <> null())
+            #getValues().add(noneValue!)
+        fi
+
+        #UsedNoneValue! = noneValue!
+    methodend
+
+classend
+rem /**
+rem  * Simple number input
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicNumber extends GxCellEditorAbstract
+    rem /**
+    rem  * The min allowed value
+    rem  */
+    field public BBjNumber Min! = null()
+    rem /**
+    rem  * The max allowed value
+    rem  */
+    field public BBjNumber Max! = null()
+    rem /**
+    rem  * The increment / decrement step
+    rem  */
+    field public BBjNumber Step! = null()
+    rem /**
+    rem  * A bbj number mask.
+    rem  * When it is set we use it to validate the number
+    rem  */
+    rem field public BBjString Mask! = null()
+    rem /**
+    rem  * The number's group separator to use. by default the bbj group separator will be used
+    rem  */
+    field public BBjString GroupSeparator! = null()
+    rem /**
+    rem  * The number's decimal separator to use. by default the bbj decimal separator will be used
+    rem  */
+    field public BBjString DecimalSeparator! = null()
+    rem /**
+    rem  * Affects the output by switching the way a mask with "#" characters in the trailing positions is filled.
+    rem  * for example, the function NumberMask.mask(.10:"#.##") returns .10 instead of .1 .
+    rem  * The options is used only when numberMask is defined
+    rem  */
+    field public BBjNumber ForceTrailingZeros = 0
+    rem /**
+    rem  * Construct new GxCellEditorBasicNumber
+    rem  *
+    rem  * @param mask! A bbj number mask to validate the number
+    rem  */
+    rem method public GxCellEditorBasicNumber(BBjString mask!)
+    rem     #super!()
+    rem     #Mask! = mask!
+    rem methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "NumberEditor"
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("numberMinValue" , #getMin().doubleValue() , err=*next)
+        json!.addProperty("numberMaxValue" , #getMax().doubleValue() , err=*next)
+        json!.addProperty("numberStepValue" , #getStep().doubleValue() , err=*next)
+        rem json!.addProperty("numberMask" , #getMask() , err=*next)
+        json!.addProperty("numberGroupingSeparator" , #getGroupSeparator() , err=*next)
+        json!.addProperty("numberDecimalSeparator" , #getDecimalSeparator() , err=*next)
+        json!.addProperty("numberForceTrailingZeros" , #getForceTrailingZeros().booleanValue() , err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * Simple text input
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicText extends GxCellEditorAbstract
+    rem /**
+    rem  * A bbj string mask
+    rem  * When set we use it to validate the value
+    rem  */
+    field public BBjString Mask! = null()
+    rem /**
+    rem  * A regular expression that the input's value must match in order for the value to pass constraint validation
+    rem  */
+    field public BBjString Pattern! = null()
+    rem /**
+    rem  * The input title , when null and the textMask options is defined , then we use the mask as title , when set to default we the browser's default title , other wise the value defined in this option
+    rem  */
+    field public BBjString Title! = null()
+    rem /**
+    rem  * When true , then the input cannot be empty and a value is required to consider
+    rem  * the input valid
+    rem  */
+    field public BBjNumber Required! = 1
+    rem /**
+    rem  * Construct new GxCellEditorBasicText
+    rem  *
+    rem  * @params mask! A bbj string mask to validate the value
+    rem  */
+    method public GxCellEditorBasicText(BBjString mask!)
+        #super!()
+        #Mask! = mask!
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "TextEditor"
+    methodend
+    rem /**
+    rem  * @override
+    rem  *
+    rem  * {@inheritDoc}
+    rem  */
+    method public JsonObject getAsJsonObject()
+        declare JsonObject json!
+
+        json! = new JsonObject()
+        json!.addProperty("textMask" , #getMask() , err=*next)
+        json!.addProperty("textPattern" , #getPattern() , err=*next)
+        json!.addProperty("textTitle" , #getTitle() , err=*next)
+        json!.addProperty("textRequired" , #getRequired().booleanValue() , err=*next)
+        methodret json!
+    methodend
+
+classend
+rem /**
+rem  * A cell editor for timestamps
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicDateTime extends GxOptionsDateTime implements GxCellEditorInterface
+    rem /**
+    rem  * Construct new GxFilterBasicDateTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxCellEditorBasicDateTime(BBjString mask!)
+        #super!()
+        #setMask(mask!)
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getCellEditorName()
+        methodret "DateTimeEditor"
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public boolean equals(GxCellEditorInterface cellEditor!)
+        methodret GxCellEditorComparator.compare(#this!, cellEditor!)
+    methodend
+
+classend
+rem /**
+rem  * Alias for GxCellEditorBasicDateTime
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicTimestamp extends GxCellEditorBasicDateTime
+    rem /**
+    rem  * Construct new GxFilterBasicDateTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxCellEditorBasicTimestamp(BBjString mask!)
+        #super!(mask!)
+    methodend
+
+classend
+rem /**
+rem  * A date cell editor
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicDate extends GxCellEditorBasicDateTime
+    rem /**
+    rem  * Construct a new GxCellEditorBasicDate
+    rem  */
+    method public GxCellEditorBasicDate()
+        #setEnableTime(0)
+        #setMask("%Y/%Mz/%Dz")
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicDate
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxCellEditorBasicDate(BBjString mask!)
+        #super!(mask!)
+        #setEnableTime(0)
+    methodend
+
+classend
+rem /**
+rem  * A date cell editor
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorBasicTime extends GxCellEditorBasicDateTime
+    rem /**
+    rem  * Construct a new GxCellEditorBasicTime
+    rem  */
+    method public GxCellEditorBasicTime()
+        #setEnableTime(1)
+        #setEnableCalendar(0)
+        #setMask("%Hz:%mz:%sz")
+    methodend
+    rem /**
+    rem  * Construct new GxCellEditorBasicTime
+    rem  *
+    rem  * @param mask! BBj date mask
+    rem  */
+    method public GxCellEditorBasicTime(BBjString mask!)
+        #super!(mask!)
+        #setEnableTime(1)
+        #setEnableCalendar(0)
+    methodend
+
+classend

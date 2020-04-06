@@ -1,0 +1,105 @@
+
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel
+use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterNumberFilterOptions
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+class public GxClientFilterNumberModelTest
+
+    field private GxClientFilterNumberModel Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new GxClientFilterNumberModel()
+    methodend
+
+    rem @Test
+    method public void testConstructors()
+        declare GxClientFilterNumberModel obj!
+        
+        filter! = 100
+        filterTo! = 1000
+        
+        rem 3 params
+        obj! = new GxClientFilterNumberModel(filter!,filterTo! , GxColumnFilterNumberFilterOptions.GREATER_THAN())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getFilterTo() , filterTo!)
+        Assert.Equals(obj!.getType() , GxColumnFilterNumberFilterOptions.GREATER_THAN())
+        
+        rem 2 params (filter , filterTo)
+        obj! = new GxClientFilterNumberModel(filter!,filterTo!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.Equals(obj!.getFilterTo() , filterTo!)
+        Assert.Equals(obj!.getType() , GxColumnFilterNumberFilterOptions.EQUALS())        
+        
+        rem 2 params (filter , type)
+        obj! = new GxClientFilterNumberModel(filter!,GxColumnFilterNumberFilterOptions.IN_RANGE())
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , GxColumnFilterNumberFilterOptions.IN_RANGE())                
+        
+        rem 1 params (filter)
+        obj! = new GxClientFilterNumberModel(filter!)
+        Assert.Equals(obj!.getFilter() , filter!)
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , GxColumnFilterNumberFilterOptions.EQUALS())    
+        
+        rem no params
+        obj! = new GxClientFilterNumberModel()
+        Assert.IsNull(obj!.getFilter())
+        Assert.IsNull(obj!.getFilterTo())
+        Assert.Equals(obj!.getType() , GxColumnFilterNumberFilterOptions.EQUALS())                 
+    methodend
+    
+    rem @Test
+    method public void testCanSetFilter()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filter").getAsString(), "")
+        
+        #Instance!.setFilter(123)
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filter").getAsInt(), 123)
+    methodend  
+    
+    rem @Test
+    method public void testCanSetFilterTo()
+        declare JsonObject json!
+        
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("filterTo").getAsString(), "")
+        
+        #Instance!.setFilterTo(1000)
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("filterTo").getAsInt(), 1000)
+    methodend     
+    
+    rem @Test
+    method public void testClearFilter()
+        #Instance!.setFilter(1)
+        #Instance!.setFilterTo(10)
+        #Instance!.setType(GxColumnFilterNumberFilterOptions.GREATER_THAN())
+        
+        #Instance!.clearFilter()
+        Assert.IsNull(#Instance!.getFilter())
+        Assert.IsNull(#Instance!.getFilterTo())
+        Assert.Equals(#Instance!.getType(),GxColumnFilterNumberFilterOptions.EQUALS())
+    methodend     
+     
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

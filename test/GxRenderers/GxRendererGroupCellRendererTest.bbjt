@@ -1,0 +1,106 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererGroupCellRenderer
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
+use com.google.gson.JsonObject
+
+class public GxRendererGroupCellRendererTest
+
+    field private GxRendererGroupCellRenderer Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Instance!  = new GxRendererGroupCellRenderer()
+    methodend
+
+    rem @Test
+    method public void testRenderNameIsSet()
+        Assert.Equals(#Instance!.getCellRendererName() , "agGroupCellRenderer")
+    methodend
+    
+    rem @Test
+    method public void testCanSetSuppressCount()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+        Assert.IsNull(json!.get("suppressCount"))
+        
+        #Instance!.setSuppressCount(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressCount").getAsBoolean(), BBjAPI.TRUE)
+        
+        #Instance!.setSuppressCount(0)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressCount").getAsBoolean(), BBjAPI.FALSE)        
+    methodend    
+    
+    rem @Test
+    method public void testCanSetSuppressDoubleClickExpand()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+        Assert.IsNull(json!.get("suppressDoubleClickExpand"))
+        
+        #Instance!.setSuppressDoubleClickExpand(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressDoubleClickExpand").getAsBoolean(), BBjAPI.TRUE)
+        
+        #Instance!.setSuppressDoubleClickExpand(0)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("suppressDoubleClickExpand").getAsBoolean(), BBjAPI.FALSE)        
+    methodend       
+    
+    rem @Test
+    method public void testCanSetCheckbox()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+        Assert.IsNull(json!.get("checkbox"))
+        
+        #Instance!.setCheckbox(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("checkbox").getAsBoolean(), BBjAPI.TRUE)
+        
+        #Instance!.setCheckbox(0)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("checkbox").getAsBoolean(), BBjAPI.FALSE)        
+    methodend      
+    
+    rem  @Test
+    method public void testCanSetFooterValueGetterExpression()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+        Assert.IsNull(json!.get("footerValueGetter"))
+        
+        exp! = new GxExpression("x")
+        #Instance!.setFooterValueGetterExpression(exp!)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("footerValueGetter").getAsString().equals(exp!.toString()) , BBjAPI.TRUE)
+    methodend 
+    
+    rem  @Test
+    method public void testCanSetInnerRenderer()
+        declare auto JsonObject json!
+        json! = #Instance!.getAsJsonObject()
+        Assert.IsNull(json!.get("innerRenderer"))
+        
+        innerRenderer! = new GxRendererCustomHTML("tempalte")
+        #Instance!.setInnerRenderer(innerRenderer!)
+        json! = #Instance!.getAsJsonObject()
+        
+        Assert.Equals(json!.get("innerRenderer").getAsString() , innerRenderer!.getCellRendererName())
+        rem adds the inner renderer params to the group renderer params
+        Assert.Equals(json!.has("renderTemplate") , BBjAPI.TRUE)
+    methodend 
+        
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+
+classend

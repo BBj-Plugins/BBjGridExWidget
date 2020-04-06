@@ -1,0 +1,81 @@
+{
+	"filter-number-single": {
+		"filterType": "number",
+		"type": "equals",
+		"filter": 1,
+		"filterTo": 10
+	},
+	"filter-number-combined": {
+		"filterType": "number",
+		"operator": "OR",
+		"condition1": {
+			"filterType": "number",
+			"type": "equals",
+			"filter": 1,
+			"filterTo": 10
+		},
+		"condition2": {
+			"filterType": "number",
+			"type": "equals",
+			"filter": 1,
+			"filterTo": 10
+		}
+	},
+	"filter-datetime-single": {
+		"filterType": "datetime",
+		"type": "equals",
+		"filter": "2020-01-01",
+		"filterTo": "2020-01-01"
+	},
+	"filter-text-single": {
+		"filterType": "text",
+		"type": "equals",
+		"filter": "sometext"
+	},
+	"filter-boolean-single": {
+		"filterType": "boolean",
+		"value": "true"
+	},
+	"filter-set": {
+		"filterType": "set",
+		"values": [
+			1,
+			2,
+			3
+		]
+	},
+	"event-cell": {
+		"c": "test",
+		"r": {
+			"i": "4131adda-c690-36ef-85c9-76ecf1612bdb",
+			"x": 3,
+			"p": "",
+			"c": 3,
+			"s": true
+		},
+		"v": "newValue"
+	},
+	"row-model": {
+		"i": "5f1ef4d1-98d6-3d45-af98-42f368eeed93",
+		"x": 0,
+		"p": "",
+		"c": 0,
+		"s": true,
+		"cr": {
+			"__ROW_INDEX": "5f1ef4d1-98d6-3d45-af98-42f368eeed93",
+			"CDNUMBER": "000001",
+			"TITLE": "New Value",
+			"meta": {
+				"__ROW_INDEX": {
+					"ColumnType": "12"
+				},
+				"CDNUMBER": {
+					"ColumnType": "12"
+				},
+				"TITLE": {
+					"ColumnType": "12"
+				}
+			}
+		}
+	}
+}
