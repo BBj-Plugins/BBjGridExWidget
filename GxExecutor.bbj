@@ -87,10 +87,10 @@ class public GxExecutor
         rem  * return a value. in this case we check if the grid is ready
         rem  * and if it is ready we execute the script directly on the HTMLView and
         rem  * return the result , otherwise we just continue to the next step
-        rem  * 
+        rem  *
         rem  * An example of calls which not be debounced would be something like:
         rem  *  grid!.getSelectedRow() -> we expect a value
-        rem  *  grid!.clearData()      -> should be executed without delay  
+        rem  *  grid!.clearData()      -> should be executed without delay
         rem  *                            because other calls might depend on it.
         rem  */
         if(!debounced!.booleanValue())
@@ -119,7 +119,7 @@ class public GxExecutor
         rem  *
         rem  */
         shouldSuppress! = iff(#isBui() = 1 , #getSuppressBuiDebouncing() , #getSuppressGuiDebouncing())
-        
+
         if shouldSuppress!
             if isWidgetReady!
                 #executeInHTMLView(script!,1)
@@ -128,11 +128,12 @@ class public GxExecutor
             fi
         else
             #enqueue(key!,script!,priority!)
-            
+
             if isWidgetReady!
                 #endTimer().startTimer()
             fi
         fi
+
         methodret null()
     methodend
     rem /**
@@ -210,13 +211,13 @@ class public GxExecutor
         isDebugging! = widget!.getDebug()
         platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
         id! = widget!.getGRIDID()
-        
+
         if(queue!.size() > 0)
             if(isDebugging!)
                 System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s)" , platform! , id!))
             fi
 
-            bundle! = iff(isDebugging! , "console.group('BBjGridExWidget::GxExecutor.flush : (" + id! +  ")');console.time('patch time');" , "")
+            bundle! = iff(isDebugging! AND #isBui() , "console.group('BBjGridExWidget::GxExecutor.flush : (" + id! +  ")');console.time('patch time');" , "")
             #setIsFlushing(1)
             it! = queue!.entrySet().iterator()
             while it!.hasNext()
@@ -225,7 +226,10 @@ class public GxExecutor
 
                 if(isDebugging!)
                     System.out.println(String.format("%s    Script : %s" ,platform! ,script!))
-                    script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getGRIDID() , script!)  + "`);"  + script!
+
+                    if(#isBui()) then
+                        script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getGRIDID() , script!)  + "`);"  + script!
+                    fi
                 fi
 
                 if !script!.matches(";$") then script! = script! + ";"
@@ -233,7 +237,7 @@ class public GxExecutor
                 it!.remove()
             wend
 
-            if(isDebugging!) bundle! = bundle! + "console.groupEnd();console.timeEnd('patch time')"
+            if(isDebugging! AND #isBui()) bundle! = bundle! + "console.groupEnd();console.timeEnd('patch time')"
             #executeInHTMLView(bundle!,1)
             #setIsFlushing(0)
         fi
@@ -308,7 +312,9 @@ class public GxExecutor
                 System.out.println("(GUI)    Script : " + script!)
             fi
 
-            script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + script! + "`);console.groupEnd();" + script!
+            if(#isBui()) then
+                script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + script! + "`);console.groupEnd();" + script!
+            fi
         fi
 
         methodret widget!.getHTMLView().executeScript(script!)
