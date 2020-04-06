@@ -146,7 +146,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=9222")
     rem  * </code></pre>
     rem  */
-    field public static BBjNumber Debug! = 0
+    field public static BBjNumber Debug! = 1
     rem /**
     rem  * Unique auto generate id for the grid instance&#183; This id is used in the client to distinguish instances
     rem  */
@@ -756,7 +756,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         if (f_init!) then
             html$ = #getTemplate()
 
-            if (info(3,6)<>"5" and #Debug>0) then
+            if (info(3,6)<>"5" and #getDebug() > 0) then
                 if (REV < "REV 19.10")
                     call "BBjGridExWidget/util/EnableDebugger.bbj"
                 FI
@@ -774,7 +774,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
             htmlview!.setTabTraversable(1)
             htmlview!.setFocusable(1)
 
-            if (info(3,6)<>"5" and #Debug>0) then
+            if (info(3,6)<>"5" and #getDebug() > 0) then
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
                 if url$>"" then
