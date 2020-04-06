@@ -21,19 +21,19 @@ const { deepParseJson } = require('deep-parse-json')
  * @param {String} char
  */
 export function gw_startEditingCell(id, row, colKey, key, char) {
-  setTimeout(() => {
-    const options = gw_getGrid(id).options
-    const api = options.api
-    const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
+  // setTimeout(() => {
+  const options = gw_getGrid(id).options
+  const api = options.api
+  const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
 
-    gw_setFocusedCell(id, row, colKey)
-    options.api.startEditingCell({
-      rowIndex: node.rowIndex,
-      colKey: colKey,
-      keyPress: Number(key),
-      charPress: char,
-    })
-  }, 250)
+  // gw_setFocusedCell(id, row, colKey)
+  options.api.startEditingCell({
+    rowIndex: node.rowIndex,
+    colKey: colKey,
+    keyPress: Number(key),
+    charPress: char,
+  })
+  // }, 250)
 }
 
 /**
@@ -73,6 +73,12 @@ export function gw_tabToPreviousCell(id) {
  */
 export function gw_setFocusedCell(id, row, column) {
   const options = gw_getGrid(id).options
+
+  // ignore focus calls if editing
+  if (options.api.getEditingCells().length > 0) {
+    return
+  }
+
   let r, c
   if (row == -1) {
     // try to retain the focus

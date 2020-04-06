@@ -146,7 +146,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=9222")
     rem  * </code></pre>
     rem  */
-    field public static BBjNumber Debug! = 1
+    field public static BBjNumber Debug! = 0
     rem /**
     rem  * Unique auto generate id for the grid instance&#183; This id is used in the client to distinguish instances
     rem  */
@@ -2173,18 +2173,24 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  * @param BBjString row! The row id
-    rem  * @param BBjStrinf column! The column id
+    rem  * @param BBjString column! The column id
     rem  */
     method public void focus(BBjString row! , BBjString column!)
         rem DO NOT focus the canvas or the we will have an infinite focus calls
         rem #super!.focus()
-        if #HTMLView!.getParentWindow().getFocusedControlID() <>  #HTMLView!.getID() then
+
+        if #getCanvas().getParentWindow().getFocusedControlID() <>  #getCanvas().getID() then
+            #getHTMLView().clearCallback(BBjAPI.ON_GAINED_FOCUS)
             #HTMLView!.focus()
+            #getHTMLView().setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
         fi
 
-        scriptKey! = "$wnd.gw_setFocusedCell"
+        rem /**
+        rem  * We never debounce the focus calls , this causes a heck of problems 
+        rem  * when there are several grids rendered
+        rem  */
         script$="$wnd.gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
-        #getExecutor().execute(scriptKey!,script$)
+        #getExecutor().execute(script$,0)
     methodend
     rem /**
     rem  * Set the focus on the given row id and the given column
