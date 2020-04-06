@@ -146,7 +146,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=9222")
     rem  * </code></pre>
     rem  */
-    field public static BBjNumber Debug = 0
+    field public static BBjNumber Debug! = 0
     rem /**
     rem  * Unique auto generate id for the grid instance&#183; This id is used in the client to distinguish instances
     rem  */
