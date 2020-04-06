@@ -237,7 +237,7 @@ class public GxExecutor
                 it!.remove()
             wend
 
-            if(isDebugging! AND #isBui()) bundle! = bundle! + "console.groupEnd();console.timeEnd('patch time')"
+            if(isDebugging! AND #isBui()) bundle! = bundle! + "console.timeEnd('patch time');console.groupEnd();"
             #executeInHTMLView(bundle!,1)
             #setIsFlushing(0)
         fi
@@ -313,7 +313,8 @@ class public GxExecutor
             fi
 
             if(#isBui()) then
-                script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + script! + "`);console.groupEnd();" + script!
+                scriptPreview! = iff(script!.contains("`") , "Flushing Batch" , script!)
+                script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + scriptPreview! + "`);console.groupEnd();" + script!
             fi
         fi
 
