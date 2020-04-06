@@ -281,666 +281,666 @@
 <span class="sourceLineNo">273</span>*/<a name="line.273"></a>
 <span class="sourceLineNo">274</span>public BBjNumber Editable!;<a name="line.274"></a>
 <span class="sourceLineNo">275</span>/**<a name="line.275"></a>
-<span class="sourceLineNo">276</span> * A cellRenderer to use for this column<a name="line.276"></a>
-<span class="sourceLineNo">277</span> *<a name="line.277"></a>
-<span class="sourceLineNo">278</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.278"></a>
-<span class="sourceLineNo">279</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.279"></a>
-<span class="sourceLineNo">280</span>*/<a name="line.280"></a>
-<span class="sourceLineNo">281</span>public GxRendererInterface CellRenderer!;<a name="line.281"></a>
-<span class="sourceLineNo">282</span>/**<a name="line.282"></a>
-<span class="sourceLineNo">283</span> * CellEditor to use for this column<a name="line.283"></a>
-<span class="sourceLineNo">284</span> *<a name="line.284"></a>
-<span class="sourceLineNo">285</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.285"></a>
-<span class="sourceLineNo">286</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.286"></a>
-<span class="sourceLineNo">287</span>*/<a name="line.287"></a>
-<span class="sourceLineNo">288</span>public GxCellEditorInterface CellEditor!;<a name="line.288"></a>
-<span class="sourceLineNo">289</span>/**<a name="line.289"></a>
-<span class="sourceLineNo">290</span> * Name of function to use for aggregation&amp;#183; One of [sum, min, max, first, last]&amp;#183;<a name="line.290"></a>
-<span class="sourceLineNo">291</span> *<a name="line.291"></a>
-<span class="sourceLineNo">292</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.292"></a>
-<span class="sourceLineNo">293</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.293"></a>
-<span class="sourceLineNo">294</span>*/<a name="line.294"></a>
-<span class="sourceLineNo">295</span>public BBjString AggFunc!;<a name="line.295"></a>
-<span class="sourceLineNo">296</span>/**<a name="line.296"></a>
-<span class="sourceLineNo">297</span> * Aggregation functions allowed on this column eg ['sum', 'avg']&amp;#183;<a name="line.297"></a>
-<span class="sourceLineNo">298</span> *<a name="line.298"></a>
-<span class="sourceLineNo">299</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.299"></a>
-<span class="sourceLineNo">300</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.300"></a>
-<span class="sourceLineNo">301</span>*/<a name="line.301"></a>
-<span class="sourceLineNo">302</span>public HashSet AllowedAggFuncs!;<a name="line.302"></a>
-<span class="sourceLineNo">303</span>/**<a name="line.303"></a>
-<span class="sourceLineNo">304</span> * Set this in columns you want to group by&amp;#183; If only grouping by one column, set this to any number (eg 0)&amp;#183; If grouping by multiple columns, set this to where you want this column to be in the group (eg 0 for first, 1 for second, and so on)&amp;#183;<a name="line.304"></a>
-<span class="sourceLineNo">305</span> *<a name="line.305"></a>
-<span class="sourceLineNo">306</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.306"></a>
-<span class="sourceLineNo">307</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.307"></a>
-<span class="sourceLineNo">308</span>*/<a name="line.308"></a>
-<span class="sourceLineNo">309</span>public BBjNumber RowGroupIndex!;<a name="line.309"></a>
-<span class="sourceLineNo">310</span>/**<a name="line.310"></a>
-<span class="sourceLineNo">311</span> * Set this in columns you want to pivot by&amp;#183; If only pivoting by one column, set this to any number (eg 0)&amp;#183; If pivoting by multiple columns, set this to where you want this column to be in the order of pivots (eg 0 for first, 1 for second, and so on)&amp;#183;<a name="line.311"></a>
-<span class="sourceLineNo">312</span> *<a name="line.312"></a>
-<span class="sourceLineNo">313</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.313"></a>
-<span class="sourceLineNo">314</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.314"></a>
-<span class="sourceLineNo">315</span>*/<a name="line.315"></a>
-<span class="sourceLineNo">316</span>public BBjNumber PivotIndex!;<a name="line.316"></a>
-<span class="sourceLineNo">317</span>/**<a name="line.317"></a>
-<span class="sourceLineNo">318</span> * Set to true if you want the unsorted icon to be shown when no sort is applied to this column&amp;#183;<a name="line.318"></a>
-<span class="sourceLineNo">319</span> *<a name="line.319"></a>
-<span class="sourceLineNo">320</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.320"></a>
-<span class="sourceLineNo">321</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.321"></a>
-<span class="sourceLineNo">322</span>*/<a name="line.322"></a>
-<span class="sourceLineNo">323</span>public BBjNumber UnSortIcon!;<a name="line.323"></a>
-<span class="sourceLineNo">324</span>/**<a name="line.324"></a>
-<span class="sourceLineNo">325</span> * Set to true if you want to be able to row group by this column via the UI&amp;#183;<a name="line.325"></a>
-<span class="sourceLineNo">326</span> *<a name="line.326"></a>
-<span class="sourceLineNo">327</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.327"></a>
-<span class="sourceLineNo">328</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.328"></a>
-<span class="sourceLineNo">329</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.329"></a>
-<span class="sourceLineNo">330</span>*/<a name="line.330"></a>
-<span class="sourceLineNo">331</span>public BBjNumber EnableRowGroup!;<a name="line.331"></a>
-<span class="sourceLineNo">332</span>/**<a name="line.332"></a>
-<span class="sourceLineNo">333</span> * Set to true To group rows by this column<a name="line.333"></a>
-<span class="sourceLineNo">334</span> *<a name="line.334"></a>
-<span class="sourceLineNo">335</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.335"></a>
-<span class="sourceLineNo">336</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.336"></a>
-<span class="sourceLineNo">337</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.337"></a>
-<span class="sourceLineNo">338</span> *<a name="line.338"></a>
-<span class="sourceLineNo">339</span> * @see Gx&amp;#183;Columns&amp;#183;EnableRowGroup!<a name="line.339"></a>
-<span class="sourceLineNo">340</span>*/<a name="line.340"></a>
-<span class="sourceLineNo">341</span>public BBjNumber RowGroup!;<a name="line.341"></a>
-<span class="sourceLineNo">342</span>/**<a name="line.342"></a>
-<span class="sourceLineNo">343</span> * Set to true if you want to be able to pivot by this column via the UI&amp;#183;<a name="line.343"></a>
+<span class="sourceLineNo">276</span> * An expression which determines whether the column is editable<a name="line.276"></a>
+<span class="sourceLineNo">277</span> * or not. when this config is diffenrt than null , then the column<a name="line.277"></a>
+<span class="sourceLineNo">278</span> * configuration `Editable` will be ignored<a name="line.278"></a>
+<span class="sourceLineNo">279</span>*/<a name="line.279"></a>
+<span class="sourceLineNo">280</span>public GxExpressionInterface EditableExpression!;<a name="line.280"></a>
+<span class="sourceLineNo">281</span>/**<a name="line.281"></a>
+<span class="sourceLineNo">282</span> * A cellRenderer to use for this column<a name="line.282"></a>
+<span class="sourceLineNo">283</span> *<a name="line.283"></a>
+<span class="sourceLineNo">284</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.284"></a>
+<span class="sourceLineNo">285</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.285"></a>
+<span class="sourceLineNo">286</span>*/<a name="line.286"></a>
+<span class="sourceLineNo">287</span>public GxRendererInterface CellRenderer!;<a name="line.287"></a>
+<span class="sourceLineNo">288</span>/**<a name="line.288"></a>
+<span class="sourceLineNo">289</span> * CellEditor to use for this column<a name="line.289"></a>
+<span class="sourceLineNo">290</span> *<a name="line.290"></a>
+<span class="sourceLineNo">291</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.291"></a>
+<span class="sourceLineNo">292</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.292"></a>
+<span class="sourceLineNo">293</span>*/<a name="line.293"></a>
+<span class="sourceLineNo">294</span>public GxCellEditorInterface CellEditor!;<a name="line.294"></a>
+<span class="sourceLineNo">295</span>/**<a name="line.295"></a>
+<span class="sourceLineNo">296</span> * Name of function to use for aggregation&amp;#183; One of [sum, min, max, first, last]&amp;#183;<a name="line.296"></a>
+<span class="sourceLineNo">297</span> *<a name="line.297"></a>
+<span class="sourceLineNo">298</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.298"></a>
+<span class="sourceLineNo">299</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.299"></a>
+<span class="sourceLineNo">300</span>*/<a name="line.300"></a>
+<span class="sourceLineNo">301</span>public BBjString AggFunc!;<a name="line.301"></a>
+<span class="sourceLineNo">302</span>/**<a name="line.302"></a>
+<span class="sourceLineNo">303</span> * Aggregation functions allowed on this column eg ['sum', 'avg']&amp;#183;<a name="line.303"></a>
+<span class="sourceLineNo">304</span> *<a name="line.304"></a>
+<span class="sourceLineNo">305</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.305"></a>
+<span class="sourceLineNo">306</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.306"></a>
+<span class="sourceLineNo">307</span>*/<a name="line.307"></a>
+<span class="sourceLineNo">308</span>public HashSet AllowedAggFuncs!;<a name="line.308"></a>
+<span class="sourceLineNo">309</span>/**<a name="line.309"></a>
+<span class="sourceLineNo">310</span> * Set this in columns you want to group by&amp;#183; If only grouping by one column, set this to any number (eg 0)&amp;#183; If grouping by multiple columns, set this to where you want this column to be in the group (eg 0 for first, 1 for second, and so on)&amp;#183;<a name="line.310"></a>
+<span class="sourceLineNo">311</span> *<a name="line.311"></a>
+<span class="sourceLineNo">312</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.312"></a>
+<span class="sourceLineNo">313</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.313"></a>
+<span class="sourceLineNo">314</span>*/<a name="line.314"></a>
+<span class="sourceLineNo">315</span>public BBjNumber RowGroupIndex!;<a name="line.315"></a>
+<span class="sourceLineNo">316</span>/**<a name="line.316"></a>
+<span class="sourceLineNo">317</span> * Set this in columns you want to pivot by&amp;#183; If only pivoting by one column, set this to any number (eg 0)&amp;#183; If pivoting by multiple columns, set this to where you want this column to be in the order of pivots (eg 0 for first, 1 for second, and so on)&amp;#183;<a name="line.317"></a>
+<span class="sourceLineNo">318</span> *<a name="line.318"></a>
+<span class="sourceLineNo">319</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.319"></a>
+<span class="sourceLineNo">320</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.320"></a>
+<span class="sourceLineNo">321</span>*/<a name="line.321"></a>
+<span class="sourceLineNo">322</span>public BBjNumber PivotIndex!;<a name="line.322"></a>
+<span class="sourceLineNo">323</span>/**<a name="line.323"></a>
+<span class="sourceLineNo">324</span> * Set to true if you want the unsorted icon to be shown when no sort is applied to this column&amp;#183;<a name="line.324"></a>
+<span class="sourceLineNo">325</span> *<a name="line.325"></a>
+<span class="sourceLineNo">326</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.326"></a>
+<span class="sourceLineNo">327</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>*/<a name="line.328"></a>
+<span class="sourceLineNo">329</span>public BBjNumber UnSortIcon!;<a name="line.329"></a>
+<span class="sourceLineNo">330</span>/**<a name="line.330"></a>
+<span class="sourceLineNo">331</span> * Set to true if you want to be able to row group by this column via the UI&amp;#183;<a name="line.331"></a>
+<span class="sourceLineNo">332</span> *<a name="line.332"></a>
+<span class="sourceLineNo">333</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.333"></a>
+<span class="sourceLineNo">334</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.334"></a>
+<span class="sourceLineNo">335</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.335"></a>
+<span class="sourceLineNo">336</span>*/<a name="line.336"></a>
+<span class="sourceLineNo">337</span>public BBjNumber EnableRowGroup!;<a name="line.337"></a>
+<span class="sourceLineNo">338</span>/**<a name="line.338"></a>
+<span class="sourceLineNo">339</span> * Set to true To group rows by this column<a name="line.339"></a>
+<span class="sourceLineNo">340</span> *<a name="line.340"></a>
+<span class="sourceLineNo">341</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.341"></a>
+<span class="sourceLineNo">342</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.342"></a>
+<span class="sourceLineNo">343</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.343"></a>
 <span class="sourceLineNo">344</span> *<a name="line.344"></a>
-<span class="sourceLineNo">345</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.345"></a>
-<span class="sourceLineNo">346</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.346"></a>
-<span class="sourceLineNo">347</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.347"></a>
-<span class="sourceLineNo">348</span>*/<a name="line.348"></a>
-<span class="sourceLineNo">349</span>public BBjNumber EnablePivot!;<a name="line.349"></a>
-<span class="sourceLineNo">350</span>/**<a name="line.350"></a>
-<span class="sourceLineNo">351</span> * Set to true if you want to be able to aggregate by this column via the UI&amp;#183;<a name="line.351"></a>
-<span class="sourceLineNo">352</span> *<a name="line.352"></a>
-<span class="sourceLineNo">353</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.353"></a>
-<span class="sourceLineNo">354</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.354"></a>
-<span class="sourceLineNo">355</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.355"></a>
-<span class="sourceLineNo">356</span>*/<a name="line.356"></a>
-<span class="sourceLineNo">357</span>public BBjNumber EnableValue!;<a name="line.357"></a>
-<span class="sourceLineNo">358</span>/**<a name="line.358"></a>
-<span class="sourceLineNo">359</span> * Set to true if no menu should be shown for this column header&amp;#183;<a name="line.359"></a>
-<span class="sourceLineNo">360</span> *<a name="line.360"></a>
-<span class="sourceLineNo">361</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.361"></a>
-<span class="sourceLineNo">362</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.362"></a>
-<span class="sourceLineNo">363</span>*/<a name="line.363"></a>
-<span class="sourceLineNo">364</span>public BBjNumber SuppressMenu!;<a name="line.364"></a>
-<span class="sourceLineNo">365</span>/**<a name="line.365"></a>
-<span class="sourceLineNo">366</span> * Set to true if you want this columns width to be fixed during 'size to fit' operation&amp;#183;<a name="line.366"></a>
-<span class="sourceLineNo">367</span> *<a name="line.367"></a>
-<span class="sourceLineNo">368</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.368"></a>
-<span class="sourceLineNo">369</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.369"></a>
-<span class="sourceLineNo">370</span>*/<a name="line.370"></a>
-<span class="sourceLineNo">371</span>public BBjNumber SuppressSizeToFit!;<a name="line.371"></a>
-<span class="sourceLineNo">372</span>/**<a name="line.372"></a>
-<span class="sourceLineNo">373</span> * Set to true if you do not want this column to be movable via dragging&amp;#183;<a name="line.373"></a>
-<span class="sourceLineNo">374</span> *<a name="line.374"></a>
-<span class="sourceLineNo">375</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.375"></a>
-<span class="sourceLineNo">376</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.376"></a>
-<span class="sourceLineNo">377</span>*/<a name="line.377"></a>
-<span class="sourceLineNo">378</span>public BBjNumber SuppressMovable!;<a name="line.378"></a>
-<span class="sourceLineNo">379</span>/**<a name="line.379"></a>
-<span class="sourceLineNo">380</span> * Set to true if this col is not navigable (ie cannot be tabbed into), otherwise false&amp;#183;<a name="line.380"></a>
-<span class="sourceLineNo">381</span> *<a name="line.381"></a>
-<span class="sourceLineNo">382</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.382"></a>
-<span class="sourceLineNo">383</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.383"></a>
-<span class="sourceLineNo">384</span>*/<a name="line.384"></a>
-<span class="sourceLineNo">385</span>public BBjNumber SuppressNavigable!;<a name="line.385"></a>
-<span class="sourceLineNo">386</span>/**<a name="line.386"></a>
-<span class="sourceLineNo">387</span> * Set to true to have the grid calculate height of row based on contents of this column&amp;#183;<a name="line.387"></a>
-<span class="sourceLineNo">388</span> *<a name="line.388"></a>
-<span class="sourceLineNo">389</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.389"></a>
-<span class="sourceLineNo">390</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.390"></a>
-<span class="sourceLineNo">391</span>*/<a name="line.391"></a>
-<span class="sourceLineNo">392</span>public BBjNumber AutoHeight!;<a name="line.392"></a>
-<span class="sourceLineNo">393</span>/**<a name="line.393"></a>
-<span class="sourceLineNo">394</span> * Rules which can be applied to include certain CSS classes&amp;#183; These rules are provided as a map<a name="line.394"></a>
-<span class="sourceLineNo">395</span> * where the keys are the class names and the values are expressions that if evaluated to true, the class gets used&amp;#183;<a name="line.395"></a>
-<span class="sourceLineNo">396</span> * An expression is evaluated by the grid by executing the string as if it were a Javascript expression&amp;#183;<a name="line.396"></a>
-<span class="sourceLineNo">397</span> *<a name="line.397"></a>
-<span class="sourceLineNo">398</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.398"></a>
-<span class="sourceLineNo">399</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.399"></a>
-<span class="sourceLineNo">400</span> * &lt;br&gt;&lt;br&gt;<a name="line.400"></a>
-<span class="sourceLineNo">401</span> * The expression has the following attributes available to it&amp;#183; &lt;br&gt;&lt;br&gt;<a name="line.401"></a>
-<span class="sourceLineNo">402</span> * &lt;table border = "1" cellpadding = "10"&gt;<a name="line.402"></a>
-<span class="sourceLineNo">403</span> * &lt;tbody&gt;<a name="line.403"></a>
-<span class="sourceLineNo">404</span> * &lt;tr&gt;<a name="line.404"></a>
-<span class="sourceLineNo">405</span> * &lt;td&gt;&lt;strong&gt;&amp;nbsp;x&lt;/strong&gt;&lt;/td&gt;<a name="line.405"></a>
-<span class="sourceLineNo">406</span> * &lt;td&gt;&amp;nbsp;Mapped from cell value&lt;/td&gt;<a name="line.406"></a>
-<span class="sourceLineNo">407</span> * &lt;/tr&gt;<a name="line.407"></a>
-<span class="sourceLineNo">408</span> * &lt;tr&gt;<a name="line.408"></a>
-<span class="sourceLineNo">409</span> * &lt;td&gt;&lt;strong&gt;&amp;nbsp;rowIndex&lt;/strong&gt;&lt;/td&gt;<a name="line.409"></a>
-<span class="sourceLineNo">410</span> * &lt;td&gt;&amp;nbsp;Maps the current row index&lt;/td&gt;<a name="line.410"></a>
-<span class="sourceLineNo">411</span> * &lt;/tr&gt;<a name="line.411"></a>
-<span class="sourceLineNo">412</span> * &lt;tr&gt;<a name="line.412"></a>
-<span class="sourceLineNo">413</span> * &lt;td&gt;&amp;nbsp;&lt;strong&gt;data&lt;/strong&gt;&lt;/td&gt;<a name="line.413"></a>
-<span class="sourceLineNo">414</span> * &lt;td&gt;&amp;nbsp;Mapped from the DataRow&lt;/td&gt;<a name="line.414"></a>
-<span class="sourceLineNo">415</span> * &lt;/tr&gt;<a name="line.415"></a>
-<span class="sourceLineNo">416</span> * &lt;tr&gt;<a name="line.416"></a>
-<span class="sourceLineNo">417</span> * &lt;td&gt;&amp;nbsp;&lt;strong&gt;ctx&lt;/strong&gt;&lt;/td&gt;<a name="line.417"></a>
-<span class="sourceLineNo">418</span> * &lt;td&gt;&amp;nbsp;The grid client context&lt;/td&gt;<a name="line.418"></a>
-<span class="sourceLineNo">419</span> * &lt;/tr&gt;<a name="line.419"></a>
-<span class="sourceLineNo">420</span> * &lt;/tbody&gt;<a name="line.420"></a>
-<span class="sourceLineNo">421</span> * &lt;/table&gt;<a name="line.421"></a>
-<span class="sourceLineNo">422</span>*/<a name="line.422"></a>
-<span class="sourceLineNo">423</span>public JsonObject CellClassRules!;<a name="line.423"></a>
-<span class="sourceLineNo">424</span>/**<a name="line.424"></a>
-<span class="sourceLineNo">425</span> * An Ag Grid expression which can be executed before getting the value from your data for display<a name="line.425"></a>
-<span class="sourceLineNo">426</span> *<a name="line.426"></a>
-<span class="sourceLineNo">427</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.427"></a>
-<span class="sourceLineNo">428</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.428"></a>
-<span class="sourceLineNo">429</span> *<a name="line.429"></a>
-<span class="sourceLineNo">430</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.430"></a>
-<span class="sourceLineNo">431</span>*/<a name="line.431"></a>
-<span class="sourceLineNo">432</span>public GxExpressionInterface ValueGetterExpression!;<a name="line.432"></a>
-<span class="sourceLineNo">433</span>/**<a name="line.433"></a>
-<span class="sourceLineNo">434</span> * An Ag Grid expression which can be executed to format the value for display&amp;#183;<a name="line.434"></a>
+<span class="sourceLineNo">345</span> * @see Gx&amp;#183;Columns&amp;#183;EnableRowGroup!<a name="line.345"></a>
+<span class="sourceLineNo">346</span>*/<a name="line.346"></a>
+<span class="sourceLineNo">347</span>public BBjNumber RowGroup!;<a name="line.347"></a>
+<span class="sourceLineNo">348</span>/**<a name="line.348"></a>
+<span class="sourceLineNo">349</span> * Set to true if you want to be able to pivot by this column via the UI&amp;#183;<a name="line.349"></a>
+<span class="sourceLineNo">350</span> *<a name="line.350"></a>
+<span class="sourceLineNo">351</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.351"></a>
+<span class="sourceLineNo">352</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.352"></a>
+<span class="sourceLineNo">353</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.353"></a>
+<span class="sourceLineNo">354</span>*/<a name="line.354"></a>
+<span class="sourceLineNo">355</span>public BBjNumber EnablePivot!;<a name="line.355"></a>
+<span class="sourceLineNo">356</span>/**<a name="line.356"></a>
+<span class="sourceLineNo">357</span> * Set to true if you want to be able to aggregate by this column via the UI&amp;#183;<a name="line.357"></a>
+<span class="sourceLineNo">358</span> *<a name="line.358"></a>
+<span class="sourceLineNo">359</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Enterprise&lt;/small&gt;&lt;/b&gt;<a name="line.359"></a>
+<span class="sourceLineNo">360</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.360"></a>
+<span class="sourceLineNo">361</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.361"></a>
+<span class="sourceLineNo">362</span>*/<a name="line.362"></a>
+<span class="sourceLineNo">363</span>public BBjNumber EnableValue!;<a name="line.363"></a>
+<span class="sourceLineNo">364</span>/**<a name="line.364"></a>
+<span class="sourceLineNo">365</span> * Set to true if no menu should be shown for this column header&amp;#183;<a name="line.365"></a>
+<span class="sourceLineNo">366</span> *<a name="line.366"></a>
+<span class="sourceLineNo">367</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.367"></a>
+<span class="sourceLineNo">368</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.368"></a>
+<span class="sourceLineNo">369</span>*/<a name="line.369"></a>
+<span class="sourceLineNo">370</span>public BBjNumber SuppressMenu!;<a name="line.370"></a>
+<span class="sourceLineNo">371</span>/**<a name="line.371"></a>
+<span class="sourceLineNo">372</span> * Set to true if you want this columns width to be fixed during 'size to fit' operation&amp;#183;<a name="line.372"></a>
+<span class="sourceLineNo">373</span> *<a name="line.373"></a>
+<span class="sourceLineNo">374</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.374"></a>
+<span class="sourceLineNo">375</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.375"></a>
+<span class="sourceLineNo">376</span>*/<a name="line.376"></a>
+<span class="sourceLineNo">377</span>public BBjNumber SuppressSizeToFit!;<a name="line.377"></a>
+<span class="sourceLineNo">378</span>/**<a name="line.378"></a>
+<span class="sourceLineNo">379</span> * Set to true if you do not want this column to be movable via dragging&amp;#183;<a name="line.379"></a>
+<span class="sourceLineNo">380</span> *<a name="line.380"></a>
+<span class="sourceLineNo">381</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.381"></a>
+<span class="sourceLineNo">382</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.382"></a>
+<span class="sourceLineNo">383</span>*/<a name="line.383"></a>
+<span class="sourceLineNo">384</span>public BBjNumber SuppressMovable!;<a name="line.384"></a>
+<span class="sourceLineNo">385</span>/**<a name="line.385"></a>
+<span class="sourceLineNo">386</span> * Set to true if this col is not navigable (ie cannot be tabbed into), otherwise false&amp;#183;<a name="line.386"></a>
+<span class="sourceLineNo">387</span> *<a name="line.387"></a>
+<span class="sourceLineNo">388</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.388"></a>
+<span class="sourceLineNo">389</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.389"></a>
+<span class="sourceLineNo">390</span>*/<a name="line.390"></a>
+<span class="sourceLineNo">391</span>public BBjNumber SuppressNavigable!;<a name="line.391"></a>
+<span class="sourceLineNo">392</span>/**<a name="line.392"></a>
+<span class="sourceLineNo">393</span> * Set to true to have the grid calculate height of row based on contents of this column&amp;#183;<a name="line.393"></a>
+<span class="sourceLineNo">394</span> *<a name="line.394"></a>
+<span class="sourceLineNo">395</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.395"></a>
+<span class="sourceLineNo">396</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.396"></a>
+<span class="sourceLineNo">397</span>*/<a name="line.397"></a>
+<span class="sourceLineNo">398</span>public BBjNumber AutoHeight!;<a name="line.398"></a>
+<span class="sourceLineNo">399</span>/**<a name="line.399"></a>
+<span class="sourceLineNo">400</span> * Rules which can be applied to include certain CSS classes&amp;#183; These rules are provided as a map<a name="line.400"></a>
+<span class="sourceLineNo">401</span> * where the keys are the class names and the values are expressions that if evaluated to true, the class gets used&amp;#183;<a name="line.401"></a>
+<span class="sourceLineNo">402</span> * An expression is evaluated by the grid by executing the string as if it were a Javascript expression&amp;#183;<a name="line.402"></a>
+<span class="sourceLineNo">403</span> *<a name="line.403"></a>
+<span class="sourceLineNo">404</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.404"></a>
+<span class="sourceLineNo">405</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.405"></a>
+<span class="sourceLineNo">406</span> * &lt;br&gt;&lt;br&gt;<a name="line.406"></a>
+<span class="sourceLineNo">407</span> * The expression has the following attributes available to it&amp;#183; &lt;br&gt;&lt;br&gt;<a name="line.407"></a>
+<span class="sourceLineNo">408</span> * &lt;table border = "1" cellpadding = "10"&gt;<a name="line.408"></a>
+<span class="sourceLineNo">409</span> * &lt;tbody&gt;<a name="line.409"></a>
+<span class="sourceLineNo">410</span> * &lt;tr&gt;<a name="line.410"></a>
+<span class="sourceLineNo">411</span> * &lt;td&gt;&lt;strong&gt;&amp;nbsp;x&lt;/strong&gt;&lt;/td&gt;<a name="line.411"></a>
+<span class="sourceLineNo">412</span> * &lt;td&gt;&amp;nbsp;Mapped from cell value&lt;/td&gt;<a name="line.412"></a>
+<span class="sourceLineNo">413</span> * &lt;/tr&gt;<a name="line.413"></a>
+<span class="sourceLineNo">414</span> * &lt;tr&gt;<a name="line.414"></a>
+<span class="sourceLineNo">415</span> * &lt;td&gt;&lt;strong&gt;&amp;nbsp;rowIndex&lt;/strong&gt;&lt;/td&gt;<a name="line.415"></a>
+<span class="sourceLineNo">416</span> * &lt;td&gt;&amp;nbsp;Maps the current row index&lt;/td&gt;<a name="line.416"></a>
+<span class="sourceLineNo">417</span> * &lt;/tr&gt;<a name="line.417"></a>
+<span class="sourceLineNo">418</span> * &lt;tr&gt;<a name="line.418"></a>
+<span class="sourceLineNo">419</span> * &lt;td&gt;&amp;nbsp;&lt;strong&gt;data&lt;/strong&gt;&lt;/td&gt;<a name="line.419"></a>
+<span class="sourceLineNo">420</span> * &lt;td&gt;&amp;nbsp;Mapped from the DataRow&lt;/td&gt;<a name="line.420"></a>
+<span class="sourceLineNo">421</span> * &lt;/tr&gt;<a name="line.421"></a>
+<span class="sourceLineNo">422</span> * &lt;tr&gt;<a name="line.422"></a>
+<span class="sourceLineNo">423</span> * &lt;td&gt;&amp;nbsp;&lt;strong&gt;ctx&lt;/strong&gt;&lt;/td&gt;<a name="line.423"></a>
+<span class="sourceLineNo">424</span> * &lt;td&gt;&amp;nbsp;The grid client context&lt;/td&gt;<a name="line.424"></a>
+<span class="sourceLineNo">425</span> * &lt;/tr&gt;<a name="line.425"></a>
+<span class="sourceLineNo">426</span> * &lt;/tbody&gt;<a name="line.426"></a>
+<span class="sourceLineNo">427</span> * &lt;/table&gt;<a name="line.427"></a>
+<span class="sourceLineNo">428</span>*/<a name="line.428"></a>
+<span class="sourceLineNo">429</span>public JsonObject CellClassRules!;<a name="line.429"></a>
+<span class="sourceLineNo">430</span>/**<a name="line.430"></a>
+<span class="sourceLineNo">431</span> * An Ag Grid expression which can be executed before getting the value from your data for display<a name="line.431"></a>
+<span class="sourceLineNo">432</span> *<a name="line.432"></a>
+<span class="sourceLineNo">433</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.433"></a>
+<span class="sourceLineNo">434</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.434"></a>
 <span class="sourceLineNo">435</span> *<a name="line.435"></a>
-<span class="sourceLineNo">436</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.436"></a>
-<span class="sourceLineNo">437</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.437"></a>
-<span class="sourceLineNo">438</span> *<a name="line.438"></a>
-<span class="sourceLineNo">439</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.439"></a>
-<span class="sourceLineNo">440</span>*/<a name="line.440"></a>
-<span class="sourceLineNo">441</span>public GxExpressionInterface ValueFormatterExpression!;<a name="line.441"></a>
-<span class="sourceLineNo">442</span>/**<a name="line.442"></a>
-<span class="sourceLineNo">443</span> * An Ag Grid expression which can be executed to get the value for filtering purposes&amp;#183;<a name="line.443"></a>
+<span class="sourceLineNo">436</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.436"></a>
+<span class="sourceLineNo">437</span>*/<a name="line.437"></a>
+<span class="sourceLineNo">438</span>public GxExpressionInterface ValueGetterExpression!;<a name="line.438"></a>
+<span class="sourceLineNo">439</span>/**<a name="line.439"></a>
+<span class="sourceLineNo">440</span> * An Ag Grid expression which can be executed to format the value for display&amp;#183;<a name="line.440"></a>
+<span class="sourceLineNo">441</span> *<a name="line.441"></a>
+<span class="sourceLineNo">442</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.442"></a>
+<span class="sourceLineNo">443</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.443"></a>
 <span class="sourceLineNo">444</span> *<a name="line.444"></a>
-<span class="sourceLineNo">445</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.445"></a>
-<span class="sourceLineNo">446</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.446"></a>
-<span class="sourceLineNo">447</span> *<a name="line.447"></a>
-<span class="sourceLineNo">448</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.448"></a>
-<span class="sourceLineNo">449</span>*/<a name="line.449"></a>
-<span class="sourceLineNo">450</span>public GxExpressionInterface FilterValueGetterExpression!;<a name="line.450"></a>
-<span class="sourceLineNo">451</span>/**<a name="line.451"></a>
-<span class="sourceLineNo">452</span> * An Ag Grid expression which can be executed before setting the value into your data for saving&amp;#183;<a name="line.452"></a>
+<span class="sourceLineNo">445</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.445"></a>
+<span class="sourceLineNo">446</span>*/<a name="line.446"></a>
+<span class="sourceLineNo">447</span>public GxExpressionInterface ValueFormatterExpression!;<a name="line.447"></a>
+<span class="sourceLineNo">448</span>/**<a name="line.448"></a>
+<span class="sourceLineNo">449</span> * An Ag Grid expression which can be executed to get the value for filtering purposes&amp;#183;<a name="line.449"></a>
+<span class="sourceLineNo">450</span> *<a name="line.450"></a>
+<span class="sourceLineNo">451</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.451"></a>
+<span class="sourceLineNo">452</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.452"></a>
 <span class="sourceLineNo">453</span> *<a name="line.453"></a>
-<span class="sourceLineNo">454</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.454"></a>
-<span class="sourceLineNo">455</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.455"></a>
-<span class="sourceLineNo">456</span> *<a name="line.456"></a>
-<span class="sourceLineNo">457</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.457"></a>
-<span class="sourceLineNo">458</span>*/<a name="line.458"></a>
-<span class="sourceLineNo">459</span>public GxExpressionInterface ValueSetterExpression!;<a name="line.459"></a>
-<span class="sourceLineNo">460</span>/**<a name="line.460"></a>
-<span class="sourceLineNo">461</span> * An Ag Grid expression which can be executed to parse the value for saving&amp;#183;<a name="line.461"></a>
+<span class="sourceLineNo">454</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.454"></a>
+<span class="sourceLineNo">455</span>*/<a name="line.455"></a>
+<span class="sourceLineNo">456</span>public GxExpressionInterface FilterValueGetterExpression!;<a name="line.456"></a>
+<span class="sourceLineNo">457</span>/**<a name="line.457"></a>
+<span class="sourceLineNo">458</span> * An Ag Grid expression which can be executed before setting the value into your data for saving&amp;#183;<a name="line.458"></a>
+<span class="sourceLineNo">459</span> *<a name="line.459"></a>
+<span class="sourceLineNo">460</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.460"></a>
+<span class="sourceLineNo">461</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.461"></a>
 <span class="sourceLineNo">462</span> *<a name="line.462"></a>
-<span class="sourceLineNo">463</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.463"></a>
-<span class="sourceLineNo">464</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.464"></a>
-<span class="sourceLineNo">465</span> *<a name="line.465"></a>
-<span class="sourceLineNo">466</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.466"></a>
-<span class="sourceLineNo">467</span>*/<a name="line.467"></a>
-<span class="sourceLineNo">468</span>public GxExpressionInterface ValueParserExpression!;<a name="line.468"></a>
-<span class="sourceLineNo">469</span>/**<a name="line.469"></a>
-<span class="sourceLineNo">470</span> * The default numbers mask to use&amp;#183; by default null()<a name="line.470"></a>
-<span class="sourceLineNo">471</span>*/<a name="line.471"></a>
-<span class="sourceLineNo">472</span>public BBjString DefaultNumbersMask!;<a name="line.472"></a>
-<span class="sourceLineNo">473</span>/**<a name="line.473"></a>
-<span class="sourceLineNo">474</span> * The default strings mask to use&amp;#183; by default null()<a name="line.474"></a>
-<span class="sourceLineNo">475</span>*/<a name="line.475"></a>
-<span class="sourceLineNo">476</span>public BBjString DefaultStringsMask!;<a name="line.476"></a>
-<span class="sourceLineNo">477</span>/**<a name="line.477"></a>
-<span class="sourceLineNo">478</span> * The default dates mask to use&amp;#183; by default &lt;b&gt;%Dz&amp;#183;%Mz&amp;#183;%Yd&lt;/b&gt;<a name="line.478"></a>
-<span class="sourceLineNo">479</span>*/<a name="line.479"></a>
-<span class="sourceLineNo">480</span>public BBjString DefaultDatesMask!;<a name="line.480"></a>
-<span class="sourceLineNo">481</span>/**<a name="line.481"></a>
-<span class="sourceLineNo">482</span> * The default dates mask to use&amp;#183; by default &lt;b&gt;%Dz&amp;#183;%Hz:%mz:%sz&lt;/b&gt;<a name="line.482"></a>
-<span class="sourceLineNo">483</span>*/<a name="line.483"></a>
-<span class="sourceLineNo">484</span>public BBjString DefaultTimesMask!;<a name="line.484"></a>
-<span class="sourceLineNo">485</span>/**<a name="line.485"></a>
-<span class="sourceLineNo">486</span> * The default timestamps mask to use&amp;#183; by default &lt;b&gt;%Dz&amp;#183;%Mz&amp;#183;%Yl %Hz:%mz:%sz&lt;/b&gt;<a name="line.486"></a>
-<span class="sourceLineNo">487</span>*/<a name="line.487"></a>
-<span class="sourceLineNo">488</span>public BBjString DefaultTimestampsMask!;<a name="line.488"></a>
-<span class="sourceLineNo">489</span>/**<a name="line.489"></a>
-<span class="sourceLineNo">490</span> * Icons to use inside the column instead of the grid's default icons&amp;#183;<a name="line.490"></a>
-<span class="sourceLineNo">491</span> *<a name="line.491"></a>
-<span class="sourceLineNo">492</span> * The icons can either be set on the grid options (all icons) or on the column definition (all except group)&amp;#183;<a name="line.492"></a>
-<span class="sourceLineNo">493</span> * If defined in both the grid options and column definitions, the column definition will get used&amp;#183;<a name="line.493"></a>
-<span class="sourceLineNo">494</span> * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for<a name="line.494"></a>
-<span class="sourceLineNo">495</span> * specific columns&amp;#183; This is handy if, for example, you want to include 'A&amp;#183;&amp;#183;Z' as string sort icons<a name="line.495"></a>
-<span class="sourceLineNo">496</span> * and just the simple arrow for other columns&amp;#183;<a name="line.496"></a>
+<span class="sourceLineNo">463</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.463"></a>
+<span class="sourceLineNo">464</span>*/<a name="line.464"></a>
+<span class="sourceLineNo">465</span>public GxExpressionInterface ValueSetterExpression!;<a name="line.465"></a>
+<span class="sourceLineNo">466</span>/**<a name="line.466"></a>
+<span class="sourceLineNo">467</span> * An Ag Grid expression which can be executed to parse the value for saving&amp;#183;<a name="line.467"></a>
+<span class="sourceLineNo">468</span> *<a name="line.468"></a>
+<span class="sourceLineNo">469</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.469"></a>
+<span class="sourceLineNo">470</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.470"></a>
+<span class="sourceLineNo">471</span> *<a name="line.471"></a>
+<span class="sourceLineNo">472</span> * @see Gx&amp;#183;Expression&amp;#183;GxExpression<a name="line.472"></a>
+<span class="sourceLineNo">473</span>*/<a name="line.473"></a>
+<span class="sourceLineNo">474</span>public GxExpressionInterface ValueParserExpression!;<a name="line.474"></a>
+<span class="sourceLineNo">475</span>/**<a name="line.475"></a>
+<span class="sourceLineNo">476</span> * The default numbers mask to use&amp;#183; by default null()<a name="line.476"></a>
+<span class="sourceLineNo">477</span>*/<a name="line.477"></a>
+<span class="sourceLineNo">478</span>public BBjString DefaultNumbersMask!;<a name="line.478"></a>
+<span class="sourceLineNo">479</span>/**<a name="line.479"></a>
+<span class="sourceLineNo">480</span> * The default strings mask to use&amp;#183; by default null()<a name="line.480"></a>
+<span class="sourceLineNo">481</span>*/<a name="line.481"></a>
+<span class="sourceLineNo">482</span>public BBjString DefaultStringsMask!;<a name="line.482"></a>
+<span class="sourceLineNo">483</span>/**<a name="line.483"></a>
+<span class="sourceLineNo">484</span> * The default dates mask to use&amp;#183; by default &lt;b&gt;%Dz&amp;#183;%Mz&amp;#183;%Yd&lt;/b&gt;<a name="line.484"></a>
+<span class="sourceLineNo">485</span>*/<a name="line.485"></a>
+<span class="sourceLineNo">486</span>public BBjString DefaultDatesMask!;<a name="line.486"></a>
+<span class="sourceLineNo">487</span>/**<a name="line.487"></a>
+<span class="sourceLineNo">488</span> * The default dates mask to use&amp;#183; by default &lt;b&gt;%Dz&amp;#183;%Hz:%mz:%sz&lt;/b&gt;<a name="line.488"></a>
+<span class="sourceLineNo">489</span>*/<a name="line.489"></a>
+<span class="sourceLineNo">490</span>public BBjString DefaultTimesMask!;<a name="line.490"></a>
+<span class="sourceLineNo">491</span>/**<a name="line.491"></a>
+<span class="sourceLineNo">492</span> * The default timestamps mask to use&amp;#183; by default &lt;b&gt;%Dz&amp;#183;%Mz&amp;#183;%Yl %Hz:%mz:%sz&lt;/b&gt;<a name="line.492"></a>
+<span class="sourceLineNo">493</span>*/<a name="line.493"></a>
+<span class="sourceLineNo">494</span>public BBjString DefaultTimestampsMask!;<a name="line.494"></a>
+<span class="sourceLineNo">495</span>/**<a name="line.495"></a>
+<span class="sourceLineNo">496</span> * Icons to use inside the column instead of the grid's default icons&amp;#183;<a name="line.496"></a>
 <span class="sourceLineNo">497</span> *<a name="line.497"></a>
-<span class="sourceLineNo">498</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.498"></a>
-<span class="sourceLineNo">499</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.499"></a>
-<span class="sourceLineNo">500</span> *<a name="line.500"></a>
-<span class="sourceLineNo">501</span> * The icons are set as follows:<a name="line.501"></a>
-<span class="sourceLineNo">502</span> * &lt;pre&gt;<a name="line.502"></a>
-<span class="sourceLineNo">503</span> * &lt;code&gt;<a name="line.503"></a>
-<span class="sourceLineNo">504</span> * // column header items<a name="line.504"></a>
-<span class="sourceLineNo">505</span> * menu<a name="line.505"></a>
-<span class="sourceLineNo">506</span> * filter<a name="line.506"></a>
-<span class="sourceLineNo">507</span> * columns<a name="line.507"></a>
-<span class="sourceLineNo">508</span> * sortAscending<a name="line.508"></a>
-<span class="sourceLineNo">509</span> * sortDescending<a name="line.509"></a>
-<span class="sourceLineNo">510</span> * sortUnSort<a name="line.510"></a>
-<span class="sourceLineNo">511</span> *<a name="line.511"></a>
-<span class="sourceLineNo">512</span> * // row checkbox selection and tool panel column selection<a name="line.512"></a>
-<span class="sourceLineNo">513</span> * checkboxChecked<a name="line.513"></a>
-<span class="sourceLineNo">514</span> * checkboxUnchecked<a name="line.514"></a>
-<span class="sourceLineNo">515</span> * checkboxIndeterminate<a name="line.515"></a>
-<span class="sourceLineNo">516</span> *<a name="line.516"></a>
-<span class="sourceLineNo">517</span> * // tool panel column selection, when read only (ie disabled checkboxes)<a name="line.517"></a>
-<span class="sourceLineNo">518</span> * checkboxCheckedReadOnly<a name="line.518"></a>
-<span class="sourceLineNo">519</span> * checkboxUncheckedReadOnly<a name="line.519"></a>
-<span class="sourceLineNo">520</span> * checkboxIndeterminateReadOnly<a name="line.520"></a>
-<span class="sourceLineNo">521</span> *<a name="line.521"></a>
-<span class="sourceLineNo">522</span> * // when moving columns<a name="line.522"></a>
-<span class="sourceLineNo">523</span> * columnMovePin // when column is to the left, before it gets pinned<a name="line.523"></a>
-<span class="sourceLineNo">524</span> * columnMoveAdd // when adding a column<a name="line.524"></a>
-<span class="sourceLineNo">525</span> * columnMoveHide // when removing a column<a name="line.525"></a>
-<span class="sourceLineNo">526</span> * columnMoveMove // when moving a column<a name="line.526"></a>
-<span class="sourceLineNo">527</span> * columnMoveLeft // when moving and scrolling left<a name="line.527"></a>
-<span class="sourceLineNo">528</span> * columnMoveRight // when moving and scrolling right<a name="line.528"></a>
-<span class="sourceLineNo">529</span> * columnMoveGroup // when about to drop into group panel<a name="line.529"></a>
-<span class="sourceLineNo">530</span> * columnMoveValue // when about to drop into value panel<a name="line.530"></a>
-<span class="sourceLineNo">531</span> * columnMovePivot // when about to drop into pivot panel<a name="line.531"></a>
-<span class="sourceLineNo">532</span> * dropNotAllowed // when trying to drop column into group/value/pivot panel and column doesn't support it<a name="line.532"></a>
-<span class="sourceLineNo">533</span> *<a name="line.533"></a>
-<span class="sourceLineNo">534</span> * // menu<a name="line.534"></a>
-<span class="sourceLineNo">535</span> * menuPin // beside the column pin menu item<a name="line.535"></a>
-<span class="sourceLineNo">536</span> * menuValue // beside the column value menu item<a name="line.536"></a>
-<span class="sourceLineNo">537</span> * menuAddRowGroup // beside the column row group menu item<a name="line.537"></a>
-<span class="sourceLineNo">538</span> * menuRemoveRowGroup // beside the column row group menu item<a name="line.538"></a>
-<span class="sourceLineNo">539</span> * clipboardCopy // beside the copy to clipboard menu item<a name="line.539"></a>
-<span class="sourceLineNo">540</span> * clipboardPaste // beside the paste from clipboard menu item<a name="line.540"></a>
-<span class="sourceLineNo">541</span> *<a name="line.541"></a>
-<span class="sourceLineNo">542</span> * // column drop panels<a name="line.542"></a>
-<span class="sourceLineNo">543</span> * pivotPanel // beside where to drop columns for pivot<a name="line.543"></a>
-<span class="sourceLineNo">544</span> * valuePanel // beside where to drop columns for value<a name="line.544"></a>
-<span class="sourceLineNo">545</span> * &lt;/code&gt;<a name="line.545"></a>
-<span class="sourceLineNo">546</span> * &lt;/pre&gt;<a name="line.546"></a>
-<span class="sourceLineNo">547</span>*/<a name="line.547"></a>
-<span class="sourceLineNo">548</span>public JsonObject Icons!;<a name="line.548"></a>
-<span class="sourceLineNo">549</span>/**<a name="line.549"></a>
-<span class="sourceLineNo">550</span> * Defines the chart data type that should be used for a column&amp;#183;<a name="line.550"></a>
-<span class="sourceLineNo">551</span> * There are two types of charting ranges; a category range that is highlighted in green and a series range that is<a name="line.551"></a>
-<span class="sourceLineNo">552</span> * highlighted in blue&amp;#183;<a name="line.552"></a>
-<span class="sourceLineNo">553</span> * A category range can only contain cells from a single column, whereas a series range can contain<a name="line.553"></a>
-<span class="sourceLineNo">554</span> * values from many columns&amp;#183;<a name="line.554"></a>
-<span class="sourceLineNo">555</span> * Columns can be explicitly configured or left for the grid to infer the type based on the data contained in the cells<a name="line.555"></a>
-<span class="sourceLineNo">556</span> * where columns containing string values will map to 'categories' and columns containing number values will map to 'series'<a name="line.556"></a>
-<span class="sourceLineNo">557</span> * charting columns&amp;#183;<a name="line.557"></a>
-<span class="sourceLineNo">558</span> *<a name="line.558"></a>
-<span class="sourceLineNo">559</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.559"></a>
-<span class="sourceLineNo">560</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.560"></a>
-<span class="sourceLineNo">561</span>*/<a name="line.561"></a>
-<span class="sourceLineNo">562</span>public BBjString ChartType!;<a name="line.562"></a>
-<span class="sourceLineNo">563</span>/**<a name="line.563"></a>
-<span class="sourceLineNo">564</span> * The field of the tooltip to apply to the cell.<a name="line.564"></a>
-<span class="sourceLineNo">565</span> *<a name="line.565"></a>
-<span class="sourceLineNo">566</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.566"></a>
-<span class="sourceLineNo">567</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.567"></a>
-<span class="sourceLineNo">568</span>*/<a name="line.568"></a>
-<span class="sourceLineNo">569</span>public BBjString TooltipField!;<a name="line.569"></a>
-<span class="sourceLineNo">570</span>/**<a name="line.570"></a>
-<span class="sourceLineNo">571</span> * A Grid expression which can be executed to return the tooltip value<a name="line.571"></a>
-<span class="sourceLineNo">572</span> * to display for each cell.<a name="line.572"></a>
-<span class="sourceLineNo">573</span> *<a name="line.573"></a>
-<span class="sourceLineNo">574</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.574"></a>
-<span class="sourceLineNo">575</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.575"></a>
-<span class="sourceLineNo">576</span> *<a name="line.576"></a>
-<span class="sourceLineNo">577</span> * @see GxExpressions.GxExpression<a name="line.577"></a>
-<span class="sourceLineNo">578</span>*/<a name="line.578"></a>
-<span class="sourceLineNo">579</span>public GxExpressionInterface TooltipValueGetterExpression!;<a name="line.579"></a>
-<span class="sourceLineNo">580</span>/**<a name="line.580"></a>
-<span class="sourceLineNo">581</span> * Get pinned left constant<a name="line.581"></a>
+<span class="sourceLineNo">498</span> * The icons can either be set on the grid options (all icons) or on the column definition (all except group)&amp;#183;<a name="line.498"></a>
+<span class="sourceLineNo">499</span> * If defined in both the grid options and column definitions, the column definition will get used&amp;#183;<a name="line.499"></a>
+<span class="sourceLineNo">500</span> * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for<a name="line.500"></a>
+<span class="sourceLineNo">501</span> * specific columns&amp;#183; This is handy if, for example, you want to include 'A&amp;#183;&amp;#183;Z' as string sort icons<a name="line.501"></a>
+<span class="sourceLineNo">502</span> * and just the simple arrow for other columns&amp;#183;<a name="line.502"></a>
+<span class="sourceLineNo">503</span> *<a name="line.503"></a>
+<span class="sourceLineNo">504</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.504"></a>
+<span class="sourceLineNo">505</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.505"></a>
+<span class="sourceLineNo">506</span> *<a name="line.506"></a>
+<span class="sourceLineNo">507</span> * The icons are set as follows:<a name="line.507"></a>
+<span class="sourceLineNo">508</span> * &lt;pre&gt;<a name="line.508"></a>
+<span class="sourceLineNo">509</span> * &lt;code&gt;<a name="line.509"></a>
+<span class="sourceLineNo">510</span> * // column header items<a name="line.510"></a>
+<span class="sourceLineNo">511</span> * menu<a name="line.511"></a>
+<span class="sourceLineNo">512</span> * filter<a name="line.512"></a>
+<span class="sourceLineNo">513</span> * columns<a name="line.513"></a>
+<span class="sourceLineNo">514</span> * sortAscending<a name="line.514"></a>
+<span class="sourceLineNo">515</span> * sortDescending<a name="line.515"></a>
+<span class="sourceLineNo">516</span> * sortUnSort<a name="line.516"></a>
+<span class="sourceLineNo">517</span> *<a name="line.517"></a>
+<span class="sourceLineNo">518</span> * // row checkbox selection and tool panel column selection<a name="line.518"></a>
+<span class="sourceLineNo">519</span> * checkboxChecked<a name="line.519"></a>
+<span class="sourceLineNo">520</span> * checkboxUnchecked<a name="line.520"></a>
+<span class="sourceLineNo">521</span> * checkboxIndeterminate<a name="line.521"></a>
+<span class="sourceLineNo">522</span> *<a name="line.522"></a>
+<span class="sourceLineNo">523</span> * // tool panel column selection, when read only (ie disabled checkboxes)<a name="line.523"></a>
+<span class="sourceLineNo">524</span> * checkboxCheckedReadOnly<a name="line.524"></a>
+<span class="sourceLineNo">525</span> * checkboxUncheckedReadOnly<a name="line.525"></a>
+<span class="sourceLineNo">526</span> * checkboxIndeterminateReadOnly<a name="line.526"></a>
+<span class="sourceLineNo">527</span> *<a name="line.527"></a>
+<span class="sourceLineNo">528</span> * // when moving columns<a name="line.528"></a>
+<span class="sourceLineNo">529</span> * columnMovePin // when column is to the left, before it gets pinned<a name="line.529"></a>
+<span class="sourceLineNo">530</span> * columnMoveAdd // when adding a column<a name="line.530"></a>
+<span class="sourceLineNo">531</span> * columnMoveHide // when removing a column<a name="line.531"></a>
+<span class="sourceLineNo">532</span> * columnMoveMove // when moving a column<a name="line.532"></a>
+<span class="sourceLineNo">533</span> * columnMoveLeft // when moving and scrolling left<a name="line.533"></a>
+<span class="sourceLineNo">534</span> * columnMoveRight // when moving and scrolling right<a name="line.534"></a>
+<span class="sourceLineNo">535</span> * columnMoveGroup // when about to drop into group panel<a name="line.535"></a>
+<span class="sourceLineNo">536</span> * columnMoveValue // when about to drop into value panel<a name="line.536"></a>
+<span class="sourceLineNo">537</span> * columnMovePivot // when about to drop into pivot panel<a name="line.537"></a>
+<span class="sourceLineNo">538</span> * dropNotAllowed // when trying to drop column into group/value/pivot panel and column doesn't support it<a name="line.538"></a>
+<span class="sourceLineNo">539</span> *<a name="line.539"></a>
+<span class="sourceLineNo">540</span> * // menu<a name="line.540"></a>
+<span class="sourceLineNo">541</span> * menuPin // beside the column pin menu item<a name="line.541"></a>
+<span class="sourceLineNo">542</span> * menuValue // beside the column value menu item<a name="line.542"></a>
+<span class="sourceLineNo">543</span> * menuAddRowGroup // beside the column row group menu item<a name="line.543"></a>
+<span class="sourceLineNo">544</span> * menuRemoveRowGroup // beside the column row group menu item<a name="line.544"></a>
+<span class="sourceLineNo">545</span> * clipboardCopy // beside the copy to clipboard menu item<a name="line.545"></a>
+<span class="sourceLineNo">546</span> * clipboardPaste // beside the paste from clipboard menu item<a name="line.546"></a>
+<span class="sourceLineNo">547</span> *<a name="line.547"></a>
+<span class="sourceLineNo">548</span> * // column drop panels<a name="line.548"></a>
+<span class="sourceLineNo">549</span> * pivotPanel // beside where to drop columns for pivot<a name="line.549"></a>
+<span class="sourceLineNo">550</span> * valuePanel // beside where to drop columns for value<a name="line.550"></a>
+<span class="sourceLineNo">551</span> * &lt;/code&gt;<a name="line.551"></a>
+<span class="sourceLineNo">552</span> * &lt;/pre&gt;<a name="line.552"></a>
+<span class="sourceLineNo">553</span>*/<a name="line.553"></a>
+<span class="sourceLineNo">554</span>public JsonObject Icons!;<a name="line.554"></a>
+<span class="sourceLineNo">555</span>/**<a name="line.555"></a>
+<span class="sourceLineNo">556</span> * Defines the chart data type that should be used for a column&amp;#183;<a name="line.556"></a>
+<span class="sourceLineNo">557</span> * There are two types of charting ranges; a category range that is highlighted in green and a series range that is<a name="line.557"></a>
+<span class="sourceLineNo">558</span> * highlighted in blue&amp;#183;<a name="line.558"></a>
+<span class="sourceLineNo">559</span> * A category range can only contain cells from a single column, whereas a series range can contain<a name="line.559"></a>
+<span class="sourceLineNo">560</span> * values from many columns&amp;#183;<a name="line.560"></a>
+<span class="sourceLineNo">561</span> * Columns can be explicitly configured or left for the grid to infer the type based on the data contained in the cells<a name="line.561"></a>
+<span class="sourceLineNo">562</span> * where columns containing string values will map to 'categories' and columns containing number values will map to 'series'<a name="line.562"></a>
+<span class="sourceLineNo">563</span> * charting columns&amp;#183;<a name="line.563"></a>
+<span class="sourceLineNo">564</span> *<a name="line.564"></a>
+<span class="sourceLineNo">565</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.565"></a>
+<span class="sourceLineNo">566</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.566"></a>
+<span class="sourceLineNo">567</span>*/<a name="line.567"></a>
+<span class="sourceLineNo">568</span>public BBjString ChartType!;<a name="line.568"></a>
+<span class="sourceLineNo">569</span>/**<a name="line.569"></a>
+<span class="sourceLineNo">570</span> * The field of the tooltip to apply to the cell.<a name="line.570"></a>
+<span class="sourceLineNo">571</span> *<a name="line.571"></a>
+<span class="sourceLineNo">572</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.572"></a>
+<span class="sourceLineNo">573</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.573"></a>
+<span class="sourceLineNo">574</span>*/<a name="line.574"></a>
+<span class="sourceLineNo">575</span>public BBjString TooltipField!;<a name="line.575"></a>
+<span class="sourceLineNo">576</span>/**<a name="line.576"></a>
+<span class="sourceLineNo">577</span> * A Grid expression which can be executed to return the tooltip value<a name="line.577"></a>
+<span class="sourceLineNo">578</span> * to display for each cell.<a name="line.578"></a>
+<span class="sourceLineNo">579</span> *<a name="line.579"></a>
+<span class="sourceLineNo">580</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.580"></a>
+<span class="sourceLineNo">581</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;.<a name="line.581"></a>
 <span class="sourceLineNo">582</span> *<a name="line.582"></a>
-<span class="sourceLineNo">583</span> * @return BBjString &lt;b&gt;left&lt;/b&gt;<a name="line.583"></a>
+<span class="sourceLineNo">583</span> * @see GxExpressions.GxExpression<a name="line.583"></a>
 <span class="sourceLineNo">584</span>*/<a name="line.584"></a>
-<span class="sourceLineNo">585</span>public static BBjString PINNED_LEFT() { }<a name="line.585"></a>
+<span class="sourceLineNo">585</span>public GxExpressionInterface TooltipValueGetterExpression!;<a name="line.585"></a>
 <span class="sourceLineNo">586</span>/**<a name="line.586"></a>
-<span class="sourceLineNo">587</span> * Get pinned right constant<a name="line.587"></a>
+<span class="sourceLineNo">587</span> * Get pinned left constant<a name="line.587"></a>
 <span class="sourceLineNo">588</span> *<a name="line.588"></a>
-<span class="sourceLineNo">589</span> * @return BBjString &lt;b&gt;right&lt;/b&gt;<a name="line.589"></a>
+<span class="sourceLineNo">589</span> * @return BBjString &lt;b&gt;left&lt;/b&gt;<a name="line.589"></a>
 <span class="sourceLineNo">590</span>*/<a name="line.590"></a>
-<span class="sourceLineNo">591</span>public static BBjString PINNED_RIGHT() { }<a name="line.591"></a>
+<span class="sourceLineNo">591</span>public static BBjString PINNED_LEFT() { }<a name="line.591"></a>
 <span class="sourceLineNo">592</span>/**<a name="line.592"></a>
-<span class="sourceLineNo">593</span> * Get sort direction constant<a name="line.593"></a>
+<span class="sourceLineNo">593</span> * Get pinned right constant<a name="line.593"></a>
 <span class="sourceLineNo">594</span> *<a name="line.594"></a>
-<span class="sourceLineNo">595</span> * @return BBjString &lt;b&gt;desc&lt;/b&gt;<a name="line.595"></a>
+<span class="sourceLineNo">595</span> * @return BBjString &lt;b&gt;right&lt;/b&gt;<a name="line.595"></a>
 <span class="sourceLineNo">596</span>*/<a name="line.596"></a>
-<span class="sourceLineNo">597</span>public static BBjString SORT_DESC() { }<a name="line.597"></a>
+<span class="sourceLineNo">597</span>public static BBjString PINNED_RIGHT() { }<a name="line.597"></a>
 <span class="sourceLineNo">598</span>/**<a name="line.598"></a>
 <span class="sourceLineNo">599</span> * Get sort direction constant<a name="line.599"></a>
 <span class="sourceLineNo">600</span> *<a name="line.600"></a>
-<span class="sourceLineNo">601</span> * @return BBjString &lt;b&gt;asc&lt;/b&gt;<a name="line.601"></a>
+<span class="sourceLineNo">601</span> * @return BBjString &lt;b&gt;desc&lt;/b&gt;<a name="line.601"></a>
 <span class="sourceLineNo">602</span>*/<a name="line.602"></a>
-<span class="sourceLineNo">603</span>public static BBjString SORT_ASC() { }<a name="line.603"></a>
+<span class="sourceLineNo">603</span>public static BBjString SORT_DESC() { }<a name="line.603"></a>
 <span class="sourceLineNo">604</span>/**<a name="line.604"></a>
-<span class="sourceLineNo">605</span> * A constant which defines the group state as opened<a name="line.605"></a>
+<span class="sourceLineNo">605</span> * Get sort direction constant<a name="line.605"></a>
 <span class="sourceLineNo">606</span> *<a name="line.606"></a>
-<span class="sourceLineNo">607</span> * @return BBjString &lt;b&gt;opened&lt;/b&gt;<a name="line.607"></a>
+<span class="sourceLineNo">607</span> * @return BBjString &lt;b&gt;asc&lt;/b&gt;<a name="line.607"></a>
 <span class="sourceLineNo">608</span>*/<a name="line.608"></a>
-<span class="sourceLineNo">609</span>public static BBjString COLUMN_GROUP_OPENED() { }<a name="line.609"></a>
+<span class="sourceLineNo">609</span>public static BBjString SORT_ASC() { }<a name="line.609"></a>
 <span class="sourceLineNo">610</span>/**<a name="line.610"></a>
 <span class="sourceLineNo">611</span> * A constant which defines the group state as opened<a name="line.611"></a>
 <span class="sourceLineNo">612</span> *<a name="line.612"></a>
 <span class="sourceLineNo">613</span> * @return BBjString &lt;b&gt;opened&lt;/b&gt;<a name="line.613"></a>
 <span class="sourceLineNo">614</span>*/<a name="line.614"></a>
-<span class="sourceLineNo">615</span>public static BBjString COLUMN_GROUP_CLOSED() { }<a name="line.615"></a>
+<span class="sourceLineNo">615</span>public static BBjString COLUMN_GROUP_OPENED() { }<a name="line.615"></a>
 <span class="sourceLineNo">616</span>/**<a name="line.616"></a>
-<span class="sourceLineNo">617</span> * A constant which defines column chart category<a name="line.617"></a>
+<span class="sourceLineNo">617</span> * A constant which defines the group state as opened<a name="line.617"></a>
 <span class="sourceLineNo">618</span> *<a name="line.618"></a>
-<span class="sourceLineNo">619</span> * @return BBjString &lt;b&gt;category&lt;/b&gt;<a name="line.619"></a>
+<span class="sourceLineNo">619</span> * @return BBjString &lt;b&gt;opened&lt;/b&gt;<a name="line.619"></a>
 <span class="sourceLineNo">620</span>*/<a name="line.620"></a>
-<span class="sourceLineNo">621</span>public static BBjString CHART_TYPE_CATEGORY() { }<a name="line.621"></a>
+<span class="sourceLineNo">621</span>public static BBjString COLUMN_GROUP_CLOSED() { }<a name="line.621"></a>
 <span class="sourceLineNo">622</span>/**<a name="line.622"></a>
-<span class="sourceLineNo">623</span> * A constant which defines column chart series<a name="line.623"></a>
+<span class="sourceLineNo">623</span> * A constant which defines column chart category<a name="line.623"></a>
 <span class="sourceLineNo">624</span> *<a name="line.624"></a>
-<span class="sourceLineNo">625</span> * @return BBjString &lt;b&gt;series&lt;/b&gt;<a name="line.625"></a>
+<span class="sourceLineNo">625</span> * @return BBjString &lt;b&gt;category&lt;/b&gt;<a name="line.625"></a>
 <span class="sourceLineNo">626</span>*/<a name="line.626"></a>
-<span class="sourceLineNo">627</span>public static BBjString CHART_TYPE_SERIES() { }<a name="line.627"></a>
+<span class="sourceLineNo">627</span>public static BBjString CHART_TYPE_CATEGORY() { }<a name="line.627"></a>
 <span class="sourceLineNo">628</span>/**<a name="line.628"></a>
-<span class="sourceLineNo">629</span> * A constant which defines column chart excluded, columns which set chart type to excluded will be excluded from charts<a name="line.629"></a>
+<span class="sourceLineNo">629</span> * A constant which defines column chart series<a name="line.629"></a>
 <span class="sourceLineNo">630</span> *<a name="line.630"></a>
-<span class="sourceLineNo">631</span> * @return BBjString &lt;b&gt;excluded&lt;/b&gt;<a name="line.631"></a>
+<span class="sourceLineNo">631</span> * @return BBjString &lt;b&gt;series&lt;/b&gt;<a name="line.631"></a>
 <span class="sourceLineNo">632</span>*/<a name="line.632"></a>
-<span class="sourceLineNo">633</span>public static BBjString CHART_TYPE_EXCLUDED() { }<a name="line.633"></a>
+<span class="sourceLineNo">633</span>public static BBjString CHART_TYPE_SERIES() { }<a name="line.633"></a>
 <span class="sourceLineNo">634</span>/**<a name="line.634"></a>
-<span class="sourceLineNo">635</span> * Create a GxExpression from string and set it as value getter<a name="line.635"></a>
+<span class="sourceLineNo">635</span> * A constant which defines column chart excluded, columns which set chart type to excluded will be excluded from charts<a name="line.635"></a>
 <span class="sourceLineNo">636</span> *<a name="line.636"></a>
-<span class="sourceLineNo">637</span> * @param BBjString expression! Javascript expression<a name="line.637"></a>
+<span class="sourceLineNo">637</span> * @return BBjString &lt;b&gt;excluded&lt;/b&gt;<a name="line.637"></a>
 <span class="sourceLineNo">638</span>*/<a name="line.638"></a>
-<span class="sourceLineNo">639</span>public void setValueGetterExpression(BBjString expression!) { }<a name="line.639"></a>
+<span class="sourceLineNo">639</span>public static BBjString CHART_TYPE_EXCLUDED() { }<a name="line.639"></a>
 <span class="sourceLineNo">640</span>/**<a name="line.640"></a>
-<span class="sourceLineNo">641</span> * Create a GxExpression from string and set it as value setter<a name="line.641"></a>
+<span class="sourceLineNo">641</span> * Create a GxExpression from string and set it as value getter<a name="line.641"></a>
 <span class="sourceLineNo">642</span> *<a name="line.642"></a>
 <span class="sourceLineNo">643</span> * @param BBjString expression! Javascript expression<a name="line.643"></a>
 <span class="sourceLineNo">644</span>*/<a name="line.644"></a>
-<span class="sourceLineNo">645</span>public void setValueSetterExpression(BBjString expression!) { }<a name="line.645"></a>
+<span class="sourceLineNo">645</span>public void setValueGetterExpression(BBjString expression!) { }<a name="line.645"></a>
 <span class="sourceLineNo">646</span>/**<a name="line.646"></a>
-<span class="sourceLineNo">647</span> * Create a GxExpression from string and set it as value formatter<a name="line.647"></a>
+<span class="sourceLineNo">647</span> * Create a GxExpression from string and set it as value setter<a name="line.647"></a>
 <span class="sourceLineNo">648</span> *<a name="line.648"></a>
 <span class="sourceLineNo">649</span> * @param BBjString expression! Javascript expression<a name="line.649"></a>
 <span class="sourceLineNo">650</span>*/<a name="line.650"></a>
-<span class="sourceLineNo">651</span>public void setValueFormatterExpression(BBjString expression!) { }<a name="line.651"></a>
+<span class="sourceLineNo">651</span>public void setValueSetterExpression(BBjString expression!) { }<a name="line.651"></a>
 <span class="sourceLineNo">652</span>/**<a name="line.652"></a>
-<span class="sourceLineNo">653</span> * Create a GxExpression from string and set it as value parser<a name="line.653"></a>
+<span class="sourceLineNo">653</span> * Create a GxExpression from string and set it as value formatter<a name="line.653"></a>
 <span class="sourceLineNo">654</span> *<a name="line.654"></a>
 <span class="sourceLineNo">655</span> * @param BBjString expression! Javascript expression<a name="line.655"></a>
 <span class="sourceLineNo">656</span>*/<a name="line.656"></a>
-<span class="sourceLineNo">657</span>public void setValueParserExpression(BBjString expression!) { }<a name="line.657"></a>
+<span class="sourceLineNo">657</span>public void setValueFormatterExpression(BBjString expression!) { }<a name="line.657"></a>
 <span class="sourceLineNo">658</span>/**<a name="line.658"></a>
-<span class="sourceLineNo">659</span> * Create a GxExpression from string and set it as tooltip value getter<a name="line.659"></a>
+<span class="sourceLineNo">659</span> * Create a GxExpression from string and set it as value parser<a name="line.659"></a>
 <span class="sourceLineNo">660</span> *<a name="line.660"></a>
 <span class="sourceLineNo">661</span> * @param BBjString expression! Javascript expression<a name="line.661"></a>
 <span class="sourceLineNo">662</span>*/<a name="line.662"></a>
-<span class="sourceLineNo">663</span>public void setTooltipValueGetterExpression(BBjString expression!) { }<a name="line.663"></a>
+<span class="sourceLineNo">663</span>public void setValueParserExpression(BBjString expression!) { }<a name="line.663"></a>
 <span class="sourceLineNo">664</span>/**<a name="line.664"></a>
-<span class="sourceLineNo">665</span> * Set the allowd aggregation functions allowed on this column<a name="line.665"></a>
+<span class="sourceLineNo">665</span> * Create a GxExpression from string and set it as tooltip value getter<a name="line.665"></a>
 <span class="sourceLineNo">666</span> *<a name="line.666"></a>
-<span class="sourceLineNo">667</span> * @param BBjString funcs! comma separated functinos<a name="line.667"></a>
+<span class="sourceLineNo">667</span> * @param BBjString expression! Javascript expression<a name="line.667"></a>
 <span class="sourceLineNo">668</span>*/<a name="line.668"></a>
-<span class="sourceLineNo">669</span>public void setAllowedAggFuncs(BBjString funcs!) { }<a name="line.669"></a>
+<span class="sourceLineNo">669</span>public void setTooltipValueGetterExpression(BBjString expression!) { }<a name="line.669"></a>
 <span class="sourceLineNo">670</span>/**<a name="line.670"></a>
-<span class="sourceLineNo">671</span> * Sets the foreground color for a column<a name="line.671"></a>
+<span class="sourceLineNo">671</span> * Create a GxExpression from string and set it as editable expression<a name="line.671"></a>
 <span class="sourceLineNo">672</span> *<a name="line.672"></a>
-<span class="sourceLineNo">673</span> * @param BBjColor color! the color for the column<a name="line.673"></a>
+<span class="sourceLineNo">673</span> * @param BBjString expression! Javascript expression<a name="line.673"></a>
 <span class="sourceLineNo">674</span>*/<a name="line.674"></a>
-<span class="sourceLineNo">675</span>public void setForeColor(BBjColor color!) { }<a name="line.675"></a>
+<span class="sourceLineNo">675</span>public void setEditableExpression(BBjString expression!) { }<a name="line.675"></a>
 <span class="sourceLineNo">676</span>/**<a name="line.676"></a>
-<span class="sourceLineNo">677</span> * Sets the foreground color for a column<a name="line.677"></a>
+<span class="sourceLineNo">677</span> * Set the allowd aggregation functions allowed on this column<a name="line.677"></a>
 <span class="sourceLineNo">678</span> *<a name="line.678"></a>
-<span class="sourceLineNo">679</span> * @param BBjString color$ Valid CSS color<a name="line.679"></a>
-<span class="sourceLineNo">680</span> *<a name="line.680"></a>
-<span class="sourceLineNo">681</span> * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value<a name="line.681"></a>
-<span class="sourceLineNo">682</span>*/<a name="line.682"></a>
-<span class="sourceLineNo">683</span>public void setForeColor(BBjString color!) { }<a name="line.683"></a>
-<span class="sourceLineNo">684</span>/**<a name="line.684"></a>
-<span class="sourceLineNo">685</span> * Sets the background color of a column<a name="line.685"></a>
-<span class="sourceLineNo">686</span> *<a name="line.686"></a>
-<span class="sourceLineNo">687</span> * @param BBjColor color! The color for the column<a name="line.687"></a>
-<span class="sourceLineNo">688</span>*/<a name="line.688"></a>
-<span class="sourceLineNo">689</span>public void setBackColor(BBjColor color!) { }<a name="line.689"></a>
-<span class="sourceLineNo">690</span>/**<a name="line.690"></a>
-<span class="sourceLineNo">691</span> * Sets the background color of a column<a name="line.691"></a>
+<span class="sourceLineNo">679</span> * @param BBjString funcs! comma separated functinos<a name="line.679"></a>
+<span class="sourceLineNo">680</span>*/<a name="line.680"></a>
+<span class="sourceLineNo">681</span>public void setAllowedAggFuncs(BBjString funcs!) { }<a name="line.681"></a>
+<span class="sourceLineNo">682</span>/**<a name="line.682"></a>
+<span class="sourceLineNo">683</span> * Sets the foreground color for a column<a name="line.683"></a>
+<span class="sourceLineNo">684</span> *<a name="line.684"></a>
+<span class="sourceLineNo">685</span> * @param BBjColor color! the color for the column<a name="line.685"></a>
+<span class="sourceLineNo">686</span>*/<a name="line.686"></a>
+<span class="sourceLineNo">687</span>public void setForeColor(BBjColor color!) { }<a name="line.687"></a>
+<span class="sourceLineNo">688</span>/**<a name="line.688"></a>
+<span class="sourceLineNo">689</span> * Sets the foreground color for a column<a name="line.689"></a>
+<span class="sourceLineNo">690</span> *<a name="line.690"></a>
+<span class="sourceLineNo">691</span> * @param BBjString color$ Valid CSS color<a name="line.691"></a>
 <span class="sourceLineNo">692</span> *<a name="line.692"></a>
-<span class="sourceLineNo">693</span> * @param BBjColor color$ Valid CSS color<a name="line.693"></a>
-<span class="sourceLineNo">694</span> *<a name="line.694"></a>
-<span class="sourceLineNo">695</span> * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value<a name="line.695"></a>
-<span class="sourceLineNo">696</span>*/<a name="line.696"></a>
-<span class="sourceLineNo">697</span>public void setBackColor(BBjString color!) { }<a name="line.697"></a>
-<span class="sourceLineNo">698</span>/**<a name="line.698"></a>
-<span class="sourceLineNo">699</span> * Sets the default alignment for a column<a name="line.699"></a>
-<span class="sourceLineNo">700</span> *<a name="line.700"></a>
-<span class="sourceLineNo">701</span> * @param BBjNumber align! The column alignment<a name="line.701"></a>
-<span class="sourceLineNo">702</span> * @param BBjNumber alignHeader! when true the column's header will use the same alignment<a name="line.702"></a>
-<span class="sourceLineNo">703</span> *<a name="line.703"></a>
-<span class="sourceLineNo">704</span> * valid alignments:<a name="line.704"></a>
-<span class="sourceLineNo">705</span> *<a name="line.705"></a>
-<span class="sourceLineNo">706</span> * @see BBjGridExWidget.GRID_ALIGN_LEFT()<a name="line.706"></a>
-<span class="sourceLineNo">707</span> * @see BBjGridExWidget.GRID_ALIGN_CENTER()<a name="line.707"></a>
-<span class="sourceLineNo">708</span> * @see BBjGridExWidget.GRID_ALIGN_RIGHT()<a name="line.708"></a>
-<span class="sourceLineNo">709</span>*/<a name="line.709"></a>
-<span class="sourceLineNo">710</span>public void setAlignment(BBjNumber align! , BBjNumber alignHeader!) { }<a name="line.710"></a>
-<span class="sourceLineNo">711</span>/**<a name="line.711"></a>
-<span class="sourceLineNo">712</span> * Sets the default alignment for a column<a name="line.712"></a>
-<span class="sourceLineNo">713</span> *<a name="line.713"></a>
-<span class="sourceLineNo">714</span> * @param BBjNumber align! The column alignment<a name="line.714"></a>
+<span class="sourceLineNo">693</span> * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value<a name="line.693"></a>
+<span class="sourceLineNo">694</span>*/<a name="line.694"></a>
+<span class="sourceLineNo">695</span>public void setForeColor(BBjString color!) { }<a name="line.695"></a>
+<span class="sourceLineNo">696</span>/**<a name="line.696"></a>
+<span class="sourceLineNo">697</span> * Sets the background color of a column<a name="line.697"></a>
+<span class="sourceLineNo">698</span> *<a name="line.698"></a>
+<span class="sourceLineNo">699</span> * @param BBjColor color! The color for the column<a name="line.699"></a>
+<span class="sourceLineNo">700</span>*/<a name="line.700"></a>
+<span class="sourceLineNo">701</span>public void setBackColor(BBjColor color!) { }<a name="line.701"></a>
+<span class="sourceLineNo">702</span>/**<a name="line.702"></a>
+<span class="sourceLineNo">703</span> * Sets the background color of a column<a name="line.703"></a>
+<span class="sourceLineNo">704</span> *<a name="line.704"></a>
+<span class="sourceLineNo">705</span> * @param BBjColor color$ Valid CSS color<a name="line.705"></a>
+<span class="sourceLineNo">706</span> *<a name="line.706"></a>
+<span class="sourceLineNo">707</span> * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value<a name="line.707"></a>
+<span class="sourceLineNo">708</span>*/<a name="line.708"></a>
+<span class="sourceLineNo">709</span>public void setBackColor(BBjString color!) { }<a name="line.709"></a>
+<span class="sourceLineNo">710</span>/**<a name="line.710"></a>
+<span class="sourceLineNo">711</span> * Sets the default alignment for a column<a name="line.711"></a>
+<span class="sourceLineNo">712</span> *<a name="line.712"></a>
+<span class="sourceLineNo">713</span> * @param BBjNumber align! The column alignment<a name="line.713"></a>
+<span class="sourceLineNo">714</span> * @param BBjNumber alignHeader! when true the column's header will use the same alignment<a name="line.714"></a>
 <span class="sourceLineNo">715</span> *<a name="line.715"></a>
 <span class="sourceLineNo">716</span> * valid alignments:<a name="line.716"></a>
 <span class="sourceLineNo">717</span> *<a name="line.717"></a>
 <span class="sourceLineNo">718</span> * @see BBjGridExWidget.GRID_ALIGN_LEFT()<a name="line.718"></a>
 <span class="sourceLineNo">719</span> * @see BBjGridExWidget.GRID_ALIGN_CENTER()<a name="line.719"></a>
 <span class="sourceLineNo">720</span> * @see BBjGridExWidget.GRID_ALIGN_RIGHT()<a name="line.720"></a>
-<span class="sourceLineNo">721</span> *<a name="line.721"></a>
-<span class="sourceLineNo">722</span> * @RequiresRefresh<a name="line.722"></a>
-<span class="sourceLineNo">723</span>*/<a name="line.723"></a>
-<span class="sourceLineNo">724</span>public void setAlignment(BBjNumber align!) { }<a name="line.724"></a>
-<span class="sourceLineNo">725</span>/**<a name="line.725"></a>
-<span class="sourceLineNo">726</span> * Sets the default alignment for a column's header<a name="line.726"></a>
+<span class="sourceLineNo">721</span>*/<a name="line.721"></a>
+<span class="sourceLineNo">722</span>public void setAlignment(BBjNumber align! , BBjNumber alignHeader!) { }<a name="line.722"></a>
+<span class="sourceLineNo">723</span>/**<a name="line.723"></a>
+<span class="sourceLineNo">724</span> * Sets the default alignment for a column<a name="line.724"></a>
+<span class="sourceLineNo">725</span> *<a name="line.725"></a>
+<span class="sourceLineNo">726</span> * @param BBjNumber align! The column alignment<a name="line.726"></a>
 <span class="sourceLineNo">727</span> *<a name="line.727"></a>
-<span class="sourceLineNo">728</span> * @param BBjNumber align! The column's header alignment<a name="line.728"></a>
+<span class="sourceLineNo">728</span> * valid alignments:<a name="line.728"></a>
 <span class="sourceLineNo">729</span> *<a name="line.729"></a>
-<span class="sourceLineNo">730</span> * valid alignments:<a name="line.730"></a>
-<span class="sourceLineNo">731</span> *<a name="line.731"></a>
-<span class="sourceLineNo">732</span> * @see BBjGridExWidget.GRID_ALIGN_LEFT()<a name="line.732"></a>
-<span class="sourceLineNo">733</span> * @see BBjGridExWidget.GRID_ALIGN_CENTER()<a name="line.733"></a>
-<span class="sourceLineNo">734</span> * @see BBjGridExWidget.GRID_ALIGN_RIGHT()<a name="line.734"></a>
+<span class="sourceLineNo">730</span> * @see BBjGridExWidget.GRID_ALIGN_LEFT()<a name="line.730"></a>
+<span class="sourceLineNo">731</span> * @see BBjGridExWidget.GRID_ALIGN_CENTER()<a name="line.731"></a>
+<span class="sourceLineNo">732</span> * @see BBjGridExWidget.GRID_ALIGN_RIGHT()<a name="line.732"></a>
+<span class="sourceLineNo">733</span> *<a name="line.733"></a>
+<span class="sourceLineNo">734</span> * @RequiresRefresh<a name="line.734"></a>
 <span class="sourceLineNo">735</span>*/<a name="line.735"></a>
-<span class="sourceLineNo">736</span>public void setHeaderAlignment(BBjNumber align!) { }<a name="line.736"></a>
+<span class="sourceLineNo">736</span>public void setAlignment(BBjNumber align!) { }<a name="line.736"></a>
 <span class="sourceLineNo">737</span>/**<a name="line.737"></a>
-<span class="sourceLineNo">738</span> * Set the mask of a column in all supported components (filters , cell editors , ...)<a name="line.738"></a>
+<span class="sourceLineNo">738</span> * Sets the default alignment for a column's header<a name="line.738"></a>
 <span class="sourceLineNo">739</span> *<a name="line.739"></a>
-<span class="sourceLineNo">740</span> * In case the column has no value formatter expression , then the method will create one<a name="line.740"></a>
+<span class="sourceLineNo">740</span> * @param BBjNumber align! The column's header alignment<a name="line.740"></a>
 <span class="sourceLineNo">741</span> *<a name="line.741"></a>
-<span class="sourceLineNo">742</span> * @param mask! - The BBj (date , numeric or string) mask<a name="line.742"></a>
-<span class="sourceLineNo">743</span>*/<a name="line.743"></a>
-<span class="sourceLineNo">744</span>public void setColumnMask(BBjString mask!) { }<a name="line.744"></a>
-<span class="sourceLineNo">745</span>/**<a name="line.745"></a>
-<span class="sourceLineNo">746</span> * Set the grid icons<a name="line.746"></a>
-<span class="sourceLineNo">747</span> *<a name="line.747"></a>
-<span class="sourceLineNo">748</span> * @param BBjString json! The icons as a json object<a name="line.748"></a>
-<span class="sourceLineNo">749</span>*/<a name="line.749"></a>
-<span class="sourceLineNo">750</span>public void setIcons(BBjString json!) { }<a name="line.750"></a>
-<span class="sourceLineNo">751</span>/**<a name="line.751"></a>
-<span class="sourceLineNo">752</span> * Set the column type<a name="line.752"></a>
+<span class="sourceLineNo">742</span> * valid alignments:<a name="line.742"></a>
+<span class="sourceLineNo">743</span> *<a name="line.743"></a>
+<span class="sourceLineNo">744</span> * @see BBjGridExWidget.GRID_ALIGN_LEFT()<a name="line.744"></a>
+<span class="sourceLineNo">745</span> * @see BBjGridExWidget.GRID_ALIGN_CENTER()<a name="line.745"></a>
+<span class="sourceLineNo">746</span> * @see BBjGridExWidget.GRID_ALIGN_RIGHT()<a name="line.746"></a>
+<span class="sourceLineNo">747</span>*/<a name="line.747"></a>
+<span class="sourceLineNo">748</span>public void setHeaderAlignment(BBjNumber align!) { }<a name="line.748"></a>
+<span class="sourceLineNo">749</span>/**<a name="line.749"></a>
+<span class="sourceLineNo">750</span> * Set the mask of a column in all supported components (filters , cell editors , ...)<a name="line.750"></a>
+<span class="sourceLineNo">751</span> *<a name="line.751"></a>
+<span class="sourceLineNo">752</span> * In case the column has no value formatter expression , then the method will create one<a name="line.752"></a>
 <span class="sourceLineNo">753</span> *<a name="line.753"></a>
-<span class="sourceLineNo">754</span> * @param BBjString type! SQL type<a name="line.754"></a>
-<span class="sourceLineNo">755</span> *<a name="line.755"></a>
-<span class="sourceLineNo">756</span> * &lt;b&gt;Note :&lt;/b&gt;<a name="line.756"></a>
-<span class="sourceLineNo">757</span> * Not all sql types are supported, for example it does not make sense to declare a colum type as STRUCT.<a name="line.757"></a>
-<span class="sourceLineNo">758</span> * Setting the type will change the column common properties automatically like the filter, cell editor, ....<a name="line.758"></a>
+<span class="sourceLineNo">754</span> * @param mask! - The BBj (date , numeric or string) mask<a name="line.754"></a>
+<span class="sourceLineNo">755</span>*/<a name="line.755"></a>
+<span class="sourceLineNo">756</span>public void setColumnMask(BBjString mask!) { }<a name="line.756"></a>
+<span class="sourceLineNo">757</span>/**<a name="line.757"></a>
+<span class="sourceLineNo">758</span> * Set the grid icons<a name="line.758"></a>
 <span class="sourceLineNo">759</span> *<a name="line.759"></a>
-<span class="sourceLineNo">760</span> * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html<a name="line.760"></a>
+<span class="sourceLineNo">760</span> * @param BBjString json! The icons as a json object<a name="line.760"></a>
 <span class="sourceLineNo">761</span>*/<a name="line.761"></a>
-<span class="sourceLineNo">762</span>public void setType(BBjNumber type!) { }<a name="line.762"></a>
+<span class="sourceLineNo">762</span>public void setIcons(BBjString json!) { }<a name="line.762"></a>
 <span class="sourceLineNo">763</span>/**<a name="line.763"></a>
-<span class="sourceLineNo">764</span> * @override<a name="line.764"></a>
+<span class="sourceLineNo">764</span> * Set the column type<a name="line.764"></a>
 <span class="sourceLineNo">765</span> *<a name="line.765"></a>
-<span class="sourceLineNo">766</span> * {@inheritDoc}<a name="line.766"></a>
-<span class="sourceLineNo">767</span>*/<a name="line.767"></a>
-<span class="sourceLineNo">768</span>public JsonObject getAsJsonObject() { }<a name="line.768"></a>
-<span class="sourceLineNo">769</span>}<a name="line.769"></a>
-<span class="sourceLineNo">770</span>/**<a name="line.770"></a>
-<span class="sourceLineNo">771</span> * The class holds the grid column props, it also introduces several helper methods to update the<a name="line.771"></a>
-<span class="sourceLineNo">772</span> * styles like, fore/back colors.<a name="line.772"></a>
-<span class="sourceLineNo">773</span> *<a name="line.773"></a>
-<span class="sourceLineNo">774</span> * @author Hyyan Abo Fakher<a name="line.774"></a>
-<span class="sourceLineNo">775</span>*/<a name="line.775"></a>
-<span class="sourceLineNo">776</span>public class GxColumn extends GxDefaultColumnDefinition {<a name="line.776"></a>
-<span class="sourceLineNo">777</span>/**<a name="line.777"></a>
-<span class="sourceLineNo">778</span> * The field of the row to get the cells data from&lt;br&gt;&lt;b&gt;Note&lt;/b&gt;: Once the field name is set, it becomes immutable<a name="line.778"></a>
+<span class="sourceLineNo">766</span> * @param BBjString type! SQL type<a name="line.766"></a>
+<span class="sourceLineNo">767</span> *<a name="line.767"></a>
+<span class="sourceLineNo">768</span> * &lt;b&gt;Note :&lt;/b&gt;<a name="line.768"></a>
+<span class="sourceLineNo">769</span> * Not all sql types are supported, for example it does not make sense to declare a colum type as STRUCT.<a name="line.769"></a>
+<span class="sourceLineNo">770</span> * Setting the type will change the column common properties automatically like the filter, cell editor, ....<a name="line.770"></a>
+<span class="sourceLineNo">771</span> *<a name="line.771"></a>
+<span class="sourceLineNo">772</span> * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html<a name="line.772"></a>
+<span class="sourceLineNo">773</span>*/<a name="line.773"></a>
+<span class="sourceLineNo">774</span>public void setType(BBjNumber type!) { }<a name="line.774"></a>
+<span class="sourceLineNo">775</span>/**<a name="line.775"></a>
+<span class="sourceLineNo">776</span> * @override<a name="line.776"></a>
+<span class="sourceLineNo">777</span> *<a name="line.777"></a>
+<span class="sourceLineNo">778</span> * {@inheritDoc}<a name="line.778"></a>
 <span class="sourceLineNo">779</span>*/<a name="line.779"></a>
-<span class="sourceLineNo">780</span>public BBjString Field!;<a name="line.780"></a>
-<span class="sourceLineNo">781</span>/**<a name="line.781"></a>
-<span class="sourceLineNo">782</span> * Disable default constructor<a name="line.782"></a>
-<span class="sourceLineNo">783</span>*/<a name="line.783"></a>
-<span class="sourceLineNo">784</span>private GxColumn() { }<a name="line.784"></a>
-<span class="sourceLineNo">785</span>/**<a name="line.785"></a>
-<span class="sourceLineNo">786</span> * Create a new column definition<a name="line.786"></a>
-<span class="sourceLineNo">787</span> *<a name="line.787"></a>
-<span class="sourceLineNo">788</span> * @param BBjString field! The field of the row to get the cells data from<a name="line.788"></a>
-<span class="sourceLineNo">789</span>*/<a name="line.789"></a>
-<span class="sourceLineNo">790</span>public GxColumn(BBjString field!) { }<a name="line.790"></a>
-<span class="sourceLineNo">791</span>/**<a name="line.791"></a>
-<span class="sourceLineNo">792</span> * Create a new column definition<a name="line.792"></a>
-<span class="sourceLineNo">793</span> *<a name="line.793"></a>
-<span class="sourceLineNo">794</span> * @param BBjString field! The field of the row to get the cells data from<a name="line.794"></a>
-<span class="sourceLineNo">795</span> * @param BBjString label! The name to render in the column header<a name="line.795"></a>
-<span class="sourceLineNo">796</span>*/<a name="line.796"></a>
-<span class="sourceLineNo">797</span>public GxColumn(BBjString field!, BBjString label!) { }<a name="line.797"></a>
-<span class="sourceLineNo">798</span>/**<a name="line.798"></a>
-<span class="sourceLineNo">799</span> * Create a new column definition<a name="line.799"></a>
-<span class="sourceLineNo">800</span> *<a name="line.800"></a>
-<span class="sourceLineNo">801</span> * @param BBjString field! The field of the row to get the cells data from<a name="line.801"></a>
-<span class="sourceLineNo">802</span> * @param BBjString label! The name to render in the column header<a name="line.802"></a>
-<span class="sourceLineNo">803</span> * @param BBjNumber type! The field's type<a name="line.803"></a>
-<span class="sourceLineNo">804</span>*/<a name="line.804"></a>
-<span class="sourceLineNo">805</span>public GxColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.805"></a>
-<span class="sourceLineNo">806</span>/**<a name="line.806"></a>
-<span class="sourceLineNo">807</span> * Throw an error when called because the field becomes immutable after<a name="line.807"></a>
-<span class="sourceLineNo">808</span> * the column's definition creation<a name="line.808"></a>
-<span class="sourceLineNo">809</span>*/<a name="line.809"></a>
-<span class="sourceLineNo">810</span>public void setField(BBjString field!) { }<a name="line.810"></a>
-<span class="sourceLineNo">811</span>/**<a name="line.811"></a>
-<span class="sourceLineNo">812</span> * @override<a name="line.812"></a>
-<span class="sourceLineNo">813</span> *<a name="line.813"></a>
-<span class="sourceLineNo">814</span> * {@inheritDoc}<a name="line.814"></a>
-<span class="sourceLineNo">815</span>*/<a name="line.815"></a>
-<span class="sourceLineNo">816</span>public JsonObject getAsJsonObject() { }<a name="line.816"></a>
-<span class="sourceLineNo">817</span>/**<a name="line.817"></a>
-<span class="sourceLineNo">818</span> * Update the column definition from a meta map<a name="line.818"></a>
-<span class="sourceLineNo">819</span> *<a name="line.819"></a>
-<span class="sourceLineNo">820</span> * @param HashMap meta! The meta map<a name="line.820"></a>
-<span class="sourceLineNo">821</span> * @param GxDefaultColumnDefinition defaultDefinition! The default column definition in the grid<a name="line.821"></a>
-<span class="sourceLineNo">822</span>*/<a name="line.822"></a>
-<span class="sourceLineNo">823</span>public void update(HashMap meta!, GxDefaultColumnDefinition defaultDefinition!) { }<a name="line.823"></a>
-<span class="sourceLineNo">824</span>}<a name="line.824"></a>
-<span class="sourceLineNo">825</span>/**<a name="line.825"></a>
-<span class="sourceLineNo">826</span> * Allows specifying the group 'auto column' if you are not happy with the default.<a name="line.826"></a>
-<span class="sourceLineNo">827</span> * If grouping, this column def is included as the first column definition in the grid.<a name="line.827"></a>
-<span class="sourceLineNo">828</span> * If not grouping, this column is not included.<a name="line.828"></a>
-<span class="sourceLineNo">829</span> *<a name="line.829"></a>
-<span class="sourceLineNo">830</span> * @author Hyyan Abo Fakher<a name="line.830"></a>
-<span class="sourceLineNo">831</span>*/<a name="line.831"></a>
-<span class="sourceLineNo">832</span>public class GxAutoGroupColumn extends GxDefaultColumnDefinition {<a name="line.832"></a>
-<span class="sourceLineNo">833</span>/**<a name="line.833"></a>
-<span class="sourceLineNo">834</span> * Construct new instance<a name="line.834"></a>
-<span class="sourceLineNo">835</span>*/<a name="line.835"></a>
-<span class="sourceLineNo">836</span>public GxAutoGroupColumn() { }<a name="line.836"></a>
+<span class="sourceLineNo">780</span>public JsonObject getAsJsonObject() { }<a name="line.780"></a>
+<span class="sourceLineNo">781</span>}<a name="line.781"></a>
+<span class="sourceLineNo">782</span>/**<a name="line.782"></a>
+<span class="sourceLineNo">783</span> * The class holds the grid column props, it also introduces several helper methods to update the<a name="line.783"></a>
+<span class="sourceLineNo">784</span> * styles like, fore/back colors.<a name="line.784"></a>
+<span class="sourceLineNo">785</span> *<a name="line.785"></a>
+<span class="sourceLineNo">786</span> * @author Hyyan Abo Fakher<a name="line.786"></a>
+<span class="sourceLineNo">787</span>*/<a name="line.787"></a>
+<span class="sourceLineNo">788</span>public class GxColumn extends GxDefaultColumnDefinition {<a name="line.788"></a>
+<span class="sourceLineNo">789</span>/**<a name="line.789"></a>
+<span class="sourceLineNo">790</span> * The field of the row to get the cells data from&lt;br&gt;&lt;b&gt;Note&lt;/b&gt;: Once the field name is set, it becomes immutable<a name="line.790"></a>
+<span class="sourceLineNo">791</span>*/<a name="line.791"></a>
+<span class="sourceLineNo">792</span>public BBjString Field!;<a name="line.792"></a>
+<span class="sourceLineNo">793</span>/**<a name="line.793"></a>
+<span class="sourceLineNo">794</span> * Disable default constructor<a name="line.794"></a>
+<span class="sourceLineNo">795</span>*/<a name="line.795"></a>
+<span class="sourceLineNo">796</span>private GxColumn() { }<a name="line.796"></a>
+<span class="sourceLineNo">797</span>/**<a name="line.797"></a>
+<span class="sourceLineNo">798</span> * Create a new column definition<a name="line.798"></a>
+<span class="sourceLineNo">799</span> *<a name="line.799"></a>
+<span class="sourceLineNo">800</span> * @param BBjString field! The field of the row to get the cells data from<a name="line.800"></a>
+<span class="sourceLineNo">801</span>*/<a name="line.801"></a>
+<span class="sourceLineNo">802</span>public GxColumn(BBjString field!) { }<a name="line.802"></a>
+<span class="sourceLineNo">803</span>/**<a name="line.803"></a>
+<span class="sourceLineNo">804</span> * Create a new column definition<a name="line.804"></a>
+<span class="sourceLineNo">805</span> *<a name="line.805"></a>
+<span class="sourceLineNo">806</span> * @param BBjString field! The field of the row to get the cells data from<a name="line.806"></a>
+<span class="sourceLineNo">807</span> * @param BBjString label! The name to render in the column header<a name="line.807"></a>
+<span class="sourceLineNo">808</span>*/<a name="line.808"></a>
+<span class="sourceLineNo">809</span>public GxColumn(BBjString field!, BBjString label!) { }<a name="line.809"></a>
+<span class="sourceLineNo">810</span>/**<a name="line.810"></a>
+<span class="sourceLineNo">811</span> * Create a new column definition<a name="line.811"></a>
+<span class="sourceLineNo">812</span> *<a name="line.812"></a>
+<span class="sourceLineNo">813</span> * @param BBjString field! The field of the row to get the cells data from<a name="line.813"></a>
+<span class="sourceLineNo">814</span> * @param BBjString label! The name to render in the column header<a name="line.814"></a>
+<span class="sourceLineNo">815</span> * @param BBjNumber type! The field's type<a name="line.815"></a>
+<span class="sourceLineNo">816</span>*/<a name="line.816"></a>
+<span class="sourceLineNo">817</span>public GxColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.817"></a>
+<span class="sourceLineNo">818</span>/**<a name="line.818"></a>
+<span class="sourceLineNo">819</span> * Throw an error when called because the field becomes immutable after<a name="line.819"></a>
+<span class="sourceLineNo">820</span> * the column's definition creation<a name="line.820"></a>
+<span class="sourceLineNo">821</span>*/<a name="line.821"></a>
+<span class="sourceLineNo">822</span>public void setField(BBjString field!) { }<a name="line.822"></a>
+<span class="sourceLineNo">823</span>/**<a name="line.823"></a>
+<span class="sourceLineNo">824</span> * @override<a name="line.824"></a>
+<span class="sourceLineNo">825</span> *<a name="line.825"></a>
+<span class="sourceLineNo">826</span> * {@inheritDoc}<a name="line.826"></a>
+<span class="sourceLineNo">827</span>*/<a name="line.827"></a>
+<span class="sourceLineNo">828</span>public JsonObject getAsJsonObject() { }<a name="line.828"></a>
+<span class="sourceLineNo">829</span>/**<a name="line.829"></a>
+<span class="sourceLineNo">830</span> * Update the column definition from a meta map<a name="line.830"></a>
+<span class="sourceLineNo">831</span> *<a name="line.831"></a>
+<span class="sourceLineNo">832</span> * @param HashMap meta! The meta map<a name="line.832"></a>
+<span class="sourceLineNo">833</span> * @param GxDefaultColumnDefinition defaultDefinition! The default column definition in the grid<a name="line.833"></a>
+<span class="sourceLineNo">834</span>*/<a name="line.834"></a>
+<span class="sourceLineNo">835</span>public void update(HashMap meta!, GxDefaultColumnDefinition defaultDefinition!) { }<a name="line.835"></a>
+<span class="sourceLineNo">836</span>}<a name="line.836"></a>
 <span class="sourceLineNo">837</span>/**<a name="line.837"></a>
-<span class="sourceLineNo">838</span> * Set the column type<a name="line.838"></a>
-<span class="sourceLineNo">839</span> *<a name="line.839"></a>
-<span class="sourceLineNo">840</span> * @param BBjString type! SQL type<a name="line.840"></a>
+<span class="sourceLineNo">838</span> * Allows specifying the group 'auto column' if you are not happy with the default.<a name="line.838"></a>
+<span class="sourceLineNo">839</span> * If grouping, this column def is included as the first column definition in the grid.<a name="line.839"></a>
+<span class="sourceLineNo">840</span> * If not grouping, this column is not included.<a name="line.840"></a>
 <span class="sourceLineNo">841</span> *<a name="line.841"></a>
-<span class="sourceLineNo">842</span> * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html<a name="line.842"></a>
+<span class="sourceLineNo">842</span> * @author Hyyan Abo Fakher<a name="line.842"></a>
 <span class="sourceLineNo">843</span>*/<a name="line.843"></a>
-<span class="sourceLineNo">844</span>public void setType(BBjNumber type!) { }<a name="line.844"></a>
-<span class="sourceLineNo">845</span>}<a name="line.845"></a>
-<span class="sourceLineNo">846</span>/**<a name="line.846"></a>
-<span class="sourceLineNo">847</span> * The interface defines the common methods for columns and column groups management<a name="line.847"></a>
-<span class="sourceLineNo">848</span> *<a name="line.848"></a>
-<span class="sourceLineNo">849</span> * @author Hyyan Abo Fakher<a name="line.849"></a>
-<span class="sourceLineNo">850</span>*/<a name="line.850"></a>
-<span class="sourceLineNo">851</span>public interface GxColumnsManagerInterface {<a name="line.851"></a>
-<span class="sourceLineNo">852</span>/**<a name="line.852"></a>
-<span class="sourceLineNo">853</span> * Add column group<a name="line.853"></a>
-<span class="sourceLineNo">854</span> *<a name="line.854"></a>
-<span class="sourceLineNo">855</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.855"></a>
-<span class="sourceLineNo">856</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.856"></a>
-<span class="sourceLineNo">857</span> *<a name="line.857"></a>
-<span class="sourceLineNo">858</span> * @param GxColumnGroup definition! The column group definition<a name="line.858"></a>
-<span class="sourceLineNo">859</span>*/<a name="line.859"></a>
-<span class="sourceLineNo">860</span>public GxColumnGroup addColumnGroup(GxColumnGroup definition!) { }<a name="line.860"></a>
-<span class="sourceLineNo">861</span>/**<a name="line.861"></a>
-<span class="sourceLineNo">862</span> * Add column group<a name="line.862"></a>
-<span class="sourceLineNo">863</span> *<a name="line.863"></a>
-<span class="sourceLineNo">864</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.864"></a>
-<span class="sourceLineNo">865</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.865"></a>
+<span class="sourceLineNo">844</span>public class GxAutoGroupColumn extends GxDefaultColumnDefinition {<a name="line.844"></a>
+<span class="sourceLineNo">845</span>/**<a name="line.845"></a>
+<span class="sourceLineNo">846</span> * Construct new instance<a name="line.846"></a>
+<span class="sourceLineNo">847</span>*/<a name="line.847"></a>
+<span class="sourceLineNo">848</span>public GxAutoGroupColumn() { }<a name="line.848"></a>
+<span class="sourceLineNo">849</span>/**<a name="line.849"></a>
+<span class="sourceLineNo">850</span> * Set the column type<a name="line.850"></a>
+<span class="sourceLineNo">851</span> *<a name="line.851"></a>
+<span class="sourceLineNo">852</span> * @param BBjString type! SQL type<a name="line.852"></a>
+<span class="sourceLineNo">853</span> *<a name="line.853"></a>
+<span class="sourceLineNo">854</span> * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html<a name="line.854"></a>
+<span class="sourceLineNo">855</span>*/<a name="line.855"></a>
+<span class="sourceLineNo">856</span>public void setType(BBjNumber type!) { }<a name="line.856"></a>
+<span class="sourceLineNo">857</span>}<a name="line.857"></a>
+<span class="sourceLineNo">858</span>/**<a name="line.858"></a>
+<span class="sourceLineNo">859</span> * The interface defines the common methods for columns and column groups management<a name="line.859"></a>
+<span class="sourceLineNo">860</span> *<a name="line.860"></a>
+<span class="sourceLineNo">861</span> * @author Hyyan Abo Fakher<a name="line.861"></a>
+<span class="sourceLineNo">862</span>*/<a name="line.862"></a>
+<span class="sourceLineNo">863</span>public interface GxColumnsManagerInterface {<a name="line.863"></a>
+<span class="sourceLineNo">864</span>/**<a name="line.864"></a>
+<span class="sourceLineNo">865</span> * Add column group<a name="line.865"></a>
 <span class="sourceLineNo">866</span> *<a name="line.866"></a>
-<span class="sourceLineNo">867</span> * @param BBjString id! The group id<a name="line.867"></a>
-<span class="sourceLineNo">868</span>*/<a name="line.868"></a>
-<span class="sourceLineNo">869</span>public GxColumnGroup addColumnGroup(BBjString id!) { }<a name="line.869"></a>
-<span class="sourceLineNo">870</span>/**<a name="line.870"></a>
-<span class="sourceLineNo">871</span> * Add column group<a name="line.871"></a>
-<span class="sourceLineNo">872</span> *<a name="line.872"></a>
-<span class="sourceLineNo">873</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.873"></a>
-<span class="sourceLineNo">874</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.874"></a>
+<span class="sourceLineNo">867</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.867"></a>
+<span class="sourceLineNo">868</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.868"></a>
+<span class="sourceLineNo">869</span> *<a name="line.869"></a>
+<span class="sourceLineNo">870</span> * @param GxColumnGroup definition! The column group definition<a name="line.870"></a>
+<span class="sourceLineNo">871</span>*/<a name="line.871"></a>
+<span class="sourceLineNo">872</span>public GxColumnGroup addColumnGroup(GxColumnGroup definition!) { }<a name="line.872"></a>
+<span class="sourceLineNo">873</span>/**<a name="line.873"></a>
+<span class="sourceLineNo">874</span> * Add column group<a name="line.874"></a>
 <span class="sourceLineNo">875</span> *<a name="line.875"></a>
-<span class="sourceLineNo">876</span> * @param BBjString id! The group id<a name="line.876"></a>
-<span class="sourceLineNo">877</span> * @param BBjString label! The group label<a name="line.877"></a>
-<span class="sourceLineNo">878</span>*/<a name="line.878"></a>
-<span class="sourceLineNo">879</span>public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!) { }<a name="line.879"></a>
-<span class="sourceLineNo">880</span>/**<a name="line.880"></a>
-<span class="sourceLineNo">881</span> * Get the column group definition instance<a name="line.881"></a>
-<span class="sourceLineNo">882</span> *<a name="line.882"></a>
-<span class="sourceLineNo">883</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.883"></a>
-<span class="sourceLineNo">884</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.884"></a>
-<span class="sourceLineNo">885</span> *<a name="line.885"></a>
-<span class="sourceLineNo">886</span> * @param BBjString id! The column group definition id<a name="line.886"></a>
+<span class="sourceLineNo">876</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.876"></a>
+<span class="sourceLineNo">877</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.877"></a>
+<span class="sourceLineNo">878</span> *<a name="line.878"></a>
+<span class="sourceLineNo">879</span> * @param BBjString id! The group id<a name="line.879"></a>
+<span class="sourceLineNo">880</span>*/<a name="line.880"></a>
+<span class="sourceLineNo">881</span>public GxColumnGroup addColumnGroup(BBjString id!) { }<a name="line.881"></a>
+<span class="sourceLineNo">882</span>/**<a name="line.882"></a>
+<span class="sourceLineNo">883</span> * Add column group<a name="line.883"></a>
+<span class="sourceLineNo">884</span> *<a name="line.884"></a>
+<span class="sourceLineNo">885</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.885"></a>
+<span class="sourceLineNo">886</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.886"></a>
 <span class="sourceLineNo">887</span> *<a name="line.887"></a>
-<span class="sourceLineNo">888</span> * @return GxColumn return the column group definition instance if found, null() otherwise<a name="line.888"></a>
-<span class="sourceLineNo">889</span>*/<a name="line.889"></a>
-<span class="sourceLineNo">890</span>public GxColumnGroup getColumnGroup(BBjString id!) { }<a name="line.890"></a>
-<span class="sourceLineNo">891</span>/**<a name="line.891"></a>
-<span class="sourceLineNo">892</span> * Check if the column group definition exists<a name="line.892"></a>
-<span class="sourceLineNo">893</span> *<a name="line.893"></a>
-<span class="sourceLineNo">894</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.894"></a>
-<span class="sourceLineNo">895</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.895"></a>
-<span class="sourceLineNo">896</span> *<a name="line.896"></a>
-<span class="sourceLineNo">897</span> * @param BBjString id! The column group definition id<a name="line.897"></a>
-<span class="sourceLineNo">898</span> *<a name="line.898"></a>
-<span class="sourceLineNo">899</span> * @return BBjNumber return 1 when found, 0 otherwise<a name="line.899"></a>
-<span class="sourceLineNo">900</span>*/<a name="line.900"></a>
-<span class="sourceLineNo">901</span>public BBjNumber hasColumnGroup(BBjString id!) { }<a name="line.901"></a>
-<span class="sourceLineNo">902</span>/**<a name="line.902"></a>
-<span class="sourceLineNo">903</span> * Remove a column group definition<a name="line.903"></a>
-<span class="sourceLineNo">904</span> *<a name="line.904"></a>
-<span class="sourceLineNo">905</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.905"></a>
-<span class="sourceLineNo">906</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.906"></a>
-<span class="sourceLineNo">907</span> *<a name="line.907"></a>
-<span class="sourceLineNo">908</span> * @param BBjString id! The column group definition id<a name="line.908"></a>
-<span class="sourceLineNo">909</span> *<a name="line.909"></a>
-<span class="sourceLineNo">910</span> * @return GxColumnGroup The removed column group instance, null() otherwise<a name="line.910"></a>
-<span class="sourceLineNo">911</span>*/<a name="line.911"></a>
-<span class="sourceLineNo">912</span>public GxColumnGroup removeColumnGroup(BBjString id!) { }<a name="line.912"></a>
-<span class="sourceLineNo">913</span>/**<a name="line.913"></a>
-<span class="sourceLineNo">914</span> * Add new column definition<a name="line.914"></a>
-<span class="sourceLineNo">915</span> *<a name="line.915"></a>
-<span class="sourceLineNo">916</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.916"></a>
-<span class="sourceLineNo">917</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.917"></a>
-<span class="sourceLineNo">918</span> *<a name="line.918"></a>
-<span class="sourceLineNo">919</span> * @param GxColumn definition! The column definition object<a name="line.919"></a>
-<span class="sourceLineNo">920</span> *<a name="line.920"></a>
-<span class="sourceLineNo">921</span> * @return GxColumn The definition instance<a name="line.921"></a>
-<span class="sourceLineNo">922</span>*/<a name="line.922"></a>
-<span class="sourceLineNo">923</span>public GxColumn addColumn(GxColumn definition!) { }<a name="line.923"></a>
-<span class="sourceLineNo">924</span>/**<a name="line.924"></a>
-<span class="sourceLineNo">925</span> * Add new column definition<a name="line.925"></a>
-<span class="sourceLineNo">926</span> *<a name="line.926"></a>
-<span class="sourceLineNo">927</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.927"></a>
-<span class="sourceLineNo">928</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.928"></a>
-<span class="sourceLineNo">929</span> *<a name="line.929"></a>
-<span class="sourceLineNo">930</span> * @param BBjString field! The column's definition field<a name="line.930"></a>
-<span class="sourceLineNo">931</span> * @param BBjNumber type! The Field Type (java.sql.Types).<a name="line.931"></a>
+<span class="sourceLineNo">888</span> * @param BBjString id! The group id<a name="line.888"></a>
+<span class="sourceLineNo">889</span> * @param BBjString label! The group label<a name="line.889"></a>
+<span class="sourceLineNo">890</span>*/<a name="line.890"></a>
+<span class="sourceLineNo">891</span>public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!) { }<a name="line.891"></a>
+<span class="sourceLineNo">892</span>/**<a name="line.892"></a>
+<span class="sourceLineNo">893</span> * Get the column group definition instance<a name="line.893"></a>
+<span class="sourceLineNo">894</span> *<a name="line.894"></a>
+<span class="sourceLineNo">895</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.895"></a>
+<span class="sourceLineNo">896</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.896"></a>
+<span class="sourceLineNo">897</span> *<a name="line.897"></a>
+<span class="sourceLineNo">898</span> * @param BBjString id! The column group definition id<a name="line.898"></a>
+<span class="sourceLineNo">899</span> *<a name="line.899"></a>
+<span class="sourceLineNo">900</span> * @return GxColumn return the column group definition instance if found, null() otherwise<a name="line.900"></a>
+<span class="sourceLineNo">901</span>*/<a name="line.901"></a>
+<span class="sourceLineNo">902</span>public GxColumnGroup getColumnGroup(BBjString id!) { }<a name="line.902"></a>
+<span class="sourceLineNo">903</span>/**<a name="line.903"></a>
+<span class="sourceLineNo">904</span> * Check if the column group definition exists<a name="line.904"></a>
+<span class="sourceLineNo">905</span> *<a name="line.905"></a>
+<span class="sourceLineNo">906</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.906"></a>
+<span class="sourceLineNo">907</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.907"></a>
+<span class="sourceLineNo">908</span> *<a name="line.908"></a>
+<span class="sourceLineNo">909</span> * @param BBjString id! The column group definition id<a name="line.909"></a>
+<span class="sourceLineNo">910</span> *<a name="line.910"></a>
+<span class="sourceLineNo">911</span> * @return BBjNumber return 1 when found, 0 otherwise<a name="line.911"></a>
+<span class="sourceLineNo">912</span>*/<a name="line.912"></a>
+<span class="sourceLineNo">913</span>public BBjNumber hasColumnGroup(BBjString id!) { }<a name="line.913"></a>
+<span class="sourceLineNo">914</span>/**<a name="line.914"></a>
+<span class="sourceLineNo">915</span> * Remove a column group definition<a name="line.915"></a>
+<span class="sourceLineNo">916</span> *<a name="line.916"></a>
+<span class="sourceLineNo">917</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.917"></a>
+<span class="sourceLineNo">918</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.918"></a>
+<span class="sourceLineNo">919</span> *<a name="line.919"></a>
+<span class="sourceLineNo">920</span> * @param BBjString id! The column group definition id<a name="line.920"></a>
+<span class="sourceLineNo">921</span> *<a name="line.921"></a>
+<span class="sourceLineNo">922</span> * @return GxColumnGroup The removed column group instance, null() otherwise<a name="line.922"></a>
+<span class="sourceLineNo">923</span>*/<a name="line.923"></a>
+<span class="sourceLineNo">924</span>public GxColumnGroup removeColumnGroup(BBjString id!) { }<a name="line.924"></a>
+<span class="sourceLineNo">925</span>/**<a name="line.925"></a>
+<span class="sourceLineNo">926</span> * Add new column definition<a name="line.926"></a>
+<span class="sourceLineNo">927</span> *<a name="line.927"></a>
+<span class="sourceLineNo">928</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.928"></a>
+<span class="sourceLineNo">929</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.929"></a>
+<span class="sourceLineNo">930</span> *<a name="line.930"></a>
+<span class="sourceLineNo">931</span> * @param GxColumn definition! The column definition object<a name="line.931"></a>
 <span class="sourceLineNo">932</span> *<a name="line.932"></a>
 <span class="sourceLineNo">933</span> * @return GxColumn The definition instance<a name="line.933"></a>
 <span class="sourceLineNo">934</span>*/<a name="line.934"></a>
-<span class="sourceLineNo">935</span>public GxColumn addColumn(BBjString field! , BBjNumber type!) { }<a name="line.935"></a>
+<span class="sourceLineNo">935</span>public GxColumn addColumn(GxColumn definition!) { }<a name="line.935"></a>
 <span class="sourceLineNo">936</span>/**<a name="line.936"></a>
 <span class="sourceLineNo">937</span> * Add new column definition<a name="line.937"></a>
 <span class="sourceLineNo">938</span> *<a name="line.938"></a>
@@ -948,11 +948,11 @@
 <span class="sourceLineNo">940</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.940"></a>
 <span class="sourceLineNo">941</span> *<a name="line.941"></a>
 <span class="sourceLineNo">942</span> * @param BBjString field! The column's definition field<a name="line.942"></a>
-<span class="sourceLineNo">943</span> * @param BBjString label! The column's label.<a name="line.943"></a>
+<span class="sourceLineNo">943</span> * @param BBjNumber type! The Field Type (java.sql.Types).<a name="line.943"></a>
 <span class="sourceLineNo">944</span> *<a name="line.944"></a>
 <span class="sourceLineNo">945</span> * @return GxColumn The definition instance<a name="line.945"></a>
 <span class="sourceLineNo">946</span>*/<a name="line.946"></a>
-<span class="sourceLineNo">947</span>public GxColumn addColumn(BBjString field!, BBjString label!) { }<a name="line.947"></a>
+<span class="sourceLineNo">947</span>public GxColumn addColumn(BBjString field! , BBjNumber type!) { }<a name="line.947"></a>
 <span class="sourceLineNo">948</span>/**<a name="line.948"></a>
 <span class="sourceLineNo">949</span> * Add new column definition<a name="line.949"></a>
 <span class="sourceLineNo">950</span> *<a name="line.950"></a>
@@ -961,269 +961,281 @@
 <span class="sourceLineNo">953</span> *<a name="line.953"></a>
 <span class="sourceLineNo">954</span> * @param BBjString field! The column's definition field<a name="line.954"></a>
 <span class="sourceLineNo">955</span> * @param BBjString label! The column's label.<a name="line.955"></a>
-<span class="sourceLineNo">956</span> * @param BBjNumber type! The Field Type (java.sql.Types).<a name="line.956"></a>
-<span class="sourceLineNo">957</span> *<a name="line.957"></a>
-<span class="sourceLineNo">958</span> * @return GxColumn The definition instance<a name="line.958"></a>
-<span class="sourceLineNo">959</span>*/<a name="line.959"></a>
-<span class="sourceLineNo">960</span>public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.960"></a>
-<span class="sourceLineNo">961</span>/**<a name="line.961"></a>
-<span class="sourceLineNo">962</span> * Add new column definition<a name="line.962"></a>
-<span class="sourceLineNo">963</span> *<a name="line.963"></a>
-<span class="sourceLineNo">964</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.964"></a>
-<span class="sourceLineNo">965</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.965"></a>
-<span class="sourceLineNo">966</span> *<a name="line.966"></a>
-<span class="sourceLineNo">967</span> * @param BBjString field! The column's definition field<a name="line.967"></a>
-<span class="sourceLineNo">968</span> *<a name="line.968"></a>
-<span class="sourceLineNo">969</span> * @return GxColumn The definition instance<a name="line.969"></a>
-<span class="sourceLineNo">970</span>*/<a name="line.970"></a>
-<span class="sourceLineNo">971</span>public GxColumn addColumn(BBjString field!) { }<a name="line.971"></a>
-<span class="sourceLineNo">972</span>/**<a name="line.972"></a>
-<span class="sourceLineNo">973</span> * Get the column definition instance<a name="line.973"></a>
-<span class="sourceLineNo">974</span> *<a name="line.974"></a>
-<span class="sourceLineNo">975</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.975"></a>
-<span class="sourceLineNo">976</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.976"></a>
-<span class="sourceLineNo">977</span> *<a name="line.977"></a>
-<span class="sourceLineNo">978</span> * @param BBjString field! The column's definition field<a name="line.978"></a>
-<span class="sourceLineNo">979</span> *<a name="line.979"></a>
-<span class="sourceLineNo">980</span> * @return GxColumn return the column definition instance if found, null() otherwise<a name="line.980"></a>
-<span class="sourceLineNo">981</span>*/<a name="line.981"></a>
-<span class="sourceLineNo">982</span>public GxColumn getColumn(BBjString field!) { }<a name="line.982"></a>
-<span class="sourceLineNo">983</span>/**<a name="line.983"></a>
-<span class="sourceLineNo">984</span> * Check if the column definition exists<a name="line.984"></a>
-<span class="sourceLineNo">985</span> *<a name="line.985"></a>
-<span class="sourceLineNo">986</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.986"></a>
-<span class="sourceLineNo">987</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.987"></a>
-<span class="sourceLineNo">988</span> *<a name="line.988"></a>
-<span class="sourceLineNo">989</span> * @param BBjString field! The column's definition field<a name="line.989"></a>
-<span class="sourceLineNo">990</span> *<a name="line.990"></a>
-<span class="sourceLineNo">991</span> * @return BBjNumber return 1 when found, 0 otherwise<a name="line.991"></a>
-<span class="sourceLineNo">992</span>*/<a name="line.992"></a>
-<span class="sourceLineNo">993</span>public BBjNumber hasColumn(BBjString field!) { }<a name="line.993"></a>
-<span class="sourceLineNo">994</span>/**<a name="line.994"></a>
-<span class="sourceLineNo">995</span> * Remove a column definition<a name="line.995"></a>
-<span class="sourceLineNo">996</span> *<a name="line.996"></a>
-<span class="sourceLineNo">997</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.997"></a>
-<span class="sourceLineNo">998</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.998"></a>
-<span class="sourceLineNo">999</span> *<a name="line.999"></a>
-<span class="sourceLineNo">1000</span> * @param BBjString field! The column's definition field<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span> *<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span> * @return GxColumn The removed column instance, null() otherwise<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>*/<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>public GxColumn removeColumn(BBjString field!) { }<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>/**<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span> * Clear all columns and column groups<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span> *<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>*/<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>public void resetAllColumns() { }<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>}<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>/**<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span> * The class is a direct implementation for GxColumnsManagerInterface and it defines the common<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span> * logic for all methods<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span> *<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span> * @author Hyyan Abo Fakher<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>*/<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>public class GxColumnsManager implements GxColumnsManagerInterface {<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>/**<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span> * The column definitions map<a name="line.1021"></a>
+<span class="sourceLineNo">956</span> *<a name="line.956"></a>
+<span class="sourceLineNo">957</span> * @return GxColumn The definition instance<a name="line.957"></a>
+<span class="sourceLineNo">958</span>*/<a name="line.958"></a>
+<span class="sourceLineNo">959</span>public GxColumn addColumn(BBjString field!, BBjString label!) { }<a name="line.959"></a>
+<span class="sourceLineNo">960</span>/**<a name="line.960"></a>
+<span class="sourceLineNo">961</span> * Add new column definition<a name="line.961"></a>
+<span class="sourceLineNo">962</span> *<a name="line.962"></a>
+<span class="sourceLineNo">963</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.963"></a>
+<span class="sourceLineNo">964</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.964"></a>
+<span class="sourceLineNo">965</span> *<a name="line.965"></a>
+<span class="sourceLineNo">966</span> * @param BBjString field! The column's definition field<a name="line.966"></a>
+<span class="sourceLineNo">967</span> * @param BBjString label! The column's label.<a name="line.967"></a>
+<span class="sourceLineNo">968</span> * @param BBjNumber type! The Field Type (java.sql.Types).<a name="line.968"></a>
+<span class="sourceLineNo">969</span> *<a name="line.969"></a>
+<span class="sourceLineNo">970</span> * @return GxColumn The definition instance<a name="line.970"></a>
+<span class="sourceLineNo">971</span>*/<a name="line.971"></a>
+<span class="sourceLineNo">972</span>public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.972"></a>
+<span class="sourceLineNo">973</span>/**<a name="line.973"></a>
+<span class="sourceLineNo">974</span> * Add new column definition<a name="line.974"></a>
+<span class="sourceLineNo">975</span> *<a name="line.975"></a>
+<span class="sourceLineNo">976</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.976"></a>
+<span class="sourceLineNo">977</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.977"></a>
+<span class="sourceLineNo">978</span> *<a name="line.978"></a>
+<span class="sourceLineNo">979</span> * @param BBjString field! The column's definition field<a name="line.979"></a>
+<span class="sourceLineNo">980</span> *<a name="line.980"></a>
+<span class="sourceLineNo">981</span> * @return GxColumn The definition instance<a name="line.981"></a>
+<span class="sourceLineNo">982</span>*/<a name="line.982"></a>
+<span class="sourceLineNo">983</span>public GxColumn addColumn(BBjString field!) { }<a name="line.983"></a>
+<span class="sourceLineNo">984</span>/**<a name="line.984"></a>
+<span class="sourceLineNo">985</span> * Get the column definition instance<a name="line.985"></a>
+<span class="sourceLineNo">986</span> *<a name="line.986"></a>
+<span class="sourceLineNo">987</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.987"></a>
+<span class="sourceLineNo">988</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.988"></a>
+<span class="sourceLineNo">989</span> *<a name="line.989"></a>
+<span class="sourceLineNo">990</span> * @param BBjString field! The column's definition field<a name="line.990"></a>
+<span class="sourceLineNo">991</span> *<a name="line.991"></a>
+<span class="sourceLineNo">992</span> * @return GxColumn return the column definition instance if found, null() otherwise<a name="line.992"></a>
+<span class="sourceLineNo">993</span>*/<a name="line.993"></a>
+<span class="sourceLineNo">994</span>public GxColumn getColumn(BBjString field!) { }<a name="line.994"></a>
+<span class="sourceLineNo">995</span>/**<a name="line.995"></a>
+<span class="sourceLineNo">996</span> * Check if the column definition exists<a name="line.996"></a>
+<span class="sourceLineNo">997</span> *<a name="line.997"></a>
+<span class="sourceLineNo">998</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.998"></a>
+<span class="sourceLineNo">999</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.999"></a>
+<span class="sourceLineNo">1000</span> *<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span> * @param BBjString field! The column's definition field<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span> *<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span> * @return BBjNumber return 1 when found, 0 otherwise<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>*/<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>public BBjNumber hasColumn(BBjString field!) { }<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>/**<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span> * Remove a column definition<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span> *<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span> *<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span> * @param BBjString field! The column's definition field<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span> *<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span> * @return GxColumn The removed column instance, null() otherwise<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>*/<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>public GxColumn removeColumn(BBjString field!) { }<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>/**<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span> * Clear all columns and column groups<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span> *<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#Configuration&lt;/small&gt;&lt;/b&gt;<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span> * &lt;br&gt;&lt;b&gt;&lt;small&gt;#ColumnsRenderer&lt;/small&gt;&lt;/b&gt;<a name="line.1021"></a>
 <span class="sourceLineNo">1022</span>*/<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>public LinkedHashMap ColumnsDefinition!;<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>/**<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span> * The column groups definitions map<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>*/<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>public LinkedHashMap ColumnsGroupsDefinition!;<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>/**<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span> * Column &amp; column groups definitions map<a name="line.1029"></a>
+<span class="sourceLineNo">1023</span>public void resetAllColumns() { }<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>}<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>/**<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span> * The class is a direct implementation for GxColumnsManagerInterface and it defines the common<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span> * logic for all methods<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span> *<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span> * @author Hyyan Abo Fakher<a name="line.1029"></a>
 <span class="sourceLineNo">1030</span>*/<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>public LinkedHashMap Columns!;<a name="line.1031"></a>
+<span class="sourceLineNo">1031</span>public class GxColumnsManager implements GxColumnsManagerInterface {<a name="line.1031"></a>
 <span class="sourceLineNo">1032</span>/**<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span> * {@inheritDoc}<a name="line.1033"></a>
+<span class="sourceLineNo">1033</span> * The column definitions map<a name="line.1033"></a>
 <span class="sourceLineNo">1034</span>*/<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>public GxColumnGroup addColumnGroup(GxColumnGroup definition!) { }<a name="line.1035"></a>
+<span class="sourceLineNo">1035</span>public LinkedHashMap ColumnsDefinition!;<a name="line.1035"></a>
 <span class="sourceLineNo">1036</span>/**<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span> * {@inheritDoc}<a name="line.1037"></a>
+<span class="sourceLineNo">1037</span> * The column groups definitions map<a name="line.1037"></a>
 <span class="sourceLineNo">1038</span>*/<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>public GxColumnGroup addColumnGroup(BBjString id!) { }<a name="line.1039"></a>
+<span class="sourceLineNo">1039</span>public LinkedHashMap ColumnsGroupsDefinition!;<a name="line.1039"></a>
 <span class="sourceLineNo">1040</span>/**<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span> * {@inheritDoc}<a name="line.1041"></a>
+<span class="sourceLineNo">1041</span> * Column &amp; column groups definitions map<a name="line.1041"></a>
 <span class="sourceLineNo">1042</span>*/<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!) { }<a name="line.1043"></a>
+<span class="sourceLineNo">1043</span>public LinkedHashMap Columns!;<a name="line.1043"></a>
 <span class="sourceLineNo">1044</span>/**<a name="line.1044"></a>
 <span class="sourceLineNo">1045</span> * {@inheritDoc}<a name="line.1045"></a>
 <span class="sourceLineNo">1046</span>*/<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>public GxColumnGroup getColumnGroup(BBjString id!) { }<a name="line.1047"></a>
+<span class="sourceLineNo">1047</span>public GxColumnGroup addColumnGroup(GxColumnGroup definition!) { }<a name="line.1047"></a>
 <span class="sourceLineNo">1048</span>/**<a name="line.1048"></a>
 <span class="sourceLineNo">1049</span> * {@inheritDoc}<a name="line.1049"></a>
 <span class="sourceLineNo">1050</span>*/<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>public BBjNumber hasColumnGroup(BBjString id!) { }<a name="line.1051"></a>
+<span class="sourceLineNo">1051</span>public GxColumnGroup addColumnGroup(BBjString id!) { }<a name="line.1051"></a>
 <span class="sourceLineNo">1052</span>/**<a name="line.1052"></a>
 <span class="sourceLineNo">1053</span> * {@inheritDoc}<a name="line.1053"></a>
 <span class="sourceLineNo">1054</span>*/<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>public GxColumnGroup removeColumnGroup(BBjString id!) { }<a name="line.1055"></a>
+<span class="sourceLineNo">1055</span>public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!) { }<a name="line.1055"></a>
 <span class="sourceLineNo">1056</span>/**<a name="line.1056"></a>
 <span class="sourceLineNo">1057</span> * {@inheritDoc}<a name="line.1057"></a>
 <span class="sourceLineNo">1058</span>*/<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>public GxColumn addColumn(GxColumn definition!) { }<a name="line.1059"></a>
+<span class="sourceLineNo">1059</span>public GxColumnGroup getColumnGroup(BBjString id!) { }<a name="line.1059"></a>
 <span class="sourceLineNo">1060</span>/**<a name="line.1060"></a>
 <span class="sourceLineNo">1061</span> * {@inheritDoc}<a name="line.1061"></a>
 <span class="sourceLineNo">1062</span>*/<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>public GxColumn addColumn(BBjString field!, BBjNumber type!) { }<a name="line.1063"></a>
+<span class="sourceLineNo">1063</span>public BBjNumber hasColumnGroup(BBjString id!) { }<a name="line.1063"></a>
 <span class="sourceLineNo">1064</span>/**<a name="line.1064"></a>
 <span class="sourceLineNo">1065</span> * {@inheritDoc}<a name="line.1065"></a>
 <span class="sourceLineNo">1066</span>*/<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>public GxColumn addColumn(BBjString field!, BBjString label!) { }<a name="line.1067"></a>
+<span class="sourceLineNo">1067</span>public GxColumnGroup removeColumnGroup(BBjString id!) { }<a name="line.1067"></a>
 <span class="sourceLineNo">1068</span>/**<a name="line.1068"></a>
 <span class="sourceLineNo">1069</span> * {@inheritDoc}<a name="line.1069"></a>
 <span class="sourceLineNo">1070</span>*/<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.1071"></a>
+<span class="sourceLineNo">1071</span>public GxColumn addColumn(GxColumn definition!) { }<a name="line.1071"></a>
 <span class="sourceLineNo">1072</span>/**<a name="line.1072"></a>
 <span class="sourceLineNo">1073</span> * {@inheritDoc}<a name="line.1073"></a>
 <span class="sourceLineNo">1074</span>*/<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>public GxColumn addColumn(BBjString field!) { }<a name="line.1075"></a>
+<span class="sourceLineNo">1075</span>public GxColumn addColumn(BBjString field!, BBjNumber type!) { }<a name="line.1075"></a>
 <span class="sourceLineNo">1076</span>/**<a name="line.1076"></a>
 <span class="sourceLineNo">1077</span> * {@inheritDoc}<a name="line.1077"></a>
 <span class="sourceLineNo">1078</span>*/<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>public GxColumn getColumn(BBjString field!) { }<a name="line.1079"></a>
+<span class="sourceLineNo">1079</span>public GxColumn addColumn(BBjString field!, BBjString label!) { }<a name="line.1079"></a>
 <span class="sourceLineNo">1080</span>/**<a name="line.1080"></a>
 <span class="sourceLineNo">1081</span> * {@inheritDoc}<a name="line.1081"></a>
 <span class="sourceLineNo">1082</span>*/<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>public BBjNumber hasColumn(BBjString field!) { }<a name="line.1083"></a>
+<span class="sourceLineNo">1083</span>public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.1083"></a>
 <span class="sourceLineNo">1084</span>/**<a name="line.1084"></a>
 <span class="sourceLineNo">1085</span> * {@inheritDoc}<a name="line.1085"></a>
 <span class="sourceLineNo">1086</span>*/<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>public GxColumn removeColumn(BBjString field!) { }<a name="line.1087"></a>
+<span class="sourceLineNo">1087</span>public GxColumn addColumn(BBjString field!) { }<a name="line.1087"></a>
 <span class="sourceLineNo">1088</span>/**<a name="line.1088"></a>
 <span class="sourceLineNo">1089</span> * {@inheritDoc}<a name="line.1089"></a>
 <span class="sourceLineNo">1090</span>*/<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>public void resetAllColumns() { }<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>}<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>/**<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span> * The class holds the default grid column group.<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span> *<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span> * @author Hyyan Abo Fakher<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>*/<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>public class GxDefaultColumnGroup extends GxColumnDefinition {<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>/**<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span> * Set to 'true' to keep columns in this group beside each other in the grid. Moving the columns outside of the group (and hence breaking the group) is not allowed.<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>*/<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>public BBjNumber MarryChildren!;<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>/**<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span> * Set to 'true' if this group should be opened by default.<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>*/<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>public BBjNumber OpenByDefault!;<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>/**<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span> * Tooltip for the column group header<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span> * @deprecated use HeaderToolTip instead<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span>*/<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>public BBjString HeaderGroupTooltip!;<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>/**<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span> * @override<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span> *<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span> * {@inheritDoc}<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>*/<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>public JsonObject getAsJsonObject() { }<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>}<a name="line.1118"></a>
+<span class="sourceLineNo">1091</span>public GxColumn getColumn(BBjString field!) { }<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>/**<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span> * {@inheritDoc}<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>*/<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>public BBjNumber hasColumn(BBjString field!) { }<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>/**<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span> * {@inheritDoc}<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>*/<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>public GxColumn removeColumn(BBjString field!) { }<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>/**<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span> * {@inheritDoc}<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>*/<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>public void resetAllColumns() { }<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>}<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>/**<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span> * The class holds the default grid column group.<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span> *<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span> * @author Hyyan Abo Fakher<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>*/<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>public class GxDefaultColumnGroup extends GxColumnDefinition {<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>/**<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span> * Set to 'true' to keep columns in this group beside each other in the grid. Moving the columns outside of the group (and hence breaking the group) is not allowed.<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>*/<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>public BBjNumber MarryChildren!;<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>/**<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span> * Set to 'true' if this group should be opened by default.<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>*/<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>public BBjNumber OpenByDefault!;<a name="line.1118"></a>
 <span class="sourceLineNo">1119</span>/**<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span> * The class holds the grid column group.<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span> * With this object you can group several columns and several column groups together to create deep nested structure.<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span> *<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span> * @author Hyyan Abo Fakher<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>*/<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>public class GxColumnGroup extends GxDefaultColumnGroup implements GxColumnsManagerInterface {<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>/**<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span> * The unique ID to give the column.<a name="line.1127"></a>
+<span class="sourceLineNo">1120</span> * Tooltip for the column group header<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span> * @deprecated use HeaderToolTip instead<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>*/<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>public BBjString HeaderGroupTooltip!;<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>/**<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span> * @override<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span> *<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span> * {@inheritDoc}<a name="line.1127"></a>
 <span class="sourceLineNo">1128</span>*/<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>public BBjString GroupId!;<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>/**<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span> * Columns Manager instance<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>*/<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>protected GxColumnsManager ColumnsManager!;<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>/**<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span> * Disable default constructor<a name="line.1135"></a>
+<span class="sourceLineNo">1129</span>public JsonObject getAsJsonObject() { }<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>}<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>/**<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span> * The class holds the grid column group.<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span> * With this object you can group several columns and several column groups together to create deep nested structure.<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span> *<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span> * @author Hyyan Abo Fakher<a name="line.1135"></a>
 <span class="sourceLineNo">1136</span>*/<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>private GxColumnGroup() { }<a name="line.1137"></a>
+<span class="sourceLineNo">1137</span>public class GxColumnGroup extends GxDefaultColumnGroup implements GxColumnsManagerInterface {<a name="line.1137"></a>
 <span class="sourceLineNo">1138</span>/**<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span> * Construct new GxColumnGroup<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span> *<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span> * @param BBjString id! The group id<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>*/<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>public GxColumnGroup(BBjString id!) { }<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>/**<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span> * Construct new GxColumnGroup<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span> *<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span> * @param BBjString id! The group id<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span> * @param BBjString label! The group label<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>*/<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>public GxColumnGroup(BBjString id! , BBjString label!) { }<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>/**<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span> * Throw an error when called because the group id becomes immutable after<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span> * the column group's definition creation<a name="line.1153"></a>
+<span class="sourceLineNo">1139</span> * The unique ID to give the column.<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>*/<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>public BBjString GroupId!;<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>/**<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span> * Columns Manager instance<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>*/<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>protected GxColumnsManager ColumnsManager!;<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>/**<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span> * Disable default constructor<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>*/<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>private GxColumnGroup() { }<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>/**<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span> * Construct new GxColumnGroup<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span> *<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span> * @param BBjString id! The group id<a name="line.1153"></a>
 <span class="sourceLineNo">1154</span>*/<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>public void setGroupId() { }<a name="line.1155"></a>
+<span class="sourceLineNo">1155</span>public GxColumnGroup(BBjString id!) { }<a name="line.1155"></a>
 <span class="sourceLineNo">1156</span>/**<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span> * {@inheritDoc}<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>*/<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>public GxColumnGroup addColumnGroup(GxColumnGroup definition!) { }<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>/**<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span> * {@inheritDoc}<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>*/<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>public GxColumnGroup addColumnGroup(BBjString id!) { }<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>/**<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span> * {@inheritDoc}<a name="line.1165"></a>
+<span class="sourceLineNo">1157</span> * Construct new GxColumnGroup<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span> *<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span> * @param BBjString id! The group id<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span> * @param BBjString label! The group label<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>*/<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>public GxColumnGroup(BBjString id! , BBjString label!) { }<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>/**<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span> * Throw an error when called because the group id becomes immutable after<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span> * the column group's definition creation<a name="line.1165"></a>
 <span class="sourceLineNo">1166</span>*/<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!) { }<a name="line.1167"></a>
+<span class="sourceLineNo">1167</span>public void setGroupId() { }<a name="line.1167"></a>
 <span class="sourceLineNo">1168</span>/**<a name="line.1168"></a>
 <span class="sourceLineNo">1169</span> * {@inheritDoc}<a name="line.1169"></a>
 <span class="sourceLineNo">1170</span>*/<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>public GxColumnGroup getColumnGroup(BBjString id!) { }<a name="line.1171"></a>
+<span class="sourceLineNo">1171</span>public GxColumnGroup addColumnGroup(GxColumnGroup definition!) { }<a name="line.1171"></a>
 <span class="sourceLineNo">1172</span>/**<a name="line.1172"></a>
 <span class="sourceLineNo">1173</span> * {@inheritDoc}<a name="line.1173"></a>
 <span class="sourceLineNo">1174</span>*/<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>public BBjNumber hasColumnGroup(BBjString id!) { }<a name="line.1175"></a>
+<span class="sourceLineNo">1175</span>public GxColumnGroup addColumnGroup(BBjString id!) { }<a name="line.1175"></a>
 <span class="sourceLineNo">1176</span>/**<a name="line.1176"></a>
 <span class="sourceLineNo">1177</span> * {@inheritDoc}<a name="line.1177"></a>
 <span class="sourceLineNo">1178</span>*/<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>public GxColumnGroup removeColumnGroup(BBjString id!) { }<a name="line.1179"></a>
+<span class="sourceLineNo">1179</span>public GxColumnGroup addColumnGroup(BBjString id! , BBjString label!) { }<a name="line.1179"></a>
 <span class="sourceLineNo">1180</span>/**<a name="line.1180"></a>
 <span class="sourceLineNo">1181</span> * {@inheritDoc}<a name="line.1181"></a>
 <span class="sourceLineNo">1182</span>*/<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>public GxColumn addColumn(GxColumn definition!) { }<a name="line.1183"></a>
+<span class="sourceLineNo">1183</span>public GxColumnGroup getColumnGroup(BBjString id!) { }<a name="line.1183"></a>
 <span class="sourceLineNo">1184</span>/**<a name="line.1184"></a>
 <span class="sourceLineNo">1185</span> * {@inheritDoc}<a name="line.1185"></a>
 <span class="sourceLineNo">1186</span>*/<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>public GxColumn addColumn(BBjString field!, BBjNumber type!) { }<a name="line.1187"></a>
+<span class="sourceLineNo">1187</span>public BBjNumber hasColumnGroup(BBjString id!) { }<a name="line.1187"></a>
 <span class="sourceLineNo">1188</span>/**<a name="line.1188"></a>
 <span class="sourceLineNo">1189</span> * {@inheritDoc}<a name="line.1189"></a>
 <span class="sourceLineNo">1190</span>*/<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>public GxColumn addColumn(BBjString field!, BBjString label!) { }<a name="line.1191"></a>
+<span class="sourceLineNo">1191</span>public GxColumnGroup removeColumnGroup(BBjString id!) { }<a name="line.1191"></a>
 <span class="sourceLineNo">1192</span>/**<a name="line.1192"></a>
 <span class="sourceLineNo">1193</span> * {@inheritDoc}<a name="line.1193"></a>
 <span class="sourceLineNo">1194</span>*/<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.1195"></a>
+<span class="sourceLineNo">1195</span>public GxColumn addColumn(GxColumn definition!) { }<a name="line.1195"></a>
 <span class="sourceLineNo">1196</span>/**<a name="line.1196"></a>
 <span class="sourceLineNo">1197</span> * {@inheritDoc}<a name="line.1197"></a>
 <span class="sourceLineNo">1198</span>*/<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>public GxColumn getColumn(BBjString field!) { }<a name="line.1199"></a>
+<span class="sourceLineNo">1199</span>public GxColumn addColumn(BBjString field!, BBjNumber type!) { }<a name="line.1199"></a>
 <span class="sourceLineNo">1200</span>/**<a name="line.1200"></a>
 <span class="sourceLineNo">1201</span> * {@inheritDoc}<a name="line.1201"></a>
 <span class="sourceLineNo">1202</span>*/<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>public BBjNumber hasColumn(BBjString field!) { }<a name="line.1203"></a>
+<span class="sourceLineNo">1203</span>public GxColumn addColumn(BBjString field!, BBjString label!) { }<a name="line.1203"></a>
 <span class="sourceLineNo">1204</span>/**<a name="line.1204"></a>
 <span class="sourceLineNo">1205</span> * {@inheritDoc}<a name="line.1205"></a>
 <span class="sourceLineNo">1206</span>*/<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>public GxColumn removeColumn(BBjString field!) { }<a name="line.1207"></a>
+<span class="sourceLineNo">1207</span>public GxColumn addColumn(BBjString field!, BBjString label! , BBjNumber type!) { }<a name="line.1207"></a>
 <span class="sourceLineNo">1208</span>/**<a name="line.1208"></a>
 <span class="sourceLineNo">1209</span> * {@inheritDoc}<a name="line.1209"></a>
 <span class="sourceLineNo">1210</span>*/<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>public void resetAllColumns() { }<a name="line.1211"></a>
+<span class="sourceLineNo">1211</span>public GxColumn getColumn(BBjString field!) { }<a name="line.1211"></a>
 <span class="sourceLineNo">1212</span>/**<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span> * @override<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span> *<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span> * {@inheritDoc}<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>*/<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>public JsonObject getAsJsonObject() { }<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>}<a name="line.1218"></a>
+<span class="sourceLineNo">1213</span> * {@inheritDoc}<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>*/<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>public BBjNumber hasColumn(BBjString field!) { }<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>/**<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span> * {@inheritDoc}<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>*/<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>public GxColumn removeColumn(BBjString field!) { }<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>/**<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span> * {@inheritDoc}<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>*/<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>public void resetAllColumns() { }<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>/**<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span> * @override<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span> *<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span> * {@inheritDoc}<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>*/<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>public JsonObject getAsJsonObject() { }<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>}<a name="line.1230"></a>
 
 
 
