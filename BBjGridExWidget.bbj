@@ -140,11 +140,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     field public static BBjNumber ForceCommunityBuild! = 0
     rem /**
     rem  * When true the grid will use the unmingled version of the Javascript code then open the debugger
-    rem  * in the browser when the CHROMIUM_HTMLVIEW is in use&#183;<br>
-    rem  * <b>Note :</b> in BBj 19.10 and higher the grid will open the debugger only when the debugging port is set
-    rem  * <pre><code>
-    rem  *      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=9222")
-    rem  * </code></pre>
+    rem  * in a new window.
     rem  */
     field public static BBjNumber Debug! = 0
     rem /**
@@ -743,6 +739,31 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         FI
     methodend
     rem /**
+    rem  * Enable remote debugging on the given port
+    rem  *
+    rem  * @param BBjNumber debug! true to enable debug , false otherwise
+    rem  * @param BBjNumber port! the debugging port
+    rem  *
+    rem  * @return void
+    rem  */
+    method public static void setDebug(BBjNumber debug! , BBjNumber port!)
+        if(debug!.booleanValue())
+            chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=" + str(port!))
+        fi
+
+        #Debug! = debug!
+    methodend
+    rem /**
+    rem  * Enable remote debugging on the 9222 port
+    rem  *
+    rem  * @param BBjNumber debug! true to enable debug , false otherwise
+    rem  *
+    rem  * @return void
+    rem  */
+    method public static void setDebug(BBjNumber debug!)
+        #setDebug(Debug! , 9222)
+    methodend
+    rem /**
     rem  * @Override
     rem  *
     rem  * This method is called whenever the widget needs to be rendered
@@ -755,20 +776,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
         if (f_init!) then
             html$ = #getTemplate()
-
-            if (info(3,6)<>"5" and #getDebug() > 0) then
-                if (REV < "REV 19.10")
-                    call "BBjGridExWidget/util/EnableDebugger.bbj"
-                FI
-            FI
-
-            if (REV < "REV 19.10")
-                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
-            else
-                switches$ = stbl("!CHROMIUM_SWITCHES",err=*next)
-                htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$,switches$)
-            FI
-
+            htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
             htmlview!.setOpaque(0)
             htmlview!.setNoEdge(1)
             htmlview!.setTabTraversable(1)
@@ -778,7 +786,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
                 url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
                 if url$>"" then
-                    BBjAPI().getThinClient().browse(url$)
+                    a = scall("bbj BBjGridExWidget/util/DebugWindow.bbj - "+url$+" &")
                 FI
             FI
 
@@ -856,7 +864,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * @see #suppressBuiDebouncing()
     rem  * @see #suppressGuiDebouncing()
-    rem  * 
+    rem  *
     rem  * @param BBjNumber suppress! true to suppress , false to enable
     rem  */
     method public void suppressDebouncing(BBjNumber suppress!)
@@ -2178,15 +2186,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     method public void focus(BBjString row! , BBjString column!)
         rem DO NOT focus the canvas or the we will have an infinite focus calls
         rem #super!.focus()
-
         if #getCanvas().getParentWindow().getFocusedControlID() <>  #getCanvas().getID() then
             #getHTMLView().clearCallback(BBjAPI.ON_GAINED_FOCUS)
             #HTMLView!.focus()
             #getHTMLView().setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
         fi
-
         rem /**
-        rem  * We never debounce the focus calls , this causes a heck of problems 
+        rem  * We never debounce the focus calls , this causes a heck of problems
         rem  * when there are several grids rendered
         rem  */
         script$="$wnd.gw_setFocusedCell('" + #GRIDID$ + "','" + str(row!) + "','" + str(column!) + "');"
