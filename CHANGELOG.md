@@ -1,3 +1,85 @@
+# [0.101.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.4...0.101.0) (2020-04-06)
+
+
+### Bug Fixes
+
+* **JS:** `cellValueChanged` should not be fired none changed vals ([2699f8a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2699f8a53e2b73a891f14176ecd2613d1b921052))
+* `HeaderGroupTooltip` is overriding 'HeaderTooltip` ([e1f08c6](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e1f08c6772445dcc15ed21c21d7e53cb9dcbd42a))
+* addSyle should not append dot for selectors ([2dfd5ce](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2dfd5ce1e76204f5f5bd20d0259766b0087c7ec1))
+* Bad syntax and a misspelling in BBjGridExWidgetClientModels.bbj ([03db9da](https://github.com/BBj-Plugins/BBjGridExWidget/commit/03db9da39e4ecfbc415b1eb761f9b233a8f19eba)), closes [#201](https://github.com/BBj-Plugins/BBjGridExWidget/issues/201)
+* fix BBjGridExWidgetClientRowModel index , id confusion ([20cc612](https://github.com/BBj-Plugins/BBjGridExWidget/commit/20cc612abff44f789249adc4e7ae854d8c2d6833))
+* focus not working in GUI ([58930d3](https://github.com/BBj-Plugins/BBjGridExWidget/commit/58930d3202eff0e4c689948bdd081080021d86b1)), closes [#181](https://github.com/BBj-Plugins/BBjGridExWidget/issues/181)
+* gw_isHeaderCheckboxSelection duplicates boxes ([bfb856c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/bfb856c59e7dd553d70389de2582f67be6d6c73c)), closes [#188](https://github.com/BBj-Plugins/BBjGridExWidget/issues/188)
+* inject all script in top window ([ad9d7b8](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ad9d7b8fffaf38ad0ff0eb4edc4e5b5fa3820602))
+* ON_GRID_CELL_CLICK event parsing failes when value is null ([a304cd3](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a304cd34b2529a83f187e7c3098c4906d331e105)), closes [#179](https://github.com/BBj-Plugins/BBjGridExWidget/issues/179)
+* remove deprecated themes ([5102654](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5102654b59a47c96e7cc61d90d6df4f5bf5f8b25)), closes [#196](https://github.com/BBj-Plugins/BBjGridExWidget/issues/196)
+* restore the old index.html init template ([44042b2](https://github.com/BBj-Plugins/BBjGridExWidget/commit/44042b2497de1bd6ea53514fef8e0f4f22027840))
+* setRowData(index! , row!) does not need index ([ad2f058](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ad2f05836101b5a163e3dfe914df3265456e9511)), closes [#184](https://github.com/BBj-Plugins/BBjGridExWidget/issues/184)
+* TransactionModel's AddIndex default value must be 0 ([afb460d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/afb460dc8bfa84927b4894f3653a2de34fff688c))
+* **JS:** ensureIndexVisible should  cast the index ([46ef084](https://github.com/BBj-Plugins/BBjGridExWidget/commit/46ef0848046cd6baaa538a6f5f270c67562a263d))
+* **JS:** gw_ensureIndexVisible should use ensureNodeVisible to select node objects ([ee2b00b](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ee2b00bb4bb329c4d39f1fb24ba3bbceadd67983))
+* update method should not call refreshClientSideRowModel ([c2975a8](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c2975a80cca8635b0df3ea5a6a5f1fa610d4a9d7)), closes [#197](https://github.com/BBj-Plugins/BBjGridExWidget/issues/197)
+
+
+### Code Refactoring
+
+* **BBj:** move HeaderTooltip to `GxColumnDefinition` ([eb65600](https://github.com/BBj-Plugins/BBjGridExWidget/commit/eb65600650d29874bcf46073a59186b4c01dbfa7))
+* use `Gx` as prefix ([211085a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/211085a1ab98aaaeecc3cf9d3dca99806bf00279))
+
+
+### Features
+
+* add `GxColumn.setTooltipValueGetterExpressio(BBjString)` ([58fb6d9](https://github.com/BBj-Plugins/BBjGridExWidget/commit/58fb6d96e3c6ec116d61b155d47f2183838927cb))
+* add `GxExecutor` to handle script debouncing ([8170e0e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8170e0e495cd1e14a0be08b3a3f6c5771496f079))
+* add `TooltipShowDelay` option ([34ed092](https://github.com/BBj-Plugins/BBjGridExWidget/commit/34ed09210c15cb3e983d092ef4a76748a851b7ee))
+* add suffix and prefix for number,string & bytes formatters ([033071d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/033071dd02b85cbbaaacc6ac210b98a0a6bd4e38))
+* add support for editable expression ([8496726](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8496726d01de9c7d94c715daa7c9aab4e789b982))
+* support remote debugging on different windows ([50106eb](https://github.com/BBj-Plugins/BBjGridExWidget/commit/50106eb8104cd9e3d086bb3a8c544501313ca024))
+* **BBj:** add support for Field Tooltips ([dfd98c4](https://github.com/BBj-Plugins/BBjGridExWidget/commit/dfd98c40e915600b5e203fda16e8493fee90eeb5))
+* **demo:** add ColumnPinning demo ([0ef8765](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0ef87652699ba46b13bf4c3f558de251d53e5f41))
+* **demo:** add ColumnSuppressMovableAndLockPosition demo ([4557405](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4557405e7dd12aa4367056bfc480c235fe9ce9a7))
+* **demo:** add context demo ([95c2e4e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/95c2e4ec91901ec705a8d16dde7f8d231674b5c9))
+* **demo:** add HighlightingRowsAndColumns dmeo ([305478c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/305478c55bc9d2fa08b56d0ade626169d223b14c))
+* **demo:** add sorting api demo ([98e8f5e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/98e8f5ef71a459ebfea9848aa408c126fd0946b9))
+* **demo:** add tooltips demo ([d31de00](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d31de006e390df953d25aaa3e332439d9e43df2e))
+* **demo:** add ValueParser demo ([3418800](https://github.com/BBj-Plugins/BBjGridExWidget/commit/341880039b61c8356f74cf8985f97f3b8f77505c))
+* **JS,BBj:** add HTMLTooltip component ([dda6139](https://github.com/BBj-Plugins/BBjGridExWidget/commit/dda6139b1b8d30a9495a05f55f2e198a329a6cda))
+* add `resetRowHeights` api method ([19b3d67](https://github.com/BBj-Plugins/BBjGridExWidget/commit/19b3d67763603c16e3239a0d12a6fbc6b2b4a116))
+* add `tabToNextCell` and `tabToPreviousCell` API` ([3c6c8eb](https://github.com/BBj-Plugins/BBjGridExWidget/commit/3c6c8eb10cc38b317b3018ecffee4626145314b7))
+* add autoSizeColumns functions ([739999b](https://github.com/BBj-Plugins/BBjGridExWidget/commit/739999b877ebcc6d27be96967d85e9ed102e08a4)), closes [#149](https://github.com/BBj-Plugins/BBjGridExWidget/issues/149)
+* add ensureColumnVisible ([b93b550](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b93b550fbba6e4e04e0e112d0c6317ea8cd157ee))
+* add ensureIndexVisible ([196e0f4](https://github.com/BBj-Plugins/BBjGridExWidget/commit/196e0f4e85f1f69cd20421dcb247bdb368a6b33b))
+* add filters api to apply columns filters from BBj ([4bc5da8](https://github.com/BBj-Plugins/BBjGridExWidget/commit/4bc5da873e5b72b6f754ab64970dbe51e3a48ac6))
+* add ON_GRID_ROW_VALUE_CHANGED event ([1a22431](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1a224315bbb91cd1271ff87c5e300dce2e6331d0))
+* add sorting api ([9d41a74](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9d41a740ec157ce2824eed39ecf4bce8fc942b2a))
+* add support for Transaction updates ([7aae009](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7aae009bd0e5668b40514585d393c74d691a4bd6))
+* add support Tooltip value getter expression ([837e99d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/837e99d2624f4929e194117d0d7e57c3dcda2e16))
+* add supported themes as constants ([717c87d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/717c87d5e7b103ea5ccd2c8a07051068a92113fb))
+* allow cell editing by row key ([9ea41fc](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9ea41fcead0c2ec12f18d660cd15f46d8d5b2de9))
+* allow to set row height by key ([ca39f2c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ca39f2c8a6185d9c2359cdd99be2068561854475))
+* enable row data sync with a context config ([ff427c0](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ff427c03c8324c66ac1f5794bdd4f6e5e8a57964))
+* extend setSelectedRow(s) methods to allow selection by key ([2153a4e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2153a4e2c3ec5429694cccd3abd719b0fc0fe025))
+* Implement BBj interfaces for basis-aggrid-components components ([0140805](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0140805c6631044556c0f7b145b9b3f181369f91))
+* implement ON_GRID_ROW_CLICK event ([99ddcb7](https://github.com/BBj-Plugins/BBjGridExWidget/commit/99ddcb783f1eb04a80805fb0c94bca3c45b62bce)), closes [#178](https://github.com/BBj-Plugins/BBjGridExWidget/issues/178)
+* improve context api and add `redrawRows` & `updateContext` API ([1598f8f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1598f8f710a1bfc9c82e37758981e668dcbdf472))
+
+
+### BREAKING CHANGES
+
+* **BBj:** `GxDefaultColumnGroup.HeaderGroupTooltip` is deprecated
+now. Use `GxDefaultColumnGroup.HeaderTooltip` instead
+* All classes use the `GX` prefix now instead of
+`BBjGridExWidget`
+* the rowId refers now to the auto generated key by the resultset where . the rowIndex refers to
+the row index in the grid not the resultset and childIndex refers to row
+index in the grid when grouping
+* `addStyle` does not assume that selector is a class
+selector anymore. the selector can be any valid css selector thus the
+method will not auto append the dot at the begging of the selector
+anymore.
+* The fresh, dark, blue and bootstrap themes were the original themes provided by the grid. They are deprecated
+
+
 ## [0.100.4](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.3...0.100.4) (2020-01-15)
 
 
