@@ -8,13 +8,15 @@
   "plugin_dependencies": [
     {
       "plugin_name": "BBjWidget",
-      "plugin_version": "master",
+      "plugin_version": "1.0",
       "project_url": "https://github.com/BBj-Plugins/BBjWidget"
-    },
+    }
+  ],
+  "plugin_development_dependencies": [
     {
       "plugin_name": "BBjUnitTest",
       "plugin_version": "master",
       "project_url": "https://github.com/BBj-Plugins/BBjUnitTest"
     }
-  ]
+  ]  
 }
