@@ -1,3 +1,12 @@
+## [0.101.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.0...0.101.1) (2020-04-07)
+
+
+### Bug Fixes
+
+* **deps:** correct prod,dev deps and their versions ([67dfae3](https://github.com/BBj-Plugins/BBjGridExWidget/commit/67dfae32c8e5dd2ce61466676ed2f541500f6740))
+
+
+
 # [0.101.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.100.4...0.101.0) (2020-04-06)
 
 
