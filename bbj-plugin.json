@@ -1,16 +1,18 @@
 {
   "name": "BBjGridExWidget",
   "description": "An Advanced BBj Data Grid / Data Table Widget",
-  "version": "0.101.0",
+  "version": "0.101.1",
   "author": "BASIS Europe Distribution GmbH",
   "licence": "MIT",
   "bbj_dependency": "19.12",
   "plugin_dependencies": [
     {
       "plugin_name": "BBjWidget",
-      "plugin_version": "master",
+      "plugin_version": "1.0",
       "project_url": "https://github.com/BBj-Plugins/BBjWidget"
-    },
+    }
+  ],
+  "plugin_development_dependencies": [
     {
       "plugin_name": "BBjUnitTest",
       "plugin_version": "master",
