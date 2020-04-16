@@ -888,6 +888,11 @@ class public GxOptions
     rem  */
     field public BBjNumber SuppressMultiRangeSelection! = null()
     rem /**
+    rem  * If true, cells won't be selectable. This means cells will not get keyboard focus when you click on them.
+    rem  * Default: false
+    rem  */
+    field public BBjNumber SuppressCellSelection! = null()
+    rem /**
     rem  * Set to true to enable charting
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
@@ -1095,6 +1100,7 @@ class public GxOptions
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
         options!.addProperty("enableRangeSelection",#getEnableRangeSelection().booleanValue(), err=*next)
         options!.addProperty("suppressMultiRangeSelection",#getSuppressMultiRangeSelection().booleanValue(), err=*next)
+        options!.addProperty("suppressCellSelection",#getSuppressCellSelection().booleanValue(), err=*next)
         rem Editing Options
         rem ===========================
         options!.addProperty("singleClickEdit",#getSingleClickEdit().booleanValue(), err=*next)
