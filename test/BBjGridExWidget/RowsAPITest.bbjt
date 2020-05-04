@@ -34,6 +34,21 @@ class public RowsAPITest
     methodend
     
     rem @Test
+    method public void testGetRow()
+        declare auto JsonObject rowFixture!
+        
+        rowFixture! = #getModelsFixture().get("row-model").getAsJsonObject()
+        rowKey! = rowFixture!.get("i").getAsString()
+                
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.setExecuteResult(rowFixture!.toString())
+        
+        row! = #Instance!.getRow(rowKey!)
+        Assert.IsNotNull(row!)
+        Assert.Equals(row!.getId() , rowKey!)
+    methodend
+        
+    rem @Test
     method public void testGetRows()
         declare auto JsonArray rowModelFixture!
 

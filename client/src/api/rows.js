@@ -249,6 +249,21 @@ export function gw_getSelectedRow(id) {
 }
 
 /**
+ * Get the row by its id or index
+ *
+ * @param {String} id grid's id
+ * @param {String|Number} index
+ *
+ * @return {String} row as JSON
+ */
+export function gw_getRow(id, index) {
+  const options = gw_getGrid(id).options
+  return JSON.stringify(
+    gw_parseNode(options.api.getRowNode(index), options.context)
+  )
+}
+
+/**
  * Get rows from the grid
  *
  * @param {String} id The grid's id

@@ -2433,6 +2433,27 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
             methodret rows!
     methodend
     rem /**
+    rem  * Returns the row with the given key from the grid. 
+    rem  * 
+    rem  * <b>Note : </b> if you only need to get the row and 
+    rem  * you don't care about other meta data like parent(when grouping) , isSelected,... then use the 
+    rem  * ResultSet API (ex ResultSet.getItem(BBjString key!) )
+    rem  * 
+    rem  * @param BBjString key! the row's key
+    rem  * 
+    rem  * @return GxClientRowModel the grid's row model
+    rem  * 
+    rem  * @see <a href"https://basishub.github.io/components/javadoc/com/basiscomponents/db/ResultSet.html#getItem-int-">ResultSet.getItem</a>
+    rem  */
+    method public GxClientRowModel getRow(BBjString key!)
+        returnedRow! = #getExecutor().execute("$wnd.gw_getRow('" + #GRIDID$ + "','" + key! + "')" , 0)
+        if returnedRow! <> null() and len(returnedRow!) > 0 then
+            methodret #getClientJsonFactory().getRow(returnedRow!)
+        FI
+
+        methodret null()
+    methodend    
+    rem /**
     rem  * Get the rows from grid in the given phase after applying the given
     rem  * filter expression.
     rem  *
