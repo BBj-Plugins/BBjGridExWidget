@@ -307,6 +307,10 @@
         "OrderEntry.bbj": {
             "name": "OrderEntry",
             "style": ""
+        },
+        "GetRows.bbj": {
+            "name": "GetRows",
+            "style": ""
         }
     },
     "cSpell.words": [

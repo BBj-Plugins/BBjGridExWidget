@@ -7,8 +7,9 @@ rem  * file that was distributed with this source code.
 rem  */
 
 use ::BBjGridExWidget/test/BBjGridExWidget/FiltersAPITest.bbjt::FiltersAPITest
+use ::BBjGridExWidget/test/BBjGridExWidget/RowsAPITest.bbjt::RowsAPITest
 use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetTest.bbjt::BBjGridExWidgetTest
 
-rem @SuiteClasses("BBjGridExWidgetTest","FiltersAPITest")
+rem @SuiteClasses("BBjGridExWidgetTest","FiltersAPITest","RowsAPITest")
 class public GxSuite
 classend

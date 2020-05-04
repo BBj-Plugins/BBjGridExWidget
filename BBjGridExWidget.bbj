@@ -463,6 +463,32 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         methodret "never"
     methodend
     rem /**
+    rem  * Constant value which describes the rows in before sorting and
+    rem  * filtering phase.
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_ROWS_PHASE_ALL()
+        methodret "forEachNode"
+    methodend
+    rem /**
+    rem  * Constant value which describes the rows in after filtering phase.
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_ROWS_PHASE_AFTER_FILTER()
+        methodret "forEachNodeAfterFilter"
+    methodend
+    rem /**
+    rem  * Constant value which describes the rows in after filtering and sorting
+    rem  * phase.
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_ROWS_PHASE_AFTER_FILTER_SORT()
+        methodret "forEachNodeAfterFilterAndSort"
+    methodend
+    rem /**
     rem  * Constant value which defines that chart toolbar settings item
     rem  *
     rem  * @return BBjString
@@ -749,7 +775,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     method public static void setDebug(BBjNumber debug! , BBjNumber port!)
         if(debug!.booleanValue())
             chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=" + str(port!))
-        fi
+        FI
 
         #Debug! = debug!
     methodend
@@ -881,7 +907,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     method public void onInit(BBjEvent ev!)
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
         isLicensed! = 0
-        if (#getForceCommunityBuild() = 0) then isLicensed! = #isLicensed() FI
+
+        if (#getForceCommunityBuild() = 0) then
+            isLicensed! = #isLicensed()
+        FI
         rem /**
         rem  * work out the required js files
         rem  */
@@ -968,7 +997,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * @param BBjGainedFocusEvent ev! The focus event
     rem  */
     method public void onGainedFocus(BBjGainedFocusEvent ev!)
-        if(ev!.isTemporary()) methodret
+        if(ev!.isTemporary())
+            methodret
+        FI
+
         #focus()
     methodend
     rem /**
@@ -1630,7 +1662,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         rem  * The widget is declared ready when the HTMLView fires the ON_PAGE_LOADED
         rem  * event and the scripts are injected succesfully
         rem  */
-        if(!isWidgetReady!) methodret
+        if(!isWidgetReady!)
+            methodret
+        FI
+
         isFirstRender! = #getIsFirstRender()
         gson! = new Gson()
         options! = #getAsJsonObject()
@@ -1644,12 +1679,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         rem  * is queued in the normal order.
         rem  */
         priority! = 0
-        if(!isFirstRender!) priority! = null()
+
+        if(!isFirstRender!)
+            priority! = null()
+        FI
+
         #getExecutor().execute("$wnd.gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")" , 1 , priority!)
         rem /**
         rem  * Update the IsFirstRender flag once and only once
         rem  */
-        if(!isFirstRender!) #setIsFirstRender(BBjAPI.FALSE)
+        if(!isFirstRender!)
+            #setIsFirstRender(BBjAPI.FALSE)
+        FI
     methodend
     rem /**
     rem  * Re-render the column definitions on the client.
@@ -2190,7 +2231,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
             #getHTMLView().clearCallback(BBjAPI.ON_GAINED_FOCUS)
             #HTMLView!.focus()
             #getHTMLView().setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
-        fi
+        FI
         rem /**
         rem  * We never debounce the focus calls , this causes a heck of problems
         rem  * when there are several grids rendered
@@ -2301,6 +2342,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
+    rem  * Select a row by its index
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber x!: the row index to select
+    rem  */
+    method public void setSelectedRow(BBjNumber index!)
+        #setSelectedRow(str(index!))
+    methodend
+    rem /**
     rem  * Select a row by its key
     rem  *
     rem  * <br><b><small>#API</small></b>
@@ -2312,14 +2363,19 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute(script$)
     methodend
     rem /**
-    rem  * Select a row by its index
+    rem  * Get the current selected row
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber x!: the row index to select
+    rem  * @return GxClientRowModel The selected row if any, null() otherwise
     rem  */
-    method public void setSelectedRow(BBjNumber index!)
-        #setSelectedRow(str(index!))
+    method public GxClientRowModel getSelectedRow()
+        returnedRow! = #getExecutor().execute("$wnd.gw_getSelectedRow('" + #GRIDID$ + "')",0)
+        if returnedRow!<>null() and len(returnedRow!) > 0 then
+            methodret #getClientJsonFactory().getRow(returnedRow!)
+        FI
+
+        methodret null()
     methodend
     rem /**
     rem  * Select a vector of rows.
@@ -2345,6 +2401,121 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
         script$=script$+"]);"
         #getExecutor().execute(script$)
+    methodend
+    rem /**
+    rem  * Get Array of selected rows
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @return BBjVector A vector filled with the selected rows
+    rem  */
+    method public BBjVector getSelectedRows()
+        rows! = new BBjVector()
+
+        if (#getRS() = null()) then
+            goto getSelectedRowsErr
+        FI
+
+        returnedRows! = #getExecutor().execute("$wnd.gw_getSelectedRows('" + #GRIDID$ + "')" , 0)
+        if returnedRows! = null() then
+            goto getSelectedRowsErr
+        FI
+
+        parser! = new JsonParser()
+        array! = parser!.parse(returnedRows!).getAsJsonArray()
+        it! = array!.iterator()
+        while (it!.hasNext())
+            next! = it!.next().getAsJsonObject(err=getSelectedRowsErr)
+            rows!.add(#getClientJsonFactory().getRow(next!))
+        wend
+
+        getSelectedRowsErr:
+            methodret rows!
+    methodend
+    rem /**
+    rem  * Get the rows from grid in the given phase after applying the given
+    rem  * filter expression.
+    rem  *
+    rem  * <b>Note:</b> if you only need to get the whole rows from the grid and you don't care about
+    rem  *              filtering and sorting Then retrieve them from ResultSet as this will be faster
+    rem  *              especially in BUI
+    rem  *
+    rem  * @param BBjString phase! The rows phase
+    rem  * @param BBjString filterExpression! A filter expression to execute before returning the rows.
+    rem  *                                    The expression must return true or false for the given row
+    rem  *
+    rem  * @return BBjVector A vector of GxClientRowModel(s)
+    rem  *
+    rem  * @see #GRID_ROWS_PHASE_ALL()
+    rem  * @see #GRID_ROWS_PHASE_AFTER_FILTER()
+    rem  * @see #GRID_ROWS_PHASE_AFTER_FILTER_SORT()
+    rem  *
+    rem  * @see <a href="https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxExpressions/GxExpression.html">see GxExpression</a>
+    rem  */
+    method public BBjVector getRows(BBjString phase! , BBjString filterExpression!)
+        rows! = new BBjVector()
+        returnedRows! = #getExecutor().execute("$wnd.gw_getRows('" + #GRIDID$ + "','" + phase! + "'," + (new Gson()).toJson(filterExpression!) + ")" , 0)
+        if returnedRows! <> null() AND returnedRows! <> "[]" then
+            parser! = new JsonParser()
+            array! = parser!.parse(returnedRows!).getAsJsonArray()
+            it! = array!.iterator()
+            while (it!.hasNext())
+                next! = it!.next().getAsJsonObject()
+                rows!.add(#getClientJsonFactory().getRow(next!))
+            wend
+        FI
+
+        methodret rows!
+    methodend
+    rem /**
+    rem  * Get the rows from grid in the given phase after applying the given
+    rem  * filter expression.
+    rem  *
+    rem  * <b>Note:</b> if you only need to get the whole rows from the grid and you don't care about
+    rem  *              filtering and sorting Then retrieve them from ResultSet as this will be faster
+    rem  *              especially in BUI
+    rem  *
+    rem  * @param BBjString phase! The rows phase
+    rem  * @param GxExpressionInterface filterExpression! A filter expression to execute before returning the rows.
+    rem  *                                                The expression must return true or false for the given row
+    rem  *
+    rem  * @return BBjVector A vector of GxClientRowModel(s)
+    rem  *
+    rem  * @see #GRID_ROWS_PHASE_ALL()
+    rem  * @see #GRID_ROWS_PHASE_AFTER_FILTER()
+    rem  * @see #GRID_ROWS_PHASE_AFTER_FILTER_SORT()
+    rem  *
+    rem  * @see <a href="https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxExpressions/GxExpression.html">see GxExpression</a>
+    rem  */
+    method public BBjVector getRows(BBjString phase! , GxExpressionInterface filterExpression!)
+        methodret #getRows(phase!, filterExpression!.toString())
+    methodend
+    rem /**
+    rem  * Get the rows from grid in the given phase after applying the given
+    rem  * filter expression.
+    rem  *
+    rem  * <b>Note:</b> if you only need to get the whole rows from the grid and you don't care about
+    rem  *              filtering and sorting Then retrieve them from ResultSet as this will be faster
+    rem  *              especially in BUI
+    rem  *
+    rem  * @param BBjString phase! The rows phase
+    rem  *
+    rem  * @return BBjVector A vector of GxClientRowModel(s)
+    rem  *
+    rem  * @see #GRID_ROWS_PHASE_ALL()
+    rem  * @see #GRID_ROWS_PHASE_AFTER_FILTER()
+    rem  * @see #GRID_ROWS_PHASE_AFTER_FILTER_SORT()
+    rem  */
+    method public BBjVector getRows(BBjString phase!)
+        methodret #getRows(phase!, "")
+    methodend
+    rem /**
+    rem  * Get the rows from grid after sorting and filtering
+    rem  *
+    rem  * @return BBjVector A vector of GxClientRowModel(s)
+    rem  */
+    method public BBjVector getRows()
+        methodret #getRows(#GRID_ROWS_PHASE_AFTER_FILTER_SORT())
     methodend
     rem /**
     rem  * Expand all groups
@@ -2580,7 +2751,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     method public void updateContext()
         if(#IsReady!)
             #getExecutor().execute("$wnd.gw_updateContext('" + #GRIDID$ +"'," + #getClientContext().toString() + ")")
-        fi
+        FI
     methodend
     rem /**
     rem  * Set and apply filter model for the given column
@@ -2651,7 +2822,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         if(#getIsReady() = BBjAPI.TRUE)
             code! = String.format("JSON.stringify($wnd.gw_getGrid('%s').options.api.getFilterInstance('%s').getModel());" , #getGRIDID(), column!)
             jsonModel! = #getExecutor().execute(code! , 0)
-        fi
+        FI
 
         if(jsonModel! <> null() AND jsonModel! <> "null")
             methodret #getClientJsonFactory().getFilter(jsonModel!,column!)
@@ -2677,16 +2848,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
                         model! = new GxClientFilterSetFilterModel()
                         break
                 SWEND
-            fi
+            FI
 
             if(model! = null())
                 throw "Failed to create column filter's model. The column has no filter component attached" , 256
-            fi
+            FI
 
             model!.setWidget(#this!)
             model!.setColumn(column!)
             methodret model!
-        fi
+        FI
     methodend
     rem /**
     rem  * Get The combined filter model for the given column
@@ -2713,12 +2884,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
         if(isAlreadyCombined! = 0 AND model!.supportsCombinedModel() = 0)
             throw "The column's filter component does not support combined models" , 256
-        fi
+        FI
 
         combinedModel! = iff(isAlreadyCombined!,model! ,new GxClientFilterCombinedModel() )
         combinedModel!.setWidget(#this!)
         combinedModel!.setColumn(column!)
-        if(!isAlreadyCombined!) combinedModel!.setFirstCondition(model!)
+
+        if(!isAlreadyCombined!)
+            combinedModel!.setFirstCondition(model!)
+        FI
+
         methodret combinedModel!
     methodend
     rem /**
@@ -3024,51 +3199,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     method public void includeClientRowDataInRowModels(BBjNumber include!)
         #getClientContext().addProperty("includeClientRowData",include!.booleanValue())
         #updateContext()
-    methodend
-    rem /**
-    rem  * Get the current selected row
-    rem  *
-    rem  * <br><b><small>#API</small></b>
-    rem  *
-    rem  * @return GxClientRowModel The selected row if any, null() otherwise
-    rem  */
-    method public GxClientRowModel getSelectedRow()
-        returnedRow! = #getExecutor().execute("$wnd.gw_getSelectedRow('" + #GRIDID$ + "')",0)
-        if returnedRow!<>null() and len(returnedRow!) > 0 then
-            methodret #getClientJsonFactory().getRow(returnedRow!)
-        FI
-
-        methodret null()
-    methodend
-    rem /**
-    rem  * Get Array of selected rows
-    rem  *
-    rem  * <br><b><small>#API</small></b>
-    rem  *
-    rem  * @return BBjVector A vector filled with the selected rows
-    rem  */
-    method public BBjVector getSelectedRows()
-        rows! = new BBjVector()
-
-        if (#getRS() = null()) then
-            goto getSelectedRowsErr
-        FI
-
-        returnedRows! = #getExecutor().execute("$wnd.gw_getSelectedRows('" + #GRIDID$ + "')" , 0)
-        if returnedRows! = null() then
-            goto getSelectedRowsErr
-        FI
-
-        parser! = new JsonParser()
-        array! = parser!.parse(returnedRows!).getAsJsonArray()
-        it! = array!.iterator()
-        while (it!.hasNext())
-            next! = it!.next().getAsJsonObject(err=getSelectedRowsErr)
-            rows!.add(#getClientJsonFactory().getRow(next!))
-        wend
-
-        getSelectedRowsErr:
-            methodret rows!
     methodend
     rem /**
     rem  * The method will return a vector of the selected ranges including columns and rows

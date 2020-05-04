@@ -8,6 +8,7 @@
 
 import { gw_getGrid } from './utilities'
 import { gw_parseNode } from 'events/utilities'
+import { gw_executeExpression } from '../expression'
 
 export function gw_setQuickFilter(id, filter) {
   gw_getGrid(id).options.api.setQuickFilter(filter)
@@ -245,6 +246,54 @@ export function gw_getSelectedRow(id) {
   }
 
   return ''
+}
+
+/**
+ * Get rows from the grid
+ *
+ * @param {String} id The grid's id
+ * @param {String} phase The rows phase
+ * @param {String} filterExpression A filter expression
+ *
+ * @return {String} Json stringified array of rows
+ */
+export function gw_getRows(id, phase, filterExpression) {
+  const options = gw_getGrid(id).options
+  const parsed = []
+
+  options.api[phase](node => {
+    if (!node.group) {
+      if (filterExpression) {
+        const canProcess = gw_executeExpression(filterExpression, {
+          value: node.data,
+          context: options.context,
+          oldValue: null,
+          newValue: null,
+          node: node,
+          data: node.data,
+          colDef: null,
+          rowIndex: node.rowIndex,
+          api: node.gridApi,
+          columnApi: node.columnApi,
+          getValue: () => node.data,
+          column: null,
+          columnGroup:
+            // eslint-disable-next-line no-prototype-builtins
+            node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key')
+              ? node.parent.key
+              : '',
+        })
+
+        if (canProcess) {
+          parsed.push(gw_parseNode(node, options.context))
+        }
+      } else {
+        parsed.push(gw_parseNode(node, options.context))
+      }
+    }
+  })
+
+  return JSON.stringify(parsed)
 }
 
 /**
