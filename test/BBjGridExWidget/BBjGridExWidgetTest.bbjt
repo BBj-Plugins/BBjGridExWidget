@@ -9,6 +9,7 @@ rem  */
 use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
+use java.util.regex.Pattern
 
 class public BBjGridExWidgetTest
 
@@ -17,6 +18,29 @@ class public BBjGridExWidgetTest
     rem @Before
     method public void setUp()
         #Instance! = new BBjGridExWidgetMock()
+    methodend
+    
+    rem @Test    
+    method public void testGetRoot()
+        grid2! = new BBjGridExWidgetMock()
+        grid3! = new BBjGridExWidgetMock()
+        
+        currentId! = #Instance!.getRootId()
+        grid2Id!   = grid2!.getRootId()
+        grid3Id!   = grid3!.getRootId()
+            
+        pattern! = "gx-grid-[0-9]+"
+        
+        Assert.Equals(Pattern.matches(pattern!,currentId!) , BBjAPI.TRUE)
+        Assert.Equals(Pattern.matches(pattern!,grid2Id!) , BBjAPI.TRUE)
+        Assert.Equals(Pattern.matches(pattern!,grid3Id!) , BBjAPI.TRUE)
+        
+        currentInstnaceNum! = num(currentId!.substring(currentId!.lastIndexOf("-") + 1))
+        grid2InstanceNum!   = num(grid2Id!  .substring(grid2Id!  .lastIndexOf("-") + 1))
+        grid3InstanceNum!   = num(grid3Id!  .substring(grid3Id!  .lastIndexOf("-") + 1))
+        
+        Assert.Equals(currentInstnaceNum! < grid2InstanceNum! , BBjAPI.TRUE)
+        Assert.Equals(grid2InstanceNum! < grid3InstanceNum! , BBjAPI.TRUE) 
     methodend
 
     rem @Test
@@ -74,7 +98,9 @@ class public BBjGridExWidgetTest
         Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 0)
         Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 0)
     methodend        
-        
+    
+
+    
     rem @After
     method public void tearDown()
         #Instance! = null()

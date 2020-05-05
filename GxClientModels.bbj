@@ -841,7 +841,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
     method public BBjString execute(BBjNumber send!)
         #assertWidget()
         widget! = #getWidget()
-        code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getGRIDID())
+        code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getRootId())
         if(send!.booleanValue()) widget!.getExecutor().execute(code!)
         methodret code!
     methodend
@@ -902,7 +902,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
     method protected BBjString getFilterInstance()
         #assertColumn()
         #assertWidget()
-        code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getGRIDID(), #getColumn())
+        code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getRootId(), #getColumn())
         methodret code!
     methodend
 

@@ -210,7 +210,7 @@ class public GxExecutor
         widget! = #getWidget()
         isDebugging! = widget!.getDebug()
         platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
-        id! = widget!.getGRIDID()
+        id! = widget!.getRootId()
 
         if(queue!.size() > 0)
             if(isDebugging!)
@@ -228,7 +228,7 @@ class public GxExecutor
                     System.out.println(String.format("%s    Script : %s" ,platform! ,script!))
 
                     if(#isBui()) then
-                        script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getGRIDID() , script!)  + "`);"  + script!
+                        script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getRootId() , script!)  + "`);"  + script!
                     fi
                 fi
 
@@ -302,7 +302,7 @@ class public GxExecutor
         shouldSuppress! = iff(#isBui() = 1 , #getSuppressBuiDebouncing() , #getSuppressGuiDebouncing())
 
         if(isDebugging! AND (isDebounced! = 0 OR shouldSuppress!))
-            id! = widget!.getGRIDID()
+            id! = widget!.getRootId()
             platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
 
             if shouldSuppress!

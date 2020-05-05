@@ -334,7 +334,7 @@ class public GxStatusBar
     rem  */
     method public void setComponentVisibility(BBjString id! , BBjNumber visibility!)
         scriptKey! = "$wnd.gw_setStatusbarComponentVisibility" + id!
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + id! + "'," + str(visibility!) + ")")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getRootId() + "','" + id! + "'," + str(visibility!) + ")")
     methodend
     rem /**
     rem  * Hide/show statusbar component

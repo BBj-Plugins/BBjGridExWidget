@@ -283,7 +283,7 @@ class public GxSidebar
     rem  */
     method public void setVisible(BBjNumber visible!)
         scriptKey! = "$wnd.gw_setSideBarVisible"
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setSideBarVisible('" + #Widget!.getRootId() + "'," + str(visible!) + ")")
     methodend
     rem /**
     rem  * Open toolpanel
@@ -294,7 +294,7 @@ class public GxSidebar
     rem  */
     method public void openToolpanel(BBjString id!)
         scriptKey! = "$wnd.gw_openToolpanel"
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_openToolpanel('" + #Widget!.getRootId() + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Close toolpanel
@@ -305,7 +305,7 @@ class public GxSidebar
     rem  */
     method public void closeToolpanel(BBjString id!)
         scriptKey! = "$wnd.gw_closeToolpanel"
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_closeToolpanel('" + #Widget!.getRootId() + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Convert the sidebar into json object
