@@ -24,25 +24,25 @@ rem btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onToggle")
 static! = wnd!.addStaticText(202,10,10,200,25,"Toggle Statusbar Components" , $0000$ )
 totalRow! = wnd!.addCheckBox(203,10,30,200,22,"Total Row")
 totalRow!.setSelected(1)
-totalRow!.setName(GxStatusBarTotalRowCountComponent.NAME())
+totalRow!.setName(GxStatusBarTotalRowCountComponent.getId())
 totalRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 totalRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 filteredRow! = wnd!.addCheckBox(204,10,50,200,22,"Filtered Row")
 filteredRow!.setSelected(1)
-filteredRow!.setName(GxStatusBarFilteredRowCountComponent.NAME())
+filteredRow!.setName(GxStatusBarFilteredRowCountComponent.getId())
 filteredRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 filteredRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 totalAndFilteredRow! = wnd!.addCheckBox(205,10,70,200,22,"Total And Filtered Row")
 totalAndFilteredRow!.setSelected(1)
-totalAndFilteredRow!.setName(GxStatusBarTotalAndFilteredRowCountComponent.NAME())
+totalAndFilteredRow!.setName(GxStatusBarTotalAndFilteredRowCountComponent.getId())
 totalAndFilteredRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 totalAndFilteredRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
 selectedRow! = wnd!.addCheckBox(206,10,90,200,22,"Selected Row")
 selectedRow!.setSelected(1)
-selectedRow!.setName(GxStatusBarSelectedRowCountComponent.NAME())
+selectedRow!.setName(GxStatusBarSelectedRowCountComponent.getId())
 selectedRow!.setCallback(BBjAPI.ON_CHECK_OFF,"onToggle")
 selectedRow!.setCallback(BBjAPI.ON_CHECK_ON,"onToggle")
 
@@ -79,10 +79,10 @@ onToggle:
   control! = event!.getControl()
   
   name$ = control!.getName()
-  visiblity! = iff(control!.isSelected() , 1 ,0)
+  visibility! = iff(control!.isSelected() , 1 ,0)
   
   statusbar! = grid!.getStatusbar()
-  statusbar!.setComponentVisibility(name$  , visiblity!)
+  statusbar!.setComponentVisibility(name$  , visibility!)
 return 
 
 byebye:
