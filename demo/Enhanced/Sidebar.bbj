@@ -55,7 +55,7 @@ fillGrid:
 
     grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
 
-    columnsToolpanel! = cast(GxColumnsToolpanel,grid!.getSidebar().getToolpanels().get(GxColumnsToolpanel.ID()))
+    columnsToolpanel! = cast(GxColumnsToolpanel,grid!.getSidebar().getToolpanels().get(GxColumnsToolpanel.getId()))
     columnsToolpanel!.setSuppressValues(1)
 
     grid!.setData(rs!,"CDNUMBER")
@@ -72,9 +72,9 @@ toolpanelToggle:
     sidebar! = grid!.getSidebar()
 
     if toolpanelState! = 0 then
-        sidebar!.openToolpanel(GxColumnsToolpanel.ID())
+        sidebar!.openToolpanel(GxColumnsToolpanel.getId())
     else
-        sidebar!.closeToolpanel(GxColumnsToolpanel.ID())
+        sidebar!.closeToolpanel(GxColumnsToolpanel.getId())
     fi
 
     toolpanelState! = !toolpanelState!

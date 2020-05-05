@@ -26,9 +26,18 @@ interface public GxToolpanelInterface
     rem  * Get the toolbar unique name
     rem  *
     rem  * @return BBjString The toolbar name
+    rem  *
+    rem  * @deprecated use `getId()` instead
     rem  */
 
     method public static BBjString ID()
+    rem /**
+    rem  * Get the toolbar unique name
+    rem  *
+    rem  * @return BBjString The toolbar name
+    rem  */
+
+    method public static BBjString getId()
     rem /**
     rem  * Get a json representation for the toolpanel
     rem  *
@@ -79,7 +88,7 @@ class public GxToolpanel implements GxToolpanelInterface
         declare JsonObject json!
 
         json! = new JsonObject()
-        json!.addProperty("id",#this!.ID(), err=*next)
+        json!.addProperty("id",#getId(), err=*next)
         json!.addProperty("labelKey",#getLabel() , err=*next)
         json!.addProperty("labelDefault",#getLabel() , err=*next)
         json!.addProperty("iconKey",#getIcon() , err=*next)
@@ -125,6 +134,12 @@ class public GxColumnsToolpanel extends GxToolpanel
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
+        methodret GxColumnsToolpanel.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agColumnsToolPanel"
     methodend
     rem /**
@@ -166,7 +181,7 @@ class public GxColumnsToolpanel extends GxToolpanel
         params!.addProperty("suppressColumnFilter",#SuppressColumnFilter!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnSelectAll",#SuppressColumnSelectAll!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnExpandAll",#SuppressColumnExpandAll!.booleanValue(), err=*next)
-        json!.addProperty("toolPanel",#this!.ID(), err=*next)
+        json!.addProperty("toolPanel",#getId(), err=*next)
         json!.add("toolPanelParams",params!)
         methodret json!
     methodend
@@ -182,6 +197,12 @@ class public GxFiltersToolpanel extends GxToolpanel
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
+        methodret GxFiltersToolpanel.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agFiltersToolPanel"
     methodend
     rem /**
@@ -215,7 +236,7 @@ class public GxFiltersToolpanel extends GxToolpanel
         declare JsonObject json!
 
         json! = #super!.getAsJsonObject()
-        json!.addProperty("toolPanel",#this!.ID())
+        json!.addProperty("toolPanel",#getId())
         methodret json!
     methodend
 
@@ -323,9 +344,9 @@ class public GxDefaultSidebar extends GxSidebar
     rem  */
     method public GxDefaultSidebar(BBjGridExWidget widget!)
         #super!(widget!)
-        #getToolpanels().put(GxColumnsToolpanel.ID() , new GxColumnsToolpanel())
-        #getToolpanels().put(GxFiltersToolpanel.ID() , new GxFiltersToolpanel())
-        rem #setDefaulToolpanel(GxColumnsToolpanel.getId())
+        #getToolpanels().put(GxColumnsToolpanel.getId() , new GxColumnsToolpanel())
+        #getToolpanels().put(GxFiltersToolpanel.getId() , new GxFiltersToolpanel())
+        rem #setDefaultToolpanel(GxColumnsToolpanel.getId())
     methodend
 
 classend
