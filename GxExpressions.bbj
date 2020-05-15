@@ -357,6 +357,14 @@ class public GxExpressionDateTimesFormatter extends GxExpressionAbstract
     rem  */
     field public BBjString Mask! = null()
     rem /**
+    rem  * The date / timestamp locale to use.
+    rem  */
+    field public BBjString Locale! = null()
+    rem /**
+    rem  * The date / timezone timezone to use.
+    rem  */
+    field public BBjString Timezone! = null()
+    rem /**
     rem  * Disable the default constructor
     rem  */
     method private GxExpressionDateTimesFormatter()
@@ -371,6 +379,27 @@ class public GxExpressionDateTimesFormatter extends GxExpressionAbstract
         #Mask! = mask!
     methodend
     rem /**
+    rem  * Construct a new GxExpressionDateTimesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  */
+    method public GxExpressionDateTimesFormatter(BBjString mask!, BBjString locale!)
+        #this!(mask!)
+        #Locale! = locale!
+    methodend
+    rem /**
+    rem  * Construct a new GxExpressionDateTimesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  */
+    method public GxExpressionDateTimesFormatter(BBjString mask!, BBjString locale!, BBjString timezone!)
+        #this!(mask!, locale!)
+        #Timezone! = timezone!
+    methodend
+    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public String toString()
@@ -382,8 +411,13 @@ class public GxExpressionDateTimesFormatter extends GxExpressionAbstract
 
         ex! = new StringBuilder()
         ex!.append(String.format("var mask = '%s';" , #getMask()))
+        ex!.append(String.format("var locale = '%s' || null;" , #getLocale()), err=*next)
+        ex!.append(String.format("var timezone = '%s' || null;" , #getTimezone()), err=*next)
+        ex!.append("locale = typeof locale !== 'undefined' ? locale : ctx.locale ? ctx.locale : null;")
+        ex!.append("locale = locale ? locale.replace('_','-') : locale;")
+        ex!.append("timezone = typeof timezone !== 'undefined' ? timezone : ctx.timezone ? ctx.timezone : null;")
         ex!.append("var theValue = getValue || value;")
-        ex!.append("if((mask && theValue) && theValue != null) {return BBj.Masks.Types.date(theValue, mask)}")
+        ex!.append("if((mask && theValue) && theValue != null) {return BBj.Masks.Types.date(theValue, mask, locale, timezone)}")
         ex!.append("return theValue || '';")
         methodret ex!.toString()
     methodend
@@ -401,12 +435,31 @@ class public GxExpressionTimestampsFormatter extends GxExpressionDateTimesFormat
     method private GxExpressionTimestampsFormatter()
     methodend
     rem /**
-    rem  * Construct a new GxExpressionDatesFormatter
+    rem  * Construct a new GxExpressionTimestampsFormatter
     rem  *
     rem  * @param BBjString mask! The date/timestamp mask
     rem  */
     method public GxExpressionTimestampsFormatter(BBjString mask!)
         #super!(mask!)
+    methodend
+    rem /**
+    rem  * Construct a new GxExpressionTimestampsFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  */
+    method public GxExpressionTimestampsFormatter(BBjString mask!, BBjString locale!)
+        #super!(mask!, locale!)
+    methodend
+    rem /**
+    rem  * Construct a new GxExpressionTimestampsFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  */
+    method public GxExpressionTimestampsFormatter(BBjString mask!, BBjString locale!, BBjString timezone!)
+        #super!(mask!, locale!, timezone!)
     methodend
 
 classend
@@ -430,6 +483,25 @@ class public GxExpressionDatesFormatter extends GxExpressionDateTimesFormatter
     rem  */
     method public GxExpressionDatesFormatter(BBjString mask!)
         #super!(mask!)
+    methodend
+    rem /**
+    rem  * Construct a new GxExpressionDatesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  */
+    method public GxExpressionDatesFormatter(BBjString mask!, BBjString locale!)
+        #super!(mask!, locale!)
+    methodend
+    rem /**
+    rem  * Construct a new GxExpressionDatesFormatter
+    rem  *
+    rem  * @param BBjString mask! The date/timestamp mask
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  * @param BBjString locale! The date/timestamp locale
+    rem  */
+    method public GxExpressionDatesFormatter(BBjString mask!, BBjString locale!, BBjString timezone!)
+        #super!(mask!, locale!, timezone!)
     methodend
 
 classend
