@@ -950,25 +950,25 @@ acorn@^7.1.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.1.1.tgz#e35668de0b402f359de515c5482a1ab9f89a69bf"
   integrity sha512-add7dgA5ppRPxCFJoAGfMDi7PIBXq1RtGo7BhbLaxwrXPOmw8gq48Y9ozT01hUKy9byMjlR20EJhu5zlkErEkg==
 
-ag-grid-community@21.1.0:
-  version "21.1.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-21.1.0.tgz#d8dba9486c2ef1879f9d97496183711b406258c2"
-  integrity sha512-giWg653lxihzRulz4tiiSAewaZVeSvA3GN+uIY5LEHfJ8Eb2FWbI2IZ1n+KMhnuvMy7936dOflTYm8m0sxXplA==
+ag-grid-community@23.1.0:
+  version "23.1.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-23.1.0.tgz#55be001c990040a63664dcf8280557334562def8"
+  integrity sha512-7MBrjKR7jwvwex12VvsFCXcPEIpC8yqjf8cSFLnMuououQt/O32KaHaTorPlz4SRzt92OZ4VZuYSZAH7/SBQMw==
 
-ag-grid-community@^22.1.1:
-  version "22.1.1"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-22.1.1.tgz#279d0b4a3ab199dc647714add0d2d393a75315cb"
-  integrity sha512-FNyv9e9JIuuR8NNi/r3NjIjUVy2/K5GgPjwQ63g9/Z4U8EudQZLINGMVKI6OwtZfWyyNSd0hQDCNsdvx0OR1WQ==
+ag-grid-community@^23.1.0:
+  version "23.1.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-23.1.1.tgz#049ebbd2b521df4b1ad54ae68d98144cf9963e07"
+  integrity sha512-bWpilWkD7b19BNoycVfifAmXVZGI+s1m/G6ixx7tOcXTQEU+tA6dWiHn2kxt1iiLsixvEwi/6JQu1j9Iykrb7Q==
 
-ag-grid-enterprise@21.1.0:
-  version "21.1.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-21.1.0.tgz#d89111b44e2f1adaf73ca6c0eda1fd055f88f9a5"
-  integrity sha512-D5CUrMGl5YclrQibEQl6mGwA/bgzkjpqzpT1HhQuRrPkaXT1496q1qb6NHE8hlazvur6c7iGKOQHajY20xZTnQ==
+ag-grid-enterprise@23.1.0:
+  version "23.1.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-23.1.0.tgz#4a42be2cc241220021ecfbf26ea796c894f41688"
+  integrity sha512-/SsA15zmjT9saqxI24/gfTPFFF1U3jFvk6FZfLciB1bq9T7pKtESMWqqTIFS6KX1p3nJy5t0r+Coz41DbqbVlQ==
 
-ag-grid-enterprise@^22.1.1:
-  version "22.1.1"
-  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-22.1.1.tgz#ed052ac20ba817c9cb187d8bd7e82b0d248a48a8"
-  integrity sha512-TLZi9++lrxlCQY2SI+5b4VXDP2O/P0ssUQSelifA2CvwwGzQcPkPWZQKrIHlCkIHBuBoJ9OiEw7GX3AIuoBUug==
+ag-grid-enterprise@^23.1.0:
+  version "23.1.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-23.1.1.tgz#14b02bb4c02e62292821edc380376db1ece7f587"
+  integrity sha512-G+ATNOgEHO59671xMbAvjt7u1m6M67xy5tkQgMioJmgS2GftdQGd3GA7DzVM6YBu8ICewDfS67v5wE0c0W0xvg==
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -1293,11 +1293,11 @@ base@^0.11.1:
     pascalcase "^0.1.1"
 
 basis-aggrid-components@BasisHub/basis-aggrid-components:
-  version "1.0.0"
-  resolved "https://codeload.github.com/BasisHub/basis-aggrid-components/tar.gz/c38ea38029752f6bc55e158c6168bf686d57fb77"
+  version "1.2.0"
+  resolved "https://codeload.github.com/BasisHub/basis-aggrid-components/tar.gz/bc9c2214e6c836ccb164d7fba97d270161a1b863"
   dependencies:
-    ag-grid-community "^22.1.1"
-    ag-grid-enterprise "^22.1.1"
+    ag-grid-community "^23.1.0"
+    ag-grid-enterprise "^23.1.0"
     basis-input-masking BasisHub/basis-input-masking
     flatpickr "^4.3.2"
 
@@ -2274,9 +2274,9 @@ date-fns@^1.27.2:
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
 date-fns@^2.8.1:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.11.0.tgz#ec2b44977465b9dcb370021d5e6c019b19f36d06"
-  integrity sha512-8P1cDi8ebZyDxUyUprBXwidoEtiQAawYPGvpfb+Dg0G6JrQ+VozwOmm91xYC0vAv1+0VmLehEPb+isg4BGUFfA==
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.14.0.tgz#359a87a265bb34ef2e38f93ecf63ac453f9bc7ba"
+  integrity sha512-1zD+68jhFgDIM0rF05rcwYO8cExdNqxjq4xP1QKM60Q45mnO6zaMWB4tOzrIr4M4GSLntsKeE4c9Bdl2jhL/yw==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   version "2.6.9"

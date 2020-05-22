@@ -550,6 +550,22 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         methodret "material"
     methodend
     rem /**
+    rem  * Constant value which defines the alpine theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_ALPINE()
+        methodret "alpine"
+    methodend    
+    rem /**
+    rem  * Constant value which defines the alpine dark theme
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_THEME_ALPINE_DARK()
+        methodret "alpine-dark"
+    methodend      
+    rem /**
     rem  * Make Hex Color
     rem  *
     rem  * Convert the given BBjColor to a hex color string
@@ -862,10 +878,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::injectScript</a>
     rem  *
-    rem  * @param BBjString script$ the path for the javascript file
+    rem  * @param BBjString script! the path for the javascript file
     rem  */
-    method public void injectScript(BBjString script$)
-        #HTMLView!.injectScript(script$ , 1)
+    method public void injectScript(BBjString script!)
+        #HTMLView!.injectScript(new String(script!.getBytes(),"UTF-8") , 1)
     methodend
     rem /**
     rem  * Execute a javascript code on the client.
@@ -944,11 +960,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         rem  * work out the required js files
         rem  */
         basePath$ = "BBjGridExWidget/client/dist"
-        agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.min.noStyle.js") , (basePath$ +"/ag-grid-community.min.noStyle.js"))
+        agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.min.js") , (basePath$ +"/ag-grid-community.min.js"))
         gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
         rem for debugging we inject the unminified files which contain source maps of the original code
         if #getDebug() = 1 then
-            agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.noStyle.js") , (basePath$ +"/ag-grid-community.noStyle.js"))
+            agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.js") , (basePath$ +"/ag-grid-community.js"))
             gxPath$ = basePath$ + "/bbj-grid-widget.js"
         FI
         rem /**
@@ -2197,6 +2213,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     method public BBjVector getThemes()
         v! = new BBjVector()
+        v!.addItem(#GRID_THEME_ALPINE())
+        v!.addItem(#GRID_THEME_ALPINE_DARK())
         v!.addItem(#GRID_THEME_BALHAM())
         v!.addItem(#GRID_THEME_BALHAM_DARK())
         v!.addItem(#GRID_THEME_MATERIAL())

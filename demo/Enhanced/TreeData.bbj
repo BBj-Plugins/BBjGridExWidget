@@ -62,7 +62,7 @@ autoGroupDef!.setWidth(500)
 autoGroupDef!.getCellRenderer().setInnerRenderer(new GxRendererCustomHTML(template!))
 
 grid!.getSidebar().setHiddenByDefault(1)
-grid!.setTheme(grid!.GRID_THEME_BALHAM_DARK())
+grid!.setTheme(grid!.GRID_THEME_ALPINE_DARK())
 
 grid!.setCallback(grid!.ON_GRID_CELL_DOUBLE_CLICK(),"onSelectionEvent")
 

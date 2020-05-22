@@ -920,7 +920,7 @@ class public GxOptions
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  */
-    field public BBjString Theme! = "balham"
+    field public BBjString Theme! = BBjGridExWidget.GRID_THEME_ALPINE()
     rem /**
     rem  * The grid language manager
     rem  */
