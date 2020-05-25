@@ -2168,8 +2168,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * @param selector$ : Css Selector
     rem  */
-    method public void removeStyle(BBjString selector$)
+    method public Boolean removeStyle(BBjString selector$)
         #getExecutor().execute("$wnd.gw_removeStyle('" + selector$ + "')")
+        methodret BBjAPI.TRUE
     methodend
     rem /**
     rem  * Set the grid theme
