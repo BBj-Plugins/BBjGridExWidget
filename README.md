@@ -19,6 +19,8 @@ A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and
 
 <img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/82667299-da6e0880-9c37-11ea-8c0e-1339a8d8b2d6.png" />
 
+<img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/82667633-8879b280-9c38-11ea-9217-2cbe35bff94d.png" />
+
 ## ☑️ Included Features:
 
 - Column setup and formatting
