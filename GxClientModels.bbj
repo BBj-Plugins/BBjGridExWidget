@@ -21,6 +21,7 @@ use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
 use java.util.HashSet
+use java.util.HashMap
 use java.lang.StringBuilder
 REM /**
 REM  * A client model for rows
