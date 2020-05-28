@@ -7,6 +7,8 @@ rem  * file that was distributed with this source code.
 rem  */
 
 use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.db.DataRow
 use com.google.gson.JsonObject
 use com.google.gson.JsonParser
 use java.util.regex.Pattern
@@ -99,12 +101,130 @@ class public BBjGridExWidgetTest
         Assert.Equals(#Instance!.getExecutor().getSuppressGuiDebouncing() , 0)
     methodend        
     
-
+    rem @Test
+    method public void testSetGetPinnedTopRows()
+        rows! = #buildPinnedRows()
+        #Instance!.setPinnedTopRows(#buildPinnedRows())
+        
+        Assert.Equals(#Instance!.getPinnedTopRows().toJson(), rows!.toJson())
+    methodend
     
+    rem @Test
+    method public void testSetGetPinnedBottomRows()
+        rows! = #buildPinnedRows()
+        #Instance!.setPinnedBottomRows(#buildPinnedRows())
+        
+        Assert.Equals(#Instance!.getPinnedBottomRows().toJson(), rows!.toJson())
+    methodend    
+        
+    rem @Test
+    method public void testGetPinnedTopRowsCount()
+       
+        Assert.Equals(#Instance!.getPinnedTopRowsCount(), 0)
+        
+        rows! = #buildPinnedRows()
+        #Instance!.setPinnedTopRows(#buildPinnedRows())
+        
+        Assert.Equals(#Instance!.getPinnedTopRowsCount(), rows!.count())
+    methodend   
+            
+    rem @Test
+    method public void testGetPinnedBottomRowsCount()
+        
+        Assert.Equals(#Instance!.getPinnedBottomRowsCount(), 0)
+        
+        rows! = #buildPinnedRows()
+        #Instance!.setPinnedBottomRows(#buildPinnedRows())
+        
+        Assert.Equals(#Instance!.getPinnedBottomRowsCount(), rows!.count())
+    methodend   
+    
+    rem @Test
+    method public void testFocus()
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        
+        params! = "('row_key','column','top')"
+        #Instance!.focus("row_key","column",#Instance!.GRID_FLOATING_TOP())
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)
+        
+        params! = "('row_key','column','')"
+        #Instance!.focus("row_key","column")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)       
+        
+        params! = "('row_key','','')"
+        #Instance!.focus("row_key")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)   
+        
+        params! = "('100','column','top')"
+        #Instance!.focus(100,"column",#Instance!.GRID_FLOATING_TOP())
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)
+        
+        params! = "('100','column','')"
+        #Instance!.focus(100,"column")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)       
+        
+        params! = "('100','','')"
+        #Instance!.focus(100)
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE) 
+        
+        params! = "('-1','','')"
+        #Instance!.focus()
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)                            
+    methodend
+    
+    rem @Test
+    method public void testSetStartCellEditing()
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        
+        params! = "'row_key','column',32,'char','top'"
+        #Instance!.setStartCellEditing("row_key", "column", 32, "char", #Instance!.GRID_FLOATING_TOP())
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)
+        
+        params! = "'100','column',32,'char','top'"
+        #Instance!.setStartCellEditing(100, "column", 32, "char", #Instance!.GRID_FLOATING_TOP())
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)
+        
+        params! = "'row_key','column',-100,'',''"
+        #Instance!.setStartCellEditing("row_key", "column")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE) 
+        
+        params! = "'100','column',-100,'',''"
+        #Instance!.setStartCellEditing(100, "column")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)   
+        
+        params! = "'row_key','column',-100,'char',''"
+        #Instance!.setStartCellEditing("row_key", "column","char")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)     
+        
+        params! = "'100','column',-100,'char',''"
+        #Instance!.setStartCellEditing(100, "column","char")
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)    
+        
+        params! = "'row_key','column',32,'',''"
+        #Instance!.setStartCellEditing("row_key", "column",32)
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)   
+        
+        params! = "'100','column',32,'',''"
+        #Instance!.setStartCellEditing(100, "column",32)
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(params!),BBjAPI.TRUE)                                         
+    methodend
+                
     rem @After
     method public void tearDown()
         #Instance! = null()
     methodend
+    
+    method private ResultSet buildPinnedRows()
+    
+        rs! = new ResultSet()
+        
+        row! = new DataRow()
+        row!.setFieldValue("ITEM_NUM", "1")
+        rs!.add(row!)
+        rs!.createIndex()
+        
+        methodret rs!
+    methodend    
 
 classend
 

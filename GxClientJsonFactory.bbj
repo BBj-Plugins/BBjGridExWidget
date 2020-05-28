@@ -68,6 +68,7 @@ class public GxClientJsonFactory
         row!.setIndex(json!.get("x").getAsInt(),err=*next)
         row!.setChildIndex(json!.get("c").getAsInt(),err=*next)
         row!.setParentKey(json!.get("p").getAsString(),err=*next)
+        row!.setFloating(json!.get("pp").getAsString(),err=*next)
         row!.setIsSelected(iff(json!.get("s").getAsString() = "true" ,  1 , 0) , err=*next)
 
         methodret row!

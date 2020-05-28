@@ -556,7 +556,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     method public static BBjString GRID_THEME_ALPINE()
         methodret "alpine"
-    methodend    
+    methodend
     rem /**
     rem  * Constant value which defines the alpine dark theme
     rem  *
@@ -564,7 +564,31 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     method public static BBjString GRID_THEME_ALPINE_DARK()
         methodret "alpine-dark"
-    methodend      
+    methodend
+    rem /**
+    rem  * Constant value which defines the rows floating on top
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_FLOATING_TOP()
+        methodret "top"
+    methodend
+    rem /**
+    rem  * Constant value which defines the rows floating on bottom
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_FLOATING_BOTTOM()
+        methodret "bottom"
+    methodend
+    rem /**
+    rem  * Constant value which defines the rows with no floating
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GRID_FLOATING_NONE()
+        methodret ""
+    methodend
     rem /**
     rem  * Make Hex Color
     rem  *
@@ -1751,6 +1775,76 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute(scriptKey!,"$wnd.gw_setColumnDefinitions('" + #getRootId() + "'," + new Gson().toJson(definition!) + ")")
     methodend
     rem /**
+    rem  * Set a result set of pinned rows on top
+    rem  *
+    rem  * @param ResultSet rs! A ResultSet instance
+    rem  */
+    method public void setPinnedTopRows(ResultSet rs!)
+        #getOptions().setPinnedTopRows(rs!)
+
+        if(#getIsReady())
+            #getExecutor().execute("$wnd.gw_setPinnedTopRowData('" + #getRootId() + "'," + #getOptions().getPinnedTopRowsAsJson() + ")")
+        fi
+    methodend
+    rem /**
+    rem  * Get the pinened top rows as defined in the grid options 
+    rem  * 
+    rem  * @return ResultSet The pinned rows 
+    rem  */
+    method public ResultSet getPinnedTopRows()
+        methodret #getOptions().getPinnedTopRows()
+    methodend
+    rem /**
+    rem  * Get the count of pinned rows on top
+    rem  *
+    rem  * @param BBjNumber rows count
+    rem  */
+    method public BBjNumber getPinnedTopRowsCount()
+        rs! = #getOptions().getPinnedTopRows()
+        count! = 0
+
+        if(rs! <> null())
+            count! = rs!.count()
+        fi
+
+        methodret count!
+    methodend    
+    rem /**
+    rem  * Set a result set of pinned rows on bottom
+    rem  *
+    rem  * @param ResultSet rs! A ResultSet instance
+    rem  */
+    method public void setPinnedBottomRows(ResultSet rs!)
+        #getOptions().setPinnedBottomRows(rs!)
+
+        if(#getIsReady())
+            #getExecutor().execute("$wnd.gw_setPinnedBottomRowData('" + #getRootId() + "'," + #getOptions().getPinnedBottomRowsAsJson() + ")")
+        fi
+    methodend
+    rem /**
+    rem  * Get the pinened bottom rows as defined in the grid options 
+    rem  * 
+    rem  * @return ResultSet The pinned rows 
+    rem  */
+    method public ResultSet getPinnedBottomRows()
+        methodret #getOptions().getPinnedBottomRows()
+    methodend    
+    rem /**
+    rem  * Get the count of pinned rows on bottom
+    rem  *
+    rem  * @param BBjNumber rows count
+    rem  */
+    method public BBjNumber getPinnedBottomRowsCount()
+        rs! = #getOptions().getPinnedBottomRows()
+        count! = 0
+
+        if(rs! <> null())
+            count! = rs!.count()
+        fi
+
+        methodret count!
+    methodend
+    rem /**
     rem  * Build the column definitions from the passed ResultSet
     rem  *
     rem  * @param ResultSet rs! ResultSet with the data
@@ -2271,8 +2365,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * <br><b><small>#API</small></b>
     rem  * @param BBjString row! The row id
     rem  * @param BBjString column! The column id
+    rem  * @param BBjString floating! The row floating (top , bottom or none)
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_FLOATING_NONE()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_TOP()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_BOTTOM()
     rem  */
-    method public void focus(BBjString row! , BBjString column!)
+    method public void focus(BBjString row! , BBjString column! , BBjString floating!)
         rem DO NOT focus the canvas or the we will have an infinite focus calls
         rem #super!.focus()
         if #getCanvas().getParentWindow().getFocusedControlID() <>  #getCanvas().getID() then
@@ -2284,19 +2383,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         rem  * We never debounce the focus calls , this causes a heck of problems
         rem  * when there are several grids rendered
         rem  */
-        script$="$wnd.gw_setFocusedCell('" + #getRootId() + "','" + str(row!) + "','" + str(column!) + "');"
-        #getExecutor().execute(script$,0)
+        script$="$wnd.gw_setFocusedCell('" + #getRootId() + "','" + str(row!) + "','" + str(column!) + "','" + str(floating!) +"');"
+        #getExecutor().execute(script$)
     methodend
     rem /**
     rem  * Set the focus on the given row id and the given column
     rem  *
     rem  * <br><b><small>#API</small></b>
-    rem  *
-    rem  * @param BBjNumber row! The row id
+    rem  * @param BBjString row! The row id
     rem  * @param BBjString column! The column id
     rem  */
-    method public void focus(BBjNumber row! , BBjString column!)
-        #focus(str(row!) , column!)
+    method public void focus(BBjString row! , BBjString column!)
+        #focus(row!, column!, #GRID_FLOATING_NONE())
     methodend
     rem /**
     rem  * Set the focus on the given row id and the first column
@@ -2306,7 +2404,34 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * @param BBjString row! The row id
     rem  */
     method public void focus(BBjString row!)
-        #focus(str(row!) , "")
+        #focus(row!, "")
+    methodend
+    rem /**
+    rem  * Set the focus on the given row id and the given column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber row! The row id
+    rem  * @param BBjString column! The column id
+    rem  * @param BBjString floating! The row floating
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_FLOATING_NONE()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_TOP()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_BOTTOM()
+    rem  */
+    method public void focus(BBjNumber row!, BBjString column!, BBjString floating!)
+        #focus(str(row!), column!, floating!)
+    methodend
+    rem /**
+    rem  * Set the focus on the given row id and the given column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber row! The row id
+    rem  * @param BBjString column! The column id
+    rem  */
+    method public void focus(BBjNumber row!, BBjString column!)
+        #focus(row!, column!, #GRID_FLOATING_NONE())
     methodend
     rem /**
     rem  * Set the focus on the given row id and the first column
@@ -2316,7 +2441,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * @param BBjNumber row! The row id
     rem  */
     method public void focus(BBjNumber row!)
-        #focus(str(row!))
+        #focus(row!, "")
     methodend
     rem /**
     rem  * Will set the focus on the first cell of the first row.
@@ -3142,70 +3267,108 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber key!: The row key
-    rem  * @param BBjString colId!: The column ID
+    rem  * @param BBjString key! The row key
+    rem  * @param BBjString column! The column ID
+    rem  * @param BBjNumber keyPress! The key code to pass to the editor when the editor supports it
+    rem  * @param BBjString charPress! The key char to pass to the editor when the editor supports it
+    rem  * @param BBjString floating! The row floating (top , bottom or none)
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_FLOATING_NONE()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_TOP()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_BOTTOM()
     rem  */
-    method public void setStartCellEditing(BBjString key! , BBjString colId$)
-        #getExecutor().execute("$wnd.gw_startEditingCell('" + #getRootId() + "','"+ STR(key!)+ "','" + colId$ + "')")
+    method public void setStartCellEditing(BBjString key!, BBjString column!, BBjNumber keyPress!, BBjString charPress!, BBjString floating!)
+        params! = String.format("'%s','%s','%s',%s,'%s','%s'",#getRootId(), key!, column!, str(keyPress!), charPress!, floating!)
+        #getExecutor().execute("$wnd.gw_startEditingCell(" + params! + ")")
     methodend
     rem /**
     rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber index!: The row index
-    rem  * @param BBjString colId!: The column ID
+    rem  * @param BBjNumber index! The row index
+    rem  * @param BBjString column! The column ID
+    rem  * @param BBjNumber keyPress! The key code to pass to the editor when the editor supports it
+    rem  * @param BBjString charPress! The key char to pass to the editor when the editor supports it
+    rem  * @param BBjString floating! The row floating (top , bottom or none)
+    rem  *
+    rem  * @see BBjGridExWidget.GRID_FLOATING_NONE()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_TOP()
+    rem  * @see BBjGridExWidget.GRID_FLOATING_BOTTOM()
     rem  */
-    method public void setStartCellEditing(BBjNumber index! , BBjString colId$)
-        #setStartCellEditing(str(index!), colId$)
+    method public void setStartCellEditing(BBjNumber index!, BBjString column!, BBjNumber keyPress!, BBjString charPress!, BBjString floating!)
+        #setStartCellEditing(str(index!), column!, keyPress!, charPress!, floating!)
+    methodend
+    rem ===========================
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjString key! The row key
+    rem  * @param BBjString column! The column ID
+    rem  */
+    method public void setStartCellEditing(BBjString key!, BBjString column!)
+        #setStartCellEditing(key!, column!, -100, "", #GRID_FLOATING_NONE())
     methodend
     rem /**
     rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber key!: The row key
-    rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber char$: key chars to press on editor when editor supports it
+    rem  * @param BBjNumber index! The row index
+    rem  * @param BBjString column! The column ID
     rem  */
-    method public void setStartCellEditing(BBjString key!, BBjString colId$, BBjString char$)
-        #getExecutor().execute("$wnd.gw_startEditingCell('" + #getRootId() + "','"+ STR(key!)+ "','" + colId$ + "','','" + char$ +"')")
+    method public void setStartCellEditing(BBjNumber index!, BBjString column!)
+        #setStartCellEditing(str(index!), column!)
     methodend
     rem /**
     rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber index!: The row index
-    rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber char$: key chars to press on editor when editor supports it
+    rem  * @param BBjString key! The row key
+    rem  * @param BBjString column! The column ID
+    rem  * @param BBjString charPress! The key char to pass to the editor when the editor supports it
     rem  */
-    method public void setStartCellEditing(BBjNumber index!, BBjString colId$, BBjString char$)
-        #setStartCellEditing(str(index!),colId$,char$)
+    method public void setStartCellEditing(BBjString key!, BBjString column!, BBjString charPress!)
+        #setStartCellEditing(key!, column!, -100, charPress!, #GRID_FLOATING_NONE())
     methodend
     rem /**
     rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber key!: The row key
-    rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber keyPress!: key codes to press on the editor when the editor supports it
+    rem  * @param BBjNumber index! The row index
+    rem  * @param BBjString column! The column ID
+    rem  * @param BBjString charPress! The key char to pass to the editor when the editor supports it
     rem  */
-    method public void setStartCellEditing(BBjString key!, BBjString colId$, BBjNumber keyPress!)
-        #getExecutor().execute("$wnd.gw_startEditingCell('" + #getRootId() + "','"+ STR(key!)+ "','" + colId$ + "','" + STR(keyPress!)+ "')")
+    method public void setStartCellEditing(BBjNumber index!, BBjString column!, BBjString charPress!)
+        #setStartCellEditing(str(index!), column!, charPress!)
     methodend
     rem /**
     rem  * Start Cell Editing at the given row and column
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
-    rem  * @param BBjNumber index!: The row index
-    rem  * @param BBjString colId$: The column ID
-    rem  * @param BBjNumber keyPress!: key codes to press on the editor when the editor supports it
+    rem  * @param BBjString key! The row key
+    rem  * @param BBjString column! The column ID
+    rem  * @param BBjNumber keyPress! The key code to pass to the editor when the editor supports it
     rem  */
-    method public void setStartCellEditing(BBjNumber index!, BBjString colId$, BBjNumber keyPress!)
-        #setStartCellEditing(str(index!),colId$,keyPress!)
+    method public void setStartCellEditing(BBjString key!, BBjString column!, BBjNumber keyPress!)
+        #setStartCellEditing(key!, column!, keyPress!, "", #GRID_FLOATING_NONE())
+    methodend
+    rem /**
+    rem  * Start Cell Editing at the given row and column
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index! The row index
+    rem  * @param BBjString column! The column ID
+    rem  * @param BBjNumber keyPress! The key code to pass to the editor when the editor supports it
+    rem  */
+    method public void setStartCellEditing(BBjNumber index!, BBjString column!, BBjNumber keyPress!)
+        #setStartCellEditing(str(index!), column!, keyPress!)
     methodend
     rem /**
     rem  * @deprecated Use tabToNextCell() instead

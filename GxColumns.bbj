@@ -334,6 +334,17 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public GxRendererInterface CellRenderer! = null()
     rem /**
+    rem  * A cellRenderer for pinned rows.
+    rem  *
+    rem  * Use to give pinned row cell a different CellRenderer to the other cells.
+    rem  * If both CellRenderer and PinnedRowCellRenderer are provided,
+    rem  * pinned rows will use PinnedRowCellRenderer over CellRenderer.
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */
+    field public GxRendererInterface PinnedRowCellRenderer! = null()
+    rem /**
     rem  * CellEditor to use for this column
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -1086,6 +1097,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
             rendererParams! = renderer!.getAsJsonObject()
             column!.addProperty("cellRenderer", renderer!.getCellRendererName(),err=*next)
             column!.        add("cellRendererParams",iff(rendererParams!.entrySet().size() <> 0 , rendererParams! , null() ),err=*next)
+        FI
+
+        pinnedRenderer! = #getPinnedRowCellRenderer()
+
+        if(pinnedRenderer! <> null()) then
+            pinnedRendererParams! = pinnedRenderer!.getAsJsonObject()
+            column!.addProperty("pinnedRowCellRenderer", pinnedRenderer!.getCellRendererName(),err=*next)
+            column!.        add("pinnedRowCellRendererParams",iff(pinnedRendererParams!.entrySet().size() <> 0 , pinnedRendererParams! , null() ),err=*next)
         FI
 
         editor! = #getCellEditor()

@@ -14,6 +14,7 @@ use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
+use com.basiscomponents.db.ResultSet
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxLanguageManager.bbj::GxLanguageManager
 use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
@@ -915,6 +916,14 @@ class public GxOptions
     rem  */
     field public BBjNumber SkipHeaderOnAutoSize! = null()
     rem /**
+    rem  * The ResultSet instance which contains the top pinned rows
+    rem  */
+    field public ResultSet PinnedTopRows! = new ResultSet()
+    rem /**
+    rem  * The ResultSet instance which contains the bottom pinned rows
+    rem  */
+    field public ResultSet PinnedBottomRows! = new ResultSet()
+    rem /**
     rem  * Set the grid theme
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -1057,6 +1066,72 @@ class public GxOptions
         #setIcons(parser!.parse(json!).getAsJsonObject())
     methodend
     rem /**
+    rem  * Set a result set of pinned rows on top
+    rem  *
+    rem  * @param ResultSet rs! A ResultSet instance
+    rem  */
+    method public void setPinnedTopRows(ResultSet rs!)
+        #PinnedTopRows! = rs!
+        rs!.createIndex()
+    methodend
+    rem /**
+    rem  * Get the top pinned rows as json String
+    rem  *
+    rem  * @return BBjString the top pinned row as json string
+    rem  */
+    method public BBjString getPinnedTopRowsAsJson()
+        rows! = #getPinnedTopRows()
+        result! = "[]"
+
+        if(rows! <> null())
+            result! = rows!.toJson(1 , "__ROW_INDEX")
+        fi
+
+        methodret result!
+    methodend
+    rem /**
+    rem  * Get the top pinned rows as Json Array
+    rem  *
+    rem  * @return JsonArray the top pinned row as Json Array
+    rem  */
+    method public JsonArray getPinnedTopRowsAsJsonArray()
+        parser! = new JsonParser()
+        methodret parser!.parse(#getPinnedTopRowsAsJson()).getAsJsonArray()
+    methodend
+    rem /**
+    rem  * Set a result set of pinned rows on bottom
+    rem  *
+    rem  * @param ResultSet rs! A ResultSet instance
+    rem  */
+    method public void setPinnedBottomRows(ResultSet rs!)
+        #PinnedBottomRows! = rs!
+        rs!.createIndex()
+    methodend
+    rem /**
+    rem  * Get the bottom pinned rows as json String
+    rem  *
+    rem  * @return BBjString the bottom pinned row as json string
+    rem  */
+    method public BBjString getPinnedBottomRowsAsJson()
+        rows! = #getPinnedBottomRows()
+        result! = "[]"
+
+        if(rows! <> null())
+            result! = rows!.toJson(1 , "__ROW_INDEX")
+        fi
+
+        methodret result!
+    methodend
+    rem /**
+    rem  * Get the bottom pinned rows as Json Array
+    rem  *
+    rem  * @return JsonArray the bottom pinned row as Json Array
+    rem  */
+    method public JsonArray getPinnedBottomRowsAsJsonArray()
+        parser! = new JsonParser()
+        methodret parser!.parse(#getPinnedBottomRowsAsJson()).getAsJsonArray()
+    methodend
+    rem /**
     rem  * Build the grid json configuration object
     rem  *
     rem  * @return JsonObject The grid options as JsonObject
@@ -1074,6 +1149,10 @@ class public GxOptions
         FI
 
         options! = new JsonObject()
+        rem Data And Row Models
+        rem ===========================
+        options!.        add("pinnedTopRowData",#getPinnedTopRowsAsJsonArray(), err=*next)
+        options!.        add("pinnedBottomRowData",#getPinnedBottomRowsAsJsonArray(), err=*next)
         rem Columns options
         rem ===========================
         options!.        add("defaultColDef",#getDefaultColumnDefinition().getAsJsonObject() , err=*next)

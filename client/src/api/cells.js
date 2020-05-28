@@ -17,23 +17,29 @@ const { deepParseJson } = require('deep-parse-json')
  * @param {String} id The grid's id
  * @param {String|number} row The row index or key
  * @param {String} colKey The column's key
- * @param {String|Number} key  Key press
- * @param {String} char
+ * @param {String|Number} keyPress  Key press
+ * @param {String} charPress
+ * @param {String} rowPinned Set to 'top' or 'bottom' to started editing a pinned row
  */
-export function gw_startEditingCell(id, row, colKey, key, char) {
-  // setTimeout(() => {
+export function gw_startEditingCell(
+  id,
+  row,
+  colKey,
+  keyPress,
+  charPress,
+  rowPinned
+) {
   const options = gw_getGrid(id).options
   const api = options.api
   const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
 
-  // gw_setFocusedCell(id, row, colKey)
   options.api.startEditingCell({
     rowIndex: node.rowIndex,
-    colKey: colKey,
-    keyPress: Number(key),
-    charPress: char,
+    keyPress: Number(keyPress),
+    colKey,
+    charPress,
+    rowPinned,
   })
-  // }, 250)
 }
 
 /**
@@ -70,8 +76,9 @@ export function gw_tabToPreviousCell(id) {
  * @param {String} id The grid's id
  * @param {String|Number} row The row's index/id
  * @param {String} column The column id
+ * @param {String} floating null, 'top', or 'bottom'.
  */
-export function gw_setFocusedCell(id, row, column) {
+export function gw_setFocusedCell(id, row, column, floating = null) {
   const options = gw_getGrid(id).options
 
   // ignore focus calls if editing
@@ -79,7 +86,7 @@ export function gw_setFocusedCell(id, row, column) {
     return
   }
 
-  let r, c
+  let r, c, f
   if (row == -1) {
     // try to retain the focus
     const lastFocusedCell = options.api.getFocusedCell()
@@ -87,9 +94,11 @@ export function gw_setFocusedCell(id, row, column) {
     if (lastFocusedCell) {
       r = lastFocusedCell.rowIndex
       c = lastFocusedCell.column.colId
+      f = lastFocusedCell.rowPinned
     } else {
       r = 0
       c = options.columnApi.getAllGridColumns()[0].colId
+      f = floating
     }
   } else {
     r = !row
@@ -98,9 +107,10 @@ export function gw_setFocusedCell(id, row, column) {
       ? +row
       : options.api.getRowNode(row).rowIndex
     c = column ? column : options.columnApi.getAllGridColumns()[0].colId
+    f = floating
   }
 
-  gw_getGrid(id).options.api.setFocusedCell(r, c)
+  gw_getGrid(id).options.api.setFocusedCell(r, c, f)
 }
 
 /**

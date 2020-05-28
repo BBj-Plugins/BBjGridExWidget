@@ -1,0 +1,112 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use ::BBjGridExWidget/GxOptions.bbj::GxOptions
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.db.DataRow
+use com.google.gson.JsonArray
+use com.google.gson.JsonObject
+
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxOptionsTest
+
+    field private BBjGridExWidgetMock Widget!
+    field private GxOptions Instance!
+    
+    rem @Before
+    method public void setUp()
+        #Widget! = new BBjGridExWidgetMock()
+        #Instance! = new GxOptions(#Widget!)
+    methodend
+    
+    rem @Test
+    method public void testSetPinnedTopRows()
+        #Instance!.setPinnedTopRows(new ResultSet())
+        Assert.Equals(#Instance!.getPinnedTopRows().isIndexed(), BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testGetPinnedTopRowsAsJson()
+    
+        Assert.Equals(#Instance!.getPinnedTopRowsAsJson(), "[]")
+        
+        row! = new DataRow()
+        row!.setFieldValue("ITEM_NUM", "1")
+        #Instance!.getPinnedTopRows().add(row!)
+        
+        pinnedRowsAsJson! = "[{""__ROW_INDEX"":""2ef0bbab-d722-34ab-aa8f-0c4eb613ab1c"",""ITEM_NUM"":""1"",""meta"":{""__ROW_INDEX"":{""ColumnType"":""12""},""ITEM_NUM"":{""ColumnType"":""12""}}}]"
+        Assert.Equals(#Instance!.getPinnedTopRowsAsJson(), pinnedRowsAsJson!)
+    methodend
+    
+    rem @Test    
+    method public void testGetPinnedTopRowsAsJsonArray()
+        Assert.Equals((new JsonArray()).equals(#Instance!.getPinnedTopRowsAsJsonArray()) , BBjAPI.TRUE)
+        
+        row! = new DataRow()
+        row!.setFieldValue("ITEM_NUM", "1")
+        #Instance!.getPinnedTopRows().add(row!)
+        
+        declare auto JsonArray arr! 
+        
+        arr! = #Instance!.getPinnedTopRowsAsJsonArray()
+        Assert.Equals(arr!.getClass().getName(), "com.google.gson.JsonArray")
+        Assert.Equals(arr!.size() , 1)
+            
+        declare auto JsonObject options!
+         
+        options! = #Instance!.getAsJsonObject()
+        Assert.Equals(options!.get("pinnedTopRowData").getAsJsonArray().equals(#Instance!.getPinnedTopRowsAsJsonArray()) , BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testSetPinnedBottomRows()
+        #Instance!.setPinnedBottomRows(new ResultSet())
+        Assert.Equals(#Instance!.getPinnedBottomRows().isIndexed(), BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testGetPinnedBottomRowsAsJson()
+        Assert.Equals(#Instance!.getPinnedBottomRowsAsJson(), "[]")
+        
+        row! = new DataRow()
+        row!.setFieldValue("ITEM_NUM", "1")
+        #Instance!.getPinnedBottomRows().add(row!)
+        
+        pinnedRowsAsJson! = "[{""__ROW_INDEX"":""2ef0bbab-d722-34ab-aa8f-0c4eb613ab1c"",""ITEM_NUM"":""1"",""meta"":{""__ROW_INDEX"":{""ColumnType"":""12""},""ITEM_NUM"":{""ColumnType"":""12""}}}]"
+        Assert.Equals(#Instance!.getPinnedBottomRowsAsJson(), pinnedRowsAsJson!)
+    methodend
+        
+    rem @Test    
+    method public void testGetPinnedBottomRowsAsJsonArray()
+        Assert.Equals((new JsonArray()).equals(#Instance!.getPinnedBottomRowsAsJsonArray()) , BBjAPI.TRUE)
+        
+        row! = new DataRow()
+        row!.setFieldValue("ITEM_NUM", "1")
+        #Instance!.getPinnedBottomRows().add(row!)
+        
+        declare auto JsonArray arr! 
+        
+        arr! = #Instance!.getPinnedBottomRowsAsJsonArray()
+        Assert.Equals(arr!.getClass().getName(), "com.google.gson.JsonArray")
+        Assert.Equals(arr!.size() , 1)
+        
+        declare auto JsonObject options!
+        
+        options! = #Instance!.getAsJsonObject()
+        Assert.Equals(options!.get("pinnedBottomRowData").getAsJsonArray().equals(#Instance!.getPinnedBottomRowsAsJsonArray()) , BBjAPI.TRUE)
+    methodend
+            
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+        #Widget! = null()
+    methodend
+
+classend

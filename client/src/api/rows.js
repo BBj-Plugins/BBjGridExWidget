@@ -52,19 +52,42 @@ export function gw_navigateToNextRow(id, params) {
   switch (params.key) {
     case KEY_DOWN:
       // set selected cell on current cell + 1
-      options.api.forEachNode(node => {
-        if (previousCell.rowIndex + 1 === node.rowIndex) {
-          node.setSelected(true)
+      if (suggestedNextCell && !suggestedNextCell.rowPinned) {
+        if (previousCell.rowPinned) {
+          const row = options.api.getDisplayedRowAtIndex(
+            options.api.getFirstDisplayedRow()
+          )
+          if (row) {
+            row.setSelected(true)
+          }
+        } else {
+          options.api.forEachNode(node => {
+            if (previousCell.rowIndex + 1 === node.rowIndex) {
+              node.setSelected(true)
+            }
+          })
         }
-      })
+      }
+
       return suggestedNextCell
     case KEY_UP:
       // set selected cell on current cell - 1
-      options.api.forEachNode(node => {
-        if (previousCell.rowIndex - 1 === node.rowIndex) {
-          node.setSelected(true)
+      if (suggestedNextCell && !suggestedNextCell.rowPinned) {
+        if (previousCell.rowPinned) {
+          const row = options.api.getDisplayedRowAtIndex(
+            options.api.getLastDisplayedRow()
+          )
+          if (row) {
+            row.setSelected(true)
+          }
+        } else {
+          options.api.forEachNode(node => {
+            if (previousCell.rowIndex - 1 === node.rowIndex) {
+              node.setSelected(true)
+            }
+          })
         }
-      })
+      }
       return suggestedNextCell
     case KEY_LEFT:
     case KEY_RIGHT:
@@ -318,4 +341,24 @@ export function gw_getRows(id, phase, filterExpression) {
  */
 export function gw_redrawRows(id) {
   gw_getGrid(id).options.api.redrawRows()
+}
+
+/**
+ * Pin an array of tow to the top of the grid
+ *
+ * @param {String} id the grid's id
+ * @param {Array} data array of rows
+ */
+export function gw_setPinnedTopRowData(id, data) {
+  gw_getGrid(id).options.api.setPinnedTopRowData(data)
+}
+
+/**
+ * Pin an array of tow to the bottom of the grid
+ *
+ * @param {String} id the grid's id
+ * @param {Array} data array of rows
+ */
+export function gw_setPinnedBottomRowData(id, data) {
+  gw_getGrid(id).options.api.setPinnedBottomRowData(data)
 }

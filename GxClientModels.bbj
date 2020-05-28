@@ -38,7 +38,8 @@ class public GxClientRowModel
     rem  */
     field public BBjNumber Index!
     rem /**
-    rem  * The row child index
+    rem  * The row child index. 
+    rem  * if the childIndex is `-1` then the row is pinned to top or bottom
     rem  */
     field public BBjNumber ChildIndex!
     rem /**
@@ -53,6 +54,10 @@ class public GxClientRowModel
     rem  * The client row data as JsonObject.
     rem  */
     field public JsonObject ClientRow!
+    rem /**
+    rem  * The row pin position (top , bottom , null)
+    rem  */
+    field public BBjString Floating! = BBjGridExWidget.GRID_FLOATING_NONE()
     rem /**
     rem  * BBjGridExWidget instance
     rem  */
@@ -85,14 +90,14 @@ class public GxClientRowModel
     rem  * @see BBjGridExWidget.includeClientRowDataInRowModels()
     rem  */
     method public DataRow updateFromClientRow()
-        clientRow! = #this!.getClientRow()
+        clientRow! = #getClientRow()
 
         if(clientRow! = null())
             throw "The client row is not included in this model.To include it in the model configure the grid to include it by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
         fi
 
         clientRow! = clientRow!.deepCopy()
-        dataRow! = #this!.asDataRow()
+        dataRow! = #asDataRow()
         clientRow!.remove("__ROW_INDEX")
         clientRow!.remove("meta")
         dataRow!.mergeRecord(DataRow.fromJson(clientRow!.toString()),BBjAPI.TRUE)
@@ -106,6 +111,25 @@ class public GxClientRowModel
     method public DataRow asDataRow()
         nodeId! = #getWidget().getRowNodeId()
         rs! = #getWidget().getRS()
+
+        rem the row is pinned
+        if(-1 = #getChildIndex()) 
+          rem pinned ResultSets always use `__ROW_INDEX` for indexing
+          nodeId! = "__ROW_INDEX"
+
+          switch #getFloating()
+            case BBjGridExWidget.GRID_FLOATING_TOP()
+              rs! = #getWidget().getOptions().getPinnedTopRows()
+              break
+            case BBjGridExWidget.GRID_FLOATING_BOTTOM()
+              rs! = #getWidget().getOptions().getPinnedBottomRows()
+              break              
+            case default
+              throw "Unable to find the source of the floating row.", 256
+              break
+          swend
+        fi
+
         rem in case the RowNodeId is a column in the ResultSet
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
@@ -116,6 +140,10 @@ class public GxClientRowModel
             fi
 
             methodret filteredRS!.get(0)
+        fi
+
+        if(-1 = #getChildIndex()) 
+          methodret rs!.get(#getIndex())
         fi
 
         methodret rs!.get(#getId())

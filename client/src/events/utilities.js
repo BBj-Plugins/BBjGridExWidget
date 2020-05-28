@@ -70,23 +70,27 @@ export function gw_parseNode(node, context) {
     return false
   } // we do not manage groups
 
-  // const rowNodeId = context.hasOwnProperty('getRowNodeId') && node.data[context.getRowNodeId] ?
-  //   node.data[context.getRowNodeId] : '';
+  const getRowNodeId = node.rowPinned ? '__ROW_INDEX' : context.getRowNodeId
 
   return {
-    i: node.id, // id
+    i:
+      context.hasOwnProperty('getRowNodeId') && node.data[getRowNodeId]
+        ? node.data[getRowNodeId]
+        : node.id, // id
     x: node.rowIndex, // index
     p:
       node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key')
         ? node.parent.key
         : '', // parent key
-    c: node.childIndex, //childIndex
+    c: node.rowPinned ? -1 : node.childIndex, //childIndex
     s: Boolean(node.selected), // selected
+    // client row
     cr:
       context.hasOwnProperty('includeClientRowData') &&
       context['includeClientRowData'] === true
         ? node.data
         : null,
+    pp: node.rowPinned, // pin position
   }
 }
 
