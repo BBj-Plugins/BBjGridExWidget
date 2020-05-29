@@ -39,7 +39,7 @@ class public GxState
         #String$ = jsonstr$
     methodend
 
-    method public BBjString toString()
+    method public String toString()
         methodret #String$
     methodend
 

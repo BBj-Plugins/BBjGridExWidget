@@ -350,7 +350,7 @@ class public GxStatusBar
     rem  *
     rem  * @returns BBjString
     rem  */
-    method public BBjString toString()
+    method public String toString()
         declare JsonArray defs!
 
         defs! = new JsonArray()

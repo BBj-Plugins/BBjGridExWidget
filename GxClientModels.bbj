@@ -175,7 +175,7 @@ class public GxClientRowModel
     rem  *
     rem  * @return BBjString  The row id
     rem  */
-    method public BBjString toString()
+    method public String toString()
         methodret #Id!
     methodend
 
@@ -260,7 +260,7 @@ class public GxClientColumnModel
     rem  *
     rem  * @return BBjString  The column
     rem  */
-    method public BBjString toString()
+    method public String toString()
         methodret #getName()
     methodend
 
