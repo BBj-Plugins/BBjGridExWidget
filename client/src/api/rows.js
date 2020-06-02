@@ -140,9 +140,9 @@ export function gw_updateRowData(id, transaction, batchUpdate) {
   }
 
   if (!batchUpdate) {
-    options.api.updateRowData(transaction)
+    options.api.applyTransaction(transaction)
   } else {
-    options.api.batchUpdateRowData(transaction)
+    options.api.applyTransactionAsync(transaction)
   }
 }
 
