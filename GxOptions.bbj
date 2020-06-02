@@ -832,8 +832,18 @@ class public GxOptions
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *
+    rem  * @deprecated use `GxOptions.ImmutableColumns` instead
     rem  */
     field public BBjNumber DeltaColumnMode! = 0
+    rem /**
+    rem  * Puts the grid into Immutable Column mode, so that setting new columns keeps column state.
+    rem  * Default: false
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */
+    field public BBjNumber ImmutableColumns! = 0
     rem /**
     rem  * Disables the 'loading' overlay&#183;
     rem  * <br><b><small>#Configuration</small></b>
@@ -1066,6 +1076,27 @@ class public GxOptions
         #setIcons(parser!.parse(json!).getAsJsonObject())
     methodend
     rem /**
+    rem  * Enable/disable DeltaColumn Mode 
+    rem  * 
+    rem  * @param BBjNumber enabled!  true to enable , false to disable
+    rem  * 
+    rem  * @deprecated use `GxOptions.setImmutableColumns` instead
+    rem  */
+    method public void setDeltaColumnMode(BBjNumber enabled!)
+      #setImmutableColumns(enabled!)
+    methodend
+    rem /**
+    rem  * Get DeltaColumn Mode value 
+    rem  * 
+    rem  * @return BBjNumber true when enabled , false otherwise
+    rem  * 
+    rem  * @deprecated use `GxOptions.getImmutableColumns` instead
+    rem  */
+    method public BBjNumber getDeltaColumnMode()
+      methodret #getImmutableColumns()
+    methodend
+    method 
+    rem /**
     rem  * Set a result set of pinned rows on top
     rem  *
     rem  * @param ResultSet rs! A ResultSet instance
@@ -1165,7 +1196,7 @@ class public GxOptions
         options!.addProperty("suppressMultiSort",#getSuppressMultiSort().booleanValue(), err=*next)
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
         options!.addProperty("suppressSetColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
-        options!.addProperty("deltaColumnMode",#getDeltaColumnMode().booleanValue(), err=*next)
+        options!.addProperty("immutableColumns",#getImmutableColumns().booleanValue(), err=*next)
         options!.addProperty("skipHeaderOnAutoSize",#getSkipHeaderOnAutoSize().booleanValue(), err=*next)
         rem Sort & Filter options
         rem ===========================
