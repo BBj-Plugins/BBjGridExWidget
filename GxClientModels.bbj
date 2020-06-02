@@ -605,6 +605,8 @@ class public GxClientTransactionModel
     field public HashSet Update! = new HashSet()
     rem /**
     rem  * Index for rows to add
+    rem  * 
+    rem  * @deprecated `GxClientTransactionModel.addIndex` is deprecated. If you want precision control of adding data, use `BBjGridExWidget.updateData` instead
     rem  */
     field public BBjNumber AddIndex! = 0
     rem /**
