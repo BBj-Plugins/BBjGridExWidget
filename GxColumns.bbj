@@ -223,6 +223,13 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjNumber EnableFilter! = 1
     rem /**
+    rem  * When true enable the floating filter on this column , false otherwise 
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */
+    field public BBjNumber FloatingFilter! = null()
+    rem /**
     rem  * Set to true to make a column hidden by default&#183;
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -1074,6 +1081,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("tooltipField",#getTooltipField(),err=*next)
         column!.addProperty("tooltipValueGetter",#getTooltipValueGetterExpression().toString(),err=*next)
         column!.addProperty("editable",#getEditable().booleanValue(),err=*next)
+        column!.addProperty("floatingFilter",#getFloatingFilter().booleanValue(),err=*next)
         editableExpression! = #getEditableExpression()
 
         if(editableExpression! <> null()) then

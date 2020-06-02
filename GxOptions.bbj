@@ -785,8 +785,11 @@ class public GxOptions
     field public BBjNumber SuppressTouch! = null()
     rem /**
     rem  * When true enables the floating filters, disable otherwise
+    rem  * 
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  * 
+    rem  * @deprecated enabling/disabling the floatingFilter on the Options level is deprecated. Use `GxColumn.FloatingFilter` on the column level instead.
     rem  */
     field public BBjNumber EnableFloatingFilter! = 0
     rem /**

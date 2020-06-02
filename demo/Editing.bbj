@@ -38,7 +38,7 @@ wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
 grid! = new BBjGridExWidget(wnd!,100,10,50,1430,550)
 grid!.getOptions().setEnableFilter(1)
-grid!.getOptions().setEnableFloatingFilter(1)
+grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 
 rem enable grid editing based on EDITABLE flag in DataRow Attribute
 grid!.getOptions().setEditable(1)
