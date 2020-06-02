@@ -53,15 +53,19 @@ module.exports = {
             },
           },
           { loader: 'postcss-loader' },
-          { loader: 'postcss-loader' },
         ],
       },
     ],
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        include: /\.min\.js$/,
+      }),
+    ],
+  },
   plugins: [
-    new UglifyJsPlugin({
-      include: /\.min\.js$/,
-    }),
     new CopyWebpackPlugin([
       {
         from:
