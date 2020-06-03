@@ -10,6 +10,7 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 use java.util.LinkedHashMap
 use com.google.gson.JsonArray
 use com.google.gson.JsonObject
@@ -26,7 +27,7 @@ interface public GxStatusBarComponentInterface
     rem  *
     rem  * @returns BBjString the component name
     rem  *
-    rem  * @deprecated use `getId()` instead
+    rem  * @deprecated since version 0.101.0, GxStatusBarComponentInterface.NAME() is deprecated / renamed. Use GxStatusBarComponentInterface.getId() instead.
     rem  */
 
     method public static BBjString NAME()
@@ -111,6 +112,7 @@ class public GxStatusBarSelectedRowCountComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarSelectedRowCountComponent.NAME() is deprecated. use GxStatusBarSelectedRowCountComponent.getId() instead")
         methodret GxStatusBarSelectedRowCountComponent.getId()
     methodend
     rem /**
@@ -139,6 +141,7 @@ class public GxStatusBarFilteredRowCountComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarFilteredRowCountComponent.NAME() is deprecated. use GxStatusBarFilteredRowCountComponent.getId() instead")
         methodret GxStatusBarFilteredRowCountComponent.getId()
     methodend
     rem /**
@@ -167,6 +170,7 @@ class public GxStatusBarTotalAndFilteredRowCountComponent extends GxStatusBarCom
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarTotalAndFilteredRowCountComponent.NAME() is deprecated. use GxStatusBarTotalAndFilteredRowCountComponent.getId() instead")
         methodret GxStatusBarTotalAndFilteredRowCountComponent.getId()
     methodend
     rem /**
@@ -195,6 +199,7 @@ class public GxStatusBarTotalRowCountComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarTotalRowCountComponent.NAME() is deprecated. use GxStatusBarTotalRowCountComponent.getId() instead")
         methodret GxStatusBarTotalRowCountComponent.getId()
     methodend
     rem /**
@@ -234,6 +239,7 @@ class public GxStatusBarAggregationComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarAggregationComponent.NAME() is deprecated. use GxStatusBarAggregationComponent.getId() instead")
         methodret GxStatusBarAggregationComponent.getId()
     methodend
     rem /**
@@ -301,7 +307,7 @@ class public GxStatusBar
     rem  * Get statusbar component
     rem  *
     rem  * @param BBjString id! The component id
-    rem  * 
+    rem  *
     rem  * @return GxStatusBarComponentInterface The component instance
     rem  */
     method public GxStatusBarComponentInterface getComponent(BBjString id!)

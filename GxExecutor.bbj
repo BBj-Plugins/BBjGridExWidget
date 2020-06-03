@@ -8,6 +8,7 @@ rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use org.apache.commons.collections4.map.ListOrderedMap
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem /**
 rem  * The GxExecutor is responsible of Javascript code execution in the HTMLView.
 rem  * It will also  tries to debounce the scripts which are enqueued for execution and send
@@ -214,7 +215,7 @@ class public GxExecutor
 
         if(queue!.size() > 0)
             if(isDebugging!)
-                System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s)" , platform! , id!))
+                GxLogger.log("GxExecutor",String.format("%s Flush (%s)" , platform! , id!))
             fi
 
             bundle! = iff(isDebugging! AND #isBui() , "console.group('BBjGridExWidget::GxExecutor.flush : (" + id! +  ")');console.time('patch time');" , "")
@@ -225,7 +226,7 @@ class public GxExecutor
                 script! = cast(String, next!.getValue())
 
                 if(isDebugging!)
-                    System.out.println(String.format("%s    Script : %s" ,platform! ,script!))
+                    GxLogger.log("GxExecutor",String.format("%s    Script : %s" ,platform! ,script!))
 
                     if(#isBui()) then
                         script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getRootId() , script!)  + "`);"  + script!
@@ -306,10 +307,10 @@ class public GxExecutor
             platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
 
             if shouldSuppress!
-                System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s) -> Script : %s" , platform! , id! , script!))
+                GxLogger.log("GxExecutor",String.format("%s Flush (%s) -> Script : %s" , platform! , id! , script!))
             else
-                System.out.println(String.format("%s BBjGridExWidget::GxExecutor.flush (%s)" , platform! , id!))
-                System.out.println("(GUI)    Script : " + script!)
+                GxLogger.log("GxExecutor",String.format("%s Flush (%s)" , platform! , id!))
+                GxLogger.log("GxExecutor","(GUI)    Script : " + script!)
             fi
 
             if(#isBui()) then

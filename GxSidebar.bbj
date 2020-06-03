@@ -16,6 +16,7 @@ use com.google.gson.JsonObject
 use com.google.gson.JsonElement
 use com.google.gson.Gson
 use java.util.LinkedHashMap
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem /**
 rem  * A interface which defines a grid toolpanel
 rem  *
@@ -27,7 +28,7 @@ interface public GxToolpanelInterface
     rem  *
     rem  * @return BBjString The toolbar name
     rem  *
-    rem  * @deprecated use `getId()` instead
+    rem  * @deprecated since version 0.101.0, GxToolpanelInterface.ID() is deprecated. use GxToolpanelInterface.getId() instead
     rem  */
 
     method public static BBjString ID()
@@ -134,6 +135,7 @@ class public GxColumnsToolpanel extends GxToolpanel
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
+        GxLogger.warn("GxSidebar","since version 0.101.0, GxColumnsToolpanel.ID() is deprecated. use GxColumnsToolpanel.getId() instead")
         methodret GxColumnsToolpanel.getId()
     methodend
     rem /**
@@ -197,6 +199,7 @@ class public GxFiltersToolpanel extends GxToolpanel
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
+        GxLogger.warn("GxSidebar","since version 0.101.0, GxFiltersToolpanel.ID() is deprecated. use GxFiltersToolpanel.getId() instead")
         methodret GxFiltersToolpanel.getId()
     methodend
     rem /**

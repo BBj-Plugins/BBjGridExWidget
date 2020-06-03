@@ -28,6 +28,7 @@ use ::BBjGridExWidget/GxColumns.bbj::GxAutoGroupColumn
 use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnGroup
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionInterface
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem /**
 rem  * The class defines the common boolean options shared between components which
 rem  * manipulate booleans
@@ -122,9 +123,22 @@ class public GxOptionsDateTime
     rem /**
     rem  * When true then accepts direct user's input from the input field.
     rem  *
-    rem  * @deprecated direct input is always disabled
+    rem  * @deprecated since version 0.101.0, GxOptionsDateTime.AllowInput is deprecated. Direct input is always disabled.
     rem  */
     field public BBjNumber AllowInput! = 1
+    rem /**
+    rem  * @deprecated since version 0.101.0, GxOptionsDateTime.setAllowInput(BBjNumber allow!) is deprecated. Direct input is always disabled.
+    rem  */
+    method public void setAllowInput(BBjNumber allow!)
+        GxLogger.warn("GxOptions","since version 0.101.0, GxOptionsDateTime.setAllowInput(BBjNumber allow!) is deprecated. Direct input is always disabled.")
+    methodend
+    rem /**
+    rem  * @deprecated since version 0.101.0, GxOptionsDateTime.getAllowInput() is deprecated. Direct input is always disabled.
+    rem  */
+    method public BBjNumber getAllowInput()
+        GxLogger.warn("GxOptions","since version 0.101.0, GxOptionsDateTime.getAllowInput() is deprecated. Direct input is always disabled.")
+        methodret 0
+    methodend
     rem /**
     rem  * Create a GxExpression from string and set it as FormatterExpression
     rem  *
@@ -785,10 +799,10 @@ class public GxOptions
     field public BBjNumber SuppressTouch! = null()
     rem /**
     rem  * When true enables the floating filters, disable otherwise
-    rem  * 
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
-    rem  * 
+    rem  *
     rem  * @deprecated enabling/disabling the floatingFilter on the Options level is deprecated. Use `GxColumn.FloatingFilter` on the column level instead.
     rem  */
     field public BBjNumber EnableFloatingFilter! = 0
@@ -1079,26 +1093,27 @@ class public GxOptions
         #setIcons(parser!.parse(json!).getAsJsonObject())
     methodend
     rem /**
-    rem  * Enable/disable DeltaColumn Mode 
-    rem  * 
+    rem  * Enable/disable DeltaColumn Mode
+    rem  *
     rem  * @param BBjNumber enabled!  true to enable , false to disable
-    rem  * 
+    rem  *
     rem  * @deprecated use `GxOptions.setImmutableColumns` instead
     rem  */
     method public void setDeltaColumnMode(BBjNumber enabled!)
-      #setImmutableColumns(enabled!)
+        #setImmutableColumns(enabled!)
     methodend
     rem /**
-    rem  * Get DeltaColumn Mode value 
-    rem  * 
+    rem  * Get DeltaColumn Mode value
+    rem  *
     rem  * @return BBjNumber true when enabled , false otherwise
-    rem  * 
+    rem  *
     rem  * @deprecated use `GxOptions.getImmutableColumns` instead
     rem  */
     method public BBjNumber getDeltaColumnMode()
-      methodret #getImmutableColumns()
+        methodret #getImmutableColumns()
     methodend
-    method 
+
+    method
     rem /**
     rem  * Set a result set of pinned rows on top
     rem  *

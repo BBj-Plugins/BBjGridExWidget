@@ -35,6 +35,7 @@ use ::BBjGridExWidget/GxExecutor.bbj::GxExecutor
 use ::BBjGridExWidget/GxState.bbj::GxState
 use ::BBjGridExWidget/GxLanguageManager.bbj::GxLanguageManager
 use ::BBjGridExWidget/GxClientJsonFactory.bbj::GxClientJsonFactory
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem Client Events
 rem ==========================
 use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
@@ -1787,9 +1788,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         fi
     methodend
     rem /**
-    rem  * Get the pinened top rows as defined in the grid options 
-    rem  * 
-    rem  * @return ResultSet The pinned rows 
+    rem  * Get the pinened top rows as defined in the grid options
+    rem  *
+    rem  * @return ResultSet The pinned rows
     rem  */
     method public ResultSet getPinnedTopRows()
         methodret #getOptions().getPinnedTopRows()
@@ -1808,7 +1809,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         fi
 
         methodret count!
-    methodend    
+    methodend
     rem /**
     rem  * Set a result set of pinned rows on bottom
     rem  *
@@ -1822,13 +1823,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         fi
     methodend
     rem /**
-    rem  * Get the pinened bottom rows as defined in the grid options 
-    rem  * 
-    rem  * @return ResultSet The pinned rows 
+    rem  * Get the pinened bottom rows as defined in the grid options
+    rem  *
+    rem  * @return ResultSet The pinned rows
     rem  */
     method public ResultSet getPinnedBottomRows()
         methodret #getOptions().getPinnedBottomRows()
-    methodend    
+    methodend
     rem /**
     rem  * Get the count of pinned rows on bottom
     rem  *
@@ -1967,9 +1968,24 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         FI
     methodend
     rem /**
-    rem  * @deprecated Use updateData(ResultSet rs!) instead
+    rem  * Feed the grid with a new ResultSet
+    rem  *
+    rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full re-render&#183;
+    rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
+    rem  *
+    rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
+    rem  * Please note that All row and range selection will be lost.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param ResultSet rs! ResultSet with the data
+    rem  *
+    rem  * @see setData()
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget. updateData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.
     rem  */
     method public void setRowsData(ResultSet rs!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget. updateData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.")
         #updateData(rs!)
     methodend
     rem /**
@@ -2046,23 +2062,43 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * @param BBjNumber index! The Row index
     rem  * @param DataRow row! DataRow object which contains the update
     rem  *
-    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
-    rem  *
     rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.updateRow(BBjNumber index!,DataRow row!) is deprecated. Use BBjGridExWidget.updateRow(DataRow row!) instead. The grid can work out the row index by its own
     rem  */
     method public GxClientTransactionModel updateRow(BBjNumber index!,DataRow row!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.updateRow(BBjNumber index!,DataRow row!) is deprecated. Use BBjGridExWidget.updateRow(DataRow row!) instead. The grid can work out the row index by its own")
         methodret #updateRow(row!)
     methodend
     rem /**
-    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  * Update row data
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index! The Row index
+    rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.setRowData(BBjNumber index!,DataRow row!) is deprecated. Use BBjGridExWidget.updateRow(DataRow row!) instead. The grid can work out the row index by its own
     rem  */
     method public GxClientTransactionModel setRowData(BBjNumber index!,DataRow row!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.setRowData(BBjNumber index!,DataRow row!) is deprecated. Use BBjGridExWidget.updateRow(DataRow row!) instead. The grid can work out the row index by its own")
         methodret #updateRow(index!,row!)
     methodend
     rem /**
-    rem  * @deprecated use `updateRow(DataRow row!)`. The grid can work out the row index by its own
+    rem  * Update row data
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param DataRow row! DataRow object which contains the update
+    rem  *
+    rem  * @return GxClientTransactionModel the transaction object which used to achieve the update
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.setRowData(DataRow row!) is deprecated. Use BBjGridExWidget.updateRow(DataRow row!) instead. The grid can work out the row index by its own
     rem  */
     method public GxClientTransactionModel setRowData(DataRow row!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.setRowData(DataRow row!) is deprecated. Use BBjGridExWidget.updateRow(DataRow row!) instead. The grid can work out the row index by its own")
         methodret #updateRow(row!)
     methodend
     rem /**
@@ -2144,9 +2180,14 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute("$wnd.gw_setRowData('" + #getRootId() + "', [])",0)
     methodend
     rem /**
-    rem  * @deprecated use clearData() instead
+    rem  * Clear row data (Empty the grid )
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  *  @deprecated since version 0.101.0, BBjGridExWidget.clearRowsData() is deprecated / renamed. Use BBjGridExWidget.clearData() instead.
     rem  */
     method public void clearRowsData()
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.clearRowsData() is deprecated / renamed. Use BBjGridExWidget.clearData() instead.")
         #clearData()
     methodend
     rem /**
@@ -2161,9 +2202,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute(scriptKey!,"$wnd.gw_setState('" + #getRootId() + "'," + state!.toString() +")")
     methodend
     rem /**
-    rem  * @deprecated use #setState instead
+    rem  * Apply the grid's columns , soring and filtering state
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param GxState state! : the state object
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.setColumnState(GxState state!) is deprecated / renamed. Use BBjGridExWidget.setState(GxState state!) instead.
     rem  */
     method public void setColumnState(GxState state!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.setColumnState(GxState state!) is deprecated / renamed. Use BBjGridExWidget.setState(GxState state!) instead.")
         #setState(state!)
     methodend
     rem /**
@@ -2180,9 +2228,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         methodret state!
     methodend
     rem /**
-    rem  * @deprecated Use #getState() instead
+    rem  * Get the grid's columns , sorting and filtering state
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @returns GxState
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.getColumnState() is deprecated / renamed. Use BBjGridExWidget.getState() instead.
     rem  */
     method public GxState getColumnState()
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.getColumnState() is deprecated / renamed. Use BBjGridExWidget.getState() instead.")
         methodret #getState()
     methodend
     rem /**
@@ -2770,9 +2825,25 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #ensureIndexVisible(str(index!),position!)
     methodend
     rem /**
-    rem  * @deprecated use ensureIndexVisible instead
+    rem  * Ensures the row index is visible by vertically scrolling the grid
+    rem  *
+    rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
+    rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
+    rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBjNumber index!: the row index
+    rem  * @param BBjString position!: the scrolling position
+    rem  *
+    rem  * @see GRID_ROWPOS_TOP()
+    rem  * @see GRID_ROWPOS_MIDDLE()
+    rem  * @see GRID_ROWPOS_BOTTOM()
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.setVisibleRow(BBjNumber index! , BBjString position!) is deprecated / renamed. Use BBjGridExWidget.ensureIndexVisible(BBjNumber index! , BBjString position!) instead.
     rem  */
     method public void setVisibleRow(BBjNumber index! , BBjString position!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.setVisibleRow(BBjNumber index! , BBjString position!) is deprecated / renamed. Use BBjGridExWidget.ensureIndexVisible(BBjNumber index! , BBjString position!) instead.")
         #ensureIndexVisible(index!,position!)
     methodend
     rem /**
@@ -2788,9 +2859,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute(scriptKey!,script$)
     methodend
     rem /**
-    rem  * @deprecated use ensureColumnVisible instead
+    rem  * Ensures the column is visible, scrolling the table if needed.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @param BBJString columnid!: the column id
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.setVisibleColumn(BBjString columnId!) is deprecated / renamed. Use BBjGridExWidget.ensureColumnVisible(BBjString columnId!) instead.
     rem  */
     method public void setVisibleColumn(BBjString columnId!)
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.setVisibleColumn(BBjString columnId!) is deprecated / renamed. Use BBjGridExWidget.ensureColumnVisible(BBjString columnId!) instead.")
         #ensureColumnVisible(columnId!)
     methodend
     rem /**
@@ -3371,15 +3449,25 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #setStartCellEditing(str(index!), column!, keyPress!)
     methodend
     rem /**
-    rem  * @deprecated Use tabToNextCell() instead
+    rem  * Navigates the grid focus to the next cell, as if tabbing.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.startNextCellEditing() is deprecated / renamed. Use BBjGridExWidget.tabToNextCell() instead.
     rem  */
     method public void startNextCellEditing()
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.startNextCellEditing() is deprecated / renamed. Use BBjGridExWidget.tabToNextCell() instead.")
         #tabToNextCell()
     methodend
     rem /**
-    rem  * @deprecated Use tabToPreviousCell() instead
+    rem  * Navigates the grid focus to the previous cell, as if shift-tabbing.
+    rem  *
+    rem  * <br><b><small>#API</small></b>
+    rem  *
+    rem  * @deprecated since version 0.101.0, BBjGridExWidget.startPreviousCellEditing() is deprecated / renamed. Use BBjGridExWidget.tabToPreviousCell() instead.
     rem  */
     method public void startPreviousCellEditing()
+        GxLogger.warn("since version 0.101.0, BBjGridExWidget.startPreviousCellEditing() is deprecated / renamed. Use BBjGridExWidget.tabToPreviousCell() instead.")
         #tabToPreviousCell()
     methodend
     rem /**

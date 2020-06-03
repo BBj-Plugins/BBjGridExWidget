@@ -22,6 +22,7 @@ use com.google.gson.JsonArray
 use com.google.gson.JsonParser
 use com.basiscomponents.db.DataField
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem GxFilters
 rem =========================
 use ::BBjGridExWidget/GxFilters.bbj::GxFilterInterface
@@ -223,7 +224,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjNumber EnableFilter! = 1
     rem /**
-    rem  * When true enable the floating filter on this column , false otherwise 
+    rem  * When true enable the floating filter on this column , false otherwise
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -1747,9 +1748,32 @@ class public GxDefaultColumnGroup extends GxColumnDefinition
     field public BBjNumber OpenByDefault! = 1
     rem /**
     rem  * Tooltip for the column group header
-    rem  * @deprecated use HeaderToolTip instead
+    rem  *
+    rem  * @deprecated since version 0.101.0, GxDefaultColumnGroup.HeaderGroupTooltip is deprecated / renamed. Use GxDefaultColumnGroup.HeaderToolTip instead.
     rem  */
     field public BBjString HeaderGroupTooltip! = null()
+    rem /**
+    rem  * Set the tooltip for the column group header
+    rem  *
+    rem  * @param BBjString tooltip!
+    rem  *
+    rem  * @deprecated since version 0.101.0, GxDefaultColumnGroup.setHeaderGroupTooltip(BBjString tooltip!) is deprecated / renamed. Use GxDefaultColumnGroup.setHeaderToolTip(BBjString tooltip!) instead.
+    rem  */
+    method public void setHeaderGroupTooltip(BBjString tooltip!)
+        GxLogger.warn("GxColumns","since version 0.101.0, GxDefaultColumnGroup.setHeaderGroupTooltip(BBjString tooltip!) is deprecated / renamed. Use GxDefaultColumnGroup.setHeaderToolTip(BBjString tooltip!) instead.")
+        #setHeaderTooltip(tooltip!)
+    methodend
+    rem /**
+    rem  * Get the tooltip for the column group header
+    rem  *
+    rem  * @param BBjString tooltip!
+    rem  *
+    rem  * @deprecated since version 0.101.0, GxDefaultColumnGroup.getHeaderGroupTooltip() is deprecated / renamed. Use GxDefaultColumnGroup.getHeaderToolTip() instead.
+    rem  */
+    method public BBjString getHeaderGroupTooltip()
+        GxLogger.warn("GxColumns","since version 0.101.0, GxDefaultColumnGroup.getHeaderGroupTooltip() is deprecated / renamed. Use GxDefaultColumnGroup.getHeaderToolTip() instead.")
+        methodret #getHeaderTooltip()
+    methodend
     rem /**
     rem  * @override
     rem  *
@@ -1761,11 +1785,7 @@ class public GxDefaultColumnGroup extends GxColumnDefinition
         group! = #super!.getAsJsonObject()
         group!.addProperty("marryChildren",#getMarryChildren().booleanValue(),err=*next)
         group!.addProperty("openByDefault",#getOpenByDefault().booleanValue(),err=*next)
-
-        if(#getHeaderGroupTooltip() <> null() AND len(#getHeaderGroupTooltip()) > 0)
-            group!.addProperty("headerTooltip",#getHeaderGroupTooltip(),err=*next)
-        fi
-
+        group!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
         methodret group!
     methodend
 

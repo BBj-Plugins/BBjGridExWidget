@@ -12,6 +12,7 @@ rem  */
 use ::BBjGridExWidget/GxOptions.bbj::GxOptionsBoolean
 use ::BBjGridExWidget/GxOptions.bbj::GxOptionsDateTime
 use ::BBjGridExWidget/GxRenderers.bbj::GxRendererInterface
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 rem /**
@@ -45,7 +46,7 @@ interface public GxFilterInterface
 interfaceend
 rem /**
 rem  * Compare two filter components
-rem  * 
+rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxFilterComparator
@@ -332,9 +333,14 @@ rem  * The class represents the default ag-grid date filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  *
-rem  * @deprecated Use GxFilterBasicDate
+rem  * @deprecated since version 0.101.0, GxFilterDate is deprecated. Use GxFilterBasicDate instead.
 rem  */
 class public GxFilterDate extends GxFilterNumber
+
+    method public GxFilterDate()
+        #super!()
+        GxLogger.warn("GxFilters","since version 0.101.0, GxFilterDate is deprecated. Use GxFilterBasicDate instead.")
+    methodend
     rem /**
     rem  * @override
     rem  *
@@ -485,6 +491,7 @@ class public GxFilterBasicBoolean extends GxOptionsBoolean implements GxFilterIn
     method public boolean equals(GxFilterInterface filter!)
         methodret GxFilterComparator.compare(#this!, filter!)
     methodend
+
 classend
 rem /**
 rem  * The class represents the date time filter
@@ -560,6 +567,7 @@ class public GxFilterBasicDateTime extends GxOptionsDateTime implements GxFilter
     method public boolean equals(GxFilterInterface filter!)
         methodret GxFilterComparator.compare(#this!, filter!)
     methodend
+
 classend
 rem /**
 rem  * Alias for GxFilterBasicDateTime

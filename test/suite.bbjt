@@ -14,7 +14,8 @@ use ::BBjGridExWidget/test/GxClientModels/GxClientModelsSuite.bbjt::GxClientMode
 use ::BBjGridExWidget/test/GxClientJsonFactory/GxClientJsonFactorySuite.bbjt::GxClientJsonFactorySuite
 use ::BBjGridExWidget/test/BBjGridExWidget/BBjGridExWidgetSuite.bbjt::BBjGridExWidgetSuite
 use ::BBjGridExWidget/test/GxExecutorTest.bbjt::GxExecutorTest
+use ::BBjGridExWidget/test/GxLoggerTest.bbjt::GxLoggerTest
 
-rem @SuiteClasses("BBjGridExWidgetSuite","GxRenderersSuite","GxCellEditorsSuite","GxFiltersSuite","GxOptionsSuite","GxColumnsSuite","GxClientModelsSuite","GxClientJsonFactorySuite","GxExecutorTest")
+rem @SuiteClasses("BBjGridExWidgetSuite","GxRenderersSuite","GxCellEditorsSuite","GxFiltersSuite","GxOptionsSuite","GxColumnsSuite","GxClientModelsSuite","GxClientJsonFactorySuite","GxExecutorTest","GxLoggerTest")
 class public BBjGridExWidgeSuites
 classend

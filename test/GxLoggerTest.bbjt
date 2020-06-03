@@ -1,0 +1,60 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxLoggerTest
+
+  rem @Test
+  method public void testLog()
+    GxLogger.setSuppressConsole(1)
+    GxLogger.setSuppressDebugFile(1)
+    type! = GxLogger.INFO()
+    section! = "GxLoggerTest"
+    message! = "a log message test"
+
+    rem full params
+    result! = GxLogger.log(type!, section!, message!)
+    Assert.Equals(result!.contains(type!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(section!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(message!), BBjAPI.TRUE)
+
+    rem no type
+    result! = GxLogger.log(section!, message!)
+    Assert.Equals(result!.contains(GxLogger.INFO()), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(section!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(message!), BBjAPI.TRUE)
+
+    rem no type or section
+    result! = GxLogger.log(message!)
+    Assert.Equals(result!.contains(type!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(message!), BBjAPI.TRUE)
+  methodend
+
+  rem @Test
+  method public void testWarn()
+    GxLogger.setSuppressConsole(1)
+    GxLogger.setSuppressDebugFile(1)
+
+    type! = GxLogger.WARNING()
+    section! = "GxLoggerTest"
+    message! = "a log message test"
+
+    rem full params
+    result! = GxLogger.warn(section!, message!)
+    Assert.Equals(result!.contains(type!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(section!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(message!), BBjAPI.TRUE)
+
+    result! = GxLogger.warn(message!)
+    Assert.Equals(result!.contains(type!), BBjAPI.TRUE)
+    Assert.Equals(result!.contains(message!), BBjAPI.TRUE)
+  methodend
+
+classend
