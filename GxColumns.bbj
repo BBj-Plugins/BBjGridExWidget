@@ -330,7 +330,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     field public BBjNumber Editable! = 0
     rem /**
     rem  * An expression which determines whether the column is editable
-    rem  * or not. when this config is diffenrt than null , then the column
+    rem  * or not. when this config is different than null , then the column
     rem  * configuration `Editable` will be ignored
     rem  */
     field public GxExpressionInterface EditableExpression! = null()
@@ -771,9 +771,9 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         #EditableExpression! = new GxExpression(expression!)
     methodend
     rem /**
-    rem  * Set the allowd aggregation functions allowed on this column
+    rem  * Set the allowed aggregation functions allowed on this column
     rem  *
-    rem  * @param BBjString funcs! comma separated functinos
+    rem  * @param BBjString funcs! comma separated functions
     rem  */
     method public void setAllowedAggFuncs(BBjString funcs!)
         #AllowedAggFuncs!.addAll(Arrays.asList(funcs!.replaceAll(" ","").split(",")))
@@ -1361,7 +1361,7 @@ class public GxAutoGroupColumn extends GxDefaultColumnDefinition
     rem  * Construct new instance
     rem  */
     method public GxAutoGroupColumn()
-        rem we reset the following properties so they can be inheirted from the default column definition
+        rem we reset the following properties so they can be inherited from the default column definition
         #setHidden(null())
         #setEnableFilter(null())
         #setLockPinned(null())

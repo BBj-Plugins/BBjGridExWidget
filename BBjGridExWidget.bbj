@@ -145,7 +145,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     field public static BBjNumber Debug! = 0
     rem /**
-    rem  * The unique string to use as row inedx&#183; default is __ROW_INDEX
+    rem  * The unique string to use as row index&#183; default is __ROW_INDEX
     rem  */
     field public BBjString RowNodeId$ = "__ROW_INDEX"
     rem /**
@@ -161,7 +161,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     field public GxOptions Options! = new GxOptions(#this!)
     rem /**
-    rem  * Instnace of he scripts executor
+    rem  * Instance of he scripts executor
     rem  */
     field public GxExecutor Executor! = new GxExecutor(#this!, 250)
     rem /**
@@ -197,12 +197,12 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     field protected Boolean IsFirstRender! = BBjAPI.TRUE
     rem /**
-    rem  * Unique auto-generated id for the grid instanc.
+    rem  * Unique auto-generated id for the grid instance.
     rem  * This id is used in the client to distinguish instances
     rem  */
     field protected BBjString RootId!
     rem /**
-    rem  * Number of initiated instnaces per session
+    rem  * Number of initiated instances per session
     rem  */
     field protected static BBjNumber InstanceCount! = 0
     field protected BBjNumber newW!
@@ -616,7 +616,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         methodret "data:image/png;base64, "+b64$
     methodend
     rem /**
-    rem  * Alais for <i>imageToBase64()</i>
+    rem  * Alias for <i>imageToBase64()</i>
     rem  *
     rem  * @see imageToBase64()
     rem  */
@@ -854,7 +854,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem /**
     rem  * Return the number of initiated instances of the grid
     rem  *
-    rem  * @return BBjNumber The number of instnaces
+    rem  * @return BBjNumber The number of instances
     rem  */
     method public static BBjNumber getInstanceCount()
         methodret #InstanceCount!
@@ -956,7 +956,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().setSuppressGuiDebouncing(suppress!)
     methodend
     rem /**
-    rem  * Supress scripta debouncing for GUI and BUI
+    rem  * Suppress scripts debouncing for GUI and BUI
     rem  *
     rem  * @see #suppressBuiDebouncing()
     rem  * @see #suppressGuiDebouncing()
@@ -1730,7 +1730,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         rem  * Make sure to delay rendering until the widget is declared ready
         rem  *
         rem  * The widget is declared ready when the HTMLView fires the ON_PAGE_LOADED
-        rem  * event and the scripts are injected succesfully
+        rem  * event and the scripts are injected successfully
         rem  */
         if(!isWidgetReady!)
             methodret
@@ -1788,7 +1788,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         fi
     methodend
     rem /**
-    rem  * Get the pinened top rows as defined in the grid options
+    rem  * Get the pinned top rows as defined in the grid options
     rem  *
     rem  * @return ResultSet The pinned rows
     rem  */
@@ -1823,7 +1823,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         fi
     methodend
     rem /**
-    rem  * Get the pinened bottom rows as defined in the grid options
+    rem  * Get the pinned bottom rows as defined in the grid options
     rem  *
     rem  * @return ResultSet The pinned rows
     rem  */
@@ -2131,7 +2131,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         methodret #addRow(0,row!)
     methodend
     rem /**
-    rem  * Remove a row from grid by the row refernce
+    rem  * Remove a row from grid by the row reference
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -2191,7 +2191,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #clearData()
     methodend
     rem /**
-    rem  * Apply the grid's columns , soring and filtering state
+    rem  * Apply the grid's columns , sorbing and filtering state
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *
@@ -2202,7 +2202,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getExecutor().execute(scriptKey!,"$wnd.gw_setState('" + #getRootId() + "'," + state!.toString() +")")
     methodend
     rem /**
-    rem  * Apply the grid's columns , soring and filtering state
+    rem  * Apply the grid's columns , sorbing and filtering state
     rem  *
     rem  * <br><b><small>#API</small></b>
     rem  *

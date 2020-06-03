@@ -91,7 +91,7 @@ class public GxOptionsDateTime
     rem  */
     field public BBjNumber EnableWeekNumber! = 0
     rem /**
-    rem  * The Date mask for calander input
+    rem  * The Date mask for calender input
     rem  */
     field public BBjString Mask! = "%Y/%Mz/%Dz %Hz:%mz:%sz"
     rem /**
@@ -1283,7 +1283,7 @@ class public GxOptions
         options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), listIsEmpty!) ,err=*next)
         options!.        add("rowClassRules", iff(#getRowClassRules().entrySet().size() <> 0 , #getRowClassRules() , null()),err=*next)
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
-        rem Localisation
+        rem Localization
         rem ===========================
         options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
         rem Overlays

@@ -1415,7 +1415,7 @@ class public GxClientFilterBooleanModel extends GxClientFilterAbstractModel
 
 classend
 rem /**
-rem  * The filter model represents the enhanced filter type "setfilter"
+rem  * The filter model represents the enhanced filter type "setFilter"
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -1462,7 +1462,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
         #setMiniFilter(str(miniFilter!))
     methodend
     rem /**
-    rem  * Get the minifilter value.
+    rem  * Get the mini filter value.
     rem  *
     rem  * Note that if the grid is not ready , then this method will always return an empty string
     rem  * even if you have called `setMiniFilter` before.

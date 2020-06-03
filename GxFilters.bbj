@@ -68,7 +68,7 @@ class public GxFilterComparator
 
 classend
 rem /**
-rem  * Filter options constansts for texts filter
+rem  * Filter options constants for texts filter
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
