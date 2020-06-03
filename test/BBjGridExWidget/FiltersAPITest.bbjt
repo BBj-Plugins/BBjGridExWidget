@@ -73,31 +73,32 @@ class public FiltersAPITest
         #Instance!.addColumn(column!)
         
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterTextModel"), BBjAPI.TRUE)
+
+        Assert.Equals(model!.toString().contains("GxClientFilterTextModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())
         
         column!.setType(java.sql.Types.NUMERIC)
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterNumberModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterNumberModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
         column!.setType(java.sql.Types.DATE)
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())          
         
         column!.setType(java.sql.Types.BOOLEAN)
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterBooleanModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterBooleanModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
         column!.setFilter(new GxFilterSetFilter())
         model! = #Instance!.getFilterModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterSetFilterModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterSetFilterModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
@@ -111,22 +112,22 @@ class public FiltersAPITest
         #Instance!.addColumn(column!)   
         
         model! = #Instance!.getFilterAsCombinedModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
-        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterTextModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().contains("GxClientFilterTextModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())
         
         column!.setType(java.sql.Types.NUMERIC)
         model! = #Instance!.getFilterAsCombinedModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
-        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterNumberModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().contains("GxClientFilterNumberModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         
         column!.setType(java.sql.Types.DATE)        
         model! = #Instance!.getFilterAsCombinedModel("test")
-        Assert.Equals(model!.toString().endsWith("GxClientFilterCombinedModel"), BBjAPI.TRUE)
-        Assert.Equals(model!.getFirstCondition().toString().endsWith("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.toString().contains("GxClientFilterCombinedModel"), BBjAPI.TRUE)
+        Assert.Equals(model!.getFirstCondition().toString().contains("GxClientFilterDateTimeModel"), BBjAPI.TRUE)
         Assert.Equals(#Instance! , model!.getWidget())
         Assert.Equals("test", model!.getColumn())        
         

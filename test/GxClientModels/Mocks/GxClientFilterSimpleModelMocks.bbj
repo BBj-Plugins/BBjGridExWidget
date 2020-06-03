@@ -8,4 +8,9 @@ rem  */
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterSimpleModel
 
 class public FilterSimpleModelMock extends GxClientFilterSimpleModel
+
+  method public BBjNumber supportsCombinedModel()
+    methodret 0
+  methodend
+
 classend
