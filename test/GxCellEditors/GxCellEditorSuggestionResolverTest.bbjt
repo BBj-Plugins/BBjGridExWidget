@@ -1,0 +1,92 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSuggestionResolver
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorSuggestionResolverTest
+
+  field private GxCellEditorSuggestionResolver Instance!
+
+  rem @Before
+  method public void setUp()
+    #Instance! = new GxCellEditorSuggestionResolver()
+  methodend
+
+  rem @Test
+  method public void testCreateItem()
+      label! = "label"
+      value! = "value"
+      group! = "group"
+
+      rem full params
+      item! = #Instance!.createItem(label!, value!, group!)
+      Assert.Equals(item!.size() , 3)
+      Assert.Equals(item!.get("label").getAsString() , label!)
+      Assert.Equals(item!.get("value").getAsString() , value!)
+      Assert.Equals(item!.get("group").getAsString() , group!)  
+
+      rem no group
+      item! = #Instance!.createItem(label!, value!)
+      Assert.Equals(item!.size() , 2)
+      Assert.Equals(item!.get("label").getAsString() , label!)
+      Assert.Equals(item!.get("value").getAsString() , value!)
+
+      rem no group and no value
+      item! = #Instance!.createItem(label!)
+      Assert.Equals(item!.size() , 2)
+      Assert.Equals(item!.get("label").getAsString() , label!)
+      Assert.Equals(item!.get("value").getAsString() , label!)      
+  methodend
+
+  rem @Test
+  method public void testAddItem()
+      label! = "label"
+      value! = "value"
+      group! = "group"
+
+      rem full params
+      #Instance!.addItem(label!, value!, group!)
+      list! = #Instance!.getList()
+      Assert.Equals(list!.size() , 1)
+      item! = list!.get(0).getAsJsonObject()
+      Assert.Equals(item!.size() , 3)
+      Assert.Equals(item!.get("label").getAsString() , label!)
+      Assert.Equals(item!.get("value").getAsString() , value!)
+      Assert.Equals(item!.get("group").getAsString() , group!)  
+
+      rem rem no group
+      #Instance!.setList(new JsonArray())
+      #Instance!.addItem(label!, value!)
+      list! = #Instance!.getList()
+      Assert.Equals(list!.size() , 1)
+      item! = list!.get(0).getAsJsonObject()
+      Assert.Equals(item!.size() , 2)
+      Assert.Equals(item!.get("label").getAsString() , label!)
+      Assert.Equals(item!.get("value").getAsString() , value!)
+
+      rem rem no group and no value
+      #Instance!.setList(new JsonArray())
+      #Instance!.addItem(label!)
+      list! = #Instance!.getList()
+      Assert.Equals(list!.size() , 1)
+      item! = list!.get(0).getAsJsonObject()
+      Assert.Equals(item!.size() , 2)
+      Assert.Equals(item!.get("label").getAsString() , label!)
+      Assert.Equals(item!.get("value").getAsString() , label!)   
+  methodend  
+
+  rem @After
+  method public void tearDown()
+    #Instance! = null()
+  methodend
+
+classend

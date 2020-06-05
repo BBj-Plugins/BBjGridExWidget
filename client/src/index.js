@@ -13,6 +13,7 @@ import 'expose-loader?Basis.AgGridComponents!basis-aggrid-components/dist/basis-
 
 require('flatpickr/dist/flatpickr.css')
 require('./style/classes.css')
+require('./style/suggestion-editor.css')
 
 export * from './polyfills.js'
 export * from './api'

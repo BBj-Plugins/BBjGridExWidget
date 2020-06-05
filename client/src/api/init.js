@@ -24,6 +24,7 @@ import {
 } from 'events'
 import template from 'lodash-es/template'
 import HTMLTooltip from '../components/HTMLTooltip.js'
+import SuggestionEditor from '../components/SuggestionEditor.js'
 
 const { deepParseJson } = require('deep-parse-json')
 
@@ -126,6 +127,7 @@ function gw_parseOptions(options) {
         ImageRenderer: Basis.AgGridComponents.ImageRenderer,
         TemplateRenderer: Basis.AgGridComponents.TemplateRenderer,
         HTMLTooltip: HTMLTooltip,
+        SuggestionEditor: SuggestionEditor,
       },
       context: {
         ...deepParsedOptions.context,

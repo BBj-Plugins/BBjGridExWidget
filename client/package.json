@@ -47,6 +47,7 @@
   "dependencies": {
     "ag-grid-community": "23.1.0",
     "ag-grid-enterprise": "23.1.0",
+    "autocompleter": "^6.0.3",
     "basis-aggrid-components": "BasisHub/basis-aggrid-components",
     "deep-parse-json": "^1.0.1",
     "flatpickr": "^4.6.3",

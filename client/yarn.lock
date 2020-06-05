@@ -1185,6 +1185,11 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+autocompleter@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/autocompleter/-/autocompleter-6.0.3.tgz#915e8fabc53ff50792ec893ac8241415f547e233"
+  integrity sha512-CACd1r+AzgXOrppaYuOUWtJrM84EdUNSwRVXM0cuP6UQ09kLv7QumV7PD25kxRuZ7X4kVeTX9gkloH4NkNglvg==
+
 autoprefixer@^6.3.1:
   version "6.7.7"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.7.7.tgz#1dbd1c835658e35ce3f9984099db00585c782014"

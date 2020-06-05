@@ -1,0 +1,179 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSuggestion
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSuggestionResolver
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonNull
+
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxCellEditorSuggestionTest
+
+  field private GxCellEditorSuggestion Instance!
+
+  rem @Before
+  method public void setUp()
+    #Instance! = new GxCellEditorSuggestion("id", new GxCellEditorSuggestionResolver())
+  methodend
+
+  rem @Test
+  method public void testCellEditorNameIsSet()
+    Assert.Equals(#Instance!.getCellEditorName() , "SuggestionEditor")
+  methodend
+
+  rem @Test
+  method public void testCanSetPattern()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("textPattern").equals(new JsonNull()) , BBjAPI.TRUE)
+    #Instance!.setPattern("\d")
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("textPattern").getAsString(), "\d")
+  methodend
+
+  rem @Test
+  method public void testCanSetTitle()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("textTitle").equals(new JsonNull()) , BBjAPI.TRUE)
+    m! = "Fill the required input"
+    #Instance!.setTitle(m!)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("textTitle").getAsString(), m!)
+  methodend
+
+  rem @Test
+  method public void testCanSetRequired()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("textRequired").getAsBoolean(), BBjAPI.TRUE)
+    #Instance!.setRequired(0)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("textRequired").getAsBoolean(), BBjAPI.FALSE)
+  methodend
+
+  rem @Test
+  method public void testCanSetAllowCustomValues()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("allowCustomValues").getAsBoolean(), BBjAPI.FALSE)
+    #Instance!.setAllowCustomValues(1)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("allowCustomValues").getAsBoolean(), BBjAPI.TRUE)
+  methodend
+
+  rem @Test
+  method public void testCanSetWidth()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.has("width"), BBjAPI.FALSE)
+    #Instance!.setWidth(100)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("width").getAsInt(), 100)
+  methodend  
+
+  rem @Test
+  method public void testCanSetHeight()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.has("height"), BBjAPI.FALSE)
+    #Instance!.setHeight(100)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("height").getAsInt(), 100)
+  methodend  
+
+  rem @Test
+  method public void testCanSetSuppressSuggestionOnInvalidInput()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("suppressSuggestionOnInvalidInput").getAsBoolean(), BBjAPI.FALSE)
+    #Instance!.setSuppressSuggestionOnInvalidInput(1)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("suppressSuggestionOnInvalidInput").getAsBoolean(), BBjAPI.TRUE)
+  methodend
+
+  rem @Test
+  method public void testCanSetSuggestionItemTemplate()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("itemTemplate").equals(new JsonNull()) , BBjAPI.TRUE)
+    #Instance!.setSuggestionItemTemplate("my template")
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("itemTemplate").getAsString(), "my template")
+  methodend 
+  
+  rem @Test
+  method public void testCanSetSuggestionGroupTemplate()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("groupTemplate").equals(new JsonNull()) , BBjAPI.TRUE)
+    #Instance!.setSuggestionGroupTemplate("my template")
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("groupTemplate").getAsString(), "my template")
+  methodend
+  
+  rem @Test
+  method public void testCanSetEmptyMessage()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("emptyMessage").equals(new JsonNull()) , BBjAPI.TRUE)
+    #Instance!.setEmptyMessage("no data")
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("emptyMessage").getAsString(), "no data")
+  methodend    
+
+  rem @Test
+  method public void testCanSetMinLength()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("minLength").getAsInt() > 0, BBjAPI.TRUE)
+    #Instance!.setMinLength(10)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("minLength").getAsInt(), 10)
+  methodend    
+
+  rem @Test
+  method public void testCanSetShowOnFocus()
+    declare auto JsonObject json!
+
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("showOnFocus").getAsBoolean(), BBjAPI.FALSE)
+    #Instance!.setShowOnFocus(1)
+    json! = #Instance!.getAsJsonObject()
+    Assert.Equals(json!.get("showOnFocus").getAsBoolean(), BBjAPI.TRUE)
+  methodend
+
+  rem @Test
+  method public void testGetId()
+      Assert.Equals(#Instance!.getId() , "id")
+  methodend
+
+  rem @Test
+  method public void testGetResolver()
+      Assert.Equals(#Instance!.getResolver().toString().contains("GxCellEditorSuggestionResolver"), BBjAPI.TRUE )
+  methodend  
+
+  rem @After
+  method public void tearDown()
+    #Instance! = null()
+  methodend
+
+classend
