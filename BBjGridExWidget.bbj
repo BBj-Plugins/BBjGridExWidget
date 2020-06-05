@@ -3747,7 +3747,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   methodend
 
   method protected void handleStateChangedEvent(BBjString detail$, BBjNumber type!)
-    event! = #getColumnState()
+    event! = #getState()
     #fireEvent(type!, event!)
   methodend
   rem /**
