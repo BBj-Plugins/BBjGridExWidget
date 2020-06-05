@@ -1013,10 +1013,10 @@ class public GxOptions
         toolpanels! = #getSidebar().getToolpanels()
 
         if enableFiltersToolpanel! = 0 then
-            toolpanels!.remove(GxFiltersToolpanel.ID(),err=*next)
+            toolpanels!.remove(GxFiltersToolpanel.getId(),err=*next)
         else
-            if(toolpanels!.containsKey(GxFiltersToolpanel.ID()) = 0) then
-                toolpanels!.put(GxFiltersToolpanel.ID() , new GxFiltersToolpanel())
+            if(toolpanels!.containsKey(GxFiltersToolpanel.getId()) = 0) then
+                toolpanels!.put(GxFiltersToolpanel.getId() , new GxFiltersToolpanel())
             FI
         FI
     methodend
