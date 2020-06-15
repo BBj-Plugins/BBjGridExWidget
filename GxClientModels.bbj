@@ -133,7 +133,9 @@ class public GxClientRowModel
         rem in case the RowNodeId is a column in the ResultSet
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
-            filteredRS! = rs!.filterBy(nodeId! + "=" +  str(#getId()))
+            filter! = new DataRow()
+            filter!.setFieldValue(nodeId!,str(#getId()))
+            filteredRS! = rs!.filterBy(filter!)
 
             if(filteredRS!.count() <> 1) then
                 throw "Cannot query the selected row from the ResultSet. [RowNodeId = " + nodeId! + " , Index = " + str(#getIndex()) + "]", 256
