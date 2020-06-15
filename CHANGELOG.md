@@ -1,3 +1,12 @@
+## [0.101.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.2...0.101.3) (2020-06-15)
+
+## [0.101.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.1...0.101.2) (2020-06-15)
+
+### Bug Fixes
+
+* fix: :bug: nodeId is not parsing independent in client models ([50f2f66](https://github.com/BBj-Plugins/BBjGridExWidget/commit/50f2f667003e034e056762f8178e0ea1aadb08d4))
+
+
 ## [0.101.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.0...0.101.1) (2020-04-07)
 
 
