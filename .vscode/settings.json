@@ -311,6 +311,10 @@
         "GetRows.bbj": {
             "name": "GetRows",
             "style": ""
+        },
+        "RowSpan.bbj": {
+            "name": "RowSpan",
+            "style": ""
         }
     },
     "cSpell.words": [

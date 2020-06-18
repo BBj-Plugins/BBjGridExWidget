@@ -651,6 +651,74 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public GxExpressionInterface TooltipValueGetterExpression! = null()
     rem /**
+    rem  * A grid expression which can be executed to perform row spanning&#183;
+    rem  * 
+    rem  * The expression must return the number of rows to span , if no spanning should be applied , then 
+    rem  * return `1` instead (ex: "data.SHOW ? 4 : 1")
+    rem  * 
+    rem  * By default, each cell will take up the height of one row. 
+    rem  * You can change this behaviour to allow cells to span multiple rows. 
+    rem  * This feature is similar to 'cell merging' in Excel or 'row spanning' in HTML tables.
+    rem  * 
+    rem  * To allow row spanning, the grid must have options `SuppressRowTransform=true`
+    rem  * To have a cell span more than one row, return how many rows to span in the RowSpanExpression.
+    rem  * 
+    rem  * The option `SuppressRowTransform=true` is used to stop the grid positioning rows using CSS transform 
+    rem  * and instead the grid will use CSS top. 
+    rem  * The reason row span will not work with CSS transform is that CSS transform creates a stacking context
+    rem  * which constrains CSS z-index from placing cells on top of other cells in another row. 
+    rem  * Having cells extend into other rows is necessary for row span which means it will not 
+    rem  * work when using CSS transform. 
+    rem  * The downside to not using transform is performance; row animation (after sort or filter) will be slower.
+    rem  * 
+    rem  * <strong>Constraints with Row Spanning :<strong>
+    rem  * 
+    rem  * Row Spanning breaks out of the row / cell calculations that a lot of features in the grid 
+    rem  * are based on. If using Row Spanning, be aware of the following:
+    rem  * 
+    rem  * <ol>
+    rem  *   <li> 
+    rem  *    Responsibility is with the developer to not span past the last row. 
+    rem  *    This is especially true if sorting and filtering 
+    rem  *    (e.g. a cell may span outside the grid after the data is sorted and the cell's row ends up at the bottom of the grid).
+    rem  *   </li>
+    rem  *   
+    rem  *   <li> 
+    rem  *    Responsibility is with the developer to apply a background style to spanning 
+    rem  *    cells so that overwritten cells cannot be seen.
+    rem  *   </li>
+    rem  *   
+    rem  *   <li>
+    rem  *    Overwritten cells will still exist, but will not be visible. 
+    rem  *    This means cell navigation will go to the other cells - e.g. if a row spanned 
+    rem  *    cell has focus, and the user hits the 'arrow down' key, the focus will go to a hidden cell.
+    rem  *   </li>
+    rem  *   
+    rem  *   <li>
+    rem  *    Row span does not work with dynamic row height or auto-height. 
+    rem  *    The row span assumes default row height is used when calculating how high the cell should be.
+    rem  *   </li>
+    rem  *   
+    rem  *   <li>
+    rem  *    Sorting and filtering will provide strange results when row spanning.
+    rem  *    For example a cell may span 4 rows, however applying a filter or a sort will probably 
+    rem  *    change the requirements of what rows should be spanned.
+    rem  *   </li>
+    rem  *   
+    rem  *   <li>
+    rem  *    Range Selection will not work correctly when spanning cells. 
+    rem  *    This is because it is not possible to cover all scenarios, as a range is no longer a perfect rectangle.
+    rem  *   </li>
+    rem  *   
+    rem  * </ol>
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
+    rem  *
+    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  */
+    field public GxExpressionInterface RowSpanExpression! = null()    
+    rem /**
     rem  * Get pinned left constant
     rem  *
     rem  * @return BBjString <b>left</b>
@@ -769,6 +837,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     method public void setEditableExpression(BBjString expression!)
         #EditableExpression! = new GxExpression(expression!)
+    methodend
+    rem /**
+    rem  * Create a GxExpression from string and set it as row span expression
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setRowSpanExpression(BBjString expression!)
+      #RowSpanExpression! = new GxExpression(expression!)
     methodend
     rem /**
     rem  * Set the allowed aggregation functions allowed on this column
@@ -1077,6 +1153,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("filterValueGetter",#getFilterValueGetterExpression().toString(),err=*next)
         column!.addProperty("valueSetter",#getValueSetterExpression().toString(),err=*next)
         column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
+        column!.addProperty("rowSpan",#getRowSpanExpression().toString(),err=*next)
         column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)
         column!.addProperty("chartDataType",#getChartType(),err=*next)
         column!.addProperty("tooltipField",#getTooltipField(),err=*next)

@@ -943,6 +943,16 @@ class public GxOptions
     rem  */
     field public BBjNumber SkipHeaderOnAutoSize! = null()
     rem /**
+    rem  * Uses CSS top instead of CSS transform for positioning rows. 
+    rem  * 
+    rem  * Useful if the transform function is causing issues such as used in row spanning.
+    rem  * Default: false
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */    
+    field public BBjNumber SuppressRowTransform! = null()
+    rem /**
     rem  * The ResultSet instance which contains the top pinned rows
     rem  */
     field public ResultSet PinnedTopRows! = new ResultSet()
@@ -1311,6 +1321,7 @@ class public GxOptions
         options!.addProperty("suppressTouch",#getSuppressTouch().booleanValue() , err=*next)
         options!.addProperty("suppressPropertyNamesCheck",BBjGridExWidget.getDebug().booleanValue() , err=*next)
         options!.addProperty("floatingFilter",#getEnableFloatingFilter())
+        options!.addProperty("suppressRowTransform",#getSuppressRowTransform().booleanValue() , err=*next)
         options!.        add("sideBar",#getSidebar().getAsJsonObject(), err=*next)
         rem Context
         rem ===========================

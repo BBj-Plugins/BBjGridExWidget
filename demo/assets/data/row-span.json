@@ -1,0 +1,122 @@
+[
+  {
+    "LOCALTIME": "5:00AM",
+    "SHOW": {
+      "NAME": "WAKE UP DUBLIN",
+      "PRESENTER": "ANDREW CONNELL"
+    },
+    "A": 0.231,
+    "B": 0.523
+  },
+  {
+    "LOCALTIME": "5:15AM",
+    "A": 0.423,
+    "B": 0.452
+  },
+  {
+    "LOCALTIME": "5:30AM",
+    "A": 0.537,
+    "B": 0.246
+  },
+  {
+    "LOCALTIME": "5:45AM",
+    "A": 0.893,
+    "B": 0.083
+  },
+  {
+    "LOCALTIME": "6:00AM",
+    "SHOW": {
+      "NAME": "PURE BACK IN THE DAY",
+      "PRESENTER": "KEVIN FLANAGAN"
+    },
+    "A": 0.231,
+    "B": 0.523
+  },
+  {
+    "LOCALTIME": "6:15AM",
+    "A": 0.423,
+    "B": 0.452
+  },
+  {
+    "LOCALTIME": "6:30AM",
+    "A": 0.537,
+    "B": 0.246
+  },
+  {
+    "LOCALTIME": "6:45AM",
+    "A": 0.893,
+    "B": 0.083
+  },
+  {
+    "LOCALTIME": "7:00AM",
+    "SHOW": {
+      "NAME": "THE QUEENS BREAKFAST",
+      "PRESENTER": "TONY SMITH"
+    },
+    "A": 0.231,
+    "B": 0.523
+  },
+  {
+    "LOCALTIME": "7:15AM",
+    "A": 0.423,
+    "B": 0.452
+  },
+  {
+    "LOCALTIME": "7:30AM",
+    "A": 0.537,
+    "B": 0.246
+  },
+  {
+    "LOCALTIME": "7:45AM",
+    "A": 0.893,
+    "B": 0.083
+  },
+  {
+    "LOCALTIME": "8:00AM",
+    "SHOW": {
+      "NAME": "COSMETIC SURGERY",
+      "PRESENTER": "NIALL CROSBY"
+    },
+    "A": 0.231,
+    "B": 0.523
+  },
+  {
+    "LOCALTIME": "8:15AM",
+    "A": 0.423,
+    "B": 0.452
+  },
+  {
+    "LOCALTIME": "8:30AM",
+    "A": 0.537,
+    "B": 0.246
+  },
+  {
+    "LOCALTIME": "8:45AM",
+    "A": 0.893,
+    "B": 0.083
+  },
+  {
+    "LOCALTIME": "8:00AM",
+    "SHOW": {
+      "NAME": "BRICKFIELD PARK SESSIONS",
+      "PRESENTER": "BRICKER MCGEE"
+    },
+    "A": 0.231,
+    "B": 0.523
+  },
+  {
+    "LOCALTIME": "8:15AM",
+    "A": 0.423,
+    "B": 0.452
+  },
+  {
+    "LOCALTIME": "8:30AM",
+    "A": 0.537,
+    "B": 0.246
+  },
+  {
+    "LOCALTIME": "8:45AM",
+    "A": 0.893,
+    "B": 0.083
+  }
+]
