@@ -1122,8 +1122,6 @@ class public GxOptions
     method public BBjNumber getDeltaColumnMode()
         methodret #getImmutableColumns()
     methodend
-
-    method
     rem /**
     rem  * Set a result set of pinned rows on top
     rem  *
