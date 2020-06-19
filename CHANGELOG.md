@@ -1,3 +1,42 @@
+# [0.102.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.3...0.102.0) (2020-06-19)
+
+
+### Bug Fixes
+
+* :bug: remove unnoticed methodend ([2ca09e5](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2ca09e5eff970c9576217e7cb45d001682622164))
+* **webpack:** :bug: webpack minify `bbj-grid-widget.js` in production` ([8b6eaf5](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8b6eaf5da8e3356e46767a68eff05893938bdac7))
+* :bug: replace the deprecaed rows methods ([034f21c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/034f21c5cb0abc264e5a8841b74b13b7bce82422))
+* :bug: `removeStyle` is  not in compliance with BBjControl interface ([c961448](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c961448516f1d5630fb051c85f415b7df5a7e525))
+* :bug: add missing import for HashMap ([5ee1b60](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5ee1b6041fde977a36d9976805917d3e3b0bb3be))
+
+
+### Features
+
+* :sparkles: add `GxCellEditorSuggestion` ([c5986d4](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c5986d4e36561b24b34f485861aea71c91472ce7))
+* :sparkles: add `GxColumn.FloatingFilter` ([5fb4619](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5fb461978f224f4bec7590d2dbffdcbe1bb002e5))
+* :sparkles: add `GxLogger` ([e5eec0b](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e5eec0bc6056b3e1db45ef95647f6f034c8d2f53))
+* :sparkles: add `GxOptions.ImmutableColumns` ([f602031](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f6020314a376953b8e4b6d20723863ec3f8f2421))
+* :sparkles: add column spanning support ([46553e9](https://github.com/BBj-Plugins/BBjGridExWidget/commit/46553e9ee4d63d9b93fc2549196980900e0bfce4))
+* :sparkles: add row spanning support ([bc46278](https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc46278e6b9958f2bdfc18c697225163be768ad2))
+* :sparkles: add `getRow` api method ([7b89376](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7b89376208a95b713824cd0ce5f233c7c138a8cd))
+* :sparkles: add `getRows` api ([b7512d1](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b7512d191359275b11d6094217e522bd01bcd4a4))
+* :sparkles: add row pinning feature ([dbfc05a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/dbfc05acca8d50a3a64532dfc6f8d3f6ea7ffb25))
+* :sparkles: Allow suppressing cell selections ([567fdce](https://github.com/BBj-Plugins/BBjGridExWidget/commit/567fdce84fb2e99917507d71e6d3dc437f0f9a3c)), closes [#204](https://github.com/BBj-Plugins/BBjGridExWidget/issues/204)
+* :sparkles: expose `loclae` & `timezone` options to date/time expression ([c20411d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c20411d81722f48d4b44e3c5dc57185dff4d0dbb))
+* :sparkles: upgrade to agg-v23 ([c1e1cd9](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c1e1cd9f05c297177f21f445aaea32ec39209122))
+
+
+* refactor!: deprecate `GxStatusBarComponentInterface.NAME()` ([f79fe64](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f79fe64b6e3c9b5ce57275f5413a789f1b1836f7))
+* refactor!: deprecate `GxToolpanelInterface.ID` ([1ee0490](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1ee04902c0ef06ed450079bb97f34a14c7989e22))
+
+
+### BREAKING CHANGES
+
+* deprecate `GxStatusBarComponentInterface.NAME()` in favor of `GxStatusBarComponentInterface.getId()`
+* `GxToolpanelInterface.ID()` is deprecated in favor of `GxToolpanelInterface.getId()`
+
+
+
 ## [0.101.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.2...0.101.3) (2020-06-15)
 
 ## [0.101.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.1...0.101.2) (2020-06-15)
