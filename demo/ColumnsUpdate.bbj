@@ -45,7 +45,7 @@ rem  *
 rem  * Likewise, if the user changes an aggregation function or the width of a column or whether a column was pinned,
 rem  * these changes should not get undone because the application decided to update the column definitions.
 rem  */
-grid!.getOptions().setDeltaColumnMode(1)
+grid!.getOptions().setImmutableColumns(1)
 
 gosub main
 process_events

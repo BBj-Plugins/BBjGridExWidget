@@ -1,10 +1,11 @@
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+
 use com.basiscomponents.bc.SqlQueryBC
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow
 use java.sql.Types
 
-? 'HIDE'
+? 'HIDE',
 
 declare auto BBjTopLevelWindow wnd!
 declare auto BBjListButton lb_db!
@@ -12,7 +13,7 @@ declare auto BBjListButton lb_tbl!
 declare auto BBjToolButton btn_fit!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1000,800,"Editing Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1450,800,"Editing Demo")
 
 startEditingZero! = wnd!.addButton(300,10,10,200,25,"Start Editing (1 , DOUBLE)")
 startEditingZero!.setCallback(BBjAPI.ON_BUTTON_PUSH,"startEditingZeroFunc")
@@ -29,21 +30,24 @@ stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopEditingFunc")
 stopEditing! = wnd!.addButton(304,750,10,130,25,"Stop And Cancel Editing")
 stopEditing!.setCallback(BBjAPI.ON_BUTTON_PUSH,"stopAndCancelEditingFunc")
 
+actions! = wnd!.addCEdit(305,10,600,300,150,"")
+actions!.setOpaque(0)
+
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-grid! = new BBjGridExWidget(wnd!,100,0,50,1200,800)
+grid! = new BBjGridExWidget(wnd!,100,10,50,1430,550)
 grid!.getOptions().setEnableFilter(1)
-grid!.getOptions().setEnableFloatingFilter(1)
+grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 
 rem enable grid editing based on EDITABLE flag in DataRow Attribute
 grid!.getOptions().setEditable(1)
 grid!.getOptions().setSingleClickEdit(1)
-grid!.getOptions().setEditType(grid!.GRID_EDITTYPE_ROW())
-REM grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
+grid!.getOptions().setEditType(grid!.GRID_EDITTYPE_CELL());rem _ROW())
+rem grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
 
-grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted")
-grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped")
+grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted");rem no-op if not edittype_row
+grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped");rem no-op if not edittype_row
 
 grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
 
@@ -75,9 +79,7 @@ stopAndCancelEditingFunc:
 return
 
 fillGrid:
-
     rs! = new ResultSet()
-
 
     i=1
     x=2.13
@@ -85,15 +87,15 @@ fillGrid:
     for j=1 to 2
 
         dr! = new DataRow()
-        dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
+        dr!.setFieldValue("ID",java.sql.Types.VARCHAR,"ID_" + STR(i))
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2018-01-02 12:22:13")
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+        dr!.setFieldValue("SELECT",java.sql.Types.VARCHAR,STR(i))
 
         if i=1 then
-
             dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
 
@@ -114,15 +116,16 @@ fillGrid:
         x=x*-i
 
         dr! = new DataRow()
-        dr!.setFieldValue("ID",java.sql.Types.VARCHAR, "ID_" + STR(i))
+        dr!.setFieldValue("ID",java.sql.Types.VARCHAR,"ID_" + STR(i))
         dr!.setFieldValue("DATE",java.sql.Types.DATE,"2013-02-01")
         dr!.setFieldValue("DOUBLE",java.sql.Types.DOUBLE,x)
         dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"2016-11-12 23:22:00")
         dr!.setFieldValue("BOOLEAN",java.sql.Types.BOOLEAN,MOD(i,3)=0)
         dr!.setFieldValue("INTEGER",java.sql.Types.INTEGER,i)
+        dr!.setFieldValue("SELECT",java.sql.Types.VARCHAR,STR(i))
 
         rs!.addItem(dr!)
-        grid!.setStartCellEditing(1,"DOUBLE")
+        rem grid!.setStartCellEditing(1,"DOUBLE");rem why is this here in the loop?
 
         i=i+1
         x=x*-i
@@ -131,6 +134,18 @@ fillGrid:
 
     grid!.setData(rs!,"ID")
 
+    use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+    declare GxColumn column!
+    column! = grid!.getColumn("SELECT")
+    use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorRichSelect
+    declare GxCellEditorRichSelect edselect!
+    edselect! = new GxCellEditorRichSelect()
+    use com.google.gson.JsonArray
+    declare JsonArray values!
+    values! = new JsonArray()
+    for n=1 to 5; values!.add(str(n)); next n
+    edselect!.setValues(values!)
+    column!.setCellEditor(edselect!)
 return
 
 byebye:
@@ -138,34 +153,29 @@ byebye:
 
 resize:
     ev! = BBjAPI().getLastEvent()
-    grid!.setSize(ev!.getWidth(),ev!.getHeight())
+    grid!.setSize(ev!.getWidth()-20,550)
 return
 
-
 rowEditingStarted:
-
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-
-    print 'SHOW', "Row Editing Started  : ID = " , ev!.getRow().getId()
+    actions!.removeAll()
+    actions!.addParagraph(0,"Row Editing Started  : ID = " + ev!.getRow().getId())
 return
 
 rowEditingStopped:
-
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-
-    print 'SHOW', "Row Editing Stopped  : ID = " , ev!.getRow().getId()
+    actions!.removeAll()
+    actions!.addParagraph(0,"Row Editing Stopped  : ID = " + ev!.getRow().getId())
 return
 
 cellEditingChanged:
-
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-
-    print 'SHOW', "Cell Editing Started : ROW ID     = " , ev!.getRow().getId()
-    print 'SHOW', "                     : Column     = " , ev!.getColumn().getName()
-    print 'SHOW', "                     : New Value = " , ev!.getValue()
-    print 'SHOW', "                     : Old Value = " , ev!.getOldValue()
-
+    actions!.removeAll()
+    actions!.addParagraph(0,"Cell Editing Started : ROW ID     = " + ev!.getRow().getId() + $0a$ +
+:                           "                     : Column     = " + ev!.getColumn().getName() + $0a$ +
+:                           "                     : New Value = " + ev!.getValue() + $0a$ +
+:                           "                     : Old Value = " + ev!.getOldValue() + $0a$)
 return

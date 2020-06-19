@@ -16,6 +16,7 @@ use com.google.gson.JsonObject
 use com.google.gson.JsonElement
 use com.google.gson.Gson
 use java.util.LinkedHashMap
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem /**
 rem  * A interface which defines a grid toolpanel
 rem  *
@@ -26,9 +27,18 @@ interface public GxToolpanelInterface
     rem  * Get the toolbar unique name
     rem  *
     rem  * @return BBjString The toolbar name
+    rem  *
+    rem  * @deprecated since version 0.101.0, GxToolpanelInterface.ID() is deprecated. use GxToolpanelInterface.getId() instead
     rem  */
 
     method public static BBjString ID()
+    rem /**
+    rem  * Get the toolbar unique name
+    rem  *
+    rem  * @return BBjString The toolbar name
+    rem  */
+
+    method public static BBjString getId()
     rem /**
     rem  * Get a json representation for the toolpanel
     rem  *
@@ -79,7 +89,7 @@ class public GxToolpanel implements GxToolpanelInterface
         declare JsonObject json!
 
         json! = new JsonObject()
-        json!.addProperty("id",#this!.ID(), err=*next)
+        json!.addProperty("id",#getId(), err=*next)
         json!.addProperty("labelKey",#getLabel() , err=*next)
         json!.addProperty("labelDefault",#getLabel() , err=*next)
         json!.addProperty("iconKey",#getIcon() , err=*next)
@@ -125,6 +135,13 @@ class public GxColumnsToolpanel extends GxToolpanel
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
+        GxLogger.warn("GxSidebar","since version 0.101.0, GxColumnsToolpanel.ID() is deprecated. use GxColumnsToolpanel.getId() instead")
+        methodret GxColumnsToolpanel.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agColumnsToolPanel"
     methodend
     rem /**
@@ -166,7 +183,7 @@ class public GxColumnsToolpanel extends GxToolpanel
         params!.addProperty("suppressColumnFilter",#SuppressColumnFilter!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnSelectAll",#SuppressColumnSelectAll!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnExpandAll",#SuppressColumnExpandAll!.booleanValue(), err=*next)
-        json!.addProperty("toolPanel",#this!.ID(), err=*next)
+        json!.addProperty("toolPanel",#getId(), err=*next)
         json!.add("toolPanelParams",params!)
         methodret json!
     methodend
@@ -182,6 +199,13 @@ class public GxFiltersToolpanel extends GxToolpanel
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
+        GxLogger.warn("GxSidebar","since version 0.101.0, GxFiltersToolpanel.ID() is deprecated. use GxFiltersToolpanel.getId() instead")
+        methodret GxFiltersToolpanel.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agFiltersToolPanel"
     methodend
     rem /**
@@ -215,7 +239,7 @@ class public GxFiltersToolpanel extends GxToolpanel
         declare JsonObject json!
 
         json! = #super!.getAsJsonObject()
-        json!.addProperty("toolPanel",#this!.ID())
+        json!.addProperty("toolPanel",#getId())
         methodret json!
     methodend
 
@@ -262,7 +286,7 @@ class public GxSidebar
     rem  */
     method public void setVisible(BBjNumber visible!)
         scriptKey! = "$wnd.gw_setSideBarVisible"
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setSideBarVisible('" + #Widget!.getGRIDID() + "'," + str(visible!) + ")")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setSideBarVisible('" + #Widget!.getRootId() + "'," + str(visible!) + ")")
     methodend
     rem /**
     rem  * Open toolpanel
@@ -273,7 +297,7 @@ class public GxSidebar
     rem  */
     method public void openToolpanel(BBjString id!)
         scriptKey! = "$wnd.gw_openToolpanel"
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_openToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_openToolpanel('" + #Widget!.getRootId() + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Close toolpanel
@@ -284,7 +308,7 @@ class public GxSidebar
     rem  */
     method public void closeToolpanel(BBjString id!)
         scriptKey! = "$wnd.gw_closeToolpanel"
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_closeToolpanel('" + #Widget!.getGRIDID() + "','" + str(id!) + "')")
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_closeToolpanel('" + #Widget!.getRootId() + "','" + str(id!) + "')")
     methodend
     rem /**
     rem  * Convert the sidebar into json object
@@ -323,9 +347,9 @@ class public GxDefaultSidebar extends GxSidebar
     rem  */
     method public GxDefaultSidebar(BBjGridExWidget widget!)
         #super!(widget!)
-        #getToolpanels().put(GxColumnsToolpanel.ID() , new GxColumnsToolpanel())
-        #getToolpanels().put(GxFiltersToolpanel.ID() , new GxFiltersToolpanel())
-        rem #setDefaulToolpanel(GxColumnsToolpanel.getId())
+        #getToolpanels().put(GxColumnsToolpanel.getId() , new GxColumnsToolpanel())
+        #getToolpanels().put(GxFiltersToolpanel.getId() , new GxFiltersToolpanel())
+        rem #setDefaultToolpanel(GxColumnsToolpanel.getId())
     methodend
 
 classend

@@ -10,6 +10,7 @@ rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 use java.util.LinkedHashMap
 use com.google.gson.JsonArray
 use com.google.gson.JsonObject
@@ -25,9 +26,18 @@ interface public GxStatusBarComponentInterface
     rem  * Get the component name
     rem  *
     rem  * @returns BBjString the component name
+    rem  *
+    rem  * @deprecated since version 0.101.0, GxStatusBarComponentInterface.NAME() is deprecated / renamed. Use GxStatusBarComponentInterface.getId() instead.
     rem  */
 
     method public static BBjString NAME()
+    rem /**
+    rem  * Get the component id
+    rem  *
+    rem  * @returns BBjString the component unique id
+    rem  */
+
+    method public static BBjString getId()
     rem /**
     rem  * Set the component alignment
     rem  *
@@ -78,7 +88,7 @@ class public GxStatusBarComponent implements GxStatusBarComponentInterface
         declare JsonObject json!
 
         json! = new JsonObject()
-        json!.addProperty("statusPanel",#this!.NAME())
+        json!.addProperty("statusPanel",#getId())
         json!.addProperty("align",#getAlignment())
         methodret json!
     methodend
@@ -102,6 +112,13 @@ class public GxStatusBarSelectedRowCountComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarSelectedRowCountComponent.NAME() is deprecated. use GxStatusBarSelectedRowCountComponent.getId() instead")
+        methodret GxStatusBarSelectedRowCountComponent.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agSelectedRowCountComponent"
     methodend
 
@@ -124,6 +141,13 @@ class public GxStatusBarFilteredRowCountComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarFilteredRowCountComponent.NAME() is deprecated. use GxStatusBarFilteredRowCountComponent.getId() instead")
+        methodret GxStatusBarFilteredRowCountComponent.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agFilteredRowCountComponent"
     methodend
 
@@ -146,6 +170,13 @@ class public GxStatusBarTotalAndFilteredRowCountComponent extends GxStatusBarCom
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarTotalAndFilteredRowCountComponent.NAME() is deprecated. use GxStatusBarTotalAndFilteredRowCountComponent.getId() instead")
+        methodret GxStatusBarTotalAndFilteredRowCountComponent.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agTotalAndFilteredRowCountComponent"
     methodend
 
@@ -168,6 +199,13 @@ class public GxStatusBarTotalRowCountComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarTotalRowCountComponent.NAME() is deprecated. use GxStatusBarTotalRowCountComponent.getId() instead")
+        methodret GxStatusBarTotalRowCountComponent.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agTotalRowCountComponent"
     methodend
 
@@ -201,6 +239,13 @@ class public GxStatusBarAggregationComponent extends GxStatusBarComponent
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString NAME()
+        GxLogger.warn("GxStatusBar","since version 0.101.0, GxStatusBarAggregationComponent.NAME() is deprecated. use GxStatusBarAggregationComponent.getId() instead")
+        methodret GxStatusBarAggregationComponent.getId()
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public static BBjString getId()
         methodret "agAggregationComponent"
     methodend
     rem /**
@@ -256,26 +301,28 @@ class public GxStatusBar
     rem  * @param GxStatusBarComponentInterface component! a statusbar component
     rem  */
     method public void addComponent(GxStatusBarComponentInterface component!)
-        #Components!.put(component!.NAME(),component!)
+        #Components!.put(component!.getId(),component!)
     methodend
     rem /**
     rem  * Get statusbar component
     rem  *
-    rem  * @param BBjString name! the component name
+    rem  * @param BBjString id! The component id
+    rem  *
+    rem  * @return GxStatusBarComponentInterface The component instance
     rem  */
-    method public GxStatusBarComponentInterface getComponent(BBjString name!)
+    method public GxStatusBarComponentInterface getComponent(BBjString id!)
         declare auto GxStatusBarComponentInterface c!
 
-        c! = #Components!.get(name!)
+        c! = #Components!.get(id!)
         methodret c!
     methodend
     rem /**
     rem  * Remove statusbar component
     rem  *
-    rem  * @param BBjString name! the component name
+    rem  * @param BBjString id! The component id
     rem  */
-    method public void removeComponent(BBjString name!)
-        #Components!.remove(name!)
+    method public void removeComponent(BBjString id!)
+        #Components!.remove(id!)
     methodend
     rem /**
     rem  * Remove statusbar component
@@ -283,17 +330,17 @@ class public GxStatusBar
     rem  * @param GxStatusBarComponentInterface component! a statusbar component
     rem  */
     method public void removeComponent(GxStatusBarComponentInterface component!)
-        #Components!.remove(component!.NAME())
+        #Components!.remove(component!.getId())
     methodend
     rem /**
     rem  * Hide/show statusbar component
     rem  *
-    rem  * @param BBjString name! the component name
+    rem  * @param BBjString id! The component id
     rem  * @param BBjNumber visibility! 0 to hide component, 1 to show component
     rem  */
-    method public void setComponentVisibility(BBjString name! , BBjNumber visibility!)
-        scriptKey! = "$wnd.gw_setStatusbarComponentVisibility" + name!
-        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getGRIDID() + "','" + name! + "'," + str(visibility!) + ")")
+    method public void setComponentVisibility(BBjString id! , BBjNumber visibility!)
+        scriptKey! = "$wnd.gw_setStatusbarComponentVisibility" + id!
+        #Widget!.getExecutor().execute(scriptKey!,"$wnd.gw_setStatusbarComponentVisibility('" + #Widget!.getRootId() + "','" + id! + "'," + str(visibility!) + ")")
     methodend
     rem /**
     rem  * Hide/show statusbar component
@@ -302,19 +349,19 @@ class public GxStatusBar
     rem  * @param BBjNumber visibility! 0 to hide component, 1 to show component
     rem  */
     method public void setComponentVisibility(GxStatusBarComponentInterface component! , BBjNumber visibility!)
-        #setComponentVisibility(component!.NAME() , visibility!)
+        #setComponentVisibility(component!.getId() , visibility!)
     methodend
     rem /**
     rem  * Convert the statusbar into a parsable json string
     rem  *
     rem  * @returns BBjString
     rem  */
-    method public BBjString toString()
+    method public String toString()
         declare JsonArray defs!
 
         defs! = new JsonArray()
         it! = #Components!.entrySet().iterator()
-        while it!.hasNext()=BBjAPI.TRUE
+        while it!.hasNext() = BBjAPI.TRUE
             defs!.add(it!.next().getValue().getAsJsonObject())
         wend
 

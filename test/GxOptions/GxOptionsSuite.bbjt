@@ -7,7 +7,8 @@ rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/test/GxOptions/GxOptionsDateTimeTest.bbjt::GxOptionsDateTimeTest
 use ::BBjGridExWidget/test/GxOptions/GxOptionsBooleanTest.bbjt::GxOptionsBooleanTest
+use ::BBjGridExWidget/test/GxOptions/GxOptionsTest.bbjt::GxOptionsTest
 
-rem @SuiteClasses("GxOptionsDateTimeTest","GxOptionsBooleanTest")
+rem @SuiteClasses("GxOptionsDateTimeTest","GxOptionsBooleanTest","GxOptionsTest")
 class public BBjGridExWidgeOptionsSuites
 classend

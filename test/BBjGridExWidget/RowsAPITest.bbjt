@@ -1,0 +1,84 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
+use com.google.gson.JsonObject
+use com.google.gson.JsonArray
+use com.google.gson.JsonParser
+
+class public RowsAPITest
+
+    field private BBjGridExWidgetMock Instance!
+    field private BBjString ModelsFixturesString$
+
+    method private JsonObject getModelsFixture()
+        parser! = new JsonParser()
+        methodret parser!.parse(#ModelsFixturesString$).getAsJsonObject()
+    methodend
+    
+    rem @BeforeClass
+    method public void beforeClass()
+        ch=unt
+        open (ch) BBjAPI().getFileSystem().resolvePath("BBjGridExWidget/test/Fixtures/Models.json")
+        read record (ch,siz=5512000)#ModelsFixturesString$
+        close (ch)
+    methodend
+    
+    rem @Before
+    method public void setUp()
+        #Instance! = new BBjGridExWidgetMock()
+    methodend
+    
+    rem @Test
+    method public void testGetRow()
+        declare auto JsonObject rowFixture!
+        
+        rowFixture! = #getModelsFixture().get("row-model").getAsJsonObject()
+        rowKey! = rowFixture!.get("i").getAsString()
+                
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.setExecuteResult(rowFixture!.toString())
+        
+        row! = #Instance!.getRow(rowKey!)
+        Assert.IsNotNull(row!)
+        Assert.Equals(row!.getId() , rowKey!)
+    methodend
+        
+    rem @Test
+    method public void testGetRows()
+        declare auto JsonArray rowModelFixture!
+
+        rowModelFixture! = new JsonArray()
+        rowModelFixture!.add(#getModelsFixture().get("row-model").getAsJsonObject())
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.setExecuteResult(rowModelFixture!.toString())
+        expression! = "filterExpression"
+        rows! = #Instance!.getRows(#Instance!.GRID_ROWS_PHASE_ALL() , expression!)
+        Assert.Equals(rows!.size() , 1)
+        Assert.Equals(#Instance!.getLastExecutedScript().contains(expression!) , BBjAPI.TRUE)
+    methodend
+    
+    rem @Test
+    method public void testGetRowsCanHandleNullReturn()
+        rows! = #Instance!.getRows(#Instance!.GRID_ROWS_PHASE_ALL())
+        Assert.Equals(rows!.size() , 0)
+    methodend
+    
+    rem @Test
+    method public void testGetRowsCanHandleEmptyArrayReturn()
+        #Instance!.setIsReady(BBjAPI.TRUE)
+        #Instance!.setExecuteResult("[]")
+        rows! = #Instance!.getRows(#Instance!.GRID_ROWS_PHASE_ALL())
+        Assert.Equals(rows!.size() , 0)
+    methodend
+    
+    rem @After
+    method public void tearDown()
+        #Instance! = null()
+    methodend
+
+classend

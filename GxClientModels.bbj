@@ -21,6 +21,7 @@ use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
 use java.util.HashSet
+use java.util.HashMap
 use java.lang.StringBuilder
 REM /**
 REM  * A client model for rows
@@ -37,7 +38,8 @@ class public GxClientRowModel
     rem  */
     field public BBjNumber Index!
     rem /**
-    rem  * The row child index
+    rem  * The row child index. 
+    rem  * if the childIndex is `-1` then the row is pinned to top or bottom
     rem  */
     field public BBjNumber ChildIndex!
     rem /**
@@ -52,6 +54,10 @@ class public GxClientRowModel
     rem  * The client row data as JsonObject.
     rem  */
     field public JsonObject ClientRow!
+    rem /**
+    rem  * The row pin position (top , bottom , null)
+    rem  */
+    field public BBjString Floating! = BBjGridExWidget.GRID_FLOATING_NONE()
     rem /**
     rem  * BBjGridExWidget instance
     rem  */
@@ -84,14 +90,14 @@ class public GxClientRowModel
     rem  * @see BBjGridExWidget.includeClientRowDataInRowModels()
     rem  */
     method public DataRow updateFromClientRow()
-        clientRow! = #this!.getClientRow()
+        clientRow! = #getClientRow()
 
         if(clientRow! = null())
             throw "The client row is not included in this model.To include it in the model configure the grid to include it by calling BBjGridExWidget.includeClientRowDataInRowModels(1)" , 256
         fi
 
         clientRow! = clientRow!.deepCopy()
-        dataRow! = #this!.asDataRow()
+        dataRow! = #asDataRow()
         clientRow!.remove("__ROW_INDEX")
         clientRow!.remove("meta")
         dataRow!.mergeRecord(DataRow.fromJson(clientRow!.toString()),BBjAPI.TRUE)
@@ -105,6 +111,25 @@ class public GxClientRowModel
     method public DataRow asDataRow()
         nodeId! = #getWidget().getRowNodeId()
         rs! = #getWidget().getRS()
+
+        rem the row is pinned
+        if(-1 = #getChildIndex()) 
+          rem pinned ResultSets always use `__ROW_INDEX` for indexing
+          nodeId! = "__ROW_INDEX"
+
+          switch #getFloating()
+            case BBjGridExWidget.GRID_FLOATING_TOP()
+              rs! = #getWidget().getOptions().getPinnedTopRows()
+              break
+            case BBjGridExWidget.GRID_FLOATING_BOTTOM()
+              rs! = #getWidget().getOptions().getPinnedBottomRows()
+              break              
+            case default
+              throw "Unable to find the source of the floating row.", 256
+              break
+          swend
+        fi
+
         rem in case the RowNodeId is a column in the ResultSet
         if(rs!.getColumnIndex(nodeId!) <> -1 ) then
             rem indexed by an existing column
@@ -117,6 +142,10 @@ class public GxClientRowModel
             fi
 
             methodret filteredRS!.get(0)
+        fi
+
+        if(-1 = #getChildIndex()) 
+          methodret rs!.get(#getIndex())
         fi
 
         methodret rs!.get(#getId())
@@ -148,7 +177,7 @@ class public GxClientRowModel
     rem  *
     rem  * @return BBjString  The row id
     rem  */
-    method public BBjString toString()
+    method public String toString()
         methodret #Id!
     methodend
 
@@ -233,7 +262,7 @@ class public GxClientColumnModel
     rem  *
     rem  * @return BBjString  The column
     rem  */
-    method public BBjString toString()
+    method public String toString()
         methodret #getName()
     methodend
 
@@ -578,6 +607,8 @@ class public GxClientTransactionModel
     field public HashSet Update! = new HashSet()
     rem /**
     rem  * Index for rows to add
+    rem  * 
+    rem  * @deprecated `GxClientTransactionModel.addIndex` is deprecated. If you want precision control of adding data, use `BBjGridExWidget.updateData` instead
     rem  */
     field public BBjNumber AddIndex! = 0
     rem /**
@@ -843,7 +874,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
     method public BBjString execute(BBjNumber send!)
         #assertWidget()
         widget! = #getWidget()
-        code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getGRIDID())
+        code! = String.format(";$wnd.gw_getGrid('%s').options.api.onFilterChanged();", widget!.getRootId())
         if(send!.booleanValue()) widget!.getExecutor().execute(code!)
         methodret code!
     methodend
@@ -904,7 +935,7 @@ class public GxClientFilterAbstractModel implements GxClientFilterModel
     method protected BBjString getFilterInstance()
         #assertColumn()
         #assertWidget()
-        code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getGRIDID(), #getColumn())
+        code! = String.format("$wnd.gw_getGrid('%s').options.api.getFilterInstance('%s')", #getWidget().getRootId(), #getColumn())
         methodret code!
     methodend
 
@@ -1386,7 +1417,7 @@ class public GxClientFilterBooleanModel extends GxClientFilterAbstractModel
 
 classend
 rem /**
-rem  * The filter model represents the enhanced filter type "setfilter"
+rem  * The filter model represents the enhanced filter type "setFilter"
 rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
@@ -1433,7 +1464,7 @@ class public GxClientFilterSetFilterModel extends GxClientFilterAbstractModel
         #setMiniFilter(str(miniFilter!))
     methodend
     rem /**
-    rem  * Get the minifilter value.
+    rem  * Get the mini filter value.
     rem  *
     rem  * Note that if the grid is not ready , then this method will always return an empty string
     rem  * even if you have called `setMiniFilter` before.

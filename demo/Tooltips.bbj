@@ -66,7 +66,7 @@ main:
   rem Note this option is false by default . we are setting it here just for the demo purpose
   grid!.getOptions().setEnableBrowserTooltips(0)
   grid!.getOptions().setTooltipShowDelay(0)
-  grid!.setTheme(grid!.GRID_THEME_BALHAM_DARK()) 
+  grid!.setTheme(grid!.GRID_THEME_ALPINE_DARK()) 
   grid!.setFitToGrid()
   
   group! = new BBjVector()

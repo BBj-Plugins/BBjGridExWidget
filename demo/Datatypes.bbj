@@ -25,7 +25,7 @@ wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
 grid!.getOptions().setEnableFilter(1)
-grid!.getOptions().setEnableFloatingFilter(1)
+grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 
 
 rem /**

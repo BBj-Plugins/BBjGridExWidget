@@ -1,0 +1,97 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxSidebar.bbj::GxColumnsToolpanel
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
+use com.basiscomponents.bc.SqlQueryBC
+use java.sql.Types
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+GxDemoUtilities.nagAboutLicense()
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Sidebar Demo")
+
+grid! = new BBjGridExWidget(wnd!,100,0,30,800,570)
+
+wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
+
+if (info(3,6)<>"5") then
+    wnd!.setCallback(BBjAPI.ON_KEYPRESS,"onWinKeypress")
+fi
+
+
+sidebarToggle! = wnd!.addButton(300,10,3,200,25,"Toggle Sidebar")
+toolpanelToggle! = wnd!.addButton(301,230,3,200,25,"Toggle Columns Toolpanel")
+refresh! = wnd!.addButton(302,460,3,200,25,"Refresh Data")
+
+sidebarToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"sidebarToggle")
+toolpanelToggle!.setCallback(BBjAPI.ON_BUTTON_PUSH,"toolpanelToggle")
+refresh!.setCallback(BBjAPI.ON_BUTTON_PUSH,"refreshData")
+
+sidebarState! = 1
+toolpanelState! = 0
+
+gosub fillGrid
+
+process_events
+
+
+fillGrid:
+
+    declare SqlQueryBC sbc!
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+
+    grid!.getOptions().setRowGroupPanelShow(grid!.GRID_GROUPPANEL_SHOW_VISIBLE())
+
+    columnsToolpanel! = cast(GxColumnsToolpanel,grid!.getSidebar().getToolpanels().get(GxColumnsToolpanel.getId()))
+    columnsToolpanel!.setSuppressValues(1)
+
+    grid!.setData(rs!,"CDNUMBER")
+return
+
+sidebarToggle:
+    sidebar! = grid!.getSidebar()
+    sidebarState! = !sidebarState!
+    sidebar!.setVisible(sidebarState!)
+    toolpanelToggle!.setEnabled(sidebarState!)
+return
+
+toolpanelToggle:
+    sidebar! = grid!.getSidebar()
+
+    if toolpanelState! = 0 then
+        sidebar!.openToolpanel(GxColumnsToolpanel.getId())
+    else
+        sidebar!.closeToolpanel(GxColumnsToolpanel.getId())
+    fi
+
+    toolpanelState! = !toolpanelState!
+return
+
+
+refreshData:
+    grid!.render();rem restores a closed sidebar
+    sidebarState! = 1
+    toolpanelState! = 0
+    toolpanelToggle!.setEnabled(sidebarState!)
+return
+
+byebye:
+    bye
+
+resize:
+    ev! = BBjAPI().getLastEvent()
+    grid!.setSize(ev!.getWidth(),ev!.getHeight()-30)
+return

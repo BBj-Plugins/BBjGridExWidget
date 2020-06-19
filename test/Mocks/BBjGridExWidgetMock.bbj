@@ -30,7 +30,7 @@ class public BBjGridExWidgetMock extends BBjGridExWidget
 
         if(initRS! = 1)
             #fillData()
-        fi
+        FI
     methodend
     rem /**
     rem  * Fill the grid with CDStore data
@@ -108,6 +108,13 @@ class public BBjGridExWidgetMock extends BBjGridExWidget
         wend
 
         methodret backlog!
+    methodend
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public void focus(BBjString row! , BBjString column! , BBjString floating!)
+        script$ = String.format("$wnd.gw_focus('%s','%s','%s')", row!, column!, floating!)
+        #getExecutor().execute(script$)
     methodend
 
 classend

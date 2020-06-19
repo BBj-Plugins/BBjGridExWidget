@@ -53,38 +53,42 @@ module.exports = {
             },
           },
           { loader: 'postcss-loader' },
-          { loader: 'postcss-loader' },
         ],
       },
     ],
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        include: /\.min\.js$/,
+      }),
+    ],
+  },
   plugins: [
-    new UglifyJsPlugin({
-      include: /\.min\.js$/,
-    }),
     new CopyWebpackPlugin([
       {
         from:
           __dirname +
-          '/node_modules/ag-grid-community/dist/ag-grid-community.noStyle.js',
+          '/node_modules/ag-grid-community/dist/ag-grid-community.js',
         to: distPath,
       },
       {
         from:
           __dirname +
-          '/node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js',
+          '/node_modules/ag-grid-community/dist/ag-grid-community.min.js',
         to: distPath,
       },
       {
         from:
           __dirname +
-          '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.noStyle.js',
+          '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.js',
         to: distPath,
       },
       {
         from:
           __dirname +
-          '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js',
+          '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js',
         to: distPath,
       },
     ]),

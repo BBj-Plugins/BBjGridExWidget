@@ -45,7 +45,7 @@ export function gw_addChartRange(id, range) {
 
   pr.cellRange = gw_parseAddCellRange(options, pr.cellRange)
 
-  const ref = options.api.chartRange(pr)
+  const ref = options.api.createRangeChart(pr)
   const uuid = gw_uuid()
 
   grid.created_charts = grid.created_charts || {}

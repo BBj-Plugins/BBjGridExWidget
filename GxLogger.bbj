@@ -1,0 +1,110 @@
+rem package BBjGridExWidget
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+rem /**
+rem /**
+rem  * A logger class which is used internally to output log , warn , error messages to the console
+rem  * and to the debug.log file
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxLogger
+    rem /**
+    rem  * When true , the logger will not output messages in the console
+    rem  */
+    field public static BBjNumber SuppressConsole! = 0
+    rem /**
+    rem  * When true , the logger will not output messages in debug file
+    rem  */
+    field public static BBjNumber SuppressDebugFile! = 0    
+    rem /**
+    rem  * Constant value to define "info" log messages
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString INFO()
+        methodret "INFO"
+    methodend
+    rem /**
+    rem  * Constant value to define "warning" log messages
+    rem  *
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString WARNING()
+        methodret "WARNING"
+    methodend
+    rem /**
+    rem  * Output a log message on the console and Debug.log file
+    rem  *
+    rem  * @param BBjString type! The log type
+    rem  * @param BBjNumber section! The log section
+    rem  * @param BBjString message The log message
+    rem  *
+    rem  * @return BBjString The final formatted message
+    rem  */
+    method public static BBjString log(BBjString type!, BBjString section!, BBjString message!)
+        wrappedSection! = ""
+
+        if(section! <> null() and section!.length())
+            wrappedSection! = String.format("(%s)" , section!)
+        fi
+
+        output! = String.format("[BBjGridExWidget]%s - %s: %s", wrappedSection!, type!, message!)
+        if(!GxLogger.getSuppressDebugFile()) 
+          System.out.println(output!)
+        fi
+
+        if(!GxLogger.getSuppressConsole() and type! <> GxLogger.INFO())
+          print 'SHOW', output!
+        fi
+        methodret output!
+    methodend
+    rem /**
+    rem  * Output a log message on the console and Debug.log file
+    rem  *
+    rem  * @param BBjNumber section! The log section
+    rem  * @param BBjString message The log message
+    rem  *
+    rem  * @return BBjString The final formatted message
+    rem  */
+    method public static BBjString log(BBjString section!, BBjString message!)
+        methodret GxLogger.log(GxLogger.INFO(), section! , message!)
+    methodend
+    rem /**
+    rem  * Output a log message on the console and Debug.log file
+    rem  *
+    rem  * @param BBjString message The log message
+    rem  *
+    rem  * @return BBjString The final formatted message
+    rem  */
+    method public static BBjString log(BBjString message!)
+        methodret GxLogger.log(null() , message!)
+    methodend
+    rem /**
+    rem  * Output a warning message on the console and Debug.log file
+    rem  *
+    rem  * @param BBjNumber section! The log section
+    rem  * @param BBjString message The log message
+    rem  *
+    rem  * @return BBjString The final formatted message
+    rem  */
+    method public static BBjString warn(BBjString section!, BBjString message!)
+        methodret GxLogger.log(GxLogger.WARNING(), section! , message!)
+    methodend
+    rem /**
+    rem  * Output a warning message on the console and Debug.log file
+    rem  *
+    rem  * @param BBjString message The log message
+    rem  *
+    rem  * @return BBjString The final formatted message
+    rem  */
+    method public static BBjString warn(BBjString message!)
+        methodret GxLogger.log(GxLogger.WARNING(), null() , message!)
+    methodend
+
+classend

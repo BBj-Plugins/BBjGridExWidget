@@ -14,6 +14,7 @@ use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
+use com.basiscomponents.db.ResultSet
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxLanguageManager.bbj::GxLanguageManager
 use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
@@ -27,6 +28,7 @@ use ::BBjGridExWidget/GxColumns.bbj::GxAutoGroupColumn
 use ::BBjGridExWidget/GxColumns.bbj::GxDefaultColumnGroup
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionInterface
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
+use ::BBjGridExWidget/GxLogger.bbj::GxLogger
 rem /**
 rem  * The class defines the common boolean options shared between components which
 rem  * manipulate booleans
@@ -89,7 +91,7 @@ class public GxOptionsDateTime
     rem  */
     field public BBjNumber EnableWeekNumber! = 0
     rem /**
-    rem  * The Date mask for calander input
+    rem  * The Date mask for calender input
     rem  */
     field public BBjString Mask! = "%Y/%Mz/%Dz %Hz:%mz:%sz"
     rem /**
@@ -121,9 +123,22 @@ class public GxOptionsDateTime
     rem /**
     rem  * When true then accepts direct user's input from the input field.
     rem  *
-    rem  * @deprecated direct input is always disabled
+    rem  * @deprecated since version 0.101.0, GxOptionsDateTime.AllowInput is deprecated. Direct input is always disabled.
     rem  */
     field public BBjNumber AllowInput! = 1
+    rem /**
+    rem  * @deprecated since version 0.101.0, GxOptionsDateTime.setAllowInput(BBjNumber allow!) is deprecated. Direct input is always disabled.
+    rem  */
+    method public void setAllowInput(BBjNumber allow!)
+        GxLogger.warn("GxOptions","since version 0.101.0, GxOptionsDateTime.setAllowInput(BBjNumber allow!) is deprecated. Direct input is always disabled.")
+    methodend
+    rem /**
+    rem  * @deprecated since version 0.101.0, GxOptionsDateTime.getAllowInput() is deprecated. Direct input is always disabled.
+    rem  */
+    method public BBjNumber getAllowInput()
+        GxLogger.warn("GxOptions","since version 0.101.0, GxOptionsDateTime.getAllowInput() is deprecated. Direct input is always disabled.")
+        methodret 0
+    methodend
     rem /**
     rem  * Create a GxExpression from string and set it as FormatterExpression
     rem  *
@@ -784,8 +799,11 @@ class public GxOptions
     field public BBjNumber SuppressTouch! = null()
     rem /**
     rem  * When true enables the floating filters, disable otherwise
+    rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *
+    rem  * @deprecated enabling/disabling the floatingFilter on the Options level is deprecated. Use `GxColumn.FloatingFilter` on the column level instead.
     rem  */
     field public BBjNumber EnableFloatingFilter! = 0
     rem /**
@@ -831,8 +849,18 @@ class public GxOptions
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *
+    rem  * @deprecated use `GxOptions.ImmutableColumns` instead
     rem  */
     field public BBjNumber DeltaColumnMode! = 0
+    rem /**
+    rem  * Puts the grid into Immutable Column mode, so that setting new columns keeps column state.
+    rem  * Default: false
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */
+    field public BBjNumber ImmutableColumns! = 0
     rem /**
     rem  * Disables the 'loading' overlay&#183;
     rem  * <br><b><small>#Configuration</small></b>
@@ -888,6 +916,11 @@ class public GxOptions
     rem  */
     field public BBjNumber SuppressMultiRangeSelection! = null()
     rem /**
+    rem  * If true, cells won't be selectable. This means cells will not get keyboard focus when you click on them.
+    rem  * Default: false
+    rem  */
+    field public BBjNumber SuppressCellSelection! = null()
+    rem /**
     rem  * Set to true to enable charting
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
@@ -910,12 +943,30 @@ class public GxOptions
     rem  */
     field public BBjNumber SkipHeaderOnAutoSize! = null()
     rem /**
+    rem  * Uses CSS top instead of CSS transform for positioning rows. 
+    rem  * 
+    rem  * Useful if the transform function is causing issues such as used in row spanning.
+    rem  * Default: false
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */    
+    field public BBjNumber SuppressRowTransform! = null()
+    rem /**
+    rem  * The ResultSet instance which contains the top pinned rows
+    rem  */
+    field public ResultSet PinnedTopRows! = new ResultSet()
+    rem /**
+    rem  * The ResultSet instance which contains the bottom pinned rows
+    rem  */
+    field public ResultSet PinnedBottomRows! = new ResultSet()
+    rem /**
     rem  * Set the grid theme
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  */
-    field public BBjString Theme! = "balham"
+    field public BBjString Theme! = BBjGridExWidget.GRID_THEME_ALPINE()
     rem /**
     rem  * The grid language manager
     rem  */
@@ -972,10 +1023,10 @@ class public GxOptions
         toolpanels! = #getSidebar().getToolpanels()
 
         if enableFiltersToolpanel! = 0 then
-            toolpanels!.remove(GxFiltersToolpanel.ID(),err=*next)
+            toolpanels!.remove(GxFiltersToolpanel.getId(),err=*next)
         else
-            if(toolpanels!.containsKey(GxFiltersToolpanel.ID()) = 0) then
-                toolpanels!.put(GxFiltersToolpanel.ID() , new GxFiltersToolpanel())
+            if(toolpanels!.containsKey(GxFiltersToolpanel.getId()) = 0) then
+                toolpanels!.put(GxFiltersToolpanel.getId() , new GxFiltersToolpanel())
             FI
         FI
     methodend
@@ -1052,6 +1103,92 @@ class public GxOptions
         #setIcons(parser!.parse(json!).getAsJsonObject())
     methodend
     rem /**
+    rem  * Enable/disable DeltaColumn Mode
+    rem  *
+    rem  * @param BBjNumber enabled!  true to enable , false to disable
+    rem  *
+    rem  * @deprecated use `GxOptions.setImmutableColumns` instead
+    rem  */
+    method public void setDeltaColumnMode(BBjNumber enabled!)
+        #setImmutableColumns(enabled!)
+    methodend
+    rem /**
+    rem  * Get DeltaColumn Mode value
+    rem  *
+    rem  * @return BBjNumber true when enabled , false otherwise
+    rem  *
+    rem  * @deprecated use `GxOptions.getImmutableColumns` instead
+    rem  */
+    method public BBjNumber getDeltaColumnMode()
+        methodret #getImmutableColumns()
+    methodend
+    rem /**
+    rem  * Set a result set of pinned rows on top
+    rem  *
+    rem  * @param ResultSet rs! A ResultSet instance
+    rem  */
+    method public void setPinnedTopRows(ResultSet rs!)
+        #PinnedTopRows! = rs!
+        rs!.createIndex()
+    methodend
+    rem /**
+    rem  * Get the top pinned rows as json String
+    rem  *
+    rem  * @return BBjString the top pinned row as json string
+    rem  */
+    method public BBjString getPinnedTopRowsAsJson()
+        rows! = #getPinnedTopRows()
+        result! = "[]"
+
+        if(rows! <> null())
+            result! = rows!.toJson(1 , "__ROW_INDEX")
+        fi
+
+        methodret result!
+    methodend
+    rem /**
+    rem  * Get the top pinned rows as Json Array
+    rem  *
+    rem  * @return JsonArray the top pinned row as Json Array
+    rem  */
+    method public JsonArray getPinnedTopRowsAsJsonArray()
+        parser! = new JsonParser()
+        methodret parser!.parse(#getPinnedTopRowsAsJson()).getAsJsonArray()
+    methodend
+    rem /**
+    rem  * Set a result set of pinned rows on bottom
+    rem  *
+    rem  * @param ResultSet rs! A ResultSet instance
+    rem  */
+    method public void setPinnedBottomRows(ResultSet rs!)
+        #PinnedBottomRows! = rs!
+        rs!.createIndex()
+    methodend
+    rem /**
+    rem  * Get the bottom pinned rows as json String
+    rem  *
+    rem  * @return BBjString the bottom pinned row as json string
+    rem  */
+    method public BBjString getPinnedBottomRowsAsJson()
+        rows! = #getPinnedBottomRows()
+        result! = "[]"
+
+        if(rows! <> null())
+            result! = rows!.toJson(1 , "__ROW_INDEX")
+        fi
+
+        methodret result!
+    methodend
+    rem /**
+    rem  * Get the bottom pinned rows as Json Array
+    rem  *
+    rem  * @return JsonArray the bottom pinned row as Json Array
+    rem  */
+    method public JsonArray getPinnedBottomRowsAsJsonArray()
+        parser! = new JsonParser()
+        methodret parser!.parse(#getPinnedBottomRowsAsJson()).getAsJsonArray()
+    methodend
+    rem /**
     rem  * Build the grid json configuration object
     rem  *
     rem  * @return JsonObject The grid options as JsonObject
@@ -1069,6 +1206,10 @@ class public GxOptions
         FI
 
         options! = new JsonObject()
+        rem Data And Row Models
+        rem ===========================
+        options!.        add("pinnedTopRowData",#getPinnedTopRowsAsJsonArray(), err=*next)
+        options!.        add("pinnedBottomRowData",#getPinnedBottomRowsAsJsonArray(), err=*next)
         rem Columns options
         rem ===========================
         options!.        add("defaultColDef",#getDefaultColumnDefinition().getAsJsonObject() , err=*next)
@@ -1081,7 +1222,7 @@ class public GxOptions
         options!.addProperty("suppressMultiSort",#getSuppressMultiSort().booleanValue(), err=*next)
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
         options!.addProperty("suppressSetColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
-        options!.addProperty("deltaColumnMode",#getDeltaColumnMode().booleanValue(), err=*next)
+        options!.addProperty("immutableColumns",#getImmutableColumns().booleanValue(), err=*next)
         options!.addProperty("skipHeaderOnAutoSize",#getSkipHeaderOnAutoSize().booleanValue(), err=*next)
         rem Sort & Filter options
         rem ===========================
@@ -1095,6 +1236,7 @@ class public GxOptions
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
         options!.addProperty("enableRangeSelection",#getEnableRangeSelection().booleanValue(), err=*next)
         options!.addProperty("suppressMultiRangeSelection",#getSuppressMultiRangeSelection().booleanValue(), err=*next)
+        options!.addProperty("suppressCellSelection",#getSuppressCellSelection().booleanValue(), err=*next)
         rem Editing Options
         rem ===========================
         options!.addProperty("singleClickEdit",#getSingleClickEdit().booleanValue(), err=*next)
@@ -1149,7 +1291,7 @@ class public GxOptions
         options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), listIsEmpty!) ,err=*next)
         options!.        add("rowClassRules", iff(#getRowClassRules().entrySet().size() <> 0 , #getRowClassRules() , null()),err=*next)
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
-        rem Localisation
+        rem Localization
         rem ===========================
         options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
         rem Overlays
@@ -1177,6 +1319,7 @@ class public GxOptions
         options!.addProperty("suppressTouch",#getSuppressTouch().booleanValue() , err=*next)
         options!.addProperty("suppressPropertyNamesCheck",BBjGridExWidget.getDebug().booleanValue() , err=*next)
         options!.addProperty("floatingFilter",#getEnableFloatingFilter())
+        options!.addProperty("suppressRowTransform",#getSuppressRowTransform().booleanValue() , err=*next)
         options!.        add("sideBar",#getSidebar().getAsJsonObject(), err=*next)
         rem Context
         rem ===========================

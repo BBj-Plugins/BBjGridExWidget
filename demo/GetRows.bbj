@@ -1,0 +1,122 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+declare BBjTopLevelWindow wnd!
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Get Rows Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+declare BBjListButton phases!
+phases! = wnd!.addListButton(201,5,6,160,250,"")
+phases!.insertItemAt(0,"Phase : All")
+phases!.insertItemAt(1,"Phase : After Filter")
+phases!.insertItemAt(2,"Phase : After Filter And Sort")
+phases!.selectIndex(0)
+
+declare BBjEditBox expressionFilter!
+expressionFilter! = wnd!.addEditBox(202,180,6,300,22,"")
+expressionFilter!.setPlaceholder("Filter Expression (ex : x.MUSICTYPE == 'Blues' )")
+
+declare BBjButton getRowsButton!
+getRowsButton! = wnd!.addButton(203,640,5,150,25,"Get Rows")
+getRowsButton!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onGetRows")
+
+declare BBjGridExWidget grid!
+grid! = new BBjGridExWidget(wnd!,100,0,35,800,566)
+
+gosub main
+process_events
+
+rem /**
+rem  * Below shows an example using the `getRows` API. The following can be noted:
+rem  * 
+rem  *  1. The `getRows` accepts a phase param. The phase describes the rows state in the grid
+rem  *     (ex : "after filter" , "after filter and sort" , ... )
+rem  * 
+rem  *  2. The `getRows` accepts a filter expression which will be executed in the client
+rem  *     to filter the rows further before returning the result. 
+rem  *     For instance you can use the filter expression to return the rows which  
+rem  *     their `MUSICTYPE` is `Blues` after the grid's filtering and sorting is applied.
+rem  * 
+rem  *     Note that this type of filtering is done in memory and is not visual. In other words
+rem  *          the grid will not show that such a filter is applied.
+rem  *    
+rem  *     The parameters passed to the Filter Expression are the following:
+rem  * 
+rem  *     Parameter      | Description
+rem  *     ==========     | ===================
+rem  *     data           | Mapped from the DataRow
+rem  *     value          | Mapped from the DataRow
+rem  *     x              | Mapped from the DataRow
+rem  *     ctx            | The grid client context
+rem  *     rowIndex       | The auto generated index by the grid
+rem  *     columnGroup    | The group name if any
+rem  */
+
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER, TITLE, MUSICTYPE FROM CDINVENTORY")
+  grid!.setData(rs!)
+  grid!.setFitToGrid()
+return
+
+onGetRows:
+  currentPhaseIndex! = phases!.getSelectedIndex()
+  phase! = ""
+  
+  SWITCH (currentPhaseIndex!)
+      CASE 1
+        phase! = grid!.GRID_ROWS_PHASE_AFTER_FILTER()
+      BREAK
+      CASE 2
+        phase! = grid!.GRID_ROWS_PHASE_AFTER_FILTER_SORT()
+      BREAK      
+      CASE DEFAULT
+        phase! = grid!.GRID_ROWS_PHASE_ALL()
+      BREAK
+  SWEND
+  
+  rows! = grid!.getRows(phase! , expressionFilter!.getText())
+  
+  message! = "Size : " + str(rows!.size()) + $0A$ + "----------" + $0A$ 
+  message! = message! + "Rows:" + $0A$ + "----------" + $0A$  
+  
+  it! = rows!.iterator()
+  while(it!.hasNext())
+    next! = it!.next()
+    message! = message! + next!.asDataRow().getFieldAsString("TITLE") + $0A$  
+  wend
+  
+  a! = msgbox(message! , 0 , "Get Rows Result")
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h - 35)
+  grid!.setFitToGrid()
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

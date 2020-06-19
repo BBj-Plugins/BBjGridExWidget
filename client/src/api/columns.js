@@ -52,6 +52,18 @@ export function gw_extendColumnDefinitions(definitions) {
       const editable = def.editable
       def.editable = params => gw_executeExpression(editable, params)
     }
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (def.hasOwnProperty('rowSpan') && typeof def.rowSpan === 'string') {
+      const rowSpan = def.rowSpan
+      def.rowSpan = params => gw_executeExpression(rowSpan, params)
+    }
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (def.hasOwnProperty('colSpan') && typeof def.colSpan === 'string') {
+      const colSpan = def.colSpan
+      def.colSpan = params => gw_executeExpression(colSpan, params)
+    }
   }
 }
 

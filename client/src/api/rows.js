@@ -8,6 +8,7 @@
 
 import { gw_getGrid } from './utilities'
 import { gw_parseNode } from 'events/utilities'
+import { gw_executeExpression } from '../expression'
 
 export function gw_setQuickFilter(id, filter) {
   gw_getGrid(id).options.api.setQuickFilter(filter)
@@ -51,19 +52,42 @@ export function gw_navigateToNextRow(id, params) {
   switch (params.key) {
     case KEY_DOWN:
       // set selected cell on current cell + 1
-      options.api.forEachNode(node => {
-        if (previousCell.rowIndex + 1 === node.rowIndex) {
-          node.setSelected(true)
+      if (suggestedNextCell && !suggestedNextCell.rowPinned) {
+        if (previousCell.rowPinned) {
+          const row = options.api.getDisplayedRowAtIndex(
+            options.api.getFirstDisplayedRow()
+          )
+          if (row) {
+            row.setSelected(true)
+          }
+        } else {
+          options.api.forEachNode(node => {
+            if (previousCell.rowIndex + 1 === node.rowIndex) {
+              node.setSelected(true)
+            }
+          })
         }
-      })
+      }
+
       return suggestedNextCell
     case KEY_UP:
       // set selected cell on current cell - 1
-      options.api.forEachNode(node => {
-        if (previousCell.rowIndex - 1 === node.rowIndex) {
-          node.setSelected(true)
+      if (suggestedNextCell && !suggestedNextCell.rowPinned) {
+        if (previousCell.rowPinned) {
+          const row = options.api.getDisplayedRowAtIndex(
+            options.api.getLastDisplayedRow()
+          )
+          if (row) {
+            row.setSelected(true)
+          }
+        } else {
+          options.api.forEachNode(node => {
+            if (previousCell.rowIndex - 1 === node.rowIndex) {
+              node.setSelected(true)
+            }
+          })
         }
-      })
+      }
       return suggestedNextCell
     case KEY_LEFT:
     case KEY_RIGHT:
@@ -116,9 +140,9 @@ export function gw_updateRowData(id, transaction, batchUpdate) {
   }
 
   if (!batchUpdate) {
-    options.api.updateRowData(transaction)
+    options.api.applyTransaction(transaction)
   } else {
-    options.api.batchUpdateRowData(transaction)
+    options.api.applyTransactionAsync(transaction)
   }
 }
 
@@ -248,10 +272,93 @@ export function gw_getSelectedRow(id) {
 }
 
 /**
+ * Get the row by its id or index
+ *
+ * @param {String} id grid's id
+ * @param {String|Number} index
+ *
+ * @return {String} row as JSON
+ */
+export function gw_getRow(id, index) {
+  const options = gw_getGrid(id).options
+  return JSON.stringify(
+    gw_parseNode(options.api.getRowNode(index), options.context)
+  )
+}
+
+/**
+ * Get rows from the grid
+ *
+ * @param {String} id The grid's id
+ * @param {String} phase The rows phase
+ * @param {String} filterExpression A filter expression
+ *
+ * @return {String} Json stringified array of rows
+ */
+export function gw_getRows(id, phase, filterExpression) {
+  const options = gw_getGrid(id).options
+  const parsed = []
+
+  options.api[phase](node => {
+    if (!node.group) {
+      if (filterExpression) {
+        const canProcess = gw_executeExpression(filterExpression, {
+          value: node.data,
+          context: options.context,
+          oldValue: null,
+          newValue: null,
+          node: node,
+          data: node.data,
+          colDef: null,
+          rowIndex: node.rowIndex,
+          api: node.gridApi,
+          columnApi: node.columnApi,
+          getValue: () => node.data,
+          column: null,
+          columnGroup:
+            // eslint-disable-next-line no-prototype-builtins
+            node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key')
+              ? node.parent.key
+              : '',
+        })
+
+        if (canProcess) {
+          parsed.push(gw_parseNode(node, options.context))
+        }
+      } else {
+        parsed.push(gw_parseNode(node, options.context))
+      }
+    }
+  })
+
+  return JSON.stringify(parsed)
+}
+
+/**
  * Gets the grid to remove a row from the DOM and recreate it again from scratch.
  *
  * @param {String} id grid's id
  */
 export function gw_redrawRows(id) {
   gw_getGrid(id).options.api.redrawRows()
+}
+
+/**
+ * Pin an array of tow to the top of the grid
+ *
+ * @param {String} id the grid's id
+ * @param {Array} data array of rows
+ */
+export function gw_setPinnedTopRowData(id, data) {
+  gw_getGrid(id).options.api.setPinnedTopRowData(data)
+}
+
+/**
+ * Pin an array of tow to the bottom of the grid
+ *
+ * @param {String} id the grid's id
+ * @param {Array} data array of rows
+ */
+export function gw_setPinnedBottomRowData(id, data) {
+  gw_getGrid(id).options.api.setPinnedBottomRowData(data)
 }

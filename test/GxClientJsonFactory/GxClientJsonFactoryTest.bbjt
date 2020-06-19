@@ -209,7 +209,7 @@ class public GxClientJsonFactoryTest
        fixtureClone! = fixture!.deepCopy()
        model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
        
-       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.toString().contains("GxClientCellModel"), BBjAPI.TRUE)
        Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
        Assert.Equals(model!.getColumn().getName(),"test")
        Assert.Equals(model!.getValue(),"newValue")
@@ -218,7 +218,7 @@ class public GxClientJsonFactoryTest
        fixtureClone!.remove("r"); rem remove row
        model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
        
-       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.toString().contains("GxClientCellModel"), BBjAPI.TRUE)
        Assert.IsNull(model!.getRow())
        Assert.Equals(model!.getColumn().getName(),"test")
        Assert.Equals(model!.getValue(),"newValue")     
@@ -226,7 +226,7 @@ class public GxClientJsonFactoryTest
        fixtureClone! = fixture!.deepCopy()
        fixtureClone!.remove("c"); rem remove column
        model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
-       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.toString().contains("GxClientCellModel"), BBjAPI.TRUE)
        Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
        Assert.IsNull(model!.getColumn())
        Assert.Equals(model!.getValue(),"newValue")  
@@ -234,7 +234,7 @@ class public GxClientJsonFactoryTest
        fixtureClone! = fixture!.deepCopy()
        fixtureClone!.remove("v"); rem remove value
        model! = #Instance!.getCell(fixtureClone!.getAsJsonObject())
-       Assert.Equals(model!.toString().endsWith("GxClientCellModel"), BBjAPI.TRUE)
+       Assert.Equals(model!.toString().contains("GxClientCellModel"), BBjAPI.TRUE)
        Assert.Equals(model!.getRow().getId(),"4131adda-c690-36ef-85c9-76ecf1612bdb")
        Assert.Equals(model!.getColumn().getName(),"test")
        Assert.IsNull(model!.getValue())                     

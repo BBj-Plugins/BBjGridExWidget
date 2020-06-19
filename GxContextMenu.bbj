@@ -92,7 +92,7 @@ interface public GxContextMenuItemInterface
     rem  * @return BBjString
     rem  */
 
-    method public BBjString toString()
+    method public String toString()
 
 interfaceend
 rem /**
@@ -259,7 +259,7 @@ class public GxContextMenuItem implements GxContextMenuItemInterface
     rem  *
     rem  * @return BBjString
     rem  */
-    method public BBjString toString()
+    method public String toString()
         declare JsonObject json!
 
         json! = new JsonObject()

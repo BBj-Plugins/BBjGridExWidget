@@ -307,6 +307,18 @@
         "OrderEntry.bbj": {
             "name": "OrderEntry",
             "style": ""
+        },
+        "GetRows.bbj": {
+            "name": "GetRows",
+            "style": ""
+        },
+        "RowSpan.bbj": {
+            "name": "RowSpan",
+            "style": ""
+        },
+        "ColumnSpan.bbj": {
+            "name": "ColumnSpan",
+            "style": ""
         }
     },
     "cSpell.words": [

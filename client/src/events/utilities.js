@@ -33,9 +33,6 @@ export function gw_debounce(func, wait, immediate) {
 /**
  * Send an event to BBj side
  *
- * The function will trigger a custom click event on the `event-bridge-${id}` div
- * then the div will use basisDispatchCustomEvent to dispatch the event to BBj
- *
  * @param {Array} context the grid's context
  * @param {*} payload the event payload
  * @param {String} eventId the event's id
@@ -44,11 +41,8 @@ export function gw_sendEvent(context, payload = {}, eventId = []) {
   const registeredInterests = context.interests || []
 
   if (registeredInterests.includes(eventId)) {
-    const div = gw_getDocument().getElementById(`event-bridge-${context.id}`)
-    const event = new CustomEvent('click')
-
-    event.payload = payload
-    div.dispatchEvent(event)
+    const div = gw_getDocument().getElementById(`${context.id}`)
+    window.basisDispatchCustomEvent(div, payload)
   }
 }
 
@@ -76,23 +70,27 @@ export function gw_parseNode(node, context) {
     return false
   } // we do not manage groups
 
-  // const rowNodeId = context.hasOwnProperty('getRowNodeId') && node.data[context.getRowNodeId] ?
-  //   node.data[context.getRowNodeId] : '';
+  const getRowNodeId = node.rowPinned ? '__ROW_INDEX' : context.getRowNodeId
 
   return {
-    i: node.id, // id
+    i:
+      context.hasOwnProperty('getRowNodeId') && node.data[getRowNodeId]
+        ? node.data[getRowNodeId]
+        : node.id, // id
     x: node.rowIndex, // index
     p:
       node.hasOwnProperty('parent') && node.parent.hasOwnProperty('key')
         ? node.parent.key
         : '', // parent key
-    c: node.childIndex, //childIndex
+    c: node.rowPinned ? -1 : node.childIndex, //childIndex
     s: Boolean(node.selected), // selected
+    // client row
     cr:
       context.hasOwnProperty('includeClientRowData') &&
       context['includeClientRowData'] === true
         ? node.data
         : null,
+    pp: node.rowPinned, // pin position
   }
 }
 

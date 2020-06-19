@@ -20,7 +20,9 @@ use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorPopupSelectTest.bbjt::GxCel
 use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorRichSelectTest.bbjt::GxCellEditorRichSelectTest
 use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicBooleanSelectTest.bbjt::GxCellEditorBasicBooleanSelectTest
 use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorBasicBooleanRichSelectTest.bbjt::GxCellEditorBasicBooleanRichSelectTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorSuggestionResolverTest.bbjt::GxCellEditorSuggestionResolverTest
+use ::BBjGridExWidget/test/GxCellEditors/GxCellEditorSuggestionTest.bbjt::GxCellEditorSuggestionTest
 
-rem @SuiteClasses("GxCellEditorTextTest","GxCellEditorPopupTextTest","GxCellEditorLargeTextTest","GxCellEditorBasicBooleanTest","GxCellEditorBasicNumberTest","GxCellEditorBasicTextTest","GxCellEditorBasicDateTimeTest","GxCellEditorBasicDateTest","GxCellEditorBasicTimeTest","GxCellEditorSelectTest","GxCellEditorPopupSelectTest","GxCellEditorRichSelectTest","GxCellEditorBasicBooleanSelectTest","GxCellEditorBasicBooleanRichSelectTest")
+rem @SuiteClasses("GxCellEditorTextTest","GxCellEditorPopupTextTest","GxCellEditorLargeTextTest","GxCellEditorBasicBooleanTest","GxCellEditorBasicNumberTest","GxCellEditorBasicTextTest","GxCellEditorBasicDateTimeTest","GxCellEditorBasicDateTest","GxCellEditorBasicTimeTest","GxCellEditorSelectTest","GxCellEditorPopupSelectTest","GxCellEditorRichSelectTest","GxCellEditorBasicBooleanSelectTest","GxCellEditorBasicBooleanRichSelectTest","GxCellEditorSuggestionResolverTest","GxCellEditorSuggestionTest")
 class public GxGxCellEditorsSuite
 classend

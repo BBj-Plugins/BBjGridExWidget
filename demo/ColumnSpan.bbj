@@ -1,0 +1,106 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Column Spanning Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * Row spanning will typically be used for creating reports with the grid. 
+rem  * 
+rem  * Below is something that would be more typical of the row spanning feature. 
+rem  * The following can be noted from the example: 
+rem  * 
+rem  *  1. Sorting and filtering will provide strange results when row spanning so we disable them.
+rem  *  1. Column Show row spans by 4 rows when it has content. this is done by `RowSpanExpression`
+rem  *  2. Column Show uses CSS class rules to specify background and border. 
+rem  *  3. Column Show has a custom HTML cell renderer to make use of the extra space.
+rem  */
+main:
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  rs! = ResultSet.fromJson(GxDemoUtilities.readAssetsAsString("data/column-span.json"))
+
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+  rem Disable everything which might ruin the row spanning.
+  grid!.getSidebar().setHiddenByDefault(1)
+  defaultColDef! = grid!.getOptions().getDefaultColumnDefinition()
+  defaultColDef!.setSortable(0)
+  defaultColDef!.setSuppressMenu(1)
+    
+  grid!.setData(rs!)
+  grid!.setFitToGrid()
+
+  cellClassRules! = new JsonObject()
+  cellClassRules!.addProperty("header-cell","data.Section === 'big-title'")
+  cellClassRules!.addProperty("quarters-cell","data.Section === 'quarters'")
+
+  janColumn! = grid!.getColumn("Jan")
+  janColumn!.setColumnSpanExpression("data.Section === 'big-title' ? 6 : (data.Section === 'quarters' ? 3 : 1)")
+  janColumn!.setCellClassRules(cellClassRules!)
+  janColumn!.setCellClassRules(cellClassRules!)
+
+  aprColumn! = grid!.getColumn("Apr")
+  aprColumn!.setColumnSpanExpression("data.Section === 'quarters' ? 3 : 1")
+  aprColumn!.setCellClassRules(cellClassRules!)
+  aprColumn!.setCellClassRules(cellClassRules!)
+
+  sectionColumn! = grid!.getColumn("Section")
+  sectionColumn!.setLockVisible(1)
+  sectionColumn!.setHidden(1)
+
+  headerCellStyle! = new JsonObject()
+  headerCellStyle!.addProperty("background","#1E88E5")
+  headerCellStyle!.addProperty("color","white")
+  headerCellStyle!.addProperty("font-size","25px")
+  headerCellStyle!.addProperty("font-weight","bold")
+  headerCellStyle!.addProperty("display","flex")
+  headerCellStyle!.addProperty("justify-content","center")
+
+  grid!.addStyle(".header-cell", headerCellStyle!)
+
+  quartersCellStyle! = new JsonObject()
+  quartersCellStyle!.addProperty("background","#42A5F5")
+  quartersCellStyle!.addProperty("color","white")
+  quartersCellStyle!.addProperty("font-weight","bold")
+
+  grid!.addStyle(".quarters-cell", quartersCellStyle!)
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+  grid!.setFitToGrid()
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

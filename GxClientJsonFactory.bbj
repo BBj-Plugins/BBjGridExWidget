@@ -68,6 +68,7 @@ class public GxClientJsonFactory
         row!.setIndex(json!.get("x").getAsInt(),err=*next)
         row!.setChildIndex(json!.get("c").getAsInt(),err=*next)
         row!.setParentKey(json!.get("p").getAsString(),err=*next)
+        row!.setFloating(json!.get("pp").getAsString(),err=*next)
         row!.setIsSelected(iff(json!.get("s").getAsString() = "true" ,  1 , 0) , err=*next)
 
         methodret row!
@@ -239,7 +240,7 @@ class public GxClientJsonFactory
         fi
     methodend
     rem /**
-    rem  * Parse a filter conditions (single or combined) and reutrn a filter model
+    rem  * Parse a filter conditions (single or combined) and return a filter model
     rem  *
     rem  * @param BBjString json! the model as json string
     rem  *

@@ -12,12 +12,8 @@ import 'expose-loader?flatpickr!flatpickr/dist/flatpickr.js'
 import 'expose-loader?Basis.AgGridComponents!basis-aggrid-components/dist/basis-aggrid-components.js'
 
 require('flatpickr/dist/flatpickr.css')
-require('ag-grid-community/dist/styles/ag-grid.css')
-require('ag-grid-community/dist/styles/ag-theme-material.css')
-require('ag-grid-community/dist/styles/ag-theme-balham.css')
-require('ag-grid-community/dist/styles/ag-theme-balham-dark.css')
-
 require('./style/classes.css')
+require('./style/suggestion-editor.css')
 
 export * from './polyfills.js'
 export * from './api'

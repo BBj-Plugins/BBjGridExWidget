@@ -1,0 +1,132 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use com.google.gson.JsonObject
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Raw Spanning Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+rem /**
+rem  * Row spanning will typically be used for creating reports with the grid. 
+rem  * 
+rem  * Below is something that would be more typical of the row spanning feature. 
+rem  * The following can be noted from the example: 
+rem  * 
+rem  *  1. Sorting and filtering will provide strange results when row spanning so we disable them.
+rem  *  1. Column Show row spans by 4 rows when it has content. this is done by `RowSpanExpression`
+rem  *  2. Column Show uses CSS class rules to specify background and border. 
+rem  *  3. Column Show has a custom HTML cell renderer to make use of the extra space.
+rem  */
+main:
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  rs! = ResultSet.fromJson(GxDemoUtilities.readAssetsAsString("data/row-span.json"))
+  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+
+  rem /**
+  rem  * The option `SuppressRowTransform=true` is used to stop the grid positioning rows using CSS transform 
+  rem  * and instead the grid will use CSS top. 
+  rem  * The reason row span will not work with CSS transform is that CSS transform creates a stacking context
+  rem  * which constrains CSS z-index from placing cells on top of other cells in another row. 
+  rem  * Having cells extend into other rows is necessary for row span which means it will not 
+  rem  * work when using CSS transform. 
+  rem  * The downside to not using transform is performance; row animation (after sort or filter) will be slower.
+  rem  */
+  grid!.getOptions().setSuppressRowTransform(1)
+
+  rem Disable everything which might ruin the row spanning.
+  grid!.getSidebar().setHiddenByDefault(1)
+  defaultColDef! = grid!.getOptions().getDefaultColumnDefinition()
+  defaultColDef!.setSortable(0)
+  defaultColDef!.setSuppressMenu(1)
+  
+  grid!.setData(rs!)
+  grid!.setFitToGrid()
+
+  showColumn! = grid!.getColumn("SHOW")
+
+  rem /**
+  rem  * A javascript expression which returns the number of rows to span based on a condition.
+  rem  * The expression must return `1` in case there should be no spanning.
+  rem  * 
+  rem  * In this line we test if the row has the property `SHOW` , when true we span 4 rows , otherwise
+  rem  * we return `1` to stop spanning.
+  rem  */
+  showColumn!.setRowSpanExpression("data.SHOW ? 4 : 1")
+
+  rem /**
+  rem  * Responsibility is with the developer to apply a background style to spanning cells 
+  rem  * so that overwritten cells cannot be seen.
+  rem  * 
+  rem  * The cell class rule in here will be applied / used only when the cell value is not undefined
+  rem  */
+  cellStyleRules! = showColumn!.getCellClassRules()
+  cellStyleRules!.addProperty("show-cell","value !== undefined")
+
+  showCellStyle! = new JsonObject()
+  showCellStyle!.addProperty("background","white")
+  showCellStyle!.addProperty("border","1px solid lightgrey !important")
+  showCellStyle!.addProperty("border-top","none !important")
+
+  grid!.addStyle(".show-cell", showCellStyle!)
+
+  rem /**
+  rem  * Finally , we add a custom html renderer to render the name of the show and its presenter.
+  rem  * 
+  rem  * Notice how `GxRendererCustomHTML` accepts a template.
+  rem  *        This is a lodash template. it starts with `<%` and ends with `%>`
+  rem  *        to force the template to execute and print directly what is inside it
+  rem  *        we add the `=` sign to the start tag `<%=`.
+  rem  *        Inside the template you can use only Javascript and embedded HTML and CSS
+  rem  *
+  rem  * DO NOT confuse lodash templates with JSP templates. both are different things
+  rem  */
+  renderingTemplate! = "<% if(params.value) { %>"+
+:                         "<div style=""display: flex; flex-direction: column;align-items: baseline;"">" +
+:                           "<div class=""show-name"" style=""font-weight: bold"">" +
+:                               "<%= params.value.NAME %>"+
+:                           "</div>" + 
+:                           "<div class=""show-presenter"" style=""font-weight: italic"">" +
+:                               "<%= params.value.PRESENTER %>"+
+:                           "</div>" + 
+:                           "<div class=""show-name"">" +
+:                         "</div>"+
+:                      "<% } %>"  
+  showColumn!.setCellRenderer(new GxRendererCustomHTML(renderingTemplate!))
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+  grid!.setFitToGrid()
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
