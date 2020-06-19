@@ -3,7 +3,7 @@
   "main": "client/dist/bbj-grid-widget.min.js",
   "author": "BASIS Europe Distribution GmbH",
   "license": "MIT",
-  "version": "0.101.3",
+  "version": "0.102.0",
   "private": true,
   "scripts": {
     "watch": "./node_modules/.bin/webpack --watch --progress",
