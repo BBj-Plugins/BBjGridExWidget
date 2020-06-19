@@ -315,6 +315,10 @@
         "RowSpan.bbj": {
             "name": "RowSpan",
             "style": ""
+        },
+        "ColumnSpan.bbj": {
+            "name": "ColumnSpan",
+            "style": ""
         }
     },
     "cSpell.words": [

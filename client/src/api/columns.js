@@ -58,6 +58,12 @@ export function gw_extendColumnDefinitions(definitions) {
       const rowSpan = def.rowSpan
       def.rowSpan = params => gw_executeExpression(rowSpan, params)
     }
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (def.hasOwnProperty('colSpan') && typeof def.colSpan === 'string') {
+      const colSpan = def.colSpan
+      def.colSpan = params => gw_executeExpression(colSpan, params)
+    }
   }
 }
 

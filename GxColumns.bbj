@@ -715,9 +715,38 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
-    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  * @see GxExpression
     rem  */
-    field public GxExpressionInterface RowSpanExpression! = null()    
+    field public GxExpressionInterface RowSpanExpression! = null()
+    rem /**
+    rem  * A grid expression which can be executed to perform column spanning&#183;
+    rem  * 
+    rem  * The expression must return the number of columns to span , if no spanning should be applied , then 
+    rem  * return `1` instead (ex: "data.Section === 'quarters'")
+    rem  * 
+    rem  * By default, each cell will take up the width of one column. 
+    rem  * You can change this behaviour to allow cells to span multiple columns. 
+    rem  * This feature is similar to 'cell merging' in Excel or 'column spanning' in HTML tables.
+    rem  * 
+    rem  * <strong>Constraints with Column Spanning :<strong>
+    rem  * 
+    rem  * Column Spanning breaks out of the row / cell calculations that a lot of features in the grid are based on. 
+    rem  * If using Column Spanning, be aware of the following:
+    rem  * 
+    rem  * <ol>
+    rem  *   <li> 
+    rem  *    Range Selection will not work correctly when spanning cells. 
+    rem  *    This is because it is not possible to cover all scenarios, as a range is no 
+    rem  *    longer a perfect rectangle.
+    rem  *   </li>
+    rem  * </ol>
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>.
+    rem  *
+    rem  * @see GxExpression
+    rem  */      
+    field public GxExpressionInterface ColumnSpanExpression! = null()
     rem /**
     rem  * Get pinned left constant
     rem  *
@@ -845,6 +874,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     method public void setRowSpanExpression(BBjString expression!)
       #RowSpanExpression! = new GxExpression(expression!)
+    methodend
+    rem /**
+    rem  * Create a GxExpression from string and set it as column span expression
+    rem  *
+    rem  * @param BBjString expression! Javascript expression
+    rem  */
+    method public void setColumnSpanExpression(BBjString expression!)
+      #ColumnSpanExpression! = new GxExpression(expression!)
     methodend
     rem /**
     rem  * Set the allowed aggregation functions allowed on this column
@@ -1154,6 +1191,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("valueSetter",#getValueSetterExpression().toString(),err=*next)
         column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
         column!.addProperty("rowSpan",#getRowSpanExpression().toString(),err=*next)
+        column!.addProperty("colSpan",#getColumnSpanExpression().toString(),err=*next)
         column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)
         column!.addProperty("chartDataType",#getChartType(),err=*next)
         column!.addProperty("tooltipField",#getTooltipField(),err=*next)
