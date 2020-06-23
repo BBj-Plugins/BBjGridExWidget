@@ -11,26 +11,6 @@ import { gw_executeExpression } from '../expression'
 const { deepParseJson } = require('deep-parse-json')
 
 /**
- * Setup the tooltip value getter and tooltip component for the passed column definition , if the column definition is a group
- * then the function will loop over all its children and setup the expression and the component too.
- *
- * @param {Object} def column definition object
- */
-function _configureTooltips(def) {
-  const tooltipValueGetterExpression = def.tooltipValueGetter
-  if (tooltipValueGetterExpression) {
-    def.tooltipValueGetter = params =>
-      gw_executeExpression(tooltipValueGetterExpression, params)
-  }
-
-  def.tooltipComponent = 'HTMLTooltip'
-
-  // eslint-disable-next-line no-prototype-builtins
-  if (def.hasOwnProperty('children')) {
-    def.children.forEach(child => _configureTooltips(child))
-  }
-}
-/**
  * Extend the column definitions
  *
  * Extend the column definitions with options which can not be handled in BBj
@@ -45,7 +25,14 @@ export function gw_extendColumnDefinitions(definitions) {
     def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox
     def.headerCheckboxSelection =
       def.headerCheckboxSelection || gw_isHeaderCheckboxSelection
-    _configureTooltips(def)
+
+    const tooltipValueGetterExpression = def.tooltipValueGetter
+    if (tooltipValueGetterExpression) {
+      def.tooltipValueGetter = params =>
+        gw_executeExpression(tooltipValueGetterExpression, params)
+    }
+
+    def.tooltipComponent = 'HTMLTooltip'
 
     // eslint-disable-next-line no-prototype-builtins
     if (def.hasOwnProperty('editable') && typeof def.editable === 'string') {
@@ -63,6 +50,11 @@ export function gw_extendColumnDefinitions(definitions) {
     if (def.hasOwnProperty('colSpan') && typeof def.colSpan === 'string') {
       const colSpan = def.colSpan
       def.colSpan = params => gw_executeExpression(colSpan, params)
+    }
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (def.hasOwnProperty('children')) {
+      gw_extendColumnDefinitions(def.children)
     }
   }
 }
