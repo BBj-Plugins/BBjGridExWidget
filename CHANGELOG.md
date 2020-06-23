@@ -1,3 +1,12 @@
+## [0.102.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.102.0...0.102.1) (2020-06-23)
+
+
+### Bug Fixes
+
+* :bug: gx does not extend children in col def ([ee3fa06](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ee3fa06450e35973ceb71c524812af39745299b0))
+
+
+
 # [0.102.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.101.3...0.102.0) (2020-06-19)
 
 
