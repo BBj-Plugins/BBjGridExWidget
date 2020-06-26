@@ -7,7 +7,9 @@ rem  * file that was distributed with this source code.
 rem  */
 use ::BBjGridExWidget/GxFilters.bbj::GxColumnFilterAG
 use com.google.gson.JsonObject
+use com.google.gson.JsonArray
 use com.google.gson.JsonNull
+use com.google.gson.JsonPrimitive
 
 class public GxColumnFilterAGTest
 
@@ -23,11 +25,11 @@ class public GxColumnFilterAGTest
         declare auto JsonObject json!
 
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("applyButton").getAsBoolean() , BBjAPI.FALSE)
+        Assert.Equals(json!.get("buttons").equals(new JsonArray()) , BBjAPI.TRUE)
 
         #Instance!.setApplyButton(1)
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("applyButton").getAsBoolean() , BBjAPI.TRUE)
+        Assert.Equals(json!.get("buttons").getAsJsonArray().contains(new JsonPrimitive("apply")) , BBjAPI.TRUE)
     methodend
 
     rem @Test
@@ -35,11 +37,11 @@ class public GxColumnFilterAGTest
         declare auto JsonObject json!
 
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("clearButton").getAsBoolean() , BBjAPI.FALSE)
+        Assert.Equals(json!.get("buttons").equals(new JsonArray()) , BBjAPI.TRUE)
 
         #Instance!.setClearButton(1)
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("clearButton").getAsBoolean() , BBjAPI.TRUE)
+        Assert.Equals(json!.get("buttons").getAsJsonArray().contains(new JsonPrimitive("clear")) , BBjAPI.TRUE)
     methodend  
     
     rem @Test
@@ -47,11 +49,11 @@ class public GxColumnFilterAGTest
         declare auto JsonObject json!
 
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("resetButton").getAsBoolean() , BBjAPI.FALSE)
+        Assert.Equals(json!.get("buttons").equals(new JsonArray()) , BBjAPI.TRUE)
 
         #Instance!.setRestButton(1)
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("resetButton").getAsBoolean() , BBjAPI.TRUE)
+        Assert.Equals(json!.get("buttons").getAsJsonArray().contains(new JsonPrimitive("reset")) , BBjAPI.TRUE)
     methodend    
     
     rem @Test
@@ -59,13 +61,14 @@ class public GxColumnFilterAGTest
         declare auto JsonObject json!
 
         json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.has("debounceMs"), BBjAPI.FALSE)
+        Assert.Equals(json!.has("debounceMs"), BBjAPI.TRUE)
         
         #Instance!.setApplyButton(1)
         json! = #Instance!.getAsJsonObject()
 
-        Assert.Equals(json!.has("debounceMs"), BBjAPI.TRUE)
+        Assert.Equals(json!.has("debounceMs"), BBjAPI.FALSE)
 
+        #Instance!.setApplyButton(0)
         #Instance!.setDebounceMs(1000)
         json! = #Instance!.getAsJsonObject()
         Assert.Equals(json!.get("debounceMs").getAsInt() = 1000 , BBjAPI.TRUE)

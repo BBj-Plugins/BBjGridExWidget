@@ -155,11 +155,11 @@ onCountryFilterToggle:
   if(isSelected!)
     countryModel!.getValues().add("Italy")
     countryModel!.getValues().add("Mexico")
-    countryModel!.update()  
   else 
     countryModel!.selectEverything()
   fi
   
+  countryModel!.update()  
   grid!.ensureColumnVisible("COUNTRY")    
 return 
 
