@@ -96,6 +96,31 @@ class public GxFilterSetFilterTest
         Assert.Equals(json!.get("suppressSelectAll").getAsBoolean() , BBjAPI.TRUE)
     methodend      
         
+    rem @Test
+    method public void testCanSetDefaultToNothingSelected()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("defaultToNothingSelected").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setDefaultToNothingSelected(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("defaultToNothingSelected").getAsBoolean() , BBjAPI.TRUE)
+    methodend 
+
+    rem @Test
+    method public void testCanSetApplyMiniFilterWhileTyping()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("applyMiniFilterWhileTyping").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setApplyMiniFilterWhileTyping(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("applyMiniFilterWhileTyping").getAsBoolean() , BBjAPI.TRUE)
+    methodend 
+
+    
     rem @After
     method public void tearDown()
         #Instance! = null()

@@ -404,6 +404,16 @@ class public GxFilterSetFilter extends GxColumnFilterAG
   rem  */
   field public BBjNumber SuppressSelectAll! = 0
   rem /**
+  rem  * Set this to true to instead show all values as de-selected by default.
+  rem  * Default: false
+  rem  */
+  field public BBjNumber DefaultToNothingSelected! = 0
+  rem /**
+  rem  * Set to true to apply the Set Filter immediately when the user is typing in the Mini Filter.
+  rem  * Default: false
+  rem  */
+  field public BBjNumber ApplyMiniFilterWhileTyping! = 0
+  rem /**
   rem  * {@inheritDoc}
   rem  */
   method public static BBjString getFilterName()
@@ -421,6 +431,8 @@ class public GxFilterSetFilter extends GxColumnFilterAG
     json!.addProperty("suppressSorting" , #getSuppressSorting().booleanValue() , err=*next)
     json!.addProperty("suppressMiniFilter" , #getSuppressMiniFilter().booleanValue() , err=*next)
     json!.addProperty("suppressSelectAll" , #getSuppressSelectAll().booleanValue() , err=*next)
+    json!.addProperty("defaultToNothingSelected" , #getDefaultToNothingSelected().booleanValue() , err=*next)
+    json!.addProperty("applyMiniFilterWhileTyping" , #getApplyMiniFilterWhileTyping().booleanValue() , err=*next)
     json!.add("values", iff(#getValues().size() > 0 , #getValues() , empty!), err=*next)
     renderer! = #getCellRenderer()
 
