@@ -24,6 +24,13 @@ class public GxClientEventsRowSelection
     rem  */
     field public BBjVector SelectedRows! = new BBjVector()
     rem /**
+    rem  * A keypress model which is received from the client.
+    rem  * 
+    rem  * <strong>Note</strong> The the key model is available for the following grid events only 
+    rem  * `ON_GRID_ROW_CLICK` and `ON_GRID_DOUBLE_CLICK`. In all other cases , it will be null()
+    rem  */
+    field public GxClientKeypressModel Key!
+    rem /**
     rem  * Get the number of affected rows by the last event
     rem  *
     rem  * @return BBjNumber
@@ -79,6 +86,13 @@ class public GxClientEventsCell extends GxClientEventsContextMenu
     rem  * The old value of the cell
     rem  */
     field public BBjString OldValue!
+    rem /**
+    rem  * A keypress model which is received from the client.
+    rem  * 
+    rem  * <strong>Note</strong> The the key model is available for the following grid events only 
+    rem  * `ON_GRID_CELL_CLICK` and `ON_GRID_CELL_DOUBLE_CLICK`. In all other cases , it will be null()
+    rem  */
+    field public GxClientKeypressModel Key!    
 
 classend
 rem /**

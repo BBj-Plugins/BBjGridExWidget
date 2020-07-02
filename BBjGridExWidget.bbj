@@ -1088,15 +1088,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     map! = ev!.getEventMap()
     type$ = str(map!.get("type"))
     detail$ = str(map!.get("detail"))
+
     switch type$
       case "gw.rowSelect"
-        #onSelectRowChange(detail$, "select")
+        #onSelectRowChange(detail$, #ON_GRID_SELECT_ROW())
         break
       case "gw.rowClick"
-        #onSelectRowChange(detail$,"single")
+        #onSelectRowChange(detail$,#ON_GRID_ROW_CLICK())
         break
       case "gw.rowDoubleClick"
-        #onSelectRowChange(detail$,"double")
+        #onSelectRowChange(detail$,#ON_GRID_DOUBLE_CLICK())
         break
       case "gw.cellClicked"
         #onCellEvent(detail$,#ON_GRID_CELL_CLICK())
@@ -3767,26 +3768,30 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * Parse the json details coming from the client and fires new GxSelectRowEvent
   rem  *
+  rem  * @param BBjString detail$ The event detail as Json
+  rem  * @param BBjNumber type! The event type
+  rem  * 
   rem  * @see GxSelectRowEvent
   rem  */
-  method protected void onSelectRowChange(BBjString detail$, BBjString type$)
+  method protected void onSelectRowChange(BBjString detail$, BBjNumber type!)
     declare GxClientEventsRowSelection event!
+    declare JsonParser parser!
 
     event! = new GxClientEventsRowSelection()
     event!.setSelectedRows(#getSelectedRows())
-    SWITCH (type$)
-      CASE "single"
-        #fireEvent(#ON_GRID_ROW_CLICK(),event!)
-        break
-      CASE "double"
-        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
-        break
-      case "select"
-        #fireEvent(#ON_GRID_SELECT_ROW(),event!)
-        break
-      case default
-        break
-    SWEND
+
+    rem report keypress for click events only
+    if(type! = #ON_GRID_ROW_CLICK() OR type! = #ON_GRID_DOUBLE_CLICK())
+      parser! = new JsonParser()
+      detailsAsJson!  = parser!.parse(detail$).getAsJsonObject()
+      keypress! =  null()
+      if(detailsAsJson!.has("k") AND detailsAsJson!.get("k").isJsonNull() = BBjAPI.FALSE) then
+        keypress! = #getClientJsonFactory().getKeypress(detailsAsJson!.get("k").getAsJsonObject())
+      fi
+      event!.setKey(keypress!)
+    fi 
+
+    #fireEvent(type!,event!)
   methodend
   rem /**
   rem  * On context menu event
@@ -3819,9 +3824,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     parser! = new JsonParser()
     parsedCell!  = parser!.parse(detail$).getAsJsonObject()
     cell! = #getClientJsonFactory().getCell(parsedCell!)
+
     event! = new GxClientEventsCell()
     event!.setCell(cell!)
-    event!.setOldValue(parsedCell!.get("o").getAsString())
+    event!.setOldValue(parsedCell!.get("o").getAsString(), err=*next)
+
+    if(type! = #ON_GRID_CELL_CLICK() OR type! = #ON_GRID_CELL_DOUBLE_CLICK())
+      if(parsedCell!.has("k") AND parsedCell!.get("k").isJsonNull() = BBjAPI.FALSE) then
+        keypress! = #getClientJsonFactory().getKeypress(parsedCell!.get("k").getAsJsonObject())
+        event!.setKey(keypress!)
+      fi
+    fi
+
     #fireEvent(type!, event!)
   methodend
   rem /**
