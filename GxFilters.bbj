@@ -472,8 +472,8 @@ class public GxFilterSetFilter extends GxColumnFilterAG
     declare JsonObject json!
 
     json! = #super!.getAsJsonObject()
-    json!.addProperty("suppressSyncValuesAfterDataChange" , #getSuppressSyncValuesAfterDataChange().booleanValue() , err=*next)
-    json!.addProperty("suppressRemoveEntries" , #getSuppressRemoveEntries().booleanValue() , err=*next)
+    json!.addProperty("suppressSyncValuesAfterDataChange" , #SuppressSyncValuesAfterDataChange!.booleanValue() , err=*next)
+    json!.addProperty("suppressRemoveEntries" , #SuppressRemoveEntries!.booleanValue() , err=*next)
     json!.addProperty("suppressSorting" , #getSuppressSorting().booleanValue() , err=*next)
     json!.addProperty("suppressMiniFilter" , #getSuppressMiniFilter().booleanValue() , err=*next)
     json!.addProperty("suppressSelectAll" , #getSuppressSelectAll().booleanValue() , err=*next)
