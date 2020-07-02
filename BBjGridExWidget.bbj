@@ -1989,10 +1989,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * @see setData()
   rem  *
-  rem  * @deprecated since version 0.101.0, BBjGridExWidget. updateData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.
+  rem  * @deprecated since version 0.101.0, BBjGridExWidget.setRowsData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.
   rem  */
   method public void setRowsData(ResultSet rs!)
-    GxLogger.warn("since version 0.101.0, BBjGridExWidget. updateData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.")
+    GxLogger.warn("since version 0.101.0, BBjGridExWidget.setRowsData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.")
     #updateData(rs!)
   methodend
   rem /**
