@@ -950,20 +950,20 @@ acorn@^7.1.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.1.1.tgz#e35668de0b402f359de515c5482a1ab9f89a69bf"
   integrity sha512-add7dgA5ppRPxCFJoAGfMDi7PIBXq1RtGo7BhbLaxwrXPOmw8gq48Y9ozT01hUKy9byMjlR20EJhu5zlkErEkg==
 
-ag-grid-community@23.1.0:
-  version "23.1.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-23.1.0.tgz#55be001c990040a63664dcf8280557334562def8"
-  integrity sha512-7MBrjKR7jwvwex12VvsFCXcPEIpC8yqjf8cSFLnMuououQt/O32KaHaTorPlz4SRzt92OZ4VZuYSZAH7/SBQMw==
+ag-grid-community@23.2.0:
+  version "23.2.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-23.2.0.tgz#889f52e8eb91c167c2ac7477938cbf498a54f67c"
+  integrity sha512-aG7Ghfu79HeqOCd50GhFSeZUX1Tw9BVUX1VKMuglkAcwYPTQjuYvYT7QVQB5FGzfFjcVq4a1QFfcgdoAcZYJIA==
 
 ag-grid-community@^23.1.0:
   version "23.1.1"
   resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-23.1.1.tgz#049ebbd2b521df4b1ad54ae68d98144cf9963e07"
   integrity sha512-bWpilWkD7b19BNoycVfifAmXVZGI+s1m/G6ixx7tOcXTQEU+tA6dWiHn2kxt1iiLsixvEwi/6JQu1j9Iykrb7Q==
 
-ag-grid-enterprise@23.1.0:
-  version "23.1.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-23.1.0.tgz#4a42be2cc241220021ecfbf26ea796c894f41688"
-  integrity sha512-/SsA15zmjT9saqxI24/gfTPFFF1U3jFvk6FZfLciB1bq9T7pKtESMWqqTIFS6KX1p3nJy5t0r+Coz41DbqbVlQ==
+ag-grid-enterprise@23.2.0:
+  version "23.2.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-23.2.0.tgz#4ada6746be4922a22f35fc6c4eeb799a9ee65b6f"
+  integrity sha512-gKuRdzGzcuyyiT4tF4ARZUw+qrsEclcfq1S52DjRGGKkpPnj+qPBpnIJWKZpH2eJxLv0G/4ZiCKGLWgXYvkOBQ==
 
 ag-grid-enterprise@^23.1.0:
   version "23.1.1"

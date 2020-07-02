@@ -161,8 +161,8 @@ class public GxClientJsonFactory
     rem  */
     method public GxClientKeypressModel getKeypress(JsonObject json!)
         keyPress! = new GxClientKeypressModel()
-        keyPress!.setCode(json!.get("c").getAsString())
-        keyPress!.setKeyCode(json!.get("kc").getAsInt())
+        keyPress!.setCode(json!.get("c").getAsString(), err=*next)
+        keyPress!.setKeyCode(json!.get("kc").getAsInt(), err=*next)
         keyPress!.setIsAltDown(iff(json!.get("ak").getAsString() = "true" ,  1 , 0) , err=*next)
         keyPress!.setIsShiftDown(iff(json!.get("sk").getAsString() = "true" ,  1 , 0) , err=*next)
         keyPress!.setIsCtrlDown(iff(json!.get("ck").getAsString() = "true" ,  1 , 0) , err=*next)

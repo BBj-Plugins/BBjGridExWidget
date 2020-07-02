@@ -36,29 +36,29 @@ class public GxFilterSetFilterTest
         Assert.Equals(json!.get("values").getAsJsonArray().equals(#Instance!.getValues()),BBjAPI.TRUE)
     methodend
     
-    rem @Test
-    method public void testCanSetSuppressSyncValuesAfterDataChange()
-        declare auto JsonObject json!
+    rem rem @Test
+    rem method public void testCanSetSuppressSyncValuesAfterDataChange()
+    rem     declare auto JsonObject json!
 
-        json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("suppressSyncValuesAfterDataChange").getAsBoolean() , BBjAPI.FALSE)
+    rem     json! = #Instance!.getAsJsonObject()
+    rem     Assert.Equals(json!.get("suppressSyncValuesAfterDataChange").getAsBoolean() , BBjAPI.FALSE)
 
-        #Instance!.setSuppressSyncValuesAfterDataChange(1)
-        json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("suppressSyncValuesAfterDataChange").getAsBoolean() , BBjAPI.TRUE)
-    methodend
+    rem     #Instance!.setSuppressSyncValuesAfterDataChange(1)
+    rem     json! = #Instance!.getAsJsonObject()
+    rem     Assert.Equals(json!.get("suppressSyncValuesAfterDataChange").getAsBoolean() , BBjAPI.TRUE)
+    rem methodend
     
-    rem @Test
-    method public void testCanSetSuppressRemoveEntries()
-        declare auto JsonObject json!
+    rem rem @Test
+    rem method public void testCanSetSuppressRemoveEntries()
+    rem     declare auto JsonObject json!
 
-        json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("suppressRemoveEntries").getAsBoolean() , BBjAPI.FALSE)
+    rem     json! = #Instance!.getAsJsonObject()
+    rem     Assert.Equals(json!.get("suppressRemoveEntries").getAsBoolean() , BBjAPI.FALSE)
 
-        #Instance!.setSuppressRemoveEntries(1)
-        json! = #Instance!.getAsJsonObject()
-        Assert.Equals(json!.get("suppressRemoveEntries").getAsBoolean() , BBjAPI.TRUE)
-    methodend    
+    rem     #Instance!.setSuppressRemoveEntries(1)
+    rem     json! = #Instance!.getAsJsonObject()
+    rem     Assert.Equals(json!.get("suppressRemoveEntries").getAsBoolean() , BBjAPI.TRUE)
+    rem methodend    
     
     rem @Test
     method public void testCanSetSuppressSorting()
@@ -96,6 +96,31 @@ class public GxFilterSetFilterTest
         Assert.Equals(json!.get("suppressSelectAll").getAsBoolean() , BBjAPI.TRUE)
     methodend      
         
+    rem @Test
+    method public void testCanSetDefaultToNothingSelected()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("defaultToNothingSelected").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setDefaultToNothingSelected(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("defaultToNothingSelected").getAsBoolean() , BBjAPI.TRUE)
+    methodend 
+
+    rem @Test
+    method public void testCanSetApplyMiniFilterWhileTyping()
+        declare auto JsonObject json!
+
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("applyMiniFilterWhileTyping").getAsBoolean() , BBjAPI.FALSE)
+
+        #Instance!.setApplyMiniFilterWhileTyping(1)
+        json! = #Instance!.getAsJsonObject()
+        Assert.Equals(json!.get("applyMiniFilterWhileTyping").getAsBoolean() , BBjAPI.TRUE)
+    methodend 
+
+    
     rem @After
     method public void tearDown()
         #Instance! = null()

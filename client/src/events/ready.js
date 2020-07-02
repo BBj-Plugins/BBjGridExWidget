@@ -48,10 +48,32 @@ export function gw_onReadyEvent(id, _e) {
     grid.options.api.addEventListener(event, stateDebounce)
   })
 
-  // register keyboard debounce monitor
-  const keyboardDebounce = gw_debounce(keydownEvent => {
-    gw_onKeydown(id, keydownEvent)
-  }, 500)
+  // collect key downs information to be reported with other events
+  grid.container.addEventListener('keydown', keydownEvent => {
+    grid.keys = {
+      c: keydownEvent.key,
+      kc: keydownEvent.which || Number(keydownEvent.keyCode),
+      ak: keydownEvent.altKey,
+      sk: keydownEvent.shiftKey,
+      ck: keydownEvent.ctrlKey,
+    }
+  })
 
-  grid.container.addEventListener('keydown', keyboardDebounce)
+  // clear collect keydown information
+  grid.container.addEventListener(
+    'keyup',
+    // eslint-disable-next-line no-unused-vars
+    gw_debounce(_e => {
+      grid.keys = null
+    }, 250)
+  )
+
+  // register keyboard debounce monitor
+
+  grid.container.addEventListener(
+    'keydown',
+    gw_debounce(keydownEvent => {
+      gw_onKeydown(id, keydownEvent)
+    }, 500)
+  )
 }

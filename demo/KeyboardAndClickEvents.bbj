@@ -1,0 +1,110 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+
+? 'HIDE'
+
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientKeypressModel
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+declare auto BBjTopLevelWindow wnd!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Keyboard And Click Events Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+SysGui! = BBjAPI().getSysGui()
+boldFont! = SysGui!.makeFont("arial",13,BBjFont.FONT_BOLD)
+
+leftPanelTitle! = wnd!.addStaticText(202,10,10,200,25,"Event Details" , $0000$)
+leftPanelTitle!.setFont(boldFont!)
+
+details! = wnd!.addCEdit(204,10,50,180,540,"")
+details!.setOpaque(0)
+details!.setEditable(0)
+details!.setFocusable(0)
+details!.addParagraph(0, "Click a row or double click a row " + $0a$ + 
+: "with another keyboard key like:" + $0a$ + 
+: "Shift, Ctrl, Alt , ...")
+
+gosub main
+process_events
+
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
+
+  grid! = new BBjGridExWidget(wnd!,100,200,0,600,600)
+  grid!.setCallback(grid!.ON_GRID_ROW_CLICK(),"onClickEvent")
+  grid!.setCallback(grid!.ON_GRID_ROW_DOUBLE_CLICK(),"onClickEvent")
+  grid!.setData(rs!)
+return
+
+rem /**
+rem  * Below shows an example for how you can query keyboard keys with rows click events :
+rem  *  
+rem  * Note the following : 
+rem  * 
+rem  *   1. `GxClientKeypressModel.getKey()` can return null , when the grid cannot capture 
+rem  *       Keypresses. 
+rem  *   2. Keypresses can be captured also in the `ON_GRID_CELL_CLICK` and `ON_GRID_CELL_DOUBLE_CLICK`
+rem  *      events in same manner , but the demo skip this to keep the example simple.
+rem  */
+onClickEvent:
+  declare auto GxClientEventsRowSelection obj!
+  declare auto GxClientKeypressModel key!
+
+  ev!  = BBjAPI().getLastEvent()
+  obj! = ev!.getObject()
+
+  row! = obj!.getSelectedRows().get(0)
+  key! = obj!.getKey()
+
+  type!         = iff(ev!.getName().endsWith(str(BBjGridExWidget.ON_GRID_ROW_CLICK())), "Row Click", "Row Double Click")
+  row!          = row!.getId()
+  isAlt!        = " - "
+  isShift!      = " - "
+  isCtrl!       = " - "
+
+  if(key! <> null())
+    isAlt!        = iff(key!.getIsAltDown()   , "Yes", "No")
+    isShift!      = iff(key!.getIsShiftDown() , "Yes", "No")
+    isCtrl!       = iff(key!.getIsCtrlDown()  , "Yes", "No")  
+  fi
+
+  details!.removeAll()
+  details!.addParagraph(0,"EventType         : " + type!    + $0a$ + $0a$ +
+:                         "Row ID            : " + row!     + $0a$ + $0a$ +
+:                         "Is Alt Key Down   : " + isAlt!   + $0a$ + $0a$ +
+:                         "Is Shift Key Down : " + isShift! + $0a$ + $0a$ +
+:                         "Is Ctrl Key Down  : " + isCtrl! )
+
+return 
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w - 200,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye

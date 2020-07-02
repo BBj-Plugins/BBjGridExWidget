@@ -10,6 +10,7 @@ use ::BBjGridExWidget/test/Mocks/BBjGridExWidgetMock.bbj::BBjGridExWidgetMock
 use com.google.gson.JsonObject
 use com.google.gson.JsonArray
 use com.google.gson.JsonNull
+use com.google.gson.JsonPrimitive
 
 class public GxClientFilteSetFilterModelTest
 
@@ -32,12 +33,12 @@ class public GxClientFilteSetFilterModelTest
     methodend
     
     rem @Test
-    method public void testSetMiniFilterThrowErrorWihoutColumn()
+    method public void testSetMiniFilterThrowErrorWithoutColumn()
        Assert.Expect(#Instance!.setMiniFilter("someString") , 256)
     methodend
     
     rem @Test
-    method public void testSetMiniFilterThrowErrorWihoutWidget()
+    method public void testSetMiniFilterThrowErrorWithoutWidget()
          #Instance!.setWidget(null())
          #Instance!.setColumn("foo")
          Assert.Expect(#Instance!.setMiniFilter("someString") , 256)
@@ -54,13 +55,13 @@ class public GxClientFilteSetFilterModelTest
     methodend
     
     rem @Test
-    method public void testGetMiniFilterThrowErrorWihoutColumn()
+    method public void testGetMiniFilterThrowErrorWithoutColumn()
        #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
        Assert.Expect(#Instance!.getMiniFilter() , 256)
     methodend
     
     rem @Test
-    method public void testGetMiniFilterThrowErrorWihoutWidget()
+    method public void testGetMiniFilterThrowErrorWithoutWidget()
          #Instance!.setWidget(null())
          #Instance!.setColumn("foo")
          Assert.Expect(#Instance!.getMiniFilter() , 256)
@@ -82,72 +83,35 @@ class public GxClientFilteSetFilterModelTest
     methodend 
      
     rem @Test
-    method public void testSelectEveryThingThrowErrorWihoutColumn()
-       #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
-       Assert.Expect(#Instance!.selectEverything() , 256)
-    methodend
-    
-    rem @Test
-    method public void testSelectEveryThingThrowErrorWihoutWidget()
-         #Instance!.setWidget(null())
-         #Instance!.setColumn("foo")
-         Assert.Expect(#Instance!.selectEverything() , 256)
-    methodend 
-    
-    rem @Test
-    method public void testSelectEveryThingExecuteCode()
-        #Instance!.setColumn("foo")
-        
-        widget! = #Instance!.getWidget()
-        widget!.setIsReady(BBjAPI.TRUE)
-        
+    method public void testSelectEveryThingRemoveValuesArray()
+        Assert.Equals(#Instance!.getValues().equals(new JsonArray()), BBjAPI.TRUE)
         #Instance!.selectEverything()
-        Assert.Equals(len(widget!.getLastExecutedScript()) > 0, BBjAPI.TRUE)
-        rem check does call execute 
-        Assert.Equals(widget!.getLastExecutedScript().contains(#Instance!.execute(0)), BBjAPI.TRUE)        
+        Assert.IsNull(#Instance!.getValues())
     methodend
     
     rem @Test
-    method public void testSelectNothingThrowErrorWihoutColumn()
-       #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
-       Assert.Expect(#Instance!.selectNothing() , 256)
-    methodend
-    
-    rem @Test
-    method public void testSelectNothingThrowErrorWihoutWidget()
-         #Instance!.setWidget(null())
-         #Instance!.setColumn("foo")
-         Assert.Expect(#Instance!.selectNothing() , 256)
-    methodend     
-         
-    rem @Test
-    method public void testSelectNothingThingExecuteCode()
-        #Instance!.setColumn("foo")
-        
-        widget! = #Instance!.getWidget()
-        widget!.setIsReady(BBjAPI.TRUE)
-        
+    method public void testSelectNothingResetValuesArray()
+        #Instance!.getValues().add("test value")
+        Assert.Equals(#Instance!.getValues().size() > 0, BBjAPI.TRUE)
         #Instance!.selectNothing()
-        Assert.Equals(len(widget!.getLastExecutedScript()) > 0, BBjAPI.TRUE)
-        rem check does call execute 
-        Assert.Equals(widget!.getLastExecutedScript().contains(#Instance!.execute(0)), BBjAPI.TRUE)
+        Assert.Equals(#Instance!.getValues().size() > 0, BBjAPI.FALSE)
     methodend
     
     rem @Test
-    method public void testSetFilterValuesThrowErrorWihoutColumn()
+    method public void testSetFilterValuesThrowErrorWithoutColumn()
        #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
        Assert.Expect(#Instance!.setFilterValues(null()) , 256)
     methodend    
            
     rem @Test
-    method public void testSetFilterValuesThrowErrorWihoutWidget()
+    method public void testSetFilterValuesThrowErrorWithoutWidget()
          #Instance!.setWidget(null())
          #Instance!.setColumn("foo")
          Assert.Expect(#Instance!.setFilterValues(null()) , 256)
     methodend                  
              
     rem @Test
-    method public void testSetFilterValuesThingExecuteCode()
+    method public void testSetFilterValuesExecuteCode()
         #Instance!.setColumn("foo")
         
         widget! = #Instance!.getWidget()
@@ -158,61 +122,20 @@ class public GxClientFilteSetFilterModelTest
         rem check does call execute 
         Assert.Equals(widget!.getLastExecutedScript().contains(#Instance!.execute(0)), BBjAPI.TRUE)        
     methodend
-              
-    rem @Test
-    method public void testSelectValueThrowErrorWihoutColumn()
-       #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
-       Assert.Expect(#Instance!.selectValue("string") , 256)
-       Assert.Expect(#Instance!.selectValue(123) , 256)
-    methodend 
     
     rem @Test
-    method public void testSelectValueThrowErrorWihoutWidget()
-         #Instance!.setWidget(null())
-         #Instance!.setColumn("foo")
-         Assert.Expect(#Instance!.selectValue("string") , 256)
-         Assert.Expect(#Instance!.selectValue(123) , 256)
-    methodend 
-    
-    rem @Test
-    method public void testSelectValueExecuteCode()
-        #Instance!.setColumn("foo")
-        
-        widget! = #Instance!.getWidget()
-        widget!.setIsReady(BBjAPI.TRUE)
-        
-        #Instance!.selectValue("string")
-        Assert.Equals(len(widget!.getLastExecutedScript()) > 0, BBjAPI.TRUE)
-        rem check does call execute 
-        Assert.Equals(widget!.getLastExecutedScript().contains(#Instance!.execute(0)), BBjAPI.TRUE)        
+    method public void testSelectValue()
+        #Instance!.selectValue("test value")
+        Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive("test value")), BBjAPI.TRUE)
     methodend            
-                     
-    rem @Test
-    method public void testUnselectValueThrowErrorWihoutColumn()
-       #Instance!.getWidget().setIsReady(BBjAPI.TRUE)
-       Assert.Expect(#Instance!.unselectValue("string") , 256)
-       Assert.Expect(#Instance!.unselectValue(123) , 256)
-    methodend 
     
     rem @Test
-    method public void testUnselectValueThrowErrorWihoutWidget()
-         #Instance!.setWidget(null())
-         #Instance!.setColumn("foo")
-         Assert.Expect(#Instance!.unselectValue("string") , 256)
-         Assert.Expect(#Instance!.unselectValue(123) , 256)
-    methodend     
-    
-    rem @Test
-    method public void testUnselectValueExecuteCode()
-        #Instance!.setColumn("foo")
-        
-        widget! = #Instance!.getWidget()
-        widget!.setIsReady(BBjAPI.TRUE)
-        
-        #Instance!.unselectValue("string")
-        Assert.Equals(len(widget!.getLastExecutedScript()) > 0, BBjAPI.TRUE)
-        rem check does call execute 
-        Assert.Equals(widget!.getLastExecutedScript().contains(#Instance!.execute(0)), BBjAPI.TRUE)        
+    method public void testUnselectValue()
+      #Instance!.getValues().add("test value")
+      Assert.Equals(#Instance!.getValues().size() = 1, BBjAPI.TRUE)
+      #Instance!.unselectValue("test value")     
+      Assert.Equals(#Instance!.getValues().contains(new JsonPrimitive("test value")), BBjAPI.FALSE)     
+      Assert.Equals(#Instance!.getValues().size() = 0, BBjAPI.TRUE)
     methodend            
     
     rem @Test
@@ -235,8 +158,9 @@ class public GxClientFilteSetFilterModelTest
       
       #Instance!.setColumn("foo")
       #Instance!.clearFilter()
-      Assert.Equals(#Instance!.getValues().equals(new JsonArray()), BBjAPI.TRUE)
-      
+      Assert.IsNull(#Instance!.getValues())
+      rem Assert.Equals(#Instance!.getValues().equals(new JsonArray()), BBjAPI.TRUE)
+      #Instance!.update()
       widget! = #Instance!.getWidget()
       Assert.Equals(widget!.getBacklog().size() , 1)
     methodend  

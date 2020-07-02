@@ -34,11 +34,14 @@ const CELL_CLICKING_EVENTS_MAP = {
  */
 export function gw_onRowDoubleClicked(e) {
   const context = e.api.gridOptionsWrapper.gridOptions.context
+
   gw_sendEvent(
     context,
     {
       type: 'gw.rowDoubleClick',
-      detail: '',
+      detail: JSON.stringify({
+        k: gw_getGrid(context.id).keys,
+      }),
     },
     GW_EVENT_ROW_DOUBLE_CLICK
   )
@@ -53,11 +56,14 @@ export function gw_onRowDoubleClicked(e) {
  */
 export function gw_onRowClicked(e) {
   const context = e.api.gridOptionsWrapper.gridOptions.context
+
   gw_sendEvent(
     context,
     {
       type: 'gw.rowClick',
-      detail: '',
+      detail: JSON.stringify({
+        k: gw_getGrid(context.id).keys,
+      }),
     },
     GW_EVENT_ROW_CLICK
   )
@@ -129,6 +135,7 @@ export function gw_onCellClickEvent(id, e) {
           v: gw_escape(e.value), // new value
           o: gw_escape(e.value), // odl value
           c: e.column.colId, // columns
+          k: gw_getGrid(id).keys,
         }),
       },
       CELL_CLICKING_EVENTS_MAP[type]

@@ -51,7 +51,7 @@ fillGrid:
   rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
   rem wait some time to simulate a long process
   wait 3
-  grid!.setRowsData(rs!)
+  grid!.updateData(rs!)
 return
 
 rem /**
