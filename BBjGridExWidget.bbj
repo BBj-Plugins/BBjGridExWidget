@@ -2880,9 +2880,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         #getColumn(next!).setHidden(hidden!)
       fi
     wend
-    scriptKey! = "$wnd.gw_setColumnVisible"
     script$="$wnd.gw_setColumnVisible('" + #getRootId() +  "','" + columns! + "'," + str(hidden!.booleanValue()) +");"
-    #getExecutor().execute(scriptKey!,script$)
+    #getExecutor().execute(script$)
   methodend  
   rem /**
   rem  * Sets the visibility of a column
