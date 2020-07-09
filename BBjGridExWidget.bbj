@@ -2866,6 +2866,34 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #getExecutor().execute(scriptKey!,script$)
   methodend
   rem /**
+  rem  * Sets the visibility of column(s)
+  rem  * 
+  rem  * @param BBjString columns! A comma separated list of column ids to hide / show
+  rem  * @param BBjNumber hidden! True to hide , false to show
+  rem  */
+  method public void setColumnVisible(BBjString columns! , BBjNumber hidden!)
+    ids! = Arrays.asList(columns!.replaceAll(" ","").split(","))
+    it! = ids!.iterator()
+    while it!.hasNext()
+      next! = it!.next()
+      if(#hasColumn(next!))
+        #getColumn(next!).setHidden(hidden!)
+      fi
+    wend
+    scriptKey! = "$wnd.gw_setColumnVisible"
+    script$="$wnd.gw_setColumnVisible('" + #getRootId() +  "','" + columns! + "'," + str(hidden!.booleanValue()) +");"
+    #getExecutor().execute(scriptKey!,script$)
+  methodend  
+  rem /**
+  rem  * Sets the visibility of a column
+  rem  * 
+  rem  * @param GxColumn column! The column definition
+  rem  * @param BBjNumber hidden! True to hide , false to show
+  rem  */
+  method public void setColumnVisible(GxColumn column! , BBjNumber hidden!)
+    #setColumnVisible(column!.getField(), hidden!)
+  methodend  
+  rem /**
   rem  * Ensures the column is visible, scrolling the table if needed.
   rem  *
   rem  * <br><b><small>#API</small></b>
