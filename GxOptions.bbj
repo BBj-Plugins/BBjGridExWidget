@@ -611,6 +611,12 @@ class public GxOptions
     rem  */
     field public BBjNumber AlwaysShowVerticalScroll! = null()
     rem /**
+    rem  * Set to true to never show the horizontal scroll.
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */    
+    field public BBjNumber SuppressHorizontalScroll! = null()
+    rem /**
     rem  * When true, the grid will not scroll to the top when new row data is provided&#183;
     rem  * Use this if you don't want the default behaviour of scrolling to the top every time you load new data&#183;
     rem  * <br><b><small>#Configuration</small></b>
@@ -1279,6 +1285,7 @@ class public GxOptions
         rem Scrolling Options
         rem ===========================
         options!.addProperty("alwaysShowVerticalScroll",#getAlwaysShowVerticalScroll().booleanValue(), err=*next)
+        options!.addProperty("suppressHorizontalScroll",#getSuppressHorizontalScroll().booleanValue(), err=*next)
         options!.addProperty("suppressScrollOnNewData",#getSuppressScrollOnNewData().booleanValue(), err=*next)
         options!.addProperty("suppressAnimationFrame",#getSuppressAnimationFrame().booleanValue(), err=*next)
         options!.addProperty("suppressColumnVirtualisation",#getSuppressColumnVirtualisation().booleanValue(), err=*next)
