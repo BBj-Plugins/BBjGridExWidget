@@ -96,12 +96,6 @@ function gw_parseOptions(options) {
       onRowEditingStopped: e => {
         gw_onRowEditingEvent(id, e)
       },
-      onCellClicked: e => {
-        gw_onCellClickEvent(id, e)
-      },
-      onCellDoubleClicked: e => {
-        gw_onCellClickEvent(id, e)
-      },
       onGridReady: e => {
         gw_onReadyEvent(id, e)
       },
@@ -111,6 +105,8 @@ function gw_parseOptions(options) {
       popupParent: gw_getDocument().body,
       onRowDoubleClicked: gw_debounce(gw_onRowDoubleClicked, debounceDuration),
       onRowClicked: gw_debounce(gw_onRowClicked, debounceDuration),
+      onCellClicked: gw_debounce(gw_onCellClickEvent, debounceDuration),
+      onCellDoubleClicked: gw_debounce(gw_onCellClickEvent, debounceDuration),
       onSelectionChanged: gw_debounce(gw_onSelectionChanged, debounceDuration),
       onRangeSelectionChanged: gw_debounce(
         gw_onRangeSelectionChanged,

@@ -121,13 +121,15 @@ export function gw_onRangeSelectionChanged(e) {
  * @fires gw.cellClicked
  * @fires gw.cellDoubleClicked
  */
-export function gw_onCellClickEvent(id, e) {
+export function gw_onCellClickEvent(e) {
+  const context = e.api.gridOptionsWrapper.gridOptions.context
+  const id = context.id
   const parsed = gw_parseNodeFromEvent(e)
 
   if (parsed) {
     const type = e.type
     gw_sendEvent(
-      gw_getGrid(id).options.context,
+      context,
       {
         type: `gw.${e.type}`,
         detail: JSON.stringify({
