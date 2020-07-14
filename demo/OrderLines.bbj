@@ -1,0 +1,1006 @@
+? 'HIDE'
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::bbwindowutils.bbj::BBWindowUtils
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxColumns.bbj::GxColumn
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorLargeText
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicText
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicNumber
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionNumbersFormatter
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsCell
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
+use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsKeypress
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientCellModel
+use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
+use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
+use com.basiscomponents.bc.SqlQueryBC
+use com.basiscomponents.db.DataRow
+use com.basiscomponents.db.ResultSet
+use java.sql.Connection
+use java.sql.Types
+use com.google.gson.JsonObject
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public ChileConnection
+
+  field protected static ChileConnection Instance!
+  field protected Connection Connection!
+  field protected SqlQueryBC QueryBC!
+  rem /**
+  rem  * Disable the default constructor
+  rem  */
+  method private ChileConnection()
+    #setConnection(BBjAPI().getJDBCConnection("ChileCompany"))
+    #setQueryBC(new SqlQueryBC(#getConnection()))
+  methodend
+  rem /**
+  rem  * Get an instance of the ChileConnection object
+  rem  *
+  rem  * @return ChileConnection
+  rem  */
+  method public static ChileConnection getInstance()
+    if(#Instance! = null())
+      #Instance! = new ChileConnection()
+    fi
+
+    methodret #Instance!
+  methodend
+  rem /**
+  rem  * Get the JDBC opened connection for the chile compony
+  rem  *
+  rem  * @return java.sql.Connection
+  rem  */
+  method public Connection getConnection()
+    methodret #Connection!
+  methodend
+  rem /**
+  rem  * Get an instance of the query bc created with current connection
+  rem  *
+  rem  * @return com.basiscomponents.db.ResultSet
+  rem  */
+  method public SqlQueryBC getQueryBC()
+    methodret #QueryBC!
+  methodend
+
+classend
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public ItemsRepository
+  rem /**
+  rem  * The table name which the repo manages
+  rem  */
+  field protected static BBjString Table! = "ITEM"
+  rem /**
+  rem  * Get all items in the table
+  rem  *
+  rem  * @return com.basiscomponents.db.ResultSet
+  rem  */
+  method public static ResultSet getALl()
+    declare auto ChileConnection connection!
+
+    connection! = ChileConnection.getInstance()
+    query! = String.format("SELECT ITEM_NUM , DESCRIPTION , PRICE FROM %s", #getTable())
+    methodret connection!.getQueryBC().retrieve(query!)
+  methodend
+  rem /**
+  rem  * Get item by its number
+  rem  *
+  rem  * @param BBjString number! the item number
+  rem  *
+  rem  * @return com.basiscomponents.db.DataRow
+  rem  */
+  method public static DataRow getItemByNumber(BBjString number!)
+    declare auto ChileConnection connection!
+    declare auto ResultSet rs!
+
+    connection! = ChileConnection.getInstance()
+    query! = String.format("SELECT * FROM %s where ITEM_NUM = '%s'", #getTable(), number!)
+    rs! = connection!.getQueryBC().retrieve(query!)
+    row! = rs!.get(0, err=*next)
+    methodret row!
+  methodend
+
+classend
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public Configuration
+
+  field public static BBjString Currency! = "$"
+  field public static BBjString CurrencyMask! = "########.00-"
+  field public static BBjNumber MoneyColumnsAlignment! = BBjGridExWidget.GRID_ALIGN_RIGHT()
+  field public static BBjString TrashIcon! = "<svg xmlns=""http://www.w3.org/2000/svg"" width=""24"" height=""24"" viewBox=""0 0 24 24"" stroke-width=""2"" stroke=""currentColor"" fill=""none"" stroke-linecap=""round"" stroke-linejoin=""round""> <path stroke=""none"" d=""M0 0h24v24H0z""/> <line x1=""4"" y1=""7"" x2=""20"" y2=""7"" /> <line x1=""10"" y1=""11"" x2=""10"" y2=""17"" /> <line x1=""14"" y1=""11"" x2=""14"" y2=""17"" /> <path d=""M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"" /> <path d=""M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"" /> </svg>"
+
+classend
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public ItemsSelector
+  rem /**
+  rem  * The modal title
+  rem  */
+  field public BBjString Title! = ""
+  rem /**
+  rem  * SysGui instance to use
+  rem  */
+  field public BBjSysGui SysGui!
+  rem /**
+  rem  * The created modal window
+  rem  */
+  field public BBjTopLevelWindow Modal!
+  rem /**
+  rem  * The ResultSet Instance which is being used by the modal
+  rem  */
+  field public ResultSet RS! = new ResultSet()
+  rem /**
+  rem  * The GridEx instance
+  rem  */
+  field public BBjGridExWidget Grid!
+  rem /**
+  rem  * Construct new ItemSelector modal
+  rem  *
+  rem  * @param BBjSysGui sysGui!
+  rem  * @param BBjString title!
+  rem  */
+  method public ItemsSelector(BBjSysGui sysGui!, BBjString title!)
+    #setSysGui(SysGui!)
+    #setTitle(title!)
+  methodend
+  rem /**
+  rem  * Setup the required data and then start drawing the modal
+  rem  *
+  rem  * @param BBjNumber width! the modal width
+  rem  * @param BBjNumber height! the modal height
+  rem  *
+  rem  * @return ItemsSelector the ItemsSelector instance
+  rem  */
+  method public ItemsSelector init(BBjNumber width!, BBjNumber height!)
+    #Modal! = #getSysGui().addWindow(#getSysGui().getAvailableContext(), 0, 0, width!, height!, #getTitle(), $00090083$)
+    BBWindowUtils.centerWindow(#Modal!)
+    #Modal!.setCallback(BBjAPI.ON_CLOSE, #this!, "onModalClose")
+    methodret #setupSearch().setupGrid()
+  methodend
+  rem /**
+  rem  * Register a callback method to be called by the modal whenever the
+  rem  * an item is selected or the modal is closed.
+  rem  *
+  rem  * @param CustomObject instance! A reference to the object which contains the listener method
+  rem  * @param String listener! the listener method to call on the passed instance
+  rem  *
+  rem  * @return ItemsSelector the ItemsSelector instance
+  rem  */
+  method public ItemsSelector setListener(CustomObject instance!, String listener!)
+    BBjAPI().setCustomEventCallback(str(#this!), instance!, listener!)
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Draw the search input and register an `ON_EDIT_MODIFY`
+  rem  * listener.
+  rem  *
+  rem  * @return ItemsSelector the ItemsSelector instance
+  rem  */
+  method public ItemsSelector setupSearch()
+    declare auto BBjTopLevelWindow modal!
+    declare auto BBjEditBox searchInput!
+
+    modal!  = #getModal()
+    x!      = 10
+    y!      = 10
+    width!  = modal!.getWidth() - x! * 2
+    height! = 30
+    searchInput! = modal!.addEditBox(100, x!, y!, width!, height!, "", "", "search")
+    searchInput!.setPlaceholder("Search items by Number Or Description ...")
+    searchInput!.focus()
+    searchInput!.setCallback(BBjAPI.ON_EDIT_MODIFY, #this!, "onSearch")
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Setup the grid instance , fill it with the ResultSet
+  rem  * and configure its options
+  rem  *
+  rem  * @return ItemsSelector the ItemsSelector instance
+  rem  */
+  method public ItemsSelector setupGrid()
+    declare auto BBjGridExWidget grid!
+    declare auto BBjTopLevelWindow modal!
+
+    modal!  = #getModal()
+    x!      = 0
+    y!      = 50
+    id!     =  101
+    width!  = modal!.getWidth()
+    height! = modal!.getHeight() -  50
+    rem init the grid
+    grid! = new BBjGridExWidget(modal!, id!, x!, y!, width!, height!)
+    #setGrid(grid!)
+    rem /**
+    rem  * Make the currently visible columns fit the screen.
+    rem  */
+    grid!.setFitToGrid()
+    rem /**
+    rem  * Make sure to use the community editing as the grid
+    rem  * acts just as list box where we don't need any enhanced features
+    rem  */
+    grid!.setForceCommunityBuild(1)
+    rem /**
+    rem  * Retrieve the items from the `ItemsRepository` and
+    rem  * feed the grid the data
+    rem  */
+    grid!.setData(ItemsRepository.getALl())
+    rem /**
+    rem  * Listen to row double click and call `onRowDoubleClick`
+    rem  */
+    grid!.setCallback(grid!.ON_GRID_ROW_DOUBLE_CLICK(), #this!, "onRowDoubleClick")
+    rem /**
+    rem  * Listen to enter keys and select the row
+    rem  */
+    grid!.setCallback(grid!.ON_GRID_KEYPRESS(), #this!, "onKeyPress")
+    rem /**
+    rem  * Configure the columns in here
+    rem  */
+    declare auto GxColumn itemNumber!
+    declare auto GxColumn desc!
+    declare auto GxColumn price!
+
+    itemNumber! = grid!.getColumn("ITEM_NUM")
+    desc!       = grid!.getColumn("DESCRIPTION")
+    price!      = grid!.getColumn("PRICE")
+    itemNumber!.setLabel("Item Number")
+    desc!      .setLabel("Description")
+    price!     .setLabel("Price $")
+    price!     .setColumnMask("########.00-")
+    price!     .setAlignment(Configuration.getMoneyColumnsAlignment(), 1)
+
+    declare auto GxExpressionNumbersFormatter moneyFormatter!
+
+    moneyFormatter! = new GxExpressionNumbersFormatter(Configuration.getCurrencyMask())
+    moneyFormatter!.setSuffix(Configuration.getCurrency())
+    price!         .setValueFormatterExpression(moneyFormatter!)
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Destroy the modal
+  rem  *
+  rem  * @return ItemsSelector the ItemsSelector instance
+  rem  */
+  method public ItemsSelector destroy()
+    #getModal().destroy()
+    #setModal(null())
+    #setGrid(null())
+    #setRS(new ResultSet())
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Notify the registered listener
+  rem  *
+  rem  * @param GxClientRowModel rowModel!
+  rem  *
+  rem  * @return ItemsSelector the ItemsSelector instance
+  rem  */
+  method protected ItemsSelector notifyListener(GxClientRowModel rowModel!)
+    BBjAPI().postPriorityCustomEvent(str(#this!), rowModel!)
+    methodret #this!
+  methodend
+  rem /**
+  rem  * A listener for gird rows double click , it will
+  rem  * close the modal and notify the registered listener
+  rem  *
+  rem  * @param CustomObject event!
+  rem  */
+  method public void onRowDoubleClick(BBjCustomEvent event!)
+    declare auto GxClientEventsRowSelection rowSelectionEvent!
+    declare auto GxClientRowModel rowModel!
+
+    rowSelectionEvent! = event!.getObject()
+    rowModel! = rowSelectionEvent!.getSelectedRows().getItem(0)
+    #destroy().notifyListener(rowModel!)
+  methodend
+  rem /**
+  rem  * A listener for gird enter keypress
+  rem  *
+  rem  * @param CustomObject event!
+  rem  */
+  method public void onKeyPress(BBjCustomEvent event!)
+    declare auto GxClientEventsKeypress keyModel!
+
+    keyModel! = event!.getObject()
+    code! = keyModel!.getKey().getKeyCode()
+
+    if(code! = 13)
+      selectedRows! = #getGrid().getSelectedRows()
+
+      if(selectedRows!.size() > 0)
+        rowModel! = selectedRows!.getItem(0)
+        #destroy().notifyListener(rowModel!)
+      fi
+    fi
+  methodend
+  rem /**
+  rem  * Close the modal and notify the registered listener
+  rem  *
+  rem  * @param BBjCloseEvent event!
+  rem  */
+  method public void onModalClose(BBjCloseEvent event!)
+    #destroy().notifyListener(null())
+  methodend
+  rem /**
+  rem  * A listener for the search input which will
+  rem  * set a quick filter on the grid whenever the input's
+  rem  * value is changed
+  rem  *
+  rem  * @param BBjEvent event!
+  rem  */
+  method public void onSearch(BBjEvent event!)
+    term! = event!.getControl().getText()
+    #getGrid().setQuickFilter(term!)
+  methodend
+
+classend
+rem /**
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public Application
+  rem /**
+  rem  * The app title
+  rem  */
+  field public BBjString Title! = ""
+  rem /**
+  rem  * SysGui instance to use
+  rem  */
+  field public BBjSysGui SysGui!
+  rem /**
+  rem  * The created top level window
+  rem  */
+  field public BBjTopLevelWindow Window!
+  rem /**
+  rem  * The ResultSet Instance which is being used by the application
+  rem  */
+  field public ResultSet RS! = new ResultSet()
+  rem /**
+  rem  * The GridEx instance
+  rem  */
+  field public BBjGridExWidget Grid!
+  rem /**
+  rem  * The name of the column which the grid will use to index rows
+  rem  */
+  field public BBjString IndexBy! = "__INDEX__"
+  rem /**
+  rem  * The index of the last created row
+  rem  */
+  field public BBjString Index! = null()
+  rem /**
+  rem  * The cell model for the last cell which is being edited
+  rem  */
+  field public GxClientCellModel LastCellInEdit! = null()
+  rem /**
+  rem  * The instance of the last attache trigger row
+  rem  */
+  field public DataRow LastCreatedTriggerRow! = null()
+  rem /**
+  rem  * Construct new application
+  rem  *
+  rem  * @param BBjSysGui sysGui!
+  rem  * @param BBjString title!
+  rem  */
+  method public Application(BBjSysGui sysGui!, BBjString title!)
+    #setSysGui(SysGui!)
+    #setTitle(title!)
+  methodend
+  rem /**
+  rem  * Setup the required data and then start drawing the application
+  rem  *
+  rem  * @param BBjNumber width! the window width
+  rem  * @param BBjNumber height! the window height
+  rem  *
+  rem  * @return Application the application instance
+  rem  */
+  method public Application init(BBjNumber width!, BBjNumber height!)
+    #Window! = #getSysGui().addWindow(10, 10, width!, height!, #getTitle())
+    BBWindowUtils.centerWindow(#Window!)
+    #Window!.setCallback(BBjAPI.ON_CLOSE, #this!, "onClose")
+    #Window!.setCallback(BBjAPI.ON_RESIZE, #this!, "onResize")
+    rem pre-fill the grid with one empty row
+    #getRS().add(#constructNewTriggerRow())
+    #setupGrid().configureGridColumns().attachStyles()
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Create an empty row and add it to the ResultSet.
+  rem  *
+  rem  * The trigger row is just an empty row which will be appended at the end of the
+  rem  * ResultSet so the user can start adding new order lines.
+  rem  *
+  rem  * This method will make sure there is one and only one trigger row appended
+  rem  * to the ResultSet
+  rem  *
+  rem  * @return com.basiscomponents.db.DataRow
+  rem  */
+  method public DataRow constructNewTriggerRow()
+    declare auto ResultSet rs!
+    declare auto DataRow row!
+
+    rs! = #getRS()
+    count! = rs!.count()
+    lastRow! = rs!.get(rs!.count() - 1, err=*next)
+    rem we consider every row without a value in ITEM_NUM field to be a trigger row
+    hasTriggerRow! = lastRow! <> null() AND lastRow!.getFieldAsString("ITEM_NUM") = ""
+
+    if (!hasTriggerRow!) then
+      rem we make sure to update the tracked index
+      #setIndex(java.util.UUID.randomUUID().toString())
+      row! = new DataRow()
+      row!.setFieldValue("ITEM_NUM"    , "" )
+      row!.setFieldValue("DESCRIPTION" , "" )
+      row!.setFieldValue("QTY"         , "1")
+      row!.setFieldValue("PRICE"       , "0")
+      rem it is important to add the index to the data row so the grid can find it later.
+      row!.setFieldValue(#getIndexBy(), Types.VARCHAR, #getIndex())
+      #setLastCreatedTriggerRow(row!)
+    fi
+
+    methodret row!
+  methodend
+  rem /**
+  rem  * Setup the grid instance , fill it with the ResultSet
+  rem  * and configure its options
+  rem  *
+  rem  * @return Application the application instance
+  rem  */
+  method public Application setupGrid()
+    declare auto BBjGridExWidget grid!
+    declare auto BBjTopLevelWindow window!
+
+    window! = #getWindow()
+    x!      = 0
+    y!      = 0
+    id!     =  100
+    width!  = window!.getWidth()
+    height! = window!.getHeight()
+    rem init the grid
+    grid! = new BBjGridExWidget(window!, id!, x!, y!, width!, height!)
+    #setGrid(grid!)
+    rem /**
+    rem  * Make sure to use the community editing as the grid
+    rem  * acts just as list box where we don't need any enhanced features
+    rem  */
+    grid!.setForceCommunityBuild(1)
+    rem /**
+    rem  * Disable columns hiding be dragging the columns outside the grid
+    rem  */
+    grid!.getOptions().setSuppressDragLeaveHidesColumns(1)
+    rem /**
+    rem  * Configure the grid to stop editing whenever it loses the focus
+    rem  */
+    grid!.getOptions().setStopEditingWhenGridLosesFocus(1)
+    rem /**
+    rem  * Set to true to enable Single Click Editing for cells, to start editing with a single click
+    rem  */
+    grid!.getOptions().setSingleClickEdit(1)
+    rem /**
+    rem  * Make the current visible columns fit the window.
+    rem  */
+    grid!.setFitToGrid()
+    rem /**
+    rem  * Feed the grid with our created ResultSet
+    rem  *
+    rem  * Notice how we pass the `IndexBy` field to the grid.
+    rem  *        This will tell the grid to use `IndexBy` column's value to index rows
+    rem  */
+    grid!.setData(#getRS(), 0, 0, #getIndexBy())
+    rem /**
+    rem  * Attach a listener for cell editing , the event will be fired every time the cell
+    rem  * value is changed.
+    rem  *
+    rem  * Notice This event will not fired in case the old value of the cell is equal to
+    rem  *        new value of the cell.
+    rem  */
+    grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(), #this!, "onCellValueChanged")
+    rem  * Attach a listener for cell clicking , the event will be fired every time a cell
+    rem  * is clicked.
+    rem  */
+    grid!.setCallback(grid!.ON_GRID_CELL_CLICK(), #this!, "onCellClick")
+    rem /**
+    rem  * Tell the grid to set the focus on the first cell of the first row.
+    rem  * This call is a shortcode for:
+    rem  *
+    rem  * grid!.focus("COLUMN_NUM","ROW_KEY_OR_INDEX")
+    rem  */
+    grid!.focus()
+    rem /**
+    rem  * Configure the loading overlay template.
+    rem  * The overlay which will be shown , when the user is given the option to select
+    rem  * an item from the `ItemsSelector`
+    rem  */
+    grid!.getOptions().setOverlayLoadingTemplate("Waiting for items")
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Add the columns which the user will be able to manipulate to the grid
+  rem  * and configure each column with its own roles
+  rem  *
+  rem  * @return Application the application instance
+  rem  */
+  method public Application configureGridColumns()
+    declare auto GxColumn itemNum!
+    declare auto GxColumn itemDesc!
+    declare auto GxColumn itemQty!
+    declare auto GxColumn itemPrice!
+    declare auto GxColumn itemLinePrice!
+    declare auto BBjGridExWidget grid!
+
+    grid! = #getGrid()
+    rem /**
+    rem  * Add the columns to the grid and configure their SQL Types
+    rem  *
+    rem  * Notice that `LINE_PRICE` is a "Virtual column" which means it is
+    rem  *        a column used only to show the user some extra information
+    rem  *        but it is not really a column in our ResultSet.
+    rem  *        Still the grid will report the value of this column when
+    rem  *        you receive events or ask for selected row(s) using
+    rem  *        `grid!.getSelectedRow()` or  `grid!.getSelectedRows()`
+    rem  *
+    rem  * @see demo/ColumnSetup.bbj
+    rem  */
+    itemNum!        = grid!.addColumn("ITEM_NUM"    , "Item Number"  , Types.VARCHAR)
+    itemQty!        = grid!.addColumn("QTY"         , "Quantity"     , Types.INTEGER)
+    itemDesc!       = grid!.addColumn("DESCRIPTION" , "Description"  , Types.VARCHAR)
+    itemPrice!      = grid!.addColumn("PRICE"       , "Price $"      , Types.INTEGER)
+    itemLinePrice!  = grid!.addColumn("LINE_PRICE"  , "Line Price $" , Types.INTEGER)
+    action!         = grid!.addColumn("ACTION"      , ""             , Types.INTEGER)
+    rem /**
+    rem  * Lock the position of the items number column
+    rem  */
+    itemNum!.setSuppressMovable(1)
+    itemNum!.setLockPosition(1)
+    rem /**
+    rem  * To improve the user experience we render the `ITEM_NUM` cells differently
+    rem  * when there is no value
+    rem  *
+    rem  * when the cell has no value , we add grayed label to inform the user
+    rem  * that it can click on the cell to start adding new orders , when the cell has
+    rem  * already a value then we just show it.
+    rem  *
+    rem  * Notice how `GxRendererCustomHTML` accepts a template.
+    rem  *        This is a lodash template. it starts with `<%` and ends with `%>`
+    rem  *        to force the template to execute and print directly what inside it,
+    rem  *        we add the `=` sign to the start tag `<%=`.
+    rem  *        Inside the template you can use only Javascript and embedded HTML and CSS
+    rem  *
+    rem  * DO NOT confuse lodash templates with JSP templates. both are different things
+    rem  *
+    rem  * {@link https://lodash.com/docs/4.17.15#template}
+    rem  */
+    itemNum!.setCellRenderer(new GxRendererCustomHTML("<%= !params.value ? '<span style=""color:gray"">&#x2b; Add new</span>' : params.value %>"))
+    rem /**
+    rem  * We give the `PRICE` and the `LINE_PRICE` columns a mask
+    rem  * and a suffix using the `GxExpressionNumbersFormatter`.
+    rem  *
+    rem  * The expression accepts any valid BBj number mask
+    rem  * and will format the columns values so they become
+    rem  * monetary values with two decimal digits
+    rem  */
+    declare auto GxExpressionNumbersFormatter moneyFormatter!
+
+    moneyFormatter! = new GxExpressionNumbersFormatter(Configuration.getCurrencyMask())
+    moneyFormatter!.setSuffix(Configuration.getCurrency())
+    itemLinePrice! .setValueFormatterExpression(moneyFormatter!)
+    itemPrice!     .setValueFormatterExpression(moneyFormatter!)
+    rem /**
+    rem  * We align the price columns to the right
+    rem  */
+    itemLinePrice!.setAlignment(Configuration.getMoneyColumnsAlignment(), 1)
+    itemPrice!    .setAlignment(Configuration.getMoneyColumnsAlignment(), 1)
+    rem /**
+    rem  * Because the `LINE_PRICE` is a "Virtual column"
+    rem  * We setup a value getter expression on the column
+    rem  * to automatically gets its value based on the QTY & PRICE
+    rem  * columns.
+    rem  *
+    rem  * The expression is self explanatory. it casts `QTY` and `PRICE` to numbers
+    rem  * and return the result as a string.
+    rem  *
+    rem  * Notice Notice how we omitted the `return` keyword in the expression
+    rem  *        When the expression does not have the word `return` in it,
+    rem  *        then the grid will insert it for you and adds the ';' for you
+    rem  *        in other words the expression will be handled by the grid like
+    rem  *        this:
+    rem  *        `return String(Number(data.QTY) * Number(data.PRICE));`
+    rem  *
+    rem  * @see demo/ValueSetter.bbj
+    rem  */
+    itemLinePrice!.setValueGetterExpression("String(Number(data.QTY) * Number(data.PRICE))")
+    rem /**
+    rem  * We configure what columns can be edited.
+    rem  *
+    rem  * Notice how the `PRICE` and the `LINE_PRICE` have
+    rem  *        an editable expression which makes sure that the `ITEM_NUM`
+    rem  *        cell has already a value before the user can edit other cells
+    rem  *        of the row.
+    rem  *        This especially useful for trigger rows where the
+    rem  *        user should not be able to enter a QTY or a description
+    rem  *        before it selects an item.
+    rem  *
+    rem  */
+    itemNum!.setEditable(1)
+    isEditableExp! = "data.ITEM_NUM && data.ITEM_NUM.length > 0"
+    itemDesc!.setEditableExpression(isEditableExp!)
+    itemQty! .setEditableExpression(isEditableExp!)
+    rem /**
+    rem  * Configure the `ITEM_NUM` cell editor to accept only
+    rem  * a number with 6 precision using a a pattern
+    rem  *
+    rem  * The pattern makes sure that value can contains any number but the length is bigger
+    rem  * than one and smaller than 6
+    rem  *
+    rem  * More on patterns here:
+    rem  *  {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions}
+    rem  */
+    declare auto GxCellEditorBasicText itemNumCellEditor!
+
+    itemNumCellEditor! = itemNum!.getCellEditor()
+    itemNumCellEditor!.setPattern("[0-9]{1,6}")
+    rem /**
+    rem  * We setup a value parser expression for the `ITEM_NUM`. The parser
+    rem  * expression will be executed before the grid sets the cell value.
+    rem  * In our case , the expression will make sure to pad any entered number with
+    rem  * the number of missing zeros.
+    rem  *
+    rem  * This will make entering item numbers easier fo the user
+    rem  * so instead of entering `000012` , the user can enter only `12`
+    rem  *
+    rem  * @see demo/ValueParser.bbj
+    rem  */
+    itemNum!.setValueParserExpression("('000000' + newValue).substr(('000000' + newValue).length - 6)")
+    rem /**
+    rem  * Configure the `QTY` cell editor to accept a
+    rem  * value between 1 and 10 only.
+    rem  */
+    declare auto GxCellEditorBasicNumber itemQtyCellEditor!
+
+    itemQtyCellEditor! = itemQty!.getCellEditor()
+    itemQtyCellEditor!.setMin(1)
+    itemQtyCellEditor!.setMax(10)
+    rem /**
+    rem  * Configuration the `ACTION` column to disable
+    rem  * column's menu and to have a cell renderer which
+    rem  * will draw a remove button for all rows except
+    rem  * for the trigger row.
+    rem  */
+    action!.setSuppressMenu(1)
+    action!.setMaxWidth(60)
+    action!.setAlignment(grid!.GRID_ALIGN_CENTER())
+    action!.setSuppressSizeToFit(1)
+    action!.setResizable(0)
+    action!.setSortable(0)
+    action!.setSuppressNavigable(1)
+    action!.setCellRenderer(new GxRendererCustomHTML(String.format("<%%= params.data.ITEM_NUM ? '%s' : '' %%>", Configuration.getTrashIcon())))
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Style the grid with custom and conditional styles
+  rem  *
+  rem  * @return Application the application instance
+  rem  */
+  method public Application attachStyles()
+    declare auto BBjGridExWidget grid!
+
+    grid! = #getGrid()
+    rem /**
+    rem  * Action column style
+    rem  */
+    grid!.addStyle("[col-id=""ACTION""]", "{""transition"":""all 0.2s ease-in-out""}")
+    grid!.addStyle("[col-id=""ACTION""]:hover", "{""color"":""#f44336""}")
+    methodret #this!
+  methodend
+  rem /**
+  rem  * Start processing the application events events
+  rem  *
+  rem  * @return Application
+  rem  */
+  method public Application processEvents()
+    process_events
+    methodret #this!
+  methodend
+  rem /**
+  rem  * A listener for the grid `ON_GRID_CELL_CLICK` event
+  rem  *
+  rem  * The listener will be called for any cell click.
+  rem  * But we respond only to cell clicks on the `Action` menu
+  rem  *
+  rem  * The method will delete the row from the grid
+  rem  * After the user confirms the action.
+  rem  *
+  rem  * @param BBjCustomEvent event!
+  rem  */
+  method public void onCellClick(BBjCustomEvent event!)
+    declare auto GxClientEventsCell cellEvent!
+    declare auto GxClientCellModel cellModel!
+    declare auto DataRow row!
+
+    cellEvent!= event!.getObject()
+    cellModel! = cellEvent!.getCell()
+    row! = cellModel!.getRow().asDataRow()
+    isTriggerRow! = row!.equals(#getLastCreatedTriggerRow())
+    currentColumn! = cellEvent!.getColumn().getName()
+    if(isTriggerRow! OR currentColumn! <> "ACTION") methodret
+    message! = "Are you sure you want to remove " + str(row!.getFieldValue("ITEM_NUM")) + "?"
+    answer! = msgbox(message!, 1, "Delete Permanently")
+
+    if(answer! = 1)
+      rem /**
+      rem  * Remove the row from the grid and from the ResultSet too.
+      rem  */
+      #getGrid().removeRow(row!)
+    fi
+  methodend
+  rem /**
+  rem  * A listener for the grid `ON_GRID_CELL_VALUE_CHANGED` event
+  rem  *
+  rem  * The listener will be called for any cell change.
+  rem  * The method will check the active column and forward
+  rem  * the event to its appropriate handler.
+  rem  *
+  rem  * @param BBjCustomEvent event!
+  rem  */
+  method public void onCellValueChanged(BBjCustomEvent event!)
+    declare auto GxClientEventsCell cellEvent!
+    declare auto GxClientCellModel cellModel!
+
+    cellEvent!= event!.getObject()
+    cellModel! = cellEvent!.getCell()
+    #setLastCellInEdit(cellModel!)
+    currentColumn! = cellEvent!.getColumn().getName()
+    switch currentColumn!
+      case "ITEM_NUM"
+        #onItemNumberValueChanged(cellModel!)
+        break
+      case "QTY"
+        #onItemQtyValueChanged(cellModel!)
+        break
+      case "DESCRIPTION"
+        #onItemDescValueChanged(cellModel!)
+        break
+    swend
+  methodend
+  rem /**
+  rem  * Listen to `ITEM_NUM` cell changes
+  rem  *
+  rem  * We try to retrieve the item by its entered number from the `ItemsRepository`
+  rem  * if it cannot be found , then user entered something wrong
+  rem  * and we show the `ItemsSelector` modal to select one of the available items.
+  rem  * Otherwise , we update the current working ResultSet and notify the grid
+  rem  * about the update to reflect any changes
+  rem  *
+  rem  * @param GxClientCellModel cellModel!
+  rem  */
+  method public void onItemNumberValueChanged(GxClientCellModel cellModel!)
+    declare auto BBjGridExWidget grid!
+    declare auto DataRow item!
+
+    grid! = #getGrid()
+    rem /**
+    rem  * Try to find the item in the `ItemsRepository`
+    rem  * if not found then null is returned
+    rem  */
+    item! = ItemsRepository.getItemByNumber(cellModel!.getValue())
+
+    if(item! <> null())
+      declare auto GxClientRowModel rowModel!
+      declare auto DataRow row!
+      declare auto DataRow triggerRow!
+
+      rowModel! = cellModel!.getRow()
+      rem /**
+      rem  * Sync the new client row values with the ResultSet
+      rem  * Basically this part will add the selected `ITEM_NUM` to our DataRow
+      rem  * in the ResultSet. If you don't really can get your head around
+      rem  * this part then think about it as a replacement to:
+      rem  *
+      rem  *   row!= rowModel!.asDataRow()
+      rem  *   row!.setFieldValue("ITEM_NUM", item!.getFieldAsString("ITEM_NUM"))
+      rem  */
+      row! = rowModel!.updateFromClientRow()
+      rem /**
+      rem  * Then add the rest of the required fields `DESCRIPTION`
+      rem  * and `PRICE` from the item we retrieved previously from the `ItemsRepository`
+      rem  */
+      row!.setFieldValue("DESCRIPTION", item!.getFieldAsString("DESCRIPTION"))
+      row!.setFieldValue("PRICE", item!.getFieldAsNumber("PRICE"))
+      rem /**
+      rem  * Now we send the new updated DataRow again to the grid , so the user
+      rem  * can see the price and the description of the item it selects.
+      rem  */
+      grid!.updateRow(row!)
+      rem /**
+      rem  * Finally we create a new trigger row so the user can
+      rem  * keep adding new items
+      rem  */
+      triggerRow! = #constructNewTriggerRow()
+
+      if(triggerRow! <> null())
+        grid!.addRow(#getRS().count(),triggerRow!)
+        grid!.redrawRows()
+      fi
+      rem /**
+      rem  * After updating we instruct the grid to start editing
+      rem  * on the `QTY` cell
+      rem  */
+      grid!.setStartCellEditing(rowModel!.getId(), "QTY")
+      rem /**
+      rem  * IF YOU HAVE A DATABASE TABLE FOR order lines , then this is the place
+      rem  * were you should do your SQL update for the  `ITEM_NUM` column
+      rem  */
+    else
+      rem /**
+      rem  * Reaching this point means the item which the user entered
+      rem  * does really exist so as a fallback we give the user the chance
+      rem  * to select one of the available items in our items `ItemsRepository`
+      rem  * using the `ItemsSelector`
+      rem  */
+      rem /**
+      rem  * Before we show the `ItemsSelector` we revert the DataRow values
+      rem  */
+      row! = cellModel!.getRow().asDataRow()
+      row!.setFieldValue("ITEM_NUM", "")
+      row!.setFieldValue("DESCRIPTION", "")
+      row!.setFieldValue("PRICE","0")
+      rem /**
+      rem  * Instruct the grid to reflect the changes of the new
+      rem  * DataRow values
+      rem  */
+      grid!.updateRow(row!)
+      rem /**
+      rem  * Finally we create the `ItemsSelector` and wait
+      rem  * for the user to select something or to close the `ItemsSelector`
+      rem  *
+      rem  * When the user is done Interacting with the `ItemsSelector` the
+      rem  * `onItemSelected` method will be called from this class so
+      rem  * we can decide what to do next
+      rem  */
+      itemsSelector! = new ItemsSelector(#getSysGui(), "Items selector")
+      itemsSelector!.init(450,500).setListener(#this!, "onItemSelected")
+      rem /**
+      rem  * We put the grid in loading mode to prevent any kind of
+      rem  * interactions
+      rem  *
+      rem  * Notice that this part is not really necessary as the
+      rem  *        `ItemsSelector` will prevent interaction.
+      rem  *        we added this only for demoing purpose
+      rem  */
+      grid!.showLoadingOverlay()
+    fi
+  methodend
+  rem /**
+  rem  * Listen to `QTY` cell changes
+  rem  *
+  rem  * This method only update our DataRow in the ResultSet
+  rem  *
+  rem  * @param GxClientCellModel cellModel!
+  rem  */
+  method public void onItemQtyValueChanged(GxClientCellModel cellModel!)
+    cellModel!.getRow().updateFromClientRow()
+    rem /**
+    rem  * IF YOU HAVE A DATABASE TABLE FOR order lines , then this is the place
+    rem  * were you should do your SQL update for the  `QTY` column
+    rem  */
+  methodend
+  rem /**
+  rem  * Listen to `DESCRIPTION` cell changes
+  rem  *
+  rem  * This method only update our DataRow in the ResultSet
+  rem  *
+  rem  * @param GxClientCellModel cellModel!
+  rem  */
+  method public void onItemDescValueChanged(GxClientCellModel cellModel!)
+    cellModel!.getRow().updateFromClientRow()
+    rem /**
+    rem  * IF YOU HAVE A DATABASE TABLE FOR order lines , then this is the place
+    rem  * were you should do your SQL update for the  `DESCRIPTION` column
+    rem  */
+  methodend
+  rem /**
+  rem  * An `ItemsSelector` listener
+  rem  *
+  rem  * The listener will be called  once the user is done interacting
+  rem  * with the `ItemsSelector` modal.
+  rem  * The event will contain the selected row model in case the user
+  rem  * selected one
+  rem  *
+  rem  * @param BBjCustomEvent event!
+  rem  */
+  method public void onItemSelected(BBjCustomEvent event!)
+    declare auto GxClientCellModel lastCellInEdit!
+    declare auto GxClientRowModel rowModelFromTheEvent!
+    declare auto BBjGridExWidget grid!
+    declare auto DataRow dataRowFromTheEvent!
+    declare auto DataRow dataRowInEdit!
+
+    grid!                 = #getGrid()
+    lastCellInEdit!       = #getLastCellInEdit()
+    dataRowInEdit!        = lastCellInEdit!.getRow().asDataRow()
+    rowModelFromTheEvent! = event!.getObject()
+    rem /**
+    rem  * When the `rowModelFromTheEvent!` is not null()
+    rem  * then this means that the user selected a row.
+    rem  * We merge the user's selected row from the modal
+    rem  * with current the row which is being edited then
+    rem  * instruct the grid to reflect the new changes
+    rem  */
+    if(rowModelFromTheEvent! <> null())
+      dataRowFromTheEvent! = rowModelFromTheEvent!.asDataRow()
+      rem /**
+      rem  * Merges `dataRowFromTheEvent!` object with the
+      rem  * `dataRowInEdit!` by adding all fields of the
+      rem  * `dataRowFromTheEvent!` DataRow object to
+      rem  * the `dataRowInEdit!`.
+      rem  */
+      dataRowInEdit!.mergeRecord(dataRowFromTheEvent!)
+      rem /**
+      rem  * Instruct the grid to reflect changes
+      rem  */
+      grid!.updateRow(dataRowInEdit!)
+      rem /**
+      rem  * Finally we create a new trigger row so the user can
+      rem  * keep adding new items
+      rem  */
+      triggerRow! = #constructNewTriggerRow()
+
+      if(triggerRow! <> null())
+        grid!.addRow(#getRS().count(),triggerRow!)
+        grid!.redrawRows()
+      fi
+      rem /**
+      rem  * IF YOU HAVE A DATABASE TABLE FOR order lines , then this is the place
+      rem  * were you should do your SQL update for the  `ITEM_NUM` column
+      rem  */
+    fi
+    rem /**
+    rem  * Hide any shown overlay
+    rem  */
+    grid!.hideOverlay()
+    rem /**
+    rem  * After updating we instruct the grid to start editing
+    rem  * on the `QTY` cell
+    rem  */
+    grid!.setStartCellEditing(lastCellInEdit!.getRow().getId(), "QTY")
+  methodend
+  rem /**
+  rem  * Listen to the BBjTopLevelWindow resize events and
+  rem  * resize the grid to fill the available space.
+  rem  *
+  rem  * @param BBjResizeEvent event!
+  rem  */
+  method public void onResize(BBjResizeEvent event!)
+    declare auto BBjGridExWidget grid!
+
+    grid! = #getGrid()
+    w! = event!.getWidth()
+    h! = event!.getHeight()
+    grid!.setSize(w!, h!)
+    grid!.setFitToGrid()
+  methodend
+  rem /**
+  rem  * Close the application
+  rem  *
+  rem  * @param BBjCloseEvent event!
+  rem  */
+  method public void onClose(BBjCloseEvent event!)
+    declare auto BBjTopLevelWindow window!
+
+    window! = event!.getControl()
+    window!.destroy()
+    release
+  methodend
+
+classend
+rem bootstrap the application
+app! = new Application(BBjAPI().openSysGui("X0"), "Order Lines Demo App")
+app!.init(800,600).processEvents()
