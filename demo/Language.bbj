@@ -21,7 +21,8 @@ languages! = new BBjVector()
 languages!.insertItem(0,"")
 languages!.insertItem(1,"de_DE")
 languages!.insertItem(2,"nl_NL")
-languages!.insertItem(3,"de_SL"); rem Just a demo language file.
+languages!.insertItem(3,"fr_FR")
+languages!.insertItem(4,"de_SL"); rem Just a demo language file.
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"Language Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
@@ -31,7 +32,8 @@ lb_languages! = wnd!.addListButton(201,5,6,160,250,"")
 lb_languages!.insertItemAt(0,"System Language")
 lb_languages!.insertItemAt(1,"German")
 lb_languages!.insertItemAt(2,"Dutch")
-lb_languages!.insertItemAt(3,"Saarlandish (Custom)")
+lb_languages!.insertItemAt(3,"French")
+lb_languages!.insertItemAt(4,"Saarlandish (Custom)")
 lb_languages!.selectIndex(0)
 lb_languages!.setCallback(BBjAPI.ON_LIST_SELECT,"updateLanguage")
 
