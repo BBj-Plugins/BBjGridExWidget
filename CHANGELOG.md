@@ -1,3 +1,42 @@
+# [1.0.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.102.1...1.0.0) (2020-07-17)
+
+
+### Bug Fixes
+
+* :bug: cell clicks events are not debounced ([67e6e5a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/67e6e5a1438f3a5488c0f5658337639e3c0008cb))
+* :bug: setColumnVisible uses worng debounce key ([0e1b99a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0e1b99aadd49d8fa1e29fcc42d311194b62c3038))
+* **demo:** replace deprecated api in Pivot demo ([2f2bff1](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2f2bff10201321d697facfc2165f39c459fe1744))
+* :bug: replace deprecated methods in `GxFilterSetFilter` ([565f64a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/565f64a7eb3249d22d61d2ed61cf8affec471bce))
+* **demo:** :bug: redraw columns in ColumnsUpdate.bbj ([bc16e25](https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc16e25f8ae47ac1a8af282ecec58f03a7e1a11e))
+* **demo:** :bug: replace deprecated method `setRowsData` ([701fa30](https://github.com/BBj-Plugins/BBjGridExWidget/commit/701fa309322c7c3e3858e7e631787975fbb621cf))
+* :bug: Key navs broken in agg23.2 & BBj20.11 ([7728add](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7728addc9f8291e7c68889deb479947288b5a80e))
+* :bug: SetFilter filter throws warnnings in aggv23.2 ([cc8d4b6](https://github.com/BBj-Plugins/BBjGridExWidget/commit/cc8d4b62f3804ea4fe4a17489a3a1ab92d96bace))
+
+
+### Features
+
+* **demo:** :sparkles: add OrderLines demo ([b6acd3a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b6acd3a5d0698e2c980fa3e01989021e70862472))
+* :sparkles: add `setColumnVisible` APi ([aa203c8](https://github.com/BBj-Plugins/BBjGridExWidget/commit/aa203c8233868ee52b81e495af9acf53eb7c39cc))
+* :sparkles: add `SuppressHorizontalScroll` option ([409baf6](https://github.com/BBj-Plugins/BBjGridExWidget/commit/409baf62e4f1a9ff30d150813696cc92edafe06b))
+* :sparkles: add SetFilter `DefaultToNothingSelected` & `ApplyMiniFilterWhileTyping` ([8b7b5eb](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8b7b5eb08745ba412e898f01742667841317859e))
+* :sparkles: Attach key presses to clickEvents ([6de57a2](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6de57a293cf4b33aafa3a1889ea834ec65108862)), closes [#206](https://github.com/BBj-Plugins/BBjGridExWidget/issues/206)
+
+
+* refactor!: :hammer: deprecate `SuppressSyncValuesAfterDataChange` & `SuppresRemoveEntries` ([ee4171c](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ee4171c3eb1cfd3911d4d07bee5105d56aaa88ad))
+
+
+### BREAKING CHANGES
+
+* since version 0.102.0,
+`GxFilterSetFilter.SuppressRemoveEntries` &
+`GxFilterSetFilter.SuppressRemoveEntries` is deprecated / removed. Use
+GxFilterSetFilter.NewRowsAction instead.
+* The GxClientModels.GxClientFilterSetFilterModel
+requires calling the `update` method after calling any of its methods
+(ex: selectEverything()). Check Demo/FilterAPI )
+
+
+
 ## [0.102.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.102.0...0.102.1) (2020-06-23)
 
 

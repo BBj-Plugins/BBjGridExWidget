@@ -48,7 +48,7 @@ main:
   grid!.addPivotColumns("MUSICTYPE")
   grid!.addValueColumns("COST")
 
-  grid!.getSidebar().openToolpanel(GxColumnsToolpanel.ID())
+  grid!.getSidebar().openToolpanel(GxColumnsToolpanel.getId())
 return
 
 rem /**

@@ -871,6 +871,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     declare BBjHtmlView htmlview!
 
     if (f_init!) then
+      rem @see https://bugzilla.basis.com/show_bug.cgi?id=33048
+      enableInternalSpecialKeysHandling! = stbl("!OPTIONS","HTMLVIEW_INTERNAL_TABS=TRUE")
+
       html$ = #getTemplate()
       htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
       htmlview!.setOpaque(0)
@@ -1085,15 +1088,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     map! = ev!.getEventMap()
     type$ = str(map!.get("type"))
     detail$ = str(map!.get("detail"))
+
     switch type$
       case "gw.rowSelect"
-        #onSelectRowChange(detail$, "select")
+        #onSelectRowChange(detail$, #ON_GRID_SELECT_ROW())
         break
       case "gw.rowClick"
-        #onSelectRowChange(detail$,"single")
+        #onSelectRowChange(detail$,#ON_GRID_ROW_CLICK())
         break
       case "gw.rowDoubleClick"
-        #onSelectRowChange(detail$,"double")
+        #onSelectRowChange(detail$,#ON_GRID_DOUBLE_CLICK())
         break
       case "gw.cellClicked"
         #onCellEvent(detail$,#ON_GRID_CELL_CLICK())
@@ -1985,10 +1989,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * @see setData()
   rem  *
-  rem  * @deprecated since version 0.101.0, BBjGridExWidget. updateData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.
+  rem  * @deprecated since version 0.101.0, BBjGridExWidget.setRowsData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.
   rem  */
   method public void setRowsData(ResultSet rs!)
-    GxLogger.warn("since version 0.101.0, BBjGridExWidget. updateData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.")
+    GxLogger.warn("since version 0.101.0, BBjGridExWidget.setRowsData(ResultSet rs!) is deprecated / renamed. Use BBjGridExWidget.updateData(ResultSet rs!) instead.")
     #updateData(rs!)
   methodend
   rem /**
@@ -2861,6 +2865,33 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     script$="$wnd.gw_ensureColumnVisible('" + #getRootId() +  "','" + columnId! + "');"
     #getExecutor().execute(scriptKey!,script$)
   methodend
+  rem /**
+  rem  * Sets the visibility of column(s)
+  rem  * 
+  rem  * @param BBjString columns! A comma separated list of column ids to hide / show
+  rem  * @param BBjNumber hidden! True to hide , false to show
+  rem  */
+  method public void setColumnVisible(BBjString columns! , BBjNumber hidden!)
+    ids! = Arrays.asList(columns!.replaceAll(" ","").split(","))
+    it! = ids!.iterator()
+    while it!.hasNext()
+      next! = it!.next()
+      if(#hasColumn(next!))
+        #getColumn(next!).setHidden(hidden!)
+      fi
+    wend
+    script$="$wnd.gw_setColumnVisible('" + #getRootId() +  "','" + columns! + "'," + str(hidden!.booleanValue()) +");"
+    #getExecutor().execute(script$)
+  methodend  
+  rem /**
+  rem  * Sets the visibility of a column
+  rem  * 
+  rem  * @param GxColumn column! The column definition
+  rem  * @param BBjNumber hidden! True to hide , false to show
+  rem  */
+  method public void setColumnVisible(GxColumn column! , BBjNumber hidden!)
+    #setColumnVisible(column!.getField(), hidden!)
+  methodend  
   rem /**
   rem  * Ensures the column is visible, scrolling the table if needed.
   rem  *
@@ -3764,26 +3795,30 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * Parse the json details coming from the client and fires new GxSelectRowEvent
   rem  *
+  rem  * @param BBjString detail$ The event detail as Json
+  rem  * @param BBjNumber type! The event type
+  rem  * 
   rem  * @see GxSelectRowEvent
   rem  */
-  method protected void onSelectRowChange(BBjString detail$, BBjString type$)
+  method protected void onSelectRowChange(BBjString detail$, BBjNumber type!)
     declare GxClientEventsRowSelection event!
+    declare JsonParser parser!
 
     event! = new GxClientEventsRowSelection()
     event!.setSelectedRows(#getSelectedRows())
-    SWITCH (type$)
-      CASE "single"
-        #fireEvent(#ON_GRID_ROW_CLICK(),event!)
-        break
-      CASE "double"
-        #fireEvent(#ON_GRID_DOUBLE_CLICK(), event!)
-        break
-      case "select"
-        #fireEvent(#ON_GRID_SELECT_ROW(),event!)
-        break
-      case default
-        break
-    SWEND
+
+    rem report keypress for click events only
+    if(type! = #ON_GRID_ROW_CLICK() OR type! = #ON_GRID_DOUBLE_CLICK())
+      parser! = new JsonParser()
+      detailsAsJson!  = parser!.parse(detail$).getAsJsonObject()
+      keypress! =  null()
+      if(detailsAsJson!.has("k") AND detailsAsJson!.get("k").isJsonNull() = BBjAPI.FALSE) then
+        keypress! = #getClientJsonFactory().getKeypress(detailsAsJson!.get("k").getAsJsonObject())
+      fi
+      event!.setKey(keypress!)
+    fi 
+
+    #fireEvent(type!,event!)
   methodend
   rem /**
   rem  * On context menu event
@@ -3816,9 +3851,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     parser! = new JsonParser()
     parsedCell!  = parser!.parse(detail$).getAsJsonObject()
     cell! = #getClientJsonFactory().getCell(parsedCell!)
+
     event! = new GxClientEventsCell()
     event!.setCell(cell!)
-    event!.setOldValue(parsedCell!.get("o").getAsString())
+    event!.setOldValue(parsedCell!.get("o").getAsString(), err=*next)
+
+    if(type! = #ON_GRID_CELL_CLICK() OR type! = #ON_GRID_CELL_DOUBLE_CLICK())
+      if(parsedCell!.has("k") AND parsedCell!.get("k").isJsonNull() = BBjAPI.FALSE) then
+        keypress! = #getClientJsonFactory().getKeypress(parsedCell!.get("k").getAsJsonObject())
+        event!.setKey(keypress!)
+      fi
+    fi
+
     #fireEvent(type!, event!)
   methodend
   rem /**

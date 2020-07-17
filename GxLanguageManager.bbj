@@ -32,6 +32,7 @@ class public GxLanguageManager
     method public GxLanguageManager()
         #add("de_DE","BBjGridExWidget/langs/de_DE.json")
         #add("nl_NL","BBjGridExWidget/langs/nl_NL.json")
+        #add("fr_FR","BBjGridExWidget/langs/fr_FR.json")
     methodend
     rem /**
     rem  * Get the selected language

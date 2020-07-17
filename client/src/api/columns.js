@@ -325,3 +325,17 @@ export function gw_setSortModel(id, model) {
 export function gw_refreshHeader(id) {
   gw_getGrid(id).options.api.redrawRows()
 }
+
+/**
+ * Update column viability
+ *
+ * @param {String} id grid's id
+ * @param {String} columns  a comma separated list of column ids
+ * @param {Boolean} visible true to make the columns visible , false to hide
+ */
+export function gw_setColumnVisible(id, columns, visible) {
+  gw_getGrid(id).options.columnApi.setColumnsVisible(
+    columns.split(','),
+    Boolean(visible)
+  )
+}
