@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.0...1.0.1) (2020-08-31)
+
+
+### Bug Fixes
+
+* **deps:** update BBjWidget required version to 1.1 ([e7950ef](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e7950ef8012fb891755d14eb9d4f0649aa824ed7))
+
+
+
 # [1.0.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/0.102.1...1.0.0) (2020-07-17)
 
 
