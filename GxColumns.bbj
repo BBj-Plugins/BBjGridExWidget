@@ -2014,6 +2014,12 @@ class public GxColumnGroup extends GxDefaultColumnGroup implements GxColumnsMana
     rem /**
     rem  * {@inheritDoc}
     rem  */
+    method public GxColumn addColumn(BBjString field!)
+      methodret #ColumnsManager!.addColumn(field!)
+    methodend    
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
     method public GxColumn getColumn(BBjString field!)
         methodret #ColumnsManager!.getColumn(field!)
     methodend
