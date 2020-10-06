@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.1...1.0.2) (2020-10-06)
+
+
+### Bug Fixes
+
+* :bug: Cannot instantiate GxColumnGroup:addColumn(BBjString field!) ([7009c86](https://github.com/BBj-Plugins/BBjGridExWidget/commit/7009c860d30e96a45e2cdc9683f8fad504a73a80))
+
+
+
 ## [1.0.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.0...1.0.1) (2020-08-31)
 
 
