@@ -45,6 +45,21 @@ class public GxOptionsBoolean
     rem  */
     field public JsonArray PossibleFalseValues! = new JsonArray()
     rem /**
+    rem  * Construct new GxOptionsBoolean
+    rem  */
+    method public GxOptionsBoolean()
+      rem fill predefined false values
+      #getPossibleFalseValues().add("0")
+      #getPossibleFalseValues().add("false")
+      #getPossibleFalseValues().add("n")
+      #getPossibleFalseValues().add("no")
+      rem fill predefined yes values
+      #getPossibleTrueValues().add("1")
+      #getPossibleTrueValues().add("true")
+      #getPossibleTrueValues().add("y")
+      #getPossibleTrueValues().add("yes")
+    methodend
+    rem /**
     rem  * Transform the options object to json
     rem  *
     rem  * @return JsonObject

@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.2...1.0.3) (2020-10-20)
+
+
+### Bug Fixes
+
+* :bug: GxOptionsBoolean does not define default options ([83c4bac](https://github.com/BBj-Plugins/BBjGridExWidget/commit/83c4bac2083f1324d5bbd656d52ce198597e155e))
+
+
+
 ## [1.0.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.1...1.0.2) (2020-10-06)
 
 
