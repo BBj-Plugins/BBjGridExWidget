@@ -5,7 +5,7 @@ plugins:
   prerelease:
     Compiling production version:
       plugin: 'bumped-terminal'
-      command: 'NODE_ENV=production yarn build'   
+      command: 'yarn build'   
   postrelease: 
     Generating CHANGELOG file:
       plugin: bumped-changelog
