@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.3...1.0.4) (2020-10-22)
+
+
+### Bug Fixes
+
+* **deps:** :bug: bumped basis-aggrid-components version to 1.2.1 ([2e72f95](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2e72f9585f7d79b14df8f351467625af7d0d8a11))
+
+
+
 ## [1.0.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.2...1.0.3) (2020-10-20)
 
 
