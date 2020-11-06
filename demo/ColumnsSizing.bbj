@@ -36,13 +36,13 @@ gosub main
 process_events
 
 rem /**
-rem  * Retrieve the data from the database and configure the grid
+rem  * Retrieve the data from the database and configure the grid based on result set metadata
 rem  */
 main:
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
   grid!.setData(rs!)
-return 
+return
 
 rem /**
 rem  *  Make the currently visible columns fit the screen width
@@ -52,7 +52,7 @@ sizeToFit:
 return
 
 rem /**
-rem  * looks at the rendered cells on the screen, and works out 
+rem  * looks at the rendered cells on the screen, and works out
 rem  * the width based on what it sees.
 rem  */
 autoSizeAll:
@@ -60,11 +60,11 @@ autoSizeAll:
 return
 
 rem /**
-rem  * looks at the rendered TITLE column on the screen, and works out 
+rem  * looks at the rendered TITLE column on the screen, and works out
 rem  * the width of the column based on its content
 rem  */
 autoSizeTitle:
-    rem it is not necessary to call this method , we call it here for the demo purpose only
+    rem it is not necessary to call setFitToGrid() , we call it here for the demo purpose only
     grid!.setFitToGrid()
     grid!.autoSizeColumns("TITLE")
 return

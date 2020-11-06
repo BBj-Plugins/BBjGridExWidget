@@ -48,21 +48,23 @@ main:
 return
 
 rem /**
-rem  * Show Loading overlay listener
+rem  * Show Loading Overlay listener
+rem  * This overlay disable the main grid in the background until dismissed, but leaves the side-bar active.
 rem  */
 onLoadingOverlay:
     grid!.showLoadingOverlay()
 return
 
 rem /**
-rem  * Show No Rows overlay listener
+rem  * Show No Rows Overlay listener
+rem  * This overlay leaves the grid in its current state, i.e. not disabled, etc.
 rem  */
 onNoRowsOverlay:
     grid!.showNoRowsOverlay()
 return
 
 rem /**
-rem  * Hide overlay listener
+rem  * Hide Overlay listener
 rem  */
 onHideOverlay:
     grid!.hideOverlay()

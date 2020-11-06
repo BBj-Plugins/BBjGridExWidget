@@ -11,21 +11,26 @@ use com.basiscomponents.bc.SqlQueryBC
 ? 'HIDE'
 
 declare auto BBjTopLevelWindow wnd!
+declare auto BBjStaticText lbl_db!
 declare auto BBjListButton lb_db!
+declare auto BBjStaticText lbl_tbl!
 declare auto BBjListButton lb_tbl!
+declare auto BBjStaticText lbl_theme!
+declare auto BBjListButton lb_theme!
+declare auto BBjButton btn_query!
 declare BBjGridExWidget grid!
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
 
-              wnd!.addStaticText(200,5,10,60,25,"Database:")
+lbl_db!     = wnd!.addStaticText(200,5,10,60,25,"Database:")
 lb_db!      = wnd!.addListButton(201,65,5,160,250,"")
-              wnd!.addStaticText(202,270,10,60,25,"Table:")
-lb_tbl!     = wnd!.addListButton(203,310,5,160,250,"")
-btn_query!  = wnd!.addButton(204,500,5,100,25,"Query")
-
-lb_theme!   = wnd!.addListButton(211,610,5,85,250,"")
+lbl_tbl!    = wnd!.addStaticText(202,235,10,60,25,"Table:")
+lb_tbl!     = wnd!.addListButton(203,295,5,160,250,"")
+btn_query!  = wnd!.addButton(204,465,4,100,24,"Query")
+lbl_theme!  = wnd!.addStaticText(205,575,10,60,25,"Theme:")
+lb_theme!   = wnd!.addListButton(206,635,5,85,250,"")
 
 lb_db!      .setCallback(BBjAPI.ON_LIST_SELECT,"loadTables")
 btn_query!  .setCallback(BBjAPI.ON_BUTTON_PUSH,"doQuery")
@@ -46,21 +51,20 @@ lb_theme!.selectIndex(0)
 process_events
 
 loadDatabases:
-  j=0
-  i=0
+  i=0,j=0
   x$ = sqllist(-1)
   while x$>""
       db$=x$(1,pos($0a$=x$)-1)
       x$=x$(pos($0a$=x$)+1)
       lb_db!.addItem(db$)
-  
+
       if db$="ChileCompany" then
           j=i
       FI
-  
+
       i=i+1
   wend
-  
+
   lb_db!.selectIndex(j)
   gosub loadTables
 return
@@ -68,48 +72,61 @@ return
 loadTables:
   lb_tbl!.removeAllItems()
   db$ = lb_db!.getSelectedItem()
-  sqlopen (1,err=no_db)db$
-  x$=sqltables(1)
-  sqlclose(1)
-  j=0
-  i=0
+  sqlch=sqlunt
+  sqlopen (sqlch,err=no_db)db$
+  x$=sqltables(sqlch)
+  sqlclose(sqlch)
+  i=0,j=0
   while x$>""
       tbl$=x$(1,pos($0a$=x$)-1)
       x$=x$(pos($0a$=x$)+1)
       lb_tbl!.addItem(tbl$)
-  
+
       if tbl$="CUSTOMER" then
           j=i
       FI
-  
+
       i=i+1
   wend
-  
+
   lb_tbl!.selectIndex(j)
-  return
-  
+return
+
 no_db:
   a=msgbox("Database "+db$+" does not exist!",16,"Error")
-  return
-  doQuery:
+return
+
+doQuery:
+  rem run <BBjHome>/utils/bbstopwatch.bbj to time loading
+  rd_stopwatch = 0
+  groupNS!=BBjAPI().getGlobalNamespace()
+  groupNS!.getValue("stopwatch",err=*next); rd_stopwatch = 1
+  if rd_stopwatch
+    groupNS!.setValue("stopwatch", "RESET")
+    groupNS!.setValue("stopwatch", "START")
+  endif
+
   db$ = lb_db!.getSelectedItem()
   tbl$ = lb_tbl!.getSelectedItem()
-  
+
   if (db$>"" and tbl$>"") then
-      bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
-      rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
-      grid!.clearColumnDefinitions()
-      grid!.setData(rs!)
+    bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
+    rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
+    grid!.clearColumnDefinitions()
+    grid!.setData(rs!)
   FI
+
+  if rd_stopwatch groupNS!.setValue("stopwatch", "STOP")
+
 return
 
 error_sql:
-    a=msgbox(BBjAPI().getLastException().getMessage() ,0,"ERROR")
+  a=msgbox(BBjAPI().getLastException().getMessage() ,0,"ERROR")
 return
 
 setTheme:
   declare auto BBjListSelectEvent ev!
-  
+
   ev! = BBjAPI().getLastEvent()
   theme$ = ev!.getSelectedItem()
   grid!.setTheme(theme$)
@@ -117,7 +134,7 @@ return
 
 rem /**
 rem  * Listen to the BBjTopLevelWindow resize events and
-rem  * resize the grid to fill the available space. 
+rem  * resize the grid to fill the available space.
 rem  */
 resize:
   declare auto BBjResizeEvent ev!

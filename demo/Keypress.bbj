@@ -56,7 +56,7 @@ onKeyPress:
   SWITCH (code!)
       CASE 13; rem enter
         declare GxClientRowModel row!
-        row! = grid!.getSelectedRow()
+        row! = grid!.getSelectedRow(err=*break)
         let x=MSGBOX(row!.getData().get("CDNUMBER").getAsString(),num,"Selected Row ID")
       BREAK
       CASE 70; rem char "F"

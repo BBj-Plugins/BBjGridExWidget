@@ -14,7 +14,7 @@ use com.basiscomponents.bc.SqlQueryBC
 use com.google.gson.JsonObject
 
 declare auto BBjTopLevelWindow wnd!
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1000,600,"ColumnHeader Height And Text Orientation")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,1000,600,"Column Header Height And Text Orientation")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -22,17 +22,17 @@ gosub main
 process_events
 
 rem /**
-rem  * By default, the text label for the header is display horizontally, 
-rem  * ie as normal readable text. 
-rem  * To display the text in another orientation you have to provide your 
-rem  * own css to change the orientation and also provide 
+rem  * By default, the text label for the header is displayed horizontally,
+rem  * ie as normal readable text.
+rem  * To display the text in another orientation you have to provide your
+rem  * own css to change the orientation and also provide
 rem  * the adequate header heights using the appropriate grid property.
-rem  * 
-rem  * Note the following : 
-rem  * 
-rem  *  1. The header heights have all been changed in the gridOptions
-rem  *  2. The grouped column header CD Information has an specific style applied to it to make it bigger.
-rem  *  3. The column labels have CSS applied to them so they are displayed vertically
+rem  *
+rem  * Note the following :
+rem  *
+rem  *  1. The header heights have all been changed in the gridOptions.
+rem  *  2. The grouped column header 'CD Information' has a specific style applied to it to make it bigger.
+rem  *  3. The column labels have CSS applied to them so they are displayed vertically.
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -44,20 +44,19 @@ main:
   REM init the grid
   grid! = new BBjGridExWidget(wnd!,100,0,0,1000,600)
   grid!.setData(rs!)
-  
-  options! = grid!.getOptions()
 
+  options! = grid!.getOptions()
   options!.setGroupHeaderHeight(75)
   options!.setHeaderHeight(150)
   options!.setFloatingFiltersHeight(50)
-  
-  rem setup columns group style
+
+  rem setup column group with style
   grid!.addStyle(".my-group-class" , "{""font-size"":""50px""}")
   group! = new BBjVector()
   group!.addItem("ARTIST")
   group!.addItem("TITLE")
   grid!.addColumnGroup("group2" , "CD Information", group! ,  0 , "my-group-class")
-  
+
   headerCellStyle! = new JsonObject()
   headerCellStyle!.addProperty("width","55px")
   headerCellStyle!.addProperty("writing-mode","vertical-lr")

@@ -41,7 +41,7 @@ fillGrid:
 
   grid!.setData(rs!)
 
-  rem setup columns group style
+  rem setup column group style
   groupStyle! = new JsonObject()
   groupStyle!.addProperty("background","#03a9f4")
   groupStyle!.addProperty("color","white")

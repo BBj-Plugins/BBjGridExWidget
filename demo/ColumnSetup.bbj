@@ -29,9 +29,9 @@ process_events
 rem /**
 rem  * Retrieve the data from the database and configure the grid.
 rem  *
-rem  * The method shows how to configure the different column attributes using the Columns Manager methods.
+rem  * This routine shows how to configure the different column attributes using the Columns Manager methods.
 rem  * Most of these method work at the configuration level, which means you need to call them before calling
-rem  * grid!.setData() or grid!.render(). but some of them, like grid!.moveColumn() and grid!.pinColumn(),
+rem  * grid!.setData() or grid!.render(). Some of them, like grid!.moveColumn() and grid!.pinColumn()
 rem  * can call the client API to force the change, even if the grid is already rendered.
 rem  * To know which methods can do this and which cannot, check the plugin API.
 rem  */

@@ -34,7 +34,6 @@ process_events
 
 
 fillGrid:
-
     declare SqlQueryBC sbc!
     sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("ChileCompany"))
     rs! = sbc!.retrieve("SELECT  * FROM CUSTOMER")
@@ -44,7 +43,6 @@ fillGrid:
     grid!.getOptions().setMultipleSelection(1)
 
     dtlgrid!.setCallback(grid!.ON_GRID_SELECT_ROW(),"showRecord")
-
 return
 
 byebye:

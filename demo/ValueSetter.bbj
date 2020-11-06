@@ -26,31 +26,31 @@ gosub main
 process_events
 
 rem /**
-rem  * After editing a cell, the grid normally inserts the new value into your data. 
-rem  * If it's not possible then you can provide a Value Setter instead.
-rem  * A Value Setter is the inverse of a Value Getter. Where the value 
-rem  * getter allows getting values from your data using an expression 
-rem  * rather than a field, the value setter allows you to set values 
+rem  * After editing a cell, the grid normally inserts the new value into your data.
+rem  * If it's not possible, then you can provide a Value Setter instead.
+rem  * A Value Setter is the inverse of a Value Getter. Where the value
+rem  * getter allows getting values from your data using an expression
+rem  * rather than a field, the value setter allows you to set values
 rem  * into your data using an expression rather than specifying a field.
-rem  * 
+rem  *
 rem  * The parameters provided to a value setter are as follows:
-rem  * 
-rem  * Parameter	 | Description
-rem  * ==========	 | ===================
-rem  * oldValue	   | Mapped from the cell's old value, this is mapped in editing
-rem  * newValue	   | Mapped from the cell's new value, this is mapped in editing
-rem  * data	Mapped | from the DataRow
-rem  * column	     | Current column
-rem  * getValue	   | The value after it is processed by the ValueGetterExpression
-rem  * ctx	       | The grid client context
-rem  * 
-rem  * A value setter should return true if the value was updated successfully and false if the value was not updated. 
+rem  *
+rem  * Parameter   | Description
+rem  * ==========  | ===================
+rem  * oldValue    | Mapped from the cell's old value, this is mapped in editing
+rem  * newValue    | Mapped from the cell's new value, this is mapped in editing
+rem  * data Mapped | from the DataRow
+rem  * column      | Current column
+rem  * getValue    | The value after it is processed by the ValueGetterExpression
+rem  * ctx         | The grid client context
+rem  *
+rem  * A value setter should return true if the value was updated successfully and false if the value was not updated.
 rem  * When you return true, the grid knows it must refresh the cell.
-rem  * 
+rem  *
 rem  * Below shows an example using value setters. The following can be noted:
-rem  *  1. All Columns are editable
-rem  *  2. Updating FIRST_NAME or LAST_NAME column will auto update the FULL_NAME because of the value getter expression
-rem  *  3. Updating the FULL_NAME column will auto update the FIRST_NAME or LAST_NAME columns using the value setter
+rem  *  1. All Columns are editable.
+rem  *  2. Updating FIRST_NAME or LAST_NAME column will auto-update the FULL_NAME because of the value getter expression.
+rem  *  3. Updating the FULL_NAME column will auto-update the FIRST_NAME and LAST_NAME columns using the value setter.
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -79,17 +79,17 @@ cellEditingChanged:
   declare auto GxClientEventsCell cellEvent!
   declare auto GxClientCellModel cellModel!
   declare auto DataRow row!
-  
-  lastEvent! = BBjAPI().getLastEvent() 
+
+  lastEvent! = BBjAPI().getLastEvent()
   cellEvent! = lastEvent!.getObject()
   cellModel!  = cellEvent!.getCell()
-  
+
   rem sync the new client row values with the ResultSet
   row! = cellModel!.getRow().updateFromClientRow()
 
   firstName! = row!.getField("FIRST_NAME").getString(err=*next)
   lastName!  = row!.getField("LAST_NAME" ).getString(err=*next)
-  
+
   a! = msgbox(String.format("First Name : (%s) - Last Name : (%s)",firstName!,lastName!))
 return
 
