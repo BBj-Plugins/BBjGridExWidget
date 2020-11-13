@@ -26,6 +26,7 @@
 
 .gw-alignment-header-center .ag-header-cell-label {
   flex-direction: column;
+  align-self: center;
 }
 
 .gw-alignment-header-right .ag-cell-label-container,
