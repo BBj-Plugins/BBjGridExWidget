@@ -22,7 +22,7 @@ languages!.insertItem(0,"")
 languages!.insertItem(1,"de_DE")
 languages!.insertItem(2,"nl_NL")
 languages!.insertItem(3,"fr_FR")
-languages!.insertItem(4,"de_SL"); rem Just a demo language file.
+languages!.insertItem(4,"de_SL"); rem Just a demo language file
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"Language Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
@@ -46,8 +46,8 @@ rem /**
 rem  * Retrieve the data from the database and configure the grid
 rem  *
 rem  * By default, the grid will use STBL("!LOCALE") to get the default language.
-rem  * Changing this global will force the grid to use the defined language, unless the
-rem  * default grid language is set directly using grid!.getLanguageManager().setLanguage("lang_code").
+rem  * Changing this global will force the grid to use the designated language for its own components, unless the
+rem  * default grid language is set directly using grid!.getLanguageManager().setLanguage("iso_lang_code").
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -68,7 +68,6 @@ rem  */
 updateLanguage:
   ev! = BBjAPI().getLastEvent()
   language$ = languages!.get(ev!.getSelectedIndex())
-  REM setting a new language requires a full re-render
   grid!.getLanguageManager().setLanguage(language$)
   grid!.render()
 return

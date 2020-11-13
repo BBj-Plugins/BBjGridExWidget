@@ -21,25 +21,26 @@ gosub main
 process_events
 
 rem /**
-rem  * After editing cells in the grid you have the opportunity to parse 
-rem  * the value before inserting it into your data.This is done using Value Parsers.
-rem  * A Value Parser is the inverse of a Value Formatter and it is a Javascript 
-rem  * expression which will be executed in the client (browser window).
+rem  * After editing cells in the grid you have the opportunity to parse
+rem  * the value before inserting it into your data. This is done using Value Parsers.
+rem  * A Value Parser is the inverse of a Value Formatter and it is a Javascript
+rem  * expression which will be executed on the client (browser window).
+rem  *
 rem  * The parameters passed to the value parser expression are as follows:
-rem  * 
-rem  * Parameter	 | Description
-rem  * ==========	 | ===================
-rem  * oldValue	   | Mapped from the cell's old value, this is mapped in editing
-rem  * newValue	   | Mapped from the cell's new value, this is mapped in editing
-rem  * data	Mapped | from the DataRow
-rem  * column	     | Current column
-rem  * getValue	   | The value after it is processed by the ValueGetterExpression
-rem  * ctx	       | The grid client context
-rem  * 
+rem  *
+rem  * Parameter   | Description
+rem  * ==========  | ===================
+rem  * oldValue    | Mapped from the cell's old value, this is mapped in editing
+rem  * newValue    | Mapped from the cell's new value, this is mapped in editing
+rem  * data Mapped | from the DataRow
+rem  * column      | Current column
+rem  * getValue    | The value after it is processed by the ValueGetterExpression
+rem  * ctx         | The grid client context
+rem  *
 rem  * Below shows an example using value parsers. The following can be noted:
-rem  *  1. All columns are editable. After any edit, the a message box shows what has been changed.
+rem  *  1. All columns are editable. After any edit, a message box shows what has been changed.
 rem  *  2. Column CDNUMBER is a string column. No parser is needed.
-rem  *  3. Column TITLE has a parser which removes any dashes from the new value
+rem  *  3. Column TITLE has a parser which removes any dashes from the new value.
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -48,13 +49,13 @@ main:
 
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT CDNUMBER , TITLE FROM CDINVENTORY")
-  
+
   grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
   grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"onCellEditingChanged")
   grid!.getOptions().setEditable(1)
   grid!.getOptions().setSingleClickEdit(1)
   grid!.setData(rs!)
-  
+
   titleColumn! = grid!.getColumn("TITLE")
   rem The expression will cast the "newValue" to string and replace dashes with empty string
   titleColumn!.setValueParserExpression("String(newValue).replace(/-/g, '')")
@@ -63,7 +64,7 @@ return
 onCellEditingChanged:
   ev! = BBjAPI().getLastEvent()
   ev! = ev!.getObject()
-  
+
   a! = msgbox(String.format("Value changed from (%s) to (%s)",ev!.getOldValue(),ev!.getValue()))
 return
 

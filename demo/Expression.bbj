@@ -40,8 +40,7 @@ main:
 
   rem /**
   rem  * Here we are creating a column which is composed of two other columns (LABEL & TITLE).
-  rem  * Note how we are using the value getter expression to teach the grid where to get the column
-  rem  * value from.
+  rem  * Note how we are using the 'value getter expression' to teach the grid how to compute the value.
   rem  */
   declare GxColumn vcolumn!
   vcolumn! = grid!.addColumn("LABEL+TITLE","Label & Title")

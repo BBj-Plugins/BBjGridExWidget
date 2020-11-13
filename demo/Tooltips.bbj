@@ -14,7 +14,7 @@ use com.basiscomponents.bc.SqlQueryBC
 declare auto BBjTopLevelWindow wnd!
 declare BBjGridExWidget grid!
 
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Tooltips Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
@@ -26,34 +26,34 @@ process_events
 
 rem /**
 rem  * Below shows an example using Tooltips. The following can be noted:
-rem  * 
-rem  *  1. We disable browser tooltips to support HTML content in tooltips using 
-rem  *     the grid option `setEnableBrowserTooltips`
-rem  * 
-rem  *  2. We change the tooltip delay time "0" using the grid option `setTooltipShowDelay`
+rem  *
+rem  *  1. We disable browser tooltips to support HTML content in tooltips using
+rem  *     the grid option `setEnableBrowserTooltips`.
+rem  *
+rem  *  2. We change the tooltip delay time to "0" using the grid option `setTooltipShowDelay`,
 rem  *     so tooltips are displayed instantly. By default, once you hover an item, it will
-rem  *     take 2000ms for the tooltip to be displayed
-rem  * 
-rem  *  3. The `CD Information` group has a tooltip set using the `setHeaderTooltip` method
-rem  * 
-rem  *  4. The `Title` column in the `CD Information` group has a tooltip expression set using 
-rem  *     the `setTooltipValueGetterExpression` method which returns an HTML snippet 
-rem  *     to show more information about the title like the artist and the playing time.
-rem  *    
+rem  *     take 2000ms for the tooltip to be displayed.
+rem  *
+rem  *  3. The `CD Information` group has a tooltip set using the `setHeaderTooltip` method.
+rem  *
+rem  *  4. The `Title` column in the `CD Information` group has a tooltip expression set using
+rem  *     the `setTooltipValueGetterExpression` method, which returns an HTML snippet
+rem  *     to show more information about the title, like the artist and the playing time.
+rem  *
 rem  *      The parameters passed to the TooltipValueGetterExpression are as follows:
-rem  * 
-rem  *      Parameter	     | Description
-rem  *      ==========	   | ===================
+rem  *
+rem  *      Parameter      | Description
+rem  *      ==========     | ===================
 rem  *      data           | Mapped from the DataRow
-rem  *      column	       | Current column
-rem  *      getValue	     | The value after it is processed by the ValueGetterExpression
-rem  *      ctx	           | The grid client context
+rem  *      column         | Current column
+rem  *      getValue       | The value after it is processed by the ValueGetterExpression
+rem  *      ctx            | The grid client context
 rem  *      isHeader       | A boolean , when true , then the tooltip is for a column header
 rem  *      isGroupHeader  | A boolean , when true , then the tooltip is for a group header
-rem  * 
+rem  *
 rem  *  5. The Column `CDNUMBER` has a tooltip field set using the `setTooltipField` method.
-rem  *     This option basically takes the value of the cell and put it in a tooltip.
-rem  *     Note that You can use the tooltip field to display the cell value of a different column too.
+rem  *     This option basically takes the value of the cell and puts it in a tooltip.
+rem  *     Note that you can use the tooltip field to display the cell value of a different column too.
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -61,19 +61,19 @@ main:
 
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
   rs! = sbc!.retrieve("SELECT CDNUMBER , ARTIST, TITLE, LABEL, PLAYINGTIME, MUSICTYPE FROM CDINVENTORY")
-  
+
   grid!.setData(rs! , 0 , 0)
-  rem Note this option is false by default . we are setting it here just for the demo purpose
+  rem Note this option is false by default. We are setting it here just for the demo purpose.
   grid!.getOptions().setEnableBrowserTooltips(0)
   grid!.getOptions().setTooltipShowDelay(0)
-  grid!.setTheme(grid!.GRID_THEME_ALPINE_DARK()) 
+  grid!.setTheme(grid!.GRID_THEME_ALPINE_DARK())
   grid!.setFitToGrid()
-  
+
   group! = new BBjVector()
   group!.addItem("TITLE")
   group!.addItem("ARTIST")
   informationGroup! = grid!.addColumnGroup("Group_ID_1", "CD Information", group!, 1)
-  informationGroup!.setHeaderTooltip("This group display general information about the CD")
+  informationGroup!.setHeaderTooltip("This group displays general information about the CD")
 
   titleColumn! = informationGroup!.getColumn("TITLE")
   titleDetailsExpression! = ""+

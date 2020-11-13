@@ -67,7 +67,7 @@ return
 rem /**
 rem  * Create new ResultSet and update the grid
 rem  *
-rem  * Note that unlike grid!.setData(ResultSet), the method grid!.updateData(Set) will not update the column definitions
+rem  * Note that unlike grid!.setData(ResultSet), the method grid!.updateData(ResultSet) will not update the column definitions
 rem  * from the passed ResultSet
 rem  */
 setNewRS:
@@ -76,33 +76,32 @@ setNewRS:
 return
 
 rem /**
-rem  * Update a specific row in the grid
+rem  * Update a specific row (the 3rd) in the grid
 rem  */
 updateThirdRow:
-  row! = rs!.getItem(2)
+  row! = rs!.getItem(2,err=*return);rem zero-based
   row!.setFieldValue("TITLE","My Updated Title")
   row!.setFieldValue("ARTIST","My Updated Artist")
-
   grid!.updateRow(row!)
 return
 
 rem /**
-rem  * Remove a specific row in the grid by its index
+rem  * Remove a specific row (the 2nd) in the grid by its zero-based index
 rem  */
 removeByIndex:
-    grid!.removeRow(1)
+    grid!.removeRow(1,err=*next)
 return
 
 rem /**
-rem  * Remove a specific row in the grid by its key
+rem  * Remove a specific row in the grid by the key from a specific row (the 2nd) in the result set
 rem  */
 removeByKey:
-    key! = grid!.getRS().getItem(1).getRowKey()
-    grid!.removeRow(key!)
+    key! = grid!.getRS().getItem(1,err=*return).getRowKey()
+    grid!.removeRow(key!,err=*next)
 return
 
 rem /**
-rem  * Clear data but keep the column definition
+rem  * Clear data, but keep the column definition
 rem  */
 clearRowsData:
     grid!.clearData()
