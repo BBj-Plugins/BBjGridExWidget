@@ -32,3 +32,6 @@ export const GW_EVENT_KEYPRESS = 5010
 
 // filters
 export const GW_EVENT_FILTER_CHANGED = 5013
+
+// ready
+export const GW_EVENT_READY = 5014

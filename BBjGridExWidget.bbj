@@ -347,6 +347,14 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     methodret 5013
   methodend
   rem /**
+  rem  * Constant value to define the grid ready event.
+  rem  *
+  rem  * @return BBjNumber
+  rem  */
+  method public static BBjNumber ON_GRID_READY()
+    methodret 5014
+  methodend
+  rem /**
   rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
   rem  *
   rem  * @see ON_GRID_STATE_CHANGE()
@@ -1146,6 +1154,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         break
       case "gw.filterChanged"
         #onFilterChangedEvent()
+        break
+      case "gw.gridReady"
+        #onGridReadyEvent()
         break
     swend
   methodend
@@ -3941,6 +3952,14 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method protected void onFilterChangedEvent()
     #fireEvent(#ON_GRID_FILTER_CHANGED(),null())
+  methodend
+  rem /**
+  rem  * Fire a ready event
+  rem  *
+  rem  * @see ON_GRID_READY()
+  rem  */
+  method protected void onGridReadyEvent()
+    #fireEvent(#ON_GRID_READY(),#this!)
   methodend
 
 classend
