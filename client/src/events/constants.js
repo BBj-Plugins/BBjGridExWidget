@@ -29,3 +29,6 @@ export const GW_EVENT_RANGE_SELECTION_CHANGED = 5009
 
 // keyboard events
 export const GW_EVENT_KEYPRESS = 5010
+
+// filters
+export const GW_EVENT_FILTER_CHANGED = 5013

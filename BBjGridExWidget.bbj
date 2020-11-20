@@ -208,14 +208,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   field protected BBjNumber newW!
   field protected BBjNumber newH!
   rem /**
-  rem  * Constant value to define row click events
-  rem  *
-  rem  * @return BBjNumber
-  rem  */
-  method public static BBjNumber ON_GRID_ROW_CLICK()
-    methodret 5011
-  methodend
-  rem /**
   rem  * A Constant value to define row selection (selected/deselected) change events
   rem  *
   rem  * @return BBjNumber
@@ -298,15 +290,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     methodret 5006
   methodend
   rem /**
-  rem  * Constant value to define A row has changed.
-  rem  * This event corresponds to Full Row Editing only.
-  rem  *
-  rem  * @return BBjNumber
-  rem  */
-  method public static BBjNumber ON_GRID_ROW_VALUE_CHANGED()
-    methodret 5012
-  methodend
-  rem /**
   rem  * Constant value to define row editing stop event
   rem  *
   rem  * @return BBjNumber
@@ -337,6 +320,31 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method public static BBjNumber ON_GRID_KEYPRESS()
     methodret 5010
+  methodend
+  rem /**
+  rem  * Constant value to define row click events
+  rem  *
+  rem  * @return BBjNumber
+  rem  */
+  method public static BBjNumber ON_GRID_ROW_CLICK()
+    methodret 5011
+  methodend
+  rem /**
+  rem  * Constant value to define A row has changed.
+  rem  * This event corresponds to Full Row Editing only.
+  rem  *
+  rem  * @return BBjNumber
+  rem  */
+  method public static BBjNumber ON_GRID_ROW_VALUE_CHANGED()
+    methodret 5012
+  methodend
+  rem /**
+  rem  * Constant value to define A filter changed event.
+  rem  *
+  rem  * @return BBjNumber
+  rem  */
+  method public static BBjNumber ON_GRID_FILTER_CHANGED()
+    methodret 5013
   methodend
   rem /**
   rem  * Alias for <i>ON_GRID_STATE_CHANGE()</i>
@@ -873,7 +881,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     if (f_init!) then
       rem @see https://bugzilla.basis.com/show_bug.cgi?id=33048
       enableInternalSpecialKeysHandling! = stbl("!OPTIONS","HTMLVIEW_INTERNAL_TABS=TRUE")
-
       html$ = #getTemplate()
       htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
       htmlview!.setOpaque(0)
@@ -1088,7 +1095,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     map! = ev!.getEventMap()
     type$ = str(map!.get("type"))
     detail$ = str(map!.get("detail"))
-
     switch type$
       case "gw.rowSelect"
         #onSelectRowChange(detail$, #ON_GRID_SELECT_ROW())
@@ -1137,6 +1143,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         break
       case "gw.suggestion"
         #onSuggestionEvent(detail$)
+        break
+      case "gw.filterChanged"
+        #onFilterChangedEvent()
         break
     swend
   methodend
@@ -2869,7 +2878,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   methodend
   rem /**
   rem  * Sets the visibility of column(s)
-  rem  * 
+  rem  *
   rem  * @param BBjString columns! A comma separated list of column ids to hide / show
   rem  * @param BBjNumber hidden! True to hide , false to show
   rem  */
@@ -2878,22 +2887,24 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     it! = ids!.iterator()
     while it!.hasNext()
       next! = it!.next()
+
       if(#hasColumn(next!))
         #getColumn(next!).setHidden(hidden!)
       fi
     wend
+
     script$="$wnd.gw_setColumnVisible('" + #getRootId() +  "','" + columns! + "'," + str(hidden!.booleanValue()) +");"
     #getExecutor().execute(script$)
-  methodend  
+  methodend
   rem /**
   rem  * Sets the visibility of a column
-  rem  * 
+  rem  *
   rem  * @param GxColumn column! The column definition
   rem  * @param BBjNumber hidden! True to hide , false to show
   rem  */
   method public void setColumnVisible(GxColumn column! , BBjNumber hidden!)
     #setColumnVisible(column!.getField(), hidden!)
-  methodend  
+  methodend
   rem /**
   rem  * Ensures the column is visible, scrolling the table if needed.
   rem  *
@@ -3799,7 +3810,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * @param BBjString detail$ The event detail as Json
   rem  * @param BBjNumber type! The event type
-  rem  * 
+  rem  *
   rem  * @see GxSelectRowEvent
   rem  */
   method protected void onSelectRowChange(BBjString detail$, BBjNumber type!)
@@ -3808,17 +3819,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
     event! = new GxClientEventsRowSelection()
     event!.setSelectedRows(#getSelectedRows())
-
     rem report keypress for click events only
     if(type! = #ON_GRID_ROW_CLICK() OR type! = #ON_GRID_DOUBLE_CLICK())
       parser! = new JsonParser()
       detailsAsJson!  = parser!.parse(detail$).getAsJsonObject()
       keypress! =  null()
+
       if(detailsAsJson!.has("k") AND detailsAsJson!.get("k").isJsonNull() = BBjAPI.FALSE) then
         keypress! = #getClientJsonFactory().getKeypress(detailsAsJson!.get("k").getAsJsonObject())
       fi
+
       event!.setKey(keypress!)
-    fi 
+    fi
 
     #fireEvent(type!,event!)
   methodend
@@ -3853,7 +3865,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     parser! = new JsonParser()
     parsedCell!  = parser!.parse(detail$).getAsJsonObject()
     cell! = #getClientJsonFactory().getCell(parsedCell!)
-
     event! = new GxClientEventsCell()
     event!.setCell(cell!)
     event!.setOldValue(parsedCell!.get("o").getAsString(), err=*next)
@@ -3922,6 +3933,14 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       script! = String.format("$doc.dispatchEvent(new CustomEvent('%s', { detail: %s }))", id!, data!.toString())
       #getExecutor().execute(script!)
     fi
+  methodend
+  rem /**
+  rem  * Fire a filter changed event
+  rem  *
+  rem  * @see ON_GRID_FILTER_CHANGED()
+  rem  */
+  method protected void onFilterChangedEvent()
+    #fireEvent(#ON_GRID_FILTER_CHANGED(),null())
   methodend
 
 classend

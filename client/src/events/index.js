@@ -13,12 +13,10 @@ import {
   gw_onCellClickEvent,
   gw_onRangeSelectionChanged,
 } from './selections'
-
 import { gw_onCellEditingEvent, gw_onRowEditingEvent } from './editing'
-
 import { gw_onReadyEvent } from './ready'
-
 import { gw_debounce } from './utilities'
+import { gw_onFilterChanged } from './filters'
 
 export {
   gw_onRowClicked,
@@ -30,4 +28,5 @@ export {
   gw_onRowEditingEvent,
   gw_onReadyEvent,
   gw_debounce,
+  gw_onFilterChanged,
 }
