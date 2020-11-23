@@ -3723,7 +3723,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * <br><b><small>#API</small></b>
   rem  */
   method public void showLoadingOverlay()
-    #getExecutor().execute("$wnd.gw_showLoadingOverlay('" + #getRootId() + "')")
+    #getExecutor().execute("$wnd.gw_showLoadingOverlay('" + #getRootId() + "')", 0)
   methodend
   rem /**
   rem  * Show 'no rows' overlay
@@ -3731,7 +3731,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * <br><b><small>#API</small></b>
   rem  */
   method public void showNoRowsOverlay()
-    #getExecutor().execute("$wnd.gw_showNoRowsOverlay('" + #getRootId() + "')")
+    #getExecutor().execute("$wnd.gw_showNoRowsOverlay('" + #getRootId() + "')", 0)
   methodend
   rem /**
   rem  * Clear all overlays
@@ -3739,7 +3739,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * <br><b><small>#API</small></b>
   rem  */
   method public void hideOverlay()
-    #getExecutor().execute("$wnd.gw_hideOverlay('" + #getRootId() + "')")
+    #getExecutor().execute("$wnd.gw_hideOverlay('" + #getRootId() + "')", 0)
   methodend
   rem /**
   rem  * Destroy the grid
