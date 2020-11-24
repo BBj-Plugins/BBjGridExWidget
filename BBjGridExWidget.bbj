@@ -105,15 +105,15 @@ rem  * <table border="1" cellpadding="10">
 rem  *  <tbody>
 rem  *      <tr>
 rem  *          <td><strong>&nbsp;Enterprise</strong></td>
-rem  *          <td>The property/method is used only with the enterprise version&#183; using it without having a valid license will<br />be ignored&#183;</td>
+rem  *          <td>The property/method is used only with the enterprise version. using it without having a valid license will<br />be ignored.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>Configuration</strong></td>
-rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again&#183;</td>
+rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client.<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client.<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>API</strong></td>
-rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh&#183;</td>
+rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td><strong>&nbsp;ColumnsRenderer</strong></td>
@@ -145,7 +145,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   field public static BBjNumber Debug! = 0
   rem /**
-  rem  * The unique string to use as row index&#183; default is __ROW_INDEX
+  rem  * The unique string to use as row index. default is __ROW_INDEX
   rem  */
   field public BBjString RowNodeId$ = "__ROW_INDEX"
   rem /**
@@ -185,7 +185,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   field protected JsonArray ChartToolbarItems! = new JsonArray()
   rem /**
-  rem  * The client's HTML template to use in order to build the grid&#183;
+  rem  * The client's HTML template to use in order to build the grid.
   rem  */
   field protected BBjString Template$ = ""
   rem /**
@@ -1354,7 +1354,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #getExecutor().execute(scriptKey!,script$)
   methodend
   rem /**
-  rem  * Set the mask of a column using value formatter expression&#183;
+  rem  * Set the mask of a column using value formatter expression.
   rem  *
   rem  * <br><b><small>#Configuration</small></b>
   rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -1372,13 +1372,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     FI
   methodend
   rem /**
-  rem  * Set an image list for a given column using GxRendererImageRenderer&#183;
+  rem  * Set an image list for a given column using GxRendererImageRenderer.
   rem  *
   rem  * <br><b><small>#Configuration</small></b>
   rem  * <br><b><small>#ColumnsRenderer</small></b>
   rem  * <br>
   rem  *
-  rem  * <b>Note:</b> This method will override the CellRenderer of the column&#183;
+  rem  * <b>Note:</b> This method will override the CellRenderer of the column.
   rem  * The column has to contain the values "1","2","3" to x to reference the slices in the BBjImage list
   rem  *
   rem  * @param BBjString field! The column's field
@@ -1972,10 +1972,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Feed the grid with a new ResultSet
   rem  *
-  rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full re-render&#183;
-  rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
+  rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full re-render.
+  rem  * The column definition will not be synced from the passed ResultSet in this case.
   rem  *
-  rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
+  rem  * Use this method in case you want to replace the whole data in the grid at once.
   rem  * Please note that All row and range selection will be lost.
   rem  *
   rem  * <br><b><small>#API</small></b>
@@ -1997,10 +1997,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Feed the grid with a new ResultSet
   rem  *
-  rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full re-render&#183;
-  rem  * The column definition will not be synced from the passed ResultSet in this case&#183;
+  rem  * Unlike the <b>setData</b> method, this one will update the grid with a new rows set(ResultSet) without doing a full re-render.
+  rem  * The column definition will not be synced from the passed ResultSet in this case.
   rem  *
-  rem  * Use this method in case you want to replace the whole data in the grid at once&#183;
+  rem  * Use this method in case you want to replace the whole data in the grid at once.
   rem  * Please note that All row and range selection will be lost.
   rem  *
   rem  * <br><b><small>#API</small></b>
@@ -2816,8 +2816,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Ensures the row key is visible by vertically scrolling the grid
   rem  *
-  rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
-  rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
+  rem  * Ensures the row index is visible by vertically scrolling the grid.
+  rem  * The valid values for positions are {'top', 'middle', 'bottom'}.
   rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
   rem  *
   rem  * <br><b><small>#API</small></b>
@@ -2837,8 +2837,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Ensures the row index is visible by vertically scrolling the grid
   rem  *
-  rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
-  rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
+  rem  * Ensures the row index is visible by vertically scrolling the grid.
+  rem  * The valid values for positions are {'top', 'middle', 'bottom'}.
   rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
   rem  *
   rem  * <br><b><small>#API</small></b>
@@ -2856,8 +2856,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Ensures the row index is visible by vertically scrolling the grid
   rem  *
-  rem  * Ensures the row index is visible by vertically scrolling the grid&#183;
-  rem  * The valid values for positions are {'top', 'middle', 'bottom'}&#183;
+  rem  * Ensures the row index is visible by vertically scrolling the grid.
+  rem  * The valid values for positions are {'top', 'middle', 'bottom'}.
   rem  * If top, middle or bottom, the grid will scroll the row to place the row at top, middle or bottom
   rem  *
   rem  * <br><b><small>#API</small></b>
@@ -3547,7 +3547,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #getExecutor().execute("$wnd.gw_stopEditing('"+ #getRootId() + "'," + STR(cancel!)+ ")")
   methodend
   rem /**
-  rem  * If true, then row group, pivot and value aggregation will be read only from the Ui&#183;
+  rem  * If true, then row group, pivot and value aggregation will be read only from the Ui.
   rem  * The grid will display what values are used for each, but will not allow the use to change the selection
   rem  *
   rem  * <br><b><small>#Enterprise</small></b>
@@ -3673,7 +3673,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #getExecutor().execute("$wnd.gw_clearRangeSelection('" + #getRootId() + "')",0)
   methodend
   rem /**
-  rem  * Clear already created charts&#183;
+  rem  * Clear already created charts.
   rem  * <b>Note</b> that this method does not clear user created charts
   rem  *
   rem  * <br><b><small>#API</small></b>
@@ -3703,7 +3703,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #getExecutor().execute("$wnd.gw_destroyChart('" + #getRootId() + "','" + str(id!) + "')",0)
   methodend
   rem /**
-  rem  * Clear already created charts&#183;
+  rem  * Clear already created charts.
   rem  * <b>Note</b> that this method does not clear user created charts
   rem  *
   rem  * <br><b><small>#API</small></b>
