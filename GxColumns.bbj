@@ -65,15 +65,15 @@ rem  * <table border="1" cellpadding="10">
 rem  *  <tbody>
 rem  *      <tr>
 rem  *          <td><strong>&nbsp;Enterprise</strong></td>
-rem  *          <td>The property/method is used only with the enterprise version&#183; using it without having a valid license will<br />be ignored&#183;</td>
+rem  *          <td>The property/method is used only with the enterprise version. using it without having a valid license will<br />be ignored.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>Configuration</strong></td>
-rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again&#183;</td>
+rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client.<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client.<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>API</strong></td>
-rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh&#183;</td>
+rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td><strong>&nbsp;ColumnsRenderer</strong></td>
@@ -96,7 +96,7 @@ class public GxColumnDefinition
     rem  */
     field public BBjString Label! = null()
     rem /**
-    rem  * Whether to show the column when the group is open / closed&#183;
+    rem  * Whether to show the column when the group is open / closed.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -106,14 +106,14 @@ class public GxColumnDefinition
     rem  */
     field public BBjString ColumnGroupShow! = null()
     rem /**
-    rem  * CSS class(es) to use for the header cell&#183;
+    rem  * CSS class(es) to use for the header cell.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public ArrayList HeaderClass! = new ArrayList()
     rem /**
-    rem  * CSS class(es) to use for the tool panel cell&#183;
+    rem  * CSS class(es) to use for the tool panel cell.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -127,7 +127,7 @@ class public GxColumnDefinition
     rem  */
     field public BBjString HeaderTooltip! = null()
     rem /**
-    rem  * Set to true if you do not want this column or group to appear in the tool panel&#183;
+    rem  * Set to true if you do not want this column or group to appear in the tool panel.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -173,12 +173,12 @@ REM  * @author Hyyan Abo Fakher
 rem  */
 class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem /**
-    rem  * The Field Type&#183;
+    rem  * The Field Type.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
-    rem  * <b>Note :</b> Not all sql types are supported, for example it does not make sense to declare a colum type as STRUCT&#183;
+    rem  * <b>Note :</b> Not all sql types are supported, for example it does not make sense to declare a colum type as STRUCT.
     rem  *
     rem  * @see https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
     rem  */
@@ -189,7 +189,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  * <br><br>
-    rem  * <b>Note:</b> setting the width to zero will not hide the column, use <b>setHidden()</b> instead&#183; And if the width is null()
+    rem  * <b>Note:</b> setting the width to zero will not hide the column, use <b>setHidden()</b> instead. And if the width is null()
     rem  * this means the grid will auto set the width for this column
     rem  *
     rem  * @see setHidden()
@@ -231,14 +231,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjNumber FloatingFilter! = null()
     rem /**
-    rem  * Set to true to make a column hidden by default&#183;
+    rem  * Set to true to make a column hidden by default.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Hidden! = 0
     rem /**
-    rem  * Set to 'left' or 'right' to pin&#183;
+    rem  * Set to 'left' or 'right' to pin.
     rem  *
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
@@ -249,35 +249,35 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjString Pinned! = null()
     rem /**
-    rem  * Set to true to always have column displayed first&#183;
+    rem  * Set to true to always have column displayed first.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber LockPosition! = null()
     rem /**
-    rem  * Set to true block making column visible / hidden via the UI (API will still work)&#183;
+    rem  * Set to true block making column visible / hidden via the UI (API will still work).
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber LockVisible! = null()
     rem /**
-    rem  * Set to true block pinning column via the UI (API will still work)&#183;
+    rem  * Set to true block pinning column via the UI (API will still work).
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber LockPinned! = null()
     rem /**
-    rem  * Set to true to allow sorting on this column&#183;
+    rem  * Set to true to allow sorting on this column.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Sortable! = 1
     rem /**
-    rem  * Set to 'asc' or 'desc' to sort by this column by default&#183;
+    rem  * Set to 'asc' or 'desc' to sort by this column by default.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -287,42 +287,42 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjString Sort! = null()
     rem /**
-    rem  * Set to true to allow column to be resized&#183;
+    rem  * Set to true to allow column to be resized.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber Resizable! = 1
     rem /**
-    rem  * Set to true to render a selection checkbox in the column&#183;
+    rem  * Set to true to render a selection checkbox in the column.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber CheckboxSelection! = null()
     rem /**
-    rem  * Set to true to render a selection checkbox in the column's header&#183;
+    rem  * Set to true to render a selection checkbox in the column's header.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber HeaderCheckboxSelection! = null()
     rem /**
-    rem  * CSS class(es) to use for the cell&#183;
+    rem  * CSS class(es) to use for the cell.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public ArrayList CellClass! = new ArrayList()
     rem /**
-    rem  * A map of css values&#183;
+    rem  * A map of css values.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public JsonObject CellStyle! = new JsonObject()
     rem /**
-    rem  * Set to true if the column is editable, otherwise false&#183;
+    rem  * Set to true if the column is editable, otherwise false.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -360,42 +360,42 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public GxCellEditorInterface CellEditor! = new GxCellEditorBasicText()
     rem /**
-    rem  * Name of function to use for aggregation&#183; One of [sum,min,max,first,last]&#183;
+    rem  * Name of function to use for aggregation. One of [sum,min,max,first,last].
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjString AggFunc! = null()
     rem /**
-    rem  * Aggregation functions allowed on this column eg ['sum','avg']&#183;
+    rem  * Aggregation functions allowed on this column eg ['sum','avg'].
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public HashSet AllowedAggFuncs! = new HashSet()
     rem /**
-    rem  * Set this in columns you want to group by&#183; If only grouping by one column, set this to any number (eg 0)&#183; If grouping by multiple columns, set this to where you want this column to be in the group (eg 0 for first, 1 for second, and so on)&#183;
+    rem  * Set this in columns you want to group by. If only grouping by one column, set this to any number (eg 0). If grouping by multiple columns, set this to where you want this column to be in the group (eg 0 for first, 1 for second, and so on).
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber RowGroupIndex! = null()
     rem /**
-    rem  * Set this in columns you want to pivot by&#183; If only pivoting by one column, set this to any number (eg 0)&#183; If pivoting by multiple columns, set this to where you want this column to be in the order of pivots (eg 0 for first, 1 for second, and so on)&#183;
+    rem  * Set this in columns you want to pivot by. If only pivoting by one column, set this to any number (eg 0). If pivoting by multiple columns, set this to where you want this column to be in the order of pivots (eg 0 for first, 1 for second, and so on).
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber PivotIndex! = null()
     rem /**
-    rem  * Set to true if you want the unsorted icon to be shown when no sort is applied to this column&#183;
+    rem  * Set to true if you want the unsorted icon to be shown when no sort is applied to this column.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber UnSortIcon! = 0
     rem /**
-    rem  * Set to true if you want to be able to row group by this column via the UI&#183;
+    rem  * Set to true if you want to be able to row group by this column via the UI.
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
@@ -409,11 +409,11 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  *
-    rem  * @see Gx&#183;Columns&#183;EnableRowGroup!
+    rem  * @see Gx.Columns.EnableRowGroup!
     rem  */
     field public BBjNumber RowGroup! = 0
     rem /**
-    rem  * Set to true if you want to be able to pivot by this column via the UI&#183;
+    rem  * Set to true if you want to be able to pivot by this column via the UI.
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
@@ -421,7 +421,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjNumber EnablePivot! = 1
     rem /**
-    rem  * Set to true if you want to be able to aggregate by this column via the UI&#183;
+    rem  * Set to true if you want to be able to aggregate by this column via the UI.
     rem  *
     rem  * <br><b><small>#Enterprise</small></b>
     rem  * <br><b><small>#Configuration</small></b>
@@ -429,49 +429,49 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public BBjNumber EnableValue! = 1
     rem /**
-    rem  * Set to true if no menu should be shown for this column header&#183;
+    rem  * Set to true if no menu should be shown for this column header.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMenu! = 0
     rem /**
-    rem  * Set to true if you want this columns width to be fixed during 'size to fit' operation&#183;
+    rem  * Set to true if you want this columns width to be fixed during 'size to fit' operation.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressSizeToFit! = 0
     rem /**
-    rem  * Set to true if you do not want this column to be movable via dragging&#183;
+    rem  * Set to true if you do not want this column to be movable via dragging.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMovable! = 0
     rem /**
-    rem  * Set to true if this col is not navigable (ie cannot be tabbed into), otherwise false&#183;
+    rem  * Set to true if this col is not navigable (ie cannot be tabbed into), otherwise false.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber SuppressNavigable! = 0
     rem /**
-    rem  * Set to true to have the grid calculate height of row based on contents of this column&#183;
+    rem  * Set to true to have the grid calculate height of row based on contents of this column.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber AutoHeight! = 0
     rem /**
-    rem  * Rules which can be applied to include certain CSS classes&#183; These rules are provided as a map
-    rem  * where the keys are the class names and the values are expressions that if evaluated to true, the class gets used&#183;
-    rem  * An expression is evaluated by the grid by executing the string as if it were a Javascript expression&#183;
+    rem  * Rules which can be applied to include certain CSS classes. These rules are provided as a map
+    rem  * where the keys are the class names and the values are expressions that if evaluated to true, the class gets used.
+    rem  * An expression is evaluated by the grid by executing the string as if it were a Javascript expression.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  * <br><br>
-    rem  * The expression has the following attributes available to it&#183; <br><br>
+    rem  * The expression has the following attributes available to it. <br><br>
     rem  * <table border="1" cellpadding="10">
     rem  *    <tbody>
     rem  *        <tr>
@@ -500,73 +500,73 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
-    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  * @see Gx.Expression.GxExpression
     rem  */
     field public GxExpressionInterface ValueGetterExpression! = null()
     rem /**
-    rem  * An Ag Grid expression which can be executed to format the value for display&#183;
+    rem  * An Ag Grid expression which can be executed to format the value for display.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
-    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  * @see Gx.Expression.GxExpression
     rem  */
     field public GxExpressionInterface ValueFormatterExpression! = null()
     rem /**
-    rem  * An Ag Grid expression which can be executed to get the value for filtering purposes&#183;
+    rem  * An Ag Grid expression which can be executed to get the value for filtering purposes.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
-    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  * @see Gx.Expression.GxExpression
     rem  */
     field public GxExpressionInterface FilterValueGetterExpression! = null()
     rem /**
-    rem  * An Ag Grid expression which can be executed before setting the value into your data for saving&#183;
+    rem  * An Ag Grid expression which can be executed before setting the value into your data for saving.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
-    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  * @see Gx.Expression.GxExpression
     rem  */
     field public GxExpressionInterface ValueSetterExpression! = null()
     rem /**
-    rem  * An Ag Grid expression which can be executed to parse the value for saving&#183;
+    rem  * An Ag Grid expression which can be executed to parse the value for saving.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
     rem  *
-    rem  * @see Gx&#183;Expression&#183;GxExpression
+    rem  * @see Gx.Expression.GxExpression
     rem  */
     field public GxExpressionInterface ValueParserExpression! = null()
     rem /**
-    rem  * The default numbers mask to use&#183; by default null()
+    rem  * The default numbers mask to use. by default null()
     rem  */
     field public BBjString DefaultNumbersMask! = null()
     rem /**
-    rem  * The default strings  mask to use&#183; by default null()
+    rem  * The default strings  mask to use. by default null()
     rem  */
     field public BBjString DefaultStringsMask! = null()
     rem /**
-    rem  * The default dates mask to use&#183; by default <b>%Dz&#183;%Mz&#183;%Yd</b>
+    rem  * The default dates mask to use. by default <b>%Dz.%Mz.%Yd</b>
     rem  */
     field public BBjString DefaultDatesMask! = "%Yd-%Mz-%Dz"
     rem /**
-    rem  * The default dates mask to use&#183; by default <b>%Dz&#183;%Hz:%mz:%sz</b>
+    rem  * The default dates mask to use. by default <b>%Dz.%Hz:%mz:%sz</b>
     rem  */
     field public BBjString DefaultTimesMask! = "%Hz:%mz:%sz"
     rem /**
-    rem  * The default timestamps mask to use&#183; by default <b>%Dz&#183;%Mz&#183;%Yl %Hz:%mz:%sz</b>
+    rem  * The default timestamps mask to use. by default <b>%Dz.%Mz.%Yl %Hz:%mz:%sz</b>
     rem  */
     field public BBjString DefaultTimestampsMask! = "%Yd-%Mz-%Dz %Hz:%mz:%sz"
     rem /**
-    rem  * Icons to use inside the column instead of the grid's default icons&#183;
+    rem  * Icons to use inside the column instead of the grid's default icons.
     rem  *
-    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group)&#183;
-    rem  * If defined in both the grid options and column definitions, the column definition will get used&#183;
+    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group).
+    rem  * If defined in both the grid options and column definitions, the column definition will get used.
     rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for
-    rem  * specific columns&#183; This is handy if, for example, you want to include 'A&#183;&#183;Z' as string sort icons
-    rem  * and just the simple arrow for other columns&#183;
+    rem  * specific columns. This is handy if, for example, you want to include 'A..Z' as string sort icons
+    rem  * and just the simple arrow for other columns.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
@@ -620,14 +620,14 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public JsonObject Icons! = new JsonObject()
     rem /**
-    rem  * Defines the chart data type that should be used for a column&#183;
+    rem  * Defines the chart data type that should be used for a column.
     rem  * There are two types of charting ranges; a category range that is highlighted in green and a series range that is
-    rem  * highlighted in blue&#183;
+    rem  * highlighted in blue.
     rem  * A category range can only contain cells from a single column, whereas a series range can contain
-    rem  * values from many columns&#183;
+    rem  * values from many columns.
     rem  * Columns can be explicitly configured or left for the grid to infer the type based on the data contained in the cells
     rem  * where columns containing string values will map to 'categories' and columns containing number values will map to 'series'
-    rem  * charting columns&#183;
+    rem  * charting columns.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>.
@@ -651,7 +651,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public GxExpressionInterface TooltipValueGetterExpression! = null()
     rem /**
-    rem  * A grid expression which can be executed to perform row spanning&#183;
+    rem  * A grid expression which can be executed to perform row spanning.
     rem  * 
     rem  * The expression must return the number of rows to span , if no spanning should be applied , then 
     rem  * return `1` instead (ex: "data.SHOW ? 4 : 1")
@@ -719,7 +719,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  */
     field public GxExpressionInterface RowSpanExpression! = null()
     rem /**
-    rem  * A grid expression which can be executed to perform column spanning&#183;
+    rem  * A grid expression which can be executed to perform column spanning.
     rem  * 
     rem  * The expression must return the number of columns to span , if no spanning should be applied , then 
     rem  * return `1` instead (ex: "data.Section === 'quarters'")
