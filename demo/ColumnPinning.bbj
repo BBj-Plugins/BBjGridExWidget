@@ -25,16 +25,15 @@ process_events
 
 rem /**
 rem  * You can pin columns by setting the pinned attribute on the column definition to either 'left' or 'right'.
-rem  * Below shows an example with two pinned columns on the left and one pinned columns on the right. 
-rem  * The example also demonstrates changing the pinning via the API at runtime.
-rem  * The grid will reorder the columns so that 'left pinned' columns come first and 'right pinned' columns come last. In the example below the state of pinned columns impacts the order of the columns.
+rem  * Below shows an example with one pinned column on the left and one pinned column on the right.
+rem  * The grid will reorder the columns so that 'left pinned' columns come first and 'right pinned' columns come last.
 rem  */
 main:
   declare SqlQueryBC sbc!
   declare ResultSet rs!
 
   sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
 
   REM init the grid
   grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)

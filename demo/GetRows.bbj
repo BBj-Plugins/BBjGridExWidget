@@ -39,20 +39,20 @@ process_events
 
 rem /**
 rem  * Below shows an example using the `getRows` API. The following can be noted:
-rem  * 
+rem  *
 rem  *  1. The `getRows` accepts a phase param. The phase describes the rows state in the grid
 rem  *     (ex : "after filter" , "after filter and sort" , ... )
-rem  * 
-rem  *  2. The `getRows` accepts a filter expression which will be executed in the client
-rem  *     to filter the rows further before returning the result. 
-rem  *     For instance you can use the filter expression to return the rows which  
-rem  *     their `MUSICTYPE` is `Blues` after the grid's filtering and sorting is applied.
-rem  * 
-rem  *     Note that this type of filtering is done in memory and is not visual. In other words
-rem  *          the grid will not show that such a filter is applied.
-rem  *    
+rem  *
+rem  *  2. The `getRows` accepts a filter expression which will be executed on the client
+rem  *     to filter the rows further, before returning the result.
+rem  *     For instance, you can use the filter expression to return the rows whose
+rem  *     `MUSICTYPE` is `Blues` after the grid's filtering and sorting is applied.
+rem  *
+rem  *     Note that this type of filtering is done in memory and is not visual. In other words,
+rem  *     the grid will not show that such a filter is applied.
+rem  *
 rem  *     The parameters passed to the Filter Expression are the following:
-rem  * 
+rem  *
 rem  *     Parameter      | Description
 rem  *     ==========     | ===================
 rem  *     data           | Mapped from the DataRow
@@ -60,7 +60,7 @@ rem  *     value          | Mapped from the DataRow
 rem  *     x              | Mapped from the DataRow
 rem  *     ctx            | The grid client context
 rem  *     rowIndex       | The auto generated index by the grid
-rem  *     columnGroup    | The group name if any
+rem  *     columnGroup    | The group name, if any
 rem  */
 
 main:
@@ -76,30 +76,30 @@ return
 onGetRows:
   currentPhaseIndex! = phases!.getSelectedIndex()
   phase! = ""
-  
+
   SWITCH (currentPhaseIndex!)
       CASE 1
         phase! = grid!.GRID_ROWS_PHASE_AFTER_FILTER()
       BREAK
       CASE 2
         phase! = grid!.GRID_ROWS_PHASE_AFTER_FILTER_SORT()
-      BREAK      
+      BREAK
       CASE DEFAULT
         phase! = grid!.GRID_ROWS_PHASE_ALL()
       BREAK
   SWEND
-  
+
   rows! = grid!.getRows(phase! , expressionFilter!.getText())
-  
-  message! = "Size : " + str(rows!.size()) + $0A$ + "----------" + $0A$ 
-  message! = message! + "Rows:" + $0A$ + "----------" + $0A$  
-  
+
+  message! = "Size : " + str(rows!.size()) + $0A$ + "----------" + $0A$
+  message! = message! + "Rows:" + $0A$ + "----------" + $0A$
+
   it! = rows!.iterator()
   while(it!.hasNext())
     next! = it!.next()
-    message! = message! + next!.asDataRow().getFieldAsString("TITLE") + $0A$  
+    message! = message! + next!.asDataRow().getFieldAsString("TITLE") + $0A$
   wend
-  
+
   a! = msgbox(message! , 0 , "Get Rows Result")
 return
 

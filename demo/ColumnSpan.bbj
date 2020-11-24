@@ -24,15 +24,14 @@ gosub main
 process_events
 
 rem /**
-rem  * Row spanning will typically be used for creating reports with the grid. 
-rem  * 
-rem  * Below is something that would be more typical of the row spanning feature. 
-rem  * The following can be noted from the example: 
-rem  * 
-rem  *  1. Sorting and filtering will provide strange results when row spanning so we disable them.
-rem  *  1. Column Show row spans by 4 rows when it has content. this is done by `RowSpanExpression`
-rem  *  2. Column Show uses CSS class rules to specify background and border. 
-rem  *  3. Column Show has a custom HTML cell renderer to make use of the extra space.
+rem  * Row spanning will typically be used for creating reports with the grid.
+rem  *
+rem  * Below is something that would be more typical of the row spanning feature.
+rem  * The following can be noted from the example:
+rem  *  1. Sorting and filtering will provide strange results when row spanning, so we disable them.
+rem  *  2. Column Show row spans by 4 rows when it has content. this is done by `RowSpanExpression`
+rem  *  3. Column Show uses CSS class rules to specify background and border.
+rem  *  4. Column Show has a custom HTML cell renderer to make use of the extra space.
 rem  */
 main:
   declare ResultSet rs!
@@ -47,7 +46,7 @@ main:
   defaultColDef! = grid!.getOptions().getDefaultColumnDefinition()
   defaultColDef!.setSortable(0)
   defaultColDef!.setSuppressMenu(1)
-    
+
   grid!.setData(rs!)
   grid!.setFitToGrid()
 
@@ -76,14 +75,12 @@ main:
   headerCellStyle!.addProperty("font-weight","bold")
   headerCellStyle!.addProperty("display","flex")
   headerCellStyle!.addProperty("justify-content","center")
-
   grid!.addStyle(".header-cell", headerCellStyle!)
 
   quartersCellStyle! = new JsonObject()
   quartersCellStyle!.addProperty("background","#42A5F5")
   quartersCellStyle!.addProperty("color","white")
   quartersCellStyle!.addProperty("font-weight","bold")
-
   grid!.addStyle(".quarters-cell", quartersCellStyle!)
 return
 

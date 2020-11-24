@@ -18,7 +18,7 @@ wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Search Demo")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
 
-st! = wnd!.addStaticText(200,20,14,210,25,"Enter a term to search inside the grid data:")
+st! = wnd!.addStaticText(200,20,14,210,25,"Enter a term to search within the grid data:")
 ed! = wnd!.addEditBox(250,240,10,250,22,"")
 ed!.setCallback(BBjAPI.ON_EDIT_MODIFY,"onSearchEntry")
 
@@ -42,7 +42,7 @@ return
 rem /**
 rem  * Set a quick filter on the grid to perform the search.
 rem  *
-rem  * Note : this filter is applied on the client data, not the passed ResultSet.
+rem  * Note : This case-insensitive filter is applied on the client (grid) data, not the ResultSet.
 rem  */
 onSearchEntry:
   search! = ed!.getText()

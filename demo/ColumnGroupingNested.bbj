@@ -46,7 +46,7 @@ rem  * Otherwise the grid will display the same column twice once standalone and
 rem  *
 rem  * The order is kind of an important thing here.
 rem  *
-rem  * If you want just to create simple column groups then @see ColumnGroupingDemo.bbj
+rem  * If you want just to create simple column groups then @see ColumnGrouping.bbj
 rem  */
 main:
   declare SqlQueryBC sbc!
@@ -56,6 +56,7 @@ main:
   rs! = sbc!.retrieve("SELECT * FROM CDINVENTORY")
 
   grid!.addColumnGroup("Inventory")
+
   grid!.addColumn("CDNUMBER","Item#")
   grid!.addColumn("ONHAND","On Hand")
   grid!.addColumn("RETAIL","Retail")
@@ -63,8 +64,8 @@ main:
   grid!.addColumn("ARTIST","Artist Name")
   grid!.addColumn("TITLE","Record Title")
   grid!.addColumn("MUSICTYPE","Genre")
-  
-  rem it is important to set the data before creating the groups , otherwise the column types will ignored
+
+  rem It is important to set the data before creating the groups , otherwise the column types will be ignored
   grid!.setData(rs! , 0 , 0)
 
   declare GxColumnGroup InventoryDetailsGroup!

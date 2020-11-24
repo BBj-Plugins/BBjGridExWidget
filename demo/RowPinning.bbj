@@ -41,15 +41,15 @@ gosub main
 process_events
 
 rem /**
-rem  * The example below shows pinned rows. Select the number of rows you want to pin 
-rem  * at the top and the bottom using the selection above the grid.
-rem  * 
-rem  * In this example we're using an HTML cell renderer to render custom pinned row.
-rem  * Cell rendering can take place as normal on pinned rows. There is an additional 
+rem  * The example below shows pinned rows. Select the number of rows you want to pin
+rem  * at the top and the bottom using the selections above the grid.
+rem  *
+rem  * In this example, we're using an HTML cell renderer to render custom pinned rows.
+rem  * Cell rendering can take place as normal on pinned rows. There is an additional
 rem  * `PinnedRowCellRenderer` property you can use to give a pinned row cell a different cell renderer
-rem  * to the other cells. 
-rem  * 
-rem  * If both `CellRenderer` and `PinnedRowCellRenderer` are provided then pinned rows 
+rem  * than the other cells.
+rem  *
+rem  * If both `CellRenderer` and `PinnedRowCellRenderer` are provided, then pinned rows
 rem  * will use `PinnedRowCellRenderer` over `CellRenderer`.
 rem  */
 main:
@@ -70,8 +70,8 @@ main:
 : "style += isCDNumber ? ';color: blue;' : ''; "+
 : "print('<div class=""ag-cell-wrapper"" style=""' + style + '"">' + content + '</div>')"+
 : "%>")
-  grid!.getOptions().getDefaultColumnDefinition().setPinnedRowCellRenderer(renderer!)  
-  
+  grid!.getOptions().getDefaultColumnDefinition().setPinnedRowCellRenderer(renderer!)
+
   grid!.setData(rs!)
 return
 
@@ -83,9 +83,9 @@ onNumberOfTopPinnedRowsChange:
     clone!.clear()
     FOR index! = 1 TO amount!
       pinnedTopData!.add(clone!)
-    NEXT index!     
+    NEXT index!
   fi
-  
+
   grid!.setPinnedTopRows(pinnedTopData!)
 return
 
@@ -97,9 +97,9 @@ onNumberOfBottomPinnedRowsChange:
     clone!.clear()
     FOR index! = 1 TO amount!
       pinnedBottomData!.add(clone!)
-    NEXT index!     
+    NEXT index!
   fi
-  
+
   grid!.setPinnedBottomRows(pinnedBottomData!)
 return
 

@@ -258,15 +258,15 @@ rem  * <table border="1" cellpadding="10">
 rem  *  <tbody>
 rem  *      <tr>
 rem  *          <td><strong>&nbsp;Enterprise</strong></td>
-rem  *          <td>The property/method is used only with the enterprise version&#183; using it without having a valid license will<br />be ignored&#183;</td>
+rem  *          <td>The property/method is used only with the enterprise version. using it without having a valid license will<br />be ignored.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>Configuration</strong></td>
-rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client&#183;<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client&#183;<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again&#183;</td>
+rem  *          <td>Properties and methods which are tagged with&nbsp;this tag are used to configure the grid before it is rendered on the client.<br />Changing these properties or calling these methods won't affect&nbsp;the grid which is displayed on the client.<br />In order to reflect your changes on the client, you need to re-render the whole grid <br />or re-render the column definition once again.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td>&nbsp;<strong>API</strong></td>
-rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh&#183;</td>
+rem  *          <td>Methods/properties tagged with this tag can be called before or after the grid is rendered on the client and they don't require a refresh.</td>
 rem  *      </tr>
 rem  *      <tr>
 rem  *          <td><strong>&nbsp;ColumnsRenderer</strong></td>
@@ -282,63 +282,63 @@ rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxOptions
     rem /**
-    rem  * Contains column properties all columns will inherit&#183;
+    rem  * Contains column properties all columns will inherit.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public GxDefaultColumnDefinition DefaultColumnDefinition! = new GxDefaultColumnDefinition()
     rem /**
-    rem  * Contains column group properties all column groups will inherit&#183;
+    rem  * Contains column group properties all column groups will inherit.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public GxDefaultColumnGroup DefaultColumnGroupDefinition! = new GxDefaultColumnGroup()
     rem /**
-    rem  * Suppresses auto-sizing columns for columns&#183; In other words, double-clicking a column header's edge will not auto-size&#183;Default is false
+    rem  * Suppresses auto-sizing columns for columns. In other words, double-clicking a column header's edge will not auto-size.Default is false
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressAutoSize! = null()
     rem /**
-    rem  * How many pixels to add to a column width after the auto-sizing calculation&#183; The default is 4 pixels&#183; Set this if you want to add extra room to accommodate (for example) sort icons, or some other dynamic nature of the header&#183;
+    rem  * How many pixels to add to a column width after the auto-sizing calculation. The default is 4 pixels. Set this if you want to add extra room to accommodate (for example) sort icons, or some other dynamic nature of the header.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber AutoSizePadding! = null()
     rem /**
-    rem  * If true, the ag-column-moving class is not added to the grid while columns are moving&#183; In the default themes, this transpires to no animation for moving columns&#183;
+    rem  * If true, the ag-column-moving class is not added to the grid while columns are moving. In the default themes, this transpires to no animation for moving columns.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressColumnMoveAnimation! = null()
     rem /**
-    rem  * Set to true to suppress column moving&#183; In other words, set to true to make the columns fixed position&#183;
+    rem  * Set to true to suppress column moving. In other words, set to true to make the columns fixed position.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMovableColumns! = null()
     rem /**
-    rem  * Set to true to show the 'no sort' icon&#183;
+    rem  * Set to true to show the 'no sort' icon.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber UnSortIcon! = null()
     rem /**
-    rem  * Set to true to suppress multi-sort when the user shift-clicks a column header&#183;
+    rem  * Set to true to suppress multi-sort when the user shift-clicks a column header.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMultiSort! = null()
     rem /**
-    rem  * Set to true to always show the column menu button, rather than only showing when the mouse is over the column header&#183;
+    rem  * Set to true to always show the column menu button, rather than only showing when the mouse is over the column header.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMenuHide! = null()
     rem /**
-    rem  * Allows specifying the group 'auto column' if you are not happy with the default&#183;
-    rem  * If grouping, this column def is included as the first column definition in the grid&#183;
-    rem  * If not grouping, this column is not included&#183;
+    rem  * Allows specifying the group 'auto column' if you are not happy with the default.
+    rem  * If grouping, this column def is included as the first column definition in the grid.
+    rem  * If not grouping, this column is not included.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -350,7 +350,7 @@ class public GxOptions
     rem  */
     field public BBjNumber SuppressSetColumnStateEvents! = null()
     rem /**
-    rem  * Set to true to specify that the sort should take into account accented characters, if this feature is turned on the sort will perform slower&#183;
+    rem  * Set to true to specify that the sort should take into account accented characters, if this feature is turned on the sort will perform slower.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -362,18 +362,18 @@ class public GxOptions
     rem  */
     field public BBjNumber SuppressMaintainUnsortedOrder! = null()
     rem /**
-    rem  * Allow selection of multiple cells or rows&#183; When true enable multiselection, disable otherwise
+    rem  * Allow selection of multiple cells or rows. When true enable multiselection, disable otherwise
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber MultipleSelection! = 0
     rem /**
-    rem  * Set to true to allow multiple rows to be selected with a single click&#183;
+    rem  * Set to true to allow multiple rows to be selected with a single click.
     rem  *
-    rem  * E&#183;g&#183; if you click select one row, then click select another row, the first row will keep it's selection&#183;
-    rem  * Clicking a selected row in this mode will deselect the row&#183;
+    rem  * E.g. if you click select one row, then click select another row, the first row will keep it's selection.
+    rem  * Clicking a selected row in this mode will deselect the row.
     rem  * This is useful for touch devices where ctrl and shift clicking is
-    rem  * not an option&#183;
+    rem  * not an option.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  * <br>
@@ -381,36 +381,36 @@ class public GxOptions
     rem  */
     field public BBjNumber RowMultiSelectWithClick! = 0
     rem /**
-    rem  * Set to true or false&#183; If true, then rows will be deselected if you
-    rem  * hold down ctrl + click the row&#183; Normal behaviour with the grid disallows
+    rem  * Set to true or false. If true, then rows will be deselected if you
+    rem  * hold down ctrl + click the row. Normal behaviour with the grid disallows
     rem  * deselection of nodes (ie once a row is selected, it remains selected until
-    rem  * another row is selected in its place)&#183;
+    rem  * another row is selected in its place).
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber RowDeselection! = 0
     rem /**
-    rem  * If true, rows won't be selected when clicked&#183; Use, for example,
+    rem  * If true, rows won't be selected when clicked. Use, for example,
     rem  * when you want checkbox selection, and don't want to also select when the row
-    rem  * is clicked&#183;
+    rem  * is clicked.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressRowClickSelection! = 0
     rem /**
-    rem  * Set to true to enable Single Click Editing for cells, to start editing with a single click&#183;
+    rem  * Set to true to enable Single Click Editing for cells, to start editing with a single click.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SingleClickEdit! = null()
     rem /**
-    rem  * Set to true so that neither single or double-click starts editing&#183;
+    rem  * Set to true so that neither single or double-click starts editing.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressClickEdit! = null()
     rem /**
-    rem  * Set to 'fullRow' to enable Full Row Editing&#183; Otherwise leave blank to edit one cell at a time&#183;
+    rem  * Set to 'fullRow' to enable Full Row Editing. Otherwise leave blank to edit one cell at a time.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  *
@@ -419,56 +419,56 @@ class public GxOptions
     rem  */
     field public BBjString EditType! = BBjGridExWidget.GRID_EDITTYPE_CELL()
     rem /**
-    rem  * Set this to true to stop cell editing when grid loses focus&#183; The default is the grid stays editing until focus goes onto another cell&#183; For inline (non-popup) editors only&#183;
+    rem  * Set this to true to stop cell editing when grid loses focus. The default is the grid stays editing until focus goes onto another cell. For inline (non-popup) editors only.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber StopEditingWhenGridLosesFocus! = null()
     rem /**
-    rem  *  Set to true to have Enter key move focus to the cell below if not editing&#183; The default is Enter key starts editing the currently focused cell&#183;
+    rem  *  Set to true to have Enter key move focus to the cell below if not editing. The default is Enter key starts editing the currently focused cell.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber EnterMovesDown! = null()
     rem /**
-    rem  * Set to true to have Enter key move focus to the cell below after Enter is pressed while editing&#183; The default is editing will stop and focus will remain on the editing cell&#183;
+    rem  * Set to true to have Enter key move focus to the cell below after Enter is pressed while editing. The default is editing will stop and focus will remain on the editing cell.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber EnterMovesDownAfterEdit! = null()
     rem /**
-    rem  * The height for the row containing the column label header&#183; If not specified the default is 25px&#183;
+    rem  * The height for the row containing the column label header. If not specified the default is 25px.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber HeaderHeight! = null()
     rem /**
-    rem  * The height for the rows containing header column groups&#183; If not specified, it uses headerHeight
+    rem  * The height for the rows containing header column groups. If not specified, it uses headerHeight
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupHeaderHeight! = null()
     rem /**
-    rem  * The height for the row containing the floating filters&#183; If not specified the default is 20px&#183;
+    rem  * The height for the row containing the floating filters. If not specified the default is 20px.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber FloatingFiltersHeight! = null()
     rem /**
-    rem  * The height for the row containing the columns when in pivot mode&#183; If not specified, it uses headerHeight&#183;
+    rem  * The height for the row containing the columns when in pivot mode. If not specified, it uses headerHeight.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber PivotHeaderHeight! = null()
     rem /**
-    rem  * The height for the row containing header column groups when in pivot mode&#183; If not specified, it uses groupHeaderHeight
+    rem  * The height for the row containing header column groups when in pivot mode. If not specified, it uses groupHeaderHeight
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber PivotGroupHeaderHeight! = null()
     rem /**
-    rem  * If grouping, set to true or false (default is false)&#183;
-    rem  * If true, a group row will span all columns across the entire width of the table&#183;
+    rem  * If grouping, set to true or false (default is false).
+    rem  * If true, a group row will span all columns across the entire width of the table.
     rem  * If false, the cells will be rendered as normal and you will have the opportunity to include
     rem  * a grouping column (normally the first on the left) to show the group
     rem  * <br><b><small>#Configuration</small></b>
@@ -476,14 +476,14 @@ class public GxOptions
     rem  */
     field public BBjNumber GroupUseEntireRow! = null()
     rem /**
-    rem  * If grouping, set to the number of levels to expand by default&#183; Eg 0 for none, 1 first level only, etc&#183; Default is 0 (expand none)&#183; Set to -1 for expand everything
+    rem  * If grouping, set to the number of levels to expand by default. Eg 0 for none, 1 first level only, etc. Default is 0 (expand none). Set to -1 for expand everything
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupDefaultExpanded! = null()
     rem /**
-    rem  * If true, the grid will not swap in the grouping column when grouping is enabled&#183;
-    rem  * Use this if you want complete control on the column displayed and don't want the grids help&#183;
+    rem  * If true, the grid will not swap in the grouping column when grouping is enabled.
+    rem  * Use this if you want complete control on the column displayed and don't want the grids help.
     rem  * In other words, you already have a column in your column definitions that is responsible for displaying the groups
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
@@ -496,14 +496,14 @@ class public GxOptions
     rem  */
     field public BBjNumber GroupMultiAutoColumn! = null()
     rem /**
-    rem  * If true, the group row won't be displayed and the groups will be expanded by default with no ability to expand / contract the groups&#183; Useful when you want to just 'group' the rows, but not add parent group row to each group
+    rem  * If true, the group row won't be displayed and the groups will be expanded by default with no ability to expand / contract the groups. Useful when you want to just 'group' the rows, but not add parent group row to each group
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupSuppressRow! = null()
     rem /**
     rem  * When true, selecting a group will have the impact of selecting all its children
-    rem  * When false, then the group is selectable independently of the child nodes&#183;
+    rem  * When false, then the group is selectable independently of the child nodes.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  * <br>
@@ -511,11 +511,11 @@ class public GxOptions
     rem  */
     field public BBjNumber GroupSelectsChildren! = null()
     rem /**
-    rem  * If grouping, whether to show a group footer when the group is expanded&#183;
+    rem  * If grouping, whether to show a group footer when the group is expanded.
     rem  * If true, then by default, the footer will contain aggregate data (if any)
-    rem  * when shown and the header will be blank&#183;
+    rem  * when shown and the header will be blank.
     rem  * When closed, the header will contain the aggregate data regardless
-    rem  * of this setting (as footer is hidden anyway)&#183;
+    rem  * of this setting (as footer is hidden anyway).
     rem  * This is handy for 'total' rows, that are displayed below the data when
     rem  * the group is open, and alongside the group when it is closed
     rem  * <br><b><small>#Configuration</small></b>
@@ -523,14 +523,14 @@ class public GxOptions
     rem  */
     field public BBjNumber GroupIncludeFooter! = null()
     rem /**
-    rem  * Set to true to show a 'grand' total group footer across all groups&#183;
+    rem  * Set to true to show a 'grand' total group footer across all groups.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupIncludeTotalFooter! = null()
     rem /**
-    rem  * If true, and showing footer, aggregate data will be displayed at both the header and footer levels always&#183;
-    rem  * This stops the possibly undesirable behaviour of the header details 'jumping' to the footer on expand&#183;
+    rem  * If true, and showing footer, aggregate data will be displayed at both the header and footer levels always.
+    rem  * This stops the possibly undesirable behaviour of the header details 'jumping' to the footer on expand.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -542,25 +542,25 @@ class public GxOptions
     rem  */
     field public BBjNumber GroupSelectsFiltered! = null()
     rem /**
-    rem  * Set to true to collapse groups that only have one child&#183;
+    rem  * Set to true to collapse groups that only have one child.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupRemoveSingleChildren! = null()
     rem /**
-    rem  * Set to true to collapse lowest level groups that only have one child&#183;
+    rem  * Set to true to collapse lowest level groups that only have one child.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupRemoveLowestSingleChildren! = null()
     rem /**
-    rem  * Set to true to hide parents that are open&#183; When used with multiple columns for showing groups, it can give more pleasing user experience
+    rem  * Set to true to hide parents that are open. When used with multiple columns for showing groups, it can give more pleasing user experience
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupHideOpenParents! = null()
     rem /**
-    rem  * When to show the 'row group panel' (where you drag rows to group) at the top&#183; Default is never&#183; Set to either 'always' or 'onlyWhenGrouping'
+    rem  * When to show the 'row group panel' (where you drag rows to group) at the top. Default is never. Set to either 'always' or 'onlyWhenGrouping'
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  *
@@ -576,9 +576,9 @@ class public GxOptions
     rem  */
     field public BBjNumber PivotMode! = null()
     rem /**
-    rem  * When to show the 'pivot panel' (where you drag rows to pivot) at the top&#183;
-    rem  * Default is never&#183; Set to either 'always' or 'onlyWhenPivoting'&#183;
-    rem  * Note that the pivot panel will never show if pivotMode is off&#183;
+    rem  * When to show the 'pivot panel' (where you drag rows to pivot) at the top.
+    rem  * Default is never. Set to either 'always' or 'onlyWhenPivoting'.
+    rem  * Note that the pivot panel will never show if pivotMode is off.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  *
@@ -594,7 +594,7 @@ class public GxOptions
     rem  */
     field public BBjNumber RememberGroupStateWhenNewData! = null()
     rem /**
-    rem  * When true, column headers won't include the aggFunc, eg 'sum(Bank Balance)' will just be 'Bank Balance'&#183;
+    rem  * When true, column headers won't include the aggFunc, eg 'sum(Bank Balance)' will just be 'Bank Balance'.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -606,21 +606,21 @@ class public GxOptions
     rem  */
     field public BBjNumber SuppressAggAtRootLevel! = null()
     rem /**
-    rem  * If true, then row group, pivot and value aggregation will be read only from the UI&#183;
+    rem  * If true, then row group, pivot and value aggregation will be read only from the UI.
     rem  * The grid will display what values are used for each, but will not allow the use to change the selection
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  */
     field public BBjNumber FunctionsReadOnly! = null()
     rem /**
-    rem  * By default when a column is un-grouped, it is made visible&#183;
-    rem  * This property stops the column becoming visible again when un-grouping&#183;
+    rem  * By default when a column is un-grouped, it is made visible.
+    rem  * This property stops the column becoming visible again when un-grouping.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMakeVisibleAfterUnGroup! = null()
     rem /**
-    rem  * Set to true to always show the vertical scrollbar&#183;
+    rem  * Set to true to always show the vertical scrollbar.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -632,27 +632,27 @@ class public GxOptions
     rem  */    
     field public BBjNumber SuppressHorizontalScroll! = null()
     rem /**
-    rem  * When true, the grid will not scroll to the top when new row data is provided&#183;
-    rem  * Use this if you don't want the default behaviour of scrolling to the top every time you load new data&#183;
+    rem  * When true, the grid will not scroll to the top when new row data is provided.
+    rem  * Use this if you don't want the default behaviour of scrolling to the top every time you load new data.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressScrollOnNewData! = null()
     rem /**
-    rem  * When true, the grid will not use animation frames when drawing rows while scrolling&#183;
-    rem  * Use this if the grid is working fast enough that you don't need animations frame and you don't want the grid to flicker&#183;
+    rem  * When true, the grid will not use animation frames when drawing rows while scrolling.
+    rem  * Use this if the grid is working fast enough that you don't need animations frame and you don't want the grid to flicker.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressAnimationFrame! = null()
     rem /**
-    rem  * Icons to use inside the grid instead of the grid's default icons&#183;
+    rem  * Icons to use inside the grid instead of the grid's default icons.
     rem  *
-    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group)&#183;
-    rem  * If defined in both the grid options and column definitions, the column definition will get used&#183;
+    rem  * The icons can either be set on the grid options (all icons) or on the column definition (all except group).
+    rem  * If defined in both the grid options and column definitions, the column definition will get used.
     rem  * This allows you to specify defaults in the grid options to fall back on, and then provide individual icons for
-    rem  * specific columns&#183; This is handy if, for example, you want to include 'A&#183;&#183;Z' as string sort icons
-    rem  * and just the simple arrow for other columns&#183;
+    rem  * specific columns. This is handy if, for example, you want to include 'A..Z' as string sort icons
+    rem  * and just the simple arrow for other columns.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>.
     rem  * <br>
@@ -718,19 +718,19 @@ class public GxOptions
     rem  */
     field public JsonObject Icons! = new JsonObject()
     rem /**
-    rem  * Default Row Height in pixels&#183; Default is 25 pixels&#183;
+    rem  * Default Row Height in pixels. Default is 25 pixels.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#API</small></b>
     rem  */
     field public BBjNumber RowHeight! = null()
     rem /**
-    rem  * Set to true to enable Row Animation&#183;
+    rem  * Set to true to enable Row Animation.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber AnimateRows! = null()
     rem /**
-    rem  * Property to set style for all rows&#183; Set to an object of key (style names) and values (style values)
+    rem  * Property to set style for all rows. Set to an object of key (style names) and values (style values)
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -742,10 +742,10 @@ class public GxOptions
     rem  */
     field public ArrayList RowClass!  =  new ArrayList()
     rem /**
-    rem  * Rules which can be applied to include certain CSS classes for rows&#183;
+    rem  * Rules which can be applied to include certain CSS classes for rows.
     rem  *
     rem  * These rules are provided as a JavaScript map where the keys are class names and the values are expressions that
-    rem  * if evaluated to true, the class gets used&#183; The expression is a string which is treated as a shorthand for a
+    rem  * if evaluated to true, the class gets used. The expression is a string which is treated as a shorthand for a
     rem  * function by the grid.<br><b><small>#Configuration</small></b><br><b><small>#GridRenderer</small></b>.
     rem  *
     rem  * The expression has the following attributes available: <br>
@@ -769,19 +769,19 @@ class public GxOptions
     rem  */
     field public JsonObject RowClassRules! = new JsonObject()
     rem /**
-    rem  * Set to true to not highlight rows by adding the ag-row-hover CSS class&#183;
+    rem  * Set to true to not highlight rows by adding the ag-row-hover CSS class.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressRowHoverHighlight! = null()
     rem /**
-    rem  * If true, then middle clicks will result in 'click' events for cell and row&#183; Otherwise the browser will use middle click to scroll the grid&#183;
+    rem  * If true, then middle clicks will result in 'click' events for cell and row. Otherwise the browser will use middle click to scroll the grid.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressMiddleClickScrolls! = null()
     rem /**
-    rem  * Set to true to use the browser's default tooltip instead of using Ag-Grid's Tooltip Component&#183;
+    rem  * Set to true to use the browser's default tooltip instead of using Ag-Grid's Tooltip Component.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -795,25 +795,25 @@ class public GxOptions
     rem  */
     field public BBjNumber TooltipShowDelay! = null()
     rem /**
-    rem  * If true, when you drag a column out of the grid (eg to the group zone) the column is not hidden&#183;
+    rem  * If true, when you drag a column out of the grid (eg to the group zone) the column is not hidden.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressDragLeaveHidesColumns! = null()
     rem /**
-    rem  * Set to true to operate grid in RTL (Right to Left) mode&#183;
+    rem  * Set to true to operate grid in RTL (Right to Left) mode.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber EnableRtl! = null()
     rem /**
-    rem  * Set to true to not show context menu&#183; Use if you don't want to use the default 'right click' context menu&#183;
+    rem  * Set to true to not show context menu. Use if you don't want to use the default 'right click' context menu.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressContextMenu! = null()
     rem /**
-    rem  * Disables touch support (but does not remove the browsers efforts to simulate mouse events on touch)&#183;
+    rem  * Disables touch support (but does not remove the browsers efforts to simulate mouse events on touch).
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -829,7 +829,7 @@ class public GxOptions
     field public BBjNumber EnableFloatingFilter! = 0
     rem /**
     rem  * When true, A selection box will be shown on the first column
-    rem  * When false, no checkbox will be displayed&#183;
+    rem  * When false, no checkbox will be displayed.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  * <br>
@@ -838,7 +838,7 @@ class public GxOptions
     field public BBjNumber ShowSelectionCheckbox! = 0
     rem /**
     rem  * When true, selection box will be show on the first column's header
-    rem  * When false, no checkbox will be displayed&#183;
+    rem  * When false, no checkbox will be displayed.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  * <br>
@@ -847,7 +847,7 @@ class public GxOptions
     rem  */
     field public BBjNumber ShowHeaderSelectionCheckbox! = 0
     rem /**
-    rem  * Defines how users can move between rows using arrow keys&#183;
+    rem  * Defines how users can move between rows using arrow keys.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  *
@@ -883,25 +883,25 @@ class public GxOptions
     rem  */
     field public BBjNumber ImmutableColumns! = 0
     rem /**
-    rem  * Disables the 'loading' overlay&#183;
+    rem  * Disables the 'loading' overlay.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressLoadingOverlay! = null()
     rem /**
-    rem  * Disables the 'no rows' overlay&#183;
+    rem  * Disables the 'no rows' overlay.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressNoRowsOverlay! = null()
     rem /**
-    rem  * Provide a template for 'loading' overlay if not happy with the default one&#183;
+    rem  * Provide a template for 'loading' overlay if not happy with the default one.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjString OverlayLoadingTemplate! = null()
     rem /**
-    rem  * Provide a template for 'no rows' overlay if not happy with the provided&#183;
+    rem  * Provide a template for 'no rows' overlay if not happy with the provided.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -1030,8 +1030,8 @@ class public GxOptions
         #getDefaultColumnDefinition().setWidth(Width!)
     methodend
     rem /**
-    rem  * Enable / Disable column Filters&#183;This method updates only the default column definition,
-    rem  * columns can still override this setting individually&#183;
+    rem  * Enable / Disable column Filters.This method updates only the default column definition,
+    rem  * columns can still override this setting individually.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>
@@ -1052,8 +1052,8 @@ class public GxOptions
         FI
     methodend
     rem /**
-    rem  * Enable / Disable column Filters&#183;This method updates only the default column definition,
-    rem  * columns can still override this setting individually&#183;
+    rem  * Enable / Disable column Filters.This method updates only the default column definition,
+    rem  * columns can still override this setting individually.
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#ColumnsRenderer</small></b>

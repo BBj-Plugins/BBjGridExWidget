@@ -24,7 +24,7 @@ SysGui! = BBjAPI().getSysGui()
 boldFont! = SysGui!.makeFont("arial",13,BBjFont.FONT_BOLD)
 boldFontSmall! = SysGui!.makeFont("arial",10,BBjFont.FONT_BOLD)
 fontSmall! = SysGui!.makeFont("arial",10,BBjFont.FONT_PLAIN)
-icon! =SysGui!.getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/images/help.png")
+icon! = SysGui!.getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/images/help.png")
 
 
 REM ------------------Start Left Panel -------------------------
@@ -85,7 +85,7 @@ suppressRowClickSelection!.setCallback(BBjAPI.ON_CHECK_ON,"onSuppressRowClickSel
 REM --- End Suppress Row Click Selection Controls
 
 
-REM --- Start Selection Detailes
+REM --- Start Selection Details
 currentSelectionTitle! = wnd!.addStaticText(212,10,240,200,25,"__________________________________________" , $0000$ )
 
 NumOfSelectedRowsKeyStatic! = wnd!.addStaticText(213,10,270,200,25,"Selected Count: " , $0000$ )
@@ -99,7 +99,7 @@ SelectedRowsValueStatic! = wnd!.addStaticText(216,10,320,200,200," " , $0000$ )
 
 SelectedRowsKeyStatic!.setFont(boldFontSmall!)
 SelectedRowsValueStatic!.setFont(fontSmall!)
-REM --- End Selection Detailes
+REM --- End Selection Details
 
 REM ------------------End Left Panel -------------------------
 
@@ -127,8 +127,6 @@ grid!.getOptions().setShowGroupSelectionCheckbox(1)
 grid!.getOptions().setGroupSelectsChildren(1)
 
 grid!.setCallback(grid!.ON_GRID_ROW_SELECT(),"onSelectionEvent")
-
-
 
 REM ------------------End Right Panel -------------------------
 
@@ -213,9 +211,9 @@ return
 onSelectionEvent:
     ev! = BBjAPI().getLastEvent()
     ev! = ev!.getObject()
-    
+
     rows! =  ev!.getSelectedRows()
-    
+
     declare auto GxClientRowModel row!
     selectedAsText$ = ""
     it! = rows!.iterator()

@@ -30,15 +30,15 @@ grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 
 rem /**
 rem  * @see http://documentation.basis.com/BASISHelp/WebHelp/commands2/opts_variable.htm
-rem  * Set the default group and decimal separators for numbers masking.<br>
+rem  * Set the default group and decimal separators for numeric masking.<br>
 rem  *
-rem  * The grid will pick up these settings and use them by default for numbers masking.
+rem  * The grid will pick up these settings and use them by default for numeric masking.
 rem  * You can also override these settings at the column level manually.
 rem  */
 a$=opts
 a$(3,1)=ior(a$(3,1),$02$)
-a$(5,1)=","; rem set numbers group separator
-a$(6,1)="."; rem set numbers decimal separator
+a$(5,1)=","; rem set numeric group separator
+a$(6,1)="."; rem set numeric decimal separator
 setopts A$
 
 gosub main
@@ -51,6 +51,7 @@ rem  * The demo shows how grid!.setData() sets up the column components accordin
 rem  * For example, the DOUBLE column's type is double, this will enable the GxExpressionNumbersFormatter
 rem  * by default. Using the formatter you can configure the mask to use or define the group and the decimal
 rem  * separators for numbers.
+rem  *
 rem  * The same applies for other types, for example, the boolean columns will be configured automatically to have the
 rem  * GxRendererBoolean, where you can configure how true/false will be rendered
 rem  * inside the cell (switch, numbers, custom html strings, ...).
@@ -78,7 +79,7 @@ main:
       dr!.setFieldValue("BOOLEAN 3",java.sql.Types.BOOLEAN,MOD(i,3)=0)
       dr!.setFieldValue("DATE",java.sql.Types.DATE,"1979-08-03")
       dr!.setFieldValue("TIMESTAMP",java.sql.Types.TIMESTAMP,"1979-08-03 12:22:13.010")
-      rem in older version of basis components time was not supported 
+      rem in older version of basis components time was not supported
       dr!.setFieldValue("TIME",java.sql.Types.TIME,"14:00:00")
       rs!.addItem(dr!)
       i = i+1
@@ -103,12 +104,12 @@ main:
 
   grid!.setData(rs!)
 
-  iconImage!    = BBjGridExWidget.imageToBase64("BBjGridExWidget/Demo/assets/images/sampleicon.png")
-  spriteImage!  = BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/Demo/assets/images/imagelist.png")
+  iconImage!    = BBjGridExWidget.imageToBase64("BBjGridExWidget/demo/assets/images/sampleicon.png")
+  spriteImage!  = BBjAPI().getSysGui().getImageManager().loadImageFromFile("BBjGridExWidget/demo/assets/images/imagelist.png")
   jsonIcons!    = new JsonObject()
-  jsonIcons!       .addProperty("ID_1","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_airline_seat_individual_suite_black_36dp.png")
-  jsonIcons!       .addProperty("ID_2","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_confirmation_number_black_36dp.png")
-  jsonIcons!       .addProperty("ID_3","https://raw.githubusercontent.com/google/material-design-icons/master/notification/1x_web/ic_drive_eta_black_36dp.png")
+  jsonIcons!       .addProperty("ID_1","https://github.com/google/material-design-icons/blob/master/png/notification/airline_seat_individual_suite/materialicons/36dp/1x/baseline_airline_seat_individual_suite_black_36dp.png")
+  jsonIcons!       .addProperty("ID_2","https://github.com/google/material-design-icons/blob/master/png/notification/confirmation_number/materialicons/36dp/1x/baseline_confirmation_number_black_36dp.png")
+  jsonIcons!       .addProperty("ID_3","https://github.com/google/material-design-icons/blob/master/png/notification/drive_eta/materialicons/36dp/1x/baseline_drive_eta_black_36dp.png")
   jsonIcons!       .addProperty("ID_4", iconImage!)
 
   icon!      = grid!.getColumn("ICON")

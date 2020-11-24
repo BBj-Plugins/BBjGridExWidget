@@ -7,14 +7,16 @@
 */
 
 .gw-alignment-cell-right,
-.gw-alignment-cell-right .ag-cell-value {
+.gw-alignment-cell-right .ag-cell-value,
+.gw-alignment-cell-right .templateRenderer {
   text-align: right;
   justify-content: flex-end;
   flex: 1;
 }
 
 .gw-alignment-cell-center,
-.gw-alignment-cell-center .ag-cell-value {
+.gw-alignment-cell-center .ag-cell-value,
+.gw-alignment-cell-center .templateRenderer {
   text-align: center;
   justify-content: center;
   flex: 1;
@@ -25,7 +27,12 @@
 }
 
 .gw-alignment-header-center .ag-header-cell-label {
-  flex-direction: column;
+  display: flex;
+  justify-content: center;
+}
+
+.gw-alignment-header-center .ag-header-cell-text {
+  margin-left: -16px !important;
 }
 
 .gw-alignment-header-right .ag-cell-label-container,

@@ -6,10 +6,11 @@
  * file that was distributed with this source code.
  */
 
-import { gw_debounce } from './utilities'
+import { gw_debounce, gw_sendEvent } from './utilities'
 import { gw_onStateChanged } from './state'
 import { gw_onKeydown } from './keyboard'
 import { gw_getGrid } from 'api/utilities'
+import { GW_EVENT_READY } from './constants'
 
 /**
  * On Ready Event
@@ -19,10 +20,22 @@ import { gw_getGrid } from 'api/utilities'
  *
  * @param {String} id The grid's id
  * @param {Object} e  The event payload
+ *
+ * @listens agGrid.gridReady
+ * @fires gw.ready
  */
 // eslint-disable-next-line no-unused-vars
 export function gw_onReadyEvent(id, _e) {
   const grid = gw_getGrid(id)
+
+  gw_sendEvent(
+    grid.options.context,
+    {
+      type: 'gw.gridReady',
+      detail: {},
+    },
+    GW_EVENT_READY
+  )
 
   // register state debounce monitor
   const stateDebounce = gw_debounce(changeEvent => {

@@ -20,6 +20,7 @@ import {
   gw_onCellEditingEvent,
   gw_onRowEditingEvent,
   gw_onReadyEvent,
+  gw_onFilterChanged,
   gw_debounce,
 } from 'events'
 import template from 'lodash-es/template'
@@ -98,6 +99,9 @@ function gw_parseOptions(options) {
       },
       onGridReady: e => {
         gw_onReadyEvent(id, e)
+      },
+      onFilterChanged: e => {
+        gw_onFilterChanged(id, e)
       },
       getRowNodeId: data => gw_getRowNodeId(id, data),
       getContextMenuItems: params => gw_getContextMenu(id, params),
