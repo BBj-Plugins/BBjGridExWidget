@@ -1,3 +1,21 @@
+# [1.1.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.4...1.1.0) (2020-11-24)
+
+
+### Bug Fixes
+
+* :bug: headers and cells are not aligned correctly ([f8db034](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f8db034f8c97bd93e171503274f0e58579c48bc5))
+* :bug: overlay api should not be debounced in BUI ([b1fdb59](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b1fdb593f6b890de50e4c3ad03adae8cdf61e0f7))
+* avoid focus in INFO(3,6)="6" client ([139b01f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/139b01f9ff54c1dc5a1ffb234360e0f479831159))
+* column headers are centered wronglly ([a233e22](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a233e22c002094c768db42f1401fd91bb92388c7))
+
+
+### Features
+
+* :sparkles: add BBjGridExWidget.ON_GRID_FILTER_CHANGED ([58b1140](https://github.com/BBj-Plugins/BBjGridExWidget/commit/58b11403475d0cea3e13ba92ab76d26ef431f706))
+* :sparkles: add BBjGridExWidget.ON_GRID_READY event ([1eb7d30](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1eb7d3004a25555daa550e44ee81abbea1cbdd48))
+
+
+
 ## [1.0.4](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.3...1.0.4) (2020-10-22)
 
 
