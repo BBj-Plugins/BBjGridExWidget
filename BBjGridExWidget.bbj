@@ -895,6 +895,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       htmlview!.setNoEdge(1)
       htmlview!.setTabTraversable(1)
       htmlview!.setFocusable(1)
+      htmlview!.addStyle("htmlview-" + #getRootId())
 
       if (info(3,6)<>"5" and #getDebug() > 0) then
         url$ = htmlview!.getAttribute("remoteDebuggingURL")

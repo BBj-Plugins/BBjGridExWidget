@@ -42,7 +42,16 @@ export function gw_sendEvent(context, payload = {}, eventId = []) {
 
   if (registeredInterests.includes(eventId)) {
     const div = gw_getDocument().getElementById(`${context.id}`)
-    window.basisDispatchCustomEvent(div, payload)
+
+    // bui or webapp
+    if ([5, 6].indexOf(context.platform) > -1) {
+      const htmlviewId = `htmlview-${context.id}`
+      gw_getDocument()
+        .getElementsByClassName(htmlviewId)[0]
+        .basisDispatchCustomEvent(div, payload)
+    } else {
+      window.basisDispatchCustomEvent(div, payload)
+    }
   }
 }
 
