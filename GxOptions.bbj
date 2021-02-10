@@ -1355,6 +1355,7 @@ class public GxOptions
         context!.addProperty("contextMenu",#ContextMenu!.toString(), err=*next)
         context!.addProperty("navigateToNextCell",Iff(#NavigationBehavior! = BBjGridExWidget.GRID_NAVIGATION_BEHAVIOUR_NEXT_ROW() , 1 , 0), err=*next)
         context!.addProperty("getDataPath",#getDataPathTemplate(), err=*next)
+        context!.addProperty("platform",str(info(3,6)), err=*next)
         options!.add("context",context!)
         methodret options!
     methodend

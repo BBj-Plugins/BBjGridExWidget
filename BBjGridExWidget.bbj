@@ -895,6 +895,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       htmlview!.setNoEdge(1)
       htmlview!.setTabTraversable(1)
       htmlview!.setFocusable(1)
+      htmlview!.addStyle("htmlview-" + #getRootId())
 
       if (info(3,6)<>"5" and #getDebug() > 0) then
         url$ = htmlview!.getAttribute("remoteDebuggingURL")
@@ -2202,9 +2203,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * <br><b><small>#API</small></b>
   rem  */
   method public void clearData()
-    #RS! = new ResultSet()
-    #RS!.createIndex(err=*next)
-    #getExecutor().execute("$wnd.gw_setRowData('" + #getRootId() + "', [])",0)
+    #getRS().clear()
+
+    if(#IsReady!) then
+      #getExecutor().execute("$wnd.gw_setRowData('" + #getRootId() + "', [])",0)
+    fi
   methodend
   rem /**
   rem  * Clear row data (Empty the grid )

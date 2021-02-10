@@ -323,6 +323,14 @@
         "OrderLines.bbj": {
             "name": "OrderLines",
             "style": ""
+        },
+        "htmlview.bbj": {
+            "name": "htmlview",
+            "style": ""
+        },
+        "editbox.bbj": {
+            "name": "editbox",
+            "style": ""
         }
     },
     "cSpell.words": [
