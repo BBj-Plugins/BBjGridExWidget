@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.1...1.1.2) (2021-02-10)
+
+
+### Bug Fixes
+
+* :bug: check for basisDispatchCustomEvent in html container ([ac1b879](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ac1b8797e0e3e780dc23b91db00c4c5bb5d77200))
+
+
+
 ## [1.1.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.0...1.1.1) (2021-02-10)
 
 

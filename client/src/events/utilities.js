@@ -46,9 +46,12 @@ export function gw_sendEvent(context, payload = {}, eventId = []) {
     // bui or webapp
     if ([5, 6].indexOf(context.platform) > -1) {
       const htmlviewId = `htmlview-${context.id}`
-      gw_getDocument()
-        .getElementsByClassName(htmlviewId)[0]
-        .basisDispatchCustomEvent(div, payload)
+      const container = gw_getDocument().getElementsByClassName(htmlviewId)[0]
+      if (typeof container.basisDispatchCustomEvent === 'function') {
+        container.basisDispatchCustomEvent(div, payload)
+      } else {
+        window.basisDispatchCustomEvent(div, payload)
+      }
     } else {
       window.basisDispatchCustomEvent(div, payload)
     }
