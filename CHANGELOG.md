@@ -1,3 +1,13 @@
+## [1.1.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.0...1.1.1) (2021-02-10)
+
+
+### Bug Fixes
+
+* :bug: BBjGridExWidget::clearData does not check for the grid's ready state ([a899f0e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a899f0ec76f1c5aa02f9bc2e66ff26cbb8dca902))
+* events dispatching should go throw the htmlview container ([bc4ef78](https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc4ef786c79739f93763403c42ae4275ac5e0dbc))
+
+
+
 # [1.1.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.0.4...1.1.0) (2020-11-24)
 
 
