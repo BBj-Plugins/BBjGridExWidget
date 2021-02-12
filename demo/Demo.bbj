@@ -20,6 +20,8 @@ declare auto BBjListButton lb_theme!
 declare auto BBjButton btn_query!
 declare BBjGridExWidget grid!
 
+
+
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,900,600,"BBj Grid Ex Demo")
 wnd!        .setCallback(BBjAPI.ON_CLOSE,"byebye")
 wnd!        .setCallback(BBjAPI.ON_RESIZE,"resize")
@@ -28,13 +30,32 @@ lbl_db!     = wnd!.addStaticText(200,5,10,60,25,"Database:")
 lb_db!      = wnd!.addListButton(201,65,5,160,250,"")
 lbl_tbl!    = wnd!.addStaticText(202,235,10,60,25,"Table:")
 lb_tbl!     = wnd!.addListButton(203,295,5,160,250,"")
-btn_query!  = wnd!.addButton(204,465,4,100,24,"Query")
-lbl_theme!  = wnd!.addStaticText(205,575,10,60,25,"Theme:")
-lb_theme!   = wnd!.addListButton(206,635,5,85,250,"")
+lbl_limit!    = wnd!.addStaticText(251,465,10,60,25,"Data Limit:")
+lb_limit!     = wnd!.addListButton(252,530,5,100,250,"")
+btn_query!  = wnd!.addButton(204,640,4,100,24,"Query")
+lbl_theme!  = wnd!.addStaticText(205,750,10,60,25,"Theme:")
+lb_theme!   = wnd!.addListButton(206,810,5,85,250,"")
 
 lb_db!      .setCallback(BBjAPI.ON_LIST_SELECT,"loadTables")
+rem lb_limit!.setCallback(BBjAPI.ON_LIST_SELECT,"loadDataLimit")
 btn_query!  .setCallback(BBjAPI.ON_BUTTON_PUSH,"doQuery")
 lb_theme!   .setCallback(BBjAPI.ON_LIST_SELECT,"setTheme")
+
+rem Shahidur
+LET myAPI!=BBjAPI()
+LET mySysGui!=myAPI!.getSysGui()
+myVector! = mySysGui!.makeVector()
+rem end
+
+
+REM Add the above values into the BBjVector object
+myVector!.addItem(str(5))
+myVector!.addItem(str(50))
+myVector!.addItem(str(100))
+myVector!.addItem(str(1000))
+
+lb_limit!.insertItems(0,myVector!)
+
 
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,35,900,563)
@@ -108,10 +129,19 @@ doQuery:
 
   db$ = lb_db!.getSelectedItem()
   tbl$ = lb_tbl!.getSelectedItem()
+  limit$ = lb_limit!.getSelectedItem()
 
   if (db$>"" and tbl$>"") then
-    bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
-    rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
+        bc! = new SqlQueryBC(BBjAPI().getJDBCConnection(db$))
+    if limit$ = "" then
+        rs! = bc!.retrieve("SELECT * FROM "+tbl$,err=error_sql)
+        
+    else
+        
+        rs! = bc!.retrieve("SELECT TOP "+limit$+" * FROM "+tbl$,err=error_sql)
+       
+    endif
+    
     grid!.clearColumnDefinitions()
     grid!.setData(rs!)
   FI
