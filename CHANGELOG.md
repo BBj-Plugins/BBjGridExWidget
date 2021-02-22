@@ -1,3 +1,12 @@
+## [1.1.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.2...1.1.3) (2021-02-22)
+
+
+### Bug Fixes
+
+* force event listeners remove when setData is called more than once ([abd7005](https://github.com/BBj-Plugins/BBjGridExWidget/commit/abd70054b1ee3599bbc1315f3e00e9ea2ae78869))
+
+
+
 ## [1.1.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.1...1.1.2) (2021-02-10)
 
 
