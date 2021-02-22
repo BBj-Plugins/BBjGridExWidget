@@ -35,7 +35,11 @@ export function gw_init(options, license, data) {
   }
 
   const id = options.context.id
-  const container = gw_getDocument().getElementById(id)
+  let container = gw_getDocument().getElementById(id)
+  const containerClone = container.cloneNode(true)
+
+  container.parentNode.replaceChild(containerClone, container)
+  container = containerClone
   // we make the grid options available as soon as possible
   const grid = gw_addGrid(id, {
     container,
