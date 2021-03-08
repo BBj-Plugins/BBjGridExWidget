@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.3...1.2.0) (2021-03-08)
+
+
+### Bug Fixes
+
+* **docs:** :books: update required BBj version ([2665662](https://github.com/BBj-Plugins/BBjGridExWidget/commit/2665662adb983533917f716d631c49a3e912753f))
+
+
+### Features
+
+* :sparkles: allow to configure columns menu tabs ([1aec687](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1aec687e45cc123964d2e9d91255b79148bd9511))
+
+
+
 ## [1.1.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.2...1.1.3) (2021-02-22)
 
 
