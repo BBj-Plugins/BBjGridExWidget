@@ -10,7 +10,7 @@ rem  */
 
 use java.io.File
 use java.util.ArrayList  
-use com.basis.bbjutilities.bbjdocsgenerator.sections.BBjDocsGenerator  
+use com.basis.bbjutilities.bbjdocsgenerator.BBjDocsGenerator  
 use com.basis.bbjutilities.bbjdocsgenerator.BBjDocsParameters   
 
 root! = BBjAPI().getFileSystem().resolvePath("BBjGridExWidget")
