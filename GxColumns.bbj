@@ -747,6 +747,17 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * @see GxExpression
     rem  */      
     field public GxExpressionInterface ColumnSpanExpression! = null()
+
+    rem /**
+    rem  * Set to an array containing zero, one or many of the pre built men tabs.
+    rem  * This is used to figure out which menu tabs are present and in which order the tabs are shown.
+    rem  * 
+    rem  * @see GxColumn.MENU_TAB_FILTER()
+    rem  * @see GxColumn.MENU_TAB_GENERAL()
+    rem  * @see GxColumn.MENU_TAB_COLUMNS()
+    rem  */
+    field public ArrayList MenuTabs! = new ArrayList()
+
     rem /**
     rem  * Get pinned left constant
     rem  *
@@ -1198,6 +1209,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("tooltipValueGetter",#getTooltipValueGetterExpression().toString(),err=*next)
         column!.addProperty("editable",#getEditable().booleanValue(),err=*next)
         column!.addProperty("floatingFilter",#getFloatingFilter().booleanValue(),err=*next)
+        column!.addProperty("menuTabs" , iff(#getMenuTabs().size() <> 0 ,new Gson().toJson(#getMenuTabs()), listIsEmpty!) ,err=*next)
         editableExpression! = #getEditableExpression()
 
         if(editableExpression! <> null()) then
@@ -1254,6 +1266,29 @@ class public GxColumn extends GxDefaultColumnDefinition
     rem  * The field of the row to get the cells data from<br><b>Note</b>: Once the field name is set, it becomes immutable
     rem  */
     field public BBjString Field!
+    
+    rem /**
+    rem  * @return filterMenuTab
+    rem  */
+    method public static BBjString MENU_TAB_FILTER()
+      methodret "filterMenuTab"
+    methodend
+
+    rem /**
+    rem  * @return generalMenuTab
+    rem  */
+    method public static BBjString MENU_TAB_GENERAL()
+      methodret "generalMenuTab"
+    methodend
+
+
+    rem /**
+    rem  * @return filterMenuTab
+    rem  */
+    method public static BBjString MENU_TAB_COLUMNS()
+      methodret "columnsMenuTab"
+    methodend
+
     rem /**
     rem  * Disable default constructor
     rem  */

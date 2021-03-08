@@ -43,8 +43,8 @@ grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 rem enable grid editing based on EDITABLE flag in DataRow Attribute
 grid!.getOptions().setEditable(1)
 grid!.getOptions().setSingleClickEdit(1)
-grid!.getOptions().setEditType(grid!.GRID_EDITTYPE_CELL());rem _ROW())
-rem grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
+grid!.getOptions().setEditType(grid!.GRID_EDITTYPE_CELL());		rem see also: _ROW())
+rem see also: grid!.setEnterKeyBehavior(grid!.GRID_ENTER_NEXT_CELL())
 
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STARTED(),"rowEditingStarted");rem no-op if not edittype_row
 grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped");rem no-op if not edittype_row
@@ -52,6 +52,14 @@ grid!.setCallback(grid!.ON_GRID_ROW_EDITING_STOPPED(),"rowEditingStopped");rem n
 grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
 
 gosub fillGrid
+
+REM The numbers cell editor is a normal <input type="number"> 
+REM you will need to set up the allowed step 
+
+double! = grid!.getColumn("DOUBLE")
+double!.getCellEditor().setStep(.01)
+
+
 process_events
 
 startEditingZeroFunc:
@@ -98,7 +106,7 @@ fillGrid:
         if i=1 then
             dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
             dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
-
+			
             dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
 
             dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
