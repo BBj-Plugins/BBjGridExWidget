@@ -1022,7 +1022,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * Why?
     rem  *
-    rem  * in BUI we use GWT ad GWT uses $wnd instead of window because compiled code is executed normally in an iframe,
+    rem  * in BUI we use GWT and GWT uses $wnd instead of window because compiled code is executed normally in an iframe,
     rem  * and in this context, window will reference the iframe window while $wnd will reference the parent window.
     rem  * The same occurs with $doc which is a reference in the iframe to the parent document.
     rem  *
@@ -1033,8 +1033,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * the JS code we execute from the grid will throw an error , we polyfill these two vars
     rem  * for GUI to get around the problem
     rem  */
-    bundle$ = "var $wnd = (typeof $wnd !== 'undefined' ? $wnd : window);"
-    bundle$ = bundle$ + "var $doc = (typeof $doc !== 'undefined' ? $doc : document);"
+    rem bundle$ = "var $wnd = (typeof $wnd !== 'undefined' ? $wnd : window);"
+    rem bundle$ = bundle$ + "var $doc = (typeof $doc !== 'undefined' ? $doc : document);"
+    bundle$ = "var $wnd = window;"
+    bundle$ = bundle$ + "var $doc = document;"
     rem loop over the require scripts and attach to the bundle
     it! = scriptsSet!.iterator()
     while(it!.hasNext())
