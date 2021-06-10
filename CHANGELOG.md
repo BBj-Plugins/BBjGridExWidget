@@ -1,3 +1,18 @@
+# [1.3.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.2.0...1.3.0) (2021-06-10)
+
+
+### Bug Fixes
+
+* (DWC) make canvas size the same as surrounding div container ([1f1946e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1f1946edd447cf1db48a16666a4f15a378ddc463))
+* allow DWC to run inside BUI and DWC ([8a48ac5](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8a48ac52e2019174e3aa1bd505b4eb849b02b44b))
+
+
+### Features
+
+* add columns option `HeaderCheckboxSelectionFilteredOnly` ([20b3160](https://github.com/BBj-Plugins/BBjGridExWidget/commit/20b31601bd60900b717b0a3054c2c9acf6d41d3c))
+
+
+
 # [1.2.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.1.3...1.2.0) (2021-03-08)
 
 

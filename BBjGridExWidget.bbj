@@ -896,8 +896,15 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       htmlview!.setTabTraversable(1)
       htmlview!.setFocusable(1)
       htmlview!.addStyle("htmlview-" + #getRootId())
+      
+      if (info(3,6)="6" AND AND(#getCanvas().getWindowFlags(),$00100000$) = $00100000$) then
+            rem in DWC, if parent window is client-side sized, make the htmlview same size as surrunding canvas
+            htmlview!.setStyle("width","100%")
+            htmlview!.setStyle("height","100%")
+      fi
+      
 
-      if (info(3,6)<>"5" and #getDebug() > 0) then
+      if (info(3,6)<"5" and #getDebug() > 0) then
         url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
         if url$>"" then
@@ -1022,7 +1029,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  *
     rem  * Why?
     rem  *
-    rem  * in BUI we use GWT ad GWT uses $wnd instead of window because compiled code is executed normally in an iframe,
+    rem  * in BUI we use GWT and GWT uses $wnd instead of window because compiled code is executed normally in an iframe,
     rem  * and in this context, window will reference the iframe window while $wnd will reference the parent window.
     rem  * The same occurs with $doc which is a reference in the iframe to the parent document.
     rem  *
@@ -1033,8 +1040,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * the JS code we execute from the grid will throw an error , we polyfill these two vars
     rem  * for GUI to get around the problem
     rem  */
-    bundle$ = "var $wnd = (typeof $wnd !== 'undefined' ? $wnd : window);"
-    bundle$ = bundle$ + "var $doc = (typeof $doc !== 'undefined' ? $doc : document);"
+    rem bundle$ = "var $wnd = (typeof $wnd !== 'undefined' ? $wnd : window);"
+    rem bundle$ = bundle$ + "var $doc = (typeof $doc !== 'undefined' ? $doc : document);"
+    bundle$ = "var $wnd = window;"
+    bundle$ = bundle$ + "var $doc = document;"
     rem loop over the require scripts and attach to the bundle
     it! = scriptsSet!.iterator()
     while(it!.hasNext())
@@ -2368,7 +2377,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #getOptions().setTheme(theme$)
 
     if(#IsReady!) then
-      if info(3,6)="5" then
+      if info(3,6)>"4" then
         s$="$doc.getElementById('" + str(#getRootId()) + "').className='ag-theme-"+theme$+"';"
       else
         s$="document.getElementById('" + str(#getRootId()) + "').className='ag-theme-"+theme$+"';"
@@ -2459,13 +2468,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   method public void focus(BBjString row! , BBjString column! , BBjString floating!)
     rem DO NOT focus the canvas or the we will have an infinite focus calls
     rem #super!.focus()
-    if info(3,6)<>"6" then
-      if #getCanvas().getParentWindow().getFocusedControlID() <>  #getCanvas().getID() then
-        #getHTMLView().clearCallback(BBjAPI.ON_GAINED_FOCUS)
-        #HTMLView!.focus()
-        #getHTMLView().setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
-      FI
-    endif
+REM     if info(3,6)<>"6" then
+          if #getCanvas().getParentWindow().getFocusedControlID() <>  #getCanvas().getID() then
+            #getHTMLView().clearCallback(BBjAPI.ON_GAINED_FOCUS)
+            #HTMLView!.focus()
+            #getHTMLView().setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
+          FI
+REM     endif
     rem /**
     rem  * We never debounce the focus calls , this causes a heck of problems
     rem  * when there are several grids rendered
