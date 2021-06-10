@@ -307,6 +307,16 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     rem  * <br><b><small>#ColumnsRenderer</small></b>
     rem  */
     field public BBjNumber HeaderCheckboxSelection! = null()
+
+    rem /**
+    rem  * When true , The checkbox will select only filtered rows when checked and un-select only filtered rows when unchecked. The checkbox will update its state based only on filtered rows.
+    rem  * When false The checkbox will select all rows when checked, and un-select all rows when unchecked. The checkbox will update its state based on all rows.
+    rem  * 
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */
+    field public BBjNumber HeaderCheckboxSelectionFilteredOnly! = 1
+
     rem /**
     rem  * CSS class(es) to use for the cell.
     rem  *
@@ -1179,6 +1189,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
         column!.addProperty("resizable",#getResizable().booleanValue(),err=*next)
         column!.addProperty("checkboxSelection",#getCheckboxSelection().booleanValue(),err=*next)
         column!.addProperty("headerCheckboxSelection",#getHeaderCheckboxSelection().booleanValue(),err=*next)
+        column!.addProperty("headerCheckboxSelectionFilteredOnly",#getHeaderCheckboxSelectionFilteredOnly().booleanValue(),err=*next)
         column!.addProperty("cellClass" , iff(#getCellClass().size() <> 0 ,new Gson().toJson(#getCellClass()), listIsEmpty!) ,err=*next)
         column!.        add("cellStyle", iff(#getCellStyle().entrySet().size() <> 0 , #getCellStyle() , listIsEmpty!),err=*next)
         column!.addProperty("aggFunc",#getAggFunc())
