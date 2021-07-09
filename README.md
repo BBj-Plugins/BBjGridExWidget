@@ -12,6 +12,9 @@
   <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
   </a>
+   <a href="https://open.vscode.dev/BBj-Plugins/BBjGridExWidget">
+    <img src="https://open.vscode.dev/badges/open-in-vscode.svg" alt="Open in Visual Studio Code" />
+  </a>
 </p>
 
 A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and loads quickly in GUI and BUI
