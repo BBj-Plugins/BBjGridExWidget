@@ -339,3 +339,50 @@ export function gw_setColumnVisible(id, columns, visible) {
     Boolean(visible)
   )
 }
+
+/**
+ * Align two grid together
+ *
+ * @param {String} id The current grid's id
+ * @param {String} gridId The target grid's id
+ */
+export function gw_addAlignedGrid(id, gridId) {
+  const currentGridOption = gw_getGrid(id).options
+  const register = () => {
+    const targetGridOption = gw_getGrid(gridId).options
+    currentGridOption.alignedGrids.push(targetGridOption)
+  }
+
+  try {
+    register()
+  } catch (err) {
+    currentGridOption.alignedGrids.push(gridId)
+    window.addEventListener(`${gridId}-ready`, () => {
+      const indexOf = currentGridOption.alignedGrids.indexOf(gridId)
+      if (indexOf > -1) {
+        currentGridOption.alignedGrids.splice(indexOf, 1)
+        register()
+      }
+    })
+  }
+}
+
+/**
+ * Remove aligned grids
+ *
+ * @param {String} id The current grid's id
+ * @param {String} gridId The target grid's id
+ */
+export function gw_removeAlignedGrid(id, gridId) {
+  const currentGridOption = gw_getGrid(id).options
+  const alignedGrids = currentGridOption.alignedGrids
+  for (let x = 0; x < alignedGrids.length; x++) {
+    const grid = alignedGrids[x]
+    if (
+      (typeof grid === 'string' && grid === gridId) ||
+      grid.context.id === gridId
+    ) {
+      alignedGrids.splice(x, 1)
+    }
+  }
+}
