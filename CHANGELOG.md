@@ -1,3 +1,17 @@
+# [1.4.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.3.0...1.4.0) (2021-07-21)
+
+
+### Bug Fixes
+
+* :bug: fix `addAlignedGrid `cannot read push of undefined ([5462712](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5462712d9939ded6cd4a8bffa14c84083de92790))
+
+
+### Features
+
+* :sparkles: Add support for aligned grids. ([a82b48f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/a82b48f94f9741e2b10648b897e9f88658747ed3))
+
+
+
 # [1.3.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.2.0...1.3.0) (2021-06-10)
 
 
