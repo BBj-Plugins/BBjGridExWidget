@@ -331,6 +331,10 @@
         "editbox.bbj": {
             "name": "editbox",
             "style": ""
+        },
+        "AlignedGrids.bbj": {
+            "name": "AlignedGrids",
+            "style": ""
         }
     },
     "cSpell.words": [

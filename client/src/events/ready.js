@@ -89,4 +89,6 @@ export function gw_onReadyEvent(id, _e) {
       gw_onKeydown(id, keydownEvent)
     }, 500)
   )
+
+  window.dispatchEvent(new CustomEvent(`${id}-ready`, { detail: grid }))
 }

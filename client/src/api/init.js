@@ -140,6 +140,7 @@ function gw_parseOptions(options) {
           window: gw_getWindow(),
         },
       },
+      alignedGrids: [],
     },
   }
 

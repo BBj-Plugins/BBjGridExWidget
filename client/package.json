@@ -3,7 +3,7 @@
   "main": "client/dist/bbj-grid-widget.min.js",
   "author": "BASIS Europe Distribution GmbH",
   "license": "MIT",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "scripts": {
     "watch": "./node_modules/.bin/webpack --watch --progress",
@@ -52,7 +52,7 @@
     "deep-parse-json": "^1.0.1",
     "flatpickr": "^4.6.3",
     "jss": "https://github.com/dvtng/jss",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.15"
   },
   "husky": {

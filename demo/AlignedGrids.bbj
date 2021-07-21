@@ -1,0 +1,57 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.com>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+
+? 'HIDE'
+
+if(info(3,6)<"5") 
+  let x=MSGBOX("Aligned grids work only in BUI and DWC.", 0, "Aligned Grids Demo")
+fi
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Aligned Grids Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+
+topGrid! = new BBjGridExWidget(wnd!,100,0,0,800,300)
+bottomGrid! = new BBjGridExWidget(wnd!,101,0,300,800,300)
+
+gosub main
+process_events
+
+rem /**
+rem  * Aligning two or more grids means columns will be kept aligned in all grids. 
+rem  * In other words, column changes to one grid (column width, column order, column visibility etc)
+rem  * are reflected in the other grid. This is useful if you have two grids, one above the other such
+rem  * that their columns are vertically aligned, and you want to keep the columns aligned.
+rem  * 
+rem  * The pivot functionality does not work with aligned grids. This is because pivoting data changes 
+rem  * the columns, which would make the aligned grids incompatible, as they are no longer sharing the 
+rem  * same set of columns.
+rem  */
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+  topGrid!.setData(rs!)
+  bottomGrid!.setData(rs!)
+
+  topGrid!.addAlignedGrid(bottomGrid!)
+  bottomGrid!.addAlignedGrid(topGrid!)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
