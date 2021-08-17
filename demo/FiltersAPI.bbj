@@ -73,8 +73,16 @@ main:
   grid!.setData(rs!, 1, 0)
 
   rem IMPORTANT: GxFilterSetFilter is part of the Enhanced grid
-  country! = grid!.getColumn("COUNTRY")
-  country!.setFilter(new GxFilterSetFilter())
+  rem check for license and (for development purposes) for license-less behavior
+  if (grid!.isLicensed() and !grid!.getForceCommunityBuild()) then
+    country! = grid!.getColumn("COUNTRY")
+    country!.setFilter(new GxFilterSetFilter())
+  else
+    rem if no license available,
+    rem deactivate filter and add a notice as tooltip:
+    countryFilter!.setEnabled(0)
+    countryFilter!.setToolTipText("Deactivated: Part of the Enhanced Grid")
+  endif
 
   grid!.getColumn("IS_OVER_120").setType(16)
 
