@@ -89,7 +89,10 @@ rem /**
 rem  * Remove a specific row (the 2nd) in the grid by its zero-based index
 rem  */
 removeByIndex:
-    grid!.removeRow(1,err=*next)
+    rows! = grid!.getRows()
+    if (rows!.size()>1) then
+        grid!.removeRow(1,err=*next)
+    endif
 return
 
 rem /**
