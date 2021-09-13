@@ -1,3 +1,12 @@
+# [1.5.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.4.1...1.5.0) (2021-09-13)
+
+
+### Features
+
+* :sparkles: allow Multi sorting by CTRL ([ea61303](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ea61303cb3e956967354e3f0583783495eca222b))
+
+
+
 ## [1.4.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.4.0...1.4.1) (2021-08-06)
 
 
