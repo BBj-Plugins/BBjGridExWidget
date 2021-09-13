@@ -48,16 +48,16 @@ class public GxOptionsBoolean
     rem  * Construct new GxOptionsBoolean
     rem  */
     method public GxOptionsBoolean()
-      rem fill predefined false values
-      #getPossibleFalseValues().add("0")
-      #getPossibleFalseValues().add("false")
-      #getPossibleFalseValues().add("n")
-      #getPossibleFalseValues().add("no")
-      rem fill predefined yes values
-      #getPossibleTrueValues().add("1")
-      #getPossibleTrueValues().add("true")
-      #getPossibleTrueValues().add("y")
-      #getPossibleTrueValues().add("yes")
+        rem fill predefined false values
+        #getPossibleFalseValues().add("0")
+        #getPossibleFalseValues().add("false")
+        #getPossibleFalseValues().add("n")
+        #getPossibleFalseValues().add("no")
+        rem fill predefined yes values
+        #getPossibleTrueValues().add("1")
+        #getPossibleTrueValues().add("true")
+        #getPossibleTrueValues().add("y")
+        #getPossibleTrueValues().add("yes")
     methodend
     rem /**
     rem  * Transform the options object to json
@@ -629,7 +629,7 @@ class public GxOptions
     rem  * Set to true to never show the horizontal scroll.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
-    rem  */    
+    rem  */
     field public BBjNumber SuppressHorizontalScroll! = null()
     rem /**
     rem  * When true, the grid will not scroll to the top when new row data is provided.
@@ -964,15 +964,20 @@ class public GxOptions
     rem  */
     field public BBjNumber SkipHeaderOnAutoSize! = null()
     rem /**
-    rem  * Uses CSS top instead of CSS transform for positioning rows. 
-    rem  * 
+    rem  * Uses CSS top instead of CSS transform for positioning rows.
+    rem  *
     rem  * Useful if the transform function is causing issues such as used in row spanning.
     rem  * Default: false
     rem  *
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
-    rem  */    
+    rem  */
     field public BBjNumber SuppressRowTransform! = null()
+    rem /**
+    rem  * When true , then the user will be able to sort by multiple columns by holding down the `ctrl`
+    rem  * key (or Command key on Apple) while clicking the column header. By default this action is possible using the `shit` key.
+    rem  */
+    field public BBjNumber UseCtrlForMultiSort! = 0
     rem /**
     rem  * The ResultSet instance which contains the top pinned rows
     rem  */
@@ -1274,6 +1279,10 @@ class public GxOptions
         options!.addProperty("floatingFiltersHeight",#getFloatingFiltersHeight().longValue(), err=*next )
         options!.addProperty("pivotHeaderHeight",#getPivotHeaderHeight().longValue(), err=*next )
         options!.addProperty("pivotGroupHeaderHeight",#getPivotGroupHeaderHeight().longValue(), err=*next )
+
+        if(#getUseCtrlForMultiSort())
+            options!.addProperty("multiSortKey","ctrl", err=*next)
+        fi
         rem Grouping & Pivoting
         rem ===========================
         options!.addProperty("groupUseEntireRow",#getGroupUseEntireRow().booleanValue() , err=*next)
