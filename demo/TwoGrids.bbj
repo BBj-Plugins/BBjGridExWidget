@@ -54,6 +54,8 @@ resize:
     grid!.setSize(ev!.getWidth(),h)
     dtlgrid!.setSize(ev!.getWidth(),h)
     dtlgrid!.setLocation(0,h+2)
+    recfield!.setSize(ev!.getWidth()-20,180)
+    recfield!.setLocation(10,h*2+15)
 return
 
 showDetails:
