@@ -105,16 +105,14 @@ fillGrid:
 
         if i=1 then
             dr!.setFieldAttribute("DOUBLE","EDITABLE","1")
-            dr!.setFieldAttribute("DOUBLE","RENDERER_MASK","-### ##0.0000")
+            dr!.setFieldAttribute("DOUBLE","MASK","-### ##0.0000")
 			
             dr!.setFieldAttribute("BOOLEAN","EDITABLE","1")
 
-            dr!.setFieldAttribute("DATE","RENDERER_MASK","%Dz.%Mz.%Yl")
-            dr!.setFieldAttribute("DATE","EDITOR_MASK","%Dz.%Mz.%Yl")
+            dr!.setFieldAttribute("DATE","MASK","%Dz.%Mz.%Yl")
             dr!.setFieldAttribute("DATE","EDITABLE","1")
 
-            dr!.setFieldAttribute("TIMESTAMP","RENDERER_MASK","%Yd-%Mz-%Dz %Hz:%mz:%sz")
-            dr!.setFieldAttribute("TIMESTAMP","EDITOR_MASK","%Yd-%Mz-%Dz %Hz:%mz:%sz")
+            dr!.setFieldAttribute("TIMESTAMP","MASK","%Yd-%Mz-%Dz %Hz:%mz:%sz")
             dr!.setFieldAttribute("TIMESTAMP","EDITABLE","1")
         fi
 
