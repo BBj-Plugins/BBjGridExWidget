@@ -32,7 +32,7 @@ Commented samples from the [Demo](https://github.com/BBj-Plugins/BBjGridExWidget
 
 ## Documentation
 
-[javadoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget.html)
+[javadoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/)
 
 enjoy!
 
