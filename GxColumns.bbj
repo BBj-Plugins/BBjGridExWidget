@@ -1341,6 +1341,15 @@ class public GxColumn extends GxDefaultColumnDefinition
     rem  * Create a new column definition
     rem  *
     rem  * @param BBjString field! The field of the row to get the cells data from
+    rem  * @param BBjNumber type! The field's type
+    rem  */    
+    method public GxColumn(BBjString field!, BBjNumber type!)
+        #this!(field!, field!, type!)
+    methodend
+    rem /**
+    rem  * Create a new column definition
+    rem  *
+    rem  * @param BBjString field! The field of the row to get the cells data from
     rem  * @param BBjString label! The name to render in the column header
     rem  * @param BBjNumber type! The field's type
     rem  */
