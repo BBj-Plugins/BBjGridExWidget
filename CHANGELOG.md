@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.0...1.5.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* :bug:  (No match for method ::BBjGridExWidget/GxColumns.bbj::GxColumn.`<init>`(BBjString, BBjNumber)) ([d453448](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d453448c6e825db4292a348046f7cbf8815c3a10))
+
+
+
 # [1.5.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.4.1...1.5.0) (2021-09-13)
 
 
