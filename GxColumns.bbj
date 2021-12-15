@@ -1123,6 +1123,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
                 #setFilter(new GxFilterNumber())
                 #setValueFormatterExpression(new GxExpressionNumbersFormatter(#getDefaultNumbersMask()))
                 rem #setCellEditor(new GxCellEditorBasicNumber(#getDefaultNumbersMask()))
+                #setValueGetterExpression(new GxExpression("Number(data[colDef.field])"))
                 #setCellEditor(new GxCellEditorBasicNumber())
                 BREAK
             CASE Types.DATE
