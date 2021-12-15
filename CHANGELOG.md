@@ -1,3 +1,14 @@
+## [1.5.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.1...1.5.2) (2021-12-15)
+
+
+### Bug Fixes
+
+* :bug: `GxColumn:update` should do case-insentive search in the ([5ba0214](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5ba021469822a3e1fda86e03e3cfd1c40a71f4f1))
+* :bug: GxExpressionNumbersFormatter removes zeros ([e6ffb6a](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e6ffb6a11db4df4ff1b6af372909c835675a821c))
+* :bug: numeric columns should have a default valueGetter ([997c623](https://github.com/BBj-Plugins/BBjGridExWidget/commit/997c623f3bdb44a3c1f7174fd912480a36345951))
+
+
+
 ## [1.5.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.0...1.5.1) (2021-12-13)
 
 
