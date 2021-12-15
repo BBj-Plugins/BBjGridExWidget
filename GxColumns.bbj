@@ -1123,6 +1123,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
                 #setFilter(new GxFilterNumber())
                 #setValueFormatterExpression(new GxExpressionNumbersFormatter(#getDefaultNumbersMask()))
                 rem #setCellEditor(new GxCellEditorBasicNumber(#getDefaultNumbersMask()))
+                #setValueGetterExpression(new GxExpression("Number(data[colDef.field])"))
                 #setCellEditor(new GxCellEditorBasicNumber())
                 BREAK
             CASE Types.DATE
@@ -1392,6 +1393,7 @@ class public GxColumn extends GxDefaultColumnDefinition
         if(!metaMap!.containsKey("columntype"))
             methodret
         FI
+
         rem sync with default column definition
         #setEnableFilter(defaultDefinition!.getEnableFilter(),err=*next)
         rem define the column type
@@ -1442,8 +1444,9 @@ class public GxColumn extends GxDefaultColumnDefinition
         iterator!   = metaMap!.entrySet().iterator()
         while iterator!.hasNext()
             next!   = iterator!.next()
-            key!    = next!.getKey()
+            key!    = cvs(next!.getKey(), 8)
             value!  = next!.getValue()
+   
             SWITCH (key!)
                 CASE "gw_label"
                 CASE "gw_header_name"

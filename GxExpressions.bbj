@@ -269,7 +269,7 @@ class public GxExpressionNumbersFormatter extends GxExpressionAbstract
         ex!.append(String.format("var groupSep  = '%s' || ctx.numberGroupSep;" , #getGroupSeparator()))
         ex!.append(String.format("var decimalSep  = '%s' || ctx.numberDecimalSep;" , #getDecimalSeparator()))
         ex!.append("var theValue = getValue || value;")
-        ex!.append(String.format("if ((mask && theValue) && (theValue != null && !isNaN(theValue))) {return '%s' + BBj.Masks.Types.number(theValue, mask, groupSep, decimalSep) + '%s'}",#getPrefix() , #getSuffix()))
+        ex!.append(String.format("if (mask && (theValue != null && !isNaN(theValue))) {return '%s' + BBj.Masks.Types.number(theValue, mask, groupSep, decimalSep) + '%s'}",#getPrefix() , #getSuffix()))
         ex!.append(String.format("return (theValue ? '%s' + theValue + '%s' : '');",#getPrefix() , #getSuffix()))
         methodret ex!.toString()
     methodend
