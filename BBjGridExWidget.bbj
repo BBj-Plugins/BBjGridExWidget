@@ -1001,6 +1001,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  */
     method public void onInit(BBjEvent ev!)
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
+        #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
         isLicensed! = 0
 
         if (#getForceCommunityBuild() = 0) then
@@ -1055,6 +1056,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         wend
         rem finally inject the built bundle
         #injectScript(bundle$)
+        wait 0
         rem /**
         rem  * Some customers reported that the second ON_PAGE_LOADED event is not fired
         rem  * so we call the onLoaded method manually in case the event is not fired
@@ -1062,7 +1064,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         rem  * could even directly call the onLoaded Method from here
         rem  * #onLoaded(null())
         rem  */
-        BBjAPI().createTimer(str(#this!)+"onLoadFallback",.2,#this!,"onLoaded")
+        BBjAPI().createTimer(str(#this!)+"onLoadFallback",2,#this!,"onLoadedByTimer")
+    methodend
+    rem /**
+    rem  * An Event listener for the fallback by timer 
+    rem  *
+    rem  * Sporadically the ON_PAGE_LOADED event did not fire
+    rem  *
+    rem  * @param BBjEvent ev! The onLoad event
+    rem  */    
+    method public void onLoadedByTimer(BBjEvent ev!)
+        System.out.println("BBjGridExWidget: Loaded by timer fallback. High System Load?")
+        #onLoaded(ev!)
     methodend
     rem /**
     rem  * An Event listener executed after the second ON_PAGE_LOADED event
@@ -1072,8 +1085,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * @param BBjEvent ev! The onLoad event
     rem  */
     method public void onLoaded(BBjEvent ev!)
+    
         #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
         BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
+        
+        if info(3,6)<"5" AND #HTMLView!.executeScript("$wnd") = null() then
+            System.out.println("BBjGridExWidget: $wnd not found, repeating injectScript. High System Load?")
+            #onInit(ev!)
+            methodret
+        fi
+        
         #getLicenseManager().register(#this!)
         #IsReady! = BBjAPI.TRUE
         #render()
