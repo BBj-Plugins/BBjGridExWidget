@@ -1,3 +1,12 @@
+## [1.5.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.2...1.5.3) (2022-01-20)
+
+
+### Bug Fixes
+
+* :bug: fix [#230](https://github.com/BBj-Plugins/BBjGridExWidget/issues/230) Grid sporadically not rendering in GUI ([6274c9f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/6274c9f450009e44bda80d57a3fa99932a4685da))
+
+
+
 ## [1.5.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.1...1.5.2) (2021-12-15)
 
 
