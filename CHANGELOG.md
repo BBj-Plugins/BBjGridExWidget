@@ -1,3 +1,12 @@
+## [1.5.4](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.3...1.5.4) (2022-02-23)
+
+
+### Bug Fixes
+
+* fix translation typo ([aa6dc70](https://github.com/BBj-Plugins/BBjGridExWidget/commit/aa6dc70781abac8486bae1162cc0358f0684a64f))
+
+
+
 ## [1.5.3](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.2...1.5.3) (2022-01-20)
 
 
