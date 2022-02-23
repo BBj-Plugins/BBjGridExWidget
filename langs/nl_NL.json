@@ -14,7 +14,7 @@
   "filterOoo": "Filter...",
   "applyFilter": "Filter toepassen...",
   "equals": "Gelijk aan",
-  "notEquals": "Ongelijk aan",
+  "notEqual": "Ongelijk aan",
   "lessThan": "Kleiner",
   "greaterThan": "Groter",
   "lessThanOrEqual": "Kleiner of gelijk",
