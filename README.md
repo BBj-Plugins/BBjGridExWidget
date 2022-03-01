@@ -20,6 +20,9 @@
 A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and loads quickly in GUI and BUI
 , optimized for large data sets and uses the BBjHtmlView Leveraging Chromium engine in GUI.
 
+> **_NOTE:_** The BBjGridExWidget depends on [process_events](https://documentation.basis.com/BASISHelp/WebHelp/commands/process_events_verb.htm?Highlight=process_events) and will not work within programs that use [READ RECORD](https://documentation.basis.com/BASISHelp/WebHelp/commands/read_verb.htm) loops to handle events. As it internally relies on certain events being fired, programs also must be free from calls to [BBjSysGui::flushEvents](https://documentation.basis.com/BASISHelp/WebHelp/bbjobjects/SysGui/bbjsysgui/bbjsysgui_flushevents.htm?Highlight=flushEvents), especially in the phase between instantiating the BBjGridExWidget class and the first time the program execution reaches process_events.
+
+
 <img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/82667299-da6e0880-9c37-11ea-8c0e-1339a8d8b2d6.png" />
 
 <img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/82667633-8879b280-9c38-11ea-9217-2cbe35bff94d.png" />
@@ -42,6 +45,7 @@ A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and
  for BBj 20)
 
 ## Enhanced Grid:
+
 - Additional functionality 
 - Incremental surcharge to SAM
 - contact your BASIS Sales Rep for details
