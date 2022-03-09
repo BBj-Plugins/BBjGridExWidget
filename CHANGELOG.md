@@ -1,3 +1,12 @@
+## [1.5.5](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.4...1.5.5) (2022-03-09)
+
+
+### Bug Fixes
+
+* bool renderer is not aligned correctly when column's alignment is changed ([f158127](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f15812794da702d59b1a0fff90710b2a7671471d))
+
+
+
 ## [1.5.4](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.3...1.5.4) (2022-02-23)
 
 
