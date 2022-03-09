@@ -22,6 +22,25 @@
   flex: 1;
 }
 
+.gw-alignment-cell-right .boolSwitch,
+.gw-alignment-cell-center .boolSwitch {
+  text-align: initial;
+}
+
+.gw-alignment-cell-center .boolSwitch__wrapper,
+.gw-alignment-cell-right .boolSwitch__wrapper {
+  width: auto;
+  height: auto;
+}
+
+.gw-alignment-cell-center .boolSwitch__wrapper {
+  justify-content: center;
+}
+
+.gw-alignment-cell-right .boolSwitch__wrapper {
+  justify-content: right;
+}
+
 .gw-alignment-header-right .ag-header-cell-label {
   flex-direction: row-reverse;
 }
