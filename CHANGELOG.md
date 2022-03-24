@@ -1,3 +1,18 @@
+# [1.6.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.5...1.6.0) (2022-03-24)
+
+
+### Bug Fixes
+
+* BBjGridExWidget's height collapse to zero when the parent window
+has flow layout flag ([588597e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/588597e865258e2796823d768b5df400f4cc1d25))
+
+
+### Features
+
+* support DWC themes' variables in DWC ([80ed1ce](https://github.com/BBj-Plugins/BBjGridExWidget/commit/80ed1ce5673a7425135ff65cba6608efd8542c98))
+
+
+
 ## [1.5.5](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.4...1.5.5) (2022-03-09)
 
 

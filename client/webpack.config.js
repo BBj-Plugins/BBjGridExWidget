@@ -91,6 +91,10 @@ module.exports = {
           '/node_modules/ag-grid-enterprise/dist/ag-grid-enterprise.min.js',
         to: distPath,
       },
+      {
+        from: __dirname + '/src/style/dwc.css',
+        to: distPath,
+      },
     ]),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
