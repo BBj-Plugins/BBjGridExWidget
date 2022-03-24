@@ -123,5 +123,8 @@ html {
 
 .ag-menu,
 .ag-overlay-loading-center {
-  box-shadow: var(--bbj-shadow, 0 1px 4px 1px rgb(186 191 199 / 40%)) !important;
+  box-shadow: var(
+    --bbj-shadow,
+    0 1px 4px 1px rgb(186 191 199 / 40%)
+  ) !important;
 }
