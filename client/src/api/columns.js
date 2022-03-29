@@ -179,9 +179,9 @@ export function gw_isShowSelectionCheckbox(param) {
     return false
   }
 
-  const columns = param.columnApi.getAllGridColumns()
+  const columns = param.columnApi.getAllDisplayedColumns()
 
-  return columns[0].colDef.field === param.colDef.field
+  return columns[0] === param.column
 }
 
 /**
@@ -202,9 +202,9 @@ export function gw_isHeaderCheckboxSelection(param) {
     return false
   }
 
-  const columns = param.columnApi.getAllGridColumns()
+  const columns = param.columnApi.getAllDisplayedColumns()
 
-  return columns[0].colDef.field === param.colDef.field
+  return columns[0] === param.column
 }
 
 /**
