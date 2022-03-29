@@ -1,3 +1,12 @@
+## [1.6.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.6.0...1.6.1) (2022-03-29)
+
+
+### Bug Fixes
+
+* :bug: selection checkbox is removed when the column is hidden ([c8dbec6](https://github.com/BBj-Plugins/BBjGridExWidget/commit/c8dbec650773915c85ea9bcaf2f74da99565255b))
+
+
+
 # [1.6.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.5.5...1.6.0) (2022-03-24)
 
 
