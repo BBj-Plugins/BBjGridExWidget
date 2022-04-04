@@ -43,6 +43,8 @@ main:
   
   REM init the grid
   grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+  grid!.getOptions().setSuppressRowHoverHighlight(0)
+  grid!.getOptions().setColumnHoverHighlight(1)
   grid!.setData(rs!)
 
   group! = new BBjVector()

@@ -801,11 +801,17 @@ class public GxOptions
     rem  */
     field public JsonObject RowClassRules! = new JsonObject()
     rem /**
-    rem  * Set to true to not highlight rows by adding the ag-row-hover CSS class.
+    rem  * Set to true to not highlight rows by adding the `ag-row-hover` CSS class.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber SuppressRowHoverHighlight! = null()
+    rem /**
+    rem  * Set to true to highlight columns by adding the `ag-column-hover` CSS class.
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */
+    field public BBjNumber ColumnHoverHighlight! = null()    
     rem /**
     rem  * If true, then middle clicks will result in 'click' events for cell and row. Otherwise the browser will use middle click to scroll the grid.
     rem  * <br><b><small>#Configuration</small></b>
@@ -1424,6 +1430,8 @@ class public GxOptions
         options!.addProperty("rowClass" , iff(#getRowClass().size() <> 0 ,new Gson().toJson(#getRowClass()), listIsEmpty!) ,err=*next)
         options!.        add("rowClassRules", iff(#getRowClassRules().entrySet().size() <> 0 , #getRowClassRules() , null()),err=*next)
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
+        options!.addProperty("columnHoverHighlight",#getColumnHoverHighlight().booleanValue(), err=*next)
+        
         rem Localization
         rem ===========================
         languageKeys! = #getLanguageManager().getLanguageKeys()
