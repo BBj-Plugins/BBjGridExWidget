@@ -62,6 +62,7 @@ setupGrid:
   rem First we group by music type
   declare GxColumn musicTypeColumn!
   musicTypeColumn! = grid!.getColumn("MUSICTYPE")
+  musicTypeColumn!.setRowGroup(1)
   musicTypeColumn!.setEnableRowGroup(1)
   musicTypeColumn!.setRowGroupIndex(0)
 
@@ -69,6 +70,7 @@ setupGrid:
   rem @see https://www.ag-grid.com/javascript-grid-cell-expressions/
   declare GxColumn artistColumn!
   artistColumn! = grid!.getColumn("ARTIST")
+  artistColumn!.setRowGroup(1)
   artistColumn!.setEnableRowGroup(1)
   artistColumn!.setRowGroupIndex(1)
   artistColumn!.setValueGetterExpression("if(data) return 'Artist : ' +  data.ARTIST")
