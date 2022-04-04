@@ -387,12 +387,19 @@ class public GxOptions
     rem  * another row is selected in its place).
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *  
+    rem  *  @deprecated since v1.7.0 - use `SuppressRowDeselection` instead
     rem  */
     field public BBjNumber RowDeselection! = 0
+
     rem /**
-    rem  * If true, rows won't be selected when clicked. Use, for example,
-    rem  * when you want checkbox selection, and don't want to also select when the row
-    rem  * is clicked.
+    rem  * If true, rows will not be deselected if you hold down Ctrl and click the row or press Space.
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */    
+    field public BBjNumber SuppressRowDeselection! = 1    
+    rem /**
+    rem  * If true, rows will not be deselected if you hold down Ctrl and click the row or press Space.
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
@@ -1170,6 +1177,21 @@ class public GxOptions
         methodret #getImmutableColumns()
     methodend
     rem /**
+    rem  * @deprecated since v1.7.0 - use `GxOptions.setSuppressRowDeselection(BBjNumber value!)` instead
+    rem  */
+    method public void setRowDeselection(BBjNumber value!)      
+      GxLogger.warn("since version 1.7.0, GxOptions.setRowDeselection(BBjNumber value!) is deprecated. Use GxOptions.setSuppressRowDeselection(BBjNumber value!) instead.")
+      #RowDeselection! = value!
+      #SuppressRowDeselection! = !value!
+    methodend
+    rem /**
+    rem  *  @deprecated since v1.7.0 - use `GxOptions.setSuppressRowDeselection(BBjNumber value!)` instead
+    rem  */    
+    method public BBjNumber getRowDeselection()      
+      GxLogger.warn("since version 1.7.0, GxOptions.getRowDeselection() is deprecated. use GxOptions.getSuppressRowDeselection() instead.")
+      methodret #RowDeselection!
+    methodend      
+    rem /**
     rem  * Set a result set of pinned rows on top
     rem  *
     rem  * @param ResultSet rs! A ResultSet instance
@@ -1279,7 +1301,7 @@ class public GxOptions
         rem ===========================
         options!.addProperty("rowSelection",iff(#getMultipleSelection() = 1 , "multiple" ,"single"), err=*next)
         options!.addProperty("rowMultiSelectWithClick",#getRowMultiSelectWithClick().booleanValue() , err=*next)
-        options!.addProperty("rowDeselection",#getRowDeselection().booleanValue())
+        options!.addProperty("suppressRowDeselection",#getSuppressRowDeselection().booleanValue())
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
         options!.addProperty("enableRangeSelection",#getEnableRangeSelection().booleanValue(), err=*next)
         options!.addProperty("suppressMultiRangeSelection",#getSuppressMultiRangeSelection().booleanValue(), err=*next)

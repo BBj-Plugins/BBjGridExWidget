@@ -63,12 +63,13 @@ rowDeselectionHelp! = wnd!.addButton(207,10,130,20,22,"")
 rowDeselectionHelp!.setImage(icon!)
 rowDeselectionHelp!.setImageSize(10 , 10)
 rowDeselectionHelp!.setToolTipText("Click to learn more.")
-rowDeselectionHelp!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onRowDeselectionHelp")
+rowDeselectionHelp!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onSuppressRowDeselectionHelp")
 rowDeselectionHelp!.setNoEdge(1)
 
-rowDeselection! = wnd!.addCheckBox(208,32,130,200,22,"Row Deselection")
-rowDeselection!.setCallback(BBjAPI.ON_CHECK_OFF,"onRowDeselectionToggle")
-rowDeselection!.setCallback(BBjAPI.ON_CHECK_ON,"onRowDeselectionToggle")
+rowDeselection! = wnd!.addCheckBox(208,32,130,200,22,"Suppress RowDeselection")
+rowDeselection!.setSelected(1)
+rowDeselection!.setCallback(BBjAPI.ON_CHECK_OFF,"onSuppressRowDeselection")
+rowDeselection!.setCallback(BBjAPI.ON_CHECK_ON,"onSuppressRowDeselection")
 REM --- End Row Deselection Controls
 
 REM --- Start Suppress Row Click Selection Controls
@@ -162,10 +163,10 @@ onRowMultiSelectWithClickToggle:
   gosub rerender
 return
 
-onRowDeselectionToggle:
+onSuppressRowDeselection:
   event! = BBjAPI().getLastEvent()
   control! = event!.getControl()
-  grid!.getOptions().setRowDeselection(control!.isSelected())
+  grid!.getOptions().setSuppressRowDeselection(control!.isSelected())
   gosub rerender
 return
 
@@ -234,8 +235,8 @@ onRowMultiSelectWithClickHelp:
     a! = msgbox("With Multiple Selection checked, set to true to allow multiple/single row(s) to be selected with a single click. For example, if you click to select one row, then click to select another row, the first row will stay selected. Clicking a selected row in this mode will deselect the row. This is useful for touch devices where Ctrl- and Shift-clicking is not an option.",0,"Multi/Single Select With Click")
 return
 
-onRowDeselectionHelp:
-    a! = msgbox("If true, then rows will be deselected if you Ctrl+click the row. Normal behaviour with the grid disallows deselection of nodes, i.e. once a node is selected, it remains selected until another row is selected in its place.",0,"Row Deselection")
+onSuppressRowDeselectionHelp:
+    a! = msgbox("If true, rows will not be deselected if you hold down Ctrl and click the row or press Space",0,"Suppress Row Deselection")
 return
 
 onSuppressRowClickSelectionHelp:
