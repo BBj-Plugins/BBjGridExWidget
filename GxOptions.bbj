@@ -1426,7 +1426,10 @@ class public GxOptions
         options!.addProperty("suppressRowHoverHighlight",#getSuppressRowHoverHighlight().booleanValue(), err=*next)
         rem Localization
         rem ===========================
-        options!.addProperty("localeText" , #getLanguageManager().getLanguageKeys())
+        languageKeys! = #getLanguageManager().getLanguageKeys()
+        if(len(languageKeys!))
+          options!.addProperty("localeText", languageKeys!)
+        fi
         rem Overlays
         rem ===========================
         options!.addProperty("suppressLoadingOverlay",#getSuppressLoadingOverlay().booleanValue(), err=*next)
