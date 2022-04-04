@@ -193,6 +193,8 @@ class public GxColumnFilterAG implements GxFilterInterface
   field public BBjNumber DebounceMs! = 500
   rem /**
   rem  *  If set to 'clear', then setting data into the grid will clear (reset) the filter If set to 'keep' then the grid will keep it's currently set filter. The default is 'clear'
+  rem  *  
+  rem  *  @deprecated since version 1.7.0. This option has not replacement. The `keep` setting is now the default.
   rem  */
   field public BBjString NewRowsAction! = GxColumnFilterAG.NEW_ROWS_ACTION_CLEAR()
   rem /**
@@ -216,6 +218,8 @@ class public GxColumnFilterAG implements GxFilterInterface
   rem  * A constant which describes the NewRowsAction behavior
   rem  *
   rem  * @return BBjString <b>clear</b>
+  rem  *  
+  rem  * @deprecated since version 1.7.0
   rem  */
   method public static BBjString NEW_ROWS_ACTION_CLEAR()
     methodret "clear"
@@ -224,6 +228,8 @@ class public GxColumnFilterAG implements GxFilterInterface
   rem  * A constant which describes the NewRowsAction behavior
   rem  *
   rem  * @return BBjString <b>keep</b>
+  rem  *  
+  rem  * @deprecated since version 1.7.0
   rem  */
   method public static BBjString NEW_ROWS_ACTION_KEEP()
     methodret "keep"
@@ -251,7 +257,6 @@ class public GxColumnFilterAG implements GxFilterInterface
 
     json! = new JsonObject()
     json!.addProperty("debounceMs" , iff(!#getApplyButton().booleanValue() , #getDebounceMs().longValue() , empty!),err=*next)
-    json!.addProperty("newRowsAction" , #getNewRowsAction(),err=*next)
     json!.addProperty("suppressAndOrCondition" , #getSuppressAndOrCondition().booleanValue(),err=*next)
     json!.addProperty("defaultOption" , #getDefaultOption(),err=*next)
     json!.        add("filterOptions" , iff(#getFilterOptions().size() > 0 , #getFilterOptions() , empty!),err=*next)
@@ -392,7 +397,7 @@ class public GxFilterSetFilter extends GxColumnFilterAG
   rem /**
   rem  * Set to true to stop the filter from removing values that are no longer available (like what Excel does).
   rem  * 
-  rem  * since version 0.102.0, GxFilterSetFilter.SuppressRemoveEntries is deprecated / removed. Use GxFilterSetFilter.NewRowsAction instead.
+  rem  * since version 1.7.0. This option has been deprecated with no replacement.
   rem  */
   field public BBjNumber SuppressRemoveEntries! = 0
   rem /**
@@ -418,28 +423,6 @@ class public GxFilterSetFilter extends GxColumnFilterAG
   rem  */
   field public BBjNumber ApplyMiniFilterWhileTyping! = 0
   rem /**
-  rem  * Set to true to stop the filter from removing values that are no longer available (like what Excel does).
-  rem  *
-  rem  * @param BBjNumber suppress!
-  rem  *
-  rem  * @deprecated since version 0.102.0, GxFilterSetFilter.setSuppressRemoveEntries(BBjNumber suppress!) is deprecated / removed. Use GxFilterSetFilter.setNewRowsAction(BBjString action!) instead.
-  rem  */
-  method public void setSuppressRemoveEntries(BBjNumber suppress!)
-    #SuppressRemoveEntries! = suppress!
-    GxLogger.warn("since version 0.102.0, GxFilterSetFilter.setSuppressRemoveEntries(BBjNumber suppress!) is deprecated / removed. Use GxFilterSetFilter.setNewRowsAction(BBjString action!) instead.")
-  methodend
-  rem /**
-  rem  * Return true when the filter will not remove unavailable values , false otherwise
-  rem  *
-  rem  * @return BBjNumber
-  rem  *
-  rem  * @deprecated since version 0.102.0, GxFilterSetFilter.getSuppressRemoveEntries() is deprecated / removed. Use GxFilterSetFilter.getNewRowsAction() instead.
-  rem  */
-  method public BBjNumber getSuppressRemoveEntries()
-    GxLogger.warn("since version 0.102.0, GxFilterSetFilter.getSuppressRemoveEntries() is deprecated / removed. Use GxFilterSetFilter.getNewRowsAction() instead.")
-    methodret #SuppressRemoveEntries!
-  methodend
-  rem /**
   rem  * {@inheritDoc}
   rem  */
   method public static BBjString getFilterName()
@@ -452,7 +435,6 @@ class public GxFilterSetFilter extends GxColumnFilterAG
     declare JsonObject json!
 
     json! = #super!.getAsJsonObject()
-    json!.addProperty("suppressRemoveEntries" , #SuppressRemoveEntries!.booleanValue() , err=*next)
     json!.addProperty("suppressSorting" , #getSuppressSorting().booleanValue() , err=*next)
     json!.addProperty("suppressMiniFilter" , #getSuppressMiniFilter().booleanValue() , err=*next)
     json!.addProperty("suppressSelectAll" , #getSuppressSelectAll().booleanValue() , err=*next)
