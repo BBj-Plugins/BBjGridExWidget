@@ -1133,6 +1133,27 @@ class public GxOptions
     rem  *
     rem  * @param BBjNumber enabled!  true to enable , false to disable
     rem  *
+    rem  * @deprecated Columns are immutable by default.
+    rem  */
+    method public void setImmutableColumns(BBjNumber enabled!)
+        GxLogger.warn("since version 1.7.0, BBjGridExWidget.setImmutableColumns(BBjNumber enabled!) is deprecated. Columns are immutable by default.")
+        #ImmutableColumns! = 1
+    methodend      
+    rem /**
+    rem  * Get DeltaColumn Mode value
+    rem  *
+    rem  * @return BBjNumber true when enabled , false otherwise
+    rem  *
+    rem  * @deprecated Columns are immutable by default.
+    rem  */
+    method public BBjNumber getDeltaColumnMode()
+        methodret 1
+    methodend      
+    rem /**
+    rem  * Enable/disable DeltaColumn Mode
+    rem  *
+    rem  * @param BBjNumber enabled!  true to enable , false to disable
+    rem  *
     rem  * @deprecated use `GxOptions.setImmutableColumns` instead
     rem  */
     method public void setDeltaColumnMode(BBjNumber enabled!)
