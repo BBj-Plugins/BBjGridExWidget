@@ -79,3 +79,7 @@
   box-shadow: 0 0 6px #5c5c5c;
   color: white;
 }
+
+.ag-selection-checkbox.ag-invisible {
+  display: none !important;
+}
