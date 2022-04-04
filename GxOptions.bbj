@@ -482,6 +482,8 @@ class public GxOptions
     rem  * a grouping column (normally the first on the left) to show the group
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *  
+    rem  * @deprecated since v1.7.0 - use `GroupDisplayType! = GxOptions.GROUP_DISPLAY_GROUP_ROWS() ` instead
     rem  */
     field public BBjNumber GroupUseEntireRow! = null()
     rem /**
@@ -490,18 +492,37 @@ class public GxOptions
     rem  * <br><b><small>#GridRenderer</small></b>
     rem  */
     field public BBjNumber GroupDefaultExpanded! = null()
+
+    rem /**
+    rem  * Specifies how the results of row grouping should be displayed. 
+    rem  *  
+    rem  *  The options are: 
+    rem  *  
+    rem  *  1. 'GxOptions.GROUP_DISPLAY_SINGLE_COLUMN()': single group column automatically added by the grid.<br>
+    rem  *  2. 'GxOptions.GROUP_DISPLAY_MULTIPLE_COLUMNS()': a group column per row group is added automatically.<br> 
+    rem  *  3. 'GxOptions.GROUP_DISPLAY_GROUP_ROWS()': group rows are automatically added instead of group columns. <br>
+    rem  *  4. 'GxOptions.GROUP_DISPLAY_CUSTOM()': informs the grid that group columns will be provided.<br>
+    rem  *  
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#GridRenderer</small></b>
+    rem  */
+    field public BBjString GroupDisplayType! = null()
     rem /**
     rem  * If true, the grid will not swap in the grouping column when grouping is enabled.
     rem  * Use this if you want complete control on the column displayed and don't want the grids help.
     rem  * In other words, you already have a column in your column definitions that is responsible for displaying the groups
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *  
+    rem  *  @deprecated since v1.7.0 - use `GroupDisplayType! = GxOptions.GROUP_DISPLAY_CUSTOM()` instead
     rem  */
     field public BBjNumber GroupSuppressAutoColumn! = null()
     rem /**
     rem  * If using auto column, set to true to have each group in its own column separate column, eg if group by Country then Year, two auto columns will be created, one for country and one for year
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *  
+    rem  *  @deprecated since v1.7.0 - use `GroupDisplayType! = GxOptions.GROUP_DISPLAY_MULTIPLE_COLUMNS()` instead
     rem  */
     field public BBjNumber GroupMultiAutoColumn! = null()
     rem /**
@@ -1021,6 +1042,42 @@ class public GxOptions
     rem  */
     field public JsonObject ClientContext! = new JsonObject()
     rem /**
+    rem  * Specifies the results of row grouping should be displayed as single column:
+    rem  * single group column automatically added by the grid.
+    rem  *  
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GROUP_DISPLAY_SINGLE_COLUMN()
+      methodret "singleColumn"
+    methodend     
+    rem /**
+    rem  * Specifies the results of row grouping should be displayed as multiple columns:
+    rem  * a group column per row group is added automatically.
+    rem  *  
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GROUP_DISPLAY_MULTIPLE_COLUMNS()
+      methodret "multipleColumns"
+    methodend
+    rem /**
+    rem  * Specifies the results of row grouping should be displayed as group rows:
+    rem  * group rows are automatically added instead of group columns.
+    rem  *  
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GROUP_DISPLAY_GROUP_ROWS()
+      methodret "groupRows"
+    methodend 
+    rem /**
+    rem  * Specifies the results of row grouping should be displayed as custom:
+    rem  * informs the grid that group columns will be provided.
+    rem  *  
+    rem  * @return BBjString
+    rem  */
+    method public static BBjString GROUP_DISPLAY_CUSTOM()
+      methodret "custom"
+    methodend                    
+    rem /**
     rem  * Disable default constructor
     rem  */
     method private GxOptions()
@@ -1331,10 +1388,8 @@ class public GxOptions
         fi
         rem Grouping & Pivoting
         rem ===========================
-        options!.addProperty("groupUseEntireRow",#getGroupUseEntireRow().booleanValue() , err=*next)
         options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().longValue(), err=*next)
         options!.        add("autoGroupColumnDef",#getAutoGroupColumnDefinition().getAsJsonObject(), err=*next)
-        options!.addProperty("groupMultiAutoColumn",#getGroupMultiAutoColumn().booleanValue() , err=*next)
         options!.addProperty("groupSelectsChildren",#getGroupSelectsChildren().booleanValue(), err=*next)
         options!.addProperty("groupIncludeFooter",#getGroupIncludeFooter().booleanValue(), err=*next)
         options!.addProperty("groupIncludeTotalFooter",#getGroupIncludeTotalFooter().booleanValue(), err=*next)
@@ -1351,6 +1406,8 @@ class public GxOptions
         options!.addProperty("suppressAggAtRootLevel",#getSuppressAggAtRootLevel().booleanValue(), err=*next)
         options!.addProperty("functionsReadOnly",#getFunctionsReadOnly().booleanValue(), err=*next)
         options!.addProperty("suppressMakeVisibleAfterUnGroup",#getSuppressMakeVisibleAfterUnGroup().booleanValue(), err=*next)
+        options!.addProperty("groupDisplayType",#getGroupDisplayType(), err=*next)
+        
         rem Scrolling Options
         rem ===========================
         options!.addProperty("alwaysShowVerticalScroll",#getAlwaysShowVerticalScroll().booleanValue(), err=*next)
