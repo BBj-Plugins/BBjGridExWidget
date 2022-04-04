@@ -44,10 +44,10 @@ export function gw_navigateToNextRow(id, params) {
   let previousCell = params.previousCellPosition
   let suggestedNextCell = params.nextCellPosition
 
-  const KEY_UP = 38
-  const KEY_DOWN = 40
-  const KEY_LEFT = 37
-  const KEY_RIGHT = 39
+  const KEY_UP = 'ArrowUp'
+  const KEY_DOWN = 'ArrowDown'
+  const KEY_LEFT = 'ArrowLeft'
+  const KEY_RIGHT = 'ArrowRight'
 
   switch (params.key) {
     case KEY_DOWN:
