@@ -25,14 +25,12 @@ export function gw_getState(id) {
   const options = gw_getGrid(id).options
   const columns = options.columnApi.getColumnState()
   const groups = options.columnApi.getColumnGroupState()
-  const sort = options.api.getSortModel()
   const filters = options.api.getFilterModel()
 
   try {
     return JSON.stringify({
       columns,
       groups,
-      sort,
       filters,
     })
   } catch (e) {
