@@ -1268,7 +1268,7 @@ class public GxOptions
         options!.addProperty("unSortIcon",#getUnSortIcon().booleanValue(), err=*next)
         options!.addProperty("suppressMultiSort",#getSuppressMultiSort().booleanValue(), err=*next)
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
-        options!.addProperty("suppressSetColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
+        options!.addProperty("suppressColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
         options!.addProperty("immutableColumns",#getImmutableColumns().booleanValue(), err=*next)
         options!.addProperty("skipHeaderOnAutoSize",#getSkipHeaderOnAutoSize().booleanValue(), err=*next)
         rem Sort & Filter options
