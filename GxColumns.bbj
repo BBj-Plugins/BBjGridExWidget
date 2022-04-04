@@ -160,7 +160,7 @@ class public GxColumnDefinition
         json!.addProperty("columnGroupShow" , #getColumnGroupShow() ,err=*next)
         json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), listIsEmpty!) ,err=*next)
         json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) ,listIsEmpty!) ,err=*next)
-        json!.addProperty("suppressToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
+        json!.addProperty("suppressColumnsToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
         json!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
         methodret json!
     methodend
