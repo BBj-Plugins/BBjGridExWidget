@@ -385,6 +385,8 @@ class public GxFilterSetFilter extends GxColumnFilterAG
   field public JsonArray Values! = new JsonArray()
   rem /**
   rem  * Set to true to have the values inside the set filter NOT refresh after values are changed inside the grid.
+  rem  *  
+  rem  * @deprecated since version 1.7.0. This option has no replacement
   rem  */
   field public BBjNumber SuppressSyncValuesAfterDataChange! = 0
   rem /**
@@ -415,28 +417,6 @@ class public GxFilterSetFilter extends GxColumnFilterAG
   rem  * Default: false
   rem  */
   field public BBjNumber ApplyMiniFilterWhileTyping! = 0
-  rem /**
-  rem  * Set to true to have the values inside the set filter NOT refresh after values are changed inside the grid.
-  rem  *
-  rem  * @param BBjNumber suppress!
-  rem  *
-  rem  * @deprecated since version 0.102.0, GxFilterSetFilter.setSuppressSyncValuesAfterDataChange(BBjNumber suppress!) is deprecated / removed. Use GxFilterSetFilter.setNewRowsAction(BBjString action!) instead.
-  rem  */
-  method public void setSuppressSyncValuesAfterDataChange(BBjNumber suppress!)
-    #SuppressSyncValuesAfterDataChange! = suppress!
-    GxLogger.warn("since version 0.102.0, GxFilterSetFilter.setSuppressSyncValuesAfterDataChange(BBjNumber suppress!) is deprecated / removed. Use GxFilterSetFilter.setNewRowsAction(BBjString action!) instead.")
-  methodend
-  rem /**
-  rem  * Return true when the values inside the set filter will not refresh after values are changes inside the grid
-  rem  *
-  rem  * @return BBjNumber
-  rem  *
-  rem  * @deprecated since version 0.102.0, GxFilterSetFilter.getSuppressSyncValuesAfterDataChange() is deprecated / removed. Use GxFilterSetFilter.getNewRowsAction() instead.
-  rem  */
-  method public BBjNumber getSuppressSyncValuesAfterDataChange()
-    GxLogger.warn("since version 0.102.0, GxFilterSetFilter.getSuppressSyncValuesAfterDataChange() is deprecated / removed. Use GxFilterSetFilter.getNewRowsAction() instead.")
-    methodret #SuppressSyncValuesAfterDataChange!
-  methodend
   rem /**
   rem  * Set to true to stop the filter from removing values that are no longer available (like what Excel does).
   rem  *
@@ -472,7 +452,6 @@ class public GxFilterSetFilter extends GxColumnFilterAG
     declare JsonObject json!
 
     json! = #super!.getAsJsonObject()
-    json!.addProperty("suppressSyncValuesAfterDataChange" , #SuppressSyncValuesAfterDataChange!.booleanValue() , err=*next)
     json!.addProperty("suppressRemoveEntries" , #SuppressRemoveEntries!.booleanValue() , err=*next)
     json!.addProperty("suppressSorting" , #getSuppressSorting().booleanValue() , err=*next)
     json!.addProperty("suppressMiniFilter" , #getSuppressMiniFilter().booleanValue() , err=*next)
