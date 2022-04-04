@@ -506,6 +506,8 @@ class public GxOptions
     rem  * If true, the group row won't be displayed and the groups will be expanded by default with no ability to expand / contract the groups. Useful when you want to just 'group' the rows, but not add parent group row to each group
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *  
+    rem  *  @deprecated since v1.7.0 - There is no replacement for this functionality.
     rem  */
     field public BBjNumber GroupSuppressRow! = null()
     rem /**
@@ -1332,7 +1334,6 @@ class public GxOptions
         options!.addProperty("groupDefaultExpanded",#getGroupDefaultExpanded().longValue(), err=*next)
         options!.        add("autoGroupColumnDef",#getAutoGroupColumnDefinition().getAsJsonObject(), err=*next)
         options!.addProperty("groupMultiAutoColumn",#getGroupMultiAutoColumn().booleanValue() , err=*next)
-        options!.addProperty("groupSuppressRow",#getGroupSuppressRow().booleanValue() , err=*next)
         options!.addProperty("groupSelectsChildren",#getGroupSelectsChildren().booleanValue(), err=*next)
         options!.addProperty("groupIncludeFooter",#getGroupIncludeFooter().booleanValue(), err=*next)
         options!.addProperty("groupIncludeTotalFooter",#getGroupIncludeTotalFooter().booleanValue(), err=*next)
