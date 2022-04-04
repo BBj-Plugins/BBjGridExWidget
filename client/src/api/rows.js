@@ -101,10 +101,11 @@ export function gw_navigateToNextRow(id, params) {
  * Returns a row based on `getRowNodeId` config defined in the grid context
  *
  * @param {String} id the grid's id
- * @param {Object} data  the data row
+ * @param {Object} grid  the grid object
  */
-export function gw_getRowNodeId(id, data) {
-  return data[gw_getGrid(id).options.context.getRowNodeId]
+export function gw_getRowNodeId(_id, grid) {
+  const rowNodeId = grid.api.gridOptionsWrapper.gridOptions.context.getRowNodeId
+  return grid.data[rowNodeId]
 }
 
 /**
