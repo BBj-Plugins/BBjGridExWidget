@@ -347,6 +347,8 @@ class public GxOptions
     rem  * Set to true to suppress column events being raised when state is changed throw the API methods
     rem  * <br><b><small>#Configuration</small></b>
     rem  * <br><b><small>#GridRenderer</small></b>
+    rem  *  
+    rem  * @deprecated since version 1.7.0 - no longer required
     rem  */
     field public BBjNumber SuppressSetColumnStateEvents! = null()
     rem /**
@@ -1292,7 +1294,6 @@ class public GxOptions
         options!.addProperty("unSortIcon",#getUnSortIcon().booleanValue(), err=*next)
         options!.addProperty("suppressMultiSort",#getSuppressMultiSort().booleanValue(), err=*next)
         options!.addProperty("suppressMenuHide",#getSuppressMenuHide().booleanValue(), err=*next)
-        options!.addProperty("suppressColumnStateEvents",#getSuppressSetColumnStateEvents().booleanValue(), err=*next)
         options!.addProperty("immutableColumns",#getImmutableColumns().booleanValue(), err=*next)
         options!.addProperty("skipHeaderOnAutoSize",#getSkipHeaderOnAutoSize().booleanValue(), err=*next)
         rem Sort & Filter options
