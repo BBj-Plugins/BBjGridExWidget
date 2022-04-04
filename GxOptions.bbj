@@ -1365,7 +1365,7 @@ class public GxOptions
         options!.addProperty("suppressRowClickSelection",#getSuppressRowClickSelection().booleanValue())
         options!.addProperty("enableRangeSelection",#getEnableRangeSelection().booleanValue(), err=*next)
         options!.addProperty("suppressMultiRangeSelection",#getSuppressMultiRangeSelection().booleanValue(), err=*next)
-        options!.addProperty("suppressCellSelection",#getSuppressCellSelection().booleanValue(), err=*next)
+        options!.addProperty("suppressCellFocus",#getSuppressCellSelection().booleanValue(), err=*next)
         rem Editing Options
         rem ===========================
         options!.addProperty("singleClickEdit",#getSingleClickEdit().booleanValue(), err=*next)
