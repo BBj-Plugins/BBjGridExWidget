@@ -1451,7 +1451,7 @@ class public GxOptions
         options!.addProperty("statusBar",#getStatusbar().toString(), err=*next)
         options!.addProperty("suppressTouch",#getSuppressTouch().booleanValue() , err=*next)
         options!.addProperty("suppressPropertyNamesCheck",BBjGridExWidget.getDebug().booleanValue() , err=*next)
-        options!.addProperty("floatingFilter",#getEnableFloatingFilter())
+        rem options!.addProperty("floatingFilter",#getEnableFloatingFilter())
         options!.addProperty("suppressRowTransform",#getSuppressRowTransform().booleanValue() , err=*next)
         options!.        add("sideBar",#getSidebar().getAsJsonObject(), err=*next)
         rem Context
