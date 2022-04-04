@@ -22,12 +22,15 @@ class HTMLTooltip {
     const tooltipValueGetter = params.colDef.tooltipValueGetter
     const isHeader = params.rowIndex === undefined
     const isGroupedHeader = isHeader && !!params.colDef.children
+    console.log(params)
     // eslint-disable-next-line no-prototype-builtins
     const data =
       !isHeader && !isGroupedHeader
         ? params.api.getDisplayedRowAtIndex(params.rowIndex).data
         : null
-    const theme = params.api.gridCore.eGridDiv.className.endsWith('dark')
+    const theme = params.api.gridOptionsWrapper.eGridDiv.className.endsWith(
+      'dark'
+    )
       ? 'gw-tooltip-dark'
       : 'gw-tooltip-light'
     const tooltipField = params.colDef.tooltipField
