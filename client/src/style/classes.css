@@ -83,3 +83,7 @@
 .ag-selection-checkbox.ag-invisible {
   display: none !important;
 }
+
+.ag-cell-wrapper {
+  height: 100%;
+}
