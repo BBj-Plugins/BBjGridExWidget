@@ -1,7 +1,7 @@
 {
   "name": "BBjGridExWidget",
   "description": "An Advanced BBj Data Grid / Data Table Widget",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "author": "BASIS Europe Distribution GmbH",
   "licence": "MIT",
   "bbj_dependency": "20.11",
