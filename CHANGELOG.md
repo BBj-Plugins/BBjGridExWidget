@@ -1,3 +1,7 @@
+## [1.6.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.6.1...1.6.2) (2022-04-06)
+
+
+
 ## [1.6.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.6.0...1.6.1) (2022-03-29)
 
 
