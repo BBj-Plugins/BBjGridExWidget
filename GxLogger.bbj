@@ -17,7 +17,7 @@ class public GxLogger
     rem /**
     rem  * When true , the logger will not output messages in the console
     rem  */
-    field public static BBjNumber SuppressConsole! = 0
+    field public static BBjNumber SuppressConsole! = 1
     rem /**
     rem  * When true , the logger will not output messages in debug file
     rem  */
