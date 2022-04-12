@@ -303,6 +303,7 @@ export function gw_removeValueColumns(id, columns) {
  */
 export function gw_setSortModel(id, model) {
   const asArray = JSON.parse(model)
+  const options = gw_getGrid(id).options
   const parsedModel = []
   asArray.forEach(i => {
     for (const key in i) {
@@ -313,7 +314,10 @@ export function gw_setSortModel(id, model) {
     }
   })
 
-  gw_getGrid(id).options.api.setSortModel(parsedModel)
+  options.columnApi.applyColumnState({
+    state: Object.assign(options.columnApi.getColumnState(), parsedModel),
+    applyOrder: true,
+  })
 }
 
 /**

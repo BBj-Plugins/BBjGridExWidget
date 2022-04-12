@@ -64,13 +64,16 @@ main:
 
   renderer! = new GxRendererCustomHTML("<% "+
 : "var position = params.node.rowPinned;"+
-: "var content = position.toUpperCase() + ' ' + params.column.colId + ' ' + (params.rowIndex + 1);"+
-: "var isCDNumber = params.column.colId == 'CDNUMBER';"+
-: "var style = 'font-weight: bold;font-style: italic';"+
-: "style += isCDNumber ? ';color: blue;' : ''; "+
-: "print('<div class=""ag-cell-wrapper"" style=""' + style + '"">' + content + '</div>')"+
+: "if(!position) print(params.value);"+
+: "else {"+
+: " var content = position.toUpperCase() + ' ' + params.column.colId + ' ' + (params.rowIndex + 1);"+
+: " var isCDNumber = params.column.colId == 'CDNUMBER';"+
+: " var style = 'font-weight: bold;font-style: italic';"+
+: " style += isCDNumber ? ';color: blue;' : ''; "+
+: " print('<div class=""ag-cell-wrapper"" style=""' + style + '"">' + content + '</div>')"+
+: "}" +
 : "%>")
-  grid!.getOptions().getDefaultColumnDefinition().setPinnedRowCellRenderer(renderer!)
+  grid!.getOptions().getDefaultColumnDefinition().setCellRenderer(renderer!)
 
   grid!.setData(rs!)
 return

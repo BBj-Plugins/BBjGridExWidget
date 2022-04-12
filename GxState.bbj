@@ -33,7 +33,7 @@ class public GxState
         if len(jsonstr$)>2 and jsonstr$(1,1)="[" then
             rem old format that had only columns
             jsonstr$="{""columns"":"+jsonstr$
-            jsonstr$=jsonstr$+",""groups"":[],""sort"":[],""filters"":{}}"
+            jsonstr$=jsonstr$+",""groups"":[],""filters"":{}}"
         FI
 
         #String$ = jsonstr$

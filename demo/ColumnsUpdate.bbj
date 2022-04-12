@@ -28,25 +28,6 @@ groupByMusicType!.setCallback(BBjAPI.ON_BUTTON_PUSH,"onGroupByMusicType")
 REM init the grid
 grid! = new BBjGridExWidget(wnd!,100,0,50,800,550)
 
-rem /**
-rem  * By default, the grid will not allow updating the following properties:
-rem  * Order, Aggregation Function, Width, Pivot, Row Group and Pinned
-rem  *
-rem  * We enable here the delta column mode.
-rem  * When this mode is enabled, the grid will respect changes made to the above
-rem  * properties each time it updates the columns.
-rem  *
-rem  * This option is disabled by default to avoid unexpected behaviour.
-rem  *
-rem  * For example, suppose the application user rearranges the order of the columns.
-rem  * If the application sets new column definitions via adding one extra column to the grid,
-rem  * then it would be a bad user experience to reset the order of all the columns.
-rem  *
-rem  * Likewise, if the user changes an aggregation function or the width of a column or whether a column was pinned,
-rem  * these changes should not get undone because the application decided to update the column definitions.
-rem  */
-grid!.getOptions().setImmutableColumns(1)
-
 gosub main
 process_events
 

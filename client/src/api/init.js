@@ -107,7 +107,7 @@ function gw_parseOptions(options) {
       onFilterChanged: e => {
         gw_onFilterChanged(id, e)
       },
-      getRowNodeId: data => gw_getRowNodeId(id, data),
+      getRowId: data => gw_getRowNodeId(id, data),
       getContextMenuItems: params => gw_getContextMenu(id, params),
       getChartToolbarItems: gw_getChartToolbarItems,
       popupParent: gw_getDocument().body,

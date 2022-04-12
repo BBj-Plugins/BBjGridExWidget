@@ -44,10 +44,10 @@ export function gw_navigateToNextRow(id, params) {
   let previousCell = params.previousCellPosition
   let suggestedNextCell = params.nextCellPosition
 
-  const KEY_UP = 38
-  const KEY_DOWN = 40
-  const KEY_LEFT = 37
-  const KEY_RIGHT = 39
+  const KEY_UP = 'ArrowUp'
+  const KEY_DOWN = 'ArrowDown'
+  const KEY_LEFT = 'ArrowLeft'
+  const KEY_RIGHT = 'ArrowRight'
 
   switch (params.key) {
     case KEY_DOWN:
@@ -101,10 +101,11 @@ export function gw_navigateToNextRow(id, params) {
  * Returns a row based on `getRowNodeId` config defined in the grid context
  *
  * @param {String} id the grid's id
- * @param {Object} data  the data row
+ * @param {Object} grid  the grid object
  */
-export function gw_getRowNodeId(id, data) {
-  return data[gw_getGrid(id).options.context.getRowNodeId]
+export function gw_getRowNodeId(_id, grid) {
+  const rowNodeId = grid.api.gridOptionsWrapper.gridOptions.context.getRowNodeId
+  return grid.data[rowNodeId]
 }
 
 /**
