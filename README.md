@@ -119,3 +119,4 @@ Licensed under the [MIT License](https://github.com/BBj-Plugins/BBjGridExWidget/
 
 * [Pages](https://bbj-plugins.github.io/BBjGridExWidget/)
 * [JavaDoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc)
+* [Getting Started](https://documentation.basis.com/BASISHelp/WebHelp/bbutil/BBjGridExWidget/BBjGridExWidget.htm?Highlight=bbjgridexwidget)
