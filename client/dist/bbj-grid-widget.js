@@ -221,7 +221,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -384,7 +384,7 @@ exports.GW_EVENT_READY = exports.GW_EVENT_FILTER_CHANGED = exports.GW_EVENT_KEYP
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -1192,7 +1192,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
  * This file is part of bbj-masks lib.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -1218,7 +1218,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
  * This file is part of bbj-masks lib.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -1698,7 +1698,7 @@ exports.gw_executeExpression = gw_executeExpression;
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -2186,7 +2186,7 @@ var _cells = __webpack_require__(20);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -2287,7 +2287,7 @@ var _utilities2 = __webpack_require__(1);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -3495,7 +3495,7 @@ Object.keys(_api).forEach(function (key) {
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -3746,7 +3746,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var __WEBPACK_IMPORTED_MODULE_0__NumberMask__ = __webpack_require__(6);
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -3812,7 +3812,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -3924,7 +3924,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var __WEBPACK_IMPORTED_MODULE_0__StringMask__ = __webpack_require__(19);
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -3994,7 +3994,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -4062,7 +4062,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -4073,7 +4073,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        *
        * A javascript implementation for BBj numbers masking
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -4523,7 +4523,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -4639,7 +4639,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        *
        * A javascript implementation for BBj dates masking
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -6103,7 +6103,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -6151,7 +6151,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        *
        * A javascript implementation for BBj numbers masking
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -6311,7 +6311,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var __WEBPACK_IMPORTED_MODULE_0__Types__ = __webpack_require__(21);
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -6365,7 +6365,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
       /*
        * This file is part of bbj-masks lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -6376,7 +6376,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        *
        * BBj masks factory
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -6711,7 +6711,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       /*
        * This file is part of basis-input-masking lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -6730,7 +6730,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var __WEBPACK_IMPORTED_MODULE_0__TextInput__ = __webpack_require__(3);
       /*
        * This file is part of basis-input-masking lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -6833,7 +6833,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
       /*
        * This file is part of basis-input-masking lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -6870,7 +6870,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        *  </script>
        * ```
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -7309,7 +7309,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var __WEBPACK_IMPORTED_MODULE_0_bbj_masks_src_StringMask___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_bbj_masks_src_StringMask__);
       /*
        * This file is part of basis-input-masking lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -7539,7 +7539,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var __WEBPACK_IMPORTED_MODULE_0__NumberInput__ = __webpack_require__(6);
       /*
        * This file is part of basis-input-masking lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -7638,7 +7638,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
       /*
        * This file is part of basis-input-masking lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -7697,7 +7697,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        *  </script>
        * ```
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -8136,7 +8136,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*
  * This file is part of bbj-masks lib.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -8181,7 +8181,7 @@ var passOrThrowError = function passOrThrowError(loose, ret, i, str) {
  *
  * A javascript implementation for BBj numbers masking
  *
- * @author Hyyan Abo Fakher <habofakher@basis.com>
+ * @author Hyyan Abo Fakher <habofakher@basis.cloud>
  */
 
 
@@ -8348,7 +8348,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*
  * This file is part of bbj-masks lib.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -8359,7 +8359,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * A javascript implementation for BBj numbers masking
  *
- * @author Hyyan Abo Fakher <habofakher@basis.com>
+ * @author Hyyan Abo Fakher <habofakher@basis.cloud>
  */
 var NumberMask = /*#__PURE__*/function () {
   function NumberMask() {
@@ -11603,7 +11603,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__Component__ = __webpack_require__(45);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -13233,7 +13233,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__BooleanSwitch__ = __webpack_require__(46);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -13257,7 +13257,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__TemplateRenderer__ = __webpack_require__(65);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14290,7 +14290,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       });
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14314,7 +14314,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__DateTimeInput__ = __webpack_require__(124);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14428,7 +14428,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       });
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14447,7 +14447,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__BooleanEditor__ = __webpack_require__(44);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14592,7 +14592,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14612,7 +14612,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **booleanTrueValue[]**       | true(bool)  	| The options describes what is considered `true`                                                                                	|
        * | **booleanFalseValue[]**      | false(bool) 	| The options describes what is considered `false`
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -14810,7 +14810,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -14823,7 +14823,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        *
        * This class is the abstract class which all components should use
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -15147,7 +15147,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -15158,7 +15158,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        *
        * Simple toggle switch to handle boolean values
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -15630,7 +15630,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__BooleanRenderer__ = __webpack_require__(52);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -15775,7 +15775,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -15797,7 +15797,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **booleanTrueValue[]**       | true(bool)  	| The options describes what is considered `true`                                                                                	|
        * | **booleanFalseValue[]**      | false(bool) 	| The options describes what is considered `false`                                                                               	|
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -15956,7 +15956,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__BooleanFilter__ = __webpack_require__(54);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -16144,7 +16144,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -16179,7 +16179,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **applyButton**   | false    |  Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
        * | **resetButton**   | false    |  Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -16522,7 +16522,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__NumberEditor__ = __webpack_require__(58);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -16710,7 +16710,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -16731,7 +16731,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * |**numberDecimalSeparator** | . | a char which will be used as a decimal separator. The options is used only when **numberMask** is defined  |
        * |**numberForceTrailingZeros** | false | Affects the output by switching the way a mask with "#" characters in the trailing positions is filled. for example, the function NumberMask.mask(.10:"#.##") returns .10 instead of .1 . The options is used only when **numberMask** is defined|
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -17137,7 +17137,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__TextEditor__ = __webpack_require__(62);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -17325,7 +17325,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -17343,7 +17343,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **textMask**   | undefined    | A bbj string mask to validate the value
        * | **textTitle**   | null    | The input title , when null and the **textMask** options is defined , then we use the mask as title , when set to `default` we the browser's default title , otherwise the value defined in this option
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -17848,7 +17848,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -17863,7 +17863,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * |-------------------------	|:-------------:|--------------------------------------------------------------------------------------------------------------------------------|
        * | **renderTemplate**   | undefined    | lodash template
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -20379,7 +20379,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__ImageRenderer__ = __webpack_require__(114);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -20550,7 +20550,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -20567,7 +20567,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **imageRendererHeight**   | 28px    | image height
        * | **imageRendererList**       | {}  	| a list of which maps images with cell values as JSON or plain JS object
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        *
        * @see https://lodash.com/docs/4.17.15#template
        */
@@ -20636,7 +20636,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__DateTimeFilter__ = __webpack_require__(116);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -20869,7 +20869,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -21354,7 +21354,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **applyButton**   | false    |  Set to true to have the filter use an Apply button. If the Apply button is present, then the filter is only applied after the user hits the Apply button.
        * | **resetButton**   | false    |  Set to true to have the filter use a Reset button. The Reset button will clear the details of the filter and any active filters on that column.
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -22673,7 +22673,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -22688,7 +22688,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        *
        * @param {Class} superClass
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -22972,7 +22972,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -22983,7 +22983,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        *
        * Simple DateTimeInput component which integrates the flatpickr
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -23381,7 +23381,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       var __WEBPACK_IMPORTED_MODULE_0__DateTimeEditor__ = __webpack_require__(130);
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -23569,7 +23569,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
       /*
        * This file is part of basis-aggrid-components lib.
-       * (c) Basis Europe <eu@basis.com>
+       * (c) Basis Europe <eu@basis.cloud>
        *
        * For the full copyright and license information, please view the LICENSE
        * file that was distributed with this source code.
@@ -23598,7 +23598,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
        * | **dateTimeDisableMobile**   | false    |  Set disableMobile to true to always use the non-native picker.
        * | **dateTimeEnableWeekNumber**   | true    |  Enables display of week numbers in calendar.
        *
-       * @author Hyyan Abo Fakher <habofakher@basis.com>
+       * @author Hyyan Abo Fakher <habofakher@basis.cloud>
        */
 
 
@@ -23787,7 +23787,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24171,7 +24171,7 @@ var _utilities2 = __webpack_require__(1);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24321,7 +24321,7 @@ var _constants = __webpack_require__(3);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24577,7 +24577,7 @@ var _constants = __webpack_require__(3);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24655,7 +24655,7 @@ var _constants = __webpack_require__(3);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24700,7 +24700,7 @@ var _utilities2 = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24743,7 +24743,7 @@ var _constants = __webpack_require__(3);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26823,7 +26823,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27813,7 +27813,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27869,7 +27869,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27906,7 +27906,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27933,7 +27933,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27984,7 +27984,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28032,7 +28032,7 @@ var _utilities = __webpack_require__(0);
 
 /*
  * This file is part of the BBjGridExWidget plugin.
- * (c) Basis Europe <eu@basis.com>
+ * (c) Basis Europe <eu@basis.cloud>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28555,7 +28555,7 @@ if(false) {}
 /* 124 */
 /***/ (function(module, exports) {
 
-module.exports = "/*\r\n* This file is part of the BBjGridExWidget plugin.\r\n* (c) Basis Europe <eu@basis.com>\r\n*\r\n* For the full copyright and license information, please view the LICENSE\r\n* file that was distributed with this source code.\r\n*/\r\n\r\n.gw-alignment-cell-right,\r\n.gw-alignment-cell-right .ag-cell-value,\r\n.gw-alignment-cell-right .templateRenderer {\r\n  text-align: right;\r\n  -webkit-box-pack: end;\r\n      -ms-flex-pack: end;\r\n          justify-content: flex-end;\r\n  -webkit-box-flex: 1;\r\n      -ms-flex: 1;\r\n          flex: 1;\r\n}\r\n\r\n.gw-alignment-cell-center,\r\n.gw-alignment-cell-center .ag-cell-value,\r\n.gw-alignment-cell-center .templateRenderer {\r\n  text-align: center;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-flex: 1;\r\n      -ms-flex: 1;\r\n          flex: 1;\r\n}\r\n\r\n.gw-alignment-cell-right .boolSwitch,\r\n.gw-alignment-cell-center .boolSwitch {\r\n  text-align: initial;\r\n}\r\n\r\n.gw-alignment-cell-center .boolSwitch__wrapper,\r\n.gw-alignment-cell-right .boolSwitch__wrapper {\r\n  width: auto;\r\n  height: auto;\r\n}\r\n\r\n.gw-alignment-cell-center .boolSwitch__wrapper {\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n}\r\n\r\n.gw-alignment-cell-right .boolSwitch__wrapper {\r\n  -webkit-box-pack: right;\r\n      -ms-flex-pack: right;\r\n          justify-content: right;\r\n}\r\n\r\n.gw-alignment-header-right .ag-header-cell-label {\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: reverse;\r\n      -ms-flex-direction: row-reverse;\r\n          flex-direction: row-reverse;\r\n}\r\n\r\n.gw-alignment-header-center .ag-header-cell-label {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n}\r\n\r\n.gw-alignment-header-center .ag-header-cell-text {\r\n  margin-left: -16px !important;\r\n}\r\n\r\n.gw-alignment-header-right .ag-cell-label-container,\r\n.gw-alignment-header-center .ag-cell-label-container {\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n}\r\n\r\n.gw-tooltip {\r\n  position: absolute;\r\n  overflow: hidden;\r\n  pointer-events: none;\r\n  -webkit-transition: opacity 1s;\r\n  transition: opacity 1s;\r\n  border-radius: 3.1px;\r\n  padding: 10px;\r\n  -webkit-transition: opacity 260ms;\r\n  transition: opacity 260ms;\r\n}\r\n\r\n.gw-tooltip-light {\r\n  background-color: white;\r\n  -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);\r\n          box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);\r\n}\r\n\r\n.gw-tooltip-dark {\r\n  background-color: #1c1f20;\r\n  -webkit-box-shadow: 0 0 6px #5c5c5c;\r\n          box-shadow: 0 0 6px #5c5c5c;\r\n  color: white;\r\n}\r\n\r\n.ag-selection-checkbox.ag-invisible {\r\n  display: none !important;\r\n}\r\n\r\n.ag-cell-wrapper {\r\n  height: 100%;\r\n}\r\n"
+module.exports = "/*\r\n* This file is part of the BBjGridExWidget plugin.\r\n* (c) Basis Europe <eu@basis.cloud>\r\n*\r\n* For the full copyright and license information, please view the LICENSE\r\n* file that was distributed with this source code.\r\n*/\r\n\r\n.gw-alignment-cell-right,\r\n.gw-alignment-cell-right .ag-cell-value,\r\n.gw-alignment-cell-right .templateRenderer {\r\n  text-align: right;\r\n  -webkit-box-pack: end;\r\n      -ms-flex-pack: end;\r\n          justify-content: flex-end;\r\n  -webkit-box-flex: 1;\r\n      -ms-flex: 1;\r\n          flex: 1;\r\n}\r\n\r\n.gw-alignment-cell-center,\r\n.gw-alignment-cell-center .ag-cell-value,\r\n.gw-alignment-cell-center .templateRenderer {\r\n  text-align: center;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n  -webkit-box-flex: 1;\r\n      -ms-flex: 1;\r\n          flex: 1;\r\n}\r\n\r\n.gw-alignment-cell-right .boolSwitch,\r\n.gw-alignment-cell-center .boolSwitch {\r\n  text-align: initial;\r\n}\r\n\r\n.gw-alignment-cell-center .boolSwitch__wrapper,\r\n.gw-alignment-cell-right .boolSwitch__wrapper {\r\n  width: auto;\r\n  height: auto;\r\n}\r\n\r\n.gw-alignment-cell-center .boolSwitch__wrapper {\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n}\r\n\r\n.gw-alignment-cell-right .boolSwitch__wrapper {\r\n  -webkit-box-pack: right;\r\n      -ms-flex-pack: right;\r\n          justify-content: right;\r\n}\r\n\r\n.gw-alignment-header-right .ag-header-cell-label {\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: reverse;\r\n      -ms-flex-direction: row-reverse;\r\n          flex-direction: row-reverse;\r\n}\r\n\r\n.gw-alignment-header-center .ag-header-cell-label {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\r\n}\r\n\r\n.gw-alignment-header-center .ag-header-cell-text {\r\n  margin-left: -16px !important;\r\n}\r\n\r\n.gw-alignment-header-right .ag-cell-label-container,\r\n.gw-alignment-header-center .ag-cell-label-container {\r\n  -webkit-box-orient: horizontal;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: row;\r\n          flex-direction: row;\r\n}\r\n\r\n.gw-tooltip {\r\n  position: absolute;\r\n  overflow: hidden;\r\n  pointer-events: none;\r\n  -webkit-transition: opacity 1s;\r\n  transition: opacity 1s;\r\n  border-radius: 3.1px;\r\n  padding: 10px;\r\n  -webkit-transition: opacity 260ms;\r\n  transition: opacity 260ms;\r\n}\r\n\r\n.gw-tooltip-light {\r\n  background-color: white;\r\n  -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);\r\n          box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);\r\n}\r\n\r\n.gw-tooltip-dark {\r\n  background-color: #1c1f20;\r\n  -webkit-box-shadow: 0 0 6px #5c5c5c;\r\n          box-shadow: 0 0 6px #5c5c5c;\r\n  color: white;\r\n}\r\n\r\n.ag-selection-checkbox.ag-invisible {\r\n  display: none !important;\r\n}\r\n\r\n.ag-cell-wrapper {\r\n  height: 100%;\r\n}\r\n"
 
 /***/ }),
 /* 125 */

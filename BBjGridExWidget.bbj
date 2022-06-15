@@ -4,7 +4,7 @@ rem  */
 rem package BBjGridExWidget
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
-rem  * (c) Basis Europe <eu@basis.com>
+rem  * (c) Basis Europe <eu@basis.cloud>
 rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
@@ -887,7 +887,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     declare BBjHtmlView htmlview!
 
     if (f_init!) then
-      rem @see https://bugzilla.basis.com/show_bug.cgi?id=33048
+      rem @see https://bugzilla.basis.cloud/show_bug.cgi?id=33048
       enableInternalSpecialKeysHandling! = stbl("!OPTIONS","HTMLVIEW_INTERNAL_TABS=TRUE")
 
       if (info(3,6)="6")
@@ -933,7 +933,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * If for some reason you want to inject a script in the iframe , then use the injectScript method
   rem  * from the created internal HTML View.
   rem  *
-  rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::injectScript</a>
+  rem  * @see <a href="https://documentation.basis.cloud/BASISHelp/WebHelp/index.htm">BBjHtmlView::injectScript</a>
   rem  *
   rem  * @param BBjString script! the path for the javascript file
   rem  */
@@ -948,7 +948,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * If some reason you do not want this behavior , then use the executeScript method from the created internal
   rem  * HTML View
   rem  *
-  rem  * @see <a href="https://documentation.basis.com/BASISHelp/WebHelp/index.htm">BBjHtmlView::executeScript</a>
+  rem  * @see <a href="https://documentation.basis.cloud/BASISHelp/WebHelp/index.htm">BBjHtmlView::executeScript</a>
   rem  *
   rem  * @param BBjString script$ The javascript code
   rem  *
