@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[755],{2714:e=>{e.exports=JSON.parse('{"label":"hello","permalink":"/BBjGridExWidget/blog/tags/hello","allTagsPath":"/BBjGridExWidget/blog/tags","count":2}')}}]);
