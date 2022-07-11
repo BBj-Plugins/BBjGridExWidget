@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[1025],{3126:s=>{s.exports=JSON.parse('{"title":"Rows","slug":"/category/rows","permalink":"/docs/category/rows","navigation":{"previous":{"title":"Columns Spanning","permalink":"/docs/columns/column-spanning"},"next":{"title":"Row IDs","permalink":"/docs/rows/rows-id"}}}')}}]);

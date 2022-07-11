@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8353],{2758:e=>{e.exports=JSON.parse('{"title":"Columns","slug":"/category/columns","permalink":"/docs/category/columns","navigation":{"previous":{"title":"Columns Interface","permalink":"/docs/api/columns-interface"},"next":{"title":"Columns Header","permalink":"/docs/columns/columns-header"}}}')}}]);
