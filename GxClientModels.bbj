@@ -22,6 +22,7 @@ use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
 use java.util.HashSet
+use java.util.LinkedHashSet
 use java.util.HashMap
 use java.lang.StringBuilder
 REM /**
@@ -597,15 +598,15 @@ class public GxClientTransactionModel
     rem /**
     rem  * An array of rows to add
     rem  */
-    field public HashSet Add! = new HashSet()
+    field public HashSet Add! = new LinkedHashSet()
     rem /**
     rem  * An array of row to remove
     rem  */
-    field public HashSet Remove! = new HashSet()
+    field public HashSet Remove! = new LinkedHashSet()
     rem /**
     rem  * An array of rows to update
     rem  */
-    field public HashSet Update! = new HashSet()
+    field public HashSet Update! = new LinkedHashSet()
     rem /**
     rem  * Index for rows to add
     rem  * 
