@@ -4,7 +4,7 @@ rem  */
 rem package GxClientModels
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
-rem  * (c) Basis Europe <eu@basis.com>
+rem  * (c) Basis Europe <eu@basis.cloud>
 rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
@@ -22,6 +22,7 @@ use com.basiscomponents.db.DataRow
 use java.util.ArrayList
 use java.util.Arrays
 use java.util.HashSet
+use java.util.LinkedHashSet
 use java.util.HashMap
 use java.lang.StringBuilder
 REM /**
@@ -597,15 +598,15 @@ class public GxClientTransactionModel
     rem /**
     rem  * An array of rows to add
     rem  */
-    field public HashSet Add! = new HashSet()
+    field public HashSet Add! = new LinkedHashSet()
     rem /**
     rem  * An array of row to remove
     rem  */
-    field public HashSet Remove! = new HashSet()
+    field public HashSet Remove! = new LinkedHashSet()
     rem /**
     rem  * An array of rows to update
     rem  */
-    field public HashSet Update! = new HashSet()
+    field public HashSet Update! = new LinkedHashSet()
     rem /**
     rem  * Index for rows to add
     rem  * 

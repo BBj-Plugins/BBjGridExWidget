@@ -4,7 +4,7 @@ rem  */
 rem package GxOptions
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
-rem  * (c) Basis Europe <eu@basis.com>
+rem  * (c) Basis Europe <eu@basis.cloud>
 rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
@@ -1013,7 +1013,7 @@ class public GxOptions
     field public BBjNumber SuppressRowTransform! = null()
     rem /**
     rem  * When true , then the user will be able to sort by multiple columns by holding down the `ctrl`
-    rem  * key (or Command key on Apple) while clicking the column header. By default this action is possible using the `shit` key.
+    rem  * key (or Command key on Apple) while clicking the column header. By default this action is possible using the `shift` key.
     rem  */
     field public BBjNumber UseCtrlForMultiSort! = 0
     rem /**

@@ -1,6 +1,6 @@
 rem /**
 rem  * This file is part of the BBjGridExWidget plugin.
-rem  * (c) Basis Europe <eu@basis.com>
+rem  * (c) Basis Europe <eu@basis.cloud>
 rem  *
 rem  * For the full copyright and license information, please view the LICENSE
 rem  * file that was distributed with this source code.
@@ -29,7 +29,7 @@ grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 
 
 rem /**
-rem  * @see http://documentation.basis.com/BASISHelp/WebHelp/commands2/opts_variable.htm
+rem  * @see http://documentation.basis.cloud/BASISHelp/WebHelp/commands2/opts_variable.htm
 rem  * Set the default group and decimal separators for numeric masking.<br>
 rem  *
 rem  * The grid will pick up these settings and use them by default for numeric masking.
