@@ -335,6 +335,10 @@
         "AlignedGrids.bbj": {
             "name": "AlignedGrids",
             "style": ""
+        },
+        "Chart.bbj": {
+            "name": "Chart",
+            "style": ""
         }
     },
     "cSpell.words": [
