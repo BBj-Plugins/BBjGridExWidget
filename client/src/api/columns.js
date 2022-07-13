@@ -316,7 +316,7 @@ export function gw_setSortModel(id, model) {
 
   options.columnApi.applyColumnState({
     state: parsedModel,
-    applyOrder: true,
+    applyOrder: false,
     defaultState: options.columnApi.getColumnState(),
   })
 }
