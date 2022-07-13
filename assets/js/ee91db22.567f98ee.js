@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[6010],{1008:e=>{e.exports=JSON.parse('{"label":"facebook","permalink":"/BBjGridExWidget/blog/tags/facebook","allTagsPath":"/BBjGridExWidget/blog/tags","count":1}')}}]);
