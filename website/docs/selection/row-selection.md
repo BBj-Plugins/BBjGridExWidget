@@ -3,15 +3,15 @@ sidebar_position: 2
 title: Row Selection
 ---
 
-Select a row by clicking on it. Selecting a row will remove any previous selection unless you hold down `Ctrl` while clicking. Selecting a row and holding down `Shift` while clicking a second row will select the range.
+Select a row by clicking on it. Selecting a row will remove any previous selection unless you hold down <kbd>Ctrl</kbd> while clicking. Selecting a row and holding down <kbd>Shift</kbd> while clicking a second row will select the range.
 
 Configure row selection with the following grid options:
 
 * `MultipleSelection`: When `false` the `single` selection mod will be enabled such that when you select a row, any previously selected row gets unselected. When `true` allows multiple rows to be selected. By default the `single` selection mode is enabled
 
-* `RowMultiSelectWithClick`: Set to `true` to allow multiple rows to be selected with clicks. For example, if you click to select one row and then click to select another row, the first row will stay selected as well. Clicking a selected row in this mode will deselect the row. This is useful for touch devices where `Ctrl` and `Shift` clicking is not an option.
+* `RowMultiSelectWithClick`: Set to `true` to allow multiple rows to be selected with clicks. For example, if you click to select one row and then click to select another row, the first row will stay selected as well. Clicking a selected row in this mode will deselect the row. This is useful for touch devices where <kbd>Ctrl</kbd> and <kbd>Shift</kbd> clicking is not an option.
 
-* `SuppressRowDeselection`: Set to true to prevent rows from being deselected if you hold down `Ctrl` and click the row (i.e. once a row is selected, it remains selected until another row is selected in its place). By default the grid allows deselection of rows.
+* `SuppressRowDeselection`: Set to true to prevent rows from being deselected if you hold down <kbd>Ctrl</kbd> and click the row (i.e. once a row is selected, it remains selected until another row is selected in its place). By default the grid allows deselection of rows.
 
 * `SuppressRowClickSelection`: If `true`, rows won't be selected when clicked. Use, for example, when you want checkbox selection, and don't want to also select the row when the row is clicked.
 
@@ -92,10 +92,10 @@ bye
 
 ## Example: Multi Select With Click
 
-The example below shows multi-select with click. Clicking multiple rows will select a range of rows without the need for `Ctrl` or `Shift` keys. Clicking a selected row will deselect it. This is useful for touch devices where `Ctrl` and `Shift` clicks are not available.
+The example below shows multi-select with click. Clicking multiple rows will select a range of rows without the need for <kbd>Ctrl</kbd> or <kbd>Shift</kbd> keys. Clicking a selected row will deselect it. This is useful for touch devices where <kbd>Ctrl</kbd> and <kbd>Shift</kbd> clicks are not available.
 
 * `MultipleSelection` is set to enable multiple row selection with clicks.
-* Clicking multiple rows will select multiple rows without needing to press `Ctrl` or `Shift` keys.
+* Clicking multiple rows will select multiple rows without needing to press <kbd>Ctrl</kbd> or <kbd>Shift</kbd> keys.
 * Clicking a selected row will deselect that row.
 
 

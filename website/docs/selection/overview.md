@@ -13,6 +13,6 @@ Users can select rows, ranges or use a simple text selection from inside the gri
 
 ## Range Selection
 
-Range Selection selects ranges of cells, i.e. a rectangular block of cells.
+[Range Selection](./range-selection) selects ranges of cells, i.e. a rectangular block of cells.
 
 ![BBjGridExWidget - Range Selection](./assets/range-selection.png)
