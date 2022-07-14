@@ -13,7 +13,7 @@ The [Plug-in Manager](https://documentation.basis.cloud/BASISHelp/WebHelp/bbutil
 
 ## Reference the BBjGridExWidget
 
-Because the default PREFIX for BBj includes the `<bbj_home>/plugins/` directory, you can use the BBjGridExWidget plugin once you add a USE statement like this to your program:
+Because the default `PREFIX` for BBj includes the `<bbj_home>/plugins/` directory, you can use the BBjGridExWidget plugin once you add a `USE` statement like this to your program:
 
 ```BBj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
@@ -61,24 +61,13 @@ The grid constructor accepts the following parameters:
 * The control's Id 
 * The position parameters as any other BBj control (`x`, `y`, `width`, `height`). 
 
-:::info
+:::tip
 The BBjGridExWidget constructor has several other signatures to build the grid. To learn more about the available signatures 
 checkout the [Javadocs](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/). 
 :::
 
 After we initialize the grid, we query the `CD-Store` demo database installed with BBj, and displays the results of that query in the grid.
 
-
-### The `BBjGridExWidget::setData` method
-
-The method `BBjGridExWidget::setData` is what gets the grid rended and it has several responsibility
-
-1. Read the columns from the passed ResultSet and build a column definition.The column definition contains the column type , label and other extra properties like width or style. You can modify the column properties later on using the Columns API
-2. Set the data in the passed ResultSet inside the grid for display
-3. Wait for the `process_events` to start in order to render the grid
-
-
-:::caution
-Because `BBjGridExWidget::setData` builds the column definition form the ResultSet, it overrides all the
-components (renderers , editors and formatters) configuration (unless they are part of the data attributes) defined before calling it. to get around this configure your components after calling this method
+:::info
+The method `BBjGridExWidget::setData` is what gets the grid rended. read more about [data & data updating](../data/overview)
 :::
