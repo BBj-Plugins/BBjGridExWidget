@@ -192,12 +192,6 @@ class public GxContextMenuItem implements GxContextMenuItemInterface
         methodret "excelExport"
     methodend
     rem /**
-    rem  * @return shortcode to excelXmlExport menu item
-    rem  */
-    method public static BBjString EXCEL_XML_EXPORT()
-        methodret "excelXmlExport"
-    methodend
-    rem /**
     rem  * Disable default constructor
     rem  */
     method private GxContextMenuItem()
