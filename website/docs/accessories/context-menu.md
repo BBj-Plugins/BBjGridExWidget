@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 title: Context Menu
 sidebar_class_name: enhanced-feature
 description: This section covers BBjGridExWidget custom context menus

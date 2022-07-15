@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 title: Status Bar
 sidebar_class_name: enhanced-feature
 description: The status bar appears below the grid and holds components that typically display information about the data in the grid.
