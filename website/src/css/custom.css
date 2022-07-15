@@ -64,3 +64,15 @@
 [data-theme="dark"] .enhanced-feature a:after {
   background: url("/img/enhanced-dark.svg") no-repeat;
 }
+
+.inline-images {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-images em {
+  display: block;
+  text-align: center;
+}
