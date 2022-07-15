@@ -132,6 +132,18 @@ class public GxColumnsToolpanel extends GxToolpanel
     rem  */
     field public BBjNumber SuppressRowGroups! = null()
     rem /**
+    rem  * Suppress updating the layout of columns as they are rearranged in the grid
+    rem  */
+    field public BBjNumber SuppressSyncLayoutWithGrid! = null()  
+    rem /**
+    rem  * Suppress Column Move section
+    rem  */
+    field public BBjNumber SuppressColumnMove! = null()      
+    rem /**
+    rem  * By default, column groups start expanded. Pass true to default to contracted groups
+    rem  */
+    field public BBjNumber ContractColumnSelection! = null()           
+    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
@@ -183,6 +195,9 @@ class public GxColumnsToolpanel extends GxToolpanel
         params!.addProperty("suppressColumnFilter",#SuppressColumnFilter!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnSelectAll",#SuppressColumnSelectAll!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnExpandAll",#SuppressColumnExpandAll!.booleanValue(), err=*next)
+        params!.addProperty("suppressSyncLayoutWithGrid",#SuppressSyncLayoutWithGrid!.booleanValue(), err=*next)
+        params!.addProperty("suppressColumnMove",#SuppressColumnMove!.booleanValue(), err=*next)
+        params!.addProperty("contractColumnSelection",#ContractColumnSelection!.booleanValue(), err=*next)
         json!.addProperty("toolPanel",#getId(), err=*next)
         json!.add("toolPanelParams",params!)
         methodret json!
