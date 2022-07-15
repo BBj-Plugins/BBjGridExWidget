@@ -221,7 +221,7 @@ class public GxFiltersToolpanel extends GxToolpanel
     rem /**
     rem  * To suppress Expand / Collapse All
     rem  */
-    field public BBjNumber SuppressExpandAl! = null()  
+    field public BBjNumber suppressExpandAll! = null()  
     rem /**
     rem  * {@inheritDoc}
     rem  */
