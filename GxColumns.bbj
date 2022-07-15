@@ -134,6 +134,13 @@ class public GxColumnDefinition
     rem  */
     field public BBjNumber SuppressToolPanel! = null()
     rem /**
+    rem  * Set to true if you do not want this column (filter) or group (filter group) to appear in the Filters Tool Panel.
+    rem  *
+    rem  * <br><b><small>#Configuration</small></b>
+    rem  * <br><b><small>#ColumnsRenderer</small></b>
+    rem  */    
+    field public BBjNumber SuppressFiltersToolPanel! = null()
+    rem /**
     rem  * A constant which defines the group state as opened
     rem  *
     rem  * @return BBjString <b>opened</b>
@@ -161,6 +168,7 @@ class public GxColumnDefinition
         json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), listIsEmpty!) ,err=*next)
         json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) ,listIsEmpty!) ,err=*next)
         json!.addProperty("suppressColumnsToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
+        json!.addProperty("suppressFiltersToolPanel" , #getSuppressFiltersToolPanel().booleanValue() ,err=*next)
         json!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
         methodret json!
     methodend
