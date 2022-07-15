@@ -106,17 +106,12 @@ use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarAggregationComponent
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRangeSelectionModel
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientColumnModel
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientAddRangeSelectionModel
-use ::BBjGridExWidget/Demo/assets/Utilities.bbj::GxDemoUtilities
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 use java.sql.Types
 use java.util.ArrayList
 use java.util.Collections
 use java.util.Random
-
-? 'HIDE'
-
-GxDemoUtilities.nagAboutLicense()
 
 declare auto BBjTopLevelWindow wnd!
 
