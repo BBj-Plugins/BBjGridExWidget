@@ -69,7 +69,9 @@ class public GxDefaultContextMenu extends GxContextMenu
     method public GxDefaultContextMenu()
         #addItem(GxContextMenuItem.COPY())
         #addItem(GxContextMenuItem.COPY_WITH_HEADERS())
+        #addItem(GxContextMenuItem.COPY_WITH_GROUP_HEADERS())
         #addItem(GxContextMenuItem.EXPORT())
+        #addItem(GxContextMenuItem.CHART_RANGE())
     methodend
 
 classend
