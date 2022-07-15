@@ -219,6 +219,10 @@ class public GxFiltersToolpanel extends GxToolpanel
     rem  */
     field public BBjNumber SuppressSyncLayoutWithGrid! = null()  
     rem /**
+    rem  * To suppress Expand / Collapse All
+    rem  */
+    field public BBjNumber SuppressExpandAl! = null()  
+    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
@@ -266,6 +270,7 @@ class public GxFiltersToolpanel extends GxToolpanel
         params! = new JsonObject()
         params!.addProperty("suppressFilterSearch",#SuppressFilterSearch!.booleanValue(), err=*next)
         params!.addProperty("suppressSyncLayoutWithGrid",#SuppressSyncLayoutWithGrid!.booleanValue(), err=*next)
+        params!.addProperty("suppressExpandAll",#SuppressExpandAll!.booleanValue(), err=*next)
         json!.add("toolPanelParams",params!)
         methodret json!
     methodend
