@@ -1,6 +1,6 @@
 {
-  "label": "Accessories",
-  "position": 9,
+  "label": "Filtering",
+  "position": 8,
   "link": {
     "type": "generated-index"
   }
