@@ -196,6 +196,14 @@ rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxFiltersToolpanel extends GxToolpanel
     rem /**
+    rem  * To suppress the Filter Search
+    rem  */
+    field public BBjNumber SuppressFilterSearch! = null()  
+    rem /**
+    rem  * Suppress updating the layout of columns as they are rearranged in the grid
+    rem  */
+    field public BBjNumber SuppressSyncLayoutWithGrid! = null()  
+    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
@@ -240,6 +248,10 @@ class public GxFiltersToolpanel extends GxToolpanel
 
         json! = #super!.getAsJsonObject()
         json!.addProperty("toolPanel",#getId())
+        params! = new JsonObject()
+        params!.addProperty("suppressFilterSearch",#SuppressFilterSearch!.booleanValue(), err=*next)
+        params!.addProperty("suppressSyncLayoutWithGrid",#SuppressSyncLayoutWithGrid!.booleanValue(), err=*next)
+        json!.add("toolPanelParams",params!)
         methodret json!
     methodend
 
