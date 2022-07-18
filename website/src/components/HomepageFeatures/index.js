@@ -18,7 +18,7 @@ const FeatureList = [
     Svg: require('@site/static/img/focus.svg').default,
     description: (
       <>
-        Focus on your data, and let grid does the chores. filtering , sorting
+        Focus on your data, and let the grid does the chores. filtering , sorting
         grouping and more.
       </>
     ),
