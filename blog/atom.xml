@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2022-07-13T00:00:00.000Z</updated>
+    <updated>2022-07-18T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.8.0]]></title>
+        <id>gx-grid-v1.8.0</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.8.0"/>
+        <updated>2022-07-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bug Fixes]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>dont show <code>CHART_RANGE</code> context menu item by default (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/580612027949004c0eaa215d7fc20536dda33574" target="_blank" rel="noopener noreferrer">5806120</a>)</li><li>fix typo - <code>GxFiltersToolpanel::suppressExpandAl</code> should be <code>GxFiltersToolpanel::suppressExpandAll</code> (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/50e5c794ba4eb1ab4ed10edbb09ee1104a8164be" target="_blank" rel="noopener noreferrer">50e5c79</a>)</li><li>focus should focus the container if it is empty. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/0817b4b7a1c333185b3adee38e3a4282128778e4" target="_blank" rel="noopener noreferrer">0817b4b</a>)</li><li>remove GxContextMenuItem::EXCEL_XML_EXPORT (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/3de33082d39e1cb9475282bcd33b092388b9af59" target="_blank" rel="noopener noreferrer">3de3308</a>)</li><li><strong>js:</strong> transiation add array should be reversed to be in sync with ResultSet (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/64f30d88e98a7bcd9c1690bf5c1dd9bee6dc05f2" target="_blank" rel="noopener noreferrer">64f30d8</a>)</li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>add GxColumn <code>SuppressFiltersToolPanel</code> option (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/0cf67b93c0e8abd04f70e5cd5765c79648031fba" target="_blank" rel="noopener noreferrer">0cf67b9</a>)</li><li>add GxColumnsToolpanel <code>SuppressSyncLayoutWithGrid</code> &amp; <code>SuppressColumnMove</code> and <code>ContractColumnSelection</code> options (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/9ac3d2b51089592112c8d7bd5b331f990faf89f4" target="_blank" rel="noopener noreferrer">9ac3d2b</a>)</li><li>add GxContextMenuItem <code>COPY_WITH_GROUP_HEADERS</code> (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/8b639dd157dcdbc1d8ece3abcefb1f9d9df03e45" target="_blank" rel="noopener noreferrer">8b639dd</a>)</li><li>add GxFiltersToolpanel <code>SuppressExpandAll</code> option (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/8d6bf43449a52c9d41e9c46c5f678a50117215ab" target="_blank" rel="noopener noreferrer">8d6bf43</a>)</li><li>add GxFiltersToolpanel <code>SuppressFilterSearch</code> &amp; <code>SuppressSyncLayoutWithGrid</code> (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/196341db88cdc0d9ee7a2940f41bc7aeface62ca" target="_blank" rel="noopener noreferrer">196341d</a>)</li><li>show context menu <code>COPY_WITH_GROUP_HEADERS</code> by default (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/c369079704fe6e1e30fd696375b4cc717314a733" target="_blank" rel="noopener noreferrer">c369079</a>)</li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="breaking-changes">BREAKING CHANGES<a class="hash-link" href="#breaking-changes" title="Direct link to heading">​</a></h2><ul><li>EXCEL_XML_EXPORT has been removed</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.7.1]]></title>
         <id>gx-grid-v1.7.1</id>
