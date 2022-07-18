@@ -8,6 +8,7 @@
 
 import { gw_getGrid } from './utilities'
 import { gw_parseNode } from 'events/utilities'
+import { gw_getRows } from './rows'
 
 const { deepParseJson } = require('deep-parse-json')
 
@@ -80,9 +81,15 @@ export function gw_tabToPreviousCell(id) {
  */
 export function gw_setFocusedCell(id, row, column, floating = null) {
   const options = gw_getGrid(id).options
+  const grid = gw_getGrid(id)
 
   // ignore focus calls if editing
   if (options.api.getEditingCells().length > 0) {
+    return
+  }
+
+  if (!JSON.parse(gw_getRows(id, 'forEachNodeAfterFilterAndSort', '')).length) {
+    grid.container.focus()
     return
   }
 

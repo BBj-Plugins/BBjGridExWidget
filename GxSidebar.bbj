@@ -132,6 +132,18 @@ class public GxColumnsToolpanel extends GxToolpanel
     rem  */
     field public BBjNumber SuppressRowGroups! = null()
     rem /**
+    rem  * Suppress updating the layout of columns as they are rearranged in the grid
+    rem  */
+    field public BBjNumber SuppressSyncLayoutWithGrid! = null()  
+    rem /**
+    rem  * Suppress Column Move section
+    rem  */
+    field public BBjNumber SuppressColumnMove! = null()      
+    rem /**
+    rem  * By default, column groups start expanded. Pass true to default to contracted groups
+    rem  */
+    field public BBjNumber ContractColumnSelection! = null()           
+    rem /**
     rem  * {@inheritDoc}
     rem  */
     method public static BBjString ID()
@@ -183,6 +195,9 @@ class public GxColumnsToolpanel extends GxToolpanel
         params!.addProperty("suppressColumnFilter",#SuppressColumnFilter!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnSelectAll",#SuppressColumnSelectAll!.booleanValue(), err=*next)
         params!.addProperty("suppressColumnExpandAll",#SuppressColumnExpandAll!.booleanValue(), err=*next)
+        params!.addProperty("suppressSyncLayoutWithGrid",#SuppressSyncLayoutWithGrid!.booleanValue(), err=*next)
+        params!.addProperty("suppressColumnMove",#SuppressColumnMove!.booleanValue(), err=*next)
+        params!.addProperty("contractColumnSelection",#ContractColumnSelection!.booleanValue(), err=*next)
         json!.addProperty("toolPanel",#getId(), err=*next)
         json!.add("toolPanelParams",params!)
         methodret json!
@@ -195,6 +210,18 @@ rem  *
 rem  * @author Hyyan Abo Fakher
 rem  */
 class public GxFiltersToolpanel extends GxToolpanel
+    rem /**
+    rem  * To suppress the Filter Search
+    rem  */
+    field public BBjNumber SuppressFilterSearch! = null()  
+    rem /**
+    rem  * Suppress updating the layout of columns as they are rearranged in the grid
+    rem  */
+    field public BBjNumber SuppressSyncLayoutWithGrid! = null()  
+    rem /**
+    rem  * To suppress Expand / Collapse All
+    rem  */
+    field public BBjNumber suppressExpandAll! = null()  
     rem /**
     rem  * {@inheritDoc}
     rem  */
@@ -240,6 +267,11 @@ class public GxFiltersToolpanel extends GxToolpanel
 
         json! = #super!.getAsJsonObject()
         json!.addProperty("toolPanel",#getId())
+        params! = new JsonObject()
+        params!.addProperty("suppressFilterSearch",#SuppressFilterSearch!.booleanValue(), err=*next)
+        params!.addProperty("suppressSyncLayoutWithGrid",#SuppressSyncLayoutWithGrid!.booleanValue(), err=*next)
+        params!.addProperty("suppressExpandAll",#SuppressExpandAll!.booleanValue(), err=*next)
+        json!.add("toolPanelParams",params!)
         methodret json!
     methodend
 

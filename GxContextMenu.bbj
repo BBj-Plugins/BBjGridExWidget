@@ -69,6 +69,7 @@ class public GxDefaultContextMenu extends GxContextMenu
     method public GxDefaultContextMenu()
         #addItem(GxContextMenuItem.COPY())
         #addItem(GxContextMenuItem.COPY_WITH_HEADERS())
+        #addItem(GxContextMenuItem.COPY_WITH_GROUP_HEADERS())
         #addItem(GxContextMenuItem.EXPORT())
     methodend
 
@@ -162,6 +163,12 @@ class public GxContextMenuItem implements GxContextMenuItemInterface
         methodret "copyWithHeaders"
     methodend
     rem /**
+    rem  * @return shortcode to copyWithGroupHeaders menu item
+    rem  */
+    method public static BBjString COPY_WITH_GROUP_HEADERS ()
+        methodret "copyWithGroupHeaders"
+    methodend      
+    rem /**
     rem  * @return shortcode to resetColumns menu item
     rem  */
     method public static BBjString RESET_COLUMNS()
@@ -190,12 +197,6 @@ class public GxContextMenuItem implements GxContextMenuItemInterface
     rem  */
     method public static BBjString EXCEL_EXPORT()
         methodret "excelExport"
-    methodend
-    rem /**
-    rem  * @return shortcode to excelXmlExport menu item
-    rem  */
-    method public static BBjString EXCEL_XML_EXPORT()
-        methodret "excelXmlExport"
     methodend
     rem /**
     rem  * Disable default constructor

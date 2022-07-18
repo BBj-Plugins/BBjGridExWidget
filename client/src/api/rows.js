@@ -140,6 +140,10 @@ export function gw_updateRowData(id, transaction, batchUpdate) {
     transaction.remove = items
   }
 
+  if (transaction.add.length) {
+    transaction.add = transaction.add.reverse()
+  }
+
   if (!batchUpdate) {
     options.api.applyTransaction(transaction)
   } else {

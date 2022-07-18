@@ -17,92 +17,10 @@
 A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and loads quickly in GUI and BUI
 , optimized for large data sets and uses the BBjHtmlView Leveraging Chromium engine in GUI.
 
-<img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/82667299-da6e0880-9c37-11ea-8c0e-1339a8d8b2d6.png" />
+## Documentation
 
-<img style="border-radius: 0.25em;box-shadow:0 2px 4px -1px hsla(214, 53%, 23%, 0.16), 0 3px 12px -1px hsla(214, 50%, 22%, 0.26)" src="https://user-images.githubusercontent.com/4313420/82667633-8879b280-9c38-11ea-9217-2cbe35bff94d.png" />
+Check the [documentation](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/) to get you started!
 
-> **_NOTE:_** The BBjGridExWidget depends on [process_events](https://documentation.basis.cloud/BASISHelp/WebHelp/commands/process_events_verb.htm?Highlight=process_events) and will not work within programs that use [READ RECORD](https://documentation.basis.cloud/BASISHelp/WebHelp/commands/read_verb.htm) loops to handle events. As it internally relies on certain events being fired, programs also must be free from calls to [BBjSysGui::flushEvents](https://documentation.basis.cloud/BASISHelp/WebHelp/bbjobjects/SysGui/bbjsysgui/bbjsysgui_flushevents.htm?Highlight=flushEvents), especially in the phase between instantiating the BBjGridExWidget class and the first time the program execution reaches process_events.
-
-
-## ☑️ Included Features:
-
-- Column setup and formatting
-- Change column order with Drag & Drop 
-- Freeze Columns to the left or right side
-- Filtering / Searching by column or globally
-- Conditional styling
-- Column Groups
-- Save and restore layout
-- Themes
-- Icons and Images
-- Custom cell renderers
-- User interface translations, customizable
-- Multi-Selection, Single Selection, Checkbox Selection
-- Basic Cell Editing (Work in progress, Goal: Complete editing support
- for BBj 20)
-
-## Enhanced Grid:
-
-- Additional functionality 
-- Incremental surcharge to SAM
-- contact your BASIS Sales Rep for details
-
-### Features:
-
-- Slider menu:
-  * toggle column visibility
-  * create row groups (hierarchy view)
-  * define aggregation
-  * define pivot tables
-- Tree Data
-- Status Bar showing row counts, selection, etc.
-- Custom Context Menus
-- Ad-hoc Charting
-- Data Export
-
-## 🚀 How to install 
-
-* Clone the project locally , then add BBjGridExWidget to your paths
-* [Use the plugins manager](https://www.bbj-plugins.com/en/get-started)
-
-## 💻 Example
-```BBJ
-? 'HIDE'
-
-use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
-use com.basiscomponents.db.ResultSet
-use com.basiscomponents.bc.SqlQueryBC
-
-declare auto BBjTopLevelWindow wnd!
-wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo")
-wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
-wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
-
-gosub main
-process_events
-
-main:
-  declare SqlQueryBC sbc!
-  declare ResultSet rs!
-  declare BBjGridExWidget grid!
-  
-  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
-  rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
-
-  grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
-  grid!.setData(rs!)
-return
-
-resize:
-  ev! = BBjAPI().getLastEvent()
-  w=ev!.getWidth()
-  h=ev!.getHeight()
-  grid!.setSize(w,h)
-return
-
-byebye:
-bye
-```
 ## 🤝 How to Contribute
 
 Whether you're helping us fix bugs, improve the docs, or spread the word, we'd love to have you as part of the BBjGridExWidget project! 💪💜
@@ -114,9 +32,3 @@ Whether you're helping us fix bugs, improve the docs, or spread the word, we'd l
 ## 📝 License
 
 Licensed under the [MIT License](https://github.com/BBj-Plugins/BBjGridExWidget/blob/master/LICENSE).
-
-## 🔗 Documentation:
-
-* [Pages](https://bbj-plugins.github.io/BBjGridExWidget/)
-* [JavaDoc](https://bbj-plugins.github.io/BBjGridExWidget/javadoc)
-* [Getting Started](https://documentation.basis.cloud/BASISHelp/WebHelp/bbutil/BBjGridExWidget/BBjGridExWidget.htm?Highlight=bbjgridexwidget)
