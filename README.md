@@ -19,7 +19,7 @@ A Feature-rich grid component for BBj Based on HTML and JavaScript. It works and
 
 ## Documentation
 
-Check the [documentation](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/) to get you started!
+Check the [documentation](https://bbj-plugins.github.io/BBjGridExWidget/) to get you started!
 
 ## 🤝 How to Contribute
 
