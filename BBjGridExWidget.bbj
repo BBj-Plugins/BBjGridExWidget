@@ -1399,12 +1399,12 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
   rem  * the column type to determine the correct value formatter (number, date, ...)
   rem  *
-  rem ng field! The column's field
-  rem  * @param BBjString mask!: The (date or numeric) mask, BBj style
+  rem  * @param field! - The column's field
+  rem  * @param mask! - The BBj date string or numeric mask.
   rem  */
   method public void setColumnMask(BBjString field!, BBjString mask!)
     if(#hasColumn(field!)) then
-      #getColumn(field!).setColumnMask(mask!)
+      #getColumn(field!).setMask(mask!)
     FI
   methodend
   rem /**
