@@ -2,11 +2,29 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2022-07-18T00:00:00.000Z</updated>
+    <updated>2022-07-25T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.9.0]]></title>
+        <id>gx-grid-v1.9.0</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.9.0"/>
+        <updated>2022-07-25T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bug Fixes]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>!ERROR=32 (BBj Custom Object Stack Overflow) <code>getSuppressWebDebouncing()</code>. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/1350a6098af3e382501c4092960e1bf5fd7bf286" target="_blank" rel="noopener noreferrer">1350a60</a>)</li><li><code>GxExecutor</code> does not check if the grid is destroyed before executing code. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/9b33eabc2d729897f9e62a28d3bda35b1b98f00c" target="_blank" rel="noopener noreferrer">9b33eab</a>)</li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="code-refactoring">Code Refactoring<a class="hash-link" href="#code-refactoring" title="Direct link to heading">​</a></h2><ul><li>rename <code>BBjGridExWidget.suppressBuiDebouncing</code> to <code>BBjGridExWidget.suppressWebDebouncing</code>. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/0252c2277267326b846fb2d9cf986859d7f0f9b8" target="_blank" rel="noopener noreferrer">0252c22</a>)</li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li><p>add <code>BBjGridExWidget:preferAsyncExecution</code>. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/ea432eba6f0303dd0a5a66097bd48a9cb7e75c89" target="_blank" rel="noopener noreferrer">ea432eb</a>). When enabled then the executor will try to executes the JavaScript in the
+BBjHtmlView and returns immediately without waiting for a return value
+from the client. Enabling this option might boost the performance of the grid.
+By default this option is turned off</p></li><li><p>add <code>GxColumn::setMask</code> method. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/294a513d23b5da4299c52513be356561e31eccbe" target="_blank" rel="noopener noreferrer">294a513</a>)</p></li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="breaking-changes">BREAKING CHANGES<a class="hash-link" href="#breaking-changes" title="Direct link to heading">​</a></h2><ul><li><code>BBjGridExWidget.suppressBuiDebouncing</code> is deprecated.
+Use <code>BBjGridExWidget.suppressWebDebouncing</code> instead</li><li><code>DefaultStringsMask</code>, <code>DefaultNumbersMask</code>, <code>DefaultDatesMask</code>,<code>DefaultTimesMask</code> and <code>DefaultTimestamps</code> are deprecated use <code>Mask</code> instated.</li><li><code>setColumnMask</code> is deprecated use <code>setMask</code> instead.</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.8.0]]></title>
         <id>gx-grid-v1.8.0</id>
