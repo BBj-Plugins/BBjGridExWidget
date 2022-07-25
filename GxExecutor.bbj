@@ -23,6 +23,14 @@ class public GxExecutor
   rem  */
   field Public BBjNumber Rate! = 200
   rem /**
+  rem  * When true then the executor will try to executes the JavaScript in this 
+  rem  * BBjHtmlView and returns immediately without waiting for a return value from 
+  rem  * the client.
+  rem  *  
+  rem  * Enabling this option might boost the performance of the grid.
+  rem  */
+  field public BBjNumber PreferAsyncExecution! = 1  
+  rem /**
   rem  * The widget instance
   rem  */
   field public BBjGridExWidget Widget!
@@ -96,6 +104,14 @@ class public GxExecutor
     methodret #getSuppressWebDebouncing()
   methodend
   rem /**
+  rem  * Executes the specified JavaScript in this BBjHtmlView control and returns immediately
+  rem  *
+  rem  * @param BBjString script!   The Javascript code
+  rem  */
+  method public void asyncExecute(BBjString script!)
+    #executeInHTMLView(script!, 0, 1)
+  methodend    
+  rem /**
   rem  * Execute a Javascript code on the client
   rem  *
   rem  * @param BBjString key!      the script unique id
@@ -116,14 +132,14 @@ class public GxExecutor
     rem  * and if it is ready we execute the script directly on the HTMLView and
     rem  * return the result , otherwise we just continue to the next step
     rem  *
-    rem  * An example of calls which not be debounced would be something like:
+    rem  * An example of calls which should not be debounced would be something like:
     rem  *  grid!.getSelectedRow() -> we expect a value
     rem  *  grid!.clearData()      -> should be executed without delay
     rem  *                            because other calls might depend on it.
     rem  */
     if(!debounced!.booleanValue())
       if(isWidgetReady!)
-        methodret #executeInHTMLView(script!,0)
+        methodret #executeInHTMLView(script!, 0, 0)
       fi
     fi
     rem /**
@@ -133,7 +149,7 @@ class public GxExecutor
     rem  *  2. The script SHOULD NOT be debounced but the grid is not ready yet
     rem  *     so debouncing is enforced anyway
     rem  *
-    rem  * We check if debouncing is enabled for the current platform (BUI , GUI) then
+    rem  * We check if debouncing is enabled for the current platform (Web , GUI) then
     rem  *
     rem  * in case it is ENABLED  :
     rem  *    1. If the grid is READY we execute the script directly
@@ -141,7 +157,7 @@ class public GxExecutor
     rem  *
     rem  * In case it is NOT ENABLED :
     rem  *    1. add the script to the queue for later execution
-    rem  *    2. Iin case the grid is ready start a count down before executing the code
+    rem  *    2. In case the grid is ready start a count down before executing the code
     rem  *       in the HTMLView. the countdown will be restated if the developer tries
     rem  *       to execute anything new before the counted down reaches 0.
     rem  *
@@ -150,7 +166,7 @@ class public GxExecutor
 
     if shouldSuppress!
       if isWidgetReady!
-        #executeInHTMLView(script!,1)
+        #executeInHTMLView(script!, 1, #getPreferAsyncExecution())
       else
         #enqueue(key!,script!,priority!)
       fi
@@ -266,7 +282,7 @@ class public GxExecutor
       wend
 
       if(isDebugging! AND #isWeb()) bundle! = bundle! + "console.timeEnd('patch time');console.groupEnd();"
-      #executeInHTMLView(bundle!,1)
+      #executeInHTMLView(bundle!, 1, #getPreferAsyncExecution())
       #setIsFlushing(0)
     fi
 
@@ -320,10 +336,11 @@ class public GxExecutor
   rem  *
   rem  * @param BBjString script!      The Javascript code
   rem  * @param BBjString isDebounced! True A flag which defines if the script is coming from the queue or not
+  rem  * @param BBjNumber async! True if the script should be executed asynchronously , false otherwise
   rem  *
   rem  * @return Object the result of the Javascript code execution , if any
   rem  */
-  method protected Object executeInHTMLView(BBjString script!,BBjNumber isDebounced!)
+  method protected Object executeInHTMLView(BBjString script!, BBjNumber isDebounced!, BBjNumber async!)
     declare auto BBjGridExWidget widget!
 
     widget! = #getWidget()
@@ -343,15 +360,21 @@ class public GxExecutor
 
       if(#isWeb()) then
         scriptPreview! = iff(script!.contains("`") , "Flushing Batch" , script!)
-        script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + scriptPreview! + "`);console.groupEnd();" + script!
+        script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + "), Async = " + str(async!) + "');console.log(`" + scriptPreview! + "`);console.groupEnd();" + script!
       fi
     fi
 
-    if widget!.getHTMLView().isDestroyed() then
-      methodret null()
-    else
-      methodret widget!.getHTMLView().executeScript(script!)
+    result! = null()
+
+    if widget!.getHTMLView().isDestroyed() <> BBjAPI.TRUE then
+      if(async!)
+        widget!.getHTMLView().executeAsyncScript(script!)
+      else
+        result! = widget!.getHTMLView().executeScript(script!)
+      fi
     fi
+
+    methodret result!
   methodend
   rem /**
   rem  * Start count down timer

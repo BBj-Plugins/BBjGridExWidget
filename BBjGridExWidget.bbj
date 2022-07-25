@@ -1017,6 +1017,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #suppressGuiDebouncing(suppress!)
   methodend
   rem /**
+  rem  * When true then the executor will try to executes the JavaScript in the 
+  rem  * BBjHtmlView and returns immediately without waiting for a return value from 
+  rem  * the client.
+  rem  *  
+  rem  * Enabling this option might boost the performance of the grid.
+  rem  *
+  rem  * @param BBjNumber enable! true to enable , false to disable
+  rem  */
+  method public void preferAsyncExecution(BBjNumber enable!)
+    #getExecutor().setPreferAsyncExecution(enable!)
+  methodend    
+  rem /**
   rem  * An Event listener executed after the initial load of the HTML View.
   rem  *
   rem  * At this phase the grid will inject all required js files in the client to make the grid functional.

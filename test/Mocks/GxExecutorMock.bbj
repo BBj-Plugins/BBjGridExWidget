@@ -26,7 +26,7 @@ class public GxExecutorMock extends GxExecutor
     rem /**
     rem  * @override
     rem  */
-    method protected Object executeInHTMLView(BBjString script!,BBjNumber isDebounced!)
+    method protected Object executeInHTMLView(BBjString script!,BBjNumber isDebounced!, BBjNumber async!)
         if #getWidget().getIsReady() then
             #LastExecutedScript! = script!
 
