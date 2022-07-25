@@ -1038,10 +1038,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.min.js") , (basePath$ +"/ag-grid-community.min.js"))
     gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
     rem for debugging we inject the unminified files which contain source maps of the original code
-    if #getDebug() = 1 then
-      agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.js") , (basePath$ +"/ag-grid-community.js"))
-      gxPath$ = basePath$ + "/bbj-grid-widget.js"
-    FI
+    rem if #getDebug() = 1 then
+    rem   agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.js") , (basePath$ +"/ag-grid-community.js"))
+    rem   gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
+    rem FI
     rem /**
     rem  * Bundle the content of all required scripts
     rem  */
@@ -1076,7 +1076,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       open (ch)path!
       read record (ch,siz=5512000)content$
       close (ch)
-      bundle$ = bundle$ + content$
+      bundle$ = bundle$ + ";" + content$
     wend
     rem finally inject the built bundle
     #injectScript(bundle$)
