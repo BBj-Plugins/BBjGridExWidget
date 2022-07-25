@@ -5,6 +5,7 @@
   "author": "BASIS Europe Distribution GmbH",
   "licence": "MIT",
   "bbj_dependency": "20.11",
+  "documentation_url"  : "https://bbj-plugins.github.io/BBjGridExWidget/",
   "plugin_dependencies": [
     {
       "plugin_name": "BBjWidget",
