@@ -92,7 +92,7 @@ class public GxExecutor
   rem /**
   rem  * @deprecated Use `getSuppressWebDebouncing` instead
   rem  */
-  method public BBjNumber getSuppressWebDebouncing()
+  method public BBjNumber getSuppressBuiDebouncing()
     methodret #getSuppressWebDebouncing()
   methodend
   rem /**
