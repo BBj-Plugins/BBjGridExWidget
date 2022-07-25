@@ -968,10 +968,27 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * By default this options is set to "0"
   rem  *
   rem  * @param BBjNumber suppress! true to suppress , false to enable
+  rem  *  
+  rem  * @deprecated Use `setSuppressWebDebouncing` instead 
   rem  */
   method public void suppressBuiDebouncing(BBjNumber suppress!)
     #getExecutor().setSuppressBuiDebouncing(suppress!)
   methodend
+  rem /**
+  rem  * When true then the executor will limit the rate at
+  rem  * which executeScript gets invoked on the HTMLView.
+  rem  *
+  rem  * Setting this to "0" will help to boost up the communication
+  rem  * performance between BBj and the grid which lives inside
+  rem  * the HTMLView in BUI & DWC context
+  rem  *
+  rem  * By default this options is set to "0"
+  rem  *
+  rem  * @param BBjNumber suppress! true to suppress , false to enable
+  rem  */
+  method public void suppressWebDebouncing(BBjNumber suppress!)
+    #getExecutor().setSuppressWebDebouncing(suppress!)
+  methodend    
   rem /**
   rem  * When true then the executor will limit the rate at
   rem  * which executeScript gets invoked on the HTMLView.
@@ -990,15 +1007,27 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Suppress scripts debouncing for GUI and BUI
   rem  *
-  rem  * @see #suppressBuiDebouncing()
+  rem  * @see #suppressWebDebouncing()
   rem  * @see #suppressGuiDebouncing()
   rem  *
   rem  * @param BBjNumber suppress! true to suppress , false to enable
   rem  */
   method public void suppressDebouncing(BBjNumber suppress!)
-    #suppressBuiDebouncing(suppress!)
+    #suppressWebDebouncing(suppress!)
     #suppressGuiDebouncing(suppress!)
   methodend
+  rem /**
+  rem  * When true then the executor will try to executes the JavaScript in the 
+  rem  * BBjHtmlView and returns immediately without waiting for a return value from 
+  rem  * the client.
+  rem  *  
+  rem  * Enabling this option might boost the performance of the grid.
+  rem  *
+  rem  * @param BBjNumber enable! true to enable , false to disable
+  rem  */
+  method public void preferAsyncExecution(BBjNumber enable!)
+    #getExecutor().setPreferAsyncExecution(enable!)
+  methodend    
   rem /**
   rem  * An Event listener executed after the initial load of the HTML View.
   rem  *
@@ -1021,10 +1050,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.min.js") , (basePath$ +"/ag-grid-community.min.js"))
     gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
     rem for debugging we inject the unminified files which contain source maps of the original code
-    if #getDebug() = 1 then
-      agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.js") , (basePath$ +"/ag-grid-community.js"))
-      gxPath$ = basePath$ + "/bbj-grid-widget.js"
-    FI
+    rem if #getDebug() = 1 then
+    rem   agGridPath$ = iff(isLicensed!, (basePath$ + "/ag-grid-enterprise.js") , (basePath$ +"/ag-grid-community.js"))
+    rem   gxPath$ = basePath$ + "/bbj-grid-widget.min.js"
+    rem FI
     rem /**
     rem  * Bundle the content of all required scripts
     rem  */
@@ -1059,7 +1088,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       open (ch)path!
       read record (ch,siz=5512000)content$
       close (ch)
-      bundle$ = bundle$ + content$
+      bundle$ = bundle$ + ";" + content$
     wend
     rem finally inject the built bundle
     #injectScript(bundle$)
@@ -1399,12 +1428,12 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * <b>Note:</b> This method will override the ValueFormatterExpression of the column.The method depends on
   rem  * the column type to determine the correct value formatter (number, date, ...)
   rem  *
-  rem ng field! The column's field
-  rem  * @param BBjString mask!: The (date or numeric) mask, BBj style
+  rem  * @param field! - The column's field
+  rem  * @param mask! - The BBj date string or numeric mask.
   rem  */
   method public void setColumnMask(BBjString field!, BBjString mask!)
     if(#hasColumn(field!)) then
-      #getColumn(field!).setColumnMask(mask!)
+      #getColumn(field!).setMask(mask!)
     FI
   methodend
   rem /**
