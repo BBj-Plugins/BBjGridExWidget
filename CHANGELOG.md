@@ -1,3 +1,35 @@
+# [1.9.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.8.0...1.9.0) (2022-07-25)
+
+
+### Bug Fixes
+
+* !ERROR=32 (BBj Custom Object Stack Overflow) `getSuppressWebDebouncing()`. ([1350a60](https://github.com/BBj-Plugins/BBjGridExWidget/commit/1350a6098af3e382501c4092960e1bf5fd7bf286))
+* `GxExecutor` does not check if the grid is destroyed before executing code. ([9b33eab](https://github.com/BBj-Plugins/BBjGridExWidget/commit/9b33eabc2d729897f9e62a28d3bda35b1b98f00c))
+
+
+### Code Refactoring
+
+* rename `BBjGridExWidget.suppressBuiDebouncing` to `BBjGridExWidget.suppressWebDebouncing`. ([0252c22](https://github.com/BBj-Plugins/BBjGridExWidget/commit/0252c2277267326b846fb2d9cf986859d7f0f9b8))
+
+
+### Features
+
+* add `BBjGridExWidget:preferAsyncExecution`. ([ea432eb](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ea432eba6f0303dd0a5a66097bd48a9cb7e75c89)). When enabled then the executor will try to executes the JavaScript in the
+BBjHtmlView and returns immediately without waiting for a return value
+from the client. Enabling this option might boost the performance of the grid.
+By default this option is turned off
+
+* add `GxColumn::setMask` method ([294a513](https://github.com/BBj-Plugins/BBjGridExWidget/commit/294a513d23b5da4299c52513be356561e31eccbe))
+
+
+### BREAKING CHANGES
+
+* `BBjGridExWidget.suppressBuiDebouncing` is deprecated.
+Use `BBjGridExWidget.suppressWebDebouncing` instead
+* `DefaultStringsMask`, `DefaultNumbersMask`, `DefaultDatesMask`,`DefaultTimesMask` and `DefaultTimestamps` are deprecated use `Mask` instated.
+* `setColumnMask` is deprecated use `setMask` instead.
+
+
 # [1.8.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.7.1...1.8.0) (2022-07-18)
 
 
@@ -1049,6 +1081,3 @@ method again easily by registering callbacks for editing events.
 * feat: implement debounced selection api ([831243b](https://github.com/BBj-Plugins/BBjGridExWidget/commit/831243b)), closes [#113](https://github.com/BBj-Plugins/BBjGridExWidget/issues/113) [#69](https://github.com/BBj-Plugins/BBjGridExWidget/issues/69)
 * cleanup: remove obsolete variable ([b5e9e44](https://github.com/BBj-Plugins/BBjGridExWidget/commit/b5e9e44))
 * Fix: Using vertical scrollbar sometimes doesn't show the last row completely ([45695cc](https://github.com/BBj-Plugins/BBjGridExWidget/commit/45695cc)), closes [#109](https://github.com/BBj-Plugins/BBjGridExWidget/issues/109)
-
-
-
