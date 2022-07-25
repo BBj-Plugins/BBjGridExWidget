@@ -968,10 +968,27 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * By default this options is set to "0"
   rem  *
   rem  * @param BBjNumber suppress! true to suppress , false to enable
+  rem  *  
+  rem  * @deprecated Use `setSuppressWebDebouncing` instead 
   rem  */
   method public void suppressBuiDebouncing(BBjNumber suppress!)
     #getExecutor().setSuppressBuiDebouncing(suppress!)
   methodend
+  rem /**
+  rem  * When true then the executor will limit the rate at
+  rem  * which executeScript gets invoked on the HTMLView.
+  rem  *
+  rem  * Setting this to "0" will help to boost up the communication
+  rem  * performance between BBj and the grid which lives inside
+  rem  * the HTMLView in BUI & DWC context
+  rem  *
+  rem  * By default this options is set to "0"
+  rem  *
+  rem  * @param BBjNumber suppress! true to suppress , false to enable
+  rem  */
+  method public void suppressWebDebouncing(BBjNumber suppress!)
+    #getExecutor().setSuppressWebDebouncing(suppress!)
+  methodend    
   rem /**
   rem  * When true then the executor will limit the rate at
   rem  * which executeScript gets invoked on the HTMLView.
@@ -990,13 +1007,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem /**
   rem  * Suppress scripts debouncing for GUI and BUI
   rem  *
-  rem  * @see #suppressBuiDebouncing()
+  rem  * @see #suppressWebDebouncing()
   rem  * @see #suppressGuiDebouncing()
   rem  *
   rem  * @param BBjNumber suppress! true to suppress , false to enable
   rem  */
   method public void suppressDebouncing(BBjNumber suppress!)
-    #suppressBuiDebouncing(suppress!)
+    #suppressWebDebouncing(suppress!)
     #suppressGuiDebouncing(suppress!)
   methodend
   rem /**

@@ -39,8 +39,22 @@ class public GxExecutor
   rem  * the HTMLView in BUI context
   rem  *
   rem  * By default this options is set to "0"
+  rem  *
+  rem  * @deprecated This option is no longer used and will be removed in the future.
+  rem  *             Use `SuppressWebDebouncing` instead.
   rem  */
   field public BBjNumber SuppressBuiDebouncing! = 0
+  rem /**
+  rem  * When true then the executor will limit the rate at
+  rem  * which executeScript gets invoked on the HTMLView.
+  rem  *
+  rem  * Setting this to "0" will help to boost up the communication
+  rem  * performance between BBj and the grid which lives inside
+  rem  * the HTMLView in BUI & DWC context
+  rem  *
+  rem  * By default this options is set to "0"
+  rem  */
+  field public BBjNumber SuppressWebDebouncing! = 0
   rem /**
   rem  * When true then the executor will limit the rate at
   rem  * which executeScript gets invoked on the HTMLView.
@@ -67,6 +81,19 @@ class public GxExecutor
   method public GxExecutor(BBjGridExWidget widget!, BBjNumber rate!)
     #setWidget(widget!)
     #setRate(rate!)
+  methodend
+  rem /**
+  rem  * @deprecated Use `setSuppressWebDebouncing` instead
+  rem  */
+  method public void setSuppressBuiDebouncing(BBjNumber suppressBuiDebouncing!)
+    GxLogger.warn("since version 1.9.0, GxExecutor.setSuppressBuiDebouncing(BBjNumber suppressBuiDebouncing!) is deprecated / renamed. Use GxExecutor.setSuppressWebDebouncing(BBjNumber suppressWebDebouncing!) instead.")
+    #setSuppressWebDebouncing(suppressBuiDebouncing!)
+  methodend
+  rem /**
+  rem  * @deprecated Use `getSuppressWebDebouncing` instead
+  rem  */
+  method public BBjNumber getSuppressWebDebouncing()
+    methodret #getSuppressWebDebouncing()
   methodend
   rem /**
   rem  * Execute a Javascript code on the client
@@ -119,7 +146,7 @@ class public GxExecutor
     rem  *       to execute anything new before the counted down reaches 0.
     rem  *
     rem  */
-    shouldSuppress! = iff(#isBui() = 1 , #getSuppressBuiDebouncing() , #getSuppressGuiDebouncing())
+    shouldSuppress! = iff(#isWeb() = 1 , #getSuppressWebDebouncing() , #getSuppressGuiDebouncing())
 
     if shouldSuppress!
       if isWidgetReady!
@@ -210,7 +237,7 @@ class public GxExecutor
     queue! = #getQueue()
     widget! = #getWidget()
     isDebugging! = widget!.getDebug()
-    platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
+    platform! = iff(#isWeb() = 1, "(Web)" , "(GUI)")
     id! = widget!.getRootId()
 
     if(queue!.size() > 0)
@@ -218,7 +245,7 @@ class public GxExecutor
         GxLogger.log("GxExecutor",String.format("%s Flush (%s)" , platform! , id!))
       fi
 
-      bundle! = iff(isDebugging! AND #isBui() , "console.group('BBjGridExWidget::GxExecutor.flush : (" + id! +  ")');console.time('patch time');" , "")
+      bundle! = iff(isDebugging! AND #isWeb() , "console.group('BBjGridExWidget::GxExecutor.flush : (" + id! +  ")');console.time('patch time');" , "")
       #setIsFlushing(1)
       it! = queue!.entrySet().iterator()
       while it!.hasNext()
@@ -228,7 +255,7 @@ class public GxExecutor
         if(isDebugging!)
           GxLogger.log("GxExecutor",String.format("%s    Script : %s" ,platform! ,script!))
 
-          if(#isBui()) then
+          if(#isWeb()) then
             script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getRootId() , script!)  + "`);"  + script!
           fi
         fi
@@ -238,7 +265,7 @@ class public GxExecutor
         it!.remove()
       wend
 
-      if(isDebugging! AND #isBui()) bundle! = bundle! + "console.timeEnd('patch time');console.groupEnd();"
+      if(isDebugging! AND #isWeb()) bundle! = bundle! + "console.timeEnd('patch time');console.groupEnd();"
       #executeInHTMLView(bundle!,1)
       #setIsFlushing(0)
     fi
@@ -255,10 +282,11 @@ class public GxExecutor
     #endTimer().flush()
   methodend
   rem /**
-  rem  * @return BBjNumber True when the platform is BUI , false if GUI
+  rem  * @return BBjNumber True when the platform is BUI or DWC , false otherwise
   rem  */
-  method protected boolean isBui()
-    methodret iff(info(3,6) <> "5" , 0 , 1)
+  method protected boolean isWeb()
+    p! = info(3,6)
+    methodret iff(p! = "5" or p! = "6"  , 1 , 0)
   methodend
   rem /**
   rem  * Enqueue a script for later execution
@@ -300,11 +328,11 @@ class public GxExecutor
 
     widget! = #getWidget()
     isDebugging! = widget!.getDebug()
-    shouldSuppress! = iff(#isBui() = 1 , #getSuppressBuiDebouncing() , #getSuppressGuiDebouncing())
+    shouldSuppress! = iff(#isWeb() = 1 , #getSuppressWebDebouncing() , #getSuppressGuiDebouncing())
 
     if(isDebugging! AND (isDebounced! = 0 OR shouldSuppress!))
       id! = widget!.getRootId()
-      platform! = iff(#isBui() = 1, "(BUI)" , "(GUI)")
+      platform! = iff(#isWeb() = 1, "(Web)" , "(GUI)")
 
       if shouldSuppress!
         GxLogger.log("GxExecutor",String.format("%s Flush (%s) -> Script : %s" , platform! , id! , script!))
@@ -313,7 +341,7 @@ class public GxExecutor
         GxLogger.log("GxExecutor","(GUI)    Script : " + script!)
       fi
 
-      if(#isBui()) then
+      if(#isWeb()) then
         scriptPreview! = iff(script!.contains("`") , "Flushing Batch" , script!)
         script! = ";console.group('BBjGridExWidget::GxExecutor.executeInHTMLView : (" + id! + ")');console.log(`" + scriptPreview! + "`);console.groupEnd();" + script!
       fi
