@@ -1044,6 +1044,89 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     swend
   methodend
   rem /**
+  rem  * @deprecated Use `setMask` instead 
+  rem  */
+  method public void setDefaultNumbersMask(BBjString mask!)
+    GxLogger.warn("since version 1.9.0, GxColumn.setDefaultNumbersMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
+    #setMask(mask!)
+  methodend
+  rem /**
+  rem  * @deprecated Use `getMask` instead 
+  rem  */
+  method public BBjString getDefaultNumbersMask()
+    GxLogger.warn("since version 1.9.0, GxColumn.getDefaultNumbersMask() is deprecated. Use GxColumn.getMask() instead.")
+    methodret #getMask()
+  methodend    
+  rem /**
+  rem  * @deprecated Use `setMask` instead 
+  rem  */
+  method public void setDefaultStringsMask(BBjString mask!)
+    GxLogger.warn("since version 1.9.0, GxColumn.setDefaultStringsMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
+    #setMask(mask!)
+  methodend 
+  rem /**
+  rem  * @deprecated Use `getMask` instead 
+  rem  */
+  method public BBjString getDefaultStringsMask()
+    GxLogger.warn("since version 1.9.0, GxColumn.getDefaultStringsMask() is deprecated. Use GxColumn.getMask() instead.")
+    methodret #getMask()
+  methodend     
+  rem /**
+  rem  * @deprecated Use `setMask` instead 
+  rem  */
+  method public void setDefaultDatesMask(BBjString mask!)
+    GxLogger.warn("since version 1.9.0, GxColumn.setDefaultDatesMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
+    #setMask(mask!)
+  methodend
+  rem /**
+  rem  * @deprecated Use `getMask` instead 
+  rem  */
+  method public BBjString getDefaultDatesMask()
+    GxLogger.warn("since version 1.9.0, GxColumn.getDefaultDatesMask() is deprecated. Use GxColumn.getMask() instead.")
+    methodret #getMask()
+  methodend           
+  rem /**
+  rem  * @deprecated Use `setMask` instead 
+  rem  */
+  method public void setDefaultTimesMask(BBjString mask!)
+    GxLogger.warn("since version 1.9.0, GxColumn.setDefaultTimesMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
+    #setMask(mask!)
+  methodend  
+  rem /**
+  rem  * @deprecated Use `getDefaultTimesMask` instead 
+  rem  */
+  method public BBjString getDefaultTimesMask()
+    GxLogger.warn("since version 1.9.0, GxColumn.getDefaultTimesMask() is deprecated. Use GxColumn.getMask() instead.")
+    methodret #getMask()
+  methodend        
+  rem /**
+  rem  * @deprecated Use `setMask` instead 
+  rem  */
+  method public void setDefaultTimestampsMask(BBjString mask!)
+    GxLogger.warn("since version 1.9.0, GxColumn.setDefaultTimestampsMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
+    #setMask(mask!)
+  methodend   
+  rem /**
+  rem  * @deprecated Use `getDefaultTimesMask` instead 
+  rem  */
+  method public BBjString getDefaultTimestampsMask()
+    GxLogger.warn("since version 1.9.0, GxColumn.getDefaultTimestampsMask() is deprecated. Use GxColumn.getMask() instead.")
+    methodret #getMask()
+  methodend                   
+  rem /**
+  rem  * Set the mask of a column in all supported components (filters , formatters , ...)
+  rem  *
+  rem  * In case the column has no value formatter expression , then the method will create one
+  rem  *
+  rem  * @param mask! - The BBj date string or numeric mask.
+  rem  *  
+  rem  * @deprecated Use `setMask` instead 
+  rem  */
+  method public void setColumnMask(BBjString mask!)
+    GxLogger.warn("since version 1.9.0, GxColumn.setColumnMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
+    #setMask(mask!)
+  methodend    
+  rem /**
   rem  * Set the mask of a column in all supported components (filters , formatters , ...)
   rem  *
   rem  * In case the column has no value formatter expression , then the method will create one
