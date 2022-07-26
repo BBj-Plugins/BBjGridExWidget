@@ -256,7 +256,7 @@ class public ItemsSelector
     itemNumber!.setLabel("Item Number")
     desc!      .setLabel("Description")
     price!     .setLabel("Price $")
-    price!     .setColumnMask("########.00-")
+    price!     .setMask("########.00-")
     price!     .setAlignment(Configuration.getMoneyColumnsAlignment(), 1)
 
     declare auto GxExpressionNumbersFormatter moneyFormatter!

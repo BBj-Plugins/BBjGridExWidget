@@ -1,3 +1,12 @@
+# [1.10.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.9.0...1.10.0) (2022-07-26)
+
+
+### Bug Fixes
+
+* restore `GxColumn.setColumnMask` method for backwards compatibility ([5e9e73d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/5e9e73d9f1721dbe31ced4abba885a3b9aa23e3b))
+
+
+
 # [1.9.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.8.0...1.9.0) (2022-07-25)
 
 

@@ -73,6 +73,11 @@ const config = {
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {
+            href: 'https://github.com/BBj-Plugins/BBjGridExWidget/issues',
+            label: 'Report Issue',
+            position: 'right',
+          },
+          {
             href: 'https://bbj-plugins.github.io/BBjGridExWidget/javadoc/',
             label: 'Javadocs',
             position: 'right',
@@ -83,6 +88,59 @@ const config = {
             className: "header-github-link",
           },
         ],
+      },
+      footer: {
+        // style: 'dark',
+        links: [
+          {
+            title: 'Learn',
+            items: [
+              {
+                label: 'Introduction',
+                to: '/docs/introduction/overview',
+              },
+              {
+                label: 'Getting started',
+                to: '/docs/introduction/getting-started',
+              },           
+            ],
+          },
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'Github Issues & Feature Requests',
+                href: 'https://github.com/BBj-Plugins/BBjGridExWidget/issues',
+              },
+              {
+                label: 'BBj Developers',
+                href: 'https://groups.google.com/u/1/g/bbj-developer?hl=en',
+              },
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/bbj',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'Blog',
+                to: '/blog',
+              },
+              {
+                label: 'Change Log',
+                href: 'https://github.com/BBj-Plugins/BBjGridExWidget/blob/dev/CHANGELOG.md',
+              },
+              {
+                label: 'License',
+                href: 'https://github.com/BBj-Plugins/BBjGridExWidget/blob/dev/LICENSE',
+              },              
+            ],
+          },
+        ],
+        copyright: `<br>Copyright BASIS International Ltd © ${new Date().getFullYear()} BBjGridExWidget.`,
       },
       prism: {
         theme: lightCodeTheme,
