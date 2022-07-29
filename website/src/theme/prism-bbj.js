@@ -1,26 +1,19 @@
-(function (Prism) {
-  Prism.languages.BBj = Prism.languages.extend("clike", {
-    'comment': [
-      {
-        pattern: /(^|[^\\:])rem\s+.*/i,
-        lookbehind: true,
-        greedy: true
-      }
-    ],
-    keyword:
-      /\b(?:abstract|continue|for|new|switch|assert|default|goto|package|synchronized|boolean|do|if|private|this|break|double|implements|protected|throw|byte|else|import|public|throws|case|enum|instanceof|return|transient|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|strictfp|volatile|const|float|native|super|while|class|classend|extends|implements|method|methodend|methodret|interface|interfaceend|protected|public|private|void|static|use|declare|auto|field|if|then|else|endif|fi|while|wend|for|to|step|next|switch|case|swend|new)\b/i,
-    operator: {
-      pattern:
-        /(^|[^.])(?:\+[+=]?|-[-=]?|!=?|<<?=?|>>?>?=?|==?|&[&=]?|\|[|=]?|\*=?|\/=?|%=?|\^=?|[?:~])/m,
+Prism.languages.BBj = {
+  'comment': [
+    {
+      pattern: /(^|[^\\:])rem\s+.*/i,
       lookbehind: true,
-    },
-  });
-
-  Prism.languages.insertBefore("BBj", "function", {
-    annotation: {
-      alias: "punctuation",
-      pattern: /(^|[^.])@\w+/,
-      lookbehind: true,
-    },
-  });
-})(Prism);
+      greedy: true
+    }
+  ],
+  'string': {
+    pattern: /"(?:""|[!#$%&'()*,\/:;<=>?^\w +\-.])*"/,
+    greedy: true
+  },
+  'number': /(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:E[+-]?\d+)?/i,
+  'keyword': /\b(?:abstract|all|argc|auto|begin|boolean|break|bye|case|catch|char|chn|class|classend|continue|ctl|day|declare|delete|dom|double|dread|dsz|else|endif|err|exitto|extends|fi|field|for|from|gosub|goto|if|implements|interface|interfaceend|iol|iolist|let|list|load|method|methodend|methodret|new|next|on|opts|pfx|private|process_events|protected|psz|public|read_resource|remove_callback|restore|return|rev|seterr|setesc|sqlchn|sqlunt|ssn|start|static|step|strictfp|super|swend|sys|then|this|throws|tim|to|try|unt|until|use|void|volatile|wend|where|while)\b/i,
+  'function': /\b\w+(?=\()/,
+  'boolean': /\b(?:BBjAPI\.TRUE|BBjAPI\.FALSE)\b/i,
+  'operator': /<[=>]?|>=?|[+\-*\/^=&]|\b(?:and|not|or|xor)\b/i,
+  'punctuation': /[,;:()]/
+};
