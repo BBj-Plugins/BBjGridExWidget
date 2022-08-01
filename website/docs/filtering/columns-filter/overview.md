@@ -48,7 +48,7 @@ In the following sample the following can be noticed:
 * It is important to set the filter after we call `setData`. Otherwise our configurations will be overwritten. For more details see [The BBjGridExWidget::setData method](../../data/overview.md)
 
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use ::BBjGridExWidget/GxFilters.bbj::GxFilterNumber
@@ -89,7 +89,7 @@ bye
 
 To enable animation of the rows when filtering, set the grid option `AnimateRows=true`.
 
-```BBj
+```bbj
 grid!.getOptions().setAnimateRows(1)
 ```
 

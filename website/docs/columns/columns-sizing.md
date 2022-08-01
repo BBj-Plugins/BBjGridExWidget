@@ -48,7 +48,7 @@ It's important to point out that `BBjGridExWidget.autoSizeColumns(BBjNumber skip
 * `void autoSizeColumns(BBjString columns!, BBjNumber skipHeader!)`
 * `void autoSizeColumns(BBjString columns!)`
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

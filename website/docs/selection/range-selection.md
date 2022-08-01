@@ -32,7 +32,7 @@ Note that deselecting part of a range can split the range into multiple ranges, 
 
 The example below demonstrates simple range selection. Ranges can be selected in all the ways described above.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
 use com.basiscomponents.db.ResultSet
@@ -72,7 +72,7 @@ bye
 
 By default multiple ranges can be selected. To restrict range selection to a single range, even if the <kbd>Ctrl</kbd> key is held down, enable the following grid options: `SuppressMultiRangeSelection=true`.
 
-```BBj
+```bbj
 grid!.getOptions().setSuppressMultiRangeSelection(1)
 ```
 
@@ -80,7 +80,7 @@ grid!.getOptions().setSuppressMultiRangeSelection(1)
 
 The `BBjGridExWidget::ON_GRID_RANGE_SELECTION_CHANGED` is fired when a the grid's range selection is changed.
 
-```BBj
+```bbj
 grid!.setCallback(grid!.ON_GRID_RANGE_SELECTION_CHANGED(), "handleChanged")
 ```
 
@@ -100,7 +100,7 @@ The following methods are available on the `BBjGridExWidget` class for managing 
 The example below demonstrates a more complex range selection scenario. The example listens for the `ON_GRID_RANGE_SELECTION_CHANGED` and 
 re-create the BBjGridExWidget statusbar in BBj.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarAggregationComponent
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRangeSelectionModel

@@ -15,7 +15,7 @@ The [Plug-in Manager](https://documentation.basis.cloud/BASISHelp/WebHelp/bbutil
 
 Because the default `PREFIX` for BBj includes the `<bbj_home>/plugins/` directory, you can use the BBjGridExWidget plugin once you add a `USE` statement like this to your program:
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 ```
 
@@ -25,7 +25,7 @@ Of course, for the BBjGridExWidget to be useful, you will probably need it to co
 
 You can create a grid by building a ResultSet and feeding it directly to the grid.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

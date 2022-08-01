@@ -26,7 +26,7 @@ By default , the grid will apply a default bbj mask based on the column type. Th
 
 In case the column has no value formatter expression, then the method will create one based on the column's SQL Type. That's why it is important to call this method after [`BBjGridExWidget::setData`](../data/overview#the-bbjgridexwidgetsetdata-method)
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -64,7 +64,7 @@ bye
 
 When constructing the columns before [`BBjGridExWidget::setData`](../data/overview#the-bbjgridexwidgetsetdata-method) is invoked, you can configure the columns masks using the [`GxColumn::setMask`](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxColumns/GxDefaultColumnDefinition.html#setMask). in this case the `setData` method won't override the default type mask.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -110,7 +110,7 @@ bye
 You can update any column mask after rendering by setting the mask property on the column or by calling the `setColumnMask` method.
 To reflect the changes in the grid, you should invoke the method [`BBjGridExWidget.updateColumns()`](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget/BBjGridExWidget.html#updateColumns)
 
-```BBj
+```bbj
 date!  = grid!.getColumn("LAST_PURCH_DATE")
 date!.setMask("%Mz-%Dz-%Yl")
 grid!.updateColumns()

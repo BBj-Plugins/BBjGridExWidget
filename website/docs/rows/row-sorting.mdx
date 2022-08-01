@@ -11,7 +11,7 @@ This page describes how to get your grid data sorting.
 Enable sorting for columns by setting the sortable column definition attribute. Then sort a column by clicking on the column header.
 To enable/disable sorting for all columns, set sorting in the [default column definition](../api/columns-interface#avoid-duplication-of-column-definitions).
 
-```BBj
+```bbj
 grid!.getOptions().getDefaultColumnDefinition().setSortable(0)
 ```
 
@@ -23,7 +23,7 @@ The row sorting is enabled by default on all columns
 
 It is possible to sort by multiple columns. The default action for multiple column sorting is for the user to hold down <kbd>Shift</kbd> while clicking the column header. To change the default action to use the <kbd>Ctrl</kbd> key (or `Command` key on Apple) set the grid option `UseCtrlForMultiSort`
 
-```BBj
+```bbj
 grid!.getOptions().setUseCtrlForMultiSort(1)
 ```
 
@@ -31,7 +31,7 @@ grid!.getOptions().setUseCtrlForMultiSort(1)
 
 To enable/disable animation of the rows after sorting, set grid option `AnimateRows=true`. By d
 
-```BBj
+```bbj
 grid!.getOptions().setAnimateRows(1)
 ```
 
@@ -56,7 +56,7 @@ Sorting can be controlled via the Sorting API via the following methods:
 
 The following example apply sorting for the `CDNUMBER` and the `TITLE` at once.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientSortModel
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
@@ -103,7 +103,7 @@ To Query the sorting state ([`::BBjGridExWidget/GxState.bbj::GxState`](https://b
 <Tabs>
 <TabItem value="grid-state" label="grid-state.bbj">
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/GxState.bbj::GxState
 
 declare GxState state! 
@@ -184,7 +184,7 @@ rem returns a parsable JSON string
 
 By default sorting doesn't take into consideration locale specific characters, if you need to make your sort locale specific you can configure this by setting the grid option `AccentedSort = true`
 
-```BBj
+```bbj
 grid!.getOptions().setAccentedSort(1)
 ```
 

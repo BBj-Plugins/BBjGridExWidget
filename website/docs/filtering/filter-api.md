@@ -18,7 +18,7 @@ It is possible to get the state of all filters using the grid API method `BBjGri
 
 For instance in the following snippet, we get The filter model for the `FIRST_NAME` column then update the filter type and filter text. At then we call the `update` method to execute the filter
 
-```BBj
+```bbj
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterTextModel
 
 declare auto GxClientFilterTextModel model!
@@ -32,7 +32,7 @@ model!.update()
 
 You can reset all filters by doing the following:
 
-```BBj
+```bbj
 grid!.clearFilters()
 ```
 
@@ -40,7 +40,7 @@ grid!.clearFilters()
 
 The example below shows getting and setting all the filter models in action and how to access the filter components directly.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterCombinedModel
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientFilterNumberModel

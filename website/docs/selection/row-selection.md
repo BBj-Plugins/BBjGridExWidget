@@ -35,7 +35,7 @@ To get/set the selected rows in the grid, use the following API methods, All met
 
 The example below shows multiple row selection.
 
-```BBj
+```bbj
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
 use com.basiscomponents.db.ResultSet
@@ -99,7 +99,7 @@ The example below shows multi-select with click. Clicking multiple rows will sel
 * Clicking a selected row will deselect that row.
 
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
 use com.basiscomponents.db.ResultSet
@@ -175,7 +175,7 @@ always be on the first column.
 
 By default the grid won't include a checkbox at the columns's header. To include the checkbox in column's header set the grid option `ShowHeaderSelectionCheckbox`
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
 use com.basiscomponents.db.ResultSet
@@ -220,7 +220,7 @@ When doing grouping, you control what selecting a group means. This is controlle
 
 * `GroupSelectsFiltered`: When true only filtered children of the group will be selected / unselected. This means you can apply a filter, then try to select a group, and the group will end up in the intermediate state as only as subset of the children will be selected.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
 use com.basiscomponents.db.ResultSet

@@ -25,7 +25,7 @@ Expressions have access to several predefined variables:
 
 For instance 
 
-```BBj
+```bbj
 column!.setValueFormatterExpression("'(' + x + ')')
 ```
 
@@ -57,7 +57,7 @@ The method will return the attached expression if any, `null()` otherwise.
 Expression are attached after calling `setData`. For more information @see [`The BBjGridExWidget::setData method`](../data/overview#the-bbjgridexwidgetsetdata-method)
 :::
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -101,7 +101,7 @@ In the example below, the following can be noticed:
 * The Javascript code uses the [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options) API to handle number formatting
 
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionAbstract
 use com.basiscomponents.db.ResultSet

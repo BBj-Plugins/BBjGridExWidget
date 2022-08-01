@@ -14,7 +14,7 @@ The column interface is the combination of the following items:
 
 Each column in the grid is defined using a column definition. Columns are positioned in the grid according to the order defined in the ResultSet or the order of insertion. The following example shows a simple grid with 4 columns defined:
 
-```BBj showLineNumbers showLineNumbers
+```bbj showLineNumbers showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -61,7 +61,7 @@ The grid provides additional ways to help simplify and avoid duplication of colu
 
 The following code snippet shows to set the width of all columns:
 
-```BBj showLineNumbers showLineNumbers
+```bbj showLineNumbers showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -97,7 +97,7 @@ The grid respects the column type [(SQL TYPE)](https://github.com/JetBrains/jdk8
 By default you do not need to define the column type , the grid will do this automatically but uou change the 
 column type by calling `GxColumn.setType(BBjNumber type!)` method on the column
 
-```BBj showLineNumbers showLineNumbers
+```bbj showLineNumbers showLineNumbers
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 
 declare GxColumn column!
@@ -109,7 +109,7 @@ column!.setType(java.sql.Types.NUMERIC)
 
 You can also just create a new column and add it:
 
-```BBj showLineNumbers showLineNumbers
+```bbj showLineNumbers showLineNumbers
 declare GxColumn column!
 column! = new GxColumn("CDNUMBER", "My Column Title", java.sql.Types.NUMERIC)
 
@@ -123,7 +123,7 @@ It is possible to save and subsequently restore the column state via the Column 
 * To save the state use : `BBjGridExWidget::setState(::BBjGridExWidget/GxState.bbj::GxState state!)`
 * To Get the state use : `BBjGridExWidget::.getState():`
 
-```BBj showLineNumbers showLineNumbers
+```bbj showLineNumbers showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxState.bbj::GxState
 use com.basiscomponents.bc.SqlQueryBC
@@ -209,7 +209,7 @@ If the column ID matches, then the grid treats the columns as the same column. F
 The following is an example showing how to update column properties and forcing the client to reflect the changes
 using `updateColumn` method.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use com.basiscomponents.db.ResultSet

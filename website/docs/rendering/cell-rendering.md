@@ -33,7 +33,7 @@ In the sample below, The following can be noticed:
 * `Boolean 2` uses HTML entities to render the boolean value
 * `Boolean 3` uses an HTML image to render `true` values and a plain string to render `false` values
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxRenderers.bbj::GxRendererBoolean
 use com.basiscomponents.db.ResultSet
@@ -90,7 +90,7 @@ bye
 
 The example below shows how to use the [`GxRendererImageRenderer`](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxRenderers/GxRendererImageRenderer.html)
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxRenderers.bbj::GxRendererImageRenderer
 use com.basiscomponents.db.ResultSet
@@ -149,7 +149,7 @@ The BBjGridExWidget also provides a helper method [`BBjGridExWidget.setColumnIma
 <summary>Sample</summary>
 <div>
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxRenderers.bbj::GxRendererImageRenderer
 use com.basiscomponents.db.ResultSet
@@ -215,7 +215,7 @@ In the sample below, The following can be noticed:
 * To print the result of javascript code, wrap it with `<%=` and `%>`
 * To print HTML, embed the HTML directly in the template
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
 use com.basiscomponents.db.ResultSet

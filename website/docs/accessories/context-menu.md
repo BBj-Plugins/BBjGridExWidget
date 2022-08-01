@@ -16,7 +16,7 @@ You can configure the context menu by modifying the the grid's [default context 
 
 If you want to turn off the context menu completely, set the grid option `SuppressContextMenu=true`.
 
-```BBj
+```bbj
 grid!.getOptions().setSuppressContextMenu(1)
 ```
 
@@ -32,7 +32,7 @@ The following can be noted:
   - Label
 * We are using the DWC [`bbj-icon`](https://basishub.github.io/basis-next/#/dwc/bbj-icon) component to set the items icons
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenu
 use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenuItem
@@ -141,7 +141,7 @@ The following is a list of all the default built in menu items with the rules ab
 
 Like any other menu items, you cun add some or all of the builtin items to your menu using the `GxContextMenu::addItem` method 
 
-```BBj
+```bbj
 menu!.addItem(GxContextMenuItem.AUTO_SIZE_ALL())
 menu!.addItem(GxContextMenuItem.RESET_COLUMNS())
 menu!.addItem(GxContextMenuItem.EXPORT())
@@ -152,7 +152,7 @@ menu!.addItem(GxContextMenuItem.SEPARATOR())
 
 You can nest context menus using the `BBjGridExWidget::setSubMenu` method.
 
-```BBj
+```bbj
 copy! = new GxContextMenuItem(6002,"Copy Functions")
   submenu! = new GxContextMenu()
   submenu!.addItem(GxContextMenuItem.COPY())
@@ -163,7 +163,7 @@ menu!.addItem(copy!)
 
 ## Example: Putting it together
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenu
 use ::BBjGridExWidget/GxContextMenu.bbj::GxContextMenuItem

@@ -15,7 +15,7 @@ Each of these approaches are presented in the following sections.
 
 The cell style is nothing more thana map of css  values.
 
-```BBj
+```bbj
 use com.google.gson.JsonObject
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 
@@ -33,7 +33,7 @@ cellStyle!.addProperty("color","red")
 
 Provides a class for the cells in this column. 
 
-```BBj
+```bbj
 use java.util.ArrayList
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 
@@ -89,7 +89,7 @@ The following snippet shows `CellClassRules` usage to change the background colo
 
 The following is a sample which shows how to use the `CellClassRules` to do cells conditional styling
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

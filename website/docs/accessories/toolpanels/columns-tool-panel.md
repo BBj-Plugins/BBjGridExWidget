@@ -46,7 +46,7 @@ It is possible to remove items from the tool panel. Items are suppressed by sett
 | `ContractColumnSelection`    	| By default, column groups start expanded. Pass true to default to contracted groups 	|
 
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

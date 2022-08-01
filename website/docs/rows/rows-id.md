@@ -14,7 +14,7 @@ content.
 
 The row ID/Key of the DataRow can be retrieved using the [`DataRow::getRowKey`](https://basishub.github.io/components/javadoc/com/basiscomponents/db/DataRow.html#getRowKey()) method
 
-```BBj
+```bbj
 use com.basiscomponents.db.DataRow
 
 declare DataRow row!
@@ -24,7 +24,7 @@ key$ = row!.getRowKey()
 The row ID changes for a row when the content is changed.
 :::
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel
@@ -78,13 +78,13 @@ When the Application assigns Row IDs, this provides a common Row ID across the g
 Setting Row IDs is done using the `BBjGridExWidget::setData` method, When passing the ResultSet , pass the name of the column to use as
 a row ID.
 
-```BBj
+```bbj
  void setData(ResultSet rs!, BBjString indexdBy$)
 ```
 
 The following sample show how to use the `CDNUMBER` in the CD Store database as a row id.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientEvents.bbj::GxClientEventsRowSelection
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientRowModel

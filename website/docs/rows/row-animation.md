@@ -5,7 +5,7 @@ title: Row Animation
 
 Row animations occur after filtering, sorting, resizing height and expanding / collapsing a row group. Each on these animations is turned OFF be default. They are all turned on using using the property `AnimateRows=true`.
 
-```BBj
+```bbj
 grid!.getOptions().setAnimateRows(1)
 ```
 

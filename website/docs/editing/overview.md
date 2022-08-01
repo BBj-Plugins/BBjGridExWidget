@@ -7,7 +7,7 @@ title: Overview
 
 To enable Cell Editing for a Column, set `Editable=1` on the Column.
 
-```BBj
+```bbj
 grid!.getColumn("CDNUMBER").setEditable(1)
 ```
 

@@ -16,7 +16,7 @@ The [GxOptions](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxOptions/
 the grid behavior or enable/disable features.
 The example below shows how you can alter the navigation behavior and selection mode from the options interface.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 declare BBjGridExWidget grid!
 declare BBjGridExWidgetOptions options!
 
@@ -39,7 +39,7 @@ You can access both the grid and the colum api from the BBjGridExWidget class di
 The Grid API methods will only work after the grid is ready. The grid will keep enqueuing all grid API calls until the grid is ready then flush them at once. 
 :::
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -77,7 +77,7 @@ bye
 The BBjGridExWidgets fires several events to notify the program about changes. You can listen to grid events using [setCallback](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/BBjGridExWidget/BBjGridExWidget.html#setCallback) method. The following example shows how to listen to selection changes on the grid.
 
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

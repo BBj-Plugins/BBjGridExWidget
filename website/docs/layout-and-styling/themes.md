@@ -37,6 +37,6 @@ predefined themes:
 * `BBjGridExWidget.GRID_THEME_BALHAM_DARK()`
 * `BBjGridExWidget.GRID_THEME_MATERIAL()`
 
-```BBj
+```bbj
   grid!.setTheme(BBjGridExWidget.GRID_THEME_MATERIAL())
 ```

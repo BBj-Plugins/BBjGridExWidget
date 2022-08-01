@@ -9,7 +9,7 @@ Below shows an example with two pinned columns on the left and one pinned column
 
 The grid will reorder the columns so that `left pinned` columns come first and `right pinned` columns come last. In the example below the state of pinned columns impacts the order of the columns.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/BBjGridExWidgetColumns.bbj::BBjGridExWidgetColumn
 use com.basiscomponents.db.ResultSet

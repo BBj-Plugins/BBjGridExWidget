@@ -31,7 +31,7 @@ The order of the menu tabs shown in the menu will match the order you specify in
 If you don't specify a `MenuTabs` for a column the default is: ['MENU_TAB_GENERAL', 'MENU_TAB_FILTER','MENU_TAB_COLUMNS']
 
 
-```BBj
+```bbj
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 
 declare GxColumn column!

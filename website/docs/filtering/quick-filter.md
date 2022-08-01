@@ -7,7 +7,7 @@ In addition to the column specific filtering, a 'quick filter' can also be appli
 
 The quick filter text will check all words provided against the full row. For example if the text provided is "Tony Ireland", the quick filter will only include rows with both "Tony" AND "Ireland" in them.
 
-```BBj
+```bbj
 grid!.setQuickFilter("new filter text")
 ```
 
@@ -17,7 +17,7 @@ Quick Filter is a case-insensitive filter which is applied on the client (grid) 
 
 ## Example: Quick Filter
 
-```BBj
+```bbj
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
