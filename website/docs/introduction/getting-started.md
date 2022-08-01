@@ -69,5 +69,5 @@ checkout the [Javadocs](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/).
 After we initialize the grid, we query the `CD-Store` demo database installed with BBj, and displays the results of that query in the grid.
 
 :::info
-The method `BBjGridExWidget::setData` is what gets the grid rended. read more about [data & data updating](../data/overview)
+The method `BBjGridExWidget::setData` is what gets the grid rendered. read more about [data & data updating](../data/overview)
 :::
