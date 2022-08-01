@@ -96,6 +96,8 @@ class SuggestionEditor {
     this._renderGroupTemplate = this._params.groupTemplate
       ? template(this._params.groupTemplate)
       : ''
+
+    console.log(params)
     this._autocomplete = autocomplete({
       input: this._input,
       debounceWaitMs: debounceWaitMs,
@@ -109,7 +111,9 @@ class SuggestionEditor {
       emptyMsg: this._params.emptyMessage || null,
       minLength: this._params.minLength || 2,
       showOnFocus: this._params.showOnFocus || false,
-      className: params.api.gridCore.eGridDiv.className.endsWith('dark')
+      className: params.api.gridOptionsWrapper.eGridDiv.className.endsWith(
+        'dark'
+      )
         ? 'dark'
         : 'light',
     })
