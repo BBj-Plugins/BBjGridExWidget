@@ -6,7 +6,7 @@
   "version": "1.10.0",
   "private": true,
   "scripts": {
-    "watch": "./node_modules/.bin/webpack --watch --progress",
+    "start": "./node_modules/.bin/webpack --watch --progress",
     "build": "yarn run lint && yarn run format && ./node_modules/.bin/webpack --mode=production ",
     "build:dev": "yarn run lint:fix && yarn run format && ./node_modules/.bin/webpack",
     "lint": "./node_modules/.bin/eslint  -c ./.eslintrc.json --ext .js ./",
