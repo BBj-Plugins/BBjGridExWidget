@@ -11,6 +11,10 @@ To enable Cell Editing for a Column, set `Editable=1` on the Column.
 grid!.getColumn("CDNUMBER").setEditable(1)
 ```
 
+:::info
+To enable/disable cell editing conditionally, please refer to the [Editing Expressions](./editing-expressions) documentation.
+:::
+
 ## Cell Editors
 
 By default the grid provides a cell editor for each column based on the Column's SQL Type
