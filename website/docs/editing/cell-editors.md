@@ -162,7 +162,7 @@ class public CustomResolver extends GxCellEditorSuggestionResolver
     query! = query! + "    FROM"
     query! = query! + "        CDINVENTORY "
     query! = query! + "    WHERE"
-    query! = query! + "        TITLE LIKE '%s%%' "
+    query! = query! + "        CVS(TITLE,8) LIKE CVS('%s%%',8) "
     query! = query! + "    ORDER BY"
     query! = query! + "        MUSICTYPE"
     
