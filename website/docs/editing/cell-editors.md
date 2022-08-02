@@ -134,3 +134,98 @@ bye
 ```
 
 ![BBjGridExWidget - Select Cell Editor](./assets/select-cell-editor.png)
+
+## Example: Using `GxCellEditorSuggestion`
+
+The suggestion cell editor is an input which gives the user a list of values (suggestions)
+to choose from. The suggestion are displayed when the user starts typing.
+
+The suggestion list can be resolved using a custom object which implements
+[`GxCellEditorSuggestionResolverInterface`](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxCellEditors/GxCellEditorSuggestionResolverInterface.html) or extends [`GxCellEditorSuggestionResolver`](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxCellEditors/GxCellEditorSuggestionResolver.html)
+
+```bbj showLineNumbers
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSuggestionResolver
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorSuggestion
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use java.util.UUID
+class public CustomResolver extends GxCellEditorSuggestionResolver
+  method public void doResolve(BBjString term!)
+    declare SqlQueryBC sbc!
+    declare ResultSet rs!
+
+    query! = ""
+    query! = query! + "    SELECT"
+    query! = query! + "        TITLE,"
+    query! = query! + "        MUSICTYPE "
+    query! = query! + "    FROM"
+    query! = query! + "        CDINVENTORY "
+    query! = query! + "    WHERE"
+    query! = query! + "        TITLE LIKE '%s%%' "
+    query! = query! + "    ORDER BY"
+    query! = query! + "        MUSICTYPE"
+    
+    sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+    rs! = sbc!.retrieve(String.format(query!, term!))
+
+    if(rs! <> null() and rs!.count() > 0)
+      it! = rs!.iterator()
+      while it!.hasNext()
+          next! = it!.next()
+
+          label! = String.format("%s", next!.getFieldAsString("TITLE"))
+          value! = next!.getFieldAsString("TITLE")
+          group! = next!.getFieldAsString("MUSICTYPE")
+
+          rem add suggestion
+          #addItem(label!, value!, group!)
+      wend
+    fi
+
+  methodend
+classend
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10, 10, 600, 600, "SuggestionEditor")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+gosub main
+process_events
+
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+  declare BBjGridExWidget grid!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT TOP 10 CDNUMBER, TITLE, ARTIST FROM CDINVENTORY")
+
+  grid! = new BBjGridExWidget(wnd!, 100, 0, 0, 600, 600)
+  grid!.getOptions().setEditable(1)
+  grid!.setFitToGrid()
+  grid!.setData(rs!)
+
+  editor! = new GxCellEditorSuggestion(UUID.randomUUID().toString(), new CustomResolver())
+  editor!.setEmptyMessage("No data to display")
+  editor!.setMinLength(1)
+  editor!.setShowOnFocus(1)
+  editor!.setWidth(300)
+
+  column! = grid!.getColumn("TITLE")
+  column!.setCellEditor(editor!)
+return
+
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w = ev!.getWidth()
+  h = ev!.getHeight()
+
+  grid!.setSize(w,h)
+return
+
+byebye:
+bye
+```
+
+![BBjGridExWidget - GxCellEditorSuggestion](./assets/suggestion-editor.png)
