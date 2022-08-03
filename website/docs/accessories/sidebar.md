@@ -13,7 +13,7 @@ This section covers how to configure and use the Side Bar API.
 The default side bar contains the Columns and Filters tool panels. To get access to the default side bar use 
 the `BBjGridExWidget::getSidebar` method. The method will return an instance of [GxDefaultSidebar](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxSidebar/GxDefaultSidebar.html) 
 
-```BBj
+```bbj
 method public GxSidebar getSidebar()
 ```
 
@@ -26,7 +26,7 @@ The default side bar pre-configure two tool panels by default
 
 To access a specific tool panel in the sidebar use the tool panel's ID
 
-```BBj
+```bbj
 use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
 use ::BBjGridExWidget/GxSidebar.bbj::GxColumnsToolpanel 
 
@@ -43,7 +43,7 @@ columnsToolpanel!.setSuppressValues(1)
 In order to hide the sidebar, you can use the Sidebar method `GxSidebar::setVisible(BBjNumber visible!)` method.
 If you want to render the grid initially with a sidebar hidden set the `GxSidebar:HiddenByDefault` property to `true`
 
-```BBj
+```bbj
 declare auto  GxSidebar sidebar!
 
 sidebar! = grid!.getSidebar()
@@ -56,7 +56,7 @@ In order to disable or remove a specific panel, remove the the panel using its I
 
 The following sample removes the `GxColumnsToolpanel` from the sidebar.
 
-```BBj
+```bbj
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

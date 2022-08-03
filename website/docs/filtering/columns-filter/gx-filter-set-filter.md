@@ -27,7 +27,7 @@ The Set Filter is comprised of the following sections:
 
 The filer can also be explicitly configured as shown below:
 
-```BBj showLineNumber
+```bbj showLineNumber
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxFilters.bbj::GxFilterSetFilter
 use com.basiscomponents.db.ResultSet

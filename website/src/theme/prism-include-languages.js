@@ -17,6 +17,6 @@ export default function prismIncludeLanguages(PrismObject) {
   });
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  require(`./prism-bbj.js`);
+  // require(`./prism-bbj.js`);
   // delete globalThis.Prism;
 }

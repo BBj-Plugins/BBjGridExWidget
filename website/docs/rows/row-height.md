@@ -45,7 +45,7 @@ Because auto-height adds size listeners to cells and stops Column Virtualisation
 
 Setting the row height is done once for each row. Once set, the grid will not ask you for the row height again. You can change the row height after it is initially set using a combination of `BBjGridExWidget.resetRowHeights()` and `BBjGridExWidget.setRowHeight(BBjString key!, BBjNumber height!)`
 
-```BBj
+```bbj
 ...
 
 declare BBjGridExWidget grid!

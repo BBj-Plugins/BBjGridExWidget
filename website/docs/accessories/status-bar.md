@@ -30,7 +30,7 @@ If align is not specified the components will default to being aligned to the ri
 
 The snippet below shows a status bar configured with the grid provided components.
 
-```BBj
+```bbj
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarTotalRowCountComponent
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarTotalAndFilteredRowCountComponent
@@ -53,7 +53,7 @@ Labels within the Status Bar (ie. "Rows", "Total Rows", "Average") and number fo
 
 ## Advanced Status Bar Example
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarTotalRowCountComponent
@@ -153,7 +153,7 @@ If the cell does not contain a simple number value, then it will not be included
 
 In the grid below, select a range by dragging the mouse over cells and notice the status bar showing the aggregation values as you drag.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarAggregationComponent
@@ -200,7 +200,7 @@ In this code snippet we have configured the aggregation component to only show `
 `GxStatusBarAggregationComponent` supports the following agg functions:  `count`, `sum`, `min`, `max` and `avg`:
 :::
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBar
 use ::BBjGridExWidget/GxStatusBar.bbj::GxStatusBarAggregationComponent

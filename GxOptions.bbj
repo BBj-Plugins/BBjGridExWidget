@@ -1378,7 +1378,7 @@ class public GxOptions
         options!.addProperty("suppressClickEdit",#getSuppressClickEdit().booleanValue(), err=*next)
         options!.addProperty("enableGroupEdit",0); rem not really sure how this works and there are not docs
         options!.addProperty("editType",#getEditType(), err=*next )
-        options!.addProperty("stopEditingWhenGridLosesFocus",#getStopEditingWhenGridLosesFocus().booleanValue(), err=*next )
+        options!.addProperty("stopEditingWhenCellsLoseFocus",#getStopEditingWhenGridLosesFocus().booleanValue(), err=*next )
         options!.addProperty("enterMovesDown",#getEnterMovesDown().booleanValue(), err=*next )
         options!.addProperty("enterMovesDownAfterEdit",#getEnterMovesDownAfterEdit().booleanValue(), err=*next )
         rem Headers options

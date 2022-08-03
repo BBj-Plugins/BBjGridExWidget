@@ -13,7 +13,7 @@ Row customization can be achieved in the following ways:
 
 You can add CSS styles to each row in the following way:
 
-```BBj
+```bbj
 use com.google.gson.JsonObject
 
 declare JsonObject rowStyle!
@@ -27,7 +27,7 @@ grid!.setData(rs!)
 
 You can add CSS classes to each row using the grid option `GxOptions::RowClass`
 
-```BBj
+```bbj
 use java.util.ArrayList
 
 declare ArrayList rowClass!
@@ -80,7 +80,7 @@ In the sample the following can be noted:
 * When the price is greater than `11`, the `cost-danger` css class name will be applied
 * Styles are injected using the `BBjGridExWidget.addStyle` method
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use com.basiscomponents.db.ResultSet
@@ -159,7 +159,7 @@ The example below demonstrates the following:
 * CSS class `ag-row-hover` has background color added to it, so when you hover over a cell, the row will be highlighted.
 * CSS class `ag-column-hover` has background color added to it, so when you hover over a cell or a header, the column will be highlighted. If you hover over a header group, all columns in the group will be highlighted.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

@@ -18,7 +18,7 @@ The example below shows the filters tool panel. The following can be noted:
 * Clicking on a column in the filter tool panel will show the filter below the column name. Clicking a second time will hide the filter again.
 * Columns with filters active will have the filter icon appear beside the filter name in the tool panel.
 
-```BBj
+```bbj
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxSidebar.bbj::GxSidebar
 use ::BBjGridExWidget/GxSidebar.bbj::GxFiltersToolpanel 
@@ -71,7 +71,7 @@ It is possible to remove items from the tool panel. Items are suppressed by sett
 | `suppressExpandAll`           	| To suppress Expand / Collapse All                                         |
 
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -118,7 +118,7 @@ bye
 :::tip
 To remove a particular column / filter from the tool panel, set the column option SuppressFiltersToolPanel to `true`.
 
-```BBj
+```bbj
 artistColumn! = grid!.getColumn("ARTIST")
 artistColumn!.setSuppressFiltersToolPanel(1)
 ```

@@ -9,7 +9,7 @@ Grouping columns is done by providing the columns in a tree hierarchy to the gri
 
 Here is a code snippet of providing 3 groups of columns.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -62,7 +62,7 @@ The previous demo shows how the `BBjGridExWidget.addColumnGroup` can be used to 
 In the sample below notice how we are removing the columns from the grid and adding them again to a column group.
 Not doing this will cause the grid to display the same column twice once standalone and once in the group.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use ::BBjGridExWidget/GxColumns.bbj::GxColumnGroup
@@ -154,7 +154,7 @@ If you grab the group resize bar, it resizes each child in the group evenly dist
 
 The grid doesn't color the groups for you. However you can use the column property `HeaderClass` for this purpose. The `HeaderClass` attribute is available on both columns and column groups.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -213,7 +213,7 @@ bye
 
 Sometimes you want columns of the group to always stick together. To achieve this, set the column group parameter `marryChildren=1`. The example below demonstrates the following:
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

@@ -37,7 +37,7 @@ The example below demonstrates these options as follows:
 * The column `TITLE` has moving suppressed. It is not possible to move this column, however it is possible to move other columns around it.
 * The grid has `SuppressDragLeaveHidesColumns=true` so columns dragged outside of the grid are not hidden (normally dragging a column out of the grid will hide the column).
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC

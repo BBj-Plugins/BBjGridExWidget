@@ -22,14 +22,14 @@ To replace all the row data in the grid call `BBjGridExWidget.updateData(ResultS
 
 Use this method if you are effectively loading brand new data into the grid, eg loading a new report with a completely different data set to the previous. 
 
-```BBj
+```bbj
 declare ResultSet newResultSet!
 grid!.updateData(newResultSet!)
 ```
 
 In the same time if you just want to clear the whole data on the grid , then use the api method `grid!.clearData()`
 
-```BBj
+```bbj
 grid!.clearData()
 ```
 
@@ -39,7 +39,7 @@ The example below shows the data with two ResultSets. Clicking the buttons toggl
 Notice how the grid is able to maintain the selection across data changes. This is because the DataRows have auto-generated IDs based on their content.
 :::
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -95,7 +95,7 @@ The transaction method is to pass a transaction model to the grid containing row
 Updating using transactions is the best way to do large updates to the grid, as the grid treats them as delta changes, so the grid only refreshes what is needed giving a performance boost. All row and range selection will be kept.
 :::
 
-```BBj
+```bbj
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientTransactionModel
 
 transaction! = new GxClientTransactionModel()
@@ -119,7 +119,7 @@ The same applies for `update` and `add` operations
 
 The following example applies transactions in different ways.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientTransactionModel
 use com.basiscomponents.db.ResultSet
@@ -243,7 +243,7 @@ The example below demonstrates the following:
 * Set Cost on MCA: The Cost value is updated on the MCA row and the grid refreshes the cell.
 * Set Data on MCA: The entire data is set on the MCA row and the grid refreshes the entire row.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxClientModels.bbj::GxClientTransactionModel
 use com.basiscomponents.db.ResultSet
@@ -302,7 +302,7 @@ bye
 
 The example below shows controlling the grid rows, including it's order.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.db.DataRow

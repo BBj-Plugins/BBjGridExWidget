@@ -1,574 +1,757 @@
-/* Javadoc style sheet */
-/*
-Overall document style
-*/
+:root {
+  --docs-color-scheme: dark;
 
-@import url('resources/fonts/dejavu.css');
+  --docs-font-family-base: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --docs-font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --docs-font-size-base: 100%;
+  --docs-line-height-base: 1.65;
+
+  --docs-color-gray-800: #303439;
+  --docs-color-gray-900: #1c1e21;
+
+  --docs-color-primary: #80bdff;
+  --docs-color-primary-light: #a6d1ff;
+
+  --docs-accent-1: #25c2a0;
+  --docs-accent-2: #b00064;
+  --docs-accent-3: #c70071;
+  --docs-accent-4: #f1fa8c;
+
+  --docs-color-background: #1b1b1d;
+  --docs-color-text: #e3e3e3;
+
+  --docs-global-radius: 4px;
+
+  /* Code. */
+  --docs-code-background: var(--docs-color-gray-900);
+  --docs-code-border-radius: var(--docs-global-radius);
+  --docs-code-padding-horizontal: 0.1rem;
+  --docs-code-padding-vertical: 0.1rem;
+
+  /* Pre. */
+  --docs-pre-background: var(--docs-code-background);
+  --docs-pre-border-radius: var(--docs-code-border-radius);
+  --docs-pre-color: inherit;
+  --docs-pre-line-height: 1.45;
+  --docs-pre-padding: 1rem;
+}
+
+html {
+	background-color: var(--docs-background-color);
+	color: var(--docs-color-text);
+	color-scheme: var(--docs-color-scheme);
+	font: var(--docs-font-size-base) / var(--docs-line-height-base) var(--docs-font-family-base);
+	-webkit-font-smoothing: antialiased;
+	-webkit-tap-highlight-color: transparent;
+	text-rendering: optimizelegibility;
+	text-size-adjust: 100%;
+}
 
 body {
-    background-color:#ffffff;
-    color:#353833;
-    font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
-    font-size:14px;
-    margin:0;
+	margin: 0;
+	word-wrap: break-word;
 }
-a:link, a:visited {
-    text-decoration:none;
-    color:#4A6782;
+
+a:link,
+a:visited {
+	text-decoration: none;
+	color: var(--docs-color-primary);
 }
-a:hover, a:focus {
-    text-decoration:none;
-    color:#bb7a2a;
+
+a:hover,
+a:focus {
+	text-decoration: none;
+	color: var(--docs-accent-1);
 }
+
 a:active {
-    text-decoration:none;
-    color:#4A6782;
+	text-decoration: none;
+	color: var(--docs-accent-2);
 }
+
 a[name] {
-    color:#353833;
+	color: var(--docs-color-text);
 }
+
 a[name]:hover {
-    text-decoration:none;
-    color:#353833;
+	text-decoration: none;
+	color: var(--docs-color-text);
 }
+
 pre {
-    font-family:'DejaVu Sans Mono', monospace;
-    font-size:14px;
+	font-family: var(--docs-font-family-monospace);
+	font-size: 0.8rem;
 }
+
 h1 {
-    font-size:20px;
+	font-size: 2rem;
 }
+
 h2 {
-    font-size:18px;
+	font-size: 1.5rem;
 }
+
 h3 {
-    font-size:16px;
-    font-style:italic;
+	font-size: 1.25rem;
+	font-style: italic;
 }
+
 h4 {
-    font-size:13px;
+	font-size: 1rem;
 }
+
 h5 {
-    font-size:12px;
+	font-size: 0.875rem;
 }
+
 h6 {
-    font-size:11px;
+	font-size: 0.85rem;
 }
+
 ul {
-    list-style-type:disc;
+	list-style-type: disc;
 }
-code, tt {
-    font-family:'DejaVu Sans Mono', monospace;
-    font-size:14px;
-    padding-top:4px;
-    margin-top:8px;
-    line-height:1.4em;
+
+code,
+tt {
+	font-family: var(--docs-font-family-monospace);
+	font-size: 1rem;
+	padding-top: 4px;
+	margin-top: 8px;
+	line-height: 1.4em;
 }
+
 dt code {
-    font-family:'DejaVu Sans Mono', monospace;
-    font-size:14px;
-    padding-top:4px;
+	font-family: var(--docs-font-family-monospace);
+	font-size: 1rem;
+	padding-top: 4px;
 }
+
 table tr td dt code {
-    font-family:'DejaVu Sans Mono', monospace;
-    font-size:14px;
-    vertical-align:top;
-    padding-top:4px;
+	font-family: var(--docs-font-family-monospace);
+	font-size: 1rem;
+	vertical-align: middle;
+	padding-top: 4px;
 }
-sup {
-    font-size:8px;
+
+pre {
+	background-color: var(--docs-pre-background);
+	border-radius: var(--docs-pre-border-radius);
+	color: var(--docs-pre-color);
+	font: var(--docs-code-font-size) / var(--docs-pre-line-height) var(--docs-font-family-monospace);
+	margin: 0 0 var(--docs-spacing-vertical);
+	overflow: auto;
+	padding: var(--docs-pre-padding);
 }
-/*
-Document title and Copyright styles
-*/
+
+pre code {
+	background-color: transparent;
+	border: none;
+	font-size: 100%;
+	line-height: inherit;
+	padding: 0;
+}
+
 .clear {
-    clear:both;
-    height:0px;
-    overflow:hidden;
+	clear: both;
+	height: 0;
+	overflow: hidden;
 }
+
 .aboutLanguage {
-    float:right;
-    padding:0px 21px;
-    font-size:11px;
-    z-index:200;
-    margin-top:-9px;
+	float: right;
+	padding: 0 21px;
+	z-index: 200;
+	margin-top: -9px;
 }
+
 .legalCopy {
-    margin-left:.5em;
+	margin-left: 0.5em;
 }
-.bar a, .bar a:link, .bar a:visited, .bar a:active {
-    color:#FFFFFF;
-    text-decoration:none;
+
+.bar a,
+.bar a:link,
+.bar a:visited,
+.bar a:active {
+	color: var(--docs-color-primary);
+	text-decoration: none;
 }
-.bar a:hover, .bar a:focus {
-    color:#bb7a2a;
+
+.bar a:hover,
+.bar a:focus {
+	color: var(--docs-accent-2);
 }
-.tab {
-    background-color:#0066FF;
-    color:#ffffff;
-    padding:8px;
-    width:5em;
-    font-weight:bold;
-}
-/*
-Navigation bar styles
-*/
+
 .bar {
-    background-color:#4D7A97;
-    color:#FFFFFF;
-    padding:.8em .5em .4em .8em;
-    height:auto;/*height:1.8em;*/
-    font-size:11px;
-    margin:0;
+	background-color: var(--docs-color-gray-800);
+	color: var(--docs-color-text);
+	padding: 0.8em 0.5em 0.4em 0.8em;
+	height: auto;
+	font-size: 0.8rem;
+	margin: 0;
+	border-bottom: 2px solid var(--docs-accent-3);
 }
+
 .topNav {
-    background-color:#4D7A97;
-    color:#FFFFFF;
-    float:left;
-    padding:0;
-    width:100%;
-    clear:right;
-    height:2.8em;
-    padding-top:10px;
-    overflow:hidden;
-    font-size:12px; 
+	background-color: var(--docs-color-gray-800);
+	color: var(--docs-color-text);
+	float: left;
+	width: 100%;
+	clear: right;
+	height: 3.2em;
+	padding: 10px 0 0;
+	overflow: hidden;
+	font-size: 0.8rem;
+	border-bottom: 2px solid var(--docs-accent-3);
 }
-.bottomNav {
-    margin-top:10px;
-    background-color:#4D7A97;
-    color:#FFFFFF;
-    float:left;
-    padding:0;
-    width:100%;
-    clear:right;
-    height:2.8em;
-    padding-top:10px;
-    overflow:hidden;
-    font-size:12px;
-}
+
 .subNav {
-    background-color:#dee3e9;
-    float:left;
-    width:100%;
-    overflow:hidden;
-    font-size:12px;
+	background-color: var(--docs-color-primary-light);
+	background-color: var(--docs-color-gray-800);
+	float: left;
+	width: 100%;
+	overflow: hidden;
+	font-size: 0.8rem;
+	border-bottom: 2px solid var(--docs-accent-3);
 }
+
 .subNav div {
-    clear:left;
-    float:left;
-    padding:0 0 5px 6px;
-    text-transform:uppercase;
+	clear: left;
+	float: left;
+	padding: 0 0 5px 6px;
+	text-transform: uppercase;
 }
-ul.navList, ul.subNavList {
-    float:left;
-    margin:0 25px 0 0;
-    padding:0;
+
+ul.navList,
+ul.subNavList {
+	float: left;
+	margin: 0 25px 0 0;
+	padding: 0;
 }
-ul.navList li{
-    list-style:none;
-    float:left;
-    padding: 5px 6px;
-    text-transform:uppercase;
+
+ul.navList li {
+	list-style: none;
+	float: left;
+	padding: 5px 6px;
+	text-transform: uppercase;
 }
-ul.subNavList li{
-    list-style:none;
-    float:left;
+
+ul.subNavList li {
+	list-style: none;
+	float: left;
 }
-.topNav a:link, .topNav a:active, .topNav a:visited, .bottomNav a:link, .bottomNav a:active, .bottomNav a:visited {
-    color:#FFFFFF;
-    text-decoration:none;
-    text-transform:uppercase;
+
+.topNav a:link,
+.topNav a:active,
+.topNav a:visited,
+.bottomNav a:link,
+.bottomNav a:active,
+.bottomNav a:visited {
+	color: var(--docs-color-text);
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: all 0.2s;
 }
-.topNav a:hover, .bottomNav a:hover {
-    text-decoration:none;
-    color:#bb7a2a;
-    text-transform:uppercase;
+
+.topNav a:hover,
+.bottomNav a:hover {
+	text-decoration: none;
+	color: var(--docs-color-primary);
+	text-transform: uppercase;
 }
+
 .navBarCell1Rev {
-    background-color:#F8981D;
-    color:#253441;
-    margin: auto 5px;
+	color: var(--docs-color-primary);
+	border: 1px solid var(--docs-color-primary);
+	border-radius: var(--docs-global-radius);
+	margin: auto 5px;
 }
+
 .skipNav {
-    position:absolute;
-    top:auto;
-    left:-9999px;
-    overflow:hidden;
+	position: absolute;
+	top: auto;
+	left: -9999px;
+	overflow: hidden;
 }
-/*
-Page header and footer styles
-*/
-.header, .footer {
-    clear:both;
-    margin:0 20px;
-    padding:5px 0 0 0;
+
+.header,
+.footer {
+	clear: both;
+	margin: 0 20px;
+	padding: 5px 0 0 0;
 }
+
 .indexHeader {
-    margin:10px;
-    position:relative;
+	margin: 10px;
+	position: relative;
 }
-.indexHeader span{
-    margin-right:15px;
+
+.indexHeader span {
+	margin-right: 15px;
 }
-.indexHeader h1 {
-    font-size:13px;
-}
+
 .title {
-    color:#2c4557;
-    margin:10px 0;
+	color: var(--docs-accent-3);
+	margin: 10px 0;
 }
+
 .subTitle {
-    margin:5px 0 0 0;
+	margin: 5px 0 0 0;
 }
+
 .header ul {
-    margin:0 0 15px 0;
-    padding:0;
+	margin: 0 0 15px 0;
+	padding: 0;
 }
+
 .footer ul {
-    margin:20px 0 5px 0;
+	margin: 20px 0 5px 0;
 }
-.header ul li, .footer ul li {
-    list-style:none;
-    font-size:13px;
+
+.header ul li,
+.footer ul li {
+	list-style: none;
 }
-/*
-Heading styles
-*/
-div.details ul.blockList ul.blockList ul.blockList li.blockList h4, div.details ul.blockList ul.blockList ul.blockListLast li.blockList h4 {
-    background-color:#dee3e9;
-    border:1px solid #d0d9e0;
-    margin:0 0 6px -8px;
-    padding:7px 5px;
+
+div.details ul.blockList ul.blockList ul.blockList li.blockList h4,
+div.details ul.blockList ul.blockList ul.blockListLast li.blockList h4 {
+	border-bottom: thin solid var(--docs-color-gray-800);
+	color: var(--docs-accent-3);
+	padding: 1rem 0.5rem;
+	margin: 0;
 }
-ul.blockList ul.blockList ul.blockList li.blockList h3 {
-    background-color:#dee3e9;
-    border:1px solid #d0d9e0;
-    margin:0 0 6px -8px;
-    padding:7px 5px;
+
+.contentContainer,
+.sourceContainer,
+.classUseContainer,
+.serializedFormContainer,
+.constantValuesContainer {
+	clear: both;
+	padding: 10px 20px;
+	position: relative;
 }
-ul.blockList ul.blockList li.blockList h3 {
-    padding:0;
-    margin:15px 0;
-}
-ul.blockList li.blockList h2 {
-    padding:0px 0 20px 0;
-}
-/*
-Page layout container styles
-*/
-.contentContainer, .sourceContainer, .classUseContainer, .serializedFormContainer, .constantValuesContainer {
-    clear:both;
-    padding:10px 20px;
-    position:relative;
-}
+
 .indexContainer {
-    margin:10px;
-    position:relative;
-    font-size:12px;
+	margin: 10px;
+	position: relative;
 }
-.indexContainer h2 {
-    font-size:13px;
-    padding:0 0 3px 0;
-}
-.indexContainer ul {
-    margin:0;
-    padding:0;
-}
-.indexContainer ul li {
-    list-style:none;
-    padding-top:2px;
-}
-.contentContainer .description dl dt, .contentContainer .details dl dt, .serializedFormContainer dl dt {
-    font-size:12px;
-    font-weight:bold;
-    margin:10px 0 0 0;
-    color:#4E4E4E;
-}
-.contentContainer .description dl dd, .contentContainer .details dl dd, .serializedFormContainer dl dd {
-    margin:5px 0 10px 0px;
-    font-size:14px;
-    font-family:'DejaVu Sans Mono',monospace;
-}
-.serializedFormContainer dl.nameValue dt {
-    margin-left:1px;
-    font-size:1.1em;
-    display:inline;
-    font-weight:bold;
-}
-.serializedFormContainer dl.nameValue dd {
-    margin:0 0 0 1px;
-    font-size:1.1em;
-    display:inline;
-}
-/*
-List styles
-*/
-ul.horizontal li {
-    display:inline;
-    font-size:0.9em;
-}
-ul.inheritance {
-    margin:0;
-    padding:0;
-}
-ul.inheritance li {
-    display:inline;
-    list-style:none;
-}
-ul.inheritance li ul.inheritance {
-    margin-left:15px;
-    padding-left:15px;
-    padding-top:1px;
-}
-ul.blockList, ul.blockListLast {
-    margin:10px 0 10px 0;
-    padding:0;
-}
-ul.blockList li.blockList, ul.blockListLast li.blockList {
-    list-style:none;
-    margin-bottom:15px;
-    line-height:1.4;
-}
-ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockList {
-    padding:0px 20px 5px 10px;
-    border:1px solid #ededed; 
-    background-color:#f8f8f8;
-}
-ul.blockList ul.blockList ul.blockList li.blockList, ul.blockList ul.blockList ul.blockListLast li.blockList {
-    padding:0 0 5px 8px;
-    background-color:#ffffff;
-    border:none;
-}
-ul.blockList ul.blockList ul.blockList ul.blockList li.blockList {
-    margin-left:0;
-    padding-left:0;
-    padding-bottom:15px;
-    border:none;
-}
-ul.blockList ul.blockList ul.blockList ul.blockList li.blockListLast {
-    list-style:none;
-    border-bottom:none;
-    padding-bottom:0;
-}
-table tr td dl, table tr td dl dt, table tr td dl dd {
-    margin-top:0;
-    margin-bottom:1px;
-}
-/*
-Table styles
-*/
-.overviewSummary, .memberSummary, .typeSummary, .useSummary, .constantsSummary, .deprecatedSummary {
-    width:100%;
-    border-left:1px solid #EEE; 
-    border-right:1px solid #EEE; 
-    border-bottom:1px solid #EEE; 
-}
-.overviewSummary, .memberSummary  {
-    padding:0px;
-}
-.overviewSummary caption, .memberSummary caption, .typeSummary caption,
-.useSummary caption, .constantsSummary caption, .deprecatedSummary caption {
-    position:relative;
-    text-align:left;
-    background-repeat:no-repeat;
-    color:#253441;
-    font-weight:bold;
-    clear:none;
-    overflow:hidden;
-    padding:0px;
-    padding-top:10px;
-    padding-left:1px;
-    margin:0px;
-    white-space:pre;
-}
-.overviewSummary caption a:link, .memberSummary caption a:link, .typeSummary caption a:link,
-.useSummary caption a:link, .constantsSummary caption a:link, .deprecatedSummary caption a:link,
-.overviewSummary caption a:hover, .memberSummary caption a:hover, .typeSummary caption a:hover,
-.useSummary caption a:hover, .constantsSummary caption a:hover, .deprecatedSummary caption a:hover,
-.overviewSummary caption a:active, .memberSummary caption a:active, .typeSummary caption a:active,
-.useSummary caption a:active, .constantsSummary caption a:active, .deprecatedSummary caption a:active,
-.overviewSummary caption a:visited, .memberSummary caption a:visited, .typeSummary caption a:visited,
-.useSummary caption a:visited, .constantsSummary caption a:visited, .deprecatedSummary caption a:visited {
-    color:#FFFFFF;
-}
-.overviewSummary caption span, .memberSummary caption span, .typeSummary caption span,
-.useSummary caption span, .constantsSummary caption span, .deprecatedSummary caption span {
-    white-space:nowrap;
-    padding-top:5px;
-    padding-left:12px;
-    padding-right:12px;
-    padding-bottom:7px;
-    display:inline-block;
-    float:left;
-    background-color:#F8981D;
-    border: none;
-    height:16px;
-}
-.memberSummary caption span.activeTableTab span {
-    white-space:nowrap;
-    padding-top:5px;
-    padding-left:12px;
-    padding-right:12px;
-    margin-right:3px;
-    display:inline-block;
-    float:left;
-    background-color:#F8981D;
-    height:16px;
-}
-.memberSummary caption span.tableTab span {
-    white-space:nowrap;
-    padding-top:5px;
-    padding-left:12px;
-    padding-right:12px;
-    margin-right:3px;
-    display:inline-block;
-    float:left;
-    background-color:#4D7A97;
-    height:16px;
-}
-.memberSummary caption span.tableTab, .memberSummary caption span.activeTableTab {
-    padding-top:0px;
-    padding-left:0px;
-    padding-right:0px;
-    background-image:none;
-    float:none;
-    display:inline;
-}
-.overviewSummary .tabEnd, .memberSummary .tabEnd, .typeSummary .tabEnd,
-.useSummary .tabEnd, .constantsSummary .tabEnd, .deprecatedSummary .tabEnd {
-    display:none;
-    width:5px;
-    position:relative;
-    float:left;
-    background-color:#F8981D;
-}
-.memberSummary .activeTableTab .tabEnd {
-    display:none;
-    width:5px;
-    margin-right:3px;
-    position:relative; 
-    float:left;
-    background-color:#F8981D;
-}
-.memberSummary .tableTab .tabEnd {
-    display:none;
-    width:5px;
-    margin-right:3px;
-    position:relative;
-    background-color:#4D7A97;
-    float:left;
 
+.indexContainer ul {
+	margin: 0;
+	padding: 0;
 }
-.overviewSummary td, .memberSummary td, .typeSummary td,
-.useSummary td, .constantsSummary td, .deprecatedSummary td {
-    text-align:left;
-    padding:0px 0px 12px 10px;
+
+.indexContainer ul li {
+	list-style: none;
+	padding-top: 2px;
 }
-th.colOne, th.colFirst, th.colLast, .useSummary th, .constantsSummary th,
-td.colOne, td.colFirst, td.colLast, .useSummary td, .constantsSummary td{
-    vertical-align:top;
-    padding-right:0px;
-    padding-top:8px;
-    padding-bottom:3px;
+
+.contentContainer .description dl dt,
+.contentContainer .details dl dt,
+.serializedFormContainer dl dt {
+	font-weight: bold;
+	margin: 10px 0 0 0;
+	color: var(--docs-accent-4);
 }
-th.colFirst, th.colLast, th.colOne, .constantsSummary th {
-    background:#dee3e9;
-    text-align:left;
-    padding:8px 3px 3px 7px;
+
+.contentContainer .description dl dd,
+.contentContainer .details dl dd,
+.serializedFormContainer dl dd {
+	margin: 5px 0 10px 0;
+	font-family: var(--docs-font-family-monospace);
 }
-td.colFirst, th.colFirst {
-    white-space:nowrap;
-    font-size:13px;
+
+.serializedFormContainer dl.nameValue dt {
+	margin-left: 1px;
+	font-size: 1.1em;
+	display: inline;
+	font-weight: bold;
 }
-td.colLast, th.colLast {
-    font-size:13px;
+
+.serializedFormContainer dl.nameValue dd {
+	margin: 0 0 0 1px;
+	font-size: 1.1em;
+	display: inline;
 }
-td.colOne, th.colOne {
-    font-size:13px;
+
+ul.horizontal li {
+	display: inline;
+	font-size: 0.9em;
 }
-.overviewSummary td.colFirst, .overviewSummary th.colFirst,
-.useSummary td.colFirst, .useSummary th.colFirst,
-.overviewSummary td.colOne, .overviewSummary th.colOne,
-.memberSummary td.colFirst, .memberSummary th.colFirst,
-.memberSummary td.colOne, .memberSummary th.colOne,
-.typeSummary td.colFirst{
-    width:25%;
-    vertical-align:top;
+
+ul.inheritance {
+	margin: 0;
+	padding: 0;
 }
-td.colOne a:link, td.colOne a:active, td.colOne a:visited, td.colOne a:hover, td.colFirst a:link, td.colFirst a:active, td.colFirst a:visited, td.colFirst a:hover, td.colLast a:link, td.colLast a:active, td.colLast a:visited, td.colLast a:hover, .constantValuesContainer td a:link, .constantValuesContainer td a:active, .constantValuesContainer td a:visited, .constantValuesContainer td a:hover {
-    font-weight:bold;
+
+ul.inheritance li {
+	display: inline;
+	list-style: none;
 }
-.tableSubHeadingColor {
-    background-color:#EEEEFF;
+
+ul.inheritance li ul.inheritance {
+	margin-left: 15px;
+	padding-left: 15px;
+	padding-top: 1px;
 }
+
+ul.blockList,
+ul.blockListLast {
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+ul.blockList li.blockList,
+ul.blockListLast li.blockList {
+	list-style: none;
+	margin-bottom: 15px;
+	line-height: 1.4;
+}
+
+ul.blockList ul.blockList li.blockList,
+ul.blockList ul.blockListLast li.blockList {
+	padding: 0 20px 5px 10px;
+	border-bottom: 1px solid var(--docs-color-gray-800);
+	border-radius: var(--docs-global-radius);
+}
+
+ul.blockList ul.blockList ul.blockList li.blockList,
+ul.blockList ul.blockList ul.blockListLast li.blockList {
+	padding: 0 0 5px 8px;
+	background-color: var(--docs-color-gray-900);
+	border: thin solid var(--docs-color-gray-800);
+	border-radius: var(--docs-global-radius);
+}
+
+ul.blockList ul.blockList ul.blockList ul.blockList li.blockList {
+	margin-left: 0;
+	padding-left: 0;
+	padding-bottom: 15px;
+	border: none;
+}
+
+ul.blockList ul.blockList ul.blockList ul.blockList li.blockListLast {
+	list-style: none;
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+table tr td dl,
+table tr td dl dt,
+table tr td dl dd {
+	margin-top: 0;
+	margin-bottom: 1px;
+}
+
+.overviewSummary,
+.memberSummary,
+.typeSummary,
+.useSummary,
+.constantsSummary,
+.deprecatedSummary {
+	width: 100%;
+}
+
+.overviewSummary,
+.memberSummary {
+	padding: 0;
+}
+
+.overviewSummary caption,
+.memberSummary caption,
+.typeSummary caption,
+.useSummary caption,
+.constantsSummary caption,
+.deprecatedSummary caption {
+	position: relative;
+	text-align: left;
+	background-repeat: no-repeat;
+	color: var(--docs-color-text);
+	font-weight: bold;
+	clear: none;
+	overflow: hidden;
+	padding: 10px 0 0 1px;
+	margin: 0;
+	white-space: pre;
+}
+
+.overviewSummary caption a:link,
+.memberSummary caption a:link,
+.typeSummary caption a:link,
+.useSummary caption a:link,
+.constantsSummary caption a:link,
+.deprecatedSummary caption a:link,
+.overviewSummary caption a:hover,
+.memberSummary caption a:hover,
+.typeSummary caption a:hover,
+.useSummary caption a:hover,
+.constantsSummary caption a:hover,
+.deprecatedSummary caption a:hover,
+.overviewSummary caption a:active,
+.memberSummary caption a:active,
+.typeSummary caption a:active,
+.useSummary caption a:active,
+.constantsSummary caption a:active,
+.deprecatedSummary caption a:active,
+.overviewSummary caption a:visited,
+.memberSummary caption a:visited,
+.typeSummary caption a:visited,
+.useSummary caption a:visited,
+.constantsSummary caption a:visited,
+.deprecatedSummary caption a:visited {
+	color: var(--docs-color-text);
+}
+
+.overviewSummary caption span,
+.memberSummary caption span,
+.typeSummary caption span,
+.useSummary caption span,
+.constantsSummary caption span,
+.deprecatedSummary caption span {
+	white-space: nowrap;
+	padding: 5px 12px 7px;
+	float: left;
+	background-color: var(--docs-accent-3);
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border: none;
+}
+
+.memberSummary caption span.activeTableTab span {
+	white-space: nowrap;
+	padding-top: 5px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-right: 5px;
+	float: left;
+	background-color: var(--docs-accent-3);
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	height: 16px;
+}
+
+.memberSummary caption span.tableTab span {
+	white-space: nowrap;
+	padding-top: 5px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-right: 5px;
+	float: left;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	height: 16px;
+}
+
+.memberSummary caption span.tableTab,
+.memberSummary caption span.activeTableTab {
+	padding-top: 0;
+	padding-left: 0;
+	padding-right: 0;
+	background-image: none;
+	float: none;
+	display: inline;
+}
+
+.overviewSummary .tabEnd,
+.memberSummary .tabEnd,
+.typeSummary .tabEnd,
+.useSummary .tabEnd,
+.constantsSummary .tabEnd,
+.deprecatedSummary .tabEnd {
+	display: none;
+	width: 5px;
+	position: relative;
+	float: left;
+	background-color: var(--docs-accent-3);
+}
+
+.memberSummary .activeTableTab .tabEnd {
+	display: none;
+	width: 5px;
+	margin-right: 3px;
+	position: relative;
+	float: left;
+	background-color: var(--docs-accent-3);
+}
+
+.memberSummary .tableTab .tabEnd {
+	display: none;
+	width: 5px;
+	margin-right: 3px;
+	position: relative;
+	float: left;
+}
+
+.overviewSummary td,
+.memberSummary td,
+.typeSummary td,
+.useSummary td,
+.constantsSummary td,
+.deprecatedSummary td {
+	text-align: left;
+	padding: 0 0 12px 10px;
+	width: 100%;
+}
+
+th.colOne,
+th.colFirst,
+th.colLast,
+.useSummary th,
+.constantsSummary th,
+td.colOne,
+td.colFirst,
+td.colLast,
+.useSummary td,
+.constantsSummary td {
+	vertical-align: middle;
+	padding-right: 0;
+	padding-top: 8px;
+	padding-bottom: 3px;
+}
+
+th.colFirst,
+th.colLast,
+th.colOne,
+.constantsSummary th {
+	background: var(--docs-color-gray-800);
+	text-align: left;
+	padding: 8px 3px 3px 7px;
+}
+
+td.colFirst,
+th.colFirst {
+	white-space: nowrap;
+}
+
+.overviewSummary td.colFirst,
+.overviewSummary th.colFirst,
+.overviewSummary td.colOne,
+.overviewSummary th.colOne,
+.memberSummary td.colFirst,
+.memberSummary th.colFirst,
+.memberSummary td.colOne,
+.memberSummary th.colOne,
+.typeSummary td.colFirst {
+	width: 25%;
+	vertical-align: middle;
+}
+
+td.colOne a:link,
+td.colOne a:active,
+td.colOne a:visited,
+td.colOne a:hover,
+td.colFirst a:link,
+td.colFirst a:active,
+td.colFirst a:visited,
+td.colFirst a:hover,
+td.colLast a:link,
+td.colLast a:active,
+td.colLast a:visited,
+td.colLast a:hover,
+.constantValuesContainer td a:link,
+.constantValuesContainer td a:active,
+.constantValuesContainer td a:visited,
+.constantValuesContainer td a:hover {
+	font-weight: bold;
+}
+
 .altColor {
-    background-color:#FFFFFF;
+	background-color: var(--docs-color-gray-900);
 }
+
 .rowColor {
-    background-color:#EEEEEF;
+	background-color: var(--docs-color-gray-900);
 }
-/*
-Content styles
-*/
+
+.altColor .colFirst,
+.altColor .colLast,
+.altColor .colOne {
+	border-bottom: 1px solid var(--docs-color-gray-800);
+}
+
+.rowColor .colFirst,
+.rowColor .colLast,
+.rowColor .colOne {
+	border-bottom: 1px solid var(--docs-color-gray-800);
+}
+
 .description pre {
-    margin-top:0;
+	margin-top: 0;
 }
+
 .deprecatedContent {
-    margin:0;
-    padding:10px 0;
+	margin: 0;
+	padding: 10px 0;
 }
+
 .docSummary {
-    padding:0;
+	padding: 0;
 }
 
 ul.blockList ul.blockList ul.blockList li.blockList h3 {
-    font-style:normal;
+	font-style: normal;
 }
 
 div.block {
-    font-size:14px;
-    font-family:'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
+	font-family: var(--docs-font-family-base);
 }
 
 td.colLast div {
-    padding-top:0px;
+	padding-top: 0;
 }
-
 
 td.colLast a {
-    padding-bottom:3px;
+	padding-bottom: 3px;
 }
-/*
-Formatting effect styles
-*/
+
 .sourceLineNo {
-    color:green;
-    padding:0 30px 0 0;
+	color: var(--docs-accent-1);
+	padding: 0 30px 0 0;
 }
+
 h1.hidden {
-    visibility:hidden;
-    overflow:hidden;
-    font-size:10px;
+	visibility: hidden;
+	overflow: hidden;
+	font-size: 10px;
 }
+
 .block {
-    display:block;
-    margin:3px 10px 2px 0px;
-    color:#474747;
-}
-.deprecatedLabel, .descfrmTypeLabel, .memberNameLabel, .memberNameLink,
-.overrideSpecifyLabel, .packageHierarchyLabel, .paramLabel, .returnLabel,
-.seeLabel, .simpleTagLabel, .throwsLabel, .typeNameLabel, .typeNameLink {
-    font-weight:bold;
-}
-.deprecationComment, .emphasizedPhrase, .interfaceName {
-    font-style:italic;
+	display: block;
+	margin: 3px 10px 2px 0;
+	color: var(--docs-color-text);
 }
 
-div.block div.block span.deprecationComment, div.block div.block span.emphasizedPhrase,
+.deprecatedLabel,
+.descfrmTypeLabel,
+.memberNameLabel,
+.memberNameLink,
+.overrideSpecifyLabel,
+.packageHierarchyLabel,
+.paramLabel,
+.returnLabel,
+.seeLabel,
+.simpleTagLabel,
+.throwsLabel,
+.typeNameLabel,
+.typeNameLink {
+	font-weight: bold;
+}
+
+.deprecationComment,
+.emphasizedPhrase,
+.interfaceName {
+	font-style: italic;
+}
+
+div.block div.block span.deprecationComment,
+div.block div.block span.emphasizedPhrase,
 div.block div.block span.interfaceName {
-    font-style:normal;
+	font-style: normal;
 }
 
-div.contentContainer ul.blockList li.blockList h2{
-    padding-bottom:0px;
+div.contentContainer ul.blockList li.blockList h2 {
+	padding-bottom: 0;
 }

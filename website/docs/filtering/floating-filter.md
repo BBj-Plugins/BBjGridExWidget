@@ -9,14 +9,14 @@ Floating Filters are an additional row under the column headers where the user w
 
 Floating filters are activated by setting the property floatingFilter = true on the column 
 
-```BBj
+```bbj
 grid!.setData(rs!)
 grid!.getColumn("CDNUMBER").setFloatingFilter(1)
 ```
 
 To have floating filters on for all columns by default, you should set `FloatingFilter` on the `GxDefaultColumnDefinition`. You can then disable floating filters on a per-column basis by setting `FloatingFilter = 0` on an individual column.
 
-```BBj
+```bbj
 grid!.getOptions().getDefaultColumnDefinition().setFloatingFilter(1)
 grid!.setData(rs!)
 grid!.getColumn("CDNUMBER").setFloatingFilter(0)

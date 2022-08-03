@@ -16,7 +16,7 @@ The example below demonstrates how the context object can be used. Note the foll
 * Selecting the reporting currency from the drop down places it in the context object.
 * When the reporting currency is changed the cell expression uses the currency supplied in the context object to calculate the value using `ctx.currency`
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use ::BBjGridExWidget/GxExpressions.bbj::GxExpression

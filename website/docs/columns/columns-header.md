@@ -26,7 +26,7 @@ By default, the text label for the header is display horizontally, ie as normal 
 
 The following example shows how you can provide a unique look & feel to the headers.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
@@ -80,7 +80,7 @@ Note That :
 
 * The header heights have all been changed in the gridOptions
 
-```BBj showLineNumbers
+```bbj showLineNumbers
   options! = grid!.getOptions()
 
   options!.setGroupHeaderHeight(75)
@@ -90,13 +90,13 @@ Note That :
 
 * The grouped column header `CD Information` has an specific style applied to it to make it bigger.
 
-```BBj showLineNumbers
+```bbj showLineNumbers
   grid!.addStyle(".my-group-class" , "{""font-size"":""50px""}")
 ```
 
 * The column labels have CSS applied to them so they are displayed vertically
 
-```BBj showLineNumbers
+```bbj showLineNumbers
   headerCellStyle! = new JsonObject()
   headerCellStyle!.addProperty("width","55px")
   headerCellStyle!.addProperty("writing-mode","vertical-lr")
@@ -116,7 +116,7 @@ You can add and remove style from the grid using the following two methods where
 
 You can provide a tooltip to the header using the column option `HeaderTooltip`
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 column! = grid!.getColumn("CDNUMBER")
 column!.setHeaderTooltip("My Custom Tooltip")
 ```

@@ -28,7 +28,7 @@ Expressions have access to several predefined variables:
 
 For instance 
 
-```BBj
+```bbj
 column!.setValueGetterExpression("data.FIRST_NAME + ' ' + data.LAST_NAME")
 ```
 
@@ -37,7 +37,7 @@ column!.setValueGetterExpression("data.FIRST_NAME + ' ' + data.LAST_NAME")
 The following example uses the value getter expression to compute the value of the `FULL_NAME` column
 from `FIRST_NAME` and `LAST_NAME` column
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxColumns.bbj::GxColumn
 use com.basiscomponents.db.ResultSet

@@ -24,7 +24,7 @@ The example below shows pinned rows. Select the number of rows you want to pin a
 
 In this example we're using [`GxRendererCustomHTML`](https://bbj-plugins.github.io/BBjGridExWidget/javadoc/GxRenderers/GxRendererCustomHTML.html) to render custom pinned row values for ALL columns (color blue and italics respectively).
 
-```BBj showLineNumbers
+```bbj showLineNumbers
 use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
 use ::BBjGridExWidget/GxRenderers.bbj::GxRendererCustomHTML
 use com.basiscomponents.db.ResultSet
