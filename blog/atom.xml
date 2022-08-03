@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2022-07-26T00:00:00.000Z</updated>
+    <updated>2022-08-03T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.10.1]]></title>
+        <id>gx-grid-v1.10.1</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.10.1"/>
+        <updated>2022-08-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bug Fixes]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li><strong>js:</strong> <code>SuggestionEditor</code> is broken (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/ee1e573a277305fa8b58b544cc12ecb36285d203" target="_blank" rel="noopener noreferrer">ee1e573</a>)</li><li><code>GxOptions::setStopEditingWhenGridLosesFocus</code> is broken (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/76edc2a3cc34ae965645a347d2b79041bfb88765" target="_blank" rel="noopener noreferrer">76edc2a</a>)</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.10.0]]></title>
         <id>gx-grid-v1.10.0</id>

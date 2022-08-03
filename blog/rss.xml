@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Tue, 26 Jul 2022 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 03 Aug 2022 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.10.1]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.10.1</link>
+            <guid>gx-grid-v1.10.1</guid>
+            <pubDate>Wed, 03 Aug 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li><strong>js:</strong> <code>SuggestionEditor</code> is broken (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/ee1e573a277305fa8b58b544cc12ecb36285d203" target="_blank" rel="noopener noreferrer">ee1e573</a>)</li><li><code>GxOptions::setStopEditingWhenGridLosesFocus</code> is broken (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/76edc2a3cc34ae965645a347d2b79041bfb88765" target="_blank" rel="noopener noreferrer">76edc2a</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.10.0]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.10.0</link>
