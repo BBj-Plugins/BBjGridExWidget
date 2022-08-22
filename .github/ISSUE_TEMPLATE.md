@@ -1,5 +1,5 @@
 <!--
-Thanks for contributing&mdash;you rock!
+Thanks for contributing. You rock!
 
 Please note:
 - These comments won't show up when you submit the issue.
@@ -10,15 +10,24 @@ If reporting a problem please make sure you confirm the following points so we c
 #### What product versions and settings are you using when this issue occurs?
 * BBj: 
 * BBjGridExWidget: 
-* Platform (GUI or BUI):
+* Platform (GUI, BUI or DWC):
 * Browser:
 
 #### Steps to Reproduce
 1. 
-1. 
-1. 
+2. 
+3. 
 
 #### What I Expected
 
 
 #### What Happened Instead
+
+
+
+### Sample Program
+
+```bbj
+```
+
+
