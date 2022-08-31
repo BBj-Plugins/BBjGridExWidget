@@ -13,7 +13,7 @@ Each of these approaches are presented in the following sections.
 
 ## Cell Style
 
-The cell style is nothing more thana map of css  values.
+The cell style is nothing more than map of css values.
 
 ```bbj
 use com.google.gson.JsonObject
