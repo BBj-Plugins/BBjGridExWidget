@@ -294,7 +294,7 @@ class SuggestionEditor {
    * @param {HTMLElement} input
    * @param {HTMLElement} inputRect
    * @param {HTMLElement} container
-   * @param {String} maxHeight
+   * @param {Number} maxHeight
    */
   // eslint-disable-next-line no-unused-vars
   _onAutocompleteCustomize(input, inputRect, container, maxHeight) {
@@ -304,6 +304,15 @@ class SuggestionEditor {
 
     if (this._params.height) {
       container.style.height = `${this._params.height}px`
+    }
+
+    if (maxHeight < 100) {
+      container.style.top = ''
+      container.style.bottom =
+        window.innerHeight - inputRect.bottom + input.offsetHeight + 'px'
+      container.style.maxHeight = this._params.height
+        ? `${this._params.height}px`
+        : '200px'
     }
   }
 
