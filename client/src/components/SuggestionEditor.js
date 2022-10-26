@@ -97,7 +97,6 @@ class SuggestionEditor {
       ? template(this._params.groupTemplate)
       : ''
 
-    console.log(params)
     this._autocomplete = autocomplete({
       input: this._input,
       debounceWaitMs: debounceWaitMs,
