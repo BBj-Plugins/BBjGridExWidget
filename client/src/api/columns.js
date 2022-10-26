@@ -21,6 +21,8 @@ const { deepParseJson } = require('deep-parse-json')
 export function gw_extendColumnDefinitions(definitions) {
   for (let i in definitions) {
     const def = definitions[i]
+    def.colId = String(def.colId)
+    def.field = String(def.field)
 
     def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox
     def.headerCheckboxSelection =

@@ -35,7 +35,7 @@ export function gw_startEditingCell(
   const node = api.getRowNode(row) || api.getDisplayedRowAtIndex(row)
 
   options.api.startEditingCell({
-    rowIndex: node.rowIndex,
+    rowIndex: node ? node.rowIndex : row,
     keyPress: Number(keyPress),
     colKey,
     charPress,

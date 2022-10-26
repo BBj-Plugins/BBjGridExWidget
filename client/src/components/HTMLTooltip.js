@@ -22,7 +22,7 @@ class HTMLTooltip {
     const tooltipValueGetter = params.colDef.tooltipValueGetter
     const isHeader = params.rowIndex === undefined
     const isGroupedHeader = isHeader && !!params.colDef.children
-    console.log(params)
+
     // eslint-disable-next-line no-prototype-builtins
     const data =
       !isHeader && !isGroupedHeader
