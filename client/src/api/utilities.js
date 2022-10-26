@@ -14,7 +14,8 @@
  * @return {Object} Document instance
  */
 export function gw_getDocument() {
-  return typeof $doc !== 'undefined' ? $doc : document
+  // eslint-disable-next-line no-undef
+  return $gw_doc
 }
 
 /**
@@ -25,7 +26,8 @@ export function gw_getDocument() {
  * @return {Object} Window instance
  */
 export function gw_getWindow() {
-  return typeof $wnd !== 'undefined' ? $wnd : window
+  // eslint-disable-next-line no-undef
+  return $gw_wnd
 }
 
 /**

@@ -272,7 +272,7 @@ class public GxExecutor
           GxLogger.log("GxExecutor",String.format("%s    Script : %s" ,platform! ,script!))
 
           if(#isWeb()) then
-            script! = "console.log(`" + iff(script!.contains("$wnd.gw_init"), "$wnd.gw_init : " + widget!.getRootId() , script!)  + "`);"  + script!
+            script! = "console.log(`" + iff(script!.contains("$gw_wnd.gw_init"), "$gw_wnd.gw_init : " + widget!.getRootId() , script!)  + "`);"  + script!
           fi
         fi
 

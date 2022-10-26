@@ -113,7 +113,7 @@ class public BBjGridExWidgetMock extends BBjGridExWidget
     rem  * {@inheritDoc}
     rem  */
     method public void focus(BBjString row! , BBjString column! , BBjString floating!)
-        script$ = String.format("$wnd.gw_focus('%s','%s','%s')", row!, column!, floating!)
+        script$ = String.format("$gw_wnd.gw_focus('%s','%s','%s')", row!, column!, floating!)
         #getExecutor().execute(script$)
     methodend
 
