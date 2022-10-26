@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Wed, 31 Aug 2022 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 26 Oct 2022 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.11.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.11.0</link>
+            <guid>gx-grid-v1.11.0</guid>
+            <pubDate>Wed, 26 Oct 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>🐛 Allow DWC grids to run inside BUI and DWC apps (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/d815620eb035ed7156a201146f37e76789123f72" target="_blank" rel="noopener noreferrer">d815620</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/249" target="_blank" rel="noopener noreferrer">#249</a></li><li>🐛 Grid fails to focus and start editing a column if its empty (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/cc3092a9681b68a530c646c5219301e030ce6106" target="_blank" rel="noopener noreferrer">cc3092a</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/245" target="_blank" rel="noopener noreferrer">#245</a></li><li>🐛 grid fails to render when the columnd id is a number (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e8d43a3fc627e5c9ca453e90c59724e079f8db0f" target="_blank" rel="noopener noreferrer">e8d43a3</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/244" target="_blank" rel="noopener noreferrer">#244</a></li><li>🐛 GxCellEditorSuggestion does not relocate when there is not enough space. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/fc9e39030985de5ed630873cc90df1e1001742ee" target="_blank" rel="noopener noreferrer">fc9e390</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/248" target="_blank" rel="noopener noreferrer">#248</a></li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.10.2]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.10.2</link>
