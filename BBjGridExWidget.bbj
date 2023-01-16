@@ -13,6 +13,7 @@ use java.util.Arrays
 use java.util.ArrayList
 use java.util.HashSet
 use java.util.LinkedHashMap
+use java.util.UUID
 use java.lang.StringBuilder
 use java.sql.Types
 use com.google.gson.Gson
@@ -664,8 +665,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem * @param BBjNumber h! height
   rem */
   method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
-    #create(wnd!,id!,x!,y!,w!,h!,"")
-  methodend
+    #this!(null(), wnd!, id!, x!, y!, w!, h!, "")
+  methodend  
   rem /**
   rem  * The constructor that creates the widget on wnd!
   rem  *
@@ -680,7 +681,43 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *                           Unless you want to do something really unusual
   rem */
   method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
-    #create(wnd!,id!,x!,y!,w!,h!,template$)
+    #this!(null(), wnd!, id!, x!, y!, w!, h!, template$)
+  methodend      
+  rem /**
+  rem * The constructor that creates the widget on wnd!
+  rem *
+  rem * @param BBjString rootId! The root ID of the grid. This is used to identify the grid in the client side.
+  rem  *                         This is useful when you have multiple grids in the same window.
+  rem  *                         By default the root ID is  a random string.
+  rem * @param BBjWindow wnd!! parent window
+  rem * @param BBjNumber id! the control ID
+  rem * @param BBjNumber x! x-location
+  rem * @param BBjNumber y! y-location
+  rem * @param BBjNumber w! width
+  rem * @param BBjNumber h! height
+  rem */
+  method public BBjGridExWidget(BBjString rootId!, BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
+    #this!(rootId!, wnd!, id!, x!, y!, w!, h!, "")
+  methodend    
+  rem /**
+  rem * The constructor that creates the widget on wnd!
+  rem *
+  rem * @param BBjString rootId! The root ID of the grid. This is used to identify the grid in the client side.
+  rem  *                         This is useful when you have multiple grids in the same window.
+  rem  *                         By default the root ID is  a random string.
+  rem * @param BBjWindow wnd!! parent window
+  rem * @param BBjNumber id! the control ID
+  rem * @param BBjNumber x! x-location
+  rem * @param BBjNumber y! y-location
+  rem * @param BBjNumber w! width
+  rem * @param BBjNumber h! height
+  rem * @param BBjString template$ The client's HTML template to use in order to build the grid.
+  rem *                           By default you will never need  to change the default Template.
+  rem *                           Unless you want to do something really unusual
+  rem */
+  method public BBjGridExWidget(BBjString rootId!, BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
+    #RootId! = rootId!
+    #create(wnd!, id!, x!, y!, w!, h!, template$)
   methodend
   rem /**
   rem  * The constructor that creates the widget in the ChildWindow
@@ -688,7 +725,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
   rem  */
   method public BBjGridExWidget(BBjChildWindow wnd!)
-    #create(wnd!,"")
+    #this!(null(), wnd!, "")
   methodend
   rem /**
   rem  * The constructor that creates the widget in the ChildWindow
@@ -698,8 +735,34 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *                           By default you will never need  to change the default Template.
   rem  *                           Unless you want to do something really unusual
   rem  */
-  method public BBjGridExWidget(BBjChildWindow wnd!,BBjString template$)
-    #create(wnd!,template$)
+  method public BBjGridExWidget(BBjChildWindow wnd!, BBjString template$)
+    #this!(null(), wnd!, template$)
+  methodend
+  rem /**
+  rem  * The constructor that creates the widget in the ChildWindow
+  rem  *
+  rem  * @param BBjString rootId! The root ID of the grid. This is used to identify the grid in the client side.
+  rem  *                          This is useful when you have multiple grids in the same window.
+  rem  *                          By default the root ID is  a random string.
+  rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+  rem  */
+  method public BBjGridExWidget(BBjString rootId!, BBjChildWindow wnd!)
+    #this!(RootId!, wnd!, "")
+  methodend    
+  rem /**
+  rem  * The constructor that creates the widget in the ChildWindow
+  rem  *
+  rem  * @param BBjString rootId! The root ID of the grid. This is used to identify the grid in the client side.
+  rem  *                          This is useful when you have multiple grids in the same window.
+  rem  *                          By default the root ID is  a random string.
+  rem  * @param BBjChildWindow wnd!: the child window in which to create the BBjGridExWidget
+  rem  * @param BBjString template$ The client's HTML template to use in order to build the grid.
+  rem  *                           By default you will never need  to change the default Template.
+  rem  *                           Unless you want to do something really unusual
+  rem  */
+  method public BBjGridExWidget(BBjString rootId!, BBjChildWindow wnd!, BBjString template$)
+    #RootId! = rootId!
+    #create(wnd!, template$)
   methodend
   rem /**
   rem  * Create the widget
@@ -861,8 +924,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method public BBjString getRootId()
     if(null() = #RootId!)
+      rem not used anymore. We keep it for the getInstancesCount() method
       #InstanceCount! = #InstanceCount! + 1
-      #RootId! = "gx-grid-" + str(#InstanceCount!)
+
+      uuid! = UUID.randomUUID().toString().replace("-","").substring(0,8)
+      #RootId! = "gx-grid-" + uuid!
     FI
 
     methodret #RootId!
@@ -871,8 +937,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * Return the number of initiated instances of the grid
   rem  *
   rem  * @return BBjNumber The number of instances
+  rem  * @deprecated this method is deprecated and will be removed in the next release.
+  rem  *             The method will return a wrong value if the BBj session is different from the one
+  rem  *             in which the grid was initiated.
+  rem  * @see <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/251">Issue 251</a>
   rem  */
   method public static BBjNumber getInstanceCount()
+    msg$ = "since version 1.12.0, BBjGridExWidget.getInstanceCount is deprecated and will be removed in the next release." +
+    "The method will return a wrong value if the BBj session is different from the one" +
+    "in which the grid was initiated."
+    GxLogger.warn(msg$)
     methodret #InstanceCount!
   methodend
   rem /**
