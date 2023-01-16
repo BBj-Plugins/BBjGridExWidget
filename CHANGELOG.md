@@ -1,3 +1,12 @@
+## [1.11.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.11.0...1.11.1) (2023-01-16)
+
+
+### Bug Fixes
+
+* fix collision in grid identifiers (bui/dwc) ([68d3078](https://github.com/BBj-Plugins/BBjGridExWidget/commit/68d3078e4ccaca719e3972229ed68128e9894af2)), closes [#251](https://github.com/BBj-Plugins/BBjGridExWidget/issues/251)
+
+
+
 # [1.11.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.10.2...1.11.0) (2022-10-26)
 
 
