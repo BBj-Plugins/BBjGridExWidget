@@ -7,11 +7,6 @@
   "bbj_dependency": "20.11",
   "documentation_url": "https://bbj-plugins.github.io/BBjGridExWidget/",
   "plugin_dependencies": [
-    {
-      "plugin_name": "BBjWidget",
-      "plugin_version": "1.2",
-      "project_url": "https://github.com/BBj-Plugins/BBjWidget"
-    }
   ],
   "plugin_development_dependencies": [
     {
