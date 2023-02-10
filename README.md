@@ -1,7 +1,7 @@
 # A Grid Widget Plugin for BBj
 <p>
   <a href="http://www.basis.cloud/downloads">
-    <img src="https://img.shields.io/badge/BBj-v20.11-blue" alt="BBj v20.11" />
+    <img src="https://img.shields.io/badge/BBj-v22.13-blue" alt="BBj v22.13" />
   </a>
   <a href="http://www.basis.cloud/downloads">
     <img src="https://img.shields.io/badge/BBj-SAM%20required-orange" alt="BBj sam required" />
