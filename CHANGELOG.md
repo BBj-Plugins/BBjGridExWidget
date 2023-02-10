@@ -1,3 +1,9 @@
+# [1.12.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.11.1...1.12.0) (2023-02-10)
+
+
+Version `1.12.0` no longer includes [BBjWidget](https://github.com/BBj-Plugins/BBjWidget) as a dependency. By default, BBj includes the most recent version of BBjWidget.
+
+
 ## [1.11.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.11.0...1.11.1) (2023-01-16)
 
 
