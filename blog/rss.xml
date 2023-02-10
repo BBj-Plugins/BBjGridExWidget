@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Mon, 16 Jan 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 10 Feb 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.12.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.12.0</link>
+            <guid>gx-grid-v1.12.0</guid>
+            <pubDate>Fri, 10 Feb 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Version 1.12.0 no longer includes BBjWidget as a dependency. By default, BBj includes the most recent version of BBjWidget.]]></description>
+            <content:encoded><![CDATA[<p>Version <code>1.12.0</code> no longer includes <a href="https://github.com/BBj-Plugins/BBjWidget" target="_blank" rel="noopener noreferrer">BBjWidget</a> as a dependency. By default, BBj includes the most recent version of BBjWidget.</p>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.11.1]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.11.1</link>
