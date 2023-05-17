@@ -48,7 +48,7 @@ module.exports = {
             loader: 'style-loader',
             options: {
               insertInto: function() {
-                return window.parent.document.head
+                return window.document.head
               },
             },
           },

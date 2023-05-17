@@ -15541,7 +15541,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       options.transform = transform;
 
       options.insertInto = function () {
-        return window.parent.document.head;
+        return window.document.head;
       };
 
       var update = __webpack_require__(4)(content, options);
@@ -16524,7 +16524,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       options.transform = transform;
 
       options.insertInto = function () {
-        return window.parent.document.head;
+        return window.document.head;
       };
 
       var update = __webpack_require__(4)(content, options);
@@ -17139,7 +17139,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       options.transform = transform;
 
       options.insertInto = function () {
-        return window.parent.document.head;
+        return window.document.head;
       };
 
       var update = __webpack_require__(4)(content, options);
@@ -17729,7 +17729,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       options.transform = transform;
 
       options.insertInto = function () {
-        return window.parent.document.head;
+        return window.document.head;
       };
 
       var update = __webpack_require__(4)(content, options);
@@ -23346,7 +23346,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       options.transform = transform;
 
       options.insertInto = function () {
-        return window.parent.document.head;
+        return window.document.head;
       };
 
       var update = __webpack_require__(4)(content, options);
@@ -23383,7 +23383,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       options.transform = transform;
 
       options.insertInto = function () {
-        return window.parent.document.head;
+        return window.document.head;
       };
 
       var update = __webpack_require__(4)(content, options);
@@ -28456,7 +28456,7 @@ var options = {"hmr":true}
 
 options.transform = transform
 options.insertInto = function() {
-                return window.parent.document.head
+                return window.document.head
               };
 
 var update = __webpack_require__(14)(content, options);
@@ -28581,7 +28581,7 @@ var options = {"hmr":true}
 
 options.transform = transform
 options.insertInto = function() {
-                return window.parent.document.head
+                return window.document.head
               };
 
 var update = __webpack_require__(14)(content, options);
@@ -28614,7 +28614,7 @@ var options = {"hmr":true}
 
 options.transform = transform
 options.insertInto = function() {
-                return window.parent.document.head
+                return window.document.head
               };
 
 var update = __webpack_require__(14)(content, options);
