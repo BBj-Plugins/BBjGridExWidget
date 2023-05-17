@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2023-02-10T00:00:00.000Z</updated>
+    <updated>2023-05-17T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.12.1]]></title>
+        <id>gx-grid-v1.12.1</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.12.1"/>
+        <updated>2023-05-17T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bug Fixes]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>🐛 style should injected in the window itself not the parent (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4e07747124a23e7bb140bea34b85bd40ad98720" target="_blank" rel="noopener noreferrer">e4e0774</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/256" target="_blank" rel="noopener noreferrer">#256</a></li><li>🐛 two cosmetic bugs in BBjGridExWidget (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e3ac47813e86b37033691e39e54ca64e265b862a" target="_blank" rel="noopener noreferrer">e3ac478</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/253" target="_blank" rel="noopener noreferrer">#253</a></li><li>The languages manager cannot handle umlauts (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/8f2c4addf3a17e33e4b2203680890fdd8d98c2cd" target="_blank" rel="noopener noreferrer">8f2c4ad</a>)</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.12.0]]></title>
         <id>gx-grid-v1.12.0</id>

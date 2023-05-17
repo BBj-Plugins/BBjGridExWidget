@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Fri, 10 Feb 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 17 May 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.12.1]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.12.1</link>
+            <guid>gx-grid-v1.12.1</guid>
+            <pubDate>Wed, 17 May 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>🐛 style should injected in the window itself not the parent (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4e07747124a23e7bb140bea34b85bd40ad98720" target="_blank" rel="noopener noreferrer">e4e0774</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/256" target="_blank" rel="noopener noreferrer">#256</a></li><li>🐛 two cosmetic bugs in BBjGridExWidget (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e3ac47813e86b37033691e39e54ca64e265b862a" target="_blank" rel="noopener noreferrer">e3ac478</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/253" target="_blank" rel="noopener noreferrer">#253</a></li><li>The languages manager cannot handle umlauts (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/8f2c4addf3a17e33e4b2203680890fdd8d98c2cd" target="_blank" rel="noopener noreferrer">8f2c4ad</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.12.0]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.12.0</link>
