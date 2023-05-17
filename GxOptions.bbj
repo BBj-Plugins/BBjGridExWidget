@@ -1234,16 +1234,6 @@ class public GxOptions
         #setImmutableColumns(enabled!)
     methodend
     rem /**
-    rem  * Get DeltaColumn Mode value
-    rem  *
-    rem  * @return BBjNumber true when enabled , false otherwise
-    rem  *
-    rem  * @deprecated use `GxOptions.getImmutableColumns` instead
-    rem  */
-    method public BBjNumber getDeltaColumnMode()
-        methodret #getImmutableColumns()
-    methodend
-    rem /**
     rem  * @deprecated since v1.7.0 - use `GxOptions.setSuppressRowDeselection(BBjNumber value!)` instead
     rem  */
     method public void setRowDeselection(BBjNumber value!)      

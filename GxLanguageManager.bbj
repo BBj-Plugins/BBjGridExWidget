@@ -21,89 +21,89 @@ REM  * @author Hyyan Abo Fakher
 REM  */
 class public GxLanguageManager
 
-    field public BBjString Language$ = ""
-    field public HashMap Languages! = new HashMap()
-    field public HashMap LoadedLanguages! = new HashMap()
-    rem /**
-    rem  * GxLanguageManager
-    rem  *
-    rem  * Construct a new GxLanguageManager instance
-    rem  */
-    method public GxLanguageManager()
-        #add("de_DE","BBjGridExWidget/langs/de_DE.json")
-        #add("nl_NL","BBjGridExWidget/langs/nl_NL.json")
-        #add("fr_FR","BBjGridExWidget/langs/fr_FR.json")
-    methodend
-    rem /**
-    rem  * Get the selected language
-    rem  *
-    rem  * @return BBjString the selected language if any, otherwise fallback to `stbl("!LOCALE")`
-    rem  */
-    method public BBjString getLanguage()
-        locale$ = stbl("!LOCALE")
-        methodret iff(len(#Language$) > 0 , #Language$ , locale$)
-    methodend
-    rem /**
-    rem  * Add Language File
-    rem  * This method can be used for new languages, or to
-    rem  * overrule the default translation file that is shipped
-    rem  * with the grid plugin
-    rem  *
-    rem  * @param BBjString language$ the language key (ex: de_DE)
-    rem  * @param BBjString path$ the language file (JSON file)
-    rem  */
-    method public void add(BBjString language$ , BBjString path$)
-        REM  TODO:  check if file exits
-        #Languages!.put(language$ , path$)
-        #LoadedLanguages!.put(language$ , "")
-    methodend
-    rem /**
-    rem  * Remove an added language
-    rem  *
-    rem  * @param BBjString language$ the language key (ex: de_DE)
-    rem  */
-    method public void remove(BBjString language$)
-        if #Languages!.containsKey(language$)
-            #Languages!.remove(language$)
-        FI
+  field public BBjString Language$ = ""
+  field public HashMap Languages! = new HashMap()
+  field public HashMap LoadedLanguages! = new HashMap()
+  rem /**
+  rem  * GxLanguageManager
+  rem  *
+  rem  * Construct a new GxLanguageManager instance
+  rem  */
+  method public GxLanguageManager()
+    #add("de_DE","BBjGridExWidget/langs/de_DE.json")
+    #add("nl_NL","BBjGridExWidget/langs/nl_NL.json")
+    #add("fr_FR","BBjGridExWidget/langs/fr_FR.json")
+  methodend
+  rem /**
+  rem  * Get the selected language
+  rem  *
+  rem  * @return BBjString the selected language if any, otherwise fallback to `stbl("!LOCALE")`
+  rem  */
+  method public String getLanguage()
+    locale$ = stbl("!LOCALE")
+    methodret iff(len(#Language$) > 0 , #Language$ , locale$)
+  methodend
+  rem /**
+  rem  * Add Language File
+  rem  * This method can be used for new languages, or to
+  rem  * overrule the default translation file that is shipped
+  rem  * with the grid plugin
+  rem  *
+  rem  * @param BBjString language$ the language key (ex: de_DE)
+  rem  * @param BBjString path$ the language file (JSON file)
+  rem  */
+  method public void add(BBjString language$ , BBjString path$)
+    REM  TODO:  check if file exits
+    #Languages!.put(language$ , path$)
+    #LoadedLanguages!.put(language$ , "")
+  methodend
+  rem /**
+  rem  * Remove an added language
+  rem  *
+  rem  * @param BBjString language$ the language key (ex: de_DE)
+  rem  */
+  method public void remove(BBjString language$)
+    if #Languages!.containsKey(language$)
+      #Languages!.remove(language$)
+    FI
 
-        if #LoadedLanguages!.containsKey(language$)
-            #LoadedLanguages!.remove(language$)
-        FI
-    methodend
-    rem /**
-    rem  * Get the language keys
-    rem  *
-    rem  * Get the translation keys as JSON string
-    rem  *
-    rem  * @return BBjString
-    rem  */
-    method public BBjString getLanguageKeys()
-        methodret #getLanguageKeys(#getLanguage())
-    methodend
-    rem /**
-    rem  * Get the language keys
-    rem  *
-    rem  * Get the translation keys as JSON string
-    rem  *
-    rem  * @return BBjString
-    rem  */
-    method public BBjString getLanguageKeys(BBjString language$)
-        content$ = ""
+    if #LoadedLanguages!.containsKey(language$)
+      #LoadedLanguages!.remove(language$)
+    FI
+  methodend
+  rem /**
+  rem  * Get the language keys
+  rem  *
+  rem  * Get the translation keys as JSON string
+  rem  *
+  rem  * @return BBjString
+  rem  */
+  method public String getLanguageKeys()
+    methodret #getLanguageKeys(#getLanguage())
+  methodend
+  rem /**
+  rem  * Get the language keys
+  rem  *
+  rem  * Get the translation keys as JSON string
+  rem  *
+  rem  * @return BBjString
+  rem  */
+  method public String getLanguageKeys(BBjString language$)
+    content$ = ""
 
-        if #LoadedLanguages!.containsKey(language$) then
-            content$ = #LoadedLanguages!.get(language$)
-            rem we did not load the language yet
-            if len(#LoadedLanguages!.get(language$)) = 0 then
-                ch=unt
-                open (ch)#Languages!.get(language$)
-                read record (ch,siz=5512000)content$
-                close (ch)
-                #LoadedLanguages!.put(language$ , content$)
-            FI
-        FI
+    if #LoadedLanguages!.containsKey(language$) then
+      content$ = #LoadedLanguages!.get(language$)
+      rem we did not load the language yet
+      if len(#LoadedLanguages!.get(language$)) = 0 then
+        ch=unt
+        open (ch)#Languages!.get(language$)
+        read record (ch,siz=5512000)content$
+        close (ch)
+        #LoadedLanguages!.put(language$ , new String(content$,"UTF-8"))
+      FI
+    FI
 
-        methodret content$
-    methodend
-    
+    methodret new String(content$,"UTF-8")
+  methodend
+
 classend
