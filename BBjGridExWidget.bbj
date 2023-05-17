@@ -666,7 +666,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem */
   method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
     #this!(null(), wnd!, id!, x!, y!, w!, h!, "")
-  methodend  
+  methodend
   rem /**
   rem  * The constructor that creates the widget on wnd!
   rem  *
@@ -682,7 +682,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem */
   method public BBjGridExWidget(BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h! , BBjString template$)
     #this!(null(), wnd!, id!, x!, y!, w!, h!, template$)
-  methodend      
+  methodend
   rem /**
   rem * The constructor that creates the widget on wnd!
   rem *
@@ -698,7 +698,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem */
   method public BBjGridExWidget(BBjString rootId!, BBjWindow wnd!, BBjNumber id!, BBjNumber x!, BBjNumber y!, BBjNumber w!, BBjNumber h!)
     #this!(rootId!, wnd!, id!, x!, y!, w!, h!, "")
-  methodend    
+  methodend
   rem /**
   rem * The constructor that creates the widget on wnd!
   rem *
@@ -748,7 +748,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method public BBjGridExWidget(BBjString rootId!, BBjChildWindow wnd!)
     #this!(RootId!, wnd!, "")
-  methodend    
+  methodend
   rem /**
   rem  * The constructor that creates the widget in the ChildWindow
   rem  *
@@ -926,7 +926,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     if(null() = #RootId!)
       rem not used anymore. We keep it for the getInstancesCount() method
       #InstanceCount! = #InstanceCount! + 1
-
       uuid! = UUID.randomUUID().toString().replace("-","").substring(0,8)
       #RootId! = "gx-grid-" + uuid!
     FI
@@ -943,9 +942,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @see <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/251">Issue 251</a>
   rem  */
   method public static BBjNumber getInstanceCount()
-    msg$ = "Since version 1.11.1, BBjGridExWidget.getInstanceCount is deprecated and will be removed in the next release." +
-    "The method will return a wrong value if the BBj session is different from the one" +
-    "in which the grid was initiated."
+    msg$ = "Since version 1.11.1, BBjGridExWidget.getInstanceCount is deprecated and will be removed in the next release. The method will return a wrong value if the BBj session is different from the one in which the grid was initiated."
     GxLogger.warn(msg$)
     methodret #InstanceCount!
   methodend
