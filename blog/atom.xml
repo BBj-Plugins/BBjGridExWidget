@@ -12,8 +12,8 @@
         <id>gx-grid-v1.13.0</id>
         <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.0"/>
         <updated>2023-10-06T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Beginning with version 1.13.0, BBj version 23.00`` is now a requirement.]]></summary>
-        <content type="html"><![CDATA[<p>Beginning with version <code>1.13.0``, BBj version </code>23.00`` is now a requirement.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>remove dependency on style directives (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/41651720256b7b0efea47d08425e1802593e2ca8" target="_blank" rel="noopener noreferrer">4165172</a>)</li></ul>]]></content>
+        <summary type="html"><![CDATA[Beginning with version 1.13.0, BBj version 23.00 is now a requirement.]]></summary>
+        <content type="html"><![CDATA[<p>Beginning with version <code>1.13.0</code>, BBj version <code>23.00</code> is now a requirement.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>remove dependency on style directives (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/41651720256b7b0efea47d08425e1802593e2ca8" target="_blank" rel="noopener noreferrer">4165172</a>)</li></ul>]]></content>
         <author>
             <name>Hyyan Abo Fakher</name>
             <uri>https://github.com/hyyan</uri>
