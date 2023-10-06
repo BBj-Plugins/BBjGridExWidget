@@ -962,9 +962,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       enableInternalSpecialKeysHandling! = stbl("!OPTIONS","HTMLVIEW_INTERNAL_TABS=TRUE")
 
       if (info(3,6)="6")
-        rem force components to load in DWC
-        #getCanvas().addButton(32765,0,0,0,0,"",$0010$)
-        #getCanvas().setStyle("@element","{""width"":""100%"",""height"":""100%""}")
+        #getCanvas().setStyle("width", "100%")
+        #getCanvas().setStyle("height", "100%")
       fi
 
       html$ = #getTemplate()

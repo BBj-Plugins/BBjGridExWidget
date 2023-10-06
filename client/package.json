@@ -3,16 +3,19 @@
   "main": "client/dist/bbj-grid-widget.min.js",
   "author": "BASIS Europe Distribution GmbH",
   "license": "MIT",
-  "version": "1.12.2",
+  "version": "1.13.0",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/webpack --watch --progress",
-    "build": "yarn run lint && yarn run format && ./node_modules/.bin/webpack --mode=production ",
-    "build:dev": "yarn run lint:fix && yarn run format && ./node_modules/.bin/webpack",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && ./node_modules/.bin/webpack --watch --progress",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && yarn run lint && yarn run format && ./node_modules/.bin/webpack --mode=production ",
+    "build:dev": "export NODE_OPTIONS=--openssl-legacy-provider && yarn run lint:fix && yarn run format && ./node_modules/.bin/webpack",
     "lint": "./node_modules/.bin/eslint  -c ./.eslintrc.json --ext .js ./",
     "lint:fix": "./node_modules/.bin/eslint  --fix -c ./.eslintrc.json --ext .js ./",
     "format": "./node_modules/.bin/prettier --write \"{src,demo,test}/**/*.{js,html,css}\"",
     "docs:bbj": "cd ../ && scripts/bbj/docs-generator"
+  },
+  "engines": {
+    "node": "16.x"
   },
   "browserslist": [
     "last 2 version",
