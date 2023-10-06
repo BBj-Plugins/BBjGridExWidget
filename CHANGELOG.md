@@ -1,3 +1,11 @@
+# [1.13.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.12.0...1.13.0) (2023-10-06)
+
+
+### Bug Fixes
+
+* remove dependency on style directives ([4165172](https://github.com/BBj-Plugins/BBjGridExWidget/commit/41651720256b7b0efea47d08425e1802593e2ca8))
+
+
 ## [1.12.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.12.0...1.12.2) (2023-05-18)
 
 
