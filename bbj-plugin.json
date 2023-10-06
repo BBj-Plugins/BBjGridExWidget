@@ -3,7 +3,7 @@
   "description": "An Advanced BBj Data Grid / Data Table Widget",
   "version": "1.13.0",
   "author": "BASIS Europe Distribution GmbH",
-  "licence": "MIT",
+  "license": "MIT",
   "bbj_dependency": "23.00",
   "documentation_url": "https://bbj-plugins.github.io/BBjGridExWidget/",
   "plugin_dependencies": [],
