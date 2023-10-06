@@ -5,7 +5,7 @@ authors: [hyyan]
 tags: [release, changelog]
 ---
 
-Beginning with version `1.13.0``, BBj version `23.00`` is now a requirement.
+Beginning with version `1.13.0`, BBj version `23.00` is now a requirement.
 
 ## Bug Fixes
 
