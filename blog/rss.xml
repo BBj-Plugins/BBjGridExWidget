@@ -4,17 +4,27 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Fri, 06 Oct 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 13 Oct 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.13.1]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.0</link>
+            <guid>gx-grid-v1.13.0</guid>
+            <pubDate>Fri, 13 Oct 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h3><ul><li>throw proper exception when executeScript fails. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc926e79ed7caa320bab0a8eee1e0108f3ae0634" target="_blank" rel="noopener noreferrer">bc926e7</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.13.0]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.0</link>
             <guid>gx-grid-v1.13.0</guid>
             <pubDate>Fri, 06 Oct 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Beginning with version 1.13.0, BBj version 23.00 is now a requirement.]]></description>
-            <content:encoded><![CDATA[<p>Beginning with version <code>1.13.0</code>, BBj version <code>23.00</code> is now a requirement.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>remove dependency on style directives (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/41651720256b7b0efea47d08425e1802593e2ca8" target="_blank" rel="noopener noreferrer">4165172</a>)</li></ul>]]></content:encoded>
+            <content:encoded><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h3><ul><li>throw proper exception when executeScript fails. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc926e79ed7caa320bab0a8eee1e0108f3ae0634" target="_blank" rel="noopener noreferrer">bc926e7</a>)</li></ul>]]></content:encoded>
             <category>release</category>
             <category>changelog</category>
         </item>
