@@ -368,13 +368,16 @@ class public GxExecutor
 
     if widget!.getHTMLView().isDestroyed() <> BBjAPI.TRUE then
       if(async!)
-        widget!.getHTMLView().executeAsyncScript(script!)
+        widget!.getHTMLView().executeAsyncScript(script!, err=browser_err)
       else
-        result! = widget!.getHTMLView().executeScript(script!)
+        result! = widget!.getHTMLView().executeScript(script!, err=browser_err)
       fi
     fi
 
     methodret result!
+
+    browser_err:
+        throw "Error executing script.",60
   methodend
   rem /**
   rem  * Start count down timer
