@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Fri, 13 Oct 2023 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 26 Feb 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.14.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.14.0</link>
+            <guid>gx-grid-v1.14.0</guid>
+            <pubDate>Mon, 26 Feb 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[This version requires BBj 24.00+ to run in DWC]]></description>
+            <content:encoded><![CDATA[<div class="theme-admonition theme-admonition-caution alert alert--warning admonition_LlT9"><div class="admonitionHeading_tbUL"><span class="admonitionIcon_kALy"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>caution</div><div class="admonitionContent_S0QG"><p>This version requires BBj 24.00+ to run in DWC</p></div></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="code-refactoring">Code Refactoring<a class="hash-link" href="#code-refactoring" title="Direct link to heading">​</a></h3><ul><li>update dwc theme to use the new CSS var names</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.13.1]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.1</link>
