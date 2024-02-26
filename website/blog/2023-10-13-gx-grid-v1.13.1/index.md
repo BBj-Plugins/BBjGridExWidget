@@ -1,5 +1,5 @@
 ---
-slug: gx-grid-v1.13.0
+slug: gx-grid-v1.13.1
 title: BBjGridExWidget v1.13.1
 authors: [hyyan]
 tags: [release, changelog]

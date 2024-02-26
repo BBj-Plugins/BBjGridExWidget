@@ -1,43 +1,43 @@
 html {
   /* Colour of text and icons in primary UI elements like menus */
-  --ag-foreground-color: var(--bbj-color-black);
+  --ag-foreground-color: var(--dwc-color-black);
 
   /* Colour of text and icons in UI elements that need to be slightly less emphasised to avoid distracting attention from data */
   --ag-secondary-foreground-color: var(--ag-foreground-color);
 
   /* background colour of the grid */
-  --ag-background-color: var(--bbj-surface-3);
+  --ag-background-color: var(--dwc-surface-3);
 
   /* background colour for all headers, including the grid header, panels etc */
-  --ag-header-background-color: var(--bbj-surface-3);
+  --ag-header-background-color: var(--dwc-surface-3);
 
   /* Color of elements that can't be interacted with because they are in a disabled state */
-  --ag-disabled-foreground-color: var(--bbj-color-gray-50);
+  --ag-disabled-foreground-color: var(--dwc-color-gray-50);
 
   /* Background colour for second level headings within UI components */
-  --ag-subheader-background-color: var(--bbj-surface-2);
+  --ag-subheader-background-color: var(--dwc-surface-2);
 
   /* Background for areas of the interface that contain UI controls, like tool panels and the chart settings menu */
-  --ag-control-panel-background-color: var(--bbj-surface-2);
+  --ag-control-panel-background-color: var(--dwc-surface-2);
 
   /* Background color of selected rows in the grid and in dropdown menus */
-  --ag-selected-row-background-color: var(--bbj-color-primary-85);
+  --ag-selected-row-background-color: var(--dwc-color-primary-85);
 
   /* Background colour applied to every other row or null to use background-color for all rows */
-  --ag-odd-row-background-color: var(--bbj-surface-2);
+  --ag-odd-row-background-color: var(--dwc-surface-2);
 
   /* Background color when hovering over rows in the grid and in dropdown menus, or null for no rollover effect (note - if you want a rollover on one but not the other, set to null and use CSS to achieve the rollover) */
-  --ag-row-hover-color: var(--bbj-color-primary-alt);
+  --ag-row-hover-color: var(--dwc-color-primary-alt);
 
   /* Background color of the overlay shown over the grid when it is covered by an overlay, e.g. a data loading indicator. */
-  --ag-modal-overlay-background-color: var(--bbj-overlay-background);
+  --ag-modal-overlay-background-color: var(--dwc-overlay-background);
 
   /* Color to draw around selected cell ranges */
-  --ag-range-selection-border-color: var(--bbj-color-primary);
+  --ag-range-selection-border-color: var(--dwc-color-primary);
   /* Background colour of selected cell ranges. */
   --ag-range-selection-background-color: hsla(
-    var(--bbj-color-primary-h),
-    var(--bbj-color-primary-s),
+    var(--dwc-color-primary-h),
+    var(--dwc-color-primary-s),
     50%,
     0.2
   );
@@ -45,55 +45,55 @@ html {
     --ag-range-selection-background-color
   );
   --ag-range-selection-background-color-2: hsla(
-    var(--bbj-color-primary-h),
-    var(--bbj-color-primary-s),
+    var(--dwc-color-primary-h),
+    var(--dwc-color-primary-s),
     50%,
     0.3
   );
   --ag-range-selection-background-color-3: hsla(
-    var(--bbj-color-primary-h),
-    var(--bbj-color-primary-s),
+    var(--dwc-color-primary-h),
+    var(--dwc-color-primary-s),
     50%,
     0.4
   );
   --ag-range-selection-background-color-4: hsla(
-    var(--bbj-color-primary-h),
-    var(--bbj-color-primary-s),
+    var(--dwc-color-primary-h),
+    var(--dwc-color-primary-s),
     50%,
     0.5
   );
 
   /* Colour for the "chip" that repersents a column that has been dragged onto a drop zone */
-  --ag-chip-background-color: var(--bbj-color-default);
+  --ag-chip-background-color: var(--dwc-color-default);
 
   /* Colour of the border drawn under selected tabs, including menus and tool panels */
-  --ag-selected-tab-underline-color: var(--bbj-color-primary);
+  --ag-selected-tab-underline-color: var(--dwc-color-primary);
 
   /* Colour for border around major UI components like the grid itself, headers, footers and tool panels */
-  --ag-border-color: var(--bbj-color-default);
+  --ag-border-color: var(--dwc-color-default);
 
   /* Colour for borders used to separate elements within a major UI component */
-  --ag-secondary-border-color: var(--bbj-color-default-dark);
+  --ag-secondary-border-color: var(--dwc-color-default-dark);
 
   /* Colour of the border between grid rows, or null to display no border */
   --ag-row-border-color: var(--ag-secondary-border-color);
 
   /* Inputs */
-  --ag-input-border-color: var(--bbj-color-default);
-  --ag-input-focus-border-color: var(--bbj-border-color-default);
-  --ag-input-disabled-background-color: var(--bbj-color-default-95);
+  --ag-input-border-color: var(--dwc-color-default);
+  --ag-input-focus-border-color: var(--dwc-border-color-default);
+  --ag-input-disabled-background-color: var(--dwc-color-default-95);
 
   /* Checkboxes */
-  --ag-checkbox-checked-color: var(--bbj-color-primary);
+  --ag-checkbox-checked-color: var(--dwc-color-primary);
   --ag-checkbox-indeterminate-color: var(--ag-checkbox-checked-color);
   --ag-checkbox-unchecked-color: var(--ag-checkbox-checked-color);
 
   /* Toggles */
-  --ag-toggle-button-off-border-color: var(--bbj-color-default);
-  --ag-toggle-button-off-background-color: var(--bbj-color-default-dark);
-  --ag-toggle-button-on-border-color: var(--bbj-color-primary);
-  --ag-toggle-button-on-background-color: var(--bbj-color-primary);
-  --ag-toggle-button-switch-border-color: var(--bbj-color-default-dark);
+  --ag-toggle-button-off-border-color: var(--dwc-color-default);
+  --ag-toggle-button-off-background-color: var(--dwc-color-default-dark);
+  --ag-toggle-button-on-border-color: var(--dwc-color-primary);
+  --ag-toggle-button-on-background-color: var(--dwc-color-primary);
+  --ag-toggle-button-switch-border-color: var(--dwc-color-default-dark);
 }
 
 .ag-chart-menu-icon:hover,
@@ -112,19 +112,19 @@ html {
 .ag-side-button-button:hover,
 .ag-tab:hover,
 .ag-tab-selected {
-  color: var(--bbj-color-primary-text) !important;
+  color: var(--dwc-color-primary-text) !important;
 }
 
 .ag-checkbox-input-wrapper:active,
 .ag-checkbox-input-wrapper:focus-within,
 .ag-toggle-button-input-wrapper:focus-within {
-  box-shadow: var(--bbj-focus-ring-primary) !important;
+  box-shadow: var(--dwc-focus-ring-primary) !important;
 }
 
 .ag-menu,
 .ag-overlay-loading-center {
   box-shadow: var(
-    --bbj-shadow,
+    --dwc-shadow,
     0 1px 4px 1px rgb(186 191 199 / 40%)
   ) !important;
 }
