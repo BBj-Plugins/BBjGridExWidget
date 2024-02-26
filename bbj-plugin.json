@@ -4,7 +4,7 @@
   "version": "1.13.1",
   "author": "BASIS Europe Distribution GmbH",
   "license": "MIT",
-  "bbj_dependency": "23.00",
+  "bbj_dependency": "24.00",
   "documentation_url": "https://bbj-plugins.github.io/BBjGridExWidget/",
   "plugin_dependencies": [],
   "plugin_development_dependencies": [
