@@ -1,3 +1,19 @@
+# [1.14.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.12.0...1.14.0) (2024-02-26)
+
+### Code Refactoring
+
+* update dwc theme to use the new CSS var names
+
+### Bug Fixes
+
+* :bug: style should injected in the window itself not the parent ([e4e0774](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4e07747124a23e7bb140bea34b85bd40ad98720)), closes [#256](https://github.com/BBj-Plugins/BBjGridExWidget/issues/256)
+* :bug: two cosmetic bugs in BBjGridExWidget ([e3ac478](https://github.com/BBj-Plugins/BBjGridExWidget/commit/e3ac47813e86b37033691e39e54ca64e265b862a)), closes [#253](https://github.com/BBj-Plugins/BBjGridExWidget/issues/253)
+* remove dependency on style directives ([4165172](https://github.com/BBj-Plugins/BBjGridExWidget/commit/41651720256b7b0efea47d08425e1802593e2ca8))
+* The languages manager cannot handle umlauts ([8f2c4ad](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8f2c4addf3a17e33e4b2203680890fdd8d98c2cd))
+* throw proper exception when executeScript fails. ([bc926e7](https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc926e79ed7caa320bab0a8eee1e0108f3ae0634))
+
+
+
 ## [1.13.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.13.0...1.13.1) (2023-10-13)
 
 
