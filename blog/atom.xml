@@ -9,8 +9,8 @@
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.13.1]]></title>
-        <id>gx-grid-v1.13.1</id>
-        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.1"/>
+        <id>gx-grid-v1.13.0</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.0"/>
         <updated>2023-10-13T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Bug Fixes]]></summary>
         <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h3><ul><li>throw proper exception when executeScript fails. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc926e79ed7caa320bab0a8eee1e0108f3ae0634" target="_blank" rel="noopener noreferrer">bc926e7</a>)</li></ul>]]></content>
@@ -27,7 +27,7 @@
         <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.13.0"/>
         <updated>2023-10-06T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Beginning with version 1.13.0, BBj version 23.00 is now a requirement.]]></summary>
-        <content type="html"><![CDATA[<p>Beginning with version <code>1.13.0</code>, BBj version <code>23.00</code> is now a requirement.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>remove dependency on style directives (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/41651720256b7b0efea47d08425e1802593e2ca8" target="_blank" rel="noopener noreferrer">4165172</a>)</li></ul>]]></content>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h3><ul><li>throw proper exception when executeScript fails. (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/bc926e79ed7caa320bab0a8eee1e0108f3ae0634" target="_blank" rel="noopener noreferrer">bc926e7</a>)</li></ul>]]></content>
         <author>
             <name>Hyyan Abo Fakher</name>
             <uri>https://github.com/hyyan</uri>
