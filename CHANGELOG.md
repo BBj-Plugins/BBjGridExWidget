@@ -1,3 +1,11 @@
+## [1.14.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.14.0...1.14.1) (2024-03-22)
+
+
+### Bug Fixes
+
+* :bug: the default `index.html` should not force font size
+
+
 # [1.14.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.12.0...1.14.0) (2024-02-26)
 
 ### Code Refactoring
