@@ -59,8 +59,8 @@ export function gw_extendColumnDefinitions(definitions) {
       gw_extendColumnDefinitions(def.children)
     }
 
-    // eslint-disable-next-line no-prototype-builtins
     if (
+      // eslint-disable-next-line no-prototype-builtins
       def.hasOwnProperty('cellEditorsExp') &&
       typeof def.cellEditorsExp === 'string'
     ) {
