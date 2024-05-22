@@ -114,6 +114,7 @@ class public GxClientRowModel
         nodeId! = #getWidget().getRowNodeId()
         rs! = #getWidget().getRS()
 
+        dr! = new DataRow()
         rem the row is pinned
         if(-1 = #getChildIndex()) 
           rem pinned ResultSets always use `__ROW_INDEX` for indexing
@@ -150,7 +151,8 @@ class public GxClientRowModel
           methodret rs!.get(#getIndex())
         fi
 
-        methodret rs!.get(#getId())
+        dr! = rs!.get(#getId(), err=*next)
+        methodret dr!
     methodend
     rem /**
     rem  * Get the row data as JsonObject
