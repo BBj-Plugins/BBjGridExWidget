@@ -22,6 +22,22 @@
         <category label="changelog" term="changelog"/>
     </entry>
     <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.15.0]]></title>
+        <id>gx-grid-v1.15.0</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.15.0"/>
+        <updated>2024-03-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bug Fixes]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>java.lang.IndexOutOfBoundsException and java.lang.Exception: Entry not found errors in GxClientModels.bbj
+(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/47f66bf35c99783f2c962592c7b7967c2b4c4da5" target="_blank" rel="noopener noreferrer">e4e0774</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/263" target="_blank" rel="noopener noreferrer">#256</a></li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>implement cell editor selector
+(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/c2941817c48995cfa44358e105d15b3e58ad571b" target="_blank" rel="noopener noreferrer">c294181</a></li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.14.0]]></title>
         <id>gx-grid-v1.14.0</id>
         <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.14.0"/>
