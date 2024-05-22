@@ -4,10 +4,32 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Fri, 22 Mar 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 22 May 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.15.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.15.0</link>
+            <guid>gx-grid-v1.15.0</guid>
+            <pubDate>Wed, 22 May 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>java.lang.IndexOutOfBoundsException and java.lang.Exception: Entry not found errors in GxClientModels.bbj
+(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/47f66bf35c99783f2c962592c7b7967c2b4c4da5" target="_blank" rel="noopener noreferrer">e4e0774</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/263" target="_blank" rel="noopener noreferrer">#256</a></li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>implement cell editor selector
+(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/c2941817c48995cfa44358e105d15b3e58ad571b" target="_blank" rel="noopener noreferrer">c294181</a></li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.15.1]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.15.1</link>
+            <guid>gx-grid-v1.15.1</guid>
+            <pubDate>Wed, 22 May 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>The grid renders collapsed in GUI.</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.14.1]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.14.1</link>
@@ -15,18 +37,6 @@
             <pubDate>Fri, 22 Mar 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Bug Fixes]]></description>
             <content:encoded><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h3><ul><li>🐛 the default <code>index.html</code> should not force font size</li></ul>]]></content:encoded>
-            <category>release</category>
-            <category>changelog</category>
-        </item>
-        <item>
-            <title><![CDATA[BBjGridExWidget v1.15.0]]></title>
-            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.15.0</link>
-            <guid>gx-grid-v1.15.0</guid>
-            <pubDate>Fri, 22 Mar 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[Bug Fixes]]></description>
-            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>java.lang.IndexOutOfBoundsException and java.lang.Exception: Entry not found errors in GxClientModels.bbj
-(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/47f66bf35c99783f2c962592c7b7967c2b4c4da5" target="_blank" rel="noopener noreferrer">e4e0774</a>), closes <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/263" target="_blank" rel="noopener noreferrer">#256</a></li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>implement cell editor selector
-(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/c2941817c48995cfa44358e105d15b3e58ad571b" target="_blank" rel="noopener noreferrer">c294181</a></li></ul>]]></content:encoded>
             <category>release</category>
             <category>changelog</category>
         </item>
