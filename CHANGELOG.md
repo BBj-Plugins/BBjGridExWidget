@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.15.0...1.15.1) (2024-05-22)
+
+
+### Bug Fixes
+
+* The grid renders collapsed in GUI.
+
 # [1.15.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.12.0...1.15.0) (2024-05-22)
 
 
