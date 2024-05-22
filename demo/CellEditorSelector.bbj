@@ -1,0 +1,86 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.cloud>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use java.util.HashMap
+
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicText
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorLargeText
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Cell Editor Selector Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+grid!.getOptions().setEditable(1)
+grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
+
+gosub main
+process_events
+
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER, TITLE FROM CDINVENTORY")
+  grid!.setData(rs!)
+  
+  titleColumn! = grid!.getColumn("TITLE")
+  
+  editors! = new HashMap()
+  editors!.put("my-basic-text", new GxCellEditorBasicText())
+  editors!.put("my-large-text", new GxCellEditorLargeText())
+
+REM The expression is a string that is evaluated by the grid in the client.
+REM The expression must return the name of the cell editor to use. 
+exp! = "
+: if(x.length > 10) {
+:   return 'my-large-text'
+: } else {
+:   return 'my-basic-text'
+: }
+:"
+
+  titleColumn!.setCellEditorSelector(exp!,editors!)
+return
+
+cellEditingChanged:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+
+result! = "ROW ID     = " + ev!.getRow().getId() + $0a$ +
+: "Column     = " + ev!.getColumn().getName() + $0a$ +
+: "New Value = " + ev!.getValue() + $0a$ +
+: "Old Value = " + ev!.getOldValue() + $0a$
+
+    a! = msgbox(result!, 0, "Cell Editing Changed")
+return
+
+rem /**
+rem  * Listen to the BBjTopLevelWindow resize events and
+rem  * resize the grid to fill the available space.
+rem  */
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+rem /**
+rem  * Close the demo
+rem  */
+byebye:
+bye
