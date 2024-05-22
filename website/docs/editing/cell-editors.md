@@ -229,3 +229,106 @@ bye
 ```
 
 ![BBjGridExWidget - GxCellEditorSuggestion](./assets/suggestion-editor.png)
+
+
+## Cell Editor Selector
+
+In some cases, it may be desirable to dynamically change cell editors based on a condition. The `setCellEditorSelector(BBjString expression!, HashMap editors!)` method can be used to provide the grid with a predefined list of editors and their configurations. The expression is executed to determine the ID of the editor to use when editing begins.
+
+When working with expressions keep the following points in mind:
+
+* If the expression has the word `return` in it, then we will assume it is a multi-line expression and will not wrap it.
+* If the expression does not have the word `return` in it, then we will insert the `return` statement and the `;` for you.
+* If the expression has many lines, then you will need to provide the `;` at the end of each line and also provide the `return` statement.
+
+Expressions have access to several predefined variables:
+
+|  Variable |  Description |
+| --- | --- |
+|  x | Mapped from cell value |
+|  value | Same as `x` |
+|  data |  Mapped from the DataRow |
+|  column | Current column |
+|  ctx |  The grid [client context](../data/client-context) |
+
+:::tip Cell Editor Selector Priority
+The Cell Editor Selector takes higher priority than the normal cell editor configurations. If provided, it will always be used, and the cell editor configurations will be ignored.
+:::
+
+In the following example, the grid configures a cell select editor to switch between `GxCellEditorBasicText` and `GxCellEditorLargeText` based on the length of the cell value. If the length is greater than 10 characters, `GxCellEditorLargeText` is used; otherwise, `GxCellEditorBasicText` is used.
+
+
+```bbj showLineNumbers
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.bc.SqlQueryBC
+use java.util.HashMap
+
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorBasicText
+use ::BBjGridExWidget/GxCellEditors.bbj::GxCellEditorLargeText
+
+? 'HIDE'
+
+declare auto BBjTopLevelWindow wnd!
+declare BBjGridExWidget grid!
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Cell Editor Selector Demo")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+wnd!.setCallback(BBjAPI.ON_RESIZE,"resize")
+
+grid! = new BBjGridExWidget(wnd!,100,0,0,800,600)
+grid!.getOptions().setEditable(1)
+grid!.setCallback(grid!.ON_GRID_CELL_VALUE_CHANGED(),"cellEditingChanged")
+
+gosub main
+process_events
+
+main:
+  declare SqlQueryBC sbc!
+  declare ResultSet rs!
+
+  sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+  rs! = sbc!.retrieve("SELECT CDNUMBER, TITLE FROM CDINVENTORY")
+  grid!.setData(rs!)
+  
+  titleColumn! = grid!.getColumn("TITLE")
+  
+  editors! = new HashMap()
+  editors!.put("my-basic-text", new GxCellEditorBasicText())
+  editors!.put("my-large-text", new GxCellEditorLargeText())
+
+REM The expression is a string that is evaluated by the grid in the client.
+REM The expression must return the name of the cell editor to use. 
+exp! = "
+: if(x.length > 10) {
+:   return 'my-large-text'
+: } else {
+:   return 'my-basic-text'
+: }
+:"
+
+  titleColumn!.setCellEditorSelector(exp!,editors!)
+return
+
+cellEditingChanged:
+    ev! = BBjAPI().getLastEvent()
+    ev! = ev!.getObject()
+
+result! = "ROW ID     = " + ev!.getRow().getId() + $0a$ +
+: "Column     = " + ev!.getColumn().getName() + $0a$ +
+: "New Value = " + ev!.getValue() + $0a$ +
+: "Old Value = " + ev!.getOldValue() + $0a$
+
+    a! = msgbox(result!, 0, "Cell Editing Changed")
+return
+
+resize:
+  ev! = BBjAPI().getLastEvent()
+  w=ev!.getWidth()
+  h=ev!.getHeight()
+  grid!.setSize(w,h)
+return
+
+byebye:
+bye
+```

@@ -58,6 +58,25 @@ export function gw_extendColumnDefinitions(definitions) {
     if (def.hasOwnProperty('children')) {
       gw_extendColumnDefinitions(def.children)
     }
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (
+      def.hasOwnProperty('cellEditorsExp') &&
+      typeof def.cellEditorsExp === 'string'
+    ) {
+      def.cellEditorSelector = params => {
+        const editorName = gw_executeExpression(def.cellEditorsExp, params)
+        const editors = def.cellEditors
+        const editor = editors[editorName]
+
+        return editor
+          ? {
+              component: editor.cellEditor,
+              params: editor.cellEditorParams,
+            }
+          : undefined
+      }
+    }
   }
 }
 

@@ -783,6 +783,18 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
   rem  * @see GxColumn.MENU_TAB_COLUMNS()
   rem  */
   field public ArrayList MenuTabs! = new ArrayList()
+  field private HashMap CellEditorMap! = new HashMap()
+  field private String  CellEditorSelectorExp! = null()
+  rem /**
+  REM  * Set a cell editor selector to use for this column.
+  REM  * 
+  REM  * @param expression! Javascript expression to use to select the cell editor
+  REM  * @param editors! A set of possible cell editors to use
+  REM  */
+  method public void setCellEditorSelector(BBjString expression!, HashMap editors!)
+    #CellEditorMap! = editors!
+    #CellEditorSelectorExp! = expression!
+  methodend
   rem /**
   rem  * Get pinned left constant
   rem  *
@@ -1044,88 +1056,88 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     swend
   methodend
   rem /**
-  rem  * @deprecated Use `setMask` instead 
+  rem  * @deprecated Use `setMask` instead
   rem  */
   method public void setDefaultNumbersMask(BBjString mask!)
     GxLogger.warn("since version 1.9.0, GxColumn.setDefaultNumbersMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
     #setMask(mask!)
   methodend
   rem /**
-  rem  * @deprecated Use `getMask` instead 
+  rem  * @deprecated Use `getMask` instead
   rem  */
   method public BBjString getDefaultNumbersMask()
     GxLogger.warn("since version 1.9.0, GxColumn.getDefaultNumbersMask() is deprecated. Use GxColumn.getMask() instead.")
     methodret #getMask()
-  methodend    
+  methodend
   rem /**
-  rem  * @deprecated Use `setMask` instead 
+  rem  * @deprecated Use `setMask` instead
   rem  */
   method public void setDefaultStringsMask(BBjString mask!)
     GxLogger.warn("since version 1.9.0, GxColumn.setDefaultStringsMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
     #setMask(mask!)
-  methodend 
+  methodend
   rem /**
-  rem  * @deprecated Use `getMask` instead 
+  rem  * @deprecated Use `getMask` instead
   rem  */
   method public BBjString getDefaultStringsMask()
     GxLogger.warn("since version 1.9.0, GxColumn.getDefaultStringsMask() is deprecated. Use GxColumn.getMask() instead.")
     methodret #getMask()
-  methodend     
+  methodend
   rem /**
-  rem  * @deprecated Use `setMask` instead 
+  rem  * @deprecated Use `setMask` instead
   rem  */
   method public void setDefaultDatesMask(BBjString mask!)
     GxLogger.warn("since version 1.9.0, GxColumn.setDefaultDatesMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
     #setMask(mask!)
   methodend
   rem /**
-  rem  * @deprecated Use `getMask` instead 
+  rem  * @deprecated Use `getMask` instead
   rem  */
   method public BBjString getDefaultDatesMask()
     GxLogger.warn("since version 1.9.0, GxColumn.getDefaultDatesMask() is deprecated. Use GxColumn.getMask() instead.")
     methodret #getMask()
-  methodend           
+  methodend
   rem /**
-  rem  * @deprecated Use `setMask` instead 
+  rem  * @deprecated Use `setMask` instead
   rem  */
   method public void setDefaultTimesMask(BBjString mask!)
     GxLogger.warn("since version 1.9.0, GxColumn.setDefaultTimesMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
     #setMask(mask!)
-  methodend  
+  methodend
   rem /**
-  rem  * @deprecated Use `getDefaultTimesMask` instead 
+  rem  * @deprecated Use `getDefaultTimesMask` instead
   rem  */
   method public BBjString getDefaultTimesMask()
     GxLogger.warn("since version 1.9.0, GxColumn.getDefaultTimesMask() is deprecated. Use GxColumn.getMask() instead.")
     methodret #getMask()
-  methodend        
+  methodend
   rem /**
-  rem  * @deprecated Use `setMask` instead 
+  rem  * @deprecated Use `setMask` instead
   rem  */
   method public void setDefaultTimestampsMask(BBjString mask!)
     GxLogger.warn("since version 1.9.0, GxColumn.setDefaultTimestampsMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
     #setMask(mask!)
-  methodend   
+  methodend
   rem /**
-  rem  * @deprecated Use `getDefaultTimesMask` instead 
+  rem  * @deprecated Use `getDefaultTimesMask` instead
   rem  */
   method public BBjString getDefaultTimestampsMask()
     GxLogger.warn("since version 1.9.0, GxColumn.getDefaultTimestampsMask() is deprecated. Use GxColumn.getMask() instead.")
     methodret #getMask()
-  methodend                   
+  methodend
   rem /**
   rem  * Set the mask of a column in all supported components (filters , formatters , ...)
   rem  *
   rem  * In case the column has no value formatter expression , then the method will create one
   rem  *
   rem  * @param mask! - The BBj date string or numeric mask.
-  rem  *  
-  rem  * @deprecated Use `setMask` instead 
+  rem  *
+  rem  * @deprecated Use `setMask` instead
   rem  */
   method public void setColumnMask(BBjString mask!)
     GxLogger.warn("since version 1.9.0, GxColumn.setColumnMask(BBjString mask!) is deprecated. Use GxColumn.setMask(BBjString mask!) instead.")
     #setMask(mask!)
-  methodend    
+  methodend
   rem /**
   rem  * Set the mask of a column in all supported components (filters , formatters , ...)
   rem  *
@@ -1187,8 +1199,8 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
   methodend
   rem /**
   rem  * Get the column mask
-  rem  *  
-  rem  * @return BBjString the column mask 
+  rem  *
+  rem  * @return BBjString the column mask
   rem  */
   method public BBjString getMask()
     mask! = #Mask!
@@ -1227,7 +1239,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     SWEND
 
     methodret mask!
-  methodend    
+  methodend
   rem /**
   rem  * Set the grid icons
   rem  *
@@ -1402,6 +1414,26 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
       column!.        add("cellEditorParams",iff(editorParams!.entrySet().size() <> 0 , editorParams! , null() ),err=*next)
     FI
 
+    if(#CellEditorMap! <> null() AND #CellEditorSelectorExp! <> null()) then
+      editors! = new JsonObject()
+      iterator! = #CellEditorMap!.entrySet().iterator()
+      while iterator!.hasNext()
+        next! = iterator!.next()  
+        key! = next!.getKey()
+        value! = next!.getValue()
+        cellEditorName! = value!.getCellEditorName()
+        cellEditorParams! = value!.getAsJsonObject()
+
+        cellEditor! = new JsonObject()
+        cellEditor!.addProperty("cellEditor", cellEditorName!)
+        cellEditor!.add("cellEditorParams",iff(cellEditorParams!.entrySet().size() <> 0 , cellEditorParams! , null() ),err=*next)
+        editors!.add(key!, cellEditor!)
+      wend
+
+      column!.addProperty("cellEditorsExp", #CellEditorSelectorExp!)
+      column!.add("cellEditors", editors!)
+    FI
+
     methodret column!
   methodend
 
@@ -1535,7 +1567,6 @@ class public GxColumn extends GxDefaultColumnDefinition
     else
       type! = int(metaMap!.get("columntype"))
     FI
-
     rem if(metaMap!.containsKey("mask")) then
     rem   #setMask(metaMap!.get("mask"))
     rem   escape
@@ -1980,12 +2011,14 @@ class public GxColumnsManager implements GxColumnsManagerInterface
 
       if (casted! = 0) then
         column! = cast(GxColumn, value!)
-        if(column!.getField() = field!) 
-          methodret column! 
-        fi   
-      else 
+
+        if(column!.getField() = field!)
+          methodret column!
+        fi
+      else
         group! = cast(GxColumnGroup, value!)
         column! = group!.getColumn(field!)
+
         if(column! <> null())
           methodret column!
         fi
@@ -2011,12 +2044,13 @@ class public GxColumnsManager implements GxColumnsManagerInterface
 
       if (casted! = 0) then
         column! = cast(GxColumn, value!)
-        if(column!.getField() = field!) 
+
+        if(column!.getField() = field!)
           methodret 1
-        fi  
-      else 
+        fi
+      else
         group! = cast(GxColumnGroup, value!)
-        methodret group!.hasColumn(field!)      
+        methodret group!.hasColumn(field!)
       fi
     wend
 
