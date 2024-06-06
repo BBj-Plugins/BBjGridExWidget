@@ -25,6 +25,10 @@ export function gw_extendColumnDefinitions(definitions) {
     def.field = String(def.field)
 
     def.checkboxSelection = def.checkboxSelection || gw_isShowSelectionCheckbox
+    if (typeof def.checkboxSelection !== 'function') {
+      def.checkboxSelection = params => !params.node.group
+    }
+
     def.headerCheckboxSelection =
       def.headerCheckboxSelection || gw_isHeaderCheckboxSelection
 
@@ -201,7 +205,6 @@ export function gw_isShowSelectionCheckbox(param) {
   }
 
   const columns = param.columnApi.getAllDisplayedColumns()
-
   return columns[0] === param.column
 }
 
