@@ -1,3 +1,10 @@
+## [1.15.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.15.1...1.15.2) (2024-06-06)
+
+
+### Bug Fixes
+
+* checkboxSelection should not show checkbox on group rows
+
 ## [1.15.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.15.0...1.15.1) (2024-05-22)
 
 
