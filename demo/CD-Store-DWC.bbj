@@ -1,0 +1,77 @@
+rem /**
+rem  * This file is part of the BBjGridExWidget plugin.
+rem  * (c) Basis Europe <eu@basis.cloud>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use ::BBjGridExWidget/BBjGridExWidget.bbj::BBjGridExWidget
+use com.basiscomponents.db.ResultSet
+use com.basiscomponents.db.DataRow
+use com.basiscomponents.bc.SqlQueryBC
+use com.basiscomponents.db.ResultSetExporter
+
+IF info(3,6) <> "6" THEN
+a=msgbox("This program is written for DWC only!",0,"Wrong Client")
+release
+FI
+
+browser! = BBjAPI().getWebManager()
+
+url$ = "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@latest/cdn/themes/light.css"
+browser!.injectStyleUrl(url$)
+
+url$ = "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@latest/cdn/shoelace.js"
+browser!.injectScriptUrl(url$,1,"type=module")
+
+
+wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,800,600,"Simple CD-Store Demo",$01101000$)
+
+
+wnd!.setPanelStyle("height", "calc( 100vh - 20px )")
+
+cw! = wnd!.addChildWindow("",$00108800$,BBjAPI().getSysGui().getAvailableContext())
+cw!.setStyle("top","10px")
+
+
+REM init the grid
+grid! = new BBjGridExWidget(cw!)
+
+rem add some Excel export button 
+xl! = wnd!.addWebComponent("sl-button")
+xl!.setAttribute("circle", "")
+xl!.setAttribute("size", "large")
+xl!.setAttribute("variant", "success")
+
+ic! = wnd!.addWebComponent("sl-icon")
+ic!.setAttribute("name", "filetype-xlsx")
+ic!.setStyle("transform","scale3d(2, 2, 2)")
+xl!.setSlot(ic!)
+
+xl!.setStyle("position","fixed")
+xl!.setStyle("right","40px")
+xl!.setStyle("bottom","30px")
+xl!.setCallback("click","onExcel")
+
+REM fill the grid
+sbc! = new SqlQueryBC(BBjAPI().getJDBCConnection("CDStore"))
+rs! = sbc!.retrieve("SELECT  * FROM CDINVENTORY")
+grid!.setData(rs!)
+
+process_events
+
+onExcel:
+    use java.io.File
+    file! = File.createTempFile("export_", ".xlsx")
+    file!.deleteOnExit()
+    file!.createNewFile()
+    ResultSetExporter.writeXLSX(rs!, file!, 1)
+
+    rem https://docs.google.com/document/u/0/d/1qYNOstYTVC69OjI6dFGt3eIq6B0WkiG9U2nG1GOIFo8/pub
+    tc! = bbjapi().getThinClient()
+    fs! = tc!.getClientFileSystem()
+    cf! = fs!.getClientFile(file!.getName())
+    cf!.copyToClient(file!.getAbsolutePath())
+
+    file!.delete()
+return
