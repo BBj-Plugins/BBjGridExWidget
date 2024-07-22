@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2024-06-06T00:00:00.000Z</updated>
+    <updated>2024-07-22T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.16.0]]></title>
+        <id>gx-grid-v1.16.0</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.16.0"/>
+        <updated>2024-07-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Features]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>Optimize grid rendering performance for DWC and BUI (~40% faster load time)(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/226f88b98e7cad9b322cd194a1b980d59749524a" target="_blank" rel="noopener noreferrer">226f88b</a>)</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.15.2]]></title>
         <id>gx-grid-v1.15.2</id>

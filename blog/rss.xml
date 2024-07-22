@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Thu, 06 Jun 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 22 Jul 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.16.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.16.0</link>
+            <guid>gx-grid-v1.16.0</guid>
+            <pubDate>Mon, 22 Jul 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Features]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>Optimize grid rendering performance for DWC and BUI (~40% faster load time)(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/226f88b98e7cad9b322cd194a1b980d59749524a" target="_blank" rel="noopener noreferrer">226f88b</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.15.2]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.15.2</link>
