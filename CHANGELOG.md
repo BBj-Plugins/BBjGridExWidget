@@ -1,3 +1,12 @@
+# [1.16.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.15.2...1.16.0) (2024-07-22)
+
+
+### Features
+
+* optimize grid rendering performance for DWC and BUI (~40% faster load time)([226f88b](https://github.com/BBj-Plugins/BBjGridExWidget/commit/226f88b98e7cad9b322cd194a1b980d59749524a))
+
+
+
 ## [1.15.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.15.1...1.15.2) (2024-06-06)
 
 
