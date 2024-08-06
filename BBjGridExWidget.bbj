@@ -976,8 +976,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         tmp=pos("<head>"=html$)
         bundle$=#getBundle()
         path$ = #copyWebAssets(bundle$)
-        path$="http://localhost:8888"+path$
-        
         scr$=scr$+"<script>function whenGridLibLoaded (callback) {if (typeof agGrid === 'undefined') {setTimeout (function () {whenGridLibLoaded (callback);}, 50);} else { callback (); }}</script>"
         scr$=scr$+"<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
         
@@ -1140,18 +1138,25 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjNumber top! If true, the script will be injected at iframe's parent
   rem  */
   method public String copyWebAssets(BBjString script!)
+
+    directory$ = System.getProperty("basis.BBjHome")+"/htdocs/"
+
     m=min(300,len(script!))
     name$= "gridex_"+hta(MessageDigest.getInstance("MD5").digest(script!.substring(2,m)))+"_"+str(len(script!))+".js"
-    f1! = new File(System.getProperty("basis.BBjHome")+"/htdocs/"+name$)
+    f1! = new File(directory$+name$)
 
     if  !f1!.exists() then
       ch=unt
-      open(ch,mode="O_CREATE,O_TRUNC")System.getProperty("basis.BBjHome")+"/htdocs/"+name$
+      open(ch,mode="O_CREATE,O_TRUNC")directory$+name$
       write (ch)script!
       close (ch)
     fi
-
-    methodret "/files/"+name$
+    if #isWebGui() then
+      p$=str(org.webswing.toolkit.api.jslink.JSObject@.getWindow(null()).eval("window.location.href"))
+      methodret p$+name$
+    else
+      methodret "/files/"+name$
+    fi
   methodend
   rem /**
   rem  * An Event listener executed after the initial load of the HTML View.
