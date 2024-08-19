@@ -971,14 +971,17 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       fi
 
       html$ = #getTemplate()
-
       if #isWebGui() then
+      
+        if  !#getCanvas().getParentWindow().isVisible()
+          #getCanvas().getParentWindow().setVisible(1)
+          a=msgbox("Show Window",tim=1)
+        fi        
         tmp=pos("<head>"=html$)
         bundle$=#getBundle()
         path$ = #copyWebAssets(bundle$)
+        scr$="<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
         scr$=scr$+"<script>function whenGridLibLoaded (callback) {if (typeof agGrid === 'undefined') {setTimeout (function () {whenGridLibLoaded (callback);}, 50);} else { callback (); }}</script>"
-        scr$=scr$+"<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
-        
         html$=html$(1,tmp+5)+scr$+html$(tmp+6)
         htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$,"--bbj-web-view")
       else
@@ -1014,7 +1017,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
       else
         htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
-      htmlview!.setText(html$)
+        htmlview!.setText(html$)
       fi
 
 
@@ -1038,6 +1041,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjString script! The javascript code to inject
   rem  */
   method public void injectScript(BBjString script!)
+    top=1
     if #isWebGui() then
       top=0
     fi
@@ -1138,16 +1142,18 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjNumber top! If true, the script will be injected at iframe's parent
   rem  */
   method public String copyWebAssets(BBjString script!)
-
-    directory$ = System.getProperty("basis.BBjHome")+"/htdocs/"
-
     m=min(300,len(script!))
     name$= "gridex_"+hta(MessageDigest.getInstance("MD5").digest(script!.substring(2,m)))+"_"+str(len(script!))+".js"
-    f1! = new File(directory$+name$)
+
+    webroot$=System.getProperty("basis.BBjHome")+"/htdocs/"
+    n$=webroot$+name$
+
+    f1! = new File(n$)
+
 
     if  !f1!.exists() then
       ch=unt
-      open(ch,mode="O_CREATE,O_TRUNC")directory$+name$
+      open(ch,mode="O_CREATE,O_TRUNC")n$
       write (ch)script!
       close (ch)
     fi
@@ -2613,6 +2619,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @see GRID_THEME_MATERIAL()
   rem  */
   method public void setTheme(BBjString theme$)
+    if #isWebGui() then methodret; REM TODO
     #getOptions().setTheme(theme$)
 
     if(#IsReady!) then
