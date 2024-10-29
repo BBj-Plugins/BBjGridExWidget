@@ -16,6 +16,8 @@ use java.util.LinkedHashMap
 use java.util.UUID
 use java.lang.StringBuilder
 use java.sql.Types
+use java.util.regex.Matcher
+use java.util.regex.Pattern
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
@@ -211,6 +213,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   field protected BBjNumber newW!
   field protected BBjNumber newH!
   field private static BBjNumber AssetsCopied! = 0
+  field private static BBjString AssestsPath! = null()
   field private static BBjNumber FullyLoaded! = 0
   rem /**
   rem  * A Constant value to define row selection (selected/deselected) change events
@@ -1217,9 +1220,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     if #isWeb()
       if #AssetsCopied! = 0
         path$ = #copyWebAssets(bundle$)
+        #AssestsPath! = path$
         wm! = BBjAPI().getWebManager()
         wm!.injectScriptUrl(path$, 1, "id=bbj-grid-widget")
-        wm!.setCallback(wm!.ON_SCRIPT_LOADED, #this!, "onLoaded")
+        wm!.setCallback(wm!.ON_SCRIPT_LOADED, #this!, "onLoadedByWebManager")
         #AssetsCopied! = 1
       else
         #onLoaded(ev!)
@@ -1250,6 +1254,17 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #onLoaded(ev!)
   methodend
   rem /**
+  rem  * An Event listener for the loading the script by the WebManager
+  rem  */
+  method public void onLoadedByWebManager(BBjEvent ev!)
+    loadedEvent! = cast(BBjScriptLoadedEvent, ev!)    
+    if loadedEvent!.getUrl().endsWith(#AssestsPath!) then
+      wm! = BBjAPI().getWebManager()
+      wm!.clearCallback(wm!.ON_SCRIPT_LOADED)
+      #onLoaded(ev!)
+    fi
+  methodend
+  rem /**
   rem  * An Event listener executed after the second ON_PAGE_LOADED event
   rem  *
   rem  * At this phase the grid flush all enqueued scripts
@@ -1259,10 +1274,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   method public void onLoaded(BBjEvent ev!)
     #FullyLoaded! = 1
     #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
-    REM if #isWeb() then
-    REM   wm! = BBjAPI().getWebManager()
-    REM   wm!.clearCallback(wm!.ON_SCRIPT_LOADED)
-    REM fi
     BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
 
     if info(3,6)<"5" AND #HTMLView!.executeScript("$gw_wnd") = null() then
