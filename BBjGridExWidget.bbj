@@ -16,8 +16,6 @@ use java.util.LinkedHashMap
 use java.util.UUID
 use java.lang.StringBuilder
 use java.sql.Types
-use java.util.regex.Matcher
-use java.util.regex.Pattern
 use com.google.gson.Gson
 use com.google.gson.JsonParser
 use com.google.gson.JsonObject
