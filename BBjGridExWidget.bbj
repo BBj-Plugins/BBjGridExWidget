@@ -983,7 +983,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         scr$="<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
         scr$=scr$+"<script>function whenGridLibLoaded (callback) {if (typeof agGrid === 'undefined') {setTimeout (function () {whenGridLibLoaded (callback);}, 50);} else { callback (); }}</script>"
         html$=html$(1,tmp+5)+scr$+html$(tmp+6)
-        htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$,"--bbj-web-view")
+        htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$)
       else
         htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
       fi
@@ -4277,7 +4277,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   methodend
 
   method public boolean isWebGui()
-    methodret INFO(6,0)="SWING+WEB"
+    sw$=stbl("!CHROMIUM_SWITCHES",err=*next)
+    methodret INFO(6,0)="SWING+WEB" AND sw$="--bbj-web-view"
   methodend
 
 classend
