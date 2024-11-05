@@ -904,7 +904,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method public static void setDebug(BBjNumber debug! , BBjNumber port!)
     if(debug!.booleanValue())
-      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=" + str(port!))
+      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-allow-origins=* --remote-debugging-port=" + str(port!))
     FI
 
     #Debug! = debug!
