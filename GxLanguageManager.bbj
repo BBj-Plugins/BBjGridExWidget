@@ -39,7 +39,7 @@ class public GxLanguageManager
   rem  *
   rem  * @return BBjString the selected language if any, otherwise fallback to `stbl("!LOCALE")`
   rem  */
-  method public String getLanguage()
+  method public BBjString getLanguage()
     locale$ = stbl("!LOCALE")
     methodret iff(len(#Language$) > 0 , #Language$ , locale$)
   methodend
