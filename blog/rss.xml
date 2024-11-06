@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Tue, 05 Nov 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 06 Nov 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.17.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.17.0</link>
+            <guid>gx-grid-v1.17.0</guid>
+            <pubDate>Wed, 06 Nov 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Features]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>support for WEBGUI client (BBj 24.20++) (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/d6926a96e6b3d92339238dd4cbca8c31ffcf5560" target="_blank" rel="noopener noreferrer">d6926a9</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.16.1]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.16.1</link>

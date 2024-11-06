@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2024-11-05T00:00:00.000Z</updated>
+    <updated>2024-11-06T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.17.0]]></title>
+        <id>gx-grid-v1.17.0</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.17.0"/>
+        <updated>2024-11-06T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Features]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>support for WEBGUI client (BBj 24.20++) (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/d6926a96e6b3d92339238dd4cbca8c31ffcf5560" target="_blank" rel="noopener noreferrer">d6926a9</a>)</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.16.1]]></title>
         <id>gx-grid-v1.16.1</id>
