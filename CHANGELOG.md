@@ -1,3 +1,11 @@
+# [1.17.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.16.1...1.17.0) (2024-11-06)
+
+
+### Features
+
+* support for WEBGUI client (BBj 24.20++) ([d6926a9](https://github.com/BBj-Plugins/BBjGridExWidget/commit/d6926a96e6b3d92339238dd4cbca8c31ffcf5560))
+
+
 ## [1.16.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.16.0...1.16.1) (2024-11-05)
 
 
