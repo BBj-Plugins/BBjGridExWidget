@@ -13,6 +13,14 @@ use java.sql.Types
 
 ? 'HIDE'
 
+if INFO(6,0)="SWING+WEB" then
+  if msgbox("Select Version",7,"Client Selection","Chromium","WEBGUI Client HTML")=2 then
+    dummy$=stbl("!OPTIONS","WEBGUI_HTMLVIEW=true")
+  else
+    dummy$=stbl("!OPTIONS","WEBGUI_HTMLVIEW=false")
+  fi
+fi
+
 declare auto BBjTopLevelWindow wnd!
 declare auto BBjListButton lb_db!
 declare auto BBjListButton lb_tbl!
