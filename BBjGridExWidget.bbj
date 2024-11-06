@@ -905,8 +905,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   method public static void setDebug(BBjNumber debug! , BBjNumber port!)
     if(debug!.booleanValue())
       chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-allow-origins=* --remote-debugging-port=" + str(port!))
-    FI
-
+    fi
     #Debug! = debug!
   methodend
   rem /**
@@ -933,8 +932,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       #InstanceCount! = #InstanceCount! + 1
       uuid! = UUID.randomUUID().toString().replace("-","").substring(0,8)
       #RootId! = "gx-grid-" + uuid!
-    FI
-
+    fi
     methodret #RootId!
   methodend
   rem /**
@@ -972,7 +970,24 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       fi
 
       html$ = #getTemplate()
-      htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
+      if #isWebGui() then
+        if  !#getCanvas().getParentWindow().isVisible()
+          rem if the parent window is not visible, we need to make it visible first 
+          rem else the HtmlView won't render
+          #getCanvas().getParentWindow().setVisible(1)
+          rem show a short msgbox to trigger the rendering
+          a=msgbox("Show Window",tim=1)
+        fi
+        tmp=pos("<head>"=html$)
+        bundle$=#getBundle()
+        path$ = #copyWebAssets(bundle$)
+        scr$="<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
+        scr$=scr$+"<script>function whenGridLibLoaded (callback) {if (typeof agGrid === 'undefined') {setTimeout (function () {whenGridLibLoaded (callback);}, 50);} else { callback (); }}</script>"
+        html$=html$(1,tmp+5)+scr$+html$(tmp+6)
+        htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$)
+      else
+        htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
+      fi
       htmlview!.setOpaque(0)
       htmlview!.setNoEdge(1)
       htmlview!.setTabTraversable(1)
@@ -985,18 +1000,24 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         htmlview!.setStyle("height","100%")
       fi
 
-      if (info(3,6)<"5" and #getDebug() > 0) then
+      if !#isWebGui() then
+        if (info(3,6)<"5" and #getDebug() > 0 and !#isWebGui() ) then
         url$ = htmlview!.getAttribute("remoteDebuggingURL")
 
         if url$>"" then
           a = scall("bbj BBjGridExWidget/util/DebugWindow.bbj - "+url$+" &")
-        FI
-      FI
-
-      htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
+          fi
+        fi
+      fi
       htmlview!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"onNativeEvent")
       htmlview!.setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
-      htmlview!.setText(html$)
+      if #isWebGui() then
+        htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+      else
+        htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
+        htmlview!.setText(html$)
+      fi
+
       #HTMLView!=htmlview!
     else
       #HTMLView!.setSize(#getCanvas().getWidth(),#getCanvas().getHeight())
@@ -1017,7 +1038,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjString script! The javascript code to inject
   rem  */
   method public void injectScript(BBjString script!)
-    #injectScript(script!, 1)
+    top=1
+    if #isWebGui() then
+      top=0
+    fi
+    #injectScript(script!, top)
   methodend
   rem /**
   rem  * Execute a javascript code on the client.
@@ -1116,13 +1141,29 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   method public String copyWebAssets(BBjString script!)
     m=min(300,len(script!))
     name$= "gridex_"+hta(MessageDigest.getInstance("MD5").digest(script!.substring(2,m)))+"_"+str(len(script!))+".js"
-    f1! = new File(System.getProperty("basis.BBjHome")+"/htdocs/"+name$)
+
+    webroot$=System.getProperty("basis.BBjHome")+"/htdocs/"
+
+    if #isWebGui() then
+      rem WEBGUI serves the specific client stuff from the webroot subdir
+      rem we'll use this to also serve the grid library, as it's proxied to the surrounding WEBGUI client
+      webroot$=webroot$+"webroot/"
+    fi
+
+    n$=webroot$+name$
+    f1! = new File(n$)
 
     if  !f1!.exists() then
       ch=unt
-      open(ch,mode="O_CREATE,O_TRUNC")System.getProperty("basis.BBjHome")+"/htdocs/"+name$
+      open(ch,mode="O_CREATE,O_TRUNC")n$
       write (ch)script!
       close (ch)
+    fi
+
+    if #isWebGui() then
+      rem in WebGui we need to respect the URL of the surrounding WEBGUI client, which might differ from BBj's
+      p$=str(org.webswing.toolkit.api.jslink.JSObject@.getWindow(null()).eval("window.location.href"))
+      methodret p$+name$
     fi
 
     methodret "/files/"+name$
@@ -1140,6 +1181,42 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     if !#isWeb() then
       #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
     fi
+
+    rem /**
+    rem  * For BUI, inject the $gw_wnd and $gw_doc variables in the iframe.
+    rem  * This will make sure the variables are available for all js code executed in the iframe.
+    rem  */
+    if (info(3,6)="5" or #isWebGui())
+      bundle$ = bundle$ + "var $gw_wnd = $wnd;"
+      bundle$ = bundle$ + "var $gw_doc = $doc;"
+      #injectScript(bundle$, 0)
+      bundle$ = ""
+    fi
+
+    if !#isWebGui() then
+      bundle$=#getBundle()
+      rem finally inject the built bundle
+      if #isWeb()
+        if #AssetsCopied! = 0
+          path$ = #copyWebAssets(bundle$)
+          #AssestsPath! = path$
+          wm! = BBjAPI().getWebManager()
+          wm!.injectScriptUrl(path$, 1, "id=bbj-grid-widget")
+          wm!.setCallback(wm!.ON_SCRIPT_LOADED, #this!, "onLoadedByWebManager")
+          #AssetsCopied! = 1
+        else
+          #onLoaded(ev!)
+        fi
+      else
+      rem WebGui
+        #injectScript(bundle$)
+        wait 0
+        fi
+      fi
+    fi
+  methodend
+
+  method public String getBundle()
 
     isLicensed! = 0
 
@@ -1214,30 +1291,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       close (ch)
       bundle$ = bundle$ + ";" + content$
     wend
-    rem finally inject the built bundle
-    if #isWeb()
-      if #AssetsCopied! = 0
-        path$ = #copyWebAssets(bundle$)
-        #AssestsPath! = path$
-        wm! = BBjAPI().getWebManager()
-        wm!.injectScriptUrl(path$, 1, "id=bbj-grid-widget")
-        wm!.setCallback(wm!.ON_SCRIPT_LOADED, #this!, "onLoadedByWebManager")
-        #AssetsCopied! = 1
-      else
-        #onLoaded(ev!)
-      fi
-    else
-      #injectScript(bundle$)
-      wait 0
-      rem /**
-      rem  * Some customers reported that the second ON_PAGE_LOADED event is not fired
-      rem  * so we call the onLoaded method manually in case the event is not fired
-      rem  *
-      rem  * could even directly call the onLoaded Method from here
-      rem  * #onLoaded(null())
-      rem  */
-      BBjAPI().createTimer(str(#this!)+"onLoadFallback",2,#this!,"onLoadedByTimer")
-    fi
+     methodret bundle$
   methodend
   rem /**
   rem  * An Event listener for the fallback by timer
@@ -1255,7 +1309,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * An Event listener for the loading the script by the WebManager
   rem  */
   method public void onLoadedByWebManager(BBjEvent ev!)
-    loadedEvent! = cast(BBjScriptLoadedEvent, ev!)    
+    loadedEvent! = cast(BBjScriptLoadedEvent, ev!)
+    ? #AssestsPath!
     if loadedEvent!.getUrl().endsWith(#AssestsPath!) then
       wm! = BBjAPI().getWebManager()
       wm!.clearCallback(wm!.ON_SCRIPT_LOADED)
@@ -1274,7 +1329,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
     BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
 
-    if info(3,6)<"5" AND #HTMLView!.executeScript("$gw_wnd") = null() then
+    if !#isWebGui() AND info(3,6)<"5" AND #HTMLView!.executeScript("$gw_wnd") = null() then
       System.out.println("BBjGridExWidget: $gw_wnd not found, repeating injectScript. High System Load?")
       #onInit(ev!)
       methodret
@@ -1290,6 +1345,12 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       #newW! = null()
       #newH! = null()
     FI
+
+    rem in WebGui we need to set the theme now, not earlier
+    if #isWebGui() AND #Options!.getTheme()>"" then
+      #setTheme(#Options!.getTheme())
+    fi
+
   methodend
   rem /**
   rem  * Focus the grid by selecting the cell in the first cell and first column.
@@ -2580,6 +2641,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method public void setTheme(BBjString theme$)
     #getOptions().setTheme(theme$)
+    if #isWebGui() and !#IsReady! then methodret
 
     if(#IsReady!) then
       if info(3,6)>"4" then
@@ -4215,6 +4277,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   method protected boolean isWeb()
     p! = info(3,6)
     methodret iff(p! = "5" or p! = "6"  , 1 , 0)
+  methodend
+
+  method public boolean isWebGui()
+    op$=STBL("!OPTIONS")
+    methodret INFO(6,0)="SWING+WEB" AND POS("WEBGUI_HTMLVIEW=FALSE"=op$)=0
   methodend
 
 classend
