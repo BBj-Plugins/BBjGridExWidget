@@ -211,6 +211,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   field protected BBjNumber newW!
   field protected BBjNumber newH!
   field private static BBjNumber AssetsCopied! = 0
+  field private static BBjString AssestsPath! = null()
   field private static BBjNumber FullyLoaded! = 0
   rem /**
   rem  * A Constant value to define row selection (selected/deselected) change events
@@ -903,7 +904,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  */
   method public static void setDebug(BBjNumber debug! , BBjNumber port!)
     if(debug!.booleanValue())
-      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-debugging-port=" + str(port!))
+      chromiumSwitches$ = stbl("!CHROMIUM_SWITCHES","--remote-allow-origins=* --remote-debugging-port=" + str(port!))
     FI
 
     #Debug! = debug!
@@ -972,11 +973,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
       html$ = #getTemplate()
       if #isWebGui() then
-      
+
         if  !#getCanvas().getParentWindow().isVisible()
           #getCanvas().getParentWindow().setVisible(1)
           a=msgbox("Show Window",tim=1)
-        fi        
+        fi
         tmp=pos("<head>"=html$)
         bundle$=#getBundle()
         path$ = #copyWebAssets(bundle$)
@@ -1168,9 +1169,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       p$=str(org.webswing.toolkit.api.jslink.JSObject@.getWindow(null()).eval("window.location.href"))
       methodret p$+name$
     fi
-    
+
     methodret "/files/"+name$
-    
   methodend
   rem /**
   rem  * An Event listener executed after the initial load of the HTML View.
@@ -1180,7 +1180,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
   method public void onInit(BBjEvent ev!)
-
     #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
 
     if !#isWeb() then
@@ -1197,7 +1196,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       #injectScript(bundle$, 0)
       bundle$ = ""
     fi
-    
+
     if !#isWebGui() then
       bundle$=#getBundle()
       rem finally inject the built bundle
@@ -1211,7 +1210,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         else
           #onLoaded(ev!)
         fi
-        
+
       else
         #injectScript(bundle$)
         wait 0
@@ -1277,8 +1276,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     rem  * To solve this we use the $gw_wnd and $gw_doc variables which are references to the window and document
     rem  * of the HTMLView according to the context.
     rem  */
-
-
+    rem /**
+    rem  * For BUI, inject the $gw_wnd and $gw_doc variables in the iframe.
+    rem  * This will make sure the variables are available for all js code executed in the iframe.
+    rem  */
+    if (info(3,6)="5")
+      bundle$ = bundle$ + "var $gw_wnd = $wnd;"
+      bundle$ = bundle$ + "var $gw_doc = $doc;"
+      #injectScript(bundle$, 0)
+      bundle$ = ""
+    fi
     rem /**
     rem  * For all clients inject the $gw_wnd and $gw_doc variables in the top window (iframe's parent if there is one).
     rem  * This will make sure the variables are available for all injected js code.
@@ -1308,6 +1315,17 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     System.out.println("BBjGridExWidget: Loaded by timer fallback. High System Load?")
     BBjAPI().getSysGui().executeScript("console.log('timer fallback!');")
     #onLoaded(ev!)
+  methodend
+  rem /**
+  rem  * An Event listener for the loading the script by the WebManager
+  rem  */
+  method public void onLoadedByWebManager(BBjEvent ev!)
+    loadedEvent! = cast(BBjScriptLoadedEvent, ev!)
+    if loadedEvent!.getUrl().endsWith(#AssestsPath!) then
+      wm! = BBjAPI().getWebManager()
+      wm!.clearCallback(wm!.ON_SCRIPT_LOADED)
+      #onLoaded(ev!)
+    fi
   methodend
   rem /**
   rem  * An Event listener executed after the second ON_PAGE_LOADED event
@@ -2636,7 +2654,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @see GRID_THEME_MATERIAL()
   rem  */
   method public void setTheme(BBjString theme$)
-    
+
     #getOptions().setTheme(theme$)
     if #isWebGui() and !#IsReady! then methodret
 
@@ -4277,8 +4295,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   methodend
 
   method public boolean isWebGui()
-    sw$=stbl("!CHROMIUM_SWITCHES",err=*next)
-    methodret INFO(6,0)="SWING+WEB" AND sw$="--bbj-web-view"
+    op$=STBL("!OPTIONS")
+    methodret INFO(6,0)="SWING+WEB" AND POS("WEBGUI_HTMLVIEW=FALSE"=op$)=0
   methodend
 
 classend

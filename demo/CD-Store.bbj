@@ -11,9 +11,9 @@ use com.basiscomponents.bc.SqlQueryBC
 
 if INFO(6,0)="SWING+WEB" then
   if msgbox("Select Version",7,"Client Selection","Chromium","WEBGUI Client HTML")=2 then
-      dummy$=stbl("!CHROMIUM_SWITCHES","--bbj-web-view")
+      dummy$=stbl("!OPTIONS","WEBGUI_HTMLVIEW=true")
   else
-    dummy$=stbl("!CHROMIUM_SWITCHES","")
+    dummy$=stbl("!OPTIONS","WEBGUI_HTMLVIEW=false")
   fi
 fi
 
