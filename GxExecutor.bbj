@@ -368,6 +368,9 @@ class public GxExecutor
 
     if widget!.getHTMLView().isDestroyed() <> BBjAPI.TRUE then
       if(async!)
+        if widget!.isWebGui() then
+          script! = "whenGridLibLoaded(function() {"+script!+"})"
+        fi
         widget!.getHTMLView().executeAsyncScript(script!, err=browser_err)
       else
         result! = widget!.getHTMLView().executeScript(script!, err=browser_err)
