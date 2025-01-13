@@ -2503,8 +2503,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param GxState state! : the state object
   rem  */
   method public void setState(GxState state!)
-    scriptKey! = "$gw_wnd.gw_setState"
-    #getExecutor().execute(scriptKey!,"$gw_wnd.gw_setState('" + #getRootId() + "'," + state!.toString() +")")
+    if state! <> null() then
+      scriptKey! = "$gw_wnd.gw_setState"
+      #getExecutor().execute(scriptKey!,"$gw_wnd.gw_setState('" + #getRootId() + "'," + state!.toString() +")")
+    fi
   methodend
   rem /**
   rem  * Apply the grid's columns , sorbing and filtering state
