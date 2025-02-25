@@ -1325,6 +1325,15 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
   method public void onLoaded(BBjEvent ev!)
+  
+    if #isWebGui() then
+      tmp=0
+      while tmp<30 AND #HTMLView!.executeScript("typeof(agGrid)")="undefined"
+      tmp=tmp+1
+      wait .1
+      wend
+    fi
+      
     #FullyLoaded! = 1
     #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
     BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
@@ -2503,8 +2512,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param GxState state! : the state object
   rem  */
   method public void setState(GxState state!)
-    scriptKey! = "$gw_wnd.gw_setState"
-    #getExecutor().execute(scriptKey!,"$gw_wnd.gw_setState('" + #getRootId() + "'," + state!.toString() +")")
+    if state! <> null() then
+      scriptKey! = "$gw_wnd.gw_setState"
+      #getExecutor().execute(scriptKey!,"$gw_wnd.gw_setState('" + #getRootId() + "'," + state!.toString() +")")
+    fi
   methodend
   rem /**
   rem  * Apply the grid's columns , sorbing and filtering state
