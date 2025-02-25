@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Wed, 06 Nov 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 25 Feb 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.18.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.18.0</link>
+            <guid>gx-grid-v1.18.0</guid>
+            <pubDate>Tue, 25 Feb 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>Add a check for null() <a href="https://github.com/BBj-Plugins/BBjGridExWidget/issues/277" target="_blank" rel="noopener noreferrer">#277</a> (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/3bf376d0b53e320c961eaa074009c593146da692" target="_blank" rel="noopener noreferrer">3bf376d</a>)</li><li>corrected umlauts for DE and FR languages so they are now properly rendered (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e4da33d2140b379e7fea99e6b3c5f68c26bc3d13" target="_blank" rel="noopener noreferrer">e4da33d</a>)</li><li>In WEBGUI the first render of the grid sometimes fails(<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/295a624850405548ec74f99cb684690fe4a87aea" target="_blank" rel="noopener noreferrer">295a624</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.17.0]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.17.0</link>
