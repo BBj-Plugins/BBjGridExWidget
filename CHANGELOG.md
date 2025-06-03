@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.18.0...1.19.0) (2025-06-03)
+
+### Features
+
+* add flex property to auto size columns ([f72203f](https://github.com/BBj-Plugins/BBjGridExWidget/commit/f72203fc8188dceeb4cc72b49dc5e6997177de3d))
+
+
 # [1.18.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.17.0...1.18.0) (2025-02-25)
 
 
