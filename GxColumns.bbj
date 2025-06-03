@@ -166,7 +166,7 @@ class public GxColumnDefinition
     json!.addProperty("headerName" , #getLabel(),err=*next)
     json!.addProperty("columnGroupShow" , #getColumnGroupShow() ,err=*next)
     json!.addProperty("headerClass" , iff(#getHeaderClass().size() <> 0 ,new Gson().toJson(#getHeaderClass()), listIsEmpty!) ,err=*next)
-    json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <> 0 ,new Gson().toJson(#getToolPanelClass()) ,listIsEmpty!) ,err=*next)
+    json!.addProperty("toolPanelClass" , iff(#getToolPanelClass().size() <small> 0 ,new Gson().toJson(#getToolPanelClass()) ,listIsEmpty!) ,err=*next)
     json!.addProperty("suppressColumnsToolPanel" , #getSuppressToolPanel().booleanValue() ,err=*next)
     json!.addProperty("suppressFiltersToolPanel" , #getSuppressFiltersToolPanel().booleanValue() ,err=*next)
     json!.addProperty("headerTooltip",#getHeaderTooltip(),err=*next)
@@ -217,6 +217,15 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
   rem  * <br><b><small>#ColumnsRenderer</small></b>
   rem  */
   field public BBjNumber MaxWidth! = null()
+  rem /**
+  rem  * Equivalent to flex-grow in CSS. When flex is set on one or more columns, any width value 
+  rem  * is ignored and instead the remaining free space in the grid is divided among flex columns 
+  rem  * in proportion to their flex value, so a column with flex: 2 will be twice the size as one with flex: 1.
+  rem  *
+  rem  * <br><b><small>#Configuration</small></b>
+  rem  * <br><b><small>#ColumnsRenderer</small></b>
+  rem  */
+  field public BBjNumber Flex! = null()
   rem /**
   rem  * The filter component to use for this column
   rem  *
@@ -1334,6 +1343,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     column!.addProperty("width",#getWidth().longValue(),err=*next)
     column!.addProperty("minWidth",#getMinWidth().longValue(),err=*next)
     column!.addProperty("maxWidth",#getMaxWidth().longValue(),err=*next)
+    column!.addProperty("flex",#getFlex().longValue(),err=*next)
     column!.addProperty("hide",#getHidden().booleanValue(),err=*next)
     column!.addProperty("pinned",#getPinned(),err=*next)
     column!.addProperty("lockPosition",#getLockPosition().longValue(),err=*next)
