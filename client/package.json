@@ -3,7 +3,7 @@
   "main": "client/dist/bbj-grid-widget.min.js",
   "author": "BASIS Europe Distribution GmbH",
   "license": "MIT",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "private": true,
   "scripts": {
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && ./node_modules/.bin/webpack --watch --progress",
