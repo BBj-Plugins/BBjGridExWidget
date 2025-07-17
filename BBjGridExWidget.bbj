@@ -1338,7 +1338,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
     BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
 
-    if !#isWebGui() AND info(3,6)<"5" AND #HTMLView!.executeScript("$gw_wnd") = null() then
+    if !#isWebGui() AND info(3,6)<"5" AND #HTMLView!.executeScript("$gw_wnd", err=*next) = null() then
       System.out.println("BBjGridExWidget: $gw_wnd not found, repeating injectScript. High System Load?")
       #onInit(ev!)
       methodret
