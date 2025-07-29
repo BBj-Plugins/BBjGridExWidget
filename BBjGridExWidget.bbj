@@ -1000,6 +1000,13 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         htmlview!.setStyle("height","100%")
       fi
 
+      REM https://bugzilla.basis.cloud/show_bug.cgi?id=35903
+      REM https://github.com/BBj-Plugins/BBjGridExWidget/issues/284
+      if info(3,6)="5" then
+        script$ = "$doc.querySelectorAll('.BBjHtmlView-content').forEach(el => (el.removeAttribute('tabIndex'), console.log(el)));"
+        bbjapi().getSysGui().executeScript(script$)
+      endif
+
       if !#isWebGui() then
         if (info(3,6)<"5" and #getDebug() > 0 and !#isWebGui() ) then
         url$ = htmlview!.getAttribute("remoteDebuggingURL")
