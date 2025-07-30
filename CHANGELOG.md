@@ -1,3 +1,11 @@
+## [1.19.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.19.0...1.19.1) (2025-07-30)
+
+
+### Bug Fixes
+
+* A shot in the dark for [#283](https://github.com/BBj-Plugins/BBjGridExWidget/issues/283). ([164fdcf](https://github.com/BBj-Plugins/BBjGridExWidget/commit/164fdcfca718e63d156e812ebdb5ae76a0897d4f))
+* remove BBjHtmlView tabindex in BUI to prevent focus loss ([ff71e4d](https://github.com/BBj-Plugins/BBjGridExWidget/commit/ff71e4d13bfe716f5d06fe3a8dd0b649d07e3075)), closes [#284](https://github.com/BBj-Plugins/BBjGridExWidget/issues/284)
+
 # [1.19.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.18.0...1.19.0) (2025-06-03)
 
 ### Features
