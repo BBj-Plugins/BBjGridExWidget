@@ -4299,7 +4299,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
   method public boolean isWebGui()
     op$=STBL("!OPTIONS")
-    methodret INFO(6,0)="SWING+WEB" AND POS("WEBGUI_HTMLVIEW=FALSE"=op$)=0
+    methodret INFO(6,0)="SWING+WEB" AND POS("WEBUUI_HTMLVIEW=FALSE"=op$)=0
   methodend
 
 classend
