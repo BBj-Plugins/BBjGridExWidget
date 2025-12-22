@@ -212,7 +212,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   field protected BBjNumber newH!
   field private static BBjNumber AssetsCopied! = 0
   field private static BBjString AssestsPath! = null()
-  field private static BBjNumber FullyLoaded! = 0
+  field private BBjNumber FullyLoaded! = 0
+  field private int initStage! = 0
   rem /**
   rem  * A Constant value to define row selection (selected/deselected) change events
   rem  *
@@ -982,7 +983,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         bundle$=#getBundle()
         path$ = #copyWebAssets(bundle$)
         scr$="<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
-        scr$=scr$+"<script>function whenGridLibLoaded (callback) {if (typeof agGrid === 'undefined') {setTimeout (function () {whenGridLibLoaded (callback);}, 50);} else { callback (); }}</script>"
         html$=html$(1,tmp+5)+scr$+html$(tmp+6)
         htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$)
       else
@@ -1020,6 +1020,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       htmlview!.setCallback(BBjAPI.ON_GAINED_FOCUS,#this!,"onGainedFocus")
       if #isWebGui() then
         htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+        BBjAPI().createTimer(str(#this!)+"onLoadFallback",1,#this!,"onLoadedByTimer")
       else
         htmlview!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onInit")
         htmlview!.setText(html$)
@@ -1175,6 +1176,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
     methodret "/files/"+name$
   methodend
+  method public void onScriptLoaded(BBjEvent ev!)
+  escape
+  methodend
   rem /**
   rem  * An Event listener executed after the initial load of the HTML View.
   rem  *
@@ -1183,12 +1187,21 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
   method public void onInit(BBjEvent ev!)
-    #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
 
-    if !#isWeb() then
-      #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+    System.out.println("GRID: "+STR(#HTMLView!.getParentWindow().getID())+"->"+" onInit")
+    
+    if #isWeb() then
+        #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
     fi
 
+    if !#isWeb() AND #initStage! = 1 then
+      #onLoaded(ev!)
+      #initStage! = 2
+      methodret
+    fi
+
+    #initStage! = 1
+    
     rem /**
     rem  * For BUI, inject the $gw_wnd and $gw_doc variables in the iframe.
     rem  * This will make sure the variables are available for all js code executed in the iframe.
@@ -1216,8 +1229,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         fi
       else
       rem WebGui
+        
         #injectScript(bundle$)
-        wait 0
+        rem adding a timer as fallback for sporadic event missing
+        BBjAPI().createTimer(str(#this!)+"onLoadFallback",1,#this!,"onLoadedByTimer")
         fi
       fi
     fi
@@ -1308,8 +1323,6 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
   method public void onLoadedByTimer(BBjEvent ev!)
-    System.out.println("BBjGridExWidget: Loaded by timer fallback. High System Load?")
-    BBjAPI().getSysGui().executeScript("console.log('timer fallback!');")
     #onLoaded(ev!)
   methodend
   rem /**
@@ -1331,17 +1344,10 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
-  method public void onLoaded(BBjEvent ev!)
-  
-    if #isWebGui() then
-      tmp=0
-      while tmp<30 AND #HTMLView!.executeScript("typeof(agGrid)")="undefined"
-      tmp=tmp+1
-      wait .1
-      wend
-    fi
+  method public void onLoaded(BBjEvent ev!)    System.out.println("GRID: "+STR(#HTMLView!.getParentWindow().getID())+"->"+" onLoaded")
       
     #FullyLoaded! = 1
+    #initStage! = 2
     #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
     BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
 
@@ -2054,7 +2060,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
     if(!isWidgetReady!)
       methodret
     FI
-
+ 
     isFirstRender! = #getIsFirstRender()
     gson! = new Gson()
     options! = #getAsJsonObject()
@@ -2071,9 +2077,15 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
 
     if(!isFirstRender!)
       priority! = null()
-    FI
-    rem #getExecutor().execute("console.log($gw_wnd), console.log($gw_doc)" , 1 , priority!)
-    #getExecutor().execute("$gw_wnd.gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")" , 1 , priority!)
+    fi
+        if info(3,6)="5" then
+            js$="(async () => { while (typeof($gw_wnd.gw_init)=='undefined') await new Promise(r => setTimeout(r, 50)); "
+        else
+            js$="(async () => { while (typeof($gw_wnd)=='undefined') await new Promise(r => setTimeout(r, 50)); "
+        fi
+        js$=js$+"$gw_wnd.gw_init(" + gson!.toJson(options!) + ",'" + #LicenseKey$ + "'," + data$ + ")"
+        js$=js$+"; })()"
+    #getExecutor().execute(js$ , 1 , priority!)
     rem /**
     rem  * Update the IsFirstRender flag once and only once
     rem  */
@@ -4298,7 +4310,7 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   methodend
 
   method public boolean isWebGui()
-    op$=STBL("!OPTIONS")
+      op$=STBL("!OPTIONS")
     methodret INFO(6,0)="SWING+WEB" AND POS("WEBUUI_HTMLVIEW=FALSE"=op$)=0
   methodend
 
