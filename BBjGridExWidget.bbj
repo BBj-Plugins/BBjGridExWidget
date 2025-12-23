@@ -1344,7 +1344,8 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  *
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
-  method public void onLoaded(BBjEvent ev!)    System.out.println("GRID: "+STR(#HTMLView!.getParentWindow().getID())+"->"+" onLoaded")
+  method public void onLoaded(BBjEvent ev!)   
+    System.out.println("GRID: "+STR(#HTMLView!.getParentWindow().getID())+"->"+" onLoaded")
       
     #FullyLoaded! = 1
     #initStage! = 2
