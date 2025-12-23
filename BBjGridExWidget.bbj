@@ -1345,11 +1345,16 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
   rem  * @param BBjEvent ev! The onLoad event
   rem  */
   method public void onLoaded(BBjEvent ev!)   
-    System.out.println("GRID: "+STR(#HTMLView!.getParentWindow().getID())+"->"+" onLoaded")
-      
+     
     #FullyLoaded! = 1
+
+
     #initStage! = 2
-    #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
+    if !#isWebGui() then
+      rem im WEBUI leave the event registered to re-render upon dock/undock
+      #HTMLView!.clearCallback(BBjAPI.ON_PAGE_LOADED)
+    fi
+
     BBjAPI().removeTimer(str(#this!)+"onLoadFallback",err=*next)
 
     if !#isWebGui() AND info(3,6)<"5" AND #HTMLView!.executeScript("$gw_wnd", err=*next) = null() then
