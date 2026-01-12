@@ -1367,6 +1367,11 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
       #setTheme(#Options!.getTheme())
     fi
 
+    rem For WebGui, restore the callback for undocking support
+    if #isWebGui() then
+      #HTMLView!.setCallback(BBjAPI.ON_PAGE_LOADED,#this!,"onLoaded")
+    fi
+
   methodend
   rem /**
   rem  * Focus the grid by selecting the cell in the first cell and first column.
