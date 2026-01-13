@@ -369,7 +369,7 @@ class public GxExecutor
     if widget!.getHTMLView().isDestroyed() <> BBjAPI.TRUE then
       if(async!)
         if widget!.isWebGui() then
-          script! = "(function _retry(){if(typeof whenGridLibLoaded!=='undefined'){whenGridLibLoaded(function(){"+script!+"});}else{setTimeout(_retry,50);}})();"
+              script! = "(function ready(cb) { typeof agGrid !== 'undefined' ? cb() : setTimeout(function() { ready(cb); }, 50); })(function() {" + script! + "});"
         fi
         widget!.getHTMLView().executeAsyncScript(script!, err=browser_err)
       else
