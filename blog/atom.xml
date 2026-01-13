@@ -2,11 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bbj-plugins.github.io/BBjGridExWidget/blog</id>
     <title>BBjGridExWidget Blog</title>
-    <updated>2025-06-03T00:00:00.000Z</updated>
+    <updated>2026-01-13T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bbj-plugins.github.io/BBjGridExWidget/blog"/>
     <subtitle>BBjGridExWidget Blog</subtitle>
     <icon>https://bbj-plugins.github.io/BBjGridExWidget/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BBjGridExWidget v1.19.2]]></title>
+        <id>gx-grid-v1.19.2</id>
+        <link href="https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.19.2"/>
+        <updated>2026-01-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Bug Fixes]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>more robust delayed execution (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/3ed9d1a28254c683529ae9393671ad3c09f95ed2" target="_blank" rel="noopener noreferrer">3ed9d1a</a>)</li><li>re-render when docking / undocking (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/6062663daefa039d77a4c0d4992fd36d25cd0a69" target="_blank" rel="noopener noreferrer">6062663</a>)</li><li>restore ON_PAGE_LOADED callback for WebGui undocking support (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/e8a27b674711ebf76df4b7c67422c8a3ceb95096" target="_blank" rel="noopener noreferrer">e8a27b6</a>)</li><li>WEBUI and GUI did sporadically not load (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/79da39b7cfda965e6095f756ae310c8691df5f94" target="_blank" rel="noopener noreferrer">79da39b</a>)</li></ul>]]></content>
+        <author>
+            <name>Hyyan Abo Fakher</name>
+            <uri>https://github.com/hyyan</uri>
+        </author>
+        <category label="release" term="release"/>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BBjGridExWidget v1.19.0]]></title>
         <id>gx-grid-v1.19.0</id>
