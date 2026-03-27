@@ -8,7 +8,7 @@ BBjGridExWidget uses a client-side data model, which means all of the data you w
 
 ## The `BBjGridExWidget::setData` method
 
-The method `BBjGridExWidget::setData` is what gets the grid rended and it has several responsibility
+The method `BBjGridExWidget::setData` is what gets the grid rendered and it has several responsibilities.
 
 1. Read the columns from the passed ResultSet and build a column definition. The column definition contains the column type, label and other extra properties like width or style. You can modify the column properties later on using the Columns API
 2. Set the data in the passed ResultSet inside the grid for display
