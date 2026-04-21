@@ -4,10 +4,20 @@
         <title>BBjGridExWidget Blog</title>
         <link>https://bbj-plugins.github.io/BBjGridExWidget/blog</link>
         <description>BBjGridExWidget Blog</description>
-        <lastBuildDate>Tue, 13 Jan 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 21 Apr 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[BBjGridExWidget v1.20.0]]></title>
+            <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.20.0</link>
+            <guid>gx-grid-v1.20.0</guid>
+            <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Bug Fixes]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fixes">Bug Fixes<a class="hash-link" href="#bug-fixes" title="Direct link to heading">​</a></h2><ul><li>use available control ID for HtmlView creation (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/83aaea549c3e94631457e46a240c81c665dedefd" target="_blank" rel="noopener noreferrer">83aaea5</a>)</li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a class="hash-link" href="#features" title="Direct link to heading">​</a></h2><ul><li>add custom sort comparator support to columns (<a href="https://github.com/BBj-Plugins/BBjGridExWidget/commit/59a412ed319bf94591c06525df76f22569e70df6" target="_blank" rel="noopener noreferrer">59a412e</a>)</li></ul>]]></content:encoded>
+            <category>release</category>
+            <category>changelog</category>
+        </item>
         <item>
             <title><![CDATA[BBjGridExWidget v1.19.2]]></title>
             <link>https://bbj-plugins.github.io/BBjGridExWidget/blog/gx-grid-v1.19.2</link>
