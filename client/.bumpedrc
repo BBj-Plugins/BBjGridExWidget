@@ -1,14 +1,15 @@
 files:
   - package.json
-  - ../bbj-plugin.json 
+  - ../bbj-plugin.json
 plugins:
   prerelease:
     Compiling production version:
       plugin: 'bumped-terminal'
-      command: 'yarn build'   
-  postrelease: 
+      command: 'yarn build'
+  postrelease:
     Generating CHANGELOG file:
       plugin: bumped-changelog
       options:
         preset: 'angular'
-        filename: ../CHANGELOG.md       
+        config: '../scripts/changelog-config.js'
+        filename: ../CHANGELOG.md

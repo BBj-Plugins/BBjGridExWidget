@@ -567,6 +567,18 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
   rem  */
   field public GxExpressionInterface ValueParserExpression! = null()
   rem /**
+  rem  * A custom comparator expression for sorting. The expression receives the following variables:
+  rem  * <code>valueA</code>, <code>valueB</code>, <code>nodeA</code>, <code>nodeB</code>, <code>isDescending</code>.
+  rem  * It should return 0 if values are equal, a positive number if valueA > valueB, and a negative number if valueA < valueB.
+  rem  *
+  rem  * <br><b><small>#Configuration</small></b>
+  rem  * <br><b><small>#ColumnsRenderer</small></b>.
+  rem  *
+  rem  * @see GxExpressionCaseInsensitiveComparator
+  rem  * @see Gx.Expression.GxExpression
+  rem  */
+  field public GxExpressionInterface ComparatorExpression! = null()
+  rem /**
   rem  * The default column mask
   rem  */
   field public BBjString Mask! = null()
@@ -1377,6 +1389,7 @@ class public GxDefaultColumnDefinition extends GxColumnDefinition
     column!.addProperty("filterValueGetter",#getFilterValueGetterExpression().toString(),err=*next)
     column!.addProperty("valueSetter",#getValueSetterExpression().toString(),err=*next)
     column!.addProperty("valueParser",#getValueParserExpression().toString(),err=*next)
+    column!.addProperty("comparator",#getComparatorExpression().toString(),err=*next)
     column!.addProperty("rowSpan",#getRowSpanExpression().toString(),err=*next)
     column!.addProperty("colSpan",#getColumnSpanExpression().toString(),err=*next)
     column!.        add("icons",iff(#getIcons().entrySet().size() <> 0 , #getIcons() , null()),err=*next)

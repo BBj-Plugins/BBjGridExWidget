@@ -35,7 +35,7 @@ export function gw_compileExpression(expression) {
   }
 
   const theFunction = new Function(
-    'x, ctx, oldValue, newValue, value, node, data, colDef, rowIndex, api, columnApi, getValue, column, columnGroup',
+    'x, ctx, oldValue, newValue, value, node, data, colDef, rowIndex, api, columnApi, getValue, column, columnGroup, valueA, valueB, nodeA, nodeB, isDescending',
     functionBody
   )
 
@@ -72,7 +72,12 @@ export function gw_executeExpression(expression, params) {
       params.columnApi,
       params.getValue,
       params.column,
-      params.columnGroup
+      params.columnGroup,
+      params.valueA,
+      params.valueB,
+      params.nodeA,
+      params.nodeB,
+      params.isDescending
     )
     return result
   } catch (e) {

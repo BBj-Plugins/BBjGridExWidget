@@ -1,3 +1,17 @@
+# [1.20.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.19.2...1.20.0) (2026-04-21)
+
+
+### Bug Fixes
+
+* use available control ID for HtmlView creation ([83aaea5](https://github.com/BBj-Plugins/BBjGridExWidget/commit/83aaea549c3e94631457e46a240c81c665dedefd))
+
+
+### Features
+
+* add custom sort comparator support to columns ([59a412e](https://github.com/BBj-Plugins/BBjGridExWidget/commit/59a412ed319bf94591c06525df76f22569e70df6))
+
+
+
 ## [1.19.2](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.19.1...1.19.2) (2026-01-13)
 
 

@@ -984,9 +984,9 @@ class public BBjGridExWidget extends BBjWidget implements GxColumnsManagerInterf
         path$ = #copyWebAssets(bundle$)
         scr$="<script type=""text/javascript"" src="""+path$+""" id=""bbj-grid-widget""></script>"
         html$=html$(1,tmp+5)+scr$+html$(tmp+6)
-        htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$)
+        htmlview! = #getCanvas().addHtmlView(#getCanvas().getAvailableControlID(),0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),html$,$0000$)
       else
-        htmlview! = #getCanvas().addHtmlView(101,0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
+        htmlview! = #getCanvas().addHtmlView(#getCanvas().getAvailableControlID(),0,0,#getCanvas().getWidth(),#getCanvas().getHeight(),"",$0000$)
       fi
       htmlview!.setOpaque(0)
       htmlview!.setNoEdge(1)
