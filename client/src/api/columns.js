@@ -40,6 +40,22 @@ export function gw_extendColumnDefinitions(definitions) {
 
     def.tooltipComponent = 'HTMLTooltip'
 
+    if (
+      // eslint-disable-next-line no-prototype-builtins
+      def.hasOwnProperty('comparator') &&
+      typeof def.comparator === 'string'
+    ) {
+      const comparator = def.comparator
+      def.comparator = (valueA, valueB, nodeA, nodeB, isDescending) =>
+        gw_executeExpression(comparator, {
+          valueA,
+          valueB,
+          nodeA,
+          nodeB,
+          isDescending,
+        })
+    }
+
     // eslint-disable-next-line no-prototype-builtins
     if (def.hasOwnProperty('editable') && typeof def.editable === 'string') {
       const editable = def.editable

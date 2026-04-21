@@ -513,3 +513,33 @@ class public GxExpressionDatesFormatter extends GxExpressionDateTimesFormatter
     methodend
 
 classend
+rem /**
+rem  * A predefined comparator expression for case-insensitive string sorting.
+rem  * When applied to a column, sorting becomes case-insensitive so that
+rem  * capitalization is ignored during comparison.
+rem  *
+rem  * <p>The comparator receives the following variables:
+rem  * <code>valueA</code>, <code>valueB</code>, <code>nodeA</code>, <code>nodeB</code>, <code>isDescending</code>.</p>
+rem  *
+rem  * <p><b>Usage:</b></p>
+rem  * <pre>
+rem  * column!.setComparatorExpression(new GxExpressionCaseInsensitiveComparator())
+rem  * </pre>
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public GxExpressionCaseInsensitiveComparator extends GxExpressionAbstract
+    rem /**
+    rem  * {@inheritDoc}
+    rem  */
+    method public String toString()
+        declare StringBuilder ex!
+
+        ex! = new StringBuilder()
+        ex!.append("var a = (valueA == null) ? '' : String(valueA);")
+        ex!.append("var b = (valueB == null) ? '' : String(valueB);")
+        ex!.append("return a.localeCompare(b, undefined, { sensitivity: 'base' });")
+        methodret ex!.toString()
+    methodend
+
+classend

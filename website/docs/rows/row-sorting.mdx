@@ -180,6 +180,52 @@ rem returns a parsable JSON string
 :::
 
 
+## Custom Comparator
+
+By default, the grid sorts rows using its built-in comparators (alphabetical for strings, numeric for numbers, etc.). String sorting is **case-sensitive**, so `"Alex"` and `"alex"` land far apart in the sorted output.
+
+To override this behavior on a per-column basis, assign a `ComparatorExpression` to the column. The expression is a JavaScript snippet that receives the following variables:
+
+| Variable       | Description                                           |
+| -------------- | ----------------------------------------------------- |
+| `valueA`       | The value in the first row being compared            |
+| `valueB`       | The value in the second row being compared            |
+| `nodeA`        | The RowNode of the first row                          |
+| `nodeB`        | The RowNode of the second row                          |
+| `isDescending` | `true` when the user is sorting descending            |
+
+The expression should return:
+
+* `0` when the values are equal
+* a positive number when `valueA` should come after `valueB`
+* a negative number when `valueA` should come before `valueB`
+
+### Case-Insensitive Sorting
+
+A ready-made `GxExpressionCaseInsensitiveComparator` is provided for the common case of sorting strings without regard to capitalization. Values like `"Alex"` and `"alex"` are treated as equal during comparison.
+
+```bbj
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpressionCaseInsensitiveComparator
+
+column! = grid!.getColumn("ARTIST")
+column!.setComparatorExpression(new GxExpressionCaseInsensitiveComparator())
+```
+
+### Custom Comparator Expression
+
+For any other ordering, wrap a JavaScript snippet in `GxExpression`. The example below sorts a column by string length instead of alphabetically:
+
+```bbj
+use ::BBjGridExWidget/GxExpressions.bbj::GxExpression
+
+column! = grid!.getColumn("TITLE")
+column!.setComparatorExpression(new GxExpression("return String(valueA).length - String(valueB).length;"))
+```
+
+:::tip
+Comparators run once per pairwise comparison during a sort, which can be many times for a large dataset. Keep the expression body short and avoid allocating new strings inside it when possible.
+:::
+
 ## Accented sort
 
 By default sorting doesn't take into consideration locale specific characters, if you need to make your sort locale specific you can configure this by setting the grid option `AccentedSort = true`
