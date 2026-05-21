@@ -1,3 +1,12 @@
+## [1.20.1](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.20.0...1.20.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* correct typo of WEBUI and WEBGUI in HTML view options ([8ea06d6](https://github.com/BBj-Plugins/BBjGridExWidget/commit/8ea06d656084873f8a73bc64f98c1777e865da3a))
+
+
+
 # [1.20.0](https://github.com/BBj-Plugins/BBjGridExWidget/compare/1.19.2...1.20.0) (2026-04-21)
 
 

@@ -10,10 +10,10 @@ use com.basiscomponents.db.ResultSet
 use com.basiscomponents.bc.SqlQueryBC
 
 if INFO(6,0)="SWING+WEB" then
-  if msgbox("Select Version",7,"Client Selection","Chromium","WEBGUI Client HTML")=2 then
-    dummy$=stbl("!OPTIONS","WEBGUI_HTMLVIEW=true")
+  if msgbox("Select Version",7,"Client Selection","Chromium","WEBUI Client HTML")=2 then
+    dummy$=stbl("!OPTIONS","WEBUI_HTMLVIEW=true")
   else
-    dummy$=stbl("!OPTIONS","WEBGUI_HTMLVIEW=false")
+    dummy$=stbl("!OPTIONS","WEBUI_HTMLVIEW=false")
   fi
 fi
 
